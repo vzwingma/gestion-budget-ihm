@@ -15,7 +15,7 @@ jobs:
       name: Build and Publish to GitHub 
       script:
       - npm run build
-      - npm run lint
+    #  - npm run lint
       - npm run test
     - stage: deploy
       if: branch = master
