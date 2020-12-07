@@ -12,8 +12,8 @@ node_js: 15
 cache: npm
 jobs:
   include:
-    - stage: Build and Publish to GitHub 
-      name: Build and Publish to GitHub 
+    - stage: Build
+      name: Build ReactApp
       script:
       - npm run build
     #  - npm run lint
@@ -23,15 +23,18 @@ jobs:
         then
           echo "ReTag de snapshot";
           git tag -d snapshot;
-          git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm-legacy :refs/tags/snapshot;
+          git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm :refs/tags/snapshot;
           git tag snapshot;
-          git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm-legacy --tags;
+          git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm --tags;
         else
           echo "Pas de reTag de snapshot";
         fi
-    - stage: deploy
-      if: branch = master
-      script: npm run deploy
+    - stage: Publish to GitHub
+      name: Publish to GitHub
+      if: (branch = snapshot OR (tag =~ ^v))
+      script:
+        - npm run build
+        - npm run deploy
 
     ############################
     #   PUBLISH SUR DOCKER
