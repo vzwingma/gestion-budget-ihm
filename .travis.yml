@@ -15,9 +15,10 @@ jobs:
     - stage: Build and Publish to GitHub
       name: Build and Publish to GitHub
       script:
-      - npm run build
+        - npm run test
+        - npm run build
+        - zip app_build.zip build/*
     #  - npm run lint
-      - npm run test
       # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
       - if [[ $TRAVIS_BRANCH == "master" ]];
         then
@@ -36,7 +37,7 @@ jobs:
           skip_cleanup: true
           overwrite: true
           file_glob: true
-          file: /home/travis/build/vzwingma/gestion-budget-ihm/build/*
+          file: /home/travis/build/vzwingma/gestion-budget-ihm/app_build.zip
           on:
             repo: vzwingma/gestion-budget-ihm
             tags: true
@@ -61,7 +62,9 @@ jobs:
             
         - echo "Construction de l'image Docker gestion_budget_ihm"; 
         - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
-        - wget -q https://github.com/vzwingma/gestion-budget-ihm/releases/download/$VERSION_RELEASE/$VERSION_RELEASE.zip;
+        - wget -q https://github.com/vzwingma/gestion-budget-ihm/releases/download/$VERSION_RELEASE/app_build.zip;
+        - mkdir app/
+        - unzip app_build.zip app/
         - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
 
         - if [[ $TRAVIS_BRANCH == v* ]]; 
