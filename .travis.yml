@@ -9,6 +9,7 @@ notifications:
   slack: 
     secure: "vsOHo4Chai7jU0W7VBZvJLowJhGBSaIlz6ioXqIMRYa2cdXudgwq23i2EDQ65hAj8gJLrMwMc5il105qV8WdExaaomwM1fmm4onmDXKFGTVsemG+X9rul2Y0ii2VklvmKw7jBdEKbJwE3/zmtYV7+rcI1FDP4/jNQklvkMODBK8vPrvLGapSl8K9Gfuhnf5RIJimHLPPK1584YlF7WXjq47Dce420bG6VdACrQ2OJiDcubei1MM+ov6sTaAin4jc1URrPegXjEKt4ckQK+HderVwy6SZMWoPXDG3uSC0p+7YTlOnFeMIA0TJku7ueCtEkjg14k+vJJTjGLXE41MB0h37n9PBWeWUwxF4xRbKtWmynMXbABPoEjwFJrnVoY8cr6AWcFeguat/y3iTRMaYI7LxiWhAyMyPJ0QoJfQNqN/ZkvExOae96Eb7Oy9UzSJ5gPefuNlcmqBM69cabgZH2PHVig88HFHyTKBul1vXXiSTcnPavjQq3eY2NR8pTqye7LJggc3rAEhmmai7AXjEajaBoUWRib1jIHDNMNYsQxbs2I4Onwgu4XCLEZdrzXTWFPmDr0wdpO2mm5z1uNdqqQUrFbdvWAUvKUVuQzhAuF+3DQuPuP7r2mGTn0Macb/KJ6rrqNpx+A3iHbQ7uvhwv0QJJh7jxLPz+dR83FxmtWQ="
 node_js: 15
+cache: npm
 jobs:
   include:
     - stage: Build and Publish to GitHub 
@@ -17,9 +18,21 @@ jobs:
       - npm run build
     #  - npm run lint
       - npm run test
+      # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
+      - if [[ $TRAVIS_BRANCH == "master" ]];
+        then
+          echo "ReTag de snapshot";
+          git tag -d snapshot;
+          git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm-legacy :refs/tags/snapshot;
+          git tag snapshot;
+          git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm-legacy --tags;
+        else
+          echo "Pas de reTag de snapshot";
+        fi
     - stage: deploy
       if: branch = master
       script: npm run deploy
+
     ############################
     #   PUBLISH SUR DOCKER
     ############################
