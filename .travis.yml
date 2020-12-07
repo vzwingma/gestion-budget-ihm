@@ -12,8 +12,8 @@ node_js: 15
 cache: npm
 jobs:
   include:
-    - stage: Build
-      name: Build ReactApp
+    - stage: Build and Publish to GitHub
+      name: Build and Publish to GitHub
       script:
       - npm run build
     #  - npm run lint
@@ -29,12 +29,16 @@ jobs:
         else
           echo "Pas de reTag de snapshot";
         fi
-    - stage: Publish to GitHub
-      name: Publish to GitHub
-      if: (branch = snapshot OR (tag =~ ^v))
-      script:
-        - npm run build
-        - npm run deploy
+      deploy:
+        # Déploiement des releaes sur tag : snapshot ou version
+        - provider: releases
+          token: $GITHUB_API_KEY
+          skip_cleanup: true
+          overwrite: true
+          file: /home/travis/build/vzwingma/gestion-budget-ihm-legacy/target/webapps/ihm.war
+          on:
+            repo: vzwingma/gestion-budget-ihm-legacy
+            tags: true
 
     ############################
     #   PUBLISH SUR DOCKER
