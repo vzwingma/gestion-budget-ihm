@@ -35,9 +35,10 @@ jobs:
           token: $GITHUB_API_KEY
           skip_cleanup: true
           overwrite: true
-          file: /home/travis/build/vzwingma/gestion-budget-ihm-legacy/target/webapps/ihm.war
+          file_glob: true
+          file: /home/travis/build/vzwingma/gestion-budget-ihm/build/*
           on:
-            repo: vzwingma/gestion-budget-ihm-legacy
+            repo: vzwingma/gestion-budget-ihm
             tags: true
 
     ############################
