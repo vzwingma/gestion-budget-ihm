@@ -1,4 +1,5 @@
 language: node_js
+os: "linux"
 services:
   - docker
 git:
@@ -8,47 +9,45 @@ notifications:
   slack: 
     secure: "vsOHo4Chai7jU0W7VBZvJLowJhGBSaIlz6ioXqIMRYa2cdXudgwq23i2EDQ65hAj8gJLrMwMc5il105qV8WdExaaomwM1fmm4onmDXKFGTVsemG+X9rul2Y0ii2VklvmKw7jBdEKbJwE3/zmtYV7+rcI1FDP4/jNQklvkMODBK8vPrvLGapSl8K9Gfuhnf5RIJimHLPPK1584YlF7WXjq47Dce420bG6VdACrQ2OJiDcubei1MM+ov6sTaAin4jc1URrPegXjEKt4ckQK+HderVwy6SZMWoPXDG3uSC0p+7YTlOnFeMIA0TJku7ueCtEkjg14k+vJJTjGLXE41MB0h37n9PBWeWUwxF4xRbKtWmynMXbABPoEjwFJrnVoY8cr6AWcFeguat/y3iTRMaYI7LxiWhAyMyPJ0QoJfQNqN/ZkvExOae96Eb7Oy9UzSJ5gPefuNlcmqBM69cabgZH2PHVig88HFHyTKBul1vXXiSTcnPavjQq3eY2NR8pTqye7LJggc3rAEhmmai7AXjEajaBoUWRib1jIHDNMNYsQxbs2I4Onwgu4XCLEZdrzXTWFPmDr0wdpO2mm5z1uNdqqQUrFbdvWAUvKUVuQzhAuF+3DQuPuP7r2mGTn0Macb/KJ6rrqNpx+A3iHbQ7uvhwv0QJJh7jxLPz+dR83FxmtWQ="
 node_js: 15
-
 jobs:
   include:
-    - stage: Build and Publish to GitHub
-      name: Build et publication sur GitHub
-    script:
-    - npm run build
-    - npm run lint
-    - npm run test
-  - stage: deploy
-    if: branch = master
-    script: npm run deploy
-  ############################
-  #   PUBLISH SUR DOCKER
-  ############################
-  - stage: "Publish to DockerHUB"
-    name: "Publication vers DockerHub"
-    # Deploiement sur Docker HUB 
-    if: (branch = snapshot OR (tag =~ ^v))
-    install: skip      
-    script:
-      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    - stage: Build and Publish to GitHub 
+      name: Build and Publish to GitHub 
+      script:
+      - npm run build
+      - npm run lint
+      - npm run test
+    - stage: deploy
+      if: branch = master
+      script: npm run deploy
+    ############################
+    #   PUBLISH SUR DOCKER
+    ############################
+    - stage: "Publish to DockerHUB"
+      name: "Publication vers DockerHub"
+      # Deploiement sur Docker HUB 
+      if: (branch = snapshot OR (tag =~ ^v))
+      install: skip      
+      script:
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
           
-      - if [[ $TRAVIS_BRANCH == v* ]]; 
-        then 
+        - if [[ $TRAVIS_BRANCH == v* ]]; 
+          then 
             VERSION_RELEASE=$TRAVIS_BRANCH;
-        else
+          else
             VERSION_RELEASE="snapshot";
-        fi;
+          fi;
             
-      - echo "Construction de l'image Docker gestion_budget_ihm"; 
-      - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
-      - wget -q https://github.com/vzwingma/gestion-budget-ihm/releases/download/$VERSION_RELEASE/ihm.war;
-      - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
+        - echo "Construction de l'image Docker gestion_budget_ihm"; 
+        - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
+        - wget -q https://github.com/vzwingma/gestion-budget-ihm/releases/download/$VERSION_RELEASE/ihm.war;
+        - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
 
-      - if [[ $TRAVIS_BRANCH == v* ]]; 
-        then 
+        - if [[ $TRAVIS_BRANCH == v* ]]; 
+          then 
             docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:latest ; 
             docker push vzwingmann/gestion_budget_ihm:latest ; 
             VERSION_RELEASE=$(echo $TRAVIS_BRANCH | cut -b 2-);
-        fi;
-      - docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
-      - docker push vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
-    name: "Publish IHM React"
+          fi;
+        - docker tag vzwingmann/gestion_budget_ihm:travis vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
+        - docker push vzwingmann/gestion_budget_ihm:$VERSION_RELEASE ; 
