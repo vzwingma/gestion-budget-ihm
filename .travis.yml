@@ -62,10 +62,9 @@ jobs:
           fi;
             
         - echo "Construction de l'image Docker gestion_budget_ihm"; 
-        - cd ~/build/vzwingma/gestion-budget-ihm/src/main/external-ressources/docker
+        - cd ~/build/vzwingma/gestion-budget-ihm/external-ressources/docker
         - wget -q https://github.com/vzwingma/gestion-budget-ihm/releases/download/$VERSION_RELEASE/app_build.zip;
-        - mkdir app/
-        - unzip app_build.zip app/
+        - unzip app_build.zip
         - docker build -t vzwingmann/gestion_budget_ihm:travis -f Dockerfile-IHM .;
 
         - if [[ $TRAVIS_BRANCH == v* ]]; 
