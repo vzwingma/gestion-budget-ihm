@@ -18,6 +18,7 @@ jobs:
         - npm run test
         - npm run build
         - zip -r app_build.zip build/*
+        - git add app_build.zip
     #   - npm run lint
         # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
         - if [[ $TRAVIS_BRANCH == "master" ]];
