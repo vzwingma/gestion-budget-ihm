@@ -1,33 +1,45 @@
 import React, { Component } from "react";
+import MicroServicesInfos from "./MsInfos";
 
-class Contact extends Component {
+class Infos extends Component {
 
-  state = {
-        infos: []
+    /** Etats pour la page Infos **/
+      state = {
+        infos: [],
+        urls: ['http://localhost:8091', 'http://localhost:8092', 'http://localhost:8093', 'http://localhost:8094']
       }
 
+
+    /** Appels WS vers /actuator/info pour tous les µS **/
       componentDidMount() {
-      console.log('I was triggered during componentDidMount')
 
-        fetch('http://localhost:8091/actuator/info')
-        .then(res => res.json())
-        .then((data) => {
-            console.log('I was triggered during data')
-            this.setState({ infos: data })
-        })
-        .catch(console.log)
+        // Itération sur tous les composants
+        this.state.urls.map((urlMS) => (
+            fetch(urlMS+"/actuator/info")
+            .then(res => res.json())
+            .then((data) => {
+                this.setState({ infos: [...this.state.infos, data.app] })
+            })
+            .catch(console.log)
+        ))
       }
 
+    /** Phase de Render **/
   render() {
-    return (
-      <div>
-        <h2>GOT QUESTIONS?</h2>
-        <p>The easiest thing to do is post on
-        our <a href="http://forum.kirupa.com">forums</a>.
-        </p>
-      </div>
-    );
+        return (
+          <div>
+            <center><h1>Liste des composants</h1></center>
+
+            {this.state.infos.map((msInfos) => (
+               <MicroServicesInfos
+                    key={msInfos.name}
+                    name={msInfos.name}
+                    version={msInfos.version}
+                    description={msInfos.description} />
+            ))}
+          </div>
+        )
   }
 }
 
-export default Contact;
+export default Infos;
