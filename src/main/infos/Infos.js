@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import ModuleInfos from "./MsInfos";
+import ModuleInfos from "./MsInfos.component";
 
-class Infos extends Component {
+export default class Infos extends Component {
 
     /** Etats pour la page Infos **/
       state = {
@@ -62,5 +62,3 @@ class Infos extends Component {
         )
   }
 }
-
-export default Infos;

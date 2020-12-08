@@ -14,7 +14,7 @@ import Logout from "./login/Logout.component";
 
 
 /** Page principale avec le routeur **/
-class Main extends Component {
+export default class Main extends Component {
   render() {
     return (
       <HashRouter>
@@ -27,7 +27,6 @@ class Main extends Component {
           <ul className="header">
             <li><NavLink to="/Logout">Logout</NavLink></li>
           </ul>
-
 
           <div className="App">
             <Route path="/" component={Home}/>
@@ -42,5 +41,3 @@ class Main extends Component {
     );
   }
 }
-
-export default Main;
