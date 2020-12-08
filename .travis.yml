@@ -18,23 +18,22 @@ jobs:
         - npm run test
         - npm run build
         - zip app_build.zip build/*
-    #  - npm run lint
-      # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
-      - if [[ $TRAVIS_BRANCH == "master" ]];
-        then
-          echo "ReTag de snapshot";
-          git tag -d snapshot;
-          git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm :refs/tags/snapshot;
-          git tag snapshot;
-          git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm --tags;
-        else
-          echo "Pas de reTag de snapshot";
-        fi
+    #   - npm run lint
+        # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
+        - if [[ $TRAVIS_BRANCH == "master" ]];
+          then
+            echo "ReTag de snapshot";
+            git tag -d snapshot;
+            git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm :refs/tags/snapshot;
+            git tag snapshot;
+            git push https://$GITHUB_API_KEY@github.com/vzwingma/gestion-budget-ihm --tags;
+          else
+            echo "Pas de reTag de snapshot";
+          fi
       deploy:
         # Déploiement des releaes sur tag : snapshot ou version
         - provider: releases
           token: $GITHUB_API_KEY
-          skip_cleanup: true
           overwrite: true
           file_glob: true
           file: /home/travis/build/vzwingma/gestion-budget-ihm/app_build.zip
@@ -49,7 +48,7 @@ jobs:
       name: "Publication vers DockerHub"
       # Deploiement sur Docker HUB 
       if: (branch = snapshot OR (tag =~ ^v))
-      install: skip      
+      install: skip
       script:
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
           
