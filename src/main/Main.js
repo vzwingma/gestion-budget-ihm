@@ -7,8 +7,11 @@ import {
 import Home from "./Home";
 import PrivateRoute from './PrivateRoute'
 import Budgets from "./budgets/Budgets";
-import Login from "./login/Login";
+import Login from "./login/Login.component";
 import Infos from "./infos/Infos";
+
+import Logout from "./login/Logout.component";
+
 
 /** Page principale avec le routeur **/
 class Main extends Component {
@@ -16,17 +19,23 @@ class Main extends Component {
     return (
       <HashRouter>
         <div>
-          <h1>Gestion de budgets</h1>
           <ul className="header">
             <li><NavLink to="/">Home</NavLink></li>
             <li><NavLink to="/budgets">Budgets</NavLink></li>
             <li><NavLink to="/infos">Infos</NavLink></li>
           </ul>
-          <div className="content">
+          <ul className="header">
+            <li><NavLink to="/Logout">Logout</NavLink></li>
+          </ul>
+
+
+          <div className="App">
             <Route path="/" component={Home}/>
             <Route path="/login" component={Login}/>
-            <PrivateRoute path="/budgets" component={Budgets}/>
+            <PrivateRoute path="/budgets" component={Budgets} />
             <Route path="/infos" component={Infos}/>
+
+            <Route path="/logout" component={Logout}/>
           </div>
         </div>
       </HashRouter>

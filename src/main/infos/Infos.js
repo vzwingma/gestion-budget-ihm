@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MicroServicesInfos from "./MsInfos";
+import ModuleInfos from "./MsInfos";
 
 class Infos extends Component {
 
@@ -45,14 +45,14 @@ class Infos extends Component {
             <center><h1>Liste des composants</h1></center>
             <small>Mode : <b>{process.env.NODE_ENV}</b></small>
 
-            <MicroServicesInfos
+            <ModuleInfos
                 key='ihm'
                 name='IHM'
                 version={process.env.REACT_APP_BUDGET_VERSION}
-                description="IHM REACT " />
+                description="IHM REACT" />
 
             {this.state.infos.map((msInfos) => (
-               <MicroServicesInfos
+               <ModuleInfos
                     key={msInfos.name}
                     name={msInfos.name}
                     version={msInfos.version}

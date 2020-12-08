@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import Main from './Main';
+import '@testing-library/jest-dom';
+import Main from "../main/Main";
 
 test('renders Titrew', () => {
   render(<Main />);
