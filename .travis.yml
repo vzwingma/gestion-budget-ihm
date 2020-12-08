@@ -17,7 +17,7 @@ jobs:
       script:
         - npm run test
         - npm run build
-        - zip app_build.zip build/*
+        - zip -r app_build.zip build/*
     #   - npm run lint
         # Tag de snapshot. C'est un tag pour permettre le déploiement sur GitHUB.
         - if [[ $TRAVIS_BRANCH == "master" ]];
@@ -34,6 +34,7 @@ jobs:
         # Déploiement des releaes sur tag : snapshot ou version
         - provider: releases
           token: $GITHUB_API_KEY
+          cleanup: false
           overwrite: true
           file_glob: true
           file: /home/travis/build/vzwingma/gestion-budget-ihm/app_build.zip
