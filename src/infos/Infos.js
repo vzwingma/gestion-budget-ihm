@@ -9,10 +9,10 @@ class Infos extends Component {
       }
     /** Config Backend **/
       backEnds = [
-        {idMS: 'API Paramétrage', url:'http://localhost:8091'},
-        {idMS: 'API Utilisateurs', url:'http://localhost:8092'},
-        {idMS: 'API Comptes', url:'http://localhost:8093'},
-        {idMS: 'API Opérations', url:'http://localhost:8094'}
+        {idMS: 'API Paramétrage', url: process.env.REACT_APP_CONFIG_URL_PARAMS},
+        {idMS: 'API Utilisateurs', url: process.env.REACT_APP_CONFIG_URL_UTILISATEURS},
+        {idMS: 'API Comptes', url: process.env.REACT_APP_CONFIG_URL_COMPTES},
+        {idMS: 'API Opérations', url: process.env.REACT_APP_CONFIG_URL_OPERATIONS}
       ]
 
     /** Appels WS vers /actuator/info pour tous les µS **/
@@ -43,6 +43,13 @@ class Infos extends Component {
         return (
           <div>
             <center><h1>Liste des composants</h1></center>
+            <small>Mode : <b>{process.env.NODE_ENV}</b></small>
+
+            <MicroServicesInfos
+                key='ihm'
+                name='IHM'
+                version={process.env.REACT_APP_BUDGET_VERSION}
+                description="IHM REACT " />
 
             {this.state.infos.map((msInfos) => (
                <MicroServicesInfos
