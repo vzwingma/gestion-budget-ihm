@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ModuleInfos from "./MsInfos.component";
+import * as AppConstants from "../Utils/AppEnums.constants"
 
 export default class Infos extends Component {
 
@@ -9,18 +10,20 @@ export default class Infos extends Component {
       }
     /** Config Backend **/
       backEnds = [
-        {idMS: 'API Paramétrage', url: process.env.REACT_APP_CONFIG_URL_PARAMS},
-        {idMS: 'API Utilisateurs', url: process.env.REACT_APP_CONFIG_URL_UTILISATEURS},
-        {idMS: 'API Comptes', url: process.env.REACT_APP_CONFIG_URL_COMPTES},
-        {idMS: 'API Opérations', url: process.env.REACT_APP_CONFIG_URL_OPERATIONS}
+        {idMS: 'API Paramétrage',   url: AppConstants.BACKEND_ENUM.URL_PARAMS},
+        {idMS: 'API Utilisateurs',  url: AppConstants.BACKEND_ENUM.URL_UTILISATEURS},
+        {idMS: 'API Comptes',       url: AppConstants.BACKEND_ENUM.URL_COMPTES},
+        {idMS: 'API Opérations',    url: AppConstants.BACKEND_ENUM.URL_OPERATIONS}
       ]
 
     /** Appels WS vers /actuator/info pour tous les µS **/
-      componentDidMount() {
+    componentDidMount() {
 
         // Itération sur tous les composants
         this.backEnds.map((backEnd, id) => (
-            fetch(backEnd.url+"/actuator/info")
+
+            fetch(backEnd.url + AppConstants.SERVICES_URL.INFOS.GET_INFO,
+                  { method: 'GET', headers:{'origin':'localhost', 'accept':'application/json'} })
             .then(res => res.json())
             .then((data) => {
                 this.setState({ infos: [...this.state.infos, data.app] })
