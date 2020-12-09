@@ -6,9 +6,9 @@ import {
 } from "react-router-dom";
 import Home from "./Home";
 import PrivateRoute from './PrivateRoute'
-import Budgets from "./budgets/Budgets";
+import Budgets from "./budgets/Budgets.component";
 import Login from "./login/Login.component";
-import Infos from "./infos/Infos";
+import Infos from "./infos/Infos.component";
 
 import Logout from "./login/Logout.component";
 

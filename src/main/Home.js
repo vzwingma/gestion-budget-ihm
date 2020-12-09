@@ -1,18 +1,14 @@
 import React, { Component } from "react";
 
-class Home extends Component {
+/*
+ * Bandeau principal
+ */
+export default class Home extends Component {
   render() {
     return (
         <div>
-            <center>
-                <h1>Gestion de budgets</h1>
-            </center>
-            <div>
-                <h3>{process.env.NODE_ENV}</h3>
-            </div>
+            <h5>Gestion de budgets - {process.env.NODE_ENV}</h5>
         </div>
     );
   }
 }
-
-export default Home;

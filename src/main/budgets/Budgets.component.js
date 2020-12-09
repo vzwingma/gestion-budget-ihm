@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+/*
+ * Page principale des budgets
+ */
 class Budgets extends Component {
   render() {
     return (
