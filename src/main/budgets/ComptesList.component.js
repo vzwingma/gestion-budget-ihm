@@ -11,8 +11,28 @@ export default class ComptesList extends Component {
 
     /** Etats pour la sélection des budgets **/
       state = {
-        comptes: []
+        comptes: [],
+        selectedCompte : null
       }
+
+    constructor(props) {
+        super(props);
+        this.handleSelect = this.handleSelect.bind(this);
+    }
+
+    // Sélection d'un compte
+    handleSelect(event) {
+        const compteLabel = event.target.value;
+        console.log("Changement de compte " + compteLabel)
+        var selectedIdCompte = null;
+        Array.from(event.target.options)
+             .forEach(function (option, index) {
+                if(option.value === compteLabel){
+                    selectedIdCompte = option.id;
+                }
+             })
+        this.setState({ selectedCompte: selectedIdCompte })
+    }
 
 
     /** Appels WS vers pour charger la liste des comptes **/
@@ -48,8 +68,9 @@ export default class ComptesList extends Component {
 
     render() { return (
         <div>
-            <Form.Group controlId="exampleForm.ControlSelect1">
-                <Form.Control as="select">
+            <Form.Group controlId="CompteForm.CompteSelect">
+                <Form.Label>Comptes</Form.Label>
+                <Form.Control as="select" onChange={this.handleSelect}>
                     { this.state.comptes.map((compte, key) => ( <option key={key} id={compte.id}>{compte.libelle}</option> ))}
                 </Form.Control>
             </Form.Group>
