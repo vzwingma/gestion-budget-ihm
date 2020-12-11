@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form } from 'react-bootstrap';
+import Pagination from 'react-bootstrap/Pagination'
 import * as AppConstants from "../Utils/AppEnums.constants"
 import { getHTTPHeaders } from './../Services/Auth.service'
 
@@ -10,35 +10,23 @@ export default class DateRange extends Component {
 
 
 
-    /** Etats pour la sélection des budgets **/
+    /** Etats pour la sélection du mois courant **/
       state = {
-        date: []
+        selectedDate : null
       }
+    constructor(props) {
+        super(props);
+        this.handleSelect = this.handleSelect.bind(this);
+    }
 
+    // Sélection d'un mois
+    handleSelect(event) {
+       console.log(event)
+    }
 
     /** Appels WS vers pour charger la liste des comptes **/
     componentDidMount() {
 
-        fetch(AppConstants.BACKEND_ENUM.URL_COMPTES + AppConstants.SERVICES_URL.COMPTES.GET_ALL,
-            {
-                method: 'GET', headers: getHTTPHeaders()
-            })
-            .then(res => res.json())
-            .then((data) => {
-                this.comptesLoaded(data)
-            })
-            .catch(() => {
-                console.log("Erreur lors du chargement des comptes")
-            })
-    }
-
-    // Chargement des comptes et tri suivant l'ordre
-    comptesLoaded(data){
-        console.log("Chargement de " + data.length + " comptes")
-        console.log(data)
-        data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1)
-        this.setState({ comptes: data })
-    //    this.state.comptes.forEach((item) => console.log(" - " + item.libelle) );
     }
 
 
@@ -47,14 +35,18 @@ export default class DateRange extends Component {
  *  RENDER
  */
 
+
     render() { return (
-        <div>
-           <Form>
-                <Form.Group controlId="dateRange">
-                    <Form.Label>Range</Form.Label>
-                    <Form.Control type="range" custom />
-                </Form.Group>
-            </Form>
-      </div>
+    <div>
+   <Pagination>
+     <Pagination.First />
+     <Pagination.Prev />
+     <Pagination.Item>Novembre</Pagination.Item>
+     <Pagination.Item active>Décembre</Pagination.Item>
+     <Pagination.Item>Janvier</Pagination.Item>
+     <Pagination.Next />
+     <Pagination.Last disabled/>
+   </Pagination>
+    </div>
     ); }
 }
