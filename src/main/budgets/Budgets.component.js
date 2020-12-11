@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form } from 'react-bootstrap';
 import ComptesList from "./ComptesList.component"
+import DateRange from "./DateRange.component"
 /*
  * Page principale des budgets
  */
@@ -27,7 +28,7 @@ export default class Budgets extends Component {
     render() { return (
         <div>
             <ComptesList />
-
+            <DateRange/>
             <Form.Label>Date</Form.Label>
       </div>
     ); }
