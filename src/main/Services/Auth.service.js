@@ -12,8 +12,13 @@
         }
     }
 
+    // Authentifié ?
+    const getOAuthToken = () => {
+        return localStorage.getItem(OAUTH2_KEY);
+    }
+
     export const authenticate = (value) => {
-        console.log("Authentification du token OAuth2 " + value)
+        console.log("Authentification par token OAuth2 " + value)
         localStorage.setItem(OAUTH2_KEY, value);
     }
 
@@ -21,3 +26,10 @@
         console.log("Déconnexion du token OAUTH2_KEY" )
         localStorage.removeItem(OAUTH2_KEY);
     }
+
+    /** HTTP Client Header **/
+    export const getHTTPHeaders = () => new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + getOAuthToken()
+    });
