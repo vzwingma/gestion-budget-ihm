@@ -13,7 +13,7 @@
     }
 
     // Authentifié ?
-    const getOAuthToken = () => {
+    export const getOAuthToken = () => {
         return localStorage.getItem(OAUTH2_KEY);
     }
 
@@ -26,10 +26,3 @@
         console.log("Déconnexion du token OAUTH2_KEY" )
         localStorage.removeItem(OAUTH2_KEY);
     }
-
-    /** HTTP Client Header **/
-    export const getHTTPHeaders = () => new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization' : 'Bearer ' + getOAuthToken()
-    });

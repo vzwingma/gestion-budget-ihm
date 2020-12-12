@@ -13,5 +13,8 @@ export const SERVICES_URL = {
     },
     COMPTES : {
         GET_ALL : "/comptes/v1"
+    },
+    BUDGETS : {
+        INTERVALLE : "/budgets/v1/{{}}/intervalles"
     }
 }

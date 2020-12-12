@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form } from 'react-bootstrap';
 import * as AppConstants from "../Utils/AppEnums.constants"
-import { getHTTPHeaders } from './../Services/Auth.service'
+import * as ClientHTTP from './../Services/ClientHTTP.service'
 
 /*
  * Composant Select Comptes
@@ -9,10 +9,9 @@ import { getHTTPHeaders } from './../Services/Auth.service'
 export default class ComptesList extends Component {
 
 
-    /** Etats pour la sélection des budgets **/
+    /** Etats pour la sélection du co **/
       state = {
         comptes: [],
-        selectedCompte : null
       }
 
     constructor(props) {
@@ -20,27 +19,12 @@ export default class ComptesList extends Component {
         this.handleSelect = this.handleSelect.bind(this);
     }
 
-    // Sélection d'un compte
-    handleSelect(event) {
-        const compteLabel = event.target.value;
-        console.log("Changement de compte " + compteLabel)
-        var selectedIdCompte = null;
-        Array.from(event.target.options)
-             .forEach(function (option, index) {
-                if(option.value === compteLabel){
-                    selectedIdCompte = option.id;
-                }
-             })
-        this.setState({ selectedCompte: selectedIdCompte })
-    }
-
-
     /** Appels WS vers pour charger la liste des comptes **/
     componentDidMount() {
-
-        fetch(AppConstants.BACKEND_ENUM.URL_COMPTES + AppConstants.SERVICES_URL.COMPTES.GET_ALL,
+        const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
+        fetch(getURL,
             {
-                method: 'GET', headers: getHTTPHeaders()
+                method: 'GET', headers: ClientHTTP.getHeaders()
             })
             .then(res => res.json())
             .then((data) => {
@@ -53,12 +37,29 @@ export default class ComptesList extends Component {
 
     // Chargement des comptes et tri suivant l'ordre
     comptesLoaded(data){
-        console.log("Chargement de " + data.length + " comptes")
-        console.log(data)
-        data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1)
-        this.setState({ comptes: data })
-    //    this.state.comptes.forEach((item) => console.log(" - " + item.libelle) );
+        console.log("Chargement de " + data.length + " comptes");
+        // console.log(data);
+        data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1);
+        this.setState({ comptes: data });
+        this.props.onCompteChange(data[0].id);
     }
+
+    // Sélection d'un compte
+    handleSelect(event) {
+        // Select du compte parmi la liste
+        const compteLabel =event.target.value;
+        console.log("Changement de compte : " + compteLabel)
+        var selectedIdCompte = null;
+        Array.from(event.target.options)
+             .forEach(function (option, index) {
+                if(option.value === compteLabel){
+                    selectedIdCompte = option.id;
+                }
+             })
+        // Compte sélectionné, remonté à budget
+        this.props.onCompteChange(selectedIdCompte);
+    }
+
 
 
 
