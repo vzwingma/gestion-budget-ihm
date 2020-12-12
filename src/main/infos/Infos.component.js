@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ModuleInfos from "./MsInfos.component";
 import * as AppConstants from "../Utils/AppEnums.constants"
+import * as ClientHTTP from './../Services/ClientHTTP.service'
 
 export default class Infos extends Component {
 
@@ -22,7 +23,7 @@ export default class Infos extends Component {
         // Itération sur tous les composants
         this.backEnds.map((backEnd, id) => (
 
-            fetch(backEnd.url + AppConstants.SERVICES_URL.INFOS.GET_INFO,
+            fetch(ClientHTTP.getURL(backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO),
                   { method: 'GET', headers:{'origin':'localhost', 'accept':'application/json'} })
             .then(res => res.json())
             .then((data) => {
