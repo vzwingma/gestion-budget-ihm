@@ -16,5 +16,8 @@ export const SERVICES_URL = {
     },
     BUDGETS : {
         INTERVALLE : "/budgets/v1/{{}}/intervalles"
+    },
+    OPERATIONS : {
+        LIST : "/budgets/v1/query?idCompte={{}}&annee={{}}&mois={{}}"
     }
 }

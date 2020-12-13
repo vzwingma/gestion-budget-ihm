@@ -11,7 +11,9 @@
     export const getURL = (uri, path, params) => {
         var fullURL = uri + path;
         if(params != null){
-            fullURL = fullURL.replace("{{}}", params)
+            params.forEach(param => {
+                fullURL = fullURL.replace("{{}}", param)
+            })
         }
         console.log("Appel de l'URL : [" + fullURL + "]")
         return fullURL;

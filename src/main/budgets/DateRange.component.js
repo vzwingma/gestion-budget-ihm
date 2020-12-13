@@ -23,17 +23,15 @@ export default class DateRange extends Component {
 
         // Init date à maintenant
         var now = new Date(Date.now())
-        var initDate = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
-        var previousDate = new Date(now.getFullYear(), initDate.getMonth() - 1, 1, 0, 0, 0);
-        var nextDate = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0);
         this.state = {
                      datePremierBudget : null,
                      dateDernierBudget : null,
-                     datePreviousBudget : previousDate,
-                     dateCurrentBudget : initDate,
-                     dateNextBudget : nextDate,
+                     datePreviousBudget : new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0),
+                     dateCurrentBudget : new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0),
+                     dateNextBudget : new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0),
                      idCompte : null
                  }
+        this.props.onDateChange(new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0));
 
         this.handleSelect = this.handleSelect.bind(this);
         this.refreshDatesFromCompte = this.refreshDatesFromCompte.bind(this);
@@ -43,31 +41,29 @@ export default class DateRange extends Component {
     // Mise à jour du contexte de budget
     shouldComponentUpdate(nextProps, nextStates){
         // Update ssi c'est le compte qui change
-        if(nextProps.idCompte === nextStates.idCompte){
-            if(this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()){
-                console.log("Update Context :: date=" + nextStates.dateCurrentBudget )
-                return true;
-            }
-            return false;
-        }
-        else{
+        if(nextProps.idCompte !== nextStates.idCompte){
             console.log("Update Context :: idCompte=" + nextProps.idCompte )
             this.setState({idCompte : nextProps.idCompte})
             this.refreshDatesFromCompte(nextProps.idCompte)
             return true;
         }
+        if(this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()){
+            //    console.log("Update Context :: date=" + nextStates.dateCurrentBudget )
+                return true;
+        }
+        return false;
     }
 
     /** Appels WS vers pour charger la liste des comptes **/
     refreshDatesFromCompte(idCompte) {
 
-        fetch(ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,  idCompte),
+        fetch(ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,  [ idCompte ]),
             {
                 method: 'GET', headers: ClientHTTP.getHeaders()
             })
             .then(res => res.json())
             .then((data) => {
-                console.log(data)
+                // console.log(data)
                 this.intervalleLoaded(data.datePremierBudget, data.dateDernierBudget)
             })
             .catch((e) => {
@@ -83,7 +79,6 @@ export default class DateRange extends Component {
         console.log("Budgets disponibles entre " + datePremierBudget.toLocaleString() + " et " + dateDernierBudget.toLocaleString());
 
         this.setState({ datePremierBudget: datePremierBudget, dateDernierBudget : dateDernierBudget });
-        //this.props.onCompteChange(data[0].id);
     }
 
 
@@ -106,15 +101,15 @@ export default class DateRange extends Component {
             dateChanged = true;
         }
         else if(event.target.id === "firstButton"){
-            newDatePreviousBudget = new Date(this.state.datePremierBudget);
+            newDatePreviousBudget = new Date(new Date(this.state.datePremierBudget).setMonth(this.state.datePremierBudget.getMonth() - 1));
             newDateCurrentBudget = new Date(this.state.datePremierBudget);
-            newDateNextBudget = new Date(this.state.datePremierBudget.setMonth(this.state.datePremierBudget.getMonth() + 1));
+            newDateNextBudget = new Date(new Date(this.state.datePremierBudget).setMonth(this.state.datePremierBudget.getMonth() + 1));
             dateChanged = true;
         }
         else if(event.target.id === "lastButton"){
             newDateCurrentBudget = new Date(this.state.dateDernierBudget);
-            newDateNextBudget = new Date(this.state.dateDernierBudget);
-            newDatePreviousBudget = new Date(this.state.dateDernierBudget.setMonth(this.state.dateDernierBudget.getMonth() - 1));
+            newDateNextBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() + 1));;
+            newDatePreviousBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() - 1));
             dateChanged = true;
         }
         if(dateChanged){
@@ -123,6 +118,8 @@ export default class DateRange extends Component {
                 dateCurrentBudget : newDateCurrentBudget,
                 dateNextBudget : newDateNextBudget
             })
+            // Date sélectionnée, remonté à budget
+            this.props.onDateChange(newDateCurrentBudget);
         }
 
 

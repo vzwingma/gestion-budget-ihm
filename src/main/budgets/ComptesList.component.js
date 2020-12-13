@@ -30,8 +30,8 @@ export default class ComptesList extends Component {
             .then((data) => {
                 this.comptesLoaded(data)
             })
-            .catch(() => {
-                console.log("Erreur lors du chargement des comptes")
+            .catch((e) => {
+                console.log("Erreur lors du chargement des comptes " + e)
             })
     }
 
