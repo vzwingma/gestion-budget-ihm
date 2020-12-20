@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Table from 'react-bootstrap/Table'
-import * as AppConstants from "../Utils/AppEnums.constants"
-import * as ClientHTTP from './../Services/ClientHTTP.service'
+import Table from 'react-bootstrap/Table';
 
 /*
  * Liste des opérations
@@ -10,29 +8,32 @@ export default class OperationsList extends Component {
 
     /** Etats pour Budget et opérations **/
         state = {
-            currentBudget: null
+            currentBudget: null,
+            listeOperations: []
         }
 
     /** Constructeur **/
     constructor(props){
         super(props);
+
     }
 
     // Mise à jour du contexte de budget
     shouldComponentUpdate(nextProps, nextStates){
         // Update si budget change dans le parent
         if(nextProps.currentBudget !== nextStates.currentBudget && nextProps.currentBudget != null){
-            //console.log("Update Context !: Budget " + nextProps.currentBudget.id);
-            this.setState({currentBudget : nextProps.currentBudget});
-            return true;
+            console.log("Update Context :: Budget " + nextProps.currentBudget.id + "  [" + nextProps.currentBudget.listeOperations.length + "] opérations");
+            this.setState(
+                {   currentBudget : nextProps.currentBudget,
+                    listeOperations : nextProps.currentBudget.listeOperations }
+            );
         }
-        return false;
+        return true;
     }
-
 
 /**
  *  RENDER
-     // {this.state.currentBudget.listOperations.map((budget) => ( ))}
+     //
  */
 
     render() { return (
@@ -41,8 +42,7 @@ export default class OperationsList extends Component {
           <thead>
             <tr>
               <th>Jour opération</th>
-              <th>Catégorie</th>
-              <th>SS Catégorie</th>
+              <th colspan="2">Catégorie</th>
               <th>Description</th>
               <th>Valeur</th>
               <th>Actions</th>
@@ -50,17 +50,25 @@ export default class OperationsList extends Component {
             </tr>
           </thead>
           <tbody>
-
-                      <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>mdo</td>
-                        <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>mdo</td>
-                      </tr>
-
+          { this.state.listeOperations.map((operation, key) => (
+                <tr>
+                    <td>{
+                        operation.autresInfos.dateOperation != null ?
+                        operation.autresInfos.dateOperation[2]+"/"+operation.autresInfos.dateOperation[1] +"/"+ operation.autresInfos.dateOperation[0]
+                        : "-"
+                     }</td>
+                    <td>{operation.categorie.libelle}</td>
+                    <td>{operation.ssCategorie.libelle}</td>
+                    <td>{operation.libelle}</td>
+                    <td>{operation.valeur}</td>
+                    <td>Otto</td>
+                    <td>{
+                        operation.autresInfos.dateMaj != null ?
+                        operation.autresInfos.dateMaj[2]+"/"+operation.autresInfos.dateMaj[1] +"/"+ operation.autresInfos.dateMaj[0]
+                        : "-"
+                        }</td>
+                </tr>
+          ))}
           </tbody>
         </Table>
         </div>
