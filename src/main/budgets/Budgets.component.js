@@ -15,7 +15,8 @@ export default class Budgets extends Component {
     /** Etats pour la page Budget **/
         state = {
             selectedCompte : null,
-            selectedDate : null
+            selectedDate : null,
+            currentBudget: null
         }
 
     /** Constructeur **/
@@ -23,6 +24,7 @@ export default class Budgets extends Component {
         super(props);
         this.handleCompteChange = this.handleCompteChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleBudgetUpdate = this.handleBudgetUpdate.bind(this);
         this.refreshBudget = this.refreshBudget.bind(this);
     }
 
@@ -38,6 +40,10 @@ export default class Budgets extends Component {
         this.setState({ selectedDate : selectedDateFromComponent})
     }
 
+    handleBudgetUpdate(budgetUpdated){
+        console.log("Budget mis à jour")
+        this.setState({ currentBudget : budgetUpdated })
+    }
 
     /** Appels WS vers pour charger la liste des opérations pour le mois et le budget **/
     // Mise à jour du contexte de budget
@@ -72,7 +78,7 @@ export default class Budgets extends Component {
     **/
     refreshBudget(selectedCompte, selectedDate){
         if(selectedCompte != null && selectedDate != null){
-            const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.LIST,
+            const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
                                 [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
             fetch(getURL,
             {
@@ -99,7 +105,7 @@ export default class Budgets extends Component {
         <div>
             <ComptesList onCompteChange={this.handleCompteChange} />
             <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
-            <OperationsList currentBudget={this.state.currentBudget}/>
+            <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget}/>
       </div>
     ); }
 }

@@ -15,9 +15,25 @@ export const SERVICES_URL = {
         GET_ALL : "/comptes/v1"
     },
     BUDGETS : {
-        INTERVALLE : "/budgets/v1/{{}}/intervalles"
+        INTERVALLE : "/budgets/v1/{{}}/intervalles",
+        GET : "/budgets/v1/query?idCompte={{}}&annee={{}}&mois={{}}"
     },
     OPERATIONS : {
-        LIST : "/budgets/v1/query?idCompte={{}}&annee={{}}&mois={{}}"
+        UPDATE : "/budgets/v1/{{}}/operations/{{}}"
     }
+    
+/*
+    USERS_ACCESS_DATE_FULL = "/utilisateurs/v1/lastaccessdate";
+    USERS_PREFS_FULL = "/utilisateurs/v1/preferences";
+    COMPTES_LIST_FULL = "/comptes/v1";
+    COMPTES_ID_FULL = "/comptes/v1/{idCompte}";
+    PARAMS_CATEGORIES_FULL = "/parametres/v1/categories";
+    BUDGET_ID_FULL = "/budgets/v1/{idBudget}";
+    BUDGET_QUERY_FULL = "/budgets/v1/query";
+    BUDGET_ETAT_FULL = "/budgets/v1/{idBudget}/etat";
+    BUDGET_UP_TO_DATE_FULL = "/budgets/v1/{idBudget}/upToDate";
+    BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL = "/budgets/v1/{idCompte}/operations/libelles";
+    BUDGET_OPERATION_DERNIERE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/derniereOperation";
+    BUDGET_OPERATION_INTERCOMPTE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/versCompte/{idCompte}";
+*/
 }

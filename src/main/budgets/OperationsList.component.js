@@ -12,11 +12,16 @@ export default class OperationsList extends Component {
             listeOperations: []
         }
 
-    /** Constructeur **/
     constructor(props){
-        super(props);
-
+        super(props)
+        this.handleBudgetUpdate = this.handleBudgetUpdate.bind(this)
     }
+
+    // Update du budget
+    handleBudgetUpdate(budgetUpdated){
+        this.props.onBudgetChange(budgetUpdated);
+    }
+
 
     // Mise à jour du contexte de budget
     shouldComponentUpdate(nextProps, nextStates){
@@ -61,7 +66,9 @@ export default class OperationsList extends Component {
                     <td>{operation.ssCategorie.libelle}</td>
                     <td>{operation.libelle}</td>
                     <td>{operation.valeur} €</td>
-                    <td><OperationActions key={key} id={operation.id} etat={operation.etat}/></td>
+                    <td><OperationActions key={operation.id} id={operation.id}
+                                          operation={operation} budgetid={this.props.currentBudget.id}
+                                          onBudgetChange={this.handleBudgetUpdate} /></td>
                     <td>{
                         operation.autresInfos.dateMaj != null ?
                         operation.autresInfos.dateMaj[2]+"/"+operation.autresInfos.dateMaj[1] +"/"+ operation.autresInfos.dateMaj[0]
