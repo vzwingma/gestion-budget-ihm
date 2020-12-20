@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Form } from 'react-bootstrap';
 import ComptesList from "./ComptesList.component"
 import DateRange from "./DateRange.component"
+import OperationsList from "./OperationsList.component"
+
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
 
@@ -14,8 +15,7 @@ export default class Budgets extends Component {
     /** Etats pour la page Budget **/
         state = {
             selectedCompte : null,
-            selectedDate : null,
-            currentBudget : null
+            selectedDate : null
         }
 
     /** Constructeur **/
@@ -43,17 +43,25 @@ export default class Budgets extends Component {
     // Mise à jour du contexte de budget
     shouldComponentUpdate(nextProps, nextStates){
         var componentUpdate = false;
+        var budgetUpdate = false;
         if(this.state.selectedCompte !== nextStates.selectedCompte){
             console.log("Update Context :: idCompte=" + nextStates.selectedCompte )
             componentUpdate = true;
+            budgetUpdate = true;
         }
         else if(this.state.selectedDate != null & nextStates.selectedDate != null &&
             (this.state.selectedDate.getTime() !== nextStates.selectedDate.getTime()))
         {
             console.log("Update Context :: date=" + nextStates.selectedDate )
             componentUpdate = true;
+            budgetUpdate = true;
         }
-        if(componentUpdate){
+        else if(this.state.currentBudget !== nextStates.currentBudget){
+            console.log("Update Context :: budget=" + nextStates.currentBudget.id )
+            componentUpdate = true;
+            budgetUpdate = false;
+        }
+        if(budgetUpdate){
             this.refreshBudget(nextStates.selectedCompte, nextStates.selectedDate );
         }
         return componentUpdate;
@@ -72,11 +80,10 @@ export default class Budgets extends Component {
             })
             .then(res => res.json())
             .then((data) => {
-                console.log(data)
                 this.setState({ currentBudget : data })
             })
             .catch((e) => {
-                console.log("Erreur lors du chargement des budgets " + e)
+                console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e)
             })
         }
     }
@@ -92,7 +99,7 @@ export default class Budgets extends Component {
         <div>
             <ComptesList onCompteChange={this.handleCompteChange} />
             <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
-            <Form.Label>Date</Form.Label>
+            <OperationsList currentBudget={this.state.currentBudget}/>
       </div>
     ); }
 }
