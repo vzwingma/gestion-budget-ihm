@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Table from 'react-bootstrap/Table';
-
+import OperationActions from "./OperationActions.component"
 /*
  * Liste des opérations
  */
@@ -60,8 +60,8 @@ export default class OperationsList extends Component {
                     <td>{operation.categorie.libelle}</td>
                     <td>{operation.ssCategorie.libelle}</td>
                     <td>{operation.libelle}</td>
-                    <td>{operation.valeur}</td>
-                    <td>Otto</td>
+                    <td>{operation.valeur} €</td>
+                    <td><OperationActions key={key} id={operation.id} etat={operation.etat}/></td>
                     <td>{
                         operation.autresInfos.dateMaj != null ?
                         operation.autresInfos.dateMaj[2]+"/"+operation.autresInfos.dateMaj[1] +"/"+ operation.autresInfos.dateMaj[0]
