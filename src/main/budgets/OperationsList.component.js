@@ -56,7 +56,7 @@ export default class OperationsList extends Component {
           </thead>
           <tbody>
           { this.state.listeOperations.map((operation, key) => (
-                <tr>
+                <tr key={key}>
                     <td>{
                         operation.autresInfos.dateOperation != null ?
                         operation.autresInfos.dateOperation[2]+"/"+operation.autresInfos.dateOperation[1] +"/"+ operation.autresInfos.dateOperation[0]

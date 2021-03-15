@@ -13,12 +13,7 @@ export default class OperationActions extends Component {
         this.updateOperation = this.updateOperation.bind(this);
     }
 
-    // Mise à jour de l'état de l'opération
-    handleToggleClick(event) {
-        this.props.operation.etat=event.target.attributes["action"].value;
-        this.updateOperation(this.props.operation);
-    }
-
+    // Modification de l'opération
     updateOperation(operation){
         console.log("Modification de l'opération " + operation.id + " -> " + operation.etat);
         const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
@@ -39,11 +34,16 @@ export default class OperationActions extends Component {
     }
 
 
+    // Mise à jour de l'état de l'opération
+    handleToggleClick(event) {
+        this.props.operation.etat=event.target.attributes["action"].value;
+        this.updateOperation(this.props.operation);
+    }
 
     render(){
       return (
         <div>{this.props.id} : {this.props.operation.etat}
-            <div class="btn-group" role="group" aria-label="Actions" onClick={this.handleToggleClick}>
+            <div className="btn-group" role="group" aria-label="Actions" onClick={this.handleToggleClick}>
             { this.props.operation.etat !== "REALISEE" &&
                 <Button action="REALISEE" variant="outline-success">Validation</Button>
             }

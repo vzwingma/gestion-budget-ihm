@@ -39,7 +39,7 @@ export default class Budgets extends Component {
         console.log("Changement Date=" + selectedDateFromComponent)
         this.setState({ selectedDate : selectedDateFromComponent})
     }
-
+    // Notification lorsque le budget est mis à jour
     handleBudgetUpdate(budgetUpdated){
         console.log("Budget mis à jour")
         this.setState({ currentBudget : budgetUpdated })
