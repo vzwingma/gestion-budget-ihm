@@ -18,7 +18,7 @@ export default class Logout extends Component {
     return (
         <div className="auth-wrapper">
             <div className="auth-inner">
-            Bye !
+                Vous êtes maintenant déconnecté
             </div>
         </div>
     );

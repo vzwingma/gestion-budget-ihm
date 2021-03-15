@@ -4,7 +4,6 @@ import {
   NavLink,
   HashRouter
 } from "react-router-dom";
-import Home from "./Home";
 import PrivateRoute from './PrivateRoute'
 import Budgets from "./budgets/Budgets.component";
 import Login from "./login/Login.component";
@@ -18,24 +17,24 @@ export default class Main extends Component {
   render() {
     return (
       <HashRouter>
-        <div>
-          <ul className="header">
-            <li><NavLink to="/">Home</NavLink></li>
-            <li><NavLink to="/budgets">Budgets</NavLink></li>
-            <li><NavLink to="/infos">Infos</NavLink></li>
-          </ul>
-          <ul className="header">
-            <li><NavLink to="/Logout">Logout</NavLink></li>
-          </ul>
-
-          <div className="App">
-            <Route path="/" component={Home}/>
+        <nav className="navbar navbar-expand navbar-dark bg-dark">
+            <div className="navbar-brand">
+                <img src="/img/favicon64.png" width="30" height="30" className="d-inline-block align-top" alt="Gestion de budgets"/>
+                    Gestion de budgets
+            </div>
+            <ul className="navbar-nav">
+                <li className="nav-item" ><NavLink className="nav-link" to="/budgets">Budgets</NavLink></li>
+                <li className="nav-item" ><NavLink className="nav-link" to="/infos">Infos</NavLink></li>
+                <li className="nav-item" ><span>Texte : Ici sera l'utilisateur </span></li>
+                <li className="nav-item" ><NavLink className="nav-link" to="/Logout">Déconnexion</NavLink></li>
+            </ul>
+        </nav>
+        <div className="App">
             <Route path="/login" component={Login}/>
             <PrivateRoute path="/budgets" component={Budgets} />
             <Route path="/infos" component={Infos}/>
 
             <Route path="/logout" component={Logout}/>
-          </div>
         </div>
       </HashRouter>
     );
