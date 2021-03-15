@@ -43,6 +43,11 @@ export default class OperationActions extends Component {
     render(){
       return (
         <div id={this.props.id}>
+            <style type="text/css">{`
+                .btn-light {
+                    padding: 4px 1px 4px 1px;
+                }
+            `}</style>
             <div className="btn-group" role="group" aria-label="Actions" onClick={this.handleToggleClick}>
             { this.props.operation.etat !== "REALISEE" &&
                 <Button action="REALISEE" variant="light">
