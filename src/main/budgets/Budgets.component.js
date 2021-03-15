@@ -102,10 +102,23 @@ export default class Budgets extends Component {
 
 
     render() { return (
-        <div>
-            <ComptesList onCompteChange={this.handleCompteChange} />
-            <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
-            <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget}/>
-      </div>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-4">
+              <ComptesList onCompteChange={this.handleCompteChange} />
+            </div>
+            <div className="col-8">
+              <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-4">
+                Résumé
+            </div>
+            <div className="col-8">
+                <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget}/>
+            </div>
+          </div>
+        </div>
     ); }
 }
