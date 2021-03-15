@@ -42,22 +42,32 @@ export default class OperationActions extends Component {
 
     render(){
       return (
-        <div>{this.props.id} : {this.props.operation.etat}
+        <div id={this.props.id}>
             <div className="btn-group" role="group" aria-label="Actions" onClick={this.handleToggleClick}>
             { this.props.operation.etat !== "REALISEE" &&
-                <Button action="REALISEE" variant="outline-success">Validation</Button>
+                <Button action="REALISEE" variant="light">
+                    <img action="REALISEE" src="/img/statuts/circle_ok.png" width="20" height="20" className="d-inline-block align-top" alt="Valider l'opération"/>
+                </Button>
             }
             { this.props.operation.etat !== "PREVUE" &&
-                <Button action="PREVUE" variant="outline-warning">Prévision</Button>
+                <Button action="PREVUE" variant="light">
+                    <img action="PREVUE" src="/img/statuts/circle_clock.png" width="20" height="20" className="d-inline-block align-top" alt="Prévoir l'opération"/>
+                </Button>
             }
             { this.props.operation.etat !== "ANNULEE" &&
-                <Button action="ANNULEE" variant="outline-secondary">Annulation</Button>
+                <Button action="ANNULEE" variant="light">
+                    <img action="ANNULEE" src="/img/statuts/circle_cancel.png" width="20" height="20" className="d-inline-block align-top" alt="Annuler l'opération"/>
+                </Button>
             }
             { this.props.operation.etat !== "SUPPRIMEE" &&
-                <Button action="SUPPRIMEE" variant="outline-danger">Suppression</Button>
+                <Button action="SUPPRIMEE" variant="light">
+                    <img action="SUPPRIMEE" src="/img/statuts/circle_remove.png" width="20" height="20" className="d-inline-block align-top" alt="Supprimer l'opération"/>
+                </Button>
             }
             { this.props.operation.etat !== "REPORTEE" &&
-                <Button action="REPORTEE" variant="outline-info">Report</Button>
+                <Button action="REPORTEE" variant="light">
+                    <img action="REPORTEE" src="/img/statuts/circle_arrow_right.png" width="20" height="20" className="d-inline-block align-top" alt="Reporter l'opération"/>
+                </Button>
             }
             </div>
         </div>

@@ -43,20 +43,21 @@ export default class OperationsList extends Component {
 
     render() { return (
         <div>
-        <Table striped bordered hover variant="dark">
+        <Table className="table table-sm table-striped table-bordered table-hover">
           <thead>
             <tr>
-              <th>Jour opération</th>
-              <th colspan="2">Catégorie</th>
-              <th>Description</th>
-              <th>Valeur</th>
-              <th>Actions</th>
-              <th>Date MàJ</th>
+              <th scope="col">Jour opération</th>
+              <th scope="col" colspan="2">Catégorie</th>
+              <th scope="col">Description</th>
+              <th scope="col">Valeur</th>
+              <th scope="col">Etat</th>
+              <th scope="col">Actions</th>
+              <th scope="col">Mise à Jour</th>
             </tr>
           </thead>
           <tbody>
           { this.state.listeOperations.map((operation, key) => (
-                <tr key={key}>
+                <tr key={key} id={operation.id}>
                     <td>{
                         operation.autresInfos.dateOperation != null ?
                         operation.autresInfos.dateOperation[2]+"/"+operation.autresInfos.dateOperation[1] +"/"+ operation.autresInfos.dateOperation[0]
@@ -66,6 +67,7 @@ export default class OperationsList extends Component {
                     <td>{operation.ssCategorie.libelle}</td>
                     <td>{operation.libelle}</td>
                     <td>{operation.valeur} €</td>
+                    <td>{operation.etat}</td>
                     <td><OperationActions key={operation.id} id={operation.id}
                                           operation={operation} budgetid={this.props.currentBudget.id}
                                           onBudgetChange={this.handleBudgetUpdate} /></td>
