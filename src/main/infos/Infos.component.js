@@ -48,7 +48,7 @@ export default class Infos extends Component {
         return (
         <Container fluid>
             <Card border="primary" bg="light" style={{ width: '40rem', margin: '10px auto' }} >
-                <Card.Header><h4>Information</h4></Card.Header>
+                <Card.Header><h4>Informations</h4></Card.Header>
                 <Card.Body>
                     <ListGroup>
                         <ListGroup.Item>Environnement : <b>{process.env.NODE_ENV}</b></ListGroup.Item>
