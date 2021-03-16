@@ -42,46 +42,50 @@ export default class OperationsList extends Component {
      //
  */
 
-    render() { return (
-        <div>
-        <Table striped bordered hover size="sm" variant="light">
-          <thead>
-            <tr>
-              <th scope="col">Jour opération</th>
-              <th scope="col" colspan="2">Catégorie</th>
-              <th scope="col">Description</th>
-              <th scope="col">Valeur</th>
-              <th scope="col">Etat</th>
-              <th scope="col">Actions</th>
-              <th scope="col">Mise à Jour</th>
-            </tr>
-          </thead>
-          <tbody>
-          { this.state.listeOperations.map((operation, key) => (
-                <tr key={key} id={operation.id}>
-                    <td>{
-                        operation.autresInfos.dateOperation != null ?
-                        operation.autresInfos.dateOperation[2]+"/"+operation.autresInfos.dateOperation[1] +"/"+ operation.autresInfos.dateOperation[0]
-                        : "-"
-                     }</td>
-                    <td>{operation.categorie.libelle}</td>
-                    <td>{operation.ssCategorie.libelle}</td>
-                    <td>{operation.libelle}</td>
-                    <td>{operation.valeur} €</td>
-                    <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
-                    <td><OperationActions key={operation.id} id={operation.id}
-                                          operation={operation} budgetid={this.props.currentBudget.id}
-                                          onBudgetChange={this.handleBudgetUpdate} /></td>
-                    <td>{
-                        operation.autresInfos.dateMaj != null ?
-                        operation.autresInfos.dateMaj[2]+"/"+operation.autresInfos.dateMaj[1] +"/"+ operation.autresInfos.dateMaj[0]
-                        : "-"
-                        }</td>
+    render() {
+
+        return (
+            <Table striped bordered hover size="sm" variant="light">
+              <thead>
+                <tr>
+                  <th scope="col">Jour opération</th>
+                  <th scope="col" colspan="2">Catégorie</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Valeur</th>
+                  <th scope="col">Etat</th>
+                  <th scope="col">Actions</th>
+                  <th scope="col">Mise à Jour</th>
                 </tr>
-          ))}
-          </tbody>
-        </Table>
-        </div>
+              </thead>
+              <tbody>
+              { this.state.listeOperations.map((operation, key) => (
+
+                    <tr key={key} id={operation.id}>
+                        <td>{
+                            operation.autresInfos.dateOperation != null ?
+                            operation.autresInfos.dateOperation[2]+"/"+operation.autresInfos.dateOperation[1] +"/"+ operation.autresInfos.dateOperation[0]
+                            : "-"
+                         }</td>
+                        <td>{operation.categorie.libelle}</td>
+                        <td>{operation.ssCategorie.libelle}</td>
+                        <td>{operation.libelle}</td>
+                        <td>{
+                            operation.valeur > 0 ? <span class="text-success">{operation.valeur} €</span> : <span class="text-danger">{operation.valeur} €</span>
+                            }
+                        </td>
+                        <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
+                        <td><OperationActions key={operation.id} id={operation.id}
+                                              operation={operation} budgetid={this.props.currentBudget.id}
+                                              onBudgetChange={this.handleBudgetUpdate} /></td>
+                        <td>{
+                            operation.autresInfos.dateMaj != null ?
+                            operation.autresInfos.dateMaj[2]+"/"+operation.autresInfos.dateMaj[1] +"/"+ operation.autresInfos.dateMaj[0]
+                            : "-"
+                            }</td>
+                    </tr>
+              ))}
+              </tbody>
+            </Table>
     ); }
 
 }
