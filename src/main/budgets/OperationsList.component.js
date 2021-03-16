@@ -44,7 +44,7 @@ export default class OperationsList extends Component {
 
     render() { return (
         <div>
-        <Table className="table table-sm table-striped table-bordered table-hover">
+        <Table striped bordered hover size="sm" variant="light">
           <thead>
             <tr>
               <th scope="col">Jour opération</th>

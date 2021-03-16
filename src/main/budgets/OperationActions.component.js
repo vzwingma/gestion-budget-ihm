@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from 'react-bootstrap/Button';
+import { ButtonGroup, Button } from 'react-bootstrap';
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
 
@@ -42,13 +42,12 @@ export default class OperationActions extends Component {
 
     render(){
       return (
-        <div id={this.props.id}>
+        <ButtonGroup aria-label="Actions" onClick={this.handleToggleClick}>
             <style type="text/css">{`
                 .btn-light {
-                    padding: 4px 1px 4px 1px;
+                    padding: 0px 1px 0px 1px;
                 }
             `}</style>
-            <div className="btn-group" role="group" aria-label="Actions" onClick={this.handleToggleClick}>
             { this.props.operation.etat !== "REALISEE" &&
                 <Button action="REALISEE" variant="light">
                     <img action="REALISEE" src="/img/statuts/circle_ok.png" width="20" height="20" className="d-inline-block align-top" alt="Valider l'opération"/>
@@ -74,8 +73,7 @@ export default class OperationActions extends Component {
                     <img action="REPORTEE" src="/img/statuts/circle_arrow_right.png" width="20" height="20" className="d-inline-block align-top" alt="Reporter l'opération"/>
                 </Button>
             }
-            </div>
-        </div>
+        </ButtonGroup>
       )
     }
 }
