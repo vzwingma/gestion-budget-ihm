@@ -25,7 +25,7 @@ export default class Main extends Component {
             <ul className="navbar-nav">
                 <li className="nav-item" ><NavLink className="nav-link" to="/budgets">Budgets</NavLink></li>
                 <li className="nav-item" ><NavLink className="nav-link" to="/infos">Infos</NavLink></li>
-                <li className="nav-item" ><span>Texte : Ici sera l'utilisateur </span></li>
+                <span>Texte : Ici sera l'utilisateur </span>
                 <li className="nav-item" ><NavLink className="nav-link" to="/Logout">Déconnexion</NavLink></li>
             </ul>
         </nav>

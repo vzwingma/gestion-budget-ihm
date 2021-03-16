@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ModuleInfos from "./MsInfos.component";
+import { ListGroup, Card, Container, Table } from "react-bootstrap";
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
 
@@ -45,24 +46,35 @@ export default class Infos extends Component {
     /** Phase de Render à partir de la liste de statuts  **/
   render() {
         return (
-          <div>
-            <center><h1>Liste des composants</h1></center>
-            <small>Mode : <b>{process.env.NODE_ENV}</b></small>
+        <Container fluid>
+            <Card border="primary" bg="light" style={{ width: '40rem', margin: '10px auto' }} >
+                <Card.Header><h4>Information</h4></Card.Header>
+                <Card.Body>
+                    <ListGroup>
+                        <ListGroup.Item>Environnement : <b>{process.env.NODE_ENV}</b></ListGroup.Item>
+                        <ListGroup.Item>
 
-            <ModuleInfos
-                key='ihm'
-                name='IHM'
-                version={process.env.REACT_APP_BUDGET_VERSION}
-                description="IHM REACT" />
+                            <Table striped hover variant="dark" style={{ margin: '0px 0px 0px 0px' }} >
+                              <tbody>
+                                    <ModuleInfos
+                                        key='ihm'
+                                        name='IHM'
+                                        version={process.env.REACT_APP_BUDGET_VERSION}
+                                        description="IHM REACT" />
 
-            {this.state.infos.map((msInfos) => (
-               <ModuleInfos
-                    key={msInfos.name}
-                    name={msInfos.name}
-                    version={msInfos.version}
-                    description={msInfos.description} />
-            ))}
-          </div>
+                                {this.state.infos.map((msInfos) => (
+                                    <ModuleInfos
+                                        key={msInfos.name} name={msInfos.name}
+                                        version={msInfos.version} description={msInfos.description} />
+                                ))}
+                              </tbody>
+                            </Table>
+
+                        </ListGroup.Item>
+                    </ListGroup>
+                </Card.Body>
+            </Card>
+        </Container>
         )
   }
 }

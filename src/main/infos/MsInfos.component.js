@@ -2,9 +2,9 @@
 
     const MicroServicesInfos = ({ name, version, description }) => {
       return (
-              <div>
-                <h5>{name} : {version}</h5>
-              </div>
+            <tr>
+              <td>{name}</td><td>{version}</td>
+            </tr>
       )
     };
 

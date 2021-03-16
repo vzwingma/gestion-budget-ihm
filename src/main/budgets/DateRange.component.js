@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Pagination from 'react-bootstrap/Pagination'
+import { Pagination } from 'react-bootstrap'
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
 
@@ -133,14 +133,20 @@ export default class DateRange extends Component {
 
     render() { return (
     <div>
-   <Pagination onClick={this.handleSelect}>
-     <Pagination.First id="firstButton"/>
-     <Pagination.Item id="previous">{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Pagination.Item>
-     <Pagination.Item id="current" active>{ this.state.dateCurrentBudget.toLocaleString('default', { month: 'long' })} { this.state.dateCurrentBudget.getFullYear() }</Pagination.Item>
-     <Pagination.Item id="next">{ this.state.dateNextBudget.toLocaleString('default', { month: 'long' }) } { this.state.dateNextBudget.getFullYear() }</Pagination.Item>
-     <Pagination.Last id="lastButton"/>
-   </Pagination>
-    </div>
+        <style type="text/css">{`
+            .pagination {
+                justify-content: center;
+                display: flex;
+            }
+        `}</style>
+           <Pagination fluid onClick={this.handleSelect}>
+             <Pagination.First id="firstButton"/>
+             <Pagination.Item id="previous">{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Pagination.Item>
+             <Pagination.Item id="current" active>{ this.state.dateCurrentBudget.toLocaleString('default', { month: 'long' })} { this.state.dateCurrentBudget.getFullYear() }</Pagination.Item>
+             <Pagination.Item id="next">{ this.state.dateNextBudget.toLocaleString('default', { month: 'long' }) } { this.state.dateNextBudget.getFullYear() }</Pagination.Item>
+             <Pagination.Last id="lastButton"/>
+           </Pagination>
+        </div>
     ); }
 }
 

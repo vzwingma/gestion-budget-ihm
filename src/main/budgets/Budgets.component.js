@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Container, Row, Col } from 'react-bootstrap'
 import ComptesList from "./ComptesList.component"
 import DateRange from "./DateRange.component"
 import OperationsList from "./OperationsList.component"
@@ -96,29 +97,35 @@ export default class Budgets extends Component {
 
 
 
-
-
-
-
-
     render() { return (
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-4">
+        <Container fluid>
+          <Row>
+            <Col sm={4}>
               <ComptesList onCompteChange={this.handleCompteChange} />
-            </div>
-            <div className="col-8">
+            </Col>
+            <Col sm={8}>
               <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-4">
-                Résumé
-            </div>
-            <div className="col-8">
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={4}>
+                <Container fluid>
+                    <Row>
+                        <Col fluid>
+                         Résumé par cats
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col fluid>
+                        Résumé total
+                        </Col>
+                    </Row>
+                </Container>
+            </Col>
+            <Col sm={8}>
                 <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget}/>
-            </div>
-          </div>
-        </div>
+            </Col>
+          </Row>
+        </Container>
     ); }
 }
