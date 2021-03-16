@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Form } from 'react-bootstrap';
-import * as AppConstants from "../Utils/AppEnums.constants"
-import * as ClientHTTP from './../Services/ClientHTTP.service'
-
+import * as AppConstants from "../Utils/AppEnums.constants";
+import * as ClientHTTP from './../Services/ClientHTTP.service';
 /*
  * Composant Select Comptes
  */
@@ -11,7 +10,7 @@ export default class ComptesList extends Component {
 
     /** Etats pour la sélection du co **/
       state = {
-        comptes: [],
+        comptes: []
       }
 
     constructor(props) {
@@ -70,11 +69,10 @@ export default class ComptesList extends Component {
     render() { return (
         <div>
             <Form.Group controlId="CompteForm.CompteSelect">
-                <Form.Control as="select" onChange={this.handleSelect}>
-                    { this.state.comptes.map((compte, key) => ( <option key={key} id={compte.id}>{compte.libelle}</option> ))}
+                <Form.Control as="select" size="sm" onChange={this.handleSelect}>
+                    { this.state.comptes.map((compte, key) => ( <option key={key} id={compte.id}> {compte.libelle}</option> ))}
                 </Form.Control>
             </Form.Group>
-
       </div>
     ); }
 }
