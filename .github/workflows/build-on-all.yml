@@ -32,11 +32,28 @@ jobs:
         node-version: ${{ matrix.node-version }}
     -
       run: npm ci
+      name: CI Install
     -
       run: npm run test
-#        npm run lint
+      name: Unit tests
     -
       run: npm run build --if-present
+      name: Build
+    -
+      run: zip -r app_build.zip build/*
+    -
+      uses: actions/upload-artifact@v2
+      name: Upload IHM app
+      with:
+        path: app_build.zip
+        name: app_build.zip
+    -
+      uses: actions/upload-artifact@v2
+      name: Upload DockerFile IHM
+      with:
+        path: /home/runner/work/gestion-budget-ihm/external-ressources/docker/Dockerfile-IHM
+        name: Dockerfile
+# LINT
   lint:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -60,3 +77,51 @@ jobs:
           node-version: ${{ matrix.node-version }}
       -
         run: npm run lint
+
+  # PUBLISH DOCKER IMAGES
+  docker:
+    runs-on: ubuntu-latest
+    needs: build, lint
+    steps:
+      -
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: actions/download-artifact@v2
+        name: Download IHM app
+        with:
+          name: app_build.zip
+      - uses: actions/download-artifact@v2
+        name: Download DockerFile
+        with:
+          name: Dockerfile-IHM
+      -
+        name: Build and push IHM
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: /home/runner/work
+          file: Dockerfile-IHM
+          push: true
+          tags: vzwingmann/gestion_budget_ihm:snapshot
+      -
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
