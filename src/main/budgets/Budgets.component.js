@@ -56,7 +56,7 @@ export default class Budgets extends Component {
             componentUpdate = true;
             budgetUpdate = true;
         }
-        else if(this.state.selectedDate != null & nextStates.selectedDate != null &&
+        else if(this.state.selectedDate != null && nextStates.selectedDate != null &&
             (this.state.selectedDate.getTime() !== nextStates.selectedDate.getTime()))
         {
             console.log("Update Context :: date=" + nextStates.selectedDate )

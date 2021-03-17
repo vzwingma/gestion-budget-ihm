@@ -108,7 +108,7 @@ export default class DateRange extends Component {
         }
         else if(event.target.id === "lastButton"){
             newDateCurrentBudget = new Date(this.state.dateDernierBudget);
-            newDateNextBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() + 1));;
+            newDateNextBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() + 1));
             newDatePreviousBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() - 1));
             dateChanged = true;
         }
