@@ -46,15 +46,12 @@ jobs:
       uses: actions/upload-artifact@v2
       name: Upload DockerFile IHM
       with:
-        path: /home/runner/work/gestion-budget-ihm/external-ressources/docker/Dockerfile-IHM
+        path: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/Dockerfile-IHM
         name: Dockerfile
 # LINT
   lint:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [15.x]
     steps:
       -
         uses: actions/checkout@v2
@@ -66,10 +63,10 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-npm-cache-
       -
-        name: Use Node.js ${{ matrix.node-version }}
+        name: Use Node.js 15.x
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 15.x
       -
         run: npm run lint
 
@@ -108,6 +105,9 @@ jobs:
         name: Download DockerFile
         with:
           name: Dockerfile-IHM
+      -
+        name: Unzip app archive
+        run: unzip app_build.zip
       -
         name: Build and push IHM
         id: docker_build
