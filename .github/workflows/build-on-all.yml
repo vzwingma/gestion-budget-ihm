@@ -111,6 +111,8 @@ jobs:
         name: Unzip app archive
         run: unzip app_build.zip
       -
+        run: cp /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/nginx.conf .
+      -
         name: Build and push IHM
         id: docker_build
         uses: docker/build-push-action@v2
