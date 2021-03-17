@@ -4,6 +4,10 @@ services:
   - docker
 git:
   depth: false
+# Sonar
+addons:
+  sonarqube:
+    organization: vzwingma-github
 # Notification SLACK
 notifications:
   slack: 
@@ -16,6 +20,7 @@ jobs:
       name: Build and Publish to GitHub
       script:
         - npm run test
+        - sonar-scanner
         - npm run build
         - zip -r app_build.zip build/*
         - git add app_build.zip
