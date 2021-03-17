@@ -121,15 +121,12 @@ jobs:
         name: Download IHM app
         with:
           name: app_build.zip
-      - uses: actions/download-artifact@v2
-        name: Download DockerFile
-        with:
-          name: Dockerfile-IHM
       -
         name: Unzip app archive
         run: unzip app_build.zip
+      - run: cp /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/Dockerfile-IHM /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/Dockerfile-IHM
       -
-        run: cp /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/nginx.conf .
+        run: cp /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/nginx.conf /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/nginx.conf
       -
         name: Build and push IHM
         id: docker_build
