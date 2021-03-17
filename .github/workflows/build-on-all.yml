@@ -47,7 +47,7 @@ jobs:
       name: Upload DockerFile IHM
       with:
         path: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/Dockerfile-IHM
-        name: Dockerfile
+        name: Dockerfile-IHM
 # LINT
   lint:
     # The type of runner that the job will run on
@@ -67,6 +67,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 15.x
+      -
+        run: npm install eslint --save
       -
         run: npm run lint
 
