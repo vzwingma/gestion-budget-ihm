@@ -10,11 +10,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [15.x]
-
     steps:
     -
       uses: actions/checkout@v2
@@ -26,10 +21,10 @@ jobs:
         restore-keys: |
           ${{ runner.OS }}-npm-cache-
     -
-      name: Use Node.js ${{ matrix.node-version }}
+      name: Use Node.js 15.x
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 15.x
     -
       run: npm ci
       name: CI Install
