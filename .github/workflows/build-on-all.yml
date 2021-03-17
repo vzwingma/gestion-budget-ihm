@@ -42,12 +42,6 @@ jobs:
       with:
         path: app_build.zip
         name: app_build.zip
-    -
-      uses: actions/upload-artifact@v2
-      name: Upload DockerFile IHM
-      with:
-        path: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/Dockerfile-IHM
-        name: Dockerfile-IHM
 # LINT
   lint:
     # The type of runner that the job will run on
@@ -82,7 +76,7 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          projectBaseDir: my-custom-directory
+          projectBaseDir: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm
           args: >
             -Dsonar.organization=vzwingma-github
             -Dsonar.projectKey=gestion-budget-ihm
@@ -124,15 +118,18 @@ jobs:
       -
         name: Unzip app archive
         run: unzip app_build.zip
-      - run: cp /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/Dockerfile-IHM /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/Dockerfile-IHM
       -
+        name: Copie du DockerFile
+        run: cp /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/Dockerfile-IHM /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/Dockerfile-IHM
+      -
+        name: Copie de la config nginx
         run: cp /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/nginx.conf /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/nginx.conf
       -
         name: Build and push IHM
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: /home/runner/work
+          context: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/
           file: Dockerfile-IHM
           push: true
           tags: vzwingmann/gestion_budget_ihm:snapshot
