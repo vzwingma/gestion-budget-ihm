@@ -81,7 +81,7 @@ jobs:
           projectBaseDir: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm
           args: >
             -Dsonar.organization=vzwingma-github
-            -Dsonar.projectKey=gestion-budget-ihm
+            -Dsonar.projectKey=vzwingma_gestion-budget-ihm
             -Dsonar.verbose=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
