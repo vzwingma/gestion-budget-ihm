@@ -1,8 +1,5 @@
-import React, { Component } from "react";
 import Table from 'react-bootstrap/Table';
-
-import * as AppConstants from "../../Utils/AppEnums.constants"
-
+import ResumeValue from './ResumeValue.component'
 /*
  * Page principale du solde
  */
@@ -10,9 +7,8 @@ import * as AppConstants from "../../Utils/AppEnums.constants"
 
 const ResumeSoldes = ({ currentBudget }) => {
 
-     // assuming 'changeMyVariable' returns a value
-        const typeSoldeNow = currentBudget.soldes.soldeAtMaintenant > 0 ? "success" : "danger";
-        const typeSoldeFin = currentBudget.soldes.soldeAtMaintenant > 0 ? "success" : "danger";
+     // définition de la date courante
+     const dateCourante = new Date(Date.now()) ;
 
      return (
         <Table striped bordered hover size="sm" variant="light">
@@ -20,27 +16,17 @@ const ResumeSoldes = ({ currentBudget }) => {
            <tr>
             <th/>
             <th>
-                Au { new Date(Date.now()).getDate() } { new Date(Date.now()).toLocaleString('default', { month: 'long' }) } { new Date(Date.now()).getFullYear() }
+                Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
             </th>
             <th>
-                Fin { new Date(Date.now()).toLocaleString('default', { month: 'long' }) } { new Date(Date.now()).getFullYear() }
+                Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
             </th>
           </tr>
           </thead>
           <tbody><tr>
             <td> Solde </td>
-            <td>{
-                    currentBudget.soldes.soldeAtMaintenant > 0 ?
-                        <span class="text-success">{currentBudget.soldes.soldeAtMaintenant.toFixed(2)} €</span> :
-                        <span class="text-danger">{currentBudget.soldes.soldeAtMaintenant.toFixed(2)} €</span>
-                }
-            </td>
-            <td>{
-                    currentBudget.soldes.soldeAtFinMoisCourant > 0 ?
-                        <span class="text-success">{currentBudget.soldes.soldeAtFinMoisCourant.toFixed(2)} €</span> :
-                        <span class="text-danger">{currentBudget.soldes.soldeAtFinMoisCourant.toFixed(2)} €</span>
-                }
-            </td>
+            <td><ResumeValue valueResume={currentBudget.soldes.soldeAtMaintenant} /> </td>
+            <td><ResumeValue valueResume={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
           </tr></tbody>
          </Table>
       )

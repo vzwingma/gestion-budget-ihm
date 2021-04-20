@@ -49,7 +49,7 @@ export default class OperationsList extends Component {
               <thead>
                 <tr>
                   <th scope="col">Jour opération</th>
-                  <th scope="col" colspan="2">Catégorie</th>
+                  <th scope="col" colSpan="2">Catégorie</th>
                   <th scope="col">Description</th>
                   <th scope="col">Valeur</th>
                   <th scope="col">Etat</th>
