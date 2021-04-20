@@ -113,20 +113,24 @@ export default class Budgets extends Component {
                 <Container fluid>
                     <Row>
                         <Col fluid>
-                         Résumé par cats
+                        {
+                            this.state.currentBudget != null ? <ResumeSoldes onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
+                        }
                         </Col>
                     </Row>
                     <Row>
                         <Col fluid>
                         {
-                            this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Null"
+                            this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..."
                         }
                         </Col>
                     </Row>
                 </Container>
             </Col>
             <Col sm={8}>
-                <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />
+            {
+                this.state.currentBudget != null ? <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
+            }
             </Col>
           </Row>
         </Container>
