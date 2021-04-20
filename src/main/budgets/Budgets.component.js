@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import ComptesList from "./ComptesList.component"
 import DateRange from "./DateRange.component"
 import OperationsList from "./OperationsList.component"
+import ResumeSoldes from "./totaux/ResumeSoldes.component"
 
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
@@ -117,13 +118,15 @@ export default class Budgets extends Component {
                     </Row>
                     <Row>
                         <Col fluid>
-                        Résumé total
+                        {
+                            this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Null"
+                        }
                         </Col>
                     </Row>
                 </Container>
             </Col>
             <Col sm={8}>
-                <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget}/>
+                <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />
             </Col>
           </Row>
         </Container>
