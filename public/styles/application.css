@@ -20,7 +20,6 @@ tbody.tbodyResume > tr > td:nth-child(3) {
 }
 
 
-
 /* Lignes pour les résumé */
 tbody.tbodyResume > tr.ligneCategorie {
     font-weight: bolder;

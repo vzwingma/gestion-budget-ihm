@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { ButtonGroup, Button } from 'react-bootstrap';
-import * as AppConstants from "../Utils/AppEnums.constants"
-import * as ClientHTTP from './../Services/ClientHTTP.service'
+import { ButtonGroup } from 'react-bootstrap';
+import * as AppConstants from "../../Utils/AppEnums.constants"
+import * as ClientHTTP from './../../Services/ClientHTTP.service'
+import OperationButtonAction from "./OperationButtonAction.component"
 
 export default class OperationActions extends Component {
 
@@ -49,29 +50,19 @@ export default class OperationActions extends Component {
                 }
             `}</style>
             { this.props.operation.etat !== "REALISEE" &&
-                <Button action="REALISEE" variant="light">
-                    <img action="REALISEE" src="/img/statuts/circle_ok.png" width="20" height="20" className="d-inline-block align-top" alt="Valider l'opération"/>
-                </Button>
+                <OperationButtonAction action="REALISEE" iconAction="circle_ok.png" label="Valider l'opération"/>
             }
             { this.props.operation.etat !== "PREVUE" &&
-                <Button action="PREVUE" variant="light">
-                    <img action="PREVUE" src="/img/statuts/circle_clock.png" width="20" height="20" className="d-inline-block align-top" alt="Prévoir l'opération"/>
-                </Button>
+                <OperationButtonAction action="PREVUE" iconAction="circle_clock.png" label="Prévoir l'opération"/>
             }
             { this.props.operation.etat !== "ANNULEE" &&
-                <Button action="ANNULEE" variant="light">
-                    <img action="ANNULEE" src="/img/statuts/circle_cancel.png" width="20" height="20" className="d-inline-block align-top" alt="Annuler l'opération"/>
-                </Button>
+                <OperationButtonAction action="ANNULEE" iconAction="circle_cancel.png" label="Annuler l'opération"/>
             }
             { this.props.operation.etat !== "SUPPRIMEE" &&
-                <Button action="SUPPRIMEE" variant="light">
-                    <img action="SUPPRIMEE" src="/img/statuts/circle_remove.png" width="20" height="20" className="d-inline-block align-top" alt="Supprimer l'opération"/>
-                </Button>
+                <OperationButtonAction action="SUPPRIMEE" iconAction="circle_remove.png" label="Supprimer l'opération"/>
             }
             { this.props.operation.etat !== "REPORTEE" &&
-                <Button action="REPORTEE" variant="light">
-                    <img action="REPORTEE" src="/img/statuts/circle_arrow_right.png" width="20" height="20" className="d-inline-block align-top" alt="Reporter l'opération"/>
-                </Button>
+                <OperationButtonAction action="REPORTEE" iconAction="circle_arrow_right.png" label="Reporter l'opération"/>
             }
         </ButtonGroup>
       )
