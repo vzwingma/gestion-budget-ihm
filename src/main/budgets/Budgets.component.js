@@ -4,6 +4,9 @@ import ComptesList from "./ComptesList.component"
 import DateRange from "./DateRange.component"
 import OperationsList from "./OperationsList.component"
 
+import ResumeSoldes from "./resume/ResumeSoldes.component"
+import ResumeCategories from "./resume/categories/ResumeCategories.component"
+
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
 
@@ -17,7 +20,8 @@ export default class Budgets extends Component {
         state = {
             selectedCompte : null,
             selectedDate : null,
-            currentBudget: null
+            currentBudget: null,
+            categories: null
         }
 
     /** Constructeur **/
@@ -27,6 +31,24 @@ export default class Budgets extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleBudgetUpdate = this.handleBudgetUpdate.bind(this);
         this.refreshBudget = this.refreshBudget.bind(this);
+    }
+
+
+    /** Chargement des catégories **/
+    componentDidMount(){
+        console.log("Chargement des catégories");
+        const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
+                    fetch(getURL,
+                    {
+                        method: 'GET', headers: ClientHTTP.getHeaders()
+                    })
+                    .then(res => res.json())
+                    .then((data) => {
+                        this.setState({ categories : data })
+                    })
+                    .catch((e) => {
+                        console.log("Erreur lors du chargement des catégories >> "+ e)
+                    })
     }
 
 
@@ -56,7 +78,7 @@ export default class Budgets extends Component {
             componentUpdate = true;
             budgetUpdate = true;
         }
-        else if(this.state.selectedDate != null & nextStates.selectedDate != null &&
+        else if(this.state.selectedDate != null && nextStates.selectedDate != null &&
             (this.state.selectedDate.getTime() !== nextStates.selectedDate.getTime()))
         {
             console.log("Update Context :: date=" + nextStates.selectedDate )
@@ -95,10 +117,16 @@ export default class Budgets extends Component {
         }
     }
 
-
-
+    /**
+     * Render du budget
+     */
     render() { return (
         <Container fluid>
+
+        <style type="text/css">{`
+
+        `}</style>
+
           <Row>
             <Col sm={4}>
               <ComptesList onCompteChange={this.handleCompteChange} />
@@ -112,18 +140,24 @@ export default class Budgets extends Component {
                 <Container fluid>
                     <Row>
                         <Col fluid>
-                         Résumé par cats
+                        {
+                            this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..."
+                        }
                         </Col>
                     </Row>
                     <Row>
                         <Col fluid>
-                        Résumé total
+                        {
+                            this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..."
+                        }
                         </Col>
                     </Row>
                 </Container>
             </Col>
             <Col sm={8}>
-                <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget}/>
+            {
+                this.state.currentBudget != null ? <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
+            }
             </Col>
           </Row>
         </Container>

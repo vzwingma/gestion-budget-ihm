@@ -1,6 +1,6 @@
  import React from 'react'
 
-    const MicroServicesInfos = ({ name, version, description }) => {
+ const MicroServicesInfos = ({ name, version, description }) => {
       return (
             <tr>
               <td>{name}</td><td>{version}</td>
@@ -8,4 +8,4 @@
       )
     };
 
-    export default MicroServicesInfos
+ export default MicroServicesInfos
