@@ -60,7 +60,7 @@ export default class OperationsList extends Component {
                   <th scope="col">Mise à Jour</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="tbodyOperation">
               { this.state.listeOperations.map((operation, key) => (
 
                     <tr key={key} id={operation.id}>

@@ -4,6 +4,16 @@ body {
   padding: 1px;
 }
 
+/** Style pour les opérations **/
+/*tbody.tbodyOperation > tr > td:first-child { width:200px } */
+tbody.tbodyOperation > tr > td:nth-child(5) {
+    text-align: right;
+    padding-right: 10px;
+}
+tbody.tbodyOperation > tr > td:nth-child(6) {
+    width:80px;
+}
+tbody.tbodyOperation > tr > td:nth-child(7) { width:100px }
 
 /** Style pour les résumés **/
 table {
