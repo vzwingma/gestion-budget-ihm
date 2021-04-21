@@ -1,5 +1,5 @@
 import Table from 'react-bootstrap/Table';
-import ResumeValue from './ResumeValue.component'
+import ResumeCategorie from './ResumeCategorie.component'
 /*
  * Page principale du solde par catégories
  */
@@ -8,8 +8,47 @@ const ResumeCategories = ({ currentBudget, categories }) => {
      // définition de la date courante
     const dateCourante = new Date(Date.now()) ;
     const mapTotauxCategories = Object.entries(currentBudget.totauxParCategories);
-    const mapTotauxSSCategories = Object.entries(currentBudget.totauxParSSCategories);
+    const mapTotauxSsCategories = Object.entries(currentBudget.totauxParSSCategories);
+    const mapArbreTotaux = [];
 
+
+    // Construction de l'arborescence des catégories
+    const buildResumeCategories = (mapTotauxCategories) => {
+        mapTotauxCategories
+            .map((totalCat) => (
+                buildResumeSousCategories(totalCat[0], totalCat)
+            ))
+    }
+
+    // Construction de l'arborescence des sous-catégories de idCategorie
+     const buildResumeSousCategories = (idCategorie, totalCat)=>{
+        totalCat.isSsCategorie = false;
+        mapArbreTotaux.push(totalCat);
+        // Itération des catégories
+        categories
+            .filter(catParam => catParam.id === idCategorie)
+            .flatMap(catParam => catParam.listeSSCategories)
+            .map(ssCatParam => (
+                mapTotauxSsCategories
+                    .filter(totalSScat => totalSScat[0] === ssCatParam.id)
+                    .map(totalSScat => (
+                        buildResumeCategorie(totalSScat[0], totalSScat)
+                    ))
+            ));
+    }
+
+    // Construction de l'arborescence d'une sous-catégorie
+    const buildResumeCategorie = (idSSCategorie, totalSScat) => {
+        totalSScat[1].isSsCategorie = true;
+        mapArbreTotaux.push(totalSScat);
+    }
+
+    // Build des résumés
+    buildResumeCategories(mapTotauxCategories);
+
+    /**
+     *  RENDER
+     **/
      return (
 
         <Table striped bordered hover size="sm" variant="light">
@@ -24,24 +63,11 @@ const ResumeCategories = ({ currentBudget, categories }) => {
             </th>
           </tr>
           </thead>
-          <tbody>
+          <tbody className="tbodyResume">
               {
                     // Itération sur les catégories
-                    mapTotauxCategories.map((totalCategorie, key) => (
-                        <tr key={key} id={totalCategorie[0]}>
-                            <td>{totalCategorie[1].libelleCategorie}</td>
-                            <td><ResumeValue valueResume={totalCategorie[1].totalAtMaintenant}/></td>
-                            <td><ResumeValue valueResume={totalCategorie[1].totalAtFinMoisCourant}/></td>
-                        </tr>
-
-                        mapTotauxSSCategories.map((totalSSCategorie, key) => (
-                                                <tr key={key} id={totalSSCategorie[0]}>
-                                                    <td>{totalSSCategorie[1].libelleCategorie}</td>
-                                                    <td><ResumeValue valueResume={totalSSCategorie[1].totalAtMaintenant}/></td>
-                                                    <td><ResumeValue valueResume={totalSSCategorie[1].totalAtFinMoisCourant}/></td>
-                                                </tr>
-
-
+                   mapArbreTotaux.map((totalCategorie, key) => (
+                        <ResumeCategorie keyCategorie={key} idCategorie={totalCategorie[0]} totalCategorie={totalCategorie[1]}/>
                     ))
                }
           </tbody>
