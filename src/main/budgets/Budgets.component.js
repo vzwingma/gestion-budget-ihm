@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from 'react-bootstrap'
+
 import ComptesList from "./ComptesList.component"
 import DateRange from "./DateRange.component"
 import OperationsList from "./operations/OperationsList.component"
 
 import ResumeSoldes from "./resume/ResumeSoldes.component"
 import ResumeCategories from "./resume/categories/ResumeCategories.component"
+
+import CreationActionButton from "./creation/CreationActionButton.component"
 
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
@@ -122,11 +125,6 @@ export default class Budgets extends Component {
      */
     render() { return (
         <Container fluid>
-
-        <style type="text/css">{`
-
-        `}</style>
-
           <Row>
             <Col sm={4}>
               <ComptesList onCompteChange={this.handleCompteChange} />
@@ -155,11 +153,17 @@ export default class Budgets extends Component {
                 </Container>
             </Col>
             <Col sm={8}>
-            {
-                this.state.currentBudget != null ? <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
-            }
+                <Container fluid>
+                    <Row>{
+                        this.state.currentBudget != null ? <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
+                    }</Row>
+                    <Row className="alignCenter">
+                        <CreationActionButton categories={this.state.categories} />
+                    </Row>
+                </Container>
             </Col>
           </Row>
+
         </Container>
     ); }
 }

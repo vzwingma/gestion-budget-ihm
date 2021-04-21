@@ -15,6 +15,22 @@ tbody.tbodyOperation > tr > td:nth-child(6) {
 }
 tbody.tbodyOperation > tr > td:nth-child(7) { width:100px }
 
+/* button Créer */
+div.alignCenter {
+  position:absolute;
+  bottom: 0px;
+  display: flex;
+  width: 100%;
+}
+
+.alignCenter > button {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
 /** Style pour les résumés **/
 table {
     font-size:12px;
@@ -30,7 +46,8 @@ tbody.tbodyResume > tr > td:nth-child(3) {
 }
 
 
-/* Lignes pour les résumé */
+
+/* Lignes pour les résumés */
 tbody.tbodyResume > tr.ligneCategorie {
     font-weight: bolder;
 }
