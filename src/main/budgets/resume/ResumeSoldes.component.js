@@ -23,7 +23,7 @@ const ResumeSoldes = ({ currentBudget }) => {
             </th>
           </tr>
           </thead>
-          <tbody><tr>
+          <tbody><tr className="ligneCategorie">
             <td> Solde </td>
             <td><ResumeValue valueResume={currentBudget.soldes.soldeAtMaintenant} /> </td>
             <td><ResumeValue valueResume={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>

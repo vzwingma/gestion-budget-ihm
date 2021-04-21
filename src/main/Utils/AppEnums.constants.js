@@ -20,6 +20,9 @@ export const SERVICES_URL = {
     },
     OPERATIONS : {
         UPDATE : "/budgets/v1/{{}}/operations/{{}}"
+    },
+    PARAMETRES : {
+        CATEGORIES : "/parametres/v1/categories"
     }
     
 /*
@@ -27,7 +30,6 @@ export const SERVICES_URL = {
     USERS_PREFS_FULL = "/utilisateurs/v1/preferences";
     COMPTES_LIST_FULL = "/comptes/v1";
     COMPTES_ID_FULL = "/comptes/v1/{idCompte}";
-    PARAMS_CATEGORIES_FULL = "/parametres/v1/categories";
     BUDGET_ID_FULL = "/budgets/v1/{idBudget}";
     BUDGET_QUERY_FULL = "/budgets/v1/query";
     BUDGET_ETAT_FULL = "/budgets/v1/{idBudget}/etat";
