@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Table from 'react-bootstrap/Table';
 import OperationActions from "./OperationActions.component"
 import OperationEtat from "./OperationEtat.component"
+import OperationValue from './OperationValue.component'
+
+
 /*
  * Liste des opérations
  */
@@ -69,10 +72,7 @@ export default class OperationsList extends Component {
                         <td>{operation.categorie.libelle}</td>
                         <td>{operation.ssCategorie.libelle}</td>
                         <td>{operation.libelle}</td>
-                        <td>{
-                            operation.valeur > 0 ? <span class="text-success">{operation.valeur} €</span> : <span class="text-danger">{operation.valeur} €</span>
-                            }
-                        </td>
+                        <td><OperationValue valueOperation={operation.valeur} /></td>
                         <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
                         <td><OperationActions key={operation.id} id={operation.id}
                                               operation={operation} budgetid={this.props.currentBudget.id}

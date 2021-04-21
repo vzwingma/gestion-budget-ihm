@@ -1,5 +1,5 @@
 import Table from 'react-bootstrap/Table';
-import ResumeValue from './ResumeValue.component'
+import OperationValue from './../operations/OperationValue.component'
 /*
  * Page principale du solde
  */
@@ -25,8 +25,8 @@ const ResumeSoldes = ({ currentBudget }) => {
           </thead>
           <tbody className="tbodyResume"><tr className="ligneCategorie">
             <td> Solde </td>
-            <td><ResumeValue valueResume={currentBudget.soldes.soldeAtMaintenant} /> </td>
-            <td><ResumeValue valueResume={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
+            <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /> </td>
+            <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
           </tr></tbody>
          </Table>
       )

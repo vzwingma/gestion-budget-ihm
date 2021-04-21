@@ -41,6 +41,7 @@ export default class OperationActions extends Component {
         this.updateOperation(this.props.operation);
     }
 
+
     render(){
       return (
         <ButtonGroup aria-label="Actions" onClick={this.handleToggleClick}>
