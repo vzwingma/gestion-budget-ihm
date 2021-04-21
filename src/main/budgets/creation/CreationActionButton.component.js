@@ -23,13 +23,13 @@ export default class CreationActionButton extends Component {
         this.hideModal = this.hideModal.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleSelectCategorie = this.handleSelectCategorie.bind(this);
+        this.handleSelectSsCategorie = this.handleSelectSsCategorie.bind(this);
     }
 
     // Sélection d'une catégorie
     handleSelectCategorie(event) {
         // Select du compte parmi la liste
         const categorieLabel =event.target.value;
-        console.log("Changement de categorie : " + categorieLabel)
         var selectedIdCategorie = null;
         Array.from(event.target.options)
              .forEach(function (option, index) {
@@ -38,11 +38,27 @@ export default class CreationActionButton extends Component {
                 }
              })
         // selectedIdCategorie sélectionnée
-        console.log("Changement de categorie "  + selectedIdCategorie)
+        console.log("Changement de categorie " + categorieLabel + "[" + selectedIdCategorie + "]");
         this.setState({selectedIdCategorie: selectedIdCategorie});
         this.setState({ ssCategories : this.state.categories
                                                 .filter(cat => cat.id === selectedIdCategorie)
                                                 .flatMap(cat => cat.listeSSCategories)});
+    }
+
+    // Sélection d'une sscatégorie
+    handleSelectSsCategorie(event) {
+        // Select du compte parmi la liste
+        const ssCategorieLabel = event.target.value;
+        var selectedIdSsCategorie = null;
+        Array.from(event.target.options)
+             .forEach(function (option, index) {
+                if(option.value === ssCategorieLabel){
+                    selectedIdSsCategorie = option.id;
+                }
+             })
+        // selectedIdCategorie sélectionnée
+        console.log("Changement de ss categorie " + ssCategorieLabel + "[" + selectedIdSsCategorie + "]")
+        this.setState({selectedIdSsCategorie: selectedIdSsCategorie});
     }
 
 
@@ -107,7 +123,7 @@ export default class CreationActionButton extends Component {
                               </Form.Control>
                             </Col>
                             <Col>
-                             <Form.Control as="select" size="sm" custom>
+                             <Form.Control as="select" size="sm" custom onChange={this.handleSelectSsCategorie}>
                                 <option> </option>
                                 {
                                     this.state.ssCategories
