@@ -14,7 +14,6 @@
 [![Dépendences](https://img.shields.io/librariesio/github/vzwingma/gestion-budget-ihm.png)](https://libraries.io/github/vzwingma/gestion-budget-ihm)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vzwingma_gestion-budget-ihm&metric=alert_status)](https://sonarcloud.io/dashboard?id=vzwingma_gestion-budget-ihm)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=vzwingma_gestion-budget-ihm&metric=coverage)](https://sonarcloud.io/dashboard?id=vzwingma_gestion-budget-ihm)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=vzwingma_gestion-budget-ihm&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=vzwingma_gestion-budget-ihm)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=vzwingma_gestion-budget-ihm&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=vzwingma_gestion-budget-ihm)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=vzwingma_gestion-budget-ihm&metric=security_rating)](https://sonarcloud.io/dashboard?id=vzwingma_gestion-budget-ihm)

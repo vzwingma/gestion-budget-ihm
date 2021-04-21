@@ -13,8 +13,8 @@ const ResumeCategories = ({ currentBudget, categories }) => {
 
 
     // Construction de l'arborescence des catégories
-    const buildResumeCategories = (mapTotauxCategories) => {
-        mapTotauxCategories
+    const buildResumeCategories = (mapTotauxParCategories) => {
+        mapTotauxParCategories
             .map((totalCat) => (
                 buildResumeSousCategories(totalCat[0], totalCat)
             ))
