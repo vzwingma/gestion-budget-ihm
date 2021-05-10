@@ -134,7 +134,7 @@ jobs:
           context: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/
           file: Dockerfile-IHM
           push: true
-          tags: vzwingmann/gestion_budget_ihm:snapshot
+          tags: vzwingmabudget/gestion_budget_ihm:snapshot
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
