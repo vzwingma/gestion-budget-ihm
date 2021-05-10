@@ -9,11 +9,12 @@ export default class CreationActionButton extends Component {
 
     /** Etat de la page modale **/
     state = {
-        show: false,
+        showModale: false,
         categories: [],
         ssCategories: [],
         selectedIdCategorie: null,
-        selectedIdSsCategorie: null
+        selectedIdSsCategorie: null,
+        showIntercompte: false
     }
 
 
@@ -81,14 +82,14 @@ export default class CreationActionButton extends Component {
 
 
     hideModal = () => {
-        this.setState({ show: false });
+        this.setState({ showModale: false });
     };
 
     // Sélection d'un compte
     handleClick(event) {
         // Select du compte parmi la liste
         console.log("Création d'une opération ")
-        this.setState({ show: true });
+        this.setState({ showModale: true });
     }
 /**
  *  RENDER
@@ -97,9 +98,10 @@ export default class CreationActionButton extends Component {
     render() {
         return (
         <>
+        /** Bouton de création **/
             <Button variant="outline-primary" size="sm" onClick={this.handleClick}>Création</Button>
-
-            <Modal show={this.state.show}>
+        /** Fenêtre modale - Formulaire  **/
+            <Modal show={this.state.showModale}>
                 <Modal.Header>
                     <Modal.Title>Créer une nouvelle opération</Modal.Title>
                 </Modal.Header>
@@ -132,6 +134,19 @@ export default class CreationActionButton extends Component {
                                         ))
                                 }
                               </Form.Control>
+                            </Col>
+                            <Col>
+                            {this.state.showIntercompte &&
+                             <Form.Control as="select" size="sm" custom onChange={this.handleSelectSsCategorie}>
+                                <option> Comptes </option>
+                                {
+                                    this.state.ssCategories
+                                        .map((ssCategorie, key) => (
+                                            <option key={key} id={ssCategorie.id}>{ssCategorie.libelle}</option>
+                                        ))
+                                }
+                              </Form.Control>
+                              }
                             </Col>
                         </Form.Row>
                         <Form.Row>
