@@ -1,5 +1,5 @@
 {
-  "name": "[Budget] IHM",
+  "name": "gestion-budget-ihm",
   "version": "17.0.0",
   "private": true,
   "dependencies": {
