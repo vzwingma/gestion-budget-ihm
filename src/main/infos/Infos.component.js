@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ModuleInfos from "./MsInfos.component";
+import ModuleInfos from "./MicroServicesInfos.component";
 import { ListGroup, Card, Container, Table } from "react-bootstrap";
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
@@ -22,7 +22,7 @@ export default class Infos extends Component {
     componentDidMount() {
 
         // Itération sur tous les composants
-        this.backEnds.map((backEnd, id) => (
+        this.backEnds.forEach(backEnd => (
 
             fetch(ClientHTTP.getURL(backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO),
                   { method: 'GET', headers:{'origin':'localhost', 'accept':'application/json'} })
@@ -48,7 +48,7 @@ export default class Infos extends Component {
         return (
         <Container fluid>
             <Card border="primary" bg="light" style={{ width: '40rem', margin: '10px auto' }} >
-                <Card.Header><h4>Informations</h4></Card.Header>
+                <Card.Header><h4><center>Application de Budgets</center></h4></Card.Header>
                 <Card.Body>
                     <ListGroup>
                         <ListGroup.Item>Environnement : <b>{process.env.NODE_ENV}</b></ListGroup.Item>
