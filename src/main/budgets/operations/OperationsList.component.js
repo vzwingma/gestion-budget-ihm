@@ -18,13 +18,13 @@ export default class OperationsList extends Component {
 
     constructor(props){
         super(props)
-        this.handleBudgetUpdate = this.handleBudgetUpdate.bind(this)
+        this.handleOperationsListUpdate = this.handleOperationsListUpdate.bind(this)
     }
 
-    // Update du budget
-    handleBudgetUpdate(budgetUpdated){
-        console.log("*******  handleBudgetUpdate  ***********=" + budgetUpdated)
-        this.props.onBudgetChange(budgetUpdated);
+    // Update du budget, suite à une action sur une opération
+    handleOperationsListUpdate(budgetUpdated){
+        console.log("[TRIGGER] Refresh budget [" + budgetUpdated.id+ "]")
+        this.props.onOperationChange(budgetUpdated);
     }
 
 
@@ -79,7 +79,7 @@ export default class OperationsList extends Component {
                         <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
                         <td><OperationActions key={operation.id} id={operation.id}
                                               operation={operation} budgetid={this.props.currentBudget.id}
-                                              onBudgetChange={this.handleBudgetUpdate} /></td>
+                                              onOperationChange={this.handleOperationsListUpdate} /></td>
                         <td>{
                             operation.autresInfos.dateMaj != null ?
                                 operation.autresInfos.dateMaj[2]+"/"+operation.autresInfos.dateMaj[1] +"/"+ operation.autresInfos.dateMaj[0]

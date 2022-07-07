@@ -26,7 +26,7 @@ export default class OperationActions extends Component {
             .then(res => res.json())
             .then((data) => {
                 // Update du budget global (parent)
-                this.props.onBudgetChange(data);
+                this.props.onOperationChange(data);
             })
             .catch((e) => {
                 console.log("Erreur lors de la mise à jour de l'opération " + operation.id + " >> "+ e);

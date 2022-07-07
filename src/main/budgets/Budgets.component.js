@@ -70,7 +70,7 @@ export default class Budgets extends Component {
     }
     // Notification lorsque le budget est mis à jour
     handleBudgetUpdate(budgetData){
-        console.log("Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length +  " opérations")
+        console.log("(Re)Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length +  " opérations")
         console.log(budgetData);
         this.setState({ currentBudget : budgetData })
     }
@@ -164,7 +164,7 @@ export default class Budgets extends Component {
             <Col sm={8}>
                 <Container fluid={"xl"}>
                     <Row>{
-                        this.state.currentBudget != null ? <OperationsList onBudgetChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
+                        this.state.currentBudget != null ? <OperationsList onOperationChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
                     }</Row>
                     <Row className="alignCenter">
                         <CreationActionButton categories={this.state.categories} />

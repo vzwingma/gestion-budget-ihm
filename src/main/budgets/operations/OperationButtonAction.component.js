@@ -7,7 +7,7 @@ const OperationButtonAction = ({ action, iconAction, label }) => {
 
     return (
         <Button className="btn-light" action={action} variant="light">
-            <img src={"/img/statuts/" + iconAction} width="20" height="20" className="d-inline-block align-top" alt={label}/>
+            <img action={action} src={"/img/statuts/" + iconAction} width="20" height="20" className="d-inline-block align-top" alt={label}/>
         </Button>
     )
 };
