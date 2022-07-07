@@ -23,6 +23,7 @@ export default class OperationsList extends Component {
 
     // Update du budget
     handleBudgetUpdate(budgetUpdated){
+        console.log("*******  handleBudgetUpdate  ***********=" + budgetUpdated)
         this.props.onBudgetChange(budgetUpdated);
     }
 
@@ -31,10 +32,12 @@ export default class OperationsList extends Component {
     shouldComponentUpdate(nextProps, nextStates){
         // Update si budget change dans le parent
         if(nextProps.currentBudget !== nextStates.currentBudget && nextProps.currentBudget != null){
-            console.log("Update Context :: Budget " + nextProps.currentBudget.id + "  [" + nextProps.currentBudget.listeOperations.length + "] opérations");
+            console.log("[TRIGGER] Context operations [" + nextProps.currentBudget.listeOperations.length + "]");
             this.setState(
-                {   currentBudget : nextProps.currentBudget,
-                    listeOperations : nextProps.currentBudget.listeOperations }
+                {
+                    currentBudget : nextProps.currentBudget,
+                    listeOperations : nextProps.currentBudget.listeOperations
+                }
             );
         }
         return true;
@@ -61,16 +64,16 @@ export default class OperationsList extends Component {
                 </tr>
                 </thead>
                 <tbody className="tbodyOperation">
-                { this.state.listeOperations.map((operation, key) => (
+                { this.state.listeOperations.map((operation) => (
 
-                    <tr key={key} id={operation.id}>
+                    <tr key={operation.id} id={operation.id}>
                         <td>{
                             operation.autresInfos.dateOperation != null ?
                                 operation.autresInfos.dateOperation[2]+"/"+operation.autresInfos.dateOperation[1] +"/"+ operation.autresInfos.dateOperation[0]
                                 : "-"
                         }</td>
-                        <td>{operation.categorie.libelle}</td>
-                        <td>{operation.ssCategorie.libelle}</td>
+                        <td>{ operation.categorie != null ? operation.categorie.libelle : "-" }</td>
+                        <td>{ operation.ssCategorie != null ? operation.ssCategorie.libelle : "-" }</td>
                         <td>{operation.libelle}</td>
                         <td><OperationValue valueOperation={operation.valeur} /></td>
                         <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>

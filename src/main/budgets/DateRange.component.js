@@ -42,13 +42,13 @@ export default class DateRange extends Component {
     shouldComponentUpdate(nextProps, nextStates){
         // Update ssi c'est le compte qui change
         if(nextProps.idCompte !== nextStates.idCompte){
-            console.log("Update Context :: idCompte=" + nextProps.idCompte )
+            console.log("[TRIGGER] Context :: Compte=" + nextProps.idCompte )
             this.setState({idCompte : nextProps.idCompte})
             this.refreshDatesFromCompte(nextProps.idCompte)
             return true;
         }
         if(this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()){
-                console.log("Update Context :: date=" + nextStates.dateCurrentBudget )
+                console.log("[TRIGGER] Context :: date=" + nextStates.dateCurrentBudget )
                 return true;
         }
         return false;
