@@ -66,8 +66,8 @@ const ResumeCategories = ({ currentBudget, categories }) => {
           <tbody className="tbodyResume">
               {
                     // Itération sur les catégories
-                   mapArbreTotaux.map((totalCategorie, key) => (
-                        <ResumeCategorie keyCategorie={key} idCategorie={totalCategorie[0]} totalCategorie={totalCategorie[1]}/>
+                   mapArbreTotaux.map((totalCategorie) => (
+                        <ResumeCategorie key={totalCategorie[0]} idCategorie={totalCategorie[0]} totalCategorie={totalCategorie[1]}/>
                     ))
                }
           </tbody>
