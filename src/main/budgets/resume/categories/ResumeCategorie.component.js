@@ -1,16 +1,16 @@
-import ResumeValue from './../ResumeValue.component'
+import OperationValue from './../../operations/OperationValue.component'
 /*
  * Page principale du solde pour 1 catégorie
  */
 const ResumeCategorie = ({ keyCategorie, idCategorie, totalCategorie }) => {
 
-     return (
+    return (
         <tr key={keyCategorie} id={idCategorie} className={`${!totalCategorie.isSsCategorie ? "ligneCategorie" : ""}`}>
             <td><span className={`${totalCategorie.isSsCategorie ? "ligneSsCategorie" : ""}`}>{totalCategorie.libelleCategorie}</span></td>
-            <td><ResumeValue valueResume={totalCategorie.totalAtMaintenant}/></td>
-            <td><ResumeValue valueResume={totalCategorie.totalAtFinMoisCourant}/></td>
+            <td><OperationValue valueOperation={totalCategorie.totalAtMaintenant}/></td>
+            <td><OperationValue valueOperation={totalCategorie.totalAtFinMoisCourant}/></td>
         </tr>
-      )
-     };
+    )
+};
 
-  export default ResumeCategorie
+export default ResumeCategorie

@@ -1,8 +1,34 @@
 
 /* Body */
 body {
-  padding: 1px;
+    padding: 1px;
 }
+
+/** Style pour les opérations **/
+/*tbody.tbodyOperation > tr > td:first-child { width:200px } */
+tbody.tbodyOperation > tr > td:nth-child(5) {
+    text-align: right;
+    padding-right: 10px;
+}
+tbody.tbodyOperation > tr > td:nth-child(6) {
+    width:80px;
+}
+tbody.tbodyOperation > tr > td:nth-child(7) { width:100px }
+
+/* button Créer */
+div.alignCenter {
+    position:absolute;
+    bottom: 0;
+    display: flex;
+    width: 100%;
+}
+
+.alignCenter > button {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 
 /** Style pour les résumés **/
@@ -21,7 +47,7 @@ tbody.tbodyResume > tr > td:nth-child(3) {
 
 
 
-/* Lignes pour les résumé */
+/* Lignes pour les résumés */
 tbody.tbodyResume > tr.ligneCategorie {
     font-weight: bolder;
 }

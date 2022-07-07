@@ -31,7 +31,7 @@ export default class Main extends Component {
         </nav>
         <div className="App">
             <Route path="/login" component={Login}/>
-            <PrivateRoute path="/budgets" component={Budgets} />
+            <Route path="/budgets" component={Budgets} />
             <Route path="/infos" component={Infos}/>
 
             <Route path="/logout" component={Logout}/>

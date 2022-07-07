@@ -8,7 +8,7 @@ import * as ClientHTTP from './../Services/ClientHTTP.service';
 export default class ComptesList extends Component {
 
 
-    /** Etats pour la sélection du co **/
+    /** Etats pour la sélection du compte **/
       state = {
         comptes: []
       }
@@ -50,7 +50,7 @@ export default class ComptesList extends Component {
         console.log("Changement de compte : " + compteLabel)
         var selectedIdCompte = null;
         Array.from(event.target.options)
-             .forEach(function (option, index) {
+             .forEach(function (option) {
                 if(option.value === compteLabel){
                     selectedIdCompte = option.id;
                 }
