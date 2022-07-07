@@ -28,7 +28,7 @@ export default class Infos extends Component {
                   { method: 'GET', headers:{'origin':'localhost', 'accept':'application/json'} })
             .then(res => res.json())
             .then((data) => {
-                this.setState({ infos: [...this.state.infos, data.app] })
+                this.setState({ infos: [...this.state.infos, data] })
             })
             .catch(() => {
                 console.log("Erreur pour " + backEnd.idMS)
@@ -64,7 +64,7 @@ export default class Infos extends Component {
 
                                 {this.state.infos.map((msInfos) => (
                                     <ModuleInfos
-                                        key={msInfos.name} name={msInfos.name}
+                                        key={msInfos.nom} name={msInfos.nom}
                                         version={msInfos.version} description={msInfos.description} />
                                 ))}
                               </tbody>
