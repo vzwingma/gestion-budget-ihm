@@ -18,7 +18,7 @@ export default class OperationActions extends Component {
     updateOperation(operation){
         console.log("Modification de l'opération " + operation.id + " -> " + operation.etat);
 
-        const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
+        const getURL = ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
             [ this.props.budgetid, operation.id ])
         fetch(getURL,
             {
@@ -26,7 +26,7 @@ export default class OperationActions extends Component {
                 headers: ClientHTTP.getHeaders(),
                 body: JSON.stringify(operation)
             })
-            .then(res => res.json())
+            .then(res => ClientHTTP.getJSONResponse(res))
             .then((data) => {
                 // Update du budget global (parent)
                 this.props.onOperationChange(data);

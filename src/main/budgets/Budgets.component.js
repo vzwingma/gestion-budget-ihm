@@ -37,15 +37,14 @@ export default class Budgets extends Component {
     /** Chargement des catégories **/
     componentDidMount(){
         console.log("Chargement des catégories");
-        const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
+        const getURL = ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
                     fetch(getURL,
                     {
                         method: 'GET', headers: ClientHTTP.getHeaders()
                     })
-                    .then(res => res.json())
+                    .then(res => ClientHTTP.getJSONResponse(res))
                     .then((data) => {
                         this.categoriesLoaded(data)
-
                     })
                     .catch((e) => {
                         console.log("Erreur lors du chargement des catégories >> "+ e)
@@ -109,14 +108,14 @@ export default class Budgets extends Component {
     **/
     refreshBudget(selectedCompte, selectedDate){
         if(selectedCompte != null && selectedDate != null){
-            const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
+            const getURL = ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
                                 [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
             fetch(getURL,
             {
                 method: 'GET', headers: ClientHTTP.getHeaders()
             })
-            .then(res => res.json())
-            .then((data) => this.handleBudgetUpdate(data))
+                .then(res => ClientHTTP.getJSONResponse(res))
+                .then((data) => this.handleBudgetUpdate(data))
             .catch((e) => {
                 console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e)
             })

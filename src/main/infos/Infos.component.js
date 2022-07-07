@@ -24,9 +24,9 @@ export default class Infos extends Component {
         // Itération sur tous les composants
         this.backEnds.forEach(backEnd => (
 
-            fetch(ClientHTTP.getURL(backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO),
+            fetch(ClientHTTP.getURLRequest(backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO),
                   { method: 'GET', headers:{'origin':'localhost', 'accept':'application/json'} })
-            .then(res => res.json())
+            .then(res => ClientHTTP.getJSONResponse(res))
             .then((data) => {
                 this.setState({ infos: [...this.state.infos, data] })
             })
