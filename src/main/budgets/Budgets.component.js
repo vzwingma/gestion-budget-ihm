@@ -121,7 +121,7 @@ export default class Budgets extends Component {
      * Render du budget
      */
     render() { return (
-        <Container fluid>
+        <Container fluid={"xl"}>
 
         <style type="text/css">{`
 
@@ -137,16 +137,16 @@ export default class Budgets extends Component {
           </Row>
           <Row>
             <Col sm={4}>
-                <Container fluid>
+                <Container fluid={"xl"}>
                     <Row>
-                        <Col fluid>
+                        <Col>
                         {
                             this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..."
                         }
                         </Col>
                     </Row>
                     <Row>
-                        <Col fluid>
+                        <Col>
                         {
                             this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..."
                         }
