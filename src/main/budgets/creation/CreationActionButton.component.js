@@ -80,9 +80,9 @@ export default class CreationActionButton extends Component {
         this.setState({ showModale: false });
     };
 
-    // Sélection d'un compte
+    // Validation de l'opération
     handleClick(event) {
-        // Select du compte parmi la liste
+        // Validation du formulaire
         console.log("Création d'une opération " + event)
         this.setState({ showModale: true });
     }
@@ -148,14 +148,11 @@ export default class CreationActionButton extends Component {
                                 <Col>
                                     <Form.Label>Description</Form.Label>
                                 </Col>
-                                <Col colSpan="2">
-                                    <Form.Select size="sm">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </Form.Select>
+                                <Col colSpan="2" >
+                                    <Form.Control
+                                        type="text"
+                                        id="inputPassword5"
+                                    />
                                 </Col>
                             </Row>
                             <Row>
