@@ -9,7 +9,7 @@ export const BACKEND_ENUM = {
 /* Services */
 export const SERVICES_URL = {
     INFOS : {
-        GET_INFO : "/actuator/info"
+        GET_INFO : "/_info"
     },
     COMPTES : {
         GET_ALL : "/comptes/v1"

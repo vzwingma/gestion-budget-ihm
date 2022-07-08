@@ -1,5 +1,5 @@
 import Table from 'react-bootstrap/Table';
-import ResumeValue from './ResumeValue.component'
+import OperationValue from './../operations/OperationValue.component'
 /*
  * Page principale du solde
  */
@@ -7,29 +7,29 @@ import ResumeValue from './ResumeValue.component'
 
 const ResumeSoldes = ({ currentBudget }) => {
 
-     // définition de la date courante
-     const dateCourante = new Date(Date.now()) ;
+    // définition de la date courante
+    const dateCourante = new Date(Date.now()) ;
 
-     return (
+    return (
         <Table striped bordered hover size="sm" variant="light">
-          <thead>
-           <tr>
-            <th/>
-            <th>
-                Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
-            </th>
-            <th>
-                Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
-            </th>
-          </tr>
-          </thead>
-          <tbody className="tbodyResume"><tr className="ligneCategorie">
-            <td> Solde </td>
-            <td><ResumeValue valueResume={currentBudget.soldes.soldeAtMaintenant} /> </td>
-            <td><ResumeValue valueResume={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
-          </tr></tbody>
-         </Table>
-      )
-     };
+            <thead>
+            <tr>
+                <th/>
+                <th>
+                    Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
+                </th>
+                <th>
+                    Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
+                </th>
+            </tr>
+            </thead>
+            <tbody className="tbodyResume"><tr className="ligneCategorie">
+                <td> Solde </td>
+                <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /> </td>
+                <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
+            </tr></tbody>
+        </Table>
+    )
+};
 
-  export default ResumeSoldes
+export default ResumeSoldes

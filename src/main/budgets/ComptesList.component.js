@@ -8,7 +8,7 @@ import * as ClientHTTP from './../Services/ClientHTTP.service';
 export default class ComptesList extends Component {
 
 
-    /** Etats pour la sélection du co **/
+    /** Etats pour la sélection du compte **/
       state = {
         comptes: []
       }
@@ -20,12 +20,12 @@ export default class ComptesList extends Component {
 
     /** Appels WS vers pour charger la liste des comptes **/
     componentDidMount() {
-        const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
+        const getURL = ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
         fetch(getURL,
             {
                 method: 'GET', headers: ClientHTTP.getHeaders()
             })
-            .then(res => res.json())
+            .then(res => ClientHTTP.getJSONResponse(res))
             .then((data) => {
                 this.comptesLoaded(data)
             })
@@ -50,7 +50,7 @@ export default class ComptesList extends Component {
         console.log("Changement de compte : " + compteLabel)
         var selectedIdCompte = null;
         Array.from(event.target.options)
-             .forEach(function (option, index) {
+             .forEach(function (option) {
                 if(option.value === compteLabel){
                     selectedIdCompte = option.id;
                 }

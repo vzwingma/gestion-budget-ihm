@@ -42,13 +42,13 @@ export default class DateRange extends Component {
     shouldComponentUpdate(nextProps, nextStates){
         // Update ssi c'est le compte qui change
         if(nextProps.idCompte !== nextStates.idCompte){
-            console.log("Update Context :: idCompte=" + nextProps.idCompte )
+            console.log("[TRIGGER] Context :: Compte=" + nextProps.idCompte )
             this.setState({idCompte : nextProps.idCompte})
             this.refreshDatesFromCompte(nextProps.idCompte)
             return true;
         }
         if(this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()){
-            //    console.log("Update Context :: date=" + nextStates.dateCurrentBudget )
+                console.log("[TRIGGER] Context :: date=" + nextStates.dateCurrentBudget )
                 return true;
         }
         return false;
@@ -57,11 +57,11 @@ export default class DateRange extends Component {
     /** Appels WS vers pour charger la liste des comptes **/
     refreshDatesFromCompte(idCompte) {
 
-        fetch(ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,  [ idCompte ]),
+        fetch(ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,  [ idCompte ]),
             {
                 method: 'GET', headers: ClientHTTP.getHeaders()
             })
-            .then(res => res.json())
+            .then(res => ClientHTTP.getJSONResponse(res))
             .then((data) => {
                 // console.log(data)
                 this.intervalleLoaded(data.datePremierBudget, data.dateDernierBudget)
@@ -139,7 +139,7 @@ export default class DateRange extends Component {
                 display: flex;
             }
         `}</style>
-           <Pagination fluid onClick={this.handleSelect}>
+           <Pagination onClick={this.handleSelect}>
              <Pagination.First id="firstButton"/>
              <Pagination.Item id="previous">{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Pagination.Item>
              <Pagination.Item id="current" active>{ this.state.dateCurrentBudget.toLocaleString('default', { month: 'long' })} { this.state.dateCurrentBudget.getFullYear() }</Pagination.Item>

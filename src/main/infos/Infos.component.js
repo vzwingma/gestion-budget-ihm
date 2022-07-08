@@ -24,11 +24,11 @@ export default class Infos extends Component {
         // Itération sur tous les composants
         this.backEnds.forEach(backEnd => (
 
-            fetch(ClientHTTP.getURL(backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO),
+            fetch(ClientHTTP.getURLRequest(backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO),
                   { method: 'GET', headers:{'origin':'localhost', 'accept':'application/json'} })
-            .then(res => res.json())
+            .then(res => ClientHTTP.getJSONResponse(res))
             .then((data) => {
-                this.setState({ infos: [...this.state.infos, data.app] })
+                this.setState({ infos: [...this.state.infos, data] })
             })
             .catch(() => {
                 console.log("Erreur pour " + backEnd.idMS)
@@ -64,7 +64,7 @@ export default class Infos extends Component {
 
                                 {this.state.infos.map((msInfos) => (
                                     <ModuleInfos
-                                        key={msInfos.name} name={msInfos.name}
+                                        key={msInfos.nom} name={msInfos.nom}
                                         version={msInfos.version} description={msInfos.description} />
                                 ))}
                               </tbody>
