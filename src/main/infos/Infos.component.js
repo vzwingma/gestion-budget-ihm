@@ -22,8 +22,7 @@ export default class Infos extends Component {
     componentDidMount() {
 
         // Itération sur tous les composants
-        this.backEnds.forEach(backEnd => (
-
+        this.backEnds.map(backEnd => (
             ClientHTTP.call('GET', backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO)
                 .then((data) => {
                     this.setState({ infos: [...this.state.infos, data] })
