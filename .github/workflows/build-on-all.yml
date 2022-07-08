@@ -26,6 +26,9 @@ jobs:
       with:
         node-version: 18
     -
+      run: npm install
+      name: Install
+    -
       run: npm ci
       name: CI Install
     -
