@@ -31,14 +31,12 @@ const ResumeCategories = ({ currentBudget, categories }) => {
             .map(ssCatParam => (
                 mapTotauxSsCategories
                     .filter(totalSScat => totalSScat[0] === ssCatParam.id)
-                    .map(totalSScat => (
-                        buildResumeCategorie(totalSScat[0], totalSScat)
-                    ))
+                    .map(totalSScat => buildResumeSousCategorie(totalSScat))
             ));
     }
 
     // Construction de l'arborescence d'une sous-catégorie
-    const buildResumeCategorie = (idSSCategorie, totalSScat) => {
+    const buildResumeSousCategorie = (totalSScat) => {
         totalSScat[1].isSsCategorie = true;
         mapArbreTotaux.push(totalSScat);
     }

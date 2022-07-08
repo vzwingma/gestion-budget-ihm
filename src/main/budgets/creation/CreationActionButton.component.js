@@ -30,7 +30,7 @@ export default class CreationActionButton extends Component {
     handleSelectCategorie(event) {
         // Select du compte parmi la liste
         const categorieLabel =event.target.value;
-        var selectedIdCategorie = null;
+        let selectedIdCategorie = null;
         Array.from(event.target.options)
             .forEach(function (option) {
                 if(option.value === categorieLabel){
@@ -49,7 +49,7 @@ export default class CreationActionButton extends Component {
     handleSelectSsCategorie(event) {
         // Select du compte parmi la liste
         const ssCategorieLabel = event.target.value;
-        var selectedIdSsCategorie = null;
+        let selectedIdSsCategorie = null;
         Array.from(event.target.options)
             .forEach(function (option) {
                 if(option.value === ssCategorieLabel){
@@ -210,5 +210,5 @@ export default class CreationActionButton extends Component {
                 </Modal>
             </>
         )
-    };
+    }
 }
