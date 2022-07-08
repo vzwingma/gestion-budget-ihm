@@ -1,7 +1,6 @@
 /** Client HTTP **/
 import { getOAuthToken } from './Auth.service'
-import React from "react";
-
+// import opentracing from 'opentracing';
 
 /**
  * Generate http Headers to backend calls

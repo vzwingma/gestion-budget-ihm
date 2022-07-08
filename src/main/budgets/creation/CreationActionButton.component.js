@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Col, Button, Modal } from 'react-bootstrap'
+import { Form, Col, Row, Button, Modal } from 'react-bootstrap'
 import * as AppConstants from "./../../Utils/AppEnums.constants"
 import * as ClientHTTP from './../../Services/ClientHTTP.service'
 /*
@@ -103,12 +103,12 @@ export default class CreationActionButton extends Component {
 
                     <Modal.Body>
                         <Form><Form.Group controlId="creationForm">
-                            <Form.Row>
+                            <Row>
                                 <Col>
                                     <Form.Label>Catégorie</Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control as="select" size="sm" custom onChange={this.handleSelectCategorie}>
+                                    <Form.Select size="sm" onChange={this.handleSelectCategorie}>
                                         <option> </option>
                                         {
                                             this.state.categories
@@ -117,82 +117,82 @@ export default class CreationActionButton extends Component {
                                                     <option key={key} id={categorie.id}>{categorie.libelle}</option>
                                                 ))
                                         }
-                                    </Form.Control>
+                                    </Form.Select>
                                 </Col>
                                 <Col>
-                                    <Form.Control as="select" size="sm" custom onChange={this.handleSelectSsCategorie}>
+                                    <Form.Select size="sm" onChange={this.handleSelectSsCategorie}>
                                         <option> </option>
                                         {
                                             this.state.ssCategories
-                                                .map((ssCategorie, key) => (
-                                                    <option key={key} id={ssCategorie.id}>{ssCategorie.libelle}</option>
+                                                .map((ssCategorie) => (
+                                                    <option key={ssCategorie.id} id={ssCategorie.id}>{ssCategorie.libelle}</option>
                                                 ))
                                         }
-                                    </Form.Control>
+                                    </Form.Select>
                                 </Col>
                                 <Col>
                                     {this.state.showIntercompte &&
-                                        <Form.Control as="select" size="sm" custom onChange={this.handleSelectSsCategorie}>
+                                        <Form.Select size="sm" onChange={this.handleSelectSsCategorie}>
                                             <option> Comptes </option>
                                             {
                                                 this.state.ssCategories
-                                                    .map((ssCategorie, key) => (
-                                                        <option key={key} id={ssCategorie.id}>{ssCategorie.libelle}</option>
+                                                    .map((ssCategorie) => (
+                                                        <option key={ssCategorie.id} id={ssCategorie.id}>{ssCategorie.libelle}</option>
                                                     ))
                                             }
-                                        </Form.Control>
+                                        </Form.Select>
                                     }
                                 </Col>
-                            </Form.Row>
-                            <Form.Row>
+                            </Row>
+                            <Row>
                                 <Col>
                                     <Form.Label>Description</Form.Label>
                                 </Col>
                                 <Col colSpan="2">
-                                    <Form.Control as="select" size="sm" custom>
+                                    <Form.Select size="sm">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
                                         <option>4</option>
                                         <option>5</option>
-                                    </Form.Control>
+                                    </Form.Select>
                                 </Col>
-                            </Form.Row>
-                            <Form.Row>
+                            </Row>
+                            <Row>
                                 <Col>
                                     <Form.Label>Valeur</Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control as="select" size="sm" custom>
+                                    <Form.Select size="sm">
                                         <option>+</option>
                                         <option>-</option>
-                                    </Form.Control>
+                                    </Form.Select>
                                 </Col>
                                 <Col>
                                     <Form.Control size="sm" placeholder="Valeur" />
                                 </Col>
-                            </Form.Row>
-                            <Form.Row>
+                            </Row>
+                            <Row>
                                 <Col>
                                     <Form.Label>Etat</Form.Label>
                                 </Col>
                                 <Col colSpan="2">
-                                    <Form.Control as="select" size="sm" custom>
+                                    <Form.Select size="sm">
                                         <option>Prévue</option>
                                         <option>Réalisée</option>
                                         <option>Reportée</option>
                                         <option>Annulée</option>
-                                    </Form.Control>
+                                    </Form.Select>
                                 </Col>
-                            </Form.Row>
-                            <Form.Row>
+                            </Row>
+                            <Row>
                                 <Col>
                                     <Form.Label>Dépense mensuelle</Form.Label>
                                 </Col>
                                 <Col colSpan="2">
                                     <Form.Check type="checkbox"/>
                                 </Col>
-                            </Form.Row>
+                            </Row>
                         </Form.Group></Form>
                     </Modal.Body>
 
