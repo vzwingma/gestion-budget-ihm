@@ -20,7 +20,8 @@ export default class OperationActions extends Component {
 
         ClientHTTP.call(operation.etat === "SUPPRIMEE" ? "DELETE" : "POST",
             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
-            [ this.props.budgetid, operation.id ])
+            [ this.props.budgetid, operation.id ],
+            operation)
             .then((data) => {
                 // Update du budget global (parent)
                 this.props.onOperationChange(data);

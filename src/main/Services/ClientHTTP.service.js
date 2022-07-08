@@ -20,9 +20,10 @@ import React from "react";
  * @param uri URI de base
  * @param path chemin de la ressource
  * @param params paramètres (optionnels)
+ * @param body body de la requête (optionnel)
  * @returns {Promise<Response>} réponse
  */
-export function call(httpMethod, uri, path, params ) {
+export function call(httpMethod, uri, path, params, body ) {
 
     // Calcul de l'URL complétée
     let fullURL = uri + path;
@@ -33,15 +34,22 @@ export function call(httpMethod, uri, path, params ) {
     }
 
     console.log("[WS] > [" + httpMethod + "/"+ fullURL + "]")
+    let jsonBody = null
+    if(body !== undefined){
+        jsonBody = JSON.stringify(body)
+    }
+
     return fetch(fullURL,
         {
-            method: httpMethod, headers: this.getHeaders()
+            method: httpMethod,
+            headers: this.getHeaders(),
+            body: jsonBody
         })
         .then(res => {
             console.log("[WS] < [" + res.status + " - " + res.statusText +"]")
             return res.json();
         })
         .catch((e) => {
-            console.log("Erreur lors de l'appel HTTP " + url + " :: " + e)
+            console.log("Erreur lors de l'appel HTTP " + fullURL + " :: " + e)
         })
 }
