@@ -1,7 +1,5 @@
 /** Client HTTP **/
 import { getOAuthToken } from './Auth.service'
-import React from "react";
-
 
 /**
  * Generate http Headers to backend calls
