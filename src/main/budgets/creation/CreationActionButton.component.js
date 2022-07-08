@@ -20,7 +20,6 @@ export default class CreationActionButton extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
         this.hideModal = this.hideModal.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleSelectCategorie = this.handleSelectCategorie.bind(this);
@@ -63,7 +62,7 @@ export default class CreationActionButton extends Component {
     }
 
 
-    /** Chargement des catégories **/
+    /** Chargement des catégories
     componentDidMount(){
         console.log("Chargement des catégories");
         const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
@@ -79,7 +78,7 @@ export default class CreationActionButton extends Component {
                 console.log("Erreur lors du chargement des catégories >> "+ e)
             })
     }
-
+     **/
 
     hideModal = () => {
         this.setState({ showModale: false });
