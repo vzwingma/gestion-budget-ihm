@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Routes,
   Route,
   NavLink,
   HashRouter
@@ -30,11 +31,13 @@ export default class Main extends Component {
             </ul>
         </nav>
         <div className="App">
-            <Route path="/login" component={Login}/>
-            <Route path="/budgets" component={Budgets} />
-            <Route path="/infos" component={Infos}/>
+            <Routes>
+                <Route path="/login"    element={<Login/>}/>
+                <Route path="/budgets"  element={<Budgets/>} />
+                <Route path="/infos"    element={<Infos/>}/>
 
-            <Route path="/logout" component={Logout}/>
+                <Route path="/logout"   element={<Logout/>}/>
+            </Routes>
         </div>
       </HashRouter>
     );
