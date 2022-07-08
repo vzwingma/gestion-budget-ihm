@@ -18,15 +18,10 @@ export default class OperationActions extends Component {
     updateOperation(operation){
         console.log("Modification de l'opération " + operation.id + " -> " + operation.etat);
 
-        const getURL = ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
-            [ this.props.budgetid, operation.id ])
-        fetch(getURL,
-            {
-                method: operation.etat === "SUPPRIMEE" ? "DELETE" : "POST",
-                headers: ClientHTTP.getHeaders(),
-                body: JSON.stringify(operation)
-            })
-            .then(res => ClientHTTP.getJSONResponse(res))
+        ClientHTTP.call(operation.etat === "SUPPRIMEE" ? "DELETE" : "POST",
+            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
+            [ this.props.budgetid, operation.id ],
+            operation)
             .then((data) => {
                 // Update du budget global (parent)
                 this.props.onOperationChange(data);

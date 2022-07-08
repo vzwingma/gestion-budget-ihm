@@ -8,7 +8,7 @@ import * as ClientHTTP from './../Services/ClientHTTP.service';
 export default class ComptesList extends Component {
 
 
-    /** Etats pour la sélection du compte **/
+      /** Etats pour la sélection du compte **/
       state = {
         comptes: []
       }
@@ -20,12 +20,8 @@ export default class ComptesList extends Component {
 
     /** Appels WS vers pour charger la liste des comptes **/
     componentDidMount() {
-        const getURL = ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
-        fetch(getURL,
-            {
-                method: 'GET', headers: ClientHTTP.getHeaders()
-            })
-            .then(res => ClientHTTP.getJSONResponse(res))
+        ClientHTTP
+            .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
             .then((data) => {
                 this.comptesLoaded(data)
             })

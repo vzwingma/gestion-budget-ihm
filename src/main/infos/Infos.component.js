@@ -24,22 +24,20 @@ export default class Infos extends Component {
         // Itération sur tous les composants
         this.backEnds.forEach(backEnd => (
 
-            fetch(ClientHTTP.getURLRequest(backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO),
-                  { method: 'GET', headers:{'origin':'localhost', 'accept':'application/json'} })
-            .then(res => ClientHTTP.getJSONResponse(res))
-            .then((data) => {
-                this.setState({ infos: [...this.state.infos, data] })
-            })
-            .catch(() => {
-                console.log("Erreur pour " + backEnd.idMS)
-                var errData = {
-                    key: backEnd.idMS,
-                    name: backEnd.idMS,
-                    version : 'N/A',
-                    description: backEnd.idMS
-                };
-                this.setState({ infos: [...this.state.infos, errData] })
-            })
+            ClientHTTP.call('GET', backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO)
+                .then((data) => {
+                    this.setState({ infos: [...this.state.infos, data] })
+                })
+                .catch(() => {
+                    console.log("Erreur pour " + backEnd.idMS)
+                    var errData = {
+                        key: backEnd.idMS,
+                        name: backEnd.idMS,
+                        version : 'N/A',
+                        description: backEnd.idMS
+                    };
+                    this.setState({ infos: [...this.state.infos, errData] })
+                })
         ))
       }
 
