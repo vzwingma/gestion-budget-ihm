@@ -1,6 +1,6 @@
 {
   "name": "gestion-budget-ihm",
-  "version": "17.0.0",
+  "version": "18.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
