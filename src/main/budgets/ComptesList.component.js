@@ -8,7 +8,7 @@ import * as ClientHTTP from './../Services/ClientHTTP.service';
 export default class ComptesList extends Component {
 
 
-    /** Etats pour la sélection du compte **/
+      /** Etats pour la sélection du compte **/
       state = {
         comptes: []
       }

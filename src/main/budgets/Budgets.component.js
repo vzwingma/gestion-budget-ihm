@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from 'react-bootstrap'
+
 import ComptesList from "./ComptesList.component"
 import DateRange from "./DateRange.component"
 import OperationsList from "./operations/OperationsList.component"
@@ -127,12 +128,7 @@ export default class Budgets extends Component {
      * Render du budget
      */
     render() { return (
-        <Container fluid={"xl"}>
-
-        <style type="text/css">{`
-
-        `}</style>
-
+        <Container fluid>
           <Row>
             <Col sm={4}>
               <ComptesList onCompteChange={this.handleCompteChange} />
@@ -171,6 +167,7 @@ export default class Budgets extends Component {
                 </Container>
             </Col>
           </Row>
+
         </Container>
     ); }
 }
