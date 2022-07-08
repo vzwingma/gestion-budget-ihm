@@ -1,8 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Main from "./main/Main";
 import 'bootswatch/dist/sandstone/bootstrap.min.css';
-ReactDOM.render(
-  <Main/>,
-  document.getElementById("root")
-);
+import { createRoot } from 'react-dom/client';
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<React.StrictMode>
+                <Main/>,
+            </React.StrictMode>);
