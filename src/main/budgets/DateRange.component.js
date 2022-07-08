@@ -57,11 +57,8 @@ export default class DateRange extends Component {
     /** Appels WS vers pour charger la liste des comptes **/
     refreshDatesFromCompte(idCompte) {
 
-        fetch(ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,  [ idCompte ]),
-            {
-                method: 'GET', headers: ClientHTTP.getHeaders()
-            })
-            .then(res => ClientHTTP.getJSONResponse(res))
+        ClientHTTP.call('GET',
+            ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,  [ idCompte ]))
             .then((data) => {
                 // console.log(data)
                 this.intervalleLoaded(data.datePremierBudget, data.dateDernierBudget)

@@ -1,7 +1,12 @@
-/** Service d'Authentification**/
- import { getOAuthToken } from './Auth.service'
+/** Client HTTP **/
+import { getOAuthToken } from './Auth.service'
+import React from "react";
 
-    /** HTTP Client Header **/
+
+/**
+ * Generate http Headers to backend calls
+ * @returns {Headers}
+ */
     export const getHeaders = () => new Headers({
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -22,17 +27,29 @@ export const getURLRequest = (uri, path, params) => {
                 fullURL = fullURL.replace("{{}}", param)
             })
         }
-        console.log("[WS] > [" + fullURL + "]")
         return fullURL;
     };
 
 /**
- * Fonction pour logger la réponse
- * @param data HTTP Response
- * @returns {*} JSON Data
+ * Appel HTTP vers le backend
+ * @param httpMethod méthode HTTP
+ * @param uri URI de base
+ * @param path chemin de la ressource
+ * @param params paramètres (optionnels)
+ * @returns {Promise<Response>} réponse
  */
-export const getJSONResponse = (data) => {
-
-        console.log("[WS] < [" + data.status + " - " + data.statusText +"]")
-        return data.json();
-    }
+export function call(httpMethod, uri, path, params ) {
+    const fullURL = this.getURLRequest(uri, path, params)
+    console.log("[WS] > [" + httpMethod + "/"+ fullURL + "]")
+    return fetch(fullURL,
+        {
+            method: httpMethod, headers: this.getHeaders()
+        })
+        .then(res => {
+            console.log("[WS] < [" + res.status + " - " + res.statusText +"]")
+            return res.json();
+        })
+        .catch((e) => {
+            console.log("Erreur lors de l'appel HTTP " + url + " :: " + e)
+        })
+}
