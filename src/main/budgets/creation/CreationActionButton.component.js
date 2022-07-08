@@ -62,10 +62,10 @@ export default class CreationActionButton extends Component {
     }
 
 
-    /** Chargement des catégories
+    /** Chargement des catégories **/
     componentDidMount(){
         console.log("Chargement des catégories");
-        const getURL = ClientHTTP.getURL(AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
+        const getURL = ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
         fetch(getURL,
             {
                 method: 'GET', headers: ClientHTTP.getHeaders()
@@ -78,7 +78,7 @@ export default class CreationActionButton extends Component {
                 console.log("Erreur lors du chargement des catégories >> "+ e)
             })
     }
-     **/
+
 
     hideModal = () => {
         this.setState({ showModale: false });
