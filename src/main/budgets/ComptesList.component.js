@@ -20,7 +20,8 @@ export default class ComptesList extends Component {
 
     /** Appels WS vers pour charger la liste des comptes **/
     componentDidMount() {
-        ClientHTTP.call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
+        ClientHTTP
+            .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
             .then((data) => {
                 this.comptesLoaded(data)
             })

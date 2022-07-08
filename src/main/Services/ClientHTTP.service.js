@@ -13,22 +13,6 @@ import React from "react";
             'Authorization' : 'Bearer ' + getOAuthToken()
     });
 
-/**
- * Calcul de l'URL appelée
- * @param uri URI de base
- * @param path chemin
- * @param params paramètres
- * @returns {*} URL complétée
- */
-export const getURLRequest = (uri, path, params) => {
-        var fullURL = uri + path;
-        if(params != null){
-            params.forEach(param => {
-                fullURL = fullURL.replace("{{}}", param)
-            })
-        }
-        return fullURL;
-    };
 
 /**
  * Appel HTTP vers le backend
@@ -39,7 +23,15 @@ export const getURLRequest = (uri, path, params) => {
  * @returns {Promise<Response>} réponse
  */
 export function call(httpMethod, uri, path, params ) {
-    const fullURL = this.getURLRequest(uri, path, params)
+
+    // Calcul de l'URL complétée
+    let fullURL = uri + path;
+    if(params != null){
+        params.forEach(param => {
+            fullURL = fullURL.replace("{{}}", param)
+        })
+    }
+
     console.log("[WS] > [" + httpMethod + "/"+ fullURL + "]")
     return fetch(fullURL,
         {

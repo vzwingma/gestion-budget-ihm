@@ -104,14 +104,13 @@ export default class Budgets extends Component {
     **/
     refreshBudget(selectedCompte, selectedDate){
         if(selectedCompte != null && selectedDate != null){
-            ClientHTTP.call(
-                'GET',
-                AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
-                [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
-                .then((data) => this.handleBudgetUpdate(data))
-                .catch((e) => {
-                    console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e)
-                })
+            ClientHTTP.call('GET',
+                            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
+                            [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
+                    .then((data) => this.handleBudgetUpdate(data))
+                    .catch((e) => {
+                        console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e)
+                    })
         }
     }
 
