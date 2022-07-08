@@ -83,7 +83,8 @@ export default class CreationActionButton extends Component {
     // Validation de l'opération
     handleClick(event) {
         // Validation du formulaire
-        console.log("Création d'une opération " + event)
+        console.log("Création d'une opération " )
+        console.log(event)
         this.setState({ showModale: true });
     }
     /**
@@ -149,10 +150,7 @@ export default class CreationActionButton extends Component {
                                     <Form.Label>Description</Form.Label>
                                 </Col>
                                 <Col colSpan="2" >
-                                    <Form.Control
-                                        type="text"
-                                        id="inputPassword5"
-                                    />
+                                    <Form.Control type="text" />
                                 </Col>
                             </Row>
                             <Row>

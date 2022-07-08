@@ -66,7 +66,8 @@ export default class ComptesList extends Component {
         <div>
             <Form.Group controlId="CompteForm.CompteSelect">
                 <Form.Control as="select" size="sm" onChange={this.handleSelect}>
-                    { this.state.comptes.map((compte, key) => ( <option key={key} id={compte.id}> {compte.libelle}</option> ))}
+                    { this.state.comptes
+                                .map(compte => ( <option key={compte.id} id={compte.id}>{compte.libelle}</option> ))}
                 </Form.Control>
             </Form.Group>
       </div>

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Table from 'react-bootstrap/Table';
-import OperationActions from "./OperationActions.component"
-import OperationEtat from "./OperationEtat.component"
+import OperationActions from './OperationActions.component'
+import OperationEtat from './OperationEtat.component'
 import OperationValue from './OperationValue.component'
-
+import * as DataUtils from '../../Utils/DataUtils.utils'
 
 /*
  * Liste des opérations
@@ -43,6 +43,7 @@ export default class OperationsList extends Component {
         return true;
     }
 
+
     /**
      *  RENDER
      //
@@ -51,7 +52,7 @@ export default class OperationsList extends Component {
     render() {
 
         return (
-                    <Table striped bordered hover size="sm" variant="light">
+            <Table striped bordered hover size="sm" variant="light">
                 <thead>
                 <tr>
                     <th scope="col">Jour opération</th>
@@ -67,11 +68,7 @@ export default class OperationsList extends Component {
                 { this.state.listeOperations.map((operation) => (
 
                     <tr key={operation.id} id={operation.id}>
-                        <td>{
-                            operation.autresInfos.dateOperation != null ?
-                                operation.autresInfos.dateOperation[2]+"/"+operation.autresInfos.dateOperation[1] +"/"+ operation.autresInfos.dateOperation[0]
-                                : "-"
-                        }</td>
+                        <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateOperation) }</td>
                         <td>{ operation.categorie != null ? operation.categorie.libelle : "-" }</td>
                         <td>{ operation.ssCategorie != null ? operation.ssCategorie.libelle : "-" }</td>
                         <td>{operation.libelle}</td>
@@ -80,11 +77,7 @@ export default class OperationsList extends Component {
                         <td><OperationActions key={operation.id} id={operation.id}
                                               operation={operation} budgetid={this.props.currentBudget.id}
                                               onOperationChange={this.handleOperationsListUpdate} /></td>
-                        <td>{
-                            operation.autresInfos.dateMaj != null ?
-                                operation.autresInfos.dateMaj[2]+"/"+operation.autresInfos.dateMaj[1] +"/"+ operation.autresInfos.dateMaj[0]
-                                : "-"
-                        }</td>
+                        <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateMaj) }</td>
                     </tr>
                 ))}
                 </tbody>

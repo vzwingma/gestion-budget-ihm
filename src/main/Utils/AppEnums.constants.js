@@ -28,10 +28,8 @@ export const SERVICES_URL = {
 /*
     USERS_ACCESS_DATE_FULL = "/utilisateurs/v1/lastaccessdate";
     USERS_PREFS_FULL = "/utilisateurs/v1/preferences";
-    COMPTES_LIST_FULL = "/comptes/v1";
     COMPTES_ID_FULL = "/comptes/v1/{idCompte}";
     BUDGET_ID_FULL = "/budgets/v1/{idBudget}";
-    BUDGET_QUERY_FULL = "/budgets/v1/query";
     BUDGET_ETAT_FULL = "/budgets/v1/{idBudget}/etat";
     BUDGET_UP_TO_DATE_FULL = "/budgets/v1/{idBudget}/upToDate";
     BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL = "/budgets/v1/{idCompte}/operations/libelles";
