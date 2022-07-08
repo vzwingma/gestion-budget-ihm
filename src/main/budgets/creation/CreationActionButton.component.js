@@ -65,18 +65,14 @@ export default class CreationActionButton extends Component {
     /** Chargement des catégories **/
     componentDidMount(){
         console.log("Chargement des catégories");
-        const getURL = ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
-        fetch(getURL,
-            {
-                method: 'GET', headers: ClientHTTP.getHeaders()
-            })
-            .then(res => res.json())
-            .then((data) => {
-                this.setState({ categories : data })
-            })
-            .catch((e) => {
-                console.log("Erreur lors du chargement des catégories >> "+ e)
-            })
+        ClientHTTP.call('GET',
+                        AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
+                .then((data) => {
+                    this.setState({ categories : data })
+                })
+                .catch((e) => {
+                    console.log("Erreur lors du chargement des catégories >> "+ e)
+                })
     }
 
 

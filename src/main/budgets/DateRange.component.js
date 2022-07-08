@@ -58,14 +58,15 @@ export default class DateRange extends Component {
     refreshDatesFromCompte(idCompte) {
 
         ClientHTTP.call('GET',
-            ClientHTTP.getURLRequest(AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,  [ idCompte ]))
-            .then((data) => {
-                // console.log(data)
-                this.intervalleLoaded(data.datePremierBudget, data.dateDernierBudget)
-            })
-            .catch((e) => {
-                console.log("Erreur lors du chargement de l'intervalle des budgets" + e)
-            })
+                        AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,
+                [ idCompte ])
+                .then((data) => {
+                    // console.log(data)
+                    this.intervalleLoaded(data.datePremierBudget, data.dateDernierBudget)
+                })
+                .catch((e) => {
+                    console.log("Erreur lors du chargement de l'intervalle des budgets" + e)
+                })
     }
 
     // Chargement de l'intervalle de compte
