@@ -15,7 +15,7 @@ export default class DateRange extends Component {
         super(props);
 
         // Init date à maintenant
-        var now = new Date(Date.now())
+        let now = new Date(Date.now())
         this.state = {
                      datePremierBudget : null,
                      dateDernierBudget : null,
