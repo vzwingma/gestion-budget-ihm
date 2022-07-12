@@ -2,114 +2,172 @@ import React, { Component } from "react";
 import { Form, Col, Row, Button, Modal } from 'react-bootstrap'
 import * as AppConstants from "./../../Utils/AppEnums.constants"
 import * as ClientHTTP from './../../Services/ClientHTTP.service'
-/*
- * Bouton création
+
+/**
+ * Formulaire sur le Bouton création
  */
-export default class CreationActionButton extends Component {
+export default class CreateOperationActionForm extends Component {
 
-    /** Etat de la page modale **/
-    state = {
-        showModale: false,
-        categories: [],
-        ssCategories: [],
-        selectedIdCategorie: null,
-        selectedIdSsCategorie: null,
-        showIntercompte: false
-    }
-
-
+    /**
+     * Constructeur du formulaire
+     * @param props
+     */
     constructor(props) {
         super(props);
+        this.state = {
+            idCompte : props.idCompte,
+            // Data du formulaires
+            categories: [],
+            ssCategories: [],
+            comptes: [],
+            selectedIdCategorie: null,
+            selectedIdSsCategorie: null,
+            // Affichage & Validation du formulaire
+            showIntercompte: false,
+            showModale: false,
+            formValidated: false
+        }
+
         this.hideModal = this.hideModal.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleOpenForm = this.handleOpenForm.bind(this);
         this.handleSelectCategorie = this.handleSelectCategorie.bind(this);
         this.handleSelectSsCategorie = this.handleSelectSsCategorie.bind(this);
     }
 
-    // Sélection d'une catégorie
+
+
+    /**
+     * Sélection d'une catégorie
+     * @param event événement de sélection de catégorie
+     */
     handleSelectCategorie(event) {
         // Select du compte parmi la liste
         const categorieLabel =event.target.value;
         let selectedIdCategorie = null;
         Array.from(event.target.options)
-            .forEach(function (option) {
-                if(option.value === categorieLabel){
-                    selectedIdCategorie = option.id;
-                }
-            })
+            .filter(option => option.value === categorieLabel)
+            .map(option => selectedIdCategorie = option.id);
+
         // selectedIdCategorie sélectionnée
-        console.log("Changement de categorie " + categorieLabel + "[" + selectedIdCategorie + "]");
+        console.log("Changement de catégorie " + categorieLabel + "[" + selectedIdCategorie + "]");
         this.setState({selectedIdCategorie: selectedIdCategorie});
         this.setState({ ssCategories : this.state.categories
                 .filter(cat => cat.id === selectedIdCategorie)
                 .flatMap(cat => cat.listeSSCategories)});
     }
 
-    // Sélection d'une sscatégorie
+    /**
+     * Sélection d'une sous catégorie
+     * @param event évt de sélection de sous catégorie
+     */
     handleSelectSsCategorie(event) {
+        const SOUS_CAT_INTER_COMPTES = "ed3f6100-5dbd-4b68-860e-0c97ae1bbc63"
+
         // Select du compte parmi la liste
         const ssCategorieLabel = event.target.value;
         let selectedIdSsCategorie = null;
         Array.from(event.target.options)
-            .forEach(function (option) {
-                if(option.value === ssCategorieLabel){
-                    selectedIdSsCategorie = option.id;
-                }
-            })
+            .filter(option => option.value === ssCategorieLabel)
+            .map(option => selectedIdSsCategorie = option.id);
         // selectedIdCategorie sélectionnée
-        console.log("Changement de ss categorie " + ssCategorieLabel + "[" + selectedIdSsCategorie + "]")
+        console.log("Changement de sous-catégorie " + ssCategorieLabel + "[" + selectedIdSsCategorie + "]")
         this.setState({selectedIdSsCategorie: selectedIdSsCategorie});
+
+        // Si sous catégorie intercompte
+        this.setState( {showIntercompte: selectedIdSsCategorie === SOUS_CAT_INTER_COMPTES})
+        if(selectedIdSsCategorie === SOUS_CAT_INTER_COMPTES){
+            this.loadComptes()
+        }
+
     }
 
 
-    /** Chargement des catégories **/
+    /**
+     * Chargement des catégories
+     **/
     componentDidMount(){
         console.log("Chargement des catégories");
         ClientHTTP.call('GET',
                         AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
-                .then((data) => {
+                  .then((data) => {
                     this.setState({ categories : data })
-                })
-                .catch((e) => {
+                  })
+                  .catch((e) => {
                     console.log("Erreur lors du chargement des catégories >> "+ e)
-                })
+                  })
     }
 
-
+    /** Appels WS vers pour charger la liste des comptes **/
+    loadComptes() {
+        ClientHTTP
+            .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
+            .then(data => {
+                let comptesActifs = data
+                    .filter(c => c.actif)
+                    .filter(c => c.id !== this.state.idCompte)
+                this.setState({ comptes: comptesActifs });
+            })
+            .catch((e) => {
+                console.log("Erreur lors du chargement des comptes " + e)
+            })
+    }
+    /**
+     * Fermeture de la fenêtre modale
+     */
     hideModal = () => {
         this.setState({ showModale: false });
     };
 
-    // Validation de l'opération
-    handleClick(event) {
+    /**
+     * Ouverture du formulaire
+     * @param event evenement
+     */
+    handleOpenForm(event) {
         // Validation du formulaire
-        console.log("Création d'une opération " )
+        console.log("Création d'une opération sur le compte " + this.state.idCompte )
         console.log(event)
         this.setState({ showModale: true });
     }
+
+    /**
+     * Validation du formulaire
+     * @param event événement
+     */
+    handleSubmitForm(event) {
+        const form = event.currentTarget;
+        console.log("Validation du formulaire")
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        this.hideModal()
+    }
+
+
     /**
      *  RENDER
      */
-
     render() {
         return (
             <>
                 { /** Bouton de création **/ }
-                <Button variant="outline-primary" size="sm" onClick={this.handleClick}>Création</Button>
+                <Button variant="outline-primary" size="sm" onClick={this.handleOpenForm}>Création</Button>
                 { /** Fenêtre modale - Formulaire  **/ }
                 <Modal show={this.state.showModale}>
+
                     <Modal.Header>
                         <Modal.Title>Créer une nouvelle opération</Modal.Title>
                     </Modal.Header>
-
+                    <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm }>
                     <Modal.Body>
-                        <Form><Form.Group controlId="creationForm">
+                        <Form.Group controlId="creationForm">
                             <Row>
                                 <Col>
                                     <Form.Label>Catégorie</Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Select size="sm" onChange={this.handleSelectCategorie}>
+                                    <Form.Select size="sm" required onChange={this.handleSelectCategorie}>
                                         <option> </option>
                                         {
                                             this.state.categories
@@ -121,7 +179,7 @@ export default class CreationActionButton extends Component {
                                     </Form.Select>
                                 </Col>
                                 <Col>
-                                    <Form.Select size="sm" onChange={this.handleSelectSsCategorie}>
+                                    <Form.Select size="sm" required onChange={this.handleSelectSsCategorie}>
                                         <option> </option>
                                         {
                                             this.state.ssCategories
@@ -132,14 +190,11 @@ export default class CreationActionButton extends Component {
                                     </Form.Select>
                                 </Col>
                                 <Col>
-                                    {this.state.showIntercompte &&
+                                    { this.state.showIntercompte &&
                                         <Form.Select size="sm" onChange={this.handleSelectSsCategorie}>
-                                            <option> Comptes </option>
                                             {
-                                                this.state.ssCategories
-                                                    .map((ssCategorie) => (
-                                                        <option key={ssCategorie.id} id={ssCategorie.id}>{ssCategorie.libelle}</option>
-                                                    ))
+                                                this.state.comptes
+                                                    .map(compte => ( <option key={compte.id} id={compte.id}>{compte.libelle}</option> ))
                                             }
                                         </Form.Select>
                                     }
@@ -150,7 +205,7 @@ export default class CreationActionButton extends Component {
                                     <Form.Label>Description</Form.Label>
                                 </Col>
                                 <Col colSpan="2" >
-                                    <Form.Control type="text" />
+                                    <Form.Control required type="text" />
                                 </Col>
                             </Row>
                             <Row>
@@ -158,13 +213,13 @@ export default class CreationActionButton extends Component {
                                     <Form.Label>Valeur</Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Select size="sm">
-                                        <option>+</option>
-                                        <option>-</option>
+                                    <Form.Select required size="sm">
+                                        <option key="plus" id="plus">-</option>
+                                        <option key="moins" id="moins">+</option>
                                     </Form.Select>
                                 </Col>
                                 <Col>
-                                    <Form.Control size="sm" placeholder="Valeur" />
+                                    <Form.Control required size="sm"  />
                                 </Col>
                             </Row>
                             <Row>
@@ -172,7 +227,7 @@ export default class CreationActionButton extends Component {
                                     <Form.Label>Etat</Form.Label>
                                 </Col>
                                 <Col colSpan="2">
-                                    <Form.Select size="sm">
+                                    <Form.Select required size="sm">
                                         <option>Prévue</option>
                                         <option>Réalisée</option>
                                         <option>Reportée</option>
@@ -188,20 +243,15 @@ export default class CreationActionButton extends Component {
                                     <Form.Check type="checkbox"/>
                                 </Col>
                             </Row>
-                        </Form.Group></Form>
+                        </Form.Group>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.hideModal}>
-                            Fermer
-                        </Button>
-                        <Button variant="primary" onClick={this.hideModal}>
-                            Valider et continuer
-                        </Button>
-                        <Button variant="success" onClick={this.hideModal}>
-                            Valider et fermer
-                        </Button>
+                        <Button variant="secondary" type="submit" >Fermer</Button>
+                        <Button variant="primary" type="submit" >Valider et continuer</Button>
+                        <Button variant="success" type="submit" >Valider et fermer</Button>
                     </Modal.Footer>
+                    </Form>
                 </Modal>
             </>
         )

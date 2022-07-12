@@ -7,7 +7,7 @@ import OperationsList from "./operations/OperationsList.component"
 
 import ResumeSoldes from "./resume/ResumeSoldes.component"
 import ResumeCategories from "./resume/categories/ResumeCategories.component"
-import CreationActionButton from "./creation/CreationActionButton.component"
+import CreateOperationActionForm from "./creation/CreateOperationActionForm.component"
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
 
@@ -39,7 +39,7 @@ export default class Budgets extends Component {
     componentDidMount(){
         console.log("Chargement des catégories");
         ClientHTTP.call('GET', AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
-                    .then((data) => {
+                    .then(data => {
                         this.categoriesLoaded(data)
                     })
                     .catch((e) => {
@@ -66,15 +66,14 @@ export default class Budgets extends Component {
     // Notification lorsque le budget est mis à jour
     handleBudgetUpdate(budgetData){
         console.log("(Re)Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length +  " opérations")
-        console.log(budgetData);
         this.setState({ currentBudget : budgetData })
     }
 
     /** Appels WS vers pour charger la liste des opérations pour le mois et le budget **/
     // Mise à jour du contexte de budget
     shouldComponentUpdate(nextProps, nextStates){
-        var componentUpdate = false;
-        var budgetUpdate = false;
+        let componentUpdate = false;
+        let budgetUpdate = false;
         if(this.state.selectedCompte !== nextStates.selectedCompte){
             console.log("[TRIGGER] Context compte=" + nextStates.selectedCompte )
             componentUpdate = true;
@@ -107,10 +106,8 @@ export default class Budgets extends Component {
             ClientHTTP.call('GET',
                             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
                             [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
-                    .then((data) => this.handleBudgetUpdate(data))
-                    .catch((e) => {
-                        console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e)
-                    })
+                    .then(data => this.handleBudgetUpdate(data))
+                    .catch(e => console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e))
         }
     }
 
@@ -132,18 +129,14 @@ export default class Budgets extends Component {
             <Col sm={4}>
                 <Container fluid={"xl"}>
                     <Row>
-                        <Col>
-                        {
+                        <Col>{
                             this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..."
-                        }
-                        </Col>
+                        }</Col>
                     </Row>
                     <Row>
-                        <Col>
-                        {
+                        <Col>{
                             this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..."
-                        }
-                        </Col>
+                        }</Col>
                     </Row>
                 </Container>
             </Col>
@@ -153,7 +146,7 @@ export default class Budgets extends Component {
                         this.state.currentBudget != null ? <OperationsList onOperationChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
                     }</Row>
                     <Row className="alignCenter">
-                        <CreationActionButton categories={this.state.categories} />
+                        <CreateOperationActionForm idCompte={this.state.selectedCompte} />
                     </Row>
                 </Container>
             </Col>

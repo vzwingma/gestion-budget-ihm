@@ -71,7 +71,7 @@ export default class OperationsList extends Component {
                         <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateOperation) }</td>
                         <td>{ operation.categorie != null ? operation.categorie.libelle : "-" }</td>
                         <td>{ operation.ssCategorie != null ? operation.ssCategorie.libelle : "-" }</td>
-                        <td>{operation.libelle}</td>
+                        <td>{ operation.libelle }</td>
                         <td><OperationValue valueOperation={operation.valeur} /></td>
                         <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
                         <td><OperationActions key={operation.id} id={operation.id}
