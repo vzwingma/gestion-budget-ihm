@@ -32,6 +32,7 @@ export default class CreateOperationActionForm extends Component {
         this.handleOpenForm = this.handleOpenForm.bind(this);
         this.handleSelectCategorie = this.handleSelectCategorie.bind(this);
         this.handleSelectSsCategorie = this.handleSelectSsCategorie.bind(this);
+        this.handleSubmitForm = this.handleSubmitForm.bind(this);
     }
 
 
@@ -54,6 +55,10 @@ export default class CreateOperationActionForm extends Component {
         this.setState({ ssCategories : this.state.categories
                 .filter(cat => cat.id === selectedIdCategorie)
                 .flatMap(cat => cat.listeSSCategories)});
+
+        /**
+         * Set type de valeur, suivant la catégorie
+         */
     }
 
     /**
@@ -73,11 +78,14 @@ export default class CreateOperationActionForm extends Component {
         console.log("Changement de sous-catégorie " + ssCategorieLabel + "[" + selectedIdSsCategorie + "]")
         this.setState({selectedIdSsCategorie: selectedIdSsCategorie});
 
-        // Si sous catégorie intercompte
+        /**
+         * Si sous catégorie intercompte
+         */
         this.setState( {showIntercompte: selectedIdSsCategorie === SOUS_CAT_INTER_COMPTES})
         if(selectedIdSsCategorie === SOUS_CAT_INTER_COMPTES){
-            this.loadComptes()
+            this.loadComptes();
         }
+
 
     }
 
@@ -85,17 +93,17 @@ export default class CreateOperationActionForm extends Component {
     /**
      * Chargement des catégories
      **/
-    componentDidMount(){
+    componentDidMount() {
         console.log("Chargement des catégories");
         ClientHTTP.call('GET',
                         AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
-                  .then((data) => {
+                  .then(data => {
                     this.setState({ categories : data })
                   })
-                  .catch((e) => {
+                  .catch(e => {
                     console.log("Erreur lors du chargement des catégories >> "+ e)
                   })
-    }
+    };
 
     /** Appels WS vers pour charger la liste des comptes **/
     loadComptes() {
@@ -107,14 +115,14 @@ export default class CreateOperationActionForm extends Component {
                     .filter(c => c.id !== this.state.idCompte)
                 this.setState({ comptes: comptesActifs });
             })
-            .catch((e) => {
+            .catch(e => {
                 console.log("Erreur lors du chargement des comptes " + e)
             })
     }
     /**
      * Fermeture de la fenêtre modale
      */
-    hideModal = () => {
+    hideModal() {
         this.setState({ showModale: false });
     };
 
@@ -125,7 +133,6 @@ export default class CreateOperationActionForm extends Component {
     handleOpenForm(event) {
         // Validation du formulaire
         console.log("Création d'une opération sur le compte " + this.state.idCompte )
-        console.log(event)
         this.setState({ showModale: true });
     }
 
@@ -134,14 +141,14 @@ export default class CreateOperationActionForm extends Component {
      * @param event événement
      */
     handleSubmitForm(event) {
+        console.log(event)
         const form = event.currentTarget;
         console.log("Validation du formulaire")
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
         }
-
-        this.hideModal()
+        this.hideModal();
     }
 
 
@@ -191,7 +198,7 @@ export default class CreateOperationActionForm extends Component {
                                 </Col>
                                 <Col>
                                     { this.state.showIntercompte &&
-                                        <Form.Select size="sm" onChange={this.handleSelectSsCategorie}>
+                                        <Form.Select size="sm">
                                             {
                                                 this.state.comptes
                                                     .map(compte => ( <option key={compte.id} id={compte.id}>{compte.libelle}</option> ))
@@ -247,7 +254,7 @@ export default class CreateOperationActionForm extends Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" type="submit" >Fermer</Button>
+                        <Button variant="secondary" onClick={ this.hideModal } >Fermer</Button>
                         <Button variant="primary" type="submit" >Valider et continuer</Button>
                         <Button variant="success" type="submit" >Valider et fermer</Button>
                     </Modal.Footer>
