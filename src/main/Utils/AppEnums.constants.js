@@ -36,4 +36,11 @@ export const SERVICES_URL = {
     BUDGET_OPERATION_DERNIERE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/derniereOperation";
     BUDGET_OPERATION_INTERCOMPTE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/versCompte/{idCompte}";
 */
+
+}
+
+export const BUSINESS_GUID = {
+    CAT_VIREMENT : "ea6dcc12-3349-4047-a1e5-cd1d7254f16e",
+    CAT_PRELEVEMENT_MENSUEL : "504beea7-ed52-438a-aced-15e9603b82ab",
+    SOUS_CAT_INTER_COMPTES : "ed3f6100-5dbd-4b68-860e-0c97ae1bbc63"
 }
