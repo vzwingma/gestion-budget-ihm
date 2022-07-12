@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Button, Col, Form, Modal, Row} from 'react-bootstrap'
 import * as AppConstants from "./../../Utils/AppEnums.constants"
 import * as ClientHTTP from './../../Services/ClientHTTP.service'
-
+import * as Controller from './CreateOperationActionForm.controller'
 /**
  * Formulaire sur le Bouton création
  */
@@ -26,7 +26,7 @@ export default class CreateOperationActionForm extends Component {
             formIdCategorie: null,
             formIdSsCategorie: null,
             formDescription: "",
-            formValeur: null,
+            formValeur: "",
             formEtat: "Prévue",
             formOperationType: "-",
             formOperationPeriodique: "0",
@@ -36,156 +36,21 @@ export default class CreateOperationActionForm extends Component {
             formValidated: false
         }
 
-        this.hideModal = this.hideModal.bind(this);
-        this.handleOpenForm = this.handleOpenForm.bind(this);
+        this.hideModal = Controller.hideModal.bind(this);
+        this.handleOpenForm = Controller.handleOpenForm.bind(this);
 
-        this.handleSelectCategorie = this.handleSelectCategorie.bind(this);
-        this.handleSelectSsCategorie = this.handleSelectSsCategorie.bind(this);
-        this.handleSelectDescription = this.handleSelectDescription.bind(this);
-        this.handleSelectType = this.handleSelectType.bind(this);
-        this.handleSelectValeur = this.handleSelectValeur.bind(this);
-        this.handleSelectEtat = this.handleSelectEtat.bind(this);
-        this.handleSelectPeriode = this.handleSelectPeriode.bind(this);
+        this.handleSelectCategorie = Controller.handleSelectCategorie.bind(this);
+        this.handleSelectSsCategorie = Controller.handleSelectSsCategorie.bind(this);
+        this.handleSelectDescription = Controller.handleSelectDescription.bind(this);
+        this.handleSelectType = Controller.handleSelectType.bind(this);
+        this.handleSelectValeur = Controller.handleSelectValeur.bind(this);
+        this.handleSelectEtat = Controller.handleSelectEtat.bind(this);
+        this.handleSelectPeriode = Controller.handleSelectPeriode.bind(this);
 
-        this.handleSubmitForm = this.handleSubmitForm.bind(this);
-        this.closeForm = this.closeForm.bind(this);
+        this.handleSubmitForm = Controller.handleSubmitForm.bind(this);
+        this.closeForm = Controller.closeForm.bind(this);
     }
 
-    /**
-     * Ouverture du formulaire
-     * @param event evenement
-     */
-    handleOpenForm(event) {
-        // Validation du formulaire
-        console.log("Création d'une opération sur le compte " + this.state.idCompte )
-        this.setState({ showModale: true });
-    }
-
-    /**
-     * Sélection d'une catégorie
-     * @param event événement de sélection de catégorie
-     */
-    handleSelectCategorie(event) {
-        // Select du compte parmi la liste
-        const categorieLabel =event.target.value;
-        let selectedIdCategorie = null;
-        Array.from(event.target.options)
-            .filter(option => option.value === categorieLabel)
-            .map(option => selectedIdCategorie = option.id);
-
-        // selectedIdCategorie sélectionnée
-        console.log("Changement de catégorie " + categorieLabel + "[" + selectedIdCategorie + "]");
-        this.setState({formIdCategorie: selectedIdCategorie,
-                        ssCategories : this.state.categories
-                                                .filter(cat => cat.id === selectedIdCategorie)
-                                                .flatMap(cat => cat.listeSSCategories)});
-
-        /**
-         * Set type de valeur, suivant la catégorie
-         */
-        // Prélèvement mensuel
-        let operationMensuelle = (selectedIdCategorie === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? "1" : "0";
-        this.setState( { formOperationPeriodique : operationMensuelle })
-        // Virement
-        let operationType = (selectedIdCategorie === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "+" : "-";
-        this.setState( { formOperationType : operationType } );
-    }
-
-    /**
-     * Sélection d'une sous catégorie
-     * @param event évt de sélection de sous catégorie
-     */
-    handleSelectSsCategorie(event) {
-
-        // Select du compte parmi la liste
-        const ssCategorieLabel = event.target.value;
-        let selectedIdSsCategorie = null;
-        Array.from(event.target.options)
-            .filter(option => option.value === ssCategorieLabel)
-            .map(option => selectedIdSsCategorie = option.id);
-        // selectedIdCategorie sélectionnée
-        console.log("Changement de sous-catégorie " + ssCategorieLabel + "[" + selectedIdSsCategorie + "]")
-        this.setState({formIdSsCategorie: selectedIdSsCategorie});
-
-        /**
-         * Si sous catégorie intercompte
-         */
-        this.setState( {showIntercompte: selectedIdSsCategorie === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES})
-        if(selectedIdSsCategorie === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
-            this.loadComptes();
-        }
-
-
-    }
-
-    // Saisie description
-    handleSelectDescription(event) {
-        this.setState({formDescription : event.target.value})
-    }
-    // Saisie type
-    handleSelectType(event) {
-        this.setState({formOperationType : event.target.value})
-    }
-    handleSelectValeur(event) {
-        this.setState({formValeur : event.target.value})
-    }
-    // Saisie Etat
-    handleSelectEtat(event){
-        this.setState({formEtat : event.target.value})
-    }
-    // Saisie Période
-    handleSelectPeriode(event){
-        this.setState({formOperationPeriodique : event.target.value})
-    }
-
-
-
-    /**
-     * Validation du formulaire
-     * @param event événement
-     */
-    handleSubmitForm(event) {
-        const form = event.currentTarget;
-        console.log("Validation du formulaire")
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        else{
-            console.log("Validation du formulaire \n" +
-            "formIdCategorie: " + this.state.formIdCategorie  + "\n" +
-            "formIdSsCategorie: " + this.state.formIdSsCategorie  + "\n" +
-            "formDescription: " + this.state.formDescription  + "\n" +
-            "formValeur: " + this.state.formValeur  + "\n" +
-            "formEtat: " + this.state.formEtat  + "\n" +
-            "formOperationType: " + this.state.formOperationType  + "\n" +
-            "formOperationPeriodique: " + this.state.formOperationPeriodique);
-        }
-        // Post Creation
-        this.closeForm(event.nativeEvent.submitter.id);
-
-    }
-
-    /**
-     * Fermeture du formulaire
-     * @param buttonId (id du bouton)
-     */
-    closeForm(buttonId){
-        // Clear Form
-        this.setState({ // RAZ Formulaire
-            ssCategories: [],
-            formIdCategorie: "null",
-            formIdSsCategorie: null,
-            formDescription: "",
-            formValeur: "",
-            formEtat: "Prévue",
-            formOperationType: "-",
-            formOperationPeriodique: false })
-
-        if(buttonId === "btnValidClose")  {
-            this.hideModal();
-        }
-    }
 
 
     /**
@@ -218,12 +83,6 @@ export default class CreateOperationActionForm extends Component {
                 console.log("Erreur lors du chargement des comptes " + e)
             })
     }
-    /**
-     * Fermeture de la fenêtre modale
-     */
-    hideModal() {
-        this.setState({ showModale: false });
-    };
 
 
 
