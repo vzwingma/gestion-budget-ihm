@@ -146,7 +146,7 @@ export default class Budgets extends Component {
                         this.state.currentBudget != null ? <OperationsList onOperationChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
                     }</Row>
                     <Row className="alignCenter">
-                        <CreateOperationActionForm idCompte={this.state.selectedCompte} budget={this.state.currentBudget}/>
+                        <CreateOperationActionForm idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
                     </Row>
                 </Container>
             </Col>
