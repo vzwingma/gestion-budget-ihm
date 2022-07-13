@@ -1,7 +1,6 @@
-import React, {Component} from "react";
+import React, {Component} from 'react';
 import {Button, Col, Form, Modal, Row} from 'react-bootstrap'
-import * as AppConstants from "./../../Utils/AppEnums.constants"
-import * as ClientHTTP from './../../Services/ClientHTTP.service'
+import {loadCategories, loadComptes, saveOperation} from './CreateOperationActionForm.extservices'
 import * as Controller from './CreateOperationActionForm.controller'
 /**
  * Formulaire sur le Bouton création
@@ -9,32 +8,36 @@ import * as Controller from './CreateOperationActionForm.controller'
 export default class CreateOperationActionForm extends Component {
 
 
+    state = {
+        idCompte : null,
+        idBudget : null,
+        categoriesRefs: [],
+        // Data d'affichages du formulaire
+        categories: [],
+        ssCategories: [],
+        comptes: [],
+        // Formulaire
+        formIdCategorie         : null,
+        formLibelleCategorie    : null,
+        formIdSsCategorie       : null,
+        formLibelleSsCategorie  : null,
+        formIdCompteCible       : null,
+        formDescription         : "",
+        formValeur              : "",
+        formEtat                : "Prévue",
+        formOperationType       : "-",
+        formOperationPeriodique : "0",
+        // Affichage & Validation du formulaire
+        showIntercompte: false,
+        showModale: false,
+        formValidated: false
+    }
     /**
      * Constructeur du formulaire
      * @param props
      */
     constructor(props) {
         super(props);
-        this.state = {
-            idCompte : props.idCompte,
-            categoriesRefs: [],
-            // Data d'affichages du formulaire
-            categories: [],
-            ssCategories: [],
-            comptes: [],
-            // Formulaire
-            formIdCategorie: null,
-            formIdSsCategorie: null,
-            formDescription: "",
-            formValeur: "",
-            formEtat: "Prévue",
-            formOperationType: "-",
-            formOperationPeriodique: "0",
-            // Affichage & Validation du formulaire
-            showIntercompte: false,
-            showModale: false,
-            formValidated: false
-        }
 
         this.hideModal = Controller.hideModal.bind(this);
         this.handleOpenForm = Controller.handleOpenForm.bind(this);
@@ -42,13 +45,20 @@ export default class CreateOperationActionForm extends Component {
         this.handleSelectCategorie = Controller.handleSelectCategorie.bind(this);
         this.handleSelectSsCategorie = Controller.handleSelectSsCategorie.bind(this);
         this.handleSelectDescription = Controller.handleSelectDescription.bind(this);
+        this.handleSelectCompteCible = Controller.handleSelectCompteCible.bind(this);
         this.handleSelectType = Controller.handleSelectType.bind(this);
         this.handleSelectValeur = Controller.handleSelectValeur.bind(this);
+        this.handleCompleteValeur = Controller.handleCompleteValeur.bind(this);
         this.handleSelectEtat = Controller.handleSelectEtat.bind(this);
         this.handleSelectPeriode = Controller.handleSelectPeriode.bind(this);
 
         this.handleSubmitForm = Controller.handleSubmitForm.bind(this);
         this.closeForm = Controller.closeForm.bind(this);
+        this.createOperation = Controller.createOperation.bind(this);
+
+        this.loadCategories = loadCategories.bind(this);
+        this.loadComptes = loadComptes.bind(this);
+        this.saveOperation = saveOperation.bind(this);
     }
 
 
@@ -57,33 +67,20 @@ export default class CreateOperationActionForm extends Component {
      * Chargement des catégories
      **/
     componentDidMount() {
-        console.log("Chargement des catégories");
-        ClientHTTP.call('GET',
-                        AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
-                  .then(data => {
-                    this.setState({ categoriesRefs: data, categories : data })
+        this.loadCategories();
 
-                  })
-                  .catch(e => {
-                    console.log("Erreur lors du chargement des catégories >> "+ e)
-                  })
     };
 
-    /** Appels WS vers pour charger la liste des comptes **/
-    loadComptes() {
-        ClientHTTP
-            .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
-            .then(data => {
-                let comptesActifs = data
-                    .filter(c => c.actif)
-                    .filter(c => c.id !== this.state.idCompte)
-                this.setState({ comptes: comptesActifs });
-            })
-            .catch(e => {
-                console.log("Erreur lors du chargement des comptes " + e)
-            })
+    // Mise à jour du contexte de budget
+    shouldComponentUpdate(nextProps, nextStates){
+        if( nextProps.budget != null && nextProps.budget.id !== nextStates.idBudget ) {
+            this.setState({
+                idBudget: nextProps.budget.id,
+                idCompte: nextProps.idCompte
+            });
+        }
+        return true;
     }
-
 
 
     /**
@@ -98,7 +95,7 @@ export default class CreateOperationActionForm extends Component {
                 <Modal show={this.state.showModale}>
 
                     <Modal.Header>
-                        <Modal.Title>Créer une nouvelle opération</Modal.Title>
+                        <Modal.Title>Nouvelle opération</Modal.Title>
                     </Modal.Header>
                     <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm }>
                     <Modal.Body>
@@ -132,10 +129,15 @@ export default class CreateOperationActionForm extends Component {
                                 </Col>
                                 <Col>
                                     { this.state.showIntercompte &&
-                                        <Form.Select size="sm"> {
+                                        <Form.Select size="sm" required onChange={ this.handleSelectCompteCible }>
+                                            <option> </option>
+                                            {
                                                 this.state.comptes
-                                                    .map(compte => ( <option key={compte.id} id={compte.id}>{compte.libelle}</option> ))
-                                        }</Form.Select>
+                                                    .map(compte => (
+                                                        <option key={compte.id} id={compte.id}>{compte.libelle}</option>
+                                                    ))
+                                            }
+                                        </Form.Select>
                                     }
                                 </Col>
                             </Row>
@@ -158,7 +160,12 @@ export default class CreateOperationActionForm extends Component {
                                     </Form.Select>
                                 </Col>
                                 <Col>
-                                    <Form.Control required size="sm" value={this.state.formValeur} onChange={this.handleSelectValeur} />
+                                    <Form.Control required size="sm"
+                                                  type="text"
+                                                  pattern="[0-9]*\.[0-9]{2}"
+                                                  value={this.state.formValeur}
+                                                  onBlur={this.handleCompleteValeur}
+                                                  onChange={this.handleSelectValeur} />
                                 </Col>
                             </Row>
                             <Row>

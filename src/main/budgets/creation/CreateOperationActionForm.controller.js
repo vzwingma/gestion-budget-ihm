@@ -9,8 +9,7 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
      * @param event evenement
      */
     export function handleOpenForm(event) {
-        // Validation du formulaire
-        console.log("Création d'une opération sur le compte " + this.state.idCompte )
+        // Ouverture du formulaire
         this.setState({ showModale: true });
     }
 
@@ -28,7 +27,8 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
 
         // selectedIdCategorie sélectionnée
         console.log("Changement de catégorie " + categorieLabel + "[" + selectedIdCategorie + "]");
-        this.setState({formIdCategorie: selectedIdCategorie,
+        this.setState({ formIdCategorie: selectedIdCategorie,
+                        formLibelleCategorie: categorieLabel,
                         ssCategories : this.state.categories
                                                 .filter(cat => cat.id === selectedIdCategorie)
                                                 .flatMap(cat => cat.listeSSCategories)});
@@ -58,7 +58,8 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
             .map(option => selectedIdSsCategorie = option.id);
         // selectedIdCategorie sélectionnée
         console.log("Changement de sous-catégorie " + ssCategorieLabel + "[" + selectedIdSsCategorie + "]")
-        this.setState({formIdSsCategorie: selectedIdSsCategorie});
+        this.setState({ formIdSsCategorie: selectedIdSsCategorie,
+                        formLibelleSsCategorie: ssCategorieLabel});
 
         /**
          * Si sous catégorie intercompte
@@ -66,6 +67,7 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
         this.setState( {showIntercompte: selectedIdSsCategorie === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES})
         if(selectedIdSsCategorie === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
             this.loadComptes();
+            this.setState( { formOperationType : "-" } );
         }
 
 
@@ -79,8 +81,21 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
     export function handleSelectType(event) {
         this.setState({formOperationType : event.target.value})
     }
+    // Saisie du compte Intercompte
+    export function handleSelectCompteCible(event) {
+        this.setState({formIdCompteCible : event.target.value})
+    }
+    // Saisie valeur de l'opération
     export function handleSelectValeur(event) {
         this.setState({formValeur : event.target.value})
+    }
+
+    export function handleCompleteValeur(event) {
+        let value = event.target.value.replaceAll(",", ".")
+        if(value.indexOf(".") === -1) {
+            value = value += ".00"
+        }
+        this.setState({formValeur : value})
     }
     // Saisie Etat
     export function handleSelectEtat(event){
@@ -105,18 +120,46 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
             event.stopPropagation();
         }
         else{
-            console.log("Validation du formulaire \n" +
+            this.createOperation();
+        }
+        // Post Creation
+        this.closeForm(event.nativeEvent.submitter.id);
+
+    }
+
+    export function createOperation(){
+        /*
+        console.log("Création d'une opération\n" +
             "formIdCategorie: " + this.state.formIdCategorie  + "\n" +
+            "formLibelleCategorie: " + this.state.formLibelleCategorie  + "\n" +
             "formIdSsCategorie: " + this.state.formIdSsCategorie  + "\n" +
+            "formLibelleSsCategorie: " + this.state.formLibelleSsCategorie  + "\n" +
+            "formIdCompteCible: " + this.state.formIdCompteCible  + "\n" +
             "formDescription: " + this.state.formDescription  + "\n" +
             "formValeur: " + this.state.formValeur  + "\n" +
             "formEtat: " + this.state.formEtat  + "\n" +
             "formOperationType: " + this.state.formOperationType  + "\n" +
             "formOperationPeriodique: " + this.state.formOperationPeriodique);
+    */
+        const operation = {
+            "id": "123",
+            "libelle": this.state.formDescription,
+            "categorie": {
+                "id": this.state.formIdCategorie,
+                "libelle": this.state.formLibelleCategorie
+            },
+            "ssCategorie": {
+                "id": this.state.formIdSsCategorie,
+                "libelle": this.state.formLibelleSsCategorie
+            },
+            "typeOperation": this.state.formOperationType === "-" ? "DEPENSE" : "CREDIT",
+            "etat": this.state.formEtat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase(),
+            "valeur": (this.state.formOperationType === "-" ? -1 : 1) * this.state.formValeur,
+            "periodique": this.state.formOperationPeriodique !== 0,
+            "tagDerniereOperation": false
         }
-        // Post Creation
-        this.closeForm(event.nativeEvent.submitter.id);
-
+        // Sauvegarde de l'opération
+        this.saveOperation(this.state.idBudget  , operation);
     }
 
     /**
@@ -127,13 +170,18 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
         // Clear Form
         this.setState({ // RAZ Formulaire
             ssCategories: [],
-            formIdCategorie: "null",
+            formIdCategorie: null,
+            formLibelleCategorie: "",
             formIdSsCategorie: null,
+            formLibelleSsCategorie: "",
+            formIdCompteCible: null,
             formDescription: "",
             formValeur: "",
             formEtat: "Prévue",
             formOperationType: "-",
-            formOperationPeriodique: false })
+            formOperationPeriodique: false,
+            showIntercompte: false
+        })
 
         if(buttonId === "btnValidClose")  {
             this.hideModal();

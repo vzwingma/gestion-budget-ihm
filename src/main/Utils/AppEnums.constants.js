@@ -19,6 +19,7 @@ export const SERVICES_URL = {
         GET : "/budgets/v1/query?idCompte={{}}&annee={{}}&mois={{}}"
     },
     OPERATIONS : {
+        CREATE : "/budgets/v1/{{}}/operations",
         UPDATE : "/budgets/v1/{{}}/operations/{{}}"
     },
     PARAMETRES : {
