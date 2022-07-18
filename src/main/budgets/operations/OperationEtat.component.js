@@ -17,19 +17,19 @@ export default class OperationEtat extends Component {
                 }
             `}</style>
             { this.props.operation.etat === "REALISEE" &&
-                <Badge variant="success">Réalisée</Badge>
+                <Badge bg="success">Réalisée</Badge>
             }
             { this.props.operation.etat === "PREVUE" &&
-                <Badge variant="warning">Prévue</Badge>
+                <Badge bg="warning">Prévue</Badge>
             }
             { this.props.operation.etat === "ANNULEE" &&
-                <Badge variant="Secondary">Annulée</Badge>
+                <Badge bg="Secondary">Annulée</Badge>
             }
             { this.props.operation.etat === "SUPPRIMEE" &&
-                <Badge variant="danger">Supprimée</Badge>
+                <Badge bg="danger">Supprimée</Badge>
             }
             { this.props.operation.etat === "REPORTEE" &&
-                <Badge variant="info">Reportée</Badge>
+                <Badge bg="info">Reportée</Badge>
             }
         </div>
       )
