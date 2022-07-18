@@ -3,26 +3,19 @@ import { Pagination } from 'react-bootstrap'
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
 
-/*
+/**
  * Date Range Select
  */
 export default class DateRange extends Component {
 
-    state = {
-        datePremierBudget : null,
-        dateDernierBudget : null,
-        datePreviousBudget : null,
-        dateCurrentBudget : null,
-        dateNextBudget : null,
-        idCompte : null
-    }
-
-    // Constructeur
+    /**
+     * Constructeur
+     */
     constructor(props) {
         super(props);
 
         // Init date à maintenant
-        var now = new Date(Date.now())
+        let now = new Date(Date.now())
         this.state = {
                      datePremierBudget : null,
                      dateDernierBudget : null,
@@ -39,7 +32,7 @@ export default class DateRange extends Component {
     }
 
     // Mise à jour du contexte de budget
-    shouldComponentUpdate(nextProps, nextStates){
+    shouldComponentUpdate(nextProps, nextStates, nextContext){
         // Update ssi c'est le compte qui change
         if(nextProps.idCompte !== nextStates.idCompte){
             console.log("[TRIGGER] Context :: Compte=" + nextProps.idCompte )
@@ -72,8 +65,8 @@ export default class DateRange extends Component {
     // Chargement de l'intervalle de compte
     intervalleLoaded(jourDepuisInitPremierBudget, jourDepuisInitDernierBudget) {
 
-        var datePremierBudget = new Date(jourDepuisInitPremierBudget * 24 * 60 * 60 * 1000);
-        var dateDernierBudget = new Date(jourDepuisInitDernierBudget * 24 * 60 * 60 * 1000);
+        let datePremierBudget = new Date(jourDepuisInitPremierBudget * 24 * 60 * 60 * 1000);
+        let dateDernierBudget = new Date(jourDepuisInitDernierBudget * 24 * 60 * 60 * 1000);
         console.log("Budgets disponibles entre " + datePremierBudget.toLocaleString() + " et " + dateDernierBudget.toLocaleString());
 
         this.setState({ datePremierBudget: datePremierBudget, dateDernierBudget : dateDernierBudget });
@@ -82,10 +75,10 @@ export default class DateRange extends Component {
 
     // Sélection d'un mois à partir du composant
     handleSelect(event) {
-        var newDatePreviousBudget;
-        var newDateCurrentBudget;
-        var newDateNextBudget;
-        var dateChanged = false;
+        let newDatePreviousBudget;
+        let newDateCurrentBudget;
+        let newDateNextBudget;
+        let dateChanged = false;
         if(event.target.id === "previous"){
             newDateCurrentBudget = new Date(this.state.datePreviousBudget);
             newDatePreviousBudget = new Date(this.state.datePreviousBudget.setMonth(this.state.datePreviousBudget.getMonth() - 1));

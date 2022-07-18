@@ -18,9 +18,9 @@ tbody.tbodyOperation > tr > td:nth-child(7) { width:100px }
 /* button Créer */
 div.alignCenter {
     position:absolute;
-    bottom: 0;
+    bottom: 10px;
     display: flex;
-    width: 100%;
+    width: 62%;
 }
 
 .alignCenter > button {
