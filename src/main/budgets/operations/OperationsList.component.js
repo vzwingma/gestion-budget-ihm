@@ -17,13 +17,13 @@ export default class OperationsList extends Component {
     }
 
     constructor(props){
-        super(props)
-        this.handleOperationsListUpdate = this.handleOperationsListUpdate.bind(this)
+        super(props);
+        this.handleOperationsListUpdate = this.handleOperationsListUpdate.bind(this);
     }
 
     // Update du budget, suite à une action sur une opération
     handleOperationsListUpdate(budgetUpdated){
-        console.log("[TRIGGER] Refresh budget [" + budgetUpdated.id+ "]")
+        console.log("[TRIGGER] Refresh budget [" + budgetUpdated.id+ "]");
         this.props.onOperationChange(budgetUpdated);
     }
 
