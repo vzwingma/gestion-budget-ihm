@@ -127,20 +127,11 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
 
     }
 
+    /**
+     * Création d'une nouvelle opération
+     */
     export function createOperation(){
-        /*
-        console.log("Création d'une opération\n" +
-            "formIdCategorie: " + this.state.formIdCategorie  + "\n" +
-            "formLibelleCategorie: " + this.state.formLibelleCategorie  + "\n" +
-            "formIdSsCategorie: " + this.state.formIdSsCategorie  + "\n" +
-            "formLibelleSsCategorie: " + this.state.formLibelleSsCategorie  + "\n" +
-            "formIdCompteCible: " + this.state.formIdCompteCible  + "\n" +
-            "formDescription: " + this.state.formDescription  + "\n" +
-            "formValeur: " + this.state.formValeur  + "\n" +
-            "formEtat: " + this.state.formEtat  + "\n" +
-            "formOperationType: " + this.state.formOperationType  + "\n" +
-            "formOperationPeriodique: " + this.state.formOperationPeriodique);
-    */
+
         const operation = {
             "id": "123",
             "libelle": this.state.formDescription,
@@ -169,6 +160,7 @@ import * as AppConstants from "./../../Utils/AppEnums.constants"
     export function closeForm(buttonId){
         // Clear Form
         this.setState({ // RAZ Formulaire
+            categories: this.state.categoriesRefs,
             ssCategories: [],
             formIdCategorie: null,
             formLibelleCategorie: "",

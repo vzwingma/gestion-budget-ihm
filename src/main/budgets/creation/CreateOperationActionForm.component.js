@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Col, Form, Modal, Row} from 'react-bootstrap'
-import {loadCategories, loadComptes, saveOperation} from './CreateOperationActionForm.extservices'
+import * as ExtServices from './CreateOperationActionForm.extservices'
 import * as Controller from './CreateOperationActionForm.controller'
 /**
  * Formulaire sur le Bouton création
@@ -56,9 +56,9 @@ export default class CreateOperationActionForm extends Component {
         this.closeForm = Controller.closeForm.bind(this);
         this.createOperation = Controller.createOperation.bind(this);
 
-        this.loadCategories = loadCategories.bind(this);
-        this.loadComptes = loadComptes.bind(this);
-        this.saveOperation = saveOperation.bind(this);
+        this.loadCategories = ExtServices.loadCategories.bind(this);
+        this.loadComptes = ExtServices.loadComptes.bind(this);
+        this.saveOperation = ExtServices.saveOperation.bind(this);
     }
 
 
@@ -92,20 +92,17 @@ export default class CreateOperationActionForm extends Component {
                 { /** Bouton de création **/ }
                 <Button variant="outline-primary" size="sm" onClick={this.handleOpenForm}>Création</Button>
                 { /** Fenêtre modale - Formulaire  **/ }
-                <Modal show={this.state.showModale}>
+                <Modal show={this.state.showModale} className="modal-lg">
 
                     <Modal.Header>
                         <Modal.Title>Nouvelle opération</Modal.Title>
                     </Modal.Header>
-                    <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm }>
+                    <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm } >
                     <Modal.Body>
-                        <Form.Group controlId="creationForm">
-                            <Row>
-                                <Col>
-                                    <Form.Label>Catégorie</Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Select size="sm" required onChange={this.handleSelectCategorie}>
+                        <Form.Group as={Row} className="mb-3" controlId="categoriesForm">
+                            <Form.Label column sm={4}>Catégorie</Form.Label>
+                            <Col>
+                                <Form.Select size="sm" required onChange={this.handleSelectCategorie}>
                                         <option> </option>
                                         {
                                             this.state.categories
@@ -115,8 +112,6 @@ export default class CreateOperationActionForm extends Component {
                                                 ))
                                         }
                                     </Form.Select>
-                                </Col>
-                                <Col>
                                     <Form.Select size="sm" required onChange={this.handleSelectSsCategorie}>
                                         <option> </option>
                                         {
@@ -126,8 +121,6 @@ export default class CreateOperationActionForm extends Component {
                                                 ))
                                         }
                                     </Form.Select>
-                                </Col>
-                                <Col>
                                     { this.state.showIntercompte &&
                                         <Form.Select size="sm" required onChange={ this.handleSelectCompteCible }>
                                             <option> </option>
@@ -139,62 +132,55 @@ export default class CreateOperationActionForm extends Component {
                                             }
                                         </Form.Select>
                                     }
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Label>Description</Form.Label>
-                                </Col>
-                                <Col colSpan="2" >
-                                    <Form.Control required type="text" value={this.state.formDescription} onChange={this.handleSelectDescription} />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Label>Valeur</Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Select disabled value={this.state.formOperationType} onChange={this.handleSelectType} required size="sm">
-                                        <option>-</option>
-                                        <option>+</option>
-                                    </Form.Select>
-                                </Col>
-                                <Col>
-                                    <Form.Control required size="sm"
-                                                  type="text"
-                                                  pattern="[0-9]*\.[0-9]{2}"
-                                                  value={this.state.formValeur}
-                                                  onBlur={this.handleCompleteValeur}
-                                                  onChange={this.handleSelectValeur} />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Label>Etat</Form.Label>
-                                </Col>
-                                <Col colSpan="2">
-                                    <Form.Select required size="sm" value={this.state.formEtat} onChange={this.handleSelectEtat}>
-                                        <option>Prévue</option>
-                                        <option>Réalisée</option>
-                                        <option>Reportée</option>
-                                        <option>Annulée</option>
-                                    </Form.Select>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Label>Dépense mensuelle</Form.Label>
-                                </Col>
-                                <Col colSpan="2">
-                                    <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3" controlId="descriptionForm">
+                            <Form.Label column sm={4}>Description</Form.Label>
+                            <Col>
+                            <Form.Control required type="text" value={this.state.formDescription} onChange={this.handleSelectDescription} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="valeurForm">
+                            <Form.Label column sm={4}>Valeur</Form.Label>
+                            <Col sm={2}>
+                                <Form.Select disabled value={this.state.formOperationType} onChange={this.handleSelectType} required size="sm">
+                                    <option>-</option>
+                                    <option>+</option>
+                                </Form.Select>
+                            </Col>
+                            <Col sm={6}>
+                                <Form.Control required size="sm"
+                                              type="text"
+                                              pattern="[0-9]*\.[0-9]{2}"
+                                              value={this.state.formValeur}
+                                              onBlur={this.handleCompleteValeur}
+                                              onChange={this.handleSelectValeur} />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="mb-3" controlId="etatForm">
+                            <Form.Label column sm={4}>Etat</Form.Label>
+                            <Col>
+                                <Form.Select required size="sm" value={this.state.formEtat} onChange={this.handleSelectEtat}>
+                                    <option>Prévue</option>
+                                    <option>Réalisée</option>
+                                    <option>Reportée</option>
+                                    <option>Annulée</option>
+                                </Form.Select>
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={4}>Dépense périodique</Form.Label>
+                            <Col>
+                                <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
                                         <option value="0">Ponctuelle</option>
                                         <option value="1">Mensuelle</option>
                                         <option value="3" disabled>Trimestrielle</option>
                                         <option value="6" disabled>Semestrielle</option>
                                         <option value="12" disabled>Annuelle</option>
-                                    </Form.Select>
-                                </Col>
-                            </Row>
+                                </Form.Select>
+                            </Col>
                         </Form.Group>
                     </Modal.Body>
 
