@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {Button, ButtonGroup, Col, Modal, Row} from 'react-bootstrap';
 import OperationButtonAction from "./OperationButtonAction.component";
-import * as Controller from './OperationActions.controler';
+import * as Controller from './OperationActions.controller';
 
 export default class OperationActions extends Component {
 

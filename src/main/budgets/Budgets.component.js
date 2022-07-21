@@ -8,9 +8,8 @@ import OperationsList from "./operations/OperationsList.component"
 import ResumeSoldes from "./resume/ResumeSoldes.component"
 import ResumeCategories from "./resume/categories/ResumeCategories.component"
 import CreateOperationActionForm from "./creation/CreateOperationActionForm.component"
-import * as AppConstants from "../Utils/AppEnums.constants"
-import * as ClientHTTP from './../Services/ClientHTTP.service'
-
+import * as Controller from './Budgets.controller'
+import * as Services from './Budgets.extservices'
 /*
  * Page principale des budgets
  */
@@ -28,46 +27,20 @@ export default class Budgets extends Component {
     /** Constructeur **/
     constructor(props){
         super(props);
-        this.handleCompteChange = this.handleCompteChange.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleBudgetUpdate = this.handleBudgetUpdate.bind(this);
-        this.refreshBudget = this.refreshBudget.bind(this);
+        this.handleCompteChange = Controller.handleCompteChange.bind(this);
+        this.handleDateChange = Controller.handleDateChange.bind(this);
+        this.handleBudgetUpdate = Controller.handleBudgetUpdate.bind(this);
+        this.refreshBudget = Services.reloadBudget.bind(this);
+        this.loadCategories = Services.loadCategories.bind(this);
+        this.categoriesLoaded = Services.categoriesLoaded.bind(this);
     }
 
 
     /** Chargement des catégories **/
     componentDidMount(){
-        console.log("Chargement des catégories");
-        ClientHTTP.call('GET', AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
-                    .then(data => {
-                        this.categoriesLoaded(data)
-                    })
-                    .catch((e) => {
-                        console.log("Erreur lors du chargement des catégories >> "+ e)
-                    })
+        this.loadCategories();
     }
 
-    /** Chargement des catégories **/
-    categoriesLoaded(data) {
-        console.log("Chargement de " + data.length + " catégories");
-        this.setState({ categories : data })
-    }
-
-    /** Notification lorsque le compte change **/
-    handleCompteChange(selectedIdCompteFromComponent){
-     //   console.log("[SELECT] Compte=" + selectedIdCompteFromComponent)
-        this.setState({ selectedCompte: selectedIdCompteFromComponent })
-    }
-    // Notification lorsque la date change
-    handleDateChange(selectedDateFromComponent){
-     //   console.log("[SELECT] Date=" + selectedDateFromComponent)
-        this.setState({ selectedDate : selectedDateFromComponent})
-    }
-    // Notification lorsque le budget est mis à jour
-    handleBudgetUpdate(budgetData){
-        console.log("(Re)Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length +  " opérations")
-        this.setState({ currentBudget : budgetData })
-    }
 
     /** Appels WS vers pour charger la liste des opérations pour le mois et le budget **/
     // Mise à jour du contexte de budget
@@ -96,19 +69,6 @@ export default class Budgets extends Component {
             this.refreshBudget(nextStates.selectedCompte, nextStates.selectedDate );
         }
         return componentUpdate;
-    }
-
-    /**
-        Refresh du budget
-    **/
-    refreshBudget(selectedCompte, selectedDate){
-        if(selectedCompte != null && selectedDate != null){
-            ClientHTTP.call('GET',
-                            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
-                            [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
-                    .then(data => this.handleBudgetUpdate(data))
-                    .catch(e => console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e))
-        }
     }
 
 
