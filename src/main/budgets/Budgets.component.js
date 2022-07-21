@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from 'react-bootstrap'
+import {Container, Row, Col, Button, Tooltip, OverlayTrigger} from 'react-bootstrap'
 
 import ComptesList from "./ComptesList.component"
 import DateRange from "./DateRange.component"
@@ -146,7 +146,23 @@ export default class Budgets extends Component {
                         this.state.currentBudget != null ? <OperationsList onOperationChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
                     }</Row>
                     <Row className="alignCenter">
-                        <CreateOperationActionForm idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
+                        <Col className="col-xl align-content-xl-center">
+                                <CreateOperationActionForm idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
+                        </Col>
+                        <Col className="col-sm-1">
+                            <OverlayTrigger overlay={  <Tooltip>Cloturer le budget</Tooltip>  }>
+                                <Button className="btn-light" action="{action}" variant="light">
+                                    <img action="{action}" src={"/img/statuts/unlocked.png"} width="20" height="20" className="d-inline-block align-top" alt="Clôturer le budget "/>
+                                </Button>
+                            </OverlayTrigger>
+                        </Col>
+                        <Col className="col-sm-1">
+                            <OverlayTrigger overlay={  <Tooltip>Réinitialiser le budget</Tooltip>  }>
+                                <Button className="btn-light" action="{action}" variant="light">
+                                    <img action="{action}" src={"/img/statuts/circle_reinit.png"} width="20" height="20" className="d-inline-block align-top" alt="Réinitialiser le budget"/>
+                                </Button>
+                            </OverlayTrigger>
+                        </Col>
                     </Row>
                 </Container>
             </Col>

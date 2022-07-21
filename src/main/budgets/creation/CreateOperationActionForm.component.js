@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Col, Form, Modal, Row} from 'react-bootstrap'
+import {Button, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
 import * as ExtServices from './CreateOperationActionForm.extservices'
 import * as Controller from './CreateOperationActionForm.controller'
 /**
@@ -90,17 +90,19 @@ export default class CreateOperationActionForm extends Component {
         return (
             <>
                 { /** Bouton de création **/ }
-                <Button variant="outline-primary" size="sm" onClick={this.handleOpenForm}>Création</Button>
+                <OverlayTrigger overlay={  <Tooltip>Ajouter une opération</Tooltip>  }>
+                    <Button variant="outline-primary" size="sm" onClick={this.handleOpenForm}>Création</Button>
+                </OverlayTrigger>
                 { /** Fenêtre modale - Formulaire  **/ }
-                <Modal show={this.state.showModale} className="modal-lg">
+                <Modal show={this.state.showModale} onHide={this.hideModal} className="modal" centered >
 
-                    <Modal.Header>
+                    <Modal.Header closeButton>
                         <Modal.Title>Nouvelle opération</Modal.Title>
                     </Modal.Header>
-                    <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm } >
+                    <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm }>
                     <Modal.Body>
-                        <Form.Group as={Row} className="mb-3" controlId="categoriesForm">
-                            <Form.Label column sm={4}>Catégorie</Form.Label>
+                        <Form.Group as={Row} className="mb-2" controlId="categoriesForm">
+                            <Form.Label column sm={4} className="col-form-label-sm">Catégories</Form.Label>
                             <Col>
                                 <Form.Select size="sm" required onChange={this.handleSelectCategorie}>
                                         <option> </option>
@@ -135,16 +137,16 @@ export default class CreateOperationActionForm extends Component {
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="mb-3" controlId="descriptionForm">
-                            <Form.Label column sm={4}>Description</Form.Label>
+                        <Form.Group as={Row} className="mb-2" controlId="descriptionForm">
+                            <Form.Label column sm={4} className="col-form-label-sm">Description</Form.Label>
                             <Col>
-                            <Form.Control required type="text" value={this.state.formDescription} onChange={this.handleSelectDescription} />
+                                <Form.Control type="text" required size="sm" value={this.state.formDescription} onChange={this.handleSelectDescription} />
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="valeurForm">
-                            <Form.Label column sm={4}>Valeur</Form.Label>
+                        <Form.Group as={Row} className="mb-2" controlId="valeurForm">
+                            <Form.Label column sm={4} className="col-form-label-sm">Valeur</Form.Label>
                             <Col sm={2}>
-                                <Form.Select disabled value={this.state.formOperationType} onChange={this.handleSelectType} required size="sm">
+                                <Form.Select disabled required size="sm" value={this.state.formOperationType} onChange={this.handleSelectType} >
                                     <option>-</option>
                                     <option>+</option>
                                 </Form.Select>
@@ -160,7 +162,7 @@ export default class CreateOperationActionForm extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="etatForm">
-                            <Form.Label column sm={4}>Etat</Form.Label>
+                            <Form.Label column sm={4} className="col-form-label-sm">Etat</Form.Label>
                             <Col>
                                 <Form.Select required size="sm" value={this.state.formEtat} onChange={this.handleSelectEtat}>
                                     <option>Prévue</option>
@@ -171,7 +173,7 @@ export default class CreateOperationActionForm extends Component {
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4}>Dépense périodique</Form.Label>
+                            <Form.Label column sm={4} className="col-form-label-sm">Dépense périodique</Form.Label>
                             <Col>
                                 <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
                                         <option value="0">Ponctuelle</option>
@@ -185,9 +187,17 @@ export default class CreateOperationActionForm extends Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button id="btnClose" variant="secondary" onClick={ this.hideModal } >Fermer</Button>
-                        <Button id="btnValidContinue" variant="primary" type="submit" >Valider et continuer</Button>
-                        <Button id="btnValidClose" variant="success" type="submit" >Valider et fermer</Button>
+                        <OverlayTrigger overlay={  <Tooltip>Annuler la saisie</Tooltip>  }>
+                            <Button id="btnClose" variant="secondary" onClick={ this.hideModal } >Annuler</Button>
+                        </OverlayTrigger>
+
+                        <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>
+                            <Button id="btnValidContinue" variant="primary" type="submit" >Valider et continuer</Button>
+                        </OverlayTrigger>
+
+                        <OverlayTrigger overlay={ <Tooltip>Valider la saisie et fermer le formulaire</Tooltip> }>
+                            <Button id="btnValidClose" variant="success" type="submit" >Valider et fermer</Button>
+                        </OverlayTrigger>
                     </Modal.Footer>
                     </Form>
                 </Modal>
