@@ -6,7 +6,7 @@ import {
   HashRouter
 } from "react-router-dom";
 // import PrivateRoute from './PrivateRoute'
-import Budgets from "./budgets/Budgets.component";
+import Budgets from "./budgets/budgets/Budgets.component";
 import Login from "./login/Login.component";
 import Infos from "./infos/Infos.component";
 

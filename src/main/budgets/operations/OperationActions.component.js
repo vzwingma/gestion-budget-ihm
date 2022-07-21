@@ -6,7 +6,7 @@ import * as Controller from './OperationActions.controller';
 export default class OperationActions extends Component {
 
 
-k
+
     state = {
         showModale: false
     }
@@ -52,8 +52,10 @@ k
                         </Modal.Body>
 
                         <Modal.Footer>
-                            <Button action="SUPPRIMEE_ANNULER" variant="secondary">Fermer</Button>
-                            <Button action="SUPPRIMEE" variant="success">Confirmer</Button>
+                            <ButtonGroup>
+                                <Button action="SUPPRIMEE_ANNULER" variant="secondary">Annuler</Button>
+                                <Button action="SUPPRIMEE" variant="success">Confirmer</Button>
+                            </ButtonGroup>
                         </Modal.Footer>
                     </Modal>
                     </>

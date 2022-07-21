@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import {Container, Row, Col, Button, Tooltip, OverlayTrigger} from 'react-bootstrap'
+import {Container, Row, Col} from 'react-bootstrap'
 
-import ComptesList from "./ComptesList.component"
-import DateRange from "./DateRange.component"
-import OperationsList from "./operations/OperationsList.component"
+import ComptesList from "../ComptesList.component"
+import DateRange from "../DateRange.component"
+import OperationsList from "../operations/OperationsList.component"
 
-import ResumeSoldes from "./resume/ResumeSoldes.component"
-import ResumeCategories from "./resume/categories/ResumeCategories.component"
-import CreateOperationActionForm from "./creation/CreateOperationActionForm.component"
+import ResumeSoldes from "../resume/ResumeSoldes.component"
+import ResumeCategories from "../resume/categories/ResumeCategories.component"
+import CreateOperationActionForm from "../operations/creation/CreateOperationActionForm.component"
 import * as Controller from './Budgets.controller'
 import * as Services from './Budgets.extservices'
+import BudgetActionsButtonGroup from "./actions/BudgetActionsButtonGroup";
 /*
  * Page principale des budgets
  */
@@ -30,6 +31,7 @@ export default class Budgets extends Component {
         this.handleCompteChange = Controller.handleCompteChange.bind(this);
         this.handleDateChange = Controller.handleDateChange.bind(this);
         this.handleBudgetUpdate = Controller.handleBudgetUpdate.bind(this);
+
         this.refreshBudget = Services.reloadBudget.bind(this);
         this.loadCategories = Services.loadCategories.bind(this);
         this.categoriesLoaded = Services.categoriesLoaded.bind(this);
@@ -88,11 +90,13 @@ export default class Budgets extends Component {
           <Row>
             <Col sm={4}>
                 <Container fluid={"xl"}>
+                    { /** Résumé des catégories **/ }
                     <Row>
                         <Col>{
                             this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..."
                         }</Col>
                     </Row>
+                    { /** Soldes **/ }
                     <Row>
                         <Col>{
                             this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..."
@@ -102,26 +106,18 @@ export default class Budgets extends Component {
             </Col>
             <Col sm={8}>
                 <Container fluid={"xl"}>
+                    { /** Liste des opérations **/ }
                     <Row>{
                         this.state.currentBudget != null ? <OperationsList onOperationChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
                     }</Row>
                     <Row className="alignCenter">
+                        { /** Création d'une nouvelle opération **/ }
                         <Col className="col-xl align-content-xl-center">
-                                <CreateOperationActionForm idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
+                            <CreateOperationActionForm idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
                         </Col>
+                        { /** Actions sur le budget (close / reinit) **/ }
                         <Col className="col-sm-1">
-                            <OverlayTrigger overlay={  <Tooltip>Cloturer le budget</Tooltip>  }>
-                                <Button className="btn-light" action="{action}" variant="light">
-                                    <img action="{action}" src={"/img/statuts/unlocked.png"} width="20" height="20" className="d-inline-block align-top" alt="Clôturer le budget "/>
-                                </Button>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col className="col-sm-1">
-                            <OverlayTrigger overlay={  <Tooltip>Réinitialiser le budget</Tooltip>  }>
-                                <Button className="btn-light" action="{action}" variant="light">
-                                    <img action="{action}" src={"/img/statuts/circle_reinit.png"} width="20" height="20" className="d-inline-block align-top" alt="Réinitialiser le budget"/>
-                                </Button>
-                            </OverlayTrigger>
+                            <BudgetActionsButtonGroup budget={this.state.currentBudget} />
                         </Col>
                     </Row>
                 </Container>

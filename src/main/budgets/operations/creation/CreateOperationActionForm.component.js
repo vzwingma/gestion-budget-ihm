@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
+import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
 import * as ExtServices from './CreateOperationActionForm.extservices'
 import * as Controller from './CreateOperationActionForm.controller'
 /**
@@ -187,17 +187,19 @@ export default class CreateOperationActionForm extends Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <OverlayTrigger overlay={  <Tooltip>Annuler la saisie</Tooltip>  }>
-                            <Button id="btnClose" variant="secondary" onClick={ this.hideModal } >Annuler</Button>
-                        </OverlayTrigger>
+                        <ButtonGroup>
+                            <OverlayTrigger overlay={  <Tooltip>Annuler la saisie</Tooltip>  }>
+                                <Button id="btnClose" variant="secondary" onClick={ this.hideModal } >Annuler</Button>
+                            </OverlayTrigger>
 
-                        <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>
-                            <Button id="btnValidContinue" variant="primary" type="submit" >Valider et continuer</Button>
-                        </OverlayTrigger>
+                            <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>
+                                <Button id="btnValidContinue" variant="primary" type="submit" >Valider et continuer</Button>
+                            </OverlayTrigger>
 
-                        <OverlayTrigger overlay={ <Tooltip>Valider la saisie et fermer le formulaire</Tooltip> }>
-                            <Button id="btnValidClose" variant="success" type="submit" >Valider et fermer</Button>
-                        </OverlayTrigger>
+                            <OverlayTrigger overlay={ <Tooltip>Valider la saisie et fermer le formulaire</Tooltip> }>
+                                <Button id="btnValidClose" variant="success" type="submit" >Valider et fermer</Button>
+                            </OverlayTrigger>
+                        </ButtonGroup>
                     </Modal.Footer>
                     </Form>
                 </Modal>

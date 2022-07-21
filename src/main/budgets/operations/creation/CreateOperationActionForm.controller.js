@@ -1,4 +1,4 @@
-import * as AppConstants from "./../../Utils/AppEnums.constants"
+import * as AppConstants from "../../../Utils/AppEnums.constants"
 
 /**
  * Fonctions sur le formulaire de création d'opérations

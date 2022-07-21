@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Form } from 'react-bootstrap';
-import * as AppConstants from "../Utils/AppEnums.constants";
-import * as ClientHTTP from './../Services/ClientHTTP.service';
+import * as Controller from './ComptesList.controller';
 /*
  * Composant Select Comptes
  */
@@ -15,44 +14,14 @@ export default class ComptesList extends Component {
 
     constructor(props) {
         super(props);
-        this.handleSelect = this.handleSelect.bind(this);
+        this.handleSelect   = Controller.handleSelect.bind(this);
+        this.loadComptes    = Controller.loadComptes.bind(this);
+        this.comptesLoaded  = Controller.comptesLoaded.bind(this);
     }
 
     /** Appels WS vers pour charger la liste des comptes **/
     componentDidMount() {
-        ClientHTTP
-            .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
-            .then((data) => {
-                this.comptesLoaded(data)
-            })
-            .catch((e) => {
-                console.log("Erreur lors du chargement des comptes " + e)
-            })
-    }
-
-    // Chargement des comptes et tri suivant l'ordre
-    comptesLoaded(data){
-        console.log("Chargement de " + data.length + " comptes");
-        // console.log(data);
-        data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1);
-        this.setState({ comptes: data });
-        this.props.onCompteChange(data[0].id);
-    }
-
-    // Sélection d'un compte
-    handleSelect(event) {
-        // Select du compte parmi la liste
-        const compteLabel =event.target.value;
-        console.log("Changement de compte : " + compteLabel)
-        var selectedIdCompte = null;
-        Array.from(event.target.options)
-             .forEach(function (option) {
-                if(option.value === compteLabel){
-                    selectedIdCompte = option.id;
-                }
-             })
-        // Compte sélectionné, remonté à budget
-        this.props.onCompteChange(selectedIdCompte);
+        this.loadComptes();
     }
 
 

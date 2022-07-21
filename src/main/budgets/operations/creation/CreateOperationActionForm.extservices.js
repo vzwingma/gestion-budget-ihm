@@ -1,5 +1,5 @@
-import * as AppConstants from "./../../Utils/AppEnums.constants"
-import * as ClientHTTP from "../../Services/ClientHTTP.service";
+import * as AppConstants from "../../../Utils/AppEnums.constants"
+import * as ClientHTTP from "../../../Services/ClientHTTP.service";
 
 /**
  * Fonctions d'appels des services du backend sur le formulaire de création d'opérations
