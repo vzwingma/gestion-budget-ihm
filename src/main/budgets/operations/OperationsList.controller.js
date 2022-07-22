@@ -16,6 +16,9 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
     export function handleOperationUpdate(event){
         if(this.state.budget.actif){
             console.log("[TRIGGER] Edit opération [" + event.target.parentElement.id+ "]");
+            this.setState({
+                idOperation: event.target.parentElement.id,
+                showModale : true })
         }
         else{
             console.log("[NOTRIGGER] le budget n'est pas éditable");
@@ -43,7 +46,13 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
         return false;
     }
 
-
+    /**
+     * Fermeture du formulaire
+     * @param event
+     */
+    export function hideModale(event) {
+        this.setState({ showModale: false });
+    }
 
     /**
      * Modification de l'opération sur action des boutons

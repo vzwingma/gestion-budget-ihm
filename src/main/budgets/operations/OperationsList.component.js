@@ -5,6 +5,7 @@ import OperationEtat from './OperationEtat.component';
 import OperationValue from './OperationValue.component';
 import * as DataUtils from '../../Utils/DataUtils.utils';
 import * as Controller from './OperationsList.controller';
+import CreateUpdateOperationForm from "./creation/CreateUpdateOperationForm.component";
 /*
  * Liste des opérations
  */
@@ -13,7 +14,9 @@ export default class OperationsList extends Component {
     /** Etats pour Budget et opérations **/
     state = {
         budget: null,
-        listeOperations: []
+        listeOperations: [],
+        idOperation: null,
+        showModale: false
     }
 
     constructor(props){
@@ -24,6 +27,7 @@ export default class OperationsList extends Component {
         this.disableContextMenu = Controller.disableContextMenu.bind(this);
         this.callSetOperationAsLast = Controller.callSetOperationAsLast.bind(this);
         this.updateOperationTag = Controller.updateOperationTag.bind(this);
+        this.hideModale = Controller.hideModale.bind(this);
     }
 
 
@@ -94,6 +98,14 @@ export default class OperationsList extends Component {
                     ))}
                     </tbody>
                 </Table>
+
+                { /** Fenêtre modale - Formulaire  **/ }
+                { /** la gestion de l'affichage de la modale est délégué au composant supérieur **/ }
+                <CreateUpdateOperationForm idCompte={this.props.selectedCompte} budget={this.props.budget}
+                                           showModale={this.state.showModale} modeEdition={true} idOperation={this.state.idOperation}
+                                           hideModale={this.hideModale}
+                                           onOperationChange={this.props.onOperationChange}/> { /** OnOpChange est appelé par le  composant . this.props.OnOpChange : appelle la méthode du composant supérieur**/ }
+
             </>
         ); }
 }

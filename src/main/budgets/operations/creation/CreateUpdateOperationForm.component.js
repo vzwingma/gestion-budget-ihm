@@ -97,14 +97,14 @@ export default class CreateUpdateOperationForm extends Component {
                 <Modal show={this.props.showModale} onHide={this.props.hideModale} className="modal" centered >
 
                     <Modal.Header closeButton>
-                        <Modal.Title>Nouvelle opération</Modal.Title>
+                        <Modal.Title>{ this.props.modeEdition ? "Edition" : "Création"} d'une opération</Modal.Title>
                     </Modal.Header>
                     <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm }>
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-2" controlId="categoriesForm">
                             <Form.Label column sm={4} className="col-form-label-sm">Catégories</Form.Label>
                             <Col>
-                                <Form.Select size="sm" required onChange={this.handleSelectCategorie}>
+                                <Form.Select size="sm" required disabled={ this.props.modeEdition } onChange={this.handleSelectCategorie}>
                                         <option> </option>
                                         {
                                             this.state.categories
@@ -115,7 +115,7 @@ export default class CreateUpdateOperationForm extends Component {
 
                                         }
                                     </Form.Select>
-                                    <Form.Select size="sm" required onChange={this.handleSelectSsCategorie}>
+                                    <Form.Select size="sm" required disabled={ this.props.modeEdition } onChange={this.handleSelectSsCategorie}>
                                         <option> </option>
                                         {
                                             this.state.ssCategories
@@ -126,7 +126,7 @@ export default class CreateUpdateOperationForm extends Component {
                                         }
                                     </Form.Select>
                                     { this.state.showIntercompte &&
-                                        <Form.Select size="sm" required onChange={ this.handleSelectCompteCible }>
+                                        <Form.Select size="sm" required disabled={ this.props.modeEdition } onChange={ this.handleSelectCompteCible }>
                                             <option> </option>
                                             {
                                                 this.state.comptes
@@ -191,11 +191,11 @@ export default class CreateUpdateOperationForm extends Component {
                             <OverlayTrigger overlay={  <Tooltip>Annuler la saisie</Tooltip>  }>
                                 <Button id="btnClose" variant="secondary" onClick={ this.props.hideModale } >Annuler</Button>
                             </OverlayTrigger>
-
+                            { !this.props.modeEdition &&
                             <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>
                                 <Button id="btnValidContinue" variant="primary" type="submit" >Valider et continuer</Button>
                             </OverlayTrigger>
-
+                            }
                             <OverlayTrigger overlay={ <Tooltip>Valider la saisie et fermer le formulaire</Tooltip> }>
                                 <Button id="btnValidClose" variant="success" type="submit" >Valider et fermer</Button>
                             </OverlayTrigger>
