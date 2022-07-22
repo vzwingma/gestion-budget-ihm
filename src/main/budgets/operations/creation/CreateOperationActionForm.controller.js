@@ -83,7 +83,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
     }
     // Saisie du compte Intercompte
     export function handleSelectCompteCible(event) {
-        this.setState({formIdCompteCible : event.target.value})
+        this.setState({formIdCompteCible : event.target.selectedOptions[0].id})
     }
     // Saisie valeur de l'opération
     export function handleSelectValeur(event) {
@@ -133,7 +133,6 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
     export function createOperation(){
 
         const operation = {
-            "id": "123",
             "libelle": this.state.formDescription,
             "categorie": {
                 "id": this.state.formIdCategorie,
@@ -150,7 +149,14 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             "tagDerniereOperation": false
         }
         // Sauvegarde de l'opération
-        this.saveOperation(this.state.idBudget  , operation);
+
+        if(this.state.formIdCompteCible !== null){
+            this.saveOperationIntercompte(this.state.idBudget, operation, this.state.formIdCompteCible);
+        }
+        else{
+            this.saveOperation(this.state.idBudget  , operation);
+        }
+
     }
 
     /**

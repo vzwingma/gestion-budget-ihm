@@ -61,6 +61,7 @@ export default class CreateOperationActionForm extends Component {
         this.loadCategories = ExtServices.loadCategories.bind(this);
         this.loadComptes = ExtServices.loadComptes.bind(this);
         this.saveOperation = ExtServices.saveOperation.bind(this);
+        this.saveOperationIntercompte = ExtServices.saveOperationIntercompte.bind(this);
     }
 
 
@@ -183,8 +184,8 @@ export default class CreateOperationActionForm extends Component {
                                 <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
                                         <option value="0">Ponctuelle</option>
                                         <option value="1">Mensuelle</option>
-                                        <option value="3" disabled>Trimestrielle</option>
-                                        <option value="6" disabled>Semestrielle</option>
+                                        <option value="3"  disabled>Trimestrielle</option>
+                                        <option value="6"  disabled>Semestrielle</option>
                                         <option value="12" disabled>Annuelle</option>
                                 </Form.Select>
                             </Col>

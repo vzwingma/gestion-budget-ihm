@@ -50,6 +50,24 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
                 this.props.onOperationChange(budgetUpdated);
             })
             .catch(e => {
-                console.log("Erreur lors du chargement des comptes " + e)
+                console.log("Erreur lors de l'enregistrement de l'opération " + e)
+            })
+    }
+
+
+
+    /** Appels WS vers pour enregistrer l'opération sur le backend **/
+    export function saveOperationIntercompte(idBudget, operation, idCompteCible) {
+        console.log("Création d'une opération intercompte sur le budget : " + idBudget + " vers le compte " + idCompteCible)
+        ClientHTTP
+            .call('POST',
+                AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.INTERCOMPTE,
+                [idBudget, operation.id, idCompteCible],
+                operation)
+            .then(budgetUpdated => {
+                this.props.onOperationChange(budgetUpdated);
+            })
+            .catch(e => {
+                console.log("Erreur lors de l'enregistrement de l'opération intercomptes" + e)
             })
     }

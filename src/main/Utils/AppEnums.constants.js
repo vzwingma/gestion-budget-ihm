@@ -23,7 +23,8 @@ export const SERVICES_URL = {
     OPERATIONS : {
         CREATE : "/budgets/v1/{{}}/operations",
         UPDATE : "/budgets/v1/{{}}/operations/{{}}",
-        DERNIERE : "/budgets/v1/{{}}/operations/{{}}/derniereOperation"
+        DERNIERE : "/budgets/v1/{{}}/operations/{{}}/derniereOperation",
+        INTERCOMPTE : "/budgets/v1/{{}}/operations/versCompte/{{}}"
     },
     PARAMETRES : {
         CATEGORIES : "/parametres/v1/categories"
