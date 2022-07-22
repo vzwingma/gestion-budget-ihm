@@ -4,14 +4,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
  * Fonctions sur le formulaire de création d'opérations
  */
 
-    /**
-     * Ouverture du formulaire
-     * @param event evenement
-     */
-    export function handleOpenForm(event) {
-        // Ouverture du formulaire
-        this.setState({ showModale: true });
-    }
+
 
     /**
      * Sélection d'une catégorie

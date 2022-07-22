@@ -7,10 +7,11 @@ import OperationsList from "../operations/OperationsList.component"
 
 import ResumeSoldes from "../resume/ResumeSoldes.component"
 import ResumeCategories from "../resume/categories/ResumeCategories.component"
-import CreateOperationActionForm from "../operations/creation/CreateOperationActionForm.component"
+import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
+import CreateOperationButton from "../operations/creation/CreateOperationButton.component";
 import * as Controller from './Budgets.controller'
 import * as Services from './Budgets.extservices'
-import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
+
 /*
  * Page principale des budgets
  */
@@ -113,7 +114,7 @@ export default class Budgets extends Component {
                     <Row className="alignCenter">
                         { /** Création d'une nouvelle opération **/ }
                         <Col sm={10}>
-                            <CreateOperationActionForm idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
+                            <CreateOperationButton idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
                         </Col>
                         { /** Actions sur le budget (close / reinit) **/ }
                         <Col className="col-sm-1">

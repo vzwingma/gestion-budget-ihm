@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
-import * as ExtServices from './CreateOperationActionForm.extservices'
-import * as Controller from './CreateOperationActionForm.controller'
+import * as ExtServices from './CreateUpdateOperationForm.extservices'
+import * as Controller from './CreateUpdateOperationForm.controller'
 import {sortLibelles} from '../../../Utils/DataUtils.utils'
 /**
  * Formulaire sur le Bouton création
  */
-export default class CreateOperationActionForm extends Component {
+export default class CreateUpdateOperationForm extends Component {
 
 
     state = {
@@ -43,7 +43,6 @@ export default class CreateOperationActionForm extends Component {
         super(props);
 
         this.hideModal = Controller.hideModal.bind(this);
-        this.handleOpenForm = Controller.handleOpenForm.bind(this);
 
         this.handleSelectCategorie = Controller.handleSelectCategorie.bind(this);
         this.handleSelectSsCategorie = Controller.handleSelectSsCategorie.bind(this);
@@ -96,12 +95,8 @@ export default class CreateOperationActionForm extends Component {
     render() {
         return (
             <>
-                { /** Bouton de création **/ }
-                <OverlayTrigger overlay={  <Tooltip>Ajouter une opération</Tooltip>  }>
-                    <Button variant="outline-primary" size="sm" disabled={!this.state.etatBudget} onClick={this.handleOpenForm}>Création</Button>
-                </OverlayTrigger>
                 { /** Fenêtre modale - Formulaire  **/ }
-                <Modal show={this.state.showModale} onHide={this.hideModal} className="modal" centered >
+                <Modal show={this.props.showModale} onHide={this.hideModal} className="modal" centered >
 
                     <Modal.Header closeButton>
                         <Modal.Title>Nouvelle opération</Modal.Title>
@@ -146,7 +141,6 @@ export default class CreateOperationActionForm extends Component {
                                     }
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row} className="mb-2" controlId="descriptionForm">
                             <Form.Label column sm={4} className="col-form-label-sm">Description</Form.Label>
                             <Col>
@@ -163,11 +157,9 @@ export default class CreateOperationActionForm extends Component {
                             </Col>
                             <Col sm={6}>
                                 <Form.Control required size="sm"
-                                              type="text"
-                                              pattern="[0-9]*\.[0-9]{2}"
+                                              type="text" pattern="[0-9]*\.[0-9]{2}"
                                               value={this.state.formValeur}
-                                              onBlur={this.handleCompleteValeur}
-                                              onChange={this.handleSelectValeur} />
+                                              onBlur={this.handleCompleteValeur} onChange={this.handleSelectValeur} />
                             </Col>
                         </Form.Group>
 
