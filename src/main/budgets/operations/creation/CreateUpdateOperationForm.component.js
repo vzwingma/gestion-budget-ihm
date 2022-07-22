@@ -32,7 +32,6 @@ export default class CreateUpdateOperationForm extends Component {
         formOperationPeriodique : "0",
         // Affichage & Validation du formulaire
         showIntercompte: false,
-        showModale: false,
         formValidated: false
     }
     /**
@@ -41,8 +40,6 @@ export default class CreateUpdateOperationForm extends Component {
      */
     constructor(props) {
         super(props);
-
-        this.hideModal = Controller.hideModal.bind(this);
 
         this.handleSelectCategorie = Controller.handleSelectCategorie.bind(this);
         this.handleSelectSsCategorie = Controller.handleSelectSsCategorie.bind(this);
@@ -55,13 +52,14 @@ export default class CreateUpdateOperationForm extends Component {
         this.handleSelectPeriode = Controller.handleSelectPeriode.bind(this);
 
         this.handleSubmitForm = Controller.handleSubmitForm.bind(this);
-        this.closeForm = Controller.closeForm.bind(this);
         this.createOperation = Controller.createOperation.bind(this);
 
         this.loadCategories = ExtServices.loadCategories.bind(this);
         this.loadComptes = ExtServices.loadComptes.bind(this);
         this.saveOperation = ExtServices.saveOperation.bind(this);
         this.saveOperationIntercompte = ExtServices.saveOperationIntercompte.bind(this);
+
+        this.hideModal = Controller.hideModal.bind(this);
     }
 
 
@@ -96,7 +94,7 @@ export default class CreateUpdateOperationForm extends Component {
         return (
             <>
                 { /** Fenêtre modale - Formulaire  **/ }
-                <Modal show={this.props.showModale} onHide={this.hideModal} className="modal" centered >
+                <Modal show={this.props.showModale} onHide={this.props.hideModale} className="modal" centered >
 
                     <Modal.Header closeButton>
                         <Modal.Title>Nouvelle opération</Modal.Title>
@@ -191,7 +189,7 @@ export default class CreateUpdateOperationForm extends Component {
                     <Modal.Footer>
                         <ButtonGroup>
                             <OverlayTrigger overlay={  <Tooltip>Annuler la saisie</Tooltip>  }>
-                                <Button id="btnClose" variant="secondary" onClick={ this.hideModal } >Annuler</Button>
+                                <Button id="btnClose" variant="secondary" onClick={ this.props.hideModale } >Annuler</Button>
                             </OverlayTrigger>
 
                             <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>

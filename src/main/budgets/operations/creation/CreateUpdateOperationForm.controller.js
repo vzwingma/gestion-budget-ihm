@@ -115,9 +115,26 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         else{
             this.createOperation();
         }
-        // Post Creation
-        this.closeForm(event.nativeEvent.submitter.id);
+        // Post Creation - Clear Form
+        this.setState({ // RAZ Formulaire
+            categories: this.state.categoriesRefs,
+            ssCategories: [],
+            formIdCategorie: null,
+            formLibelleCategorie: "",
+            formIdSsCategorie: null,
+            formLibelleSsCategorie: "",
+            formIdCompteCible: null,
+            formDescription: "",
+            formValeur: "",
+            formEtat: "Prévue",
+            formOperationType: "-",
+            formOperationPeriodique: false,
+            showIntercompte: false
+        })
 
+        if(event.nativeEvent.submitter.id === "btnValidClose") {
+            this.hideModal();
+        }
     }
 
     /**
@@ -153,37 +170,8 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
     }
 
     /**
-     * Fermeture du formulaire
-     * @param buttonId (id du bouton)
+     * Hide modal pour la modale
      */
-    export function closeForm(buttonId){
-        // Clear Form
-        this.setState({ // RAZ Formulaire
-            categories: this.state.categoriesRefs,
-            ssCategories: [],
-            formIdCategorie: null,
-            formLibelleCategorie: "",
-            formIdSsCategorie: null,
-            formLibelleSsCategorie: "",
-            formIdCompteCible: null,
-            formDescription: "",
-            formValeur: "",
-            formEtat: "Prévue",
-            formOperationType: "-",
-            formOperationPeriodique: false,
-            showIntercompte: false
-        })
-
-        if(buttonId === "btnValidClose")  {
-            this.hideModal();
-        }
+    export function hideModal(){
+        this.props.hideModale();
     }
-
-
-    /**
-     * Fermeture de la fenêtre modale
-     */
-    export function hideModal() {
-        this.setState({ showModale: false });
-    }
-

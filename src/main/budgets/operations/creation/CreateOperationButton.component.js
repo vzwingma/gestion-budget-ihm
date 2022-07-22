@@ -17,11 +17,17 @@ export default class CreateOperationButton extends Component {
      * Ouverture du formulaire
      * @param event evenement
      */
-     handleOpenForm(event) {
-        // Ouverture du formulaire
+     showModale(event) {
         this.setState({ showModale: true });
     }
 
+    /**
+     * Fermeture du formulaire
+     * @param event
+     */
+    hideModale(event) {
+        this.setState({ showModale: false });
+    }
     /**
      * Constructeur du formulaire
      * @param props
@@ -29,7 +35,8 @@ export default class CreateOperationButton extends Component {
     constructor(props) {
         super(props);
 
-        this.handleOpenForm = this.handleOpenForm.bind(this);
+        this.showModale = this.showModale.bind(this);
+        this.hideModale = this.hideModale.bind(this);
     }
 
 
@@ -38,8 +45,7 @@ export default class CreateOperationButton extends Component {
         if( nextProps.budget != null && (nextProps.budget !== nextStates.budget) ) {
             this.setState({
                 budget: nextProps.budget,
-                etatBudget: nextProps.budget.actif,
-                showModale: false
+                etatBudget: nextProps.budget.actif
             });
             console.log("[TRIGGER] Context budget : " + nextProps.budget.id + "::" + nextProps.budget.actif)
         }
@@ -53,10 +59,11 @@ export default class CreateOperationButton extends Component {
             <>
                 { /** Bouton de création **/ }
                 <OverlayTrigger overlay={  <Tooltip>Ajouter une opération</Tooltip>  }>
-                    <Button variant="outline-primary" size="sm" disabled={!this.state.etatBudget} onClick={this.handleOpenForm}>Création</Button>
+                    <Button variant="outline-primary" size="sm" disabled={!this.state.etatBudget} onClick={this.showModale}>Création</Button>
                 </OverlayTrigger>
                 { /** Fenêtre modale - Formulaire  **/ }
                 <CreateUpdateOperationForm idCompte={this.props.selectedCompte} budget={this.props.budget} showModale={this.state.showModale}
+                                           hideModale={this.hideModale}
                                            onOperationChange={this.props.onOperationChange}/> { /** OnOpChange est appelé par le compose. this.props.OnOpChange : appelle la méthode du composant supérieur**/ }
             </>
         )
