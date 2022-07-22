@@ -62,7 +62,7 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
         ClientHTTP
             .call('POST',
                 AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.INTERCOMPTE,
-                [idBudget, operation.id, idCompteCible],
+                [idBudget, idCompteCible],
                 operation)
             .then(budgetUpdated => {
                 this.props.onOperationChange(budgetUpdated);
