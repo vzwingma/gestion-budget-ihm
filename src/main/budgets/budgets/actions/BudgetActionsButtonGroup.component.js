@@ -62,12 +62,13 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                             <img action="CLOSE_A_CONFIRMER" src={"/img/statuts/" + this.state.imageActionCloture+".png"} className="d-inline-block align-top" alt={this.state.libelleActionCloture}/>
                         </Button>
                     </OverlayTrigger>
+                    { this.state.etatBudget &&
                     <OverlayTrigger overlay={  <Tooltip>Réinitialiser le budget</Tooltip>  }>
                         <Button className="btn-light" action="REINIT_A_CONFIRMER" variant="light">
                             <img action="REINIT_A_CONFIRMER" src={"/img/statuts/circle_reinit.png"} className="d-inline-block align-top" alt="Réinitialiser le budget"/>
                         </Button>
                     </OverlayTrigger>
-
+                    }
                     <Modal show={this.state.showModale} onHide={this.hideModal} className="modal" centered >
                         <Modal.Header closeButton>
                             <Modal.Title>{this.state.title}</Modal.Title>
