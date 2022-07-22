@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
 import * as ExtServices from './CreateOperationActionForm.extservices'
 import * as Controller from './CreateOperationActionForm.controller'
+import {sortLibelles} from '../../../Utils/DataUtils.utils'
 /**
  * Formulaire sur le Bouton création
  */
@@ -114,16 +115,18 @@ export default class CreateOperationActionForm extends Component {
                                         <option> </option>
                                         {
                                             this.state.categories
-                                                .sort((c1, c2) => c1.libelle - c2.libelle)
+                                                .sort(sortLibelles)
                                                 .map((categorie, key) => (
                                                     <option key={key} id={categorie.id}>{categorie.libelle}</option>
                                                 ))
+
                                         }
                                     </Form.Select>
                                     <Form.Select size="sm" required onChange={this.handleSelectSsCategorie}>
                                         <option> </option>
                                         {
                                             this.state.ssCategories
+                                                .sort(sortLibelles)
                                                 .map((ssCategorie) => (
                                                     <option key={ssCategorie.id} id={ssCategorie.id}>{ssCategorie.libelle}</option>
                                                 ))
@@ -134,6 +137,7 @@ export default class CreateOperationActionForm extends Component {
                                             <option> </option>
                                             {
                                                 this.state.comptes
+                                                    .sort(sortLibelles)
                                                     .map(compte => (
                                                         <option key={compte.id} id={compte.id}>{compte.libelle}</option>
                                                     ))
