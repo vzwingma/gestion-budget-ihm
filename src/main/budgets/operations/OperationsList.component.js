@@ -4,7 +4,7 @@ import OperationActions from './OperationActions.component'
 import OperationEtat from './OperationEtat.component'
 import OperationValue from './OperationValue.component'
 import * as DataUtils from '../../Utils/DataUtils.utils'
-
+import * as Controller from './OperationsList.controller'
 /*
  * Liste des opérations
  */
@@ -18,14 +18,10 @@ export default class OperationsList extends Component {
 
     constructor(props){
         super(props);
-        this.handleOperationsListUpdate = this.handleOperationsListUpdate.bind(this);
+        this.handleOperationsListUpdate = Controller.handleOperationsListUpdate.bind(this);
+        this.handleOperationUpdate = Controller.handleOperationUpdate.bind(this);
     }
 
-    // Update du budget, suite à une action sur une opération
-    handleOperationsListUpdate(budgetUpdated){
-        console.log("[TRIGGER] Refresh budget [" + budgetUpdated.id+ "]");
-        this.props.onOperationChange(budgetUpdated);
-    }
 
 
     // Mise à jour du contexte de budget
@@ -67,7 +63,7 @@ export default class OperationsList extends Component {
                 <tbody className="tbodyOperation">
                 { this.state.listeOperations.map((operation) => (
 
-                    <tr key={operation.id} id={operation.id}>
+                    <tr key={operation.id} id={operation.id} onDoubleClick={this.handleOperationUpdate}>
                         <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateOperation) }</td>
                         <td>{ operation.categorie != null ? operation.categorie.libelle : "-" }</td>
                         <td>{ operation.ssCategorie != null ? operation.ssCategorie.libelle : "-" }</td>
