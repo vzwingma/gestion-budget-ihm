@@ -10,7 +10,7 @@ import ResumeCategories from "../resume/categories/ResumeCategories.component"
 import CreateOperationActionForm from "../operations/creation/CreateOperationActionForm.component"
 import * as Controller from './Budgets.controller'
 import * as Services from './Budgets.extservices'
-import BudgetActionsButtonGroup from "./actions/BudgetActionsButtonGroup";
+import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
 /*
  * Page principale des budgets
  */
@@ -108,7 +108,7 @@ export default class Budgets extends Component {
                 <Container fluid={"xl"}>
                     { /** Liste des opérations **/ }
                     <Row>{
-                        this.state.currentBudget != null ? <OperationsList onOperationChange={this.handleBudgetUpdate} currentBudget={this.state.currentBudget} />: "Chargement..."
+                        this.state.currentBudget != null ? <OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."
                     }</Row>
                     <Row className="alignCenter">
                         { /** Création d'une nouvelle opération **/ }
@@ -117,7 +117,7 @@ export default class Budgets extends Component {
                         </Col>
                         { /** Actions sur le budget (close / reinit) **/ }
                         <Col className="col-sm-1">
-                            <BudgetActionsButtonGroup budget={this.state.currentBudget} />
+                            <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/>
                         </Col>
                     </Row>
                 </Container>

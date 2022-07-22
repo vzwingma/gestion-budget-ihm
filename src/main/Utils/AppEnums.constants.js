@@ -15,8 +15,10 @@ export const SERVICES_URL = {
         GET_ALL : "/comptes/v1"
     },
     BUDGETS : {
+        REINIT: "/budgets/v1/{{}}",
         INTERVALLE : "/budgets/v1/{{}}/intervalles",
-        GET : "/budgets/v1/query?idCompte={{}}&annee={{}}&mois={{}}"
+        GET : "/budgets/v1/query?idCompte={{}}&annee={{}}&mois={{}}",
+        ETAT : "/budgets/v1/{{}}/etat?actif={{}}"
     },
     OPERATIONS : {
         CREATE : "/budgets/v1/{{}}/operations",
@@ -31,7 +33,6 @@ export const SERVICES_URL = {
     USERS_PREFS_FULL = "/utilisateurs/v1/preferences";
     COMPTES_ID_FULL = "/comptes/v1/{idCompte}";
     BUDGET_ID_FULL = "/budgets/v1/{idBudget}";
-    BUDGET_ETAT_FULL = "/budgets/v1/{idBudget}/etat";
     BUDGET_UP_TO_DATE_FULL = "/budgets/v1/{idBudget}/upToDate";
     BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL = "/budgets/v1/{idCompte}/operations/libelles";
     BUDGET_OPERATION_DERNIERE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/derniereOperation";

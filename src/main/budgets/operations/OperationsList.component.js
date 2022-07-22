@@ -12,7 +12,7 @@ export default class OperationsList extends Component {
 
     /** Etats pour Budget et opérations **/
     state = {
-        currentBudget: null,
+        budget: null,
         listeOperations: []
     }
 
@@ -31,12 +31,12 @@ export default class OperationsList extends Component {
     // Mise à jour du contexte de budget
     shouldComponentUpdate(nextProps, nextStates){
         // Update si budget change dans le parent
-        if(nextProps.currentBudget !== nextStates.currentBudget && nextProps.currentBudget != null){
-            console.log("[TRIGGER] Context operations [" + nextProps.currentBudget.listeOperations.length + "]");
+        if(nextProps.budget !== nextStates.budget && nextProps.budget != null){
+            console.log("[TRIGGER] Context budget [" + nextProps.budget.id + ":" + nextProps.budget.actif + "] operations [" + nextProps.budget.listeOperations.length + "]");
             this.setState(
                 {
-                    currentBudget : nextProps.currentBudget,
-                    listeOperations : nextProps.currentBudget.listeOperations
+                    budget : nextProps.budget,
+                    listeOperations : nextProps.budget.listeOperations
                 }
             );
         }
@@ -74,9 +74,12 @@ export default class OperationsList extends Component {
                         <td>{ operation.libelle }</td>
                         <td><OperationValue valueOperation={operation.valeur} /></td>
                         <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
-                        <td><OperationActions key={operation.id} id={operation.id}
-                                              operation={operation} budgetid={this.props.currentBudget.id}
-                                              onOperationChange={this.handleOperationsListUpdate} /></td>
+                        <td>{ this.state.budget.actif &&
+                            <OperationActions key={operation.id} id={operation.id}
+                                              operation={operation} budgetid={this.props.budget.id}
+                                              onOperationChange={this.handleOperationsListUpdate} />
+                            }
+                        </td>
                         <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateMaj) }</td>
                     </tr>
                 ))}

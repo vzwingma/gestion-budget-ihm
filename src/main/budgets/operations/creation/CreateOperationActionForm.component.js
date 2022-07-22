@@ -10,7 +10,9 @@ export default class CreateOperationActionForm extends Component {
 
     state = {
         idCompte : null,
+        budget: null,
         idBudget : null,
+        etatBudget: false,
         categoriesRefs: [],
         // Data d'affichages du formulaire
         categories: [],
@@ -73,11 +75,14 @@ export default class CreateOperationActionForm extends Component {
 
     // Mise à jour du contexte de budget
     shouldComponentUpdate(nextProps, nextStates){
-        if( nextProps.budget != null && nextProps.budget.id !== nextStates.idBudget ) {
+        if( nextProps.budget != null && (nextProps.budget !== nextStates.budget) ) {
             this.setState({
+                budget: nextProps.budget,
                 idBudget: nextProps.budget.id,
+                etatBudget: nextProps.budget.actif,
                 idCompte: nextProps.idCompte
             });
+            console.log("[TRIGGER] Context budget : " + nextProps.budget.id + "::" + nextProps.budget.actif)
         }
         return true;
     }
@@ -91,7 +96,7 @@ export default class CreateOperationActionForm extends Component {
             <>
                 { /** Bouton de création **/ }
                 <OverlayTrigger overlay={  <Tooltip>Ajouter une opération</Tooltip>  }>
-                    <Button variant="outline-primary" size="sm" onClick={this.handleOpenForm}>Création</Button>
+                    <Button variant="outline-primary" size="sm" disabled={!this.state.etatBudget} onClick={this.handleOpenForm}>Création</Button>
                 </OverlayTrigger>
                 { /** Fenêtre modale - Formulaire  **/ }
                 <Modal show={this.state.showModale} onHide={this.hideModal} className="modal" centered >
