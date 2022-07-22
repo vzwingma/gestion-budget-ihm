@@ -112,7 +112,7 @@ export default class Budgets extends Component {
                     }</Row>
                     <Row className="alignCenter">
                         { /** Création d'une nouvelle opération **/ }
-                        <Col className="col-xl align-content-xl-center">
+                        <Col sm={10}>
                             <CreateOperationActionForm idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
                         </Col>
                         { /** Actions sur le budget (close / reinit) **/ }

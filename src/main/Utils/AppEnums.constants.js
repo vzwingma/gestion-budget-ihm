@@ -22,7 +22,8 @@ export const SERVICES_URL = {
     },
     OPERATIONS : {
         CREATE : "/budgets/v1/{{}}/operations",
-        UPDATE : "/budgets/v1/{{}}/operations/{{}}"
+        UPDATE : "/budgets/v1/{{}}/operations/{{}}",
+        DERNIERE : "/budgets/v1/{{}}/operations/{{}}/derniereOperation"
     },
     PARAMETRES : {
         CATEGORIES : "/parametres/v1/categories"
@@ -32,10 +33,8 @@ export const SERVICES_URL = {
     USERS_ACCESS_DATE_FULL = "/utilisateurs/v1/lastaccessdate";
     USERS_PREFS_FULL = "/utilisateurs/v1/preferences";
     COMPTES_ID_FULL = "/comptes/v1/{idCompte}";
-    BUDGET_ID_FULL = "/budgets/v1/{idBudget}";
     BUDGET_UP_TO_DATE_FULL = "/budgets/v1/{idBudget}/upToDate";
     BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL = "/budgets/v1/{idCompte}/operations/libelles";
-    BUDGET_OPERATION_DERNIERE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/derniereOperation";
     BUDGET_OPERATION_INTERCOMPTE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/versCompte/{idCompte}";
 */
 

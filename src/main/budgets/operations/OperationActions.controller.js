@@ -24,8 +24,11 @@ import * as ClientHTTP from './../../Services/ClientHTTP.service'
     }
 
 
-    // Mise à jour de l'état de l'opération suivant le bouton
-    export function handleToggleClick(event) {
+/**
+ * Mise à jour de l'état de l'opération suivant le bouton
+ * @param event click sur le bouton
+ */
+export function handleToggleClick(event) {
         const action = event.target.attributes["action"].value;
 
         if(action === "SUPPRIMEE_A_CONFIRMER"){
