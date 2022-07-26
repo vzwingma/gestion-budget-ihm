@@ -6,17 +6,12 @@ import * as Service from './BudgetActionsButtonGroup.extservices'
 export default class BudgetActionsButtonGroupComponent extends Component {
 
     state = {
-        idBudget: null,
-        etatBudget: true,
         // Fenêtre modale
         showModale: false,
         title: null,
         question: null,
         // Texte pour l'affichage suivant l'action
-        action: null,
-        libelleActionCloture : null,
-        imageActionCloture : null
-
+        action: null
     }
 
 
@@ -31,21 +26,6 @@ export default class BudgetActionsButtonGroupComponent extends Component {
 
 
 
-    // Mise à jour du contexte de budget
-    shouldComponentUpdate(nextProps, nextStates){
-
-        if( nextProps.budget != null && nextProps.budget.actif !== nextStates.etatBudget ) {
-            const etatBudget = nextProps.budget.actif;
-            this.setState({
-                idBudget : nextProps.budget.id,
-                etatBudget: etatBudget,
-                libelleActionCloture: (etatBudget ? "Clôturer" : "Réouvrir") + " le budget",
-                imageActionCloture: (etatBudget ? "unlocked" : "locked")
-            });
-            console.log("[TRIGGER] Context budget : " + nextProps.budget.id + "::" + etatBudget)
-        }
-        return true;
-    }
 
 
 
@@ -57,12 +37,12 @@ export default class BudgetActionsButtonGroupComponent extends Component {
             <>
             { /** Groupe d'actions sur le budget **/ }
                 <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick}>
-                    <OverlayTrigger overlay={  <Tooltip>{this.state.libelleActionCloture}</Tooltip>  }>
+                    <OverlayTrigger overlay={  <Tooltip>{(this.props.budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}</Tooltip>  }>
                         <Button className="btn-light" action="CLOSE_A_CONFIRMER" variant="light">
-                            <img action="CLOSE_A_CONFIRMER" src={"/img/statuts/" + this.state.imageActionCloture+".png"} className="d-inline-block align-top" alt={this.state.libelleActionCloture}/>
+                            <img action="CLOSE_A_CONFIRMER" src={"/img/statuts/" + (this.props.budget.actif ? "unlocked" : "locked") +".png"} className="d-inline-block align-top" alt="Confirmer changement d'état"/>
                         </Button>
                     </OverlayTrigger>
-                    { this.state.etatBudget &&
+                    { this.props.budget.actif &&
                     <OverlayTrigger overlay={  <Tooltip>Réinitialiser le budget</Tooltip>  }>
                         <Button className="btn-light" action="REINIT_A_CONFIRMER" variant="light">
                             <img action="REINIT_A_CONFIRMER" src={"/img/statuts/circle_reinit.png"} className="d-inline-block align-top" alt="Réinitialiser le budget"/>
