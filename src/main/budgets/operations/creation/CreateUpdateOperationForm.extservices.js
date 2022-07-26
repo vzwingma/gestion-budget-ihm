@@ -13,7 +13,7 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
         ClientHTTP.call('GET',
             AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
             .then(data => {
-                this.setState({ categoriesRefs: data, categories : data })
+                this.setState({ categories : data })
 
             })
             .catch(e => {
@@ -27,7 +27,7 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
             .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
             .then(data => {
                 let comptesActifs = data
-                    .filter(c => c.id !== this.state.idCompte && c.actif)
+                    .filter(c => c.id !== this.props.idCompte && c.actif)
                 this.setState({ comptes: comptesActifs });
             })
             .catch(e => {

@@ -7,7 +7,7 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
 
     // Update du budget, suite à une action sur une opération
     export function handleOperationsListUpdate(budgetUpdated){
-        console.log("[TRIGGER] Refresh budget [" + budgetUpdated.id+ "]");
+        // console.log("[TRIGGER] Refresh budget [" + budgetUpdated.id+ "]");
         this.props.onOperationChange(budgetUpdated);
     }
 
@@ -31,7 +31,7 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
     // Right click
     export function handleOperationLast(event){
         if(this.props.budget.actif){
-            console.log("[TRIGGER] Last opération [" + event.target.parentElement.id+ "]");
+            console.log("[TRIGGER] Last opération [" + event.target.parentElement.id+ "] de [" + this.props.budget.id + "]");
             this.callSetOperationAsLast(event.target.parentElement.id, this.props.budget.id)
         }
         else{
@@ -78,9 +78,10 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
      */
     export function updateOperationTag(idOperation, tagDerniereOperation){
         // Update du budget global (parent)
-        let operationListUpdated = this.state.listeOperations.map(operation => {
+        this.props.budget.listeOperations.map(operation => {
             operation.tagDerniereOperation = (operation.id === idOperation) && tagDerniereOperation;
             return operation;
         });
-        this.setState({ listeOperations : operationListUpdated});
+        // hook : màj du state pour refresh de l'ihm
+        this.setState({ idOperation : idOperation});
     }

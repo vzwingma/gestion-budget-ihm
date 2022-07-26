@@ -26,6 +26,8 @@ export default class Budgets extends Component {
             categories: null
         }
 
+
+
     /** Constructeur **/
     constructor(props){
         super(props);

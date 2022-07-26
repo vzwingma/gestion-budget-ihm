@@ -10,13 +10,12 @@ export default class CreateUpdateOperationForm extends Component {
 
 
     state = {
-        idCompte : null,
-        budget: null,
-        idBudget : null,
-        etatBudget: false,
-        categoriesRefs: [],
+        // En mode édition :
+        idOperation: null,
+        operation: null,
         // Data d'affichages du formulaire
         categories: [],
+        categoriesRefs: [],
         ssCategories: [],
         comptes: [],
         // Formulaire
@@ -72,20 +71,6 @@ export default class CreateUpdateOperationForm extends Component {
 
     };
 
-    // Mise à jour du contexte de budget
-    shouldComponentUpdate(nextProps, nextStates){
-        if( nextProps.budget != null && (nextProps.budget !== nextStates.budget) ) {
-            this.setState({
-                budget: nextProps.budget,
-                idBudget: nextProps.budget.id,
-                etatBudget: nextProps.budget.actif,
-                idCompte: nextProps.idCompte
-            });
-            console.log("[TRIGGER] Context budget : " + nextProps.budget.id + "::" + nextProps.budget.actif)
-        }
-        return true;
-    }
-
 
     /**
      *  RENDER
@@ -99,6 +84,7 @@ export default class CreateUpdateOperationForm extends Component {
                     <Modal.Header closeButton>
                         <Modal.Title>{ this.props.modeEdition ? "Edition" : "Création"} d'une opération</Modal.Title>
                     </Modal.Header>
+
                     <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm }>
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-2" controlId="categoriesForm">
@@ -107,11 +93,13 @@ export default class CreateUpdateOperationForm extends Component {
                                 <Form.Select size="sm" required disabled={ this.props.modeEdition } onChange={this.handleSelectCategorie}>
                                         <option> </option>
                                         {
+                                            this.state.categories != null ?
                                             this.state.categories
                                                 .sort(sortLibelles)
                                                 .map((categorie, key) => (
                                                     <option key={key} id={categorie.id}>{categorie.libelle}</option>
                                                 ))
+                                                : null
 
                                         }
                                     </Form.Select>

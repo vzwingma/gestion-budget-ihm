@@ -117,7 +117,6 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         }
         // Post Creation - Clear Form
         this.setState({ // RAZ Formulaire
-            categories: this.state.categoriesRefs,
             ssCategories: [],
             formIdCategorie: null,
             formLibelleCategorie: "",
@@ -161,10 +160,10 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         // Sauvegarde de l'opération
 
         if(this.state.formIdCompteCible !== null){
-            this.saveOperationIntercompte(this.state.idBudget, operation, this.state.formIdCompteCible);
+            this.saveOperationIntercompte(this.props.budget.id, operation, this.state.formIdCompteCible);
         }
         else{
-            this.saveOperation(this.state.idBudget  , operation);
+            this.saveOperation(this.props.budget.id  , operation);
         }
 
     }
