@@ -15,7 +15,8 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
     // Double click sur une opération
     export function handleOperationUpdate(event){
         if(this.props.budget.actif){
-            console.log("[TRIGGER] Edit opération [" + event.target.parentElement.id+ "]");
+            console.log("[TRIGGER] Edit opération [" + event.target.parentElement.id + "]");
+            // Activation de la modale
             this.setState({
                 idOperation: event.target.parentElement.id,
                 showModale : true })

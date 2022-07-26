@@ -1,5 +1,4 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
-
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
@@ -152,7 +151,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                 "libelle": this.state.formLibelleSsCategorie
             },
             "typeOperation": this.state.formOperationType === "-" ? "DEPENSE" : "CREDIT",
-            "etat": this.state.formEtat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase(),
+            "etat": this.state.formEtat,
             "valeur": (this.state.formOperationType === "-" ? -1 : 1) * this.state.formValeur,
             "periodique": this.state.formOperationPeriodique !== 0,
             "tagDerniereOperation": false
@@ -167,6 +166,32 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         }
 
     }
+
+
+/**
+ * Remplissage du formulaire d'édition à partir de l'opération
+ * @param idOperation id de l'opération
+ * @param listeOperations liste des opérations du budget
+ */
+export function fillFormFromOperation(idOperation, listeOperations){
+        console.log("CreateUpdateOperationForm.componentDidMount" + idOperation);
+            let operation = listeOperations.find(op => op.id === idOperation);
+            console.log(operation) ;
+            this.setState({ // remplissage du formulaire
+                formIdCategorie: operation.categorie.id,
+                formLibelleCategorie: operation.categorie.libelle,
+                formIdSsCategorie: operation.ssCategorie.id,
+                formLibelleSsCategorie: operation.ssCategorie.libelle,
+                formIdCompteCible: null,
+                formDescription: operation.libelle,
+                formValeur: Math.abs(operation.valeur),
+                formEtat: operation.etat,
+                formOperationType: operation.typeOperation === "CREDIT" ? "+" : "-",
+                formOperationPeriodique: operation.periodique ? "1" : "0",
+                showIntercompte: false
+            })
+        }
+
 
     /**
      * Hide modal pour la modale

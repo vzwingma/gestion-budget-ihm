@@ -83,10 +83,12 @@ export default class OperationsList extends Component {
 
                 { /** Fenêtre modale - Formulaire  **/ }
                 { /** la gestion de l'affichage de la modale est délégué au composant supérieur **/ }
+                { this.state.showModale && this.state.idOperation != null &&
                 <CreateUpdateOperationForm idCompte={this.props.selectedCompte} budget={this.props.budget}
                                            showModale={this.state.showModale} modeEdition={true} idOperation={this.state.idOperation}
                                            hideModale={this.hideModale}
-                                           onOperationChange={this.props.onOperationChange}/> { /** OnOpChange est appelé par le  composant . this.props.OnOpChange : appelle la méthode du composant supérieur**/ }
+                                           onOperationChange={this.props.onOperationChange}/> }
+                { /** OnOpChange est appelé par le  composant . this.props.OnOpChange : appelle la méthode du composant supérieur**/ }
 
             </>
         ); }

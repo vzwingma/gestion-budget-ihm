@@ -12,7 +12,6 @@ export default class CreateUpdateOperationForm extends Component {
     state = {
         // En mode édition :
         idOperation: null,
-        operation: null,
         // Data d'affichages du formulaire
         categories: [],
         categoriesRefs: [],
@@ -50,6 +49,8 @@ export default class CreateUpdateOperationForm extends Component {
         this.handleSelectEtat = Controller.handleSelectEtat.bind(this);
         this.handleSelectPeriode = Controller.handleSelectPeriode.bind(this);
 
+        this.fillFormFromOperation = Controller.fillFormFromOperation.bind(this);
+
         this.handleSubmitForm = Controller.handleSubmitForm.bind(this);
         this.createOperation = Controller.createOperation.bind(this);
 
@@ -66,9 +67,12 @@ export default class CreateUpdateOperationForm extends Component {
     /**
      * Chargement des catégories
      **/
+    // TODO : Ce n'est pas au bon endroit (double appel à chaque fois)
     componentDidMount() {
         this.loadCategories();
-
+        if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
+            this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations);
+        }
     };
 
 
@@ -150,13 +154,13 @@ export default class CreateUpdateOperationForm extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="etatForm">
-                            <Form.Label column sm={4} className="col-form-label-sm">Etat</Form.Label>
+                            <Form.Label column sm={4} className="col-formk-label-sm">Etat</Form.Label>
                             <Col>
                                 <Form.Select required size="sm" value={this.state.formEtat} onChange={this.handleSelectEtat}>
-                                    <option>Prévue</option>
-                                    <option>Réalisée</option>
-                                    <option>Reportée</option>
-                                    <option>Annulée</option>
+                                    <option value="PREVUE">Prévue</option>
+                                    <option value="REALISEE">Réalisée</option>
+                                    <option value="REPORTEE">Reportée</option>
+                                    <option value="ANNULEE">Annulée</option>
                                 </Form.Select>
                             </Col>
                         </Form.Group>
