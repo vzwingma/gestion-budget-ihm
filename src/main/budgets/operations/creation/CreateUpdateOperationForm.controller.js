@@ -18,7 +18,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             .map(option => selectedIdCategorie = option.id);
 
         // selectedIdCategorie sélectionnée
-        console.log("Changement de catégorie " + categorieLabel + "[" + selectedIdCategorie + "]");
+        console.log("Changement de catégorie " + categorieLabel + " : [" + selectedIdCategorie + "]");
         this.setState({ formIdCategorie: selectedIdCategorie,
                         formLibelleCategorie: categorieLabel,
                         ssCategories : this.state.categories
@@ -32,7 +32,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         let operationMensuelle = (selectedIdCategorie === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? "1" : "0";
         this.setState( { formOperationPeriodique : operationMensuelle })
         // Virement
-        let operationType = (selectedIdCategorie === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "+" : "-";
+        let operationType = (selectedIdCategorie === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "CREDIT" : "DEPENSE";
         this.setState( { formOperationType : operationType } );
     }
 
@@ -49,7 +49,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             .filter(option => option.value === ssCategorieLabel)
             .map(option => selectedIdSsCategorie = option.id);
         // selectedIdCategorie sélectionnée
-        console.log("Changement de sous-catégorie " + ssCategorieLabel + "[" + selectedIdSsCategorie + "]")
+        console.log("Changement de sous-catégorie : " + ssCategorieLabel + " [" + selectedIdSsCategorie + "]")
         this.setState({ formIdSsCategorie: selectedIdSsCategorie,
                         formLibelleSsCategorie: ssCategorieLabel});
 
@@ -59,7 +59,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         this.setState( {showIntercompte: selectedIdSsCategorie === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES})
         if(selectedIdSsCategorie === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
             this.loadComptes();
-            this.setState( { formOperationType : "-" } );
+            this.setState( { formOperationType : "DEPENSE" } );
         }
 
 
@@ -124,8 +124,8 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             formIdCompteCible: null,
             formDescription: "",
             formValeur: "",
-            formEtat: "Prévue",
-            formOperationType: "-",
+            formEtat: "PREVUE",
+            formOperationType: "DEPENSE",
             formOperationPeriodique: false,
             showIntercompte: false
         })
@@ -150,7 +150,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                 "id": this.state.formIdSsCategorie,
                 "libelle": this.state.formLibelleSsCategorie
             },
-            "typeOperation": this.state.formOperationType === "-" ? "DEPENSE" : "CREDIT",
+            "typeOperation": this.state.formOperationType,
             "etat": this.state.formEtat,
             "valeur": (this.state.formOperationType === "-" ? -1 : 1) * this.state.formValeur,
             "periodique": this.state.formOperationPeriodique !== 0,
@@ -174,22 +174,28 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
  * @param listeOperations liste des opérations du budget
  */
 export function fillFormFromOperation(idOperation, listeOperations){
-        console.log("CreateUpdateOperationForm.componentDidMount" + idOperation);
+        console.log("CreateUpdateOperationForm.componentDidMount : " + idOperation);
             let operation = listeOperations.find(op => op.id === idOperation);
-            console.log(operation) ;
-            this.setState({ // remplissage du formulaire
-                formIdCategorie: operation.categorie.id,
-                formLibelleCategorie: operation.categorie.libelle,
-                formIdSsCategorie: operation.ssCategorie.id,
-                formLibelleSsCategorie: operation.ssCategorie.libelle,
-                formIdCompteCible: null,
-                formDescription: operation.libelle,
-                formValeur: Math.abs(operation.valeur),
-                formEtat: operation.etat,
-                formOperationType: operation.typeOperation === "CREDIT" ? "+" : "-",
-                formOperationPeriodique: operation.periodique ? "1" : "0",
-                showIntercompte: false
-            })
+            if(operation !== undefined){
+                // Création dynamique des sous-catégories pour l'édition (pas de pb car disabled)
+                const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
+
+                this.setState({ // remplissage du formulaire
+                    formIdCategorie: operation.categorie.id,
+                    formLibelleCategorie: operation.categorie.libelle,
+                    ssCategories : selectedSsCat,
+                    formIdSsCategorie: operation.ssCategorie.id,
+                    formLibelleSsCategorie: operation.ssCategorie.libelle,
+                    formIdCompteCible: null,
+                    formDescription: operation.libelle,
+                    formValeur: Math.abs(operation.valeur),
+                    formEtat: operation.etat,
+                    formOperationType: operation.typeOperation,
+                    formOperationPeriodique: operation.periodique ? "1" : "0",
+                    showIntercompte: false
+                })
+            }
+
         }
 
 

@@ -29,6 +29,8 @@ import * as ClientHTTP from './../../Services/ClientHTTP.service'
  * @param event click sur le bouton
  */
 export function handleToggleClick(event) {
+    // Correction click hors cadre
+    if(event.target.attributes["action"] !== null && event.target.attributes["action"] !== undefined) {
         const action = event.target.attributes["action"].value;
 
         if(action === "SUPPRIMEE_A_CONFIRMER"){
@@ -42,6 +44,7 @@ export function handleToggleClick(event) {
             this.updateOperation(this.props.operation);
         }
     }
+}
 
     // Mise à jour de l'état de l'opération
     export function hideShowModale(showPopup) {

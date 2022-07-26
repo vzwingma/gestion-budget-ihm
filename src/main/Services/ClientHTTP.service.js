@@ -35,6 +35,7 @@ export function call(httpMethod, uri, path, params, body ) {
     let jsonBody = null
     if(body !== undefined){
         jsonBody = JSON.stringify(body)
+    //    console.log("[WS] > Body: " + jsonBody);
     }
 
     return fetch(fullURL,

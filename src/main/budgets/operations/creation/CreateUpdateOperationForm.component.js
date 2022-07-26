@@ -14,7 +14,6 @@ export default class CreateUpdateOperationForm extends Component {
         idOperation: null,
         // Data d'affichages du formulaire
         categories: [],
-        categoriesRefs: [],
         ssCategories: [],
         comptes: [],
         // Formulaire
@@ -25,8 +24,9 @@ export default class CreateUpdateOperationForm extends Component {
         formIdCompteCible       : null,
         formDescription         : "",
         formValeur              : "",
-        formEtat                : "Prévue",
-        formOperationType       : "-",
+        // TODO : Utiliser la préférence utilisateur
+        formEtat                : "PREVUE",
+        formOperationType       : "DEPENSE",
         formOperationPeriodique : "0",
         // Affichage & Validation du formulaire
         showIntercompte: false,
@@ -69,9 +69,9 @@ export default class CreateUpdateOperationForm extends Component {
      **/
     // TODO : Ce n'est pas au bon endroit (double appel à chaque fois)
     componentDidMount() {
-        this.loadCategories();
+        let categories = this.loadCategories();
         if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
-            this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations);
+            this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations, categories);
         }
     };
 
@@ -94,26 +94,30 @@ export default class CreateUpdateOperationForm extends Component {
                         <Form.Group as={Row} className="mb-2" controlId="categoriesForm">
                             <Form.Label column sm={4} className="col-form-label-sm">Catégories</Form.Label>
                             <Col>
-                                <Form.Select size="sm" required disabled={ this.props.modeEdition } onChange={this.handleSelectCategorie}>
+                                <Form.Select size="sm" required disabled={ this.props.modeEdition }
+                                             id={this.state.formIdCategorie} value={this.state.formLibelleCategorie}
+                                             onChange={this.handleSelectCategorie}>
                                         <option> </option>
                                         {
                                             this.state.categories != null ?
                                             this.state.categories
                                                 .sort(sortLibelles)
-                                                .map((categorie, key) => (
-                                                    <option key={key} id={categorie.id}>{categorie.libelle}</option>
+                                                .map(categorie => (
+                                                    <option key={categorie.id} id={categorie.id} value={categorie.libelle}>{categorie.libelle}</option>
                                                 ))
                                                 : null
 
                                         }
                                     </Form.Select>
-                                    <Form.Select size="sm" required disabled={ this.props.modeEdition } onChange={this.handleSelectSsCategorie}>
+                                    <Form.Select size="sm" required disabled={ this.props.modeEdition }
+                                                 id={this.state.formIdSsCategorie} value={this.state.formLibelleSsCategorie}
+                                                 onChange={this.handleSelectSsCategorie}>
                                         <option> </option>
                                         {
                                             this.state.ssCategories
                                                 .sort(sortLibelles)
                                                 .map((ssCategorie) => (
-                                                    <option key={ssCategorie.id} id={ssCategorie.id}>{ssCategorie.libelle}</option>
+                                                    <option key={ssCategorie.id} id={ssCategorie.id} value={ssCategorie.libelle}>{ssCategorie.libelle}</option>
                                                 ))
                                         }
                                     </Form.Select>
@@ -124,7 +128,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                 this.state.comptes
                                                     .sort(sortLibelles)
                                                     .map(compte => (
-                                                        <option key={compte.id} id={compte.id}>{compte.libelle}</option>
+                                                        <option key={compte.id} value={compte.id}>{compte.libelle}</option>
                                                     ))
                                             }
                                         </Form.Select>
@@ -141,8 +145,8 @@ export default class CreateUpdateOperationForm extends Component {
                             <Form.Label column sm={4} className="col-form-label-sm">Valeur</Form.Label>
                             <Col sm={2}>
                                 <Form.Select disabled required size="sm" value={this.state.formOperationType} onChange={this.handleSelectType} >
-                                    <option>-</option>
-                                    <option>+</option>
+                                    <option value="DEPENSE">-</option>
+                                    <option value="CREDIT">+</option>
                                 </Form.Select>
                             </Col>
                             <Col sm={6}>
