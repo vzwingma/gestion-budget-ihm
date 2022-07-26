@@ -13,8 +13,6 @@ export default class OperationsList extends Component {
 
     /** Etats pour Budget et opérations **/
     state = {
-        budget: null,
-        listeOperations: [],
         idOperation: null,
         showModale: false
     }
@@ -30,22 +28,6 @@ export default class OperationsList extends Component {
         this.hideModale = Controller.hideModale.bind(this);
     }
 
-
-
-    // Mise à jour du contexte de budget
-    shouldComponentUpdate(nextProps, nextStates){
-        // Update si budget change dans le parent
-        if(nextProps.budget !== nextStates.budget && nextProps.budget != null){
-            console.log("[TRIGGER] Context budget [" + nextProps.budget.id + ":" + nextProps.budget.actif + "] operations [" + nextProps.budget.listeOperations.length + "]");
-            this.setState(
-                {
-                    budget : nextProps.budget,
-                    listeOperations : nextProps.budget.listeOperations
-                }
-            );
-        }
-        return true;
-    }
 
 
     /**
@@ -76,7 +58,7 @@ export default class OperationsList extends Component {
                         </tr>
                     </thead>
                     <tbody className="tbodyOperation">
-                    { this.state.listeOperations.map((operation) => (
+                    { this.props.budget.listeOperations.map((operation) => (
 
                         <tr key={operation.id} id={operation.id}
                             onContextMenu={this.disableContextMenu} onDoubleClick={this.handleOperationUpdate} onAuxClick={this.handleOperationLast}
@@ -87,7 +69,7 @@ export default class OperationsList extends Component {
                             <td>{ operation.libelle }</td>
                             <td><OperationValue valueOperation={operation.valeur} /></td>
                             <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
-                            <td>{ this.state.budget.actif &&
+                            <td>{ this.props.budget.actif &&
                                 <OperationActions key={operation.id} id={operation.id}
                                                   operation={operation} budgetid={this.props.budget.id}
                                                   onOperationChange={this.handleOperationsListUpdate} />

@@ -14,7 +14,7 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
 
     // Double click sur une opération
     export function handleOperationUpdate(event){
-        if(this.state.budget.actif){
+        if(this.props.budget.actif){
             console.log("[TRIGGER] Edit opération [" + event.target.parentElement.id+ "]");
             this.setState({
                 idOperation: event.target.parentElement.id,
@@ -30,7 +30,7 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
 
     // Right click
     export function handleOperationLast(event){
-        if(this.state.budget.actif){
+        if(this.props.budget.actif){
             console.log("[TRIGGER] Last opération [" + event.target.parentElement.id+ "]");
             this.callSetOperationAsLast(event.target.parentElement.id, this.props.budget.id)
         }

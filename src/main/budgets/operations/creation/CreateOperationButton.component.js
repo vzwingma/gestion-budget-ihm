@@ -8,8 +8,6 @@ export default class CreateOperationButton extends Component {
 
 
     state = {
-        budget: null,
-        etatBudget: null,
         showModale: false
     }
 
@@ -40,17 +38,6 @@ export default class CreateOperationButton extends Component {
     }
 
 
-    // Mise à jour du contexte de budget
-    shouldComponentUpdate(nextProps, nextStates){
-        if( nextProps.budget != null && (nextProps.budget !== nextStates.budget) ) {
-            this.setState({
-                budget: nextProps.budget,
-                etatBudget: nextProps.budget.actif
-            });
-            console.log("[TRIGGER] Context budget : " + nextProps.budget.id + "::" + nextProps.budget.actif)
-        }
-        return true;
-    }
     /**
      *  RENDER
      */
@@ -59,7 +46,7 @@ export default class CreateOperationButton extends Component {
             <>
                 { /** Bouton de création **/ }
                 <OverlayTrigger overlay={  <Tooltip>Ajouter une opération</Tooltip>  }>
-                    <Button variant="outline-primary" size="sm" disabled={!this.state.etatBudget} onClick={this.showModale}>Création</Button>
+                    <Button variant="outline-primary" size="sm" disabled={!this.props.budget.actif} onClick={this.showModale}>Création</Button>
                 </OverlayTrigger>
                 { /** Fenêtre modale - Formulaire  **/ }
                 { /** la gestion de l'affichage de la modale est délégué au composant supérieur **/ }

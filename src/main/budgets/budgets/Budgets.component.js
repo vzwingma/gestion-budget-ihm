@@ -113,12 +113,16 @@ export default class Budgets extends Component {
                     }</Row>
                     <Row className="alignCenter">
                         { /** Création d'une nouvelle opération **/ }
-                        <Col sm={10}>
-                            <CreateOperationButton idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>
+                        <Col sm={10}>{
+                            this.state.currentBudget != null ?
+                                <CreateOperationButton idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>: "Chargement...."
+                        }
                         </Col>
                         { /** Actions sur le budget (close / reinit) **/ }
-                        <Col className="col-sm-1">
-                            <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/>
+                        <Col className="col-sm-1">{
+                            this.state.currentBudget != null ?
+                                <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
+                        }
                         </Col>
                     </Row>
                 </Container>
