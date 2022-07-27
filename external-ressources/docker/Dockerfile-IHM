@@ -1,5 +1,5 @@
 # Issu de la dernière image Nginx
-FROM nginx:1.19.5-alpine
+FROM nginx:1.23.0-alpine
 MAINTAINER vincent.zwingmann@gmail.com
 
 COPY build/ /usr/share/nginx/html
