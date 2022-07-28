@@ -10,8 +10,6 @@ export default class CreateUpdateOperationForm extends Component {
 
 
     state = {
-        // En mode édition :
-        idOperation: null,
         // Data d'affichages du formulaire
         categories: [],
         ssCategories: [],
@@ -50,9 +48,11 @@ export default class CreateUpdateOperationForm extends Component {
         this.handleSelectPeriode = Controller.handleSelectPeriode.bind(this);
 
         this.fillFormFromOperation = Controller.fillFormFromOperation.bind(this);
+        this.fillOperationFromForm = Controller.fillOperationFromForm.bind(this);
 
         this.handleSubmitForm = Controller.handleSubmitForm.bind(this);
         this.createOperation = Controller.createOperation.bind(this);
+        this.updateOperation = Controller.updateOperation.bind(this);
 
         this.loadCategories = ExtServices.loadCategories.bind(this);
         this.loadComptes = ExtServices.loadComptes.bind(this);
@@ -187,14 +187,19 @@ export default class CreateUpdateOperationForm extends Component {
                             <OverlayTrigger overlay={  <Tooltip>Annuler la saisie</Tooltip>  }>
                                 <Button id="btnClose" variant="secondary" onClick={ this.props.hideModale } >Annuler</Button>
                             </OverlayTrigger>
-                            { !this.props.modeEdition &&
-                            <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>
-                                <Button id="btnValidContinue" variant="primary" type="submit" >Valider et continuer</Button>
-                            </OverlayTrigger>
+                            { !this.props.modeEdition && <>
+                                <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>
+                                    <Button id="btnValidContinue" variant="primary" type="submit" >Valider et continuer</Button>
+                                </OverlayTrigger>
+                                <OverlayTrigger overlay={ <Tooltip>Valider la saisie et fermer le formulaire</Tooltip> }>
+                                    <Button id="btnValidClose" variant="success" type="submit" >{!this.props.modeEdition ? "Valider et fermer" : "Valider" }</Button>
+                                </OverlayTrigger>
+                            </> }
+                            { this.props.modeEdition &&
+                                <OverlayTrigger overlay={ <Tooltip>Valider la modification</Tooltip> }>
+                                    <Button id="btnValidModif" variant="success" type="submit" >Valider</Button>
+                                </OverlayTrigger>
                             }
-                            <OverlayTrigger overlay={ <Tooltip>Valider la saisie et fermer le formulaire</Tooltip> }>
-                                <Button id="btnValidClose" variant="success" type="submit" >Valider et fermer</Button>
-                            </OverlayTrigger>
                         </ButtonGroup>
                     </Modal.Footer>
                     </Form>

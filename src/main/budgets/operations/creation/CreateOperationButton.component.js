@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, OverlayTrigger, Tooltip} from 'react-bootstrap'
-import CreateUpdateOperationForm from "./CreateUpdateOperationForm.component";
+import CreateUpdateOperationForm from "../createupdate/CreateUpdateOperationForm.component";
 /**
  * Formulaire sur le Bouton création
  */

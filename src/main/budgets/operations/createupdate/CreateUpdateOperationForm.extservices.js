@@ -26,8 +26,7 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
         ClientHTTP
             .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
             .then(data => {
-                let comptesActifs = data
-                    .filter(c => c.id !== this.props.idCompte && c.actif)
+                let comptesActifs = data.filter(c => c.id !== this.props.idCompte && c.actif)
                 this.setState({ comptes: comptesActifs });
             })
             .catch(e => {
@@ -36,15 +35,18 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
     }
 
 
-
-
-    /** Appels WS vers pour enregistrer l'opération sur le backend **/
-    export function saveOperation(idBudget, operation) {
-        console.log("Création d'une opération sur le budget : " + idBudget)
+    /**
+     * Appels WS vers pour enregistrer l'opération sur le backend
+     * @param idBudget id du budget concerné
+     * @param operation objet operation à enregistrer
+     * @param isUpdate true si c'est une opération à mettre à jour, false si c'est une création
+     */
+    export function saveOperation(idBudget, operation, isUpdate) {
+        console.log((isUpdate ? "Mise à jour":"Création") + " d'une opération sur le budget : " + idBudget)
         ClientHTTP
             .call('POST',
-                AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.CREATE,
-                [idBudget],
+                AppConstants.BACKEND_ENUM.URL_OPERATIONS, !isUpdate ? AppConstants.SERVICES_URL.OPERATIONS.CREATE : AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
+                [idBudget, operation.id],
                 operation)
             .then(budgetUpdated => {
                 this.props.onOperationChange(budgetUpdated);
@@ -55,8 +57,12 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
     }
 
 
-
-    /** Appels WS vers pour enregistrer l'opération sur le backend **/
+    /**
+     * Appels WS vers pour enregistrer l'opération intercompte sur le backend
+     * @param idBudget id du budget concerné
+     * @param operation opération à enregistrer
+     * @param idCompteCible id du compte cible pour la 2nde opération (intercompte)
+     */
     export function saveOperationIntercompte(idBudget, operation, idCompteCible) {
         console.log("Création d'une opération intercompte sur le budget : " + idBudget + " vers le compte " + idCompteCible)
         ClientHTTP

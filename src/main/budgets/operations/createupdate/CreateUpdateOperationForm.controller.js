@@ -65,23 +65,39 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
 
     }
 
-    // Saisie description
+    /**
+     *  Saisie description de l'opération
+     * @param event évt de saisie de description
+     */
     export function handleSelectDescription(event) {
         this.setState({formDescription : event.target.value})
     }
-    // Saisie type
+
+    /**
+     *  Saisie du type de l'opération
+     * @param event évt de saisie
+     */
     export function handleSelectType(event) {
         this.setState({formOperationType : event.target.value})
     }
-    // Saisie du compte Intercompte
+    /**
+     *  Saisie compte cible de l'opération intercompte
+     * @param event évt de saisie
+     */
     export function handleSelectCompteCible(event) {
         this.setState({formIdCompteCible : event.target.selectedOptions[0].id})
     }
-    // Saisie valeur de l'opération
+    /**
+     *  Saisie de la valeur de l'opération
+     * @param event évt de saisie
+     */
     export function handleSelectValeur(event) {
         this.setState({formValeur : event.target.value})
     }
-
+    /**
+     *  Saisie du type de l'opération
+     * @param event évt de saisie
+     */
     export function handleCompleteValeur(event) {
         let value = event.target.value.replaceAll(",", ".")
         if(value.indexOf(".") === -1) {
@@ -89,11 +105,17 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         }
         this.setState({formValeur : value})
     }
-    // Saisie Etat
+    /**
+     *  Saisie de l'état de l'opération
+     * @param event évt de saisie
+     */
     export function handleSelectEtat(event){
         this.setState({formEtat : event.target.value})
     }
-    // Saisie Période
+    /**
+     *  Saisie de la période de l'opération
+     * @param event évt de saisie
+     */
     export function handleSelectPeriode(event){
         this.setState({formOperationPeriodique : event.target.value})
     }
@@ -112,7 +134,13 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             event.stopPropagation();
         }
         else{
-            this.createOperation();
+            if(event.nativeEvent.submitter.id === "btnValidContinue" || event.nativeEvent.submitter.id === "btnValidClose") {
+                this.createOperation();
+            }
+            else if(event.nativeEvent.submitter.id === "btnValidModif") {
+                this.updateOperation();
+            }
+
         }
         // Post Creation - Clear Form
         this.setState({ // RAZ Formulaire
@@ -129,18 +157,48 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             formOperationPeriodique: false,
             showIntercompte: false
         })
-
-        if(event.nativeEvent.submitter.id === "btnValidClose") {
+        // Ferme le formulaire ssi ce n'est pas le bouton Continue
+        if(event.nativeEvent.submitter.id !== "btnValidContinue") {
             this.hideModal();
         }
     }
+
 
     /**
      * Création d'une nouvelle opération
      */
     export function createOperation(){
 
-        const operation = {
+        const operation = this.fillOperationFromForm();
+        // Sauvegarde de l'opération
+        if(this.state.formIdCompteCible !== null){
+            this.saveOperationIntercompte(this.props.budget.id, operation, this.state.formIdCompteCible);
+        }
+        else{
+            this.saveOperation(this.props.budget.id  , operation, false);
+        }
+    }
+
+
+    /**
+     * Mise à jour d'une opération
+     */
+    export function updateOperation(){
+
+        const operation = this.fillOperationFromForm();
+        // Sauvegarde de l'opération
+        operation.id = this.props.idOperation;
+        console.log("Mise à jour de l'opération : " + operation.id + " [" + this.props.idOperation + "]");
+        this.saveOperation(this.props.budget.id  , operation, true);
+
+    }
+
+    /**
+     * Création d'un objet Operation à partir du formulaire
+     */
+    export function fillOperationFromForm(){
+
+        return {
             "libelle": this.state.formDescription,
             "categorie": {
                 "id": this.state.formIdCategorie,
@@ -156,31 +214,20 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             "periodique": this.state.formOperationPeriodique !== 0,
             "tagDerniereOperation": false
         }
-        // Sauvegarde de l'opération
-
-        if(this.state.formIdCompteCible !== null){
-            this.saveOperationIntercompte(this.props.budget.id, operation, this.state.formIdCompteCible);
-        }
-        else{
-            this.saveOperation(this.props.budget.id  , operation);
-        }
-
     }
 
+    /**
+     * Remplissage du formulaire d'édition à partir de l'opération
+     * @param idOperation id de l'opération
+     * @param listeOperations liste des opérations du budget
+     */
+    export function fillFormFromOperation(idOperation, listeOperations){
+        let operation = listeOperations.find(op => op.id === idOperation);
+        if(operation !== undefined){
+            // Création dynamique des sous-catégories pour l'édition (pas de pb car disabled)
+            const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
 
-/**
- * Remplissage du formulaire d'édition à partir de l'opération
- * @param idOperation id de l'opération
- * @param listeOperations liste des opérations du budget
- */
-export function fillFormFromOperation(idOperation, listeOperations){
-        console.log("CreateUpdateOperationForm.componentDidMount : " + idOperation);
-            let operation = listeOperations.find(op => op.id === idOperation);
-            if(operation !== undefined){
-                // Création dynamique des sous-catégories pour l'édition (pas de pb car disabled)
-                const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
-
-                this.setState({ // remplissage du formulaire
+            this.setState({ // remplissage du formulaire
                     formIdCategorie: operation.categorie.id,
                     formLibelleCategorie: operation.categorie.libelle,
                     ssCategories : selectedSsCat,
@@ -188,15 +235,14 @@ export function fillFormFromOperation(idOperation, listeOperations){
                     formLibelleSsCategorie: operation.ssCategorie.libelle,
                     formIdCompteCible: null,
                     formDescription: operation.libelle,
-                    formValeur: Math.abs(operation.valeur),
+                    formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: operation.etat,
                     formOperationType: operation.typeOperation,
                     formOperationPeriodique: operation.periodique ? "1" : "0",
                     showIntercompte: false
-                })
-            }
-
+            })
         }
+    }
 
 
     /**

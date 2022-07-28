@@ -5,7 +5,7 @@ import OperationEtat from './OperationEtat.component';
 import OperationValue from './OperationValue.component';
 import * as DataUtils from '../../Utils/DataUtils.utils';
 import * as Controller from './OperationsList.controller';
-import CreateUpdateOperationForm from "./creation/CreateUpdateOperationForm.component";
+import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.component";
 /*
  * Liste des opérations
  */
