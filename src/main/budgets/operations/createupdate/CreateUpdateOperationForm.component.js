@@ -60,6 +60,7 @@ export default class CreateUpdateOperationForm extends Component {
         this.saveOperationIntercompte = ExtServices.saveOperationIntercompte.bind(this);
 
         this.hideModal = Controller.hideModal.bind(this);
+   //
     }
 
 
@@ -69,11 +70,14 @@ export default class CreateUpdateOperationForm extends Component {
      **/
     // TODO : Ce n'est pas au bon endroit (double appel à chaque fois)
     componentDidMount() {
-        let categories = this.loadCategories();
-        if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
-            this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations, categories);
+        if(!this.props.modeEdition){
+            this.loadCategories();
         }
-    };
+        if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
+            this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations, this.state.categories);
+        }
+
+    }
 
 
     /**

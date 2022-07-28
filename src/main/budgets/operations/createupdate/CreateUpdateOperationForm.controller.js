@@ -226,10 +226,11 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         if(operation !== undefined){
             // Création dynamique des sous-catégories pour l'édition (pas de pb car disabled)
             const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
-
+            const selectedCat  = [{id: operation.categorie.id, libelle: operation.categorie.libelle}];
             this.setState({ // remplissage du formulaire
                     formIdCategorie: operation.categorie.id,
                     formLibelleCategorie: operation.categorie.libelle,
+                    categories: selectedCat,
                     ssCategories : selectedSsCat,
                     formIdSsCategorie: operation.ssCategorie.id,
                     formLibelleSsCategorie: operation.ssCategorie.libelle,
