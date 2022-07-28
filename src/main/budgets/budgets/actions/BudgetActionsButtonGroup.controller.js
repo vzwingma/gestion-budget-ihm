@@ -5,7 +5,7 @@
      */
     export function handleButtonsBudgetClick(event){
 
-        if(event.target.attributes["action"] !== null){
+        if(event.target.attributes["action"] !== null && event.target.attributes["action"] !== undefined) {
             const action = event.target.attributes["action"].value;
             // console.log("[SELECT]" + action)
 
@@ -42,6 +42,11 @@
                 question : questionPopup,
                 showModale : affichagePopup,
                 action : action
+            })
+        }
+        else if(event.target.className === "btn-close"){
+            this.setState({
+                showModale : false
             })
         }
     }
