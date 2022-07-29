@@ -210,8 +210,9 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             },
             "typeOperation": this.state.formOperationType,
             "etat": this.state.formEtat,
-            "valeur": (this.state.formOperationType === "-" ? -1 : 1) * this.state.formValeur,
-            "periodique": this.state.formOperationPeriodique !== 0,
+            "valeur": (this.state.formOperationType === "DEPENSE" ? -1 : 1) * this.state.formValeur,
+            "periodique": this.state.formOperationPeriodique !== "0",
+            "mensualite": this.state.formOperationPeriodique,
             "tagDerniereOperation": false
         }
     }
@@ -227,6 +228,15 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             // Création dynamique des sous-catégories pour l'édition (pas de pb car disabled)
             const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
             const selectedCat  = [{id: operation.categorie.id, libelle: operation.categorie.libelle}];
+
+            let mensualite;
+            if(operation.periodique && operation.mensualite === 0){
+                mensualite = 1;
+            }
+            else{
+                mensualite = operation.mensualite;
+            }
+
             this.setState({ // remplissage du formulaire
                     formIdCategorie: operation.categorie.id,
                     formLibelleCategorie: operation.categorie.libelle,
@@ -239,7 +249,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                     formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: operation.etat,
                     formOperationType: operation.typeOperation,
-                    formOperationPeriodique: operation.periodique ? "1" : "0",
+                    formOperationPeriodique: mensualite,
                     showIntercompte: false
             })
         }
