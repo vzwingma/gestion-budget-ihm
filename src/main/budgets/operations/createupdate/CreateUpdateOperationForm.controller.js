@@ -154,7 +154,8 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             formValeur: "",
             formEtat: "PREVUE",
             formOperationType: "DEPENSE",
-            formOperationPeriodique: false,
+            formOperationPeriodique: "0",
+            formProchaineMensualite: null,
             showIntercompte: false
         })
         // Ferme le formulaire ssi ce n'est pas le bouton Continue
@@ -212,8 +213,9 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             "etat": this.state.formEtat,
             "valeur": (this.state.formOperationType === "DEPENSE" ? -1 : 1) * this.state.formValeur,
             "periodique": this.state.formOperationPeriodique !== "0",
-            "mensualite": this.state.formOperationPeriodique,
-            "tagDerniereOperation": false
+            "periodeMensualite": this.state.formOperationPeriodique,
+            // "prochaineMensualite": inutile - calculé automatiquement par le backend
+            "tagDerniereOperation": this.state.formTagDerniereOperation
         }
     }
 
@@ -230,11 +232,11 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             const selectedCat  = [{id: operation.categorie.id, libelle: operation.categorie.libelle}];
 
             let mensualite;
-            if(operation.periodique && operation.mensualite === 0){
+            if(operation.periodique && operation.periodeMensualite === 0){
                 mensualite = 1;
             }
             else{
-                mensualite = operation.mensualite;
+                mensualite = operation.periodeMensualite;
             }
 
             this.setState({ // remplissage du formulaire
@@ -250,6 +252,8 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                     formEtat: operation.etat,
                     formOperationType: operation.typeOperation,
                     formOperationPeriodique: mensualite,
+                    formProchaineMensualite: operation.prochaineMensualite,
+                    formTagDerniereOperation: operation.tagDerniereOperation,
                     showIntercompte: false
             })
         }

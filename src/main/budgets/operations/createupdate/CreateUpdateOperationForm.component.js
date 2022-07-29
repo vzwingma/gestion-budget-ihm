@@ -26,6 +26,8 @@ export default class CreateUpdateOperationForm extends Component {
         formEtat                : "PREVUE",
         formOperationType       : "DEPENSE",
         formOperationPeriodique : "0",
+        formProchaineMensualite : null,
+        formTagDerniereOperation: false,
         // Affichage & Validation du formulaire
         showIntercompte: false,
         formValidated: false
