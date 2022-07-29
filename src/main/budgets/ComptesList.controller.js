@@ -13,9 +13,7 @@ import * as ClientHTTP from './../Services/ClientHTTP.service';
             .then((data) => {
                 this.comptesLoaded(data)
             })
-            .catch((e) => {
-                console.log("Erreur lors du chargement des comptes " + e)
-            })
+            .catch(e => console.log("Erreur lors du chargement des comptes " + e))
     }
 
     /**
