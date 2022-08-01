@@ -44,6 +44,10 @@ export default class OperationsList extends Component {
                     .derniereOperation_true td {
                         font-weight : bold;
                     }
+                    
+                    .operation_PLANIFIEE td {
+                        font-style : italic;
+                    }
                 `}</style>
 
                 <Table striped bordered hover size="sm" variant="light">
@@ -60,10 +64,12 @@ export default class OperationsList extends Component {
                         </tr>
                     </thead>
                     <tbody className="tbodyOperation">
-                    { this.props.budget.listeOperations.map((operation) => (
-                        <tr key={operation.id} id={operation.id}
+                    { this.props.budget.listeOperations
+                     //   .filter(T => T.etat !== "PLANIFIEE")
+                        .map((operation) => (
+                        <tr key={operation.id} id={operation.id} title={operation.etat}
                             onContextMenu={this.disableContextMenu} onDoubleClick={this.handleOperationUpdate} onAuxClick={this.handleOperationLast}
-                            className={ "derniereOperation_" + operation.tagDerniereOperation }>
+                            className={ "derniereOperation_" + operation.tagDerniereOperation  + " operation_" + operation.etat }>
                             <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateOperation) }</td>
                             <td>{ operation.categorie != null ? operation.categorie.libelle : "-" }</td>
                             <td>{ operation.ssCategorie != null ? operation.ssCategorie.libelle : "-" }</td>
