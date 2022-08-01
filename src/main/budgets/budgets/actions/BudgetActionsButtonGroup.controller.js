@@ -21,7 +21,7 @@
             }
             else if(action === "REINIT_A_CONFIRMER"){
                 titrePopup = "Action sur le budget";
-                questionPopup = "Voulez vous vraiment réinitialiser le budget ?";
+                questionPopup = "Voulez vous vraiment réinitialiser le budget ? \n Le budget précédent sera clôturé, et les opérations en cours seront reportées";
                 affichagePopup = true;
             }
             else if(action === "ANNULER"){

@@ -28,8 +28,10 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
     }
 
 
-
-    // Right click
+    /**
+     * Right click sur une opération - tag comme dernière opération
+     * @param event événement
+     */
     export function handleOperationLast(event){
         if(this.props.budget.actif){
             console.log("[TRIGGER] Last opération [" + event.target.parentElement.id+ "] de [" + this.props.budget.id + "]");

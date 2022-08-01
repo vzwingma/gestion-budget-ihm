@@ -3,7 +3,7 @@ import {Container, Row, Col} from 'react-bootstrap'
 
 import ComptesList from "../ComptesList.component"
 import DateRange from "../DateRange.component"
-import OperationsList from "../operations/OperationsList.component"
+import OperationsList from "../operations/OperationsTableList.component"
 
 import ResumeSoldes from "../resume/ResumeSoldes.component"
 import ResumeCategories from "../resume/categories/ResumeCategories.component"

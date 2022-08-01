@@ -1,5 +1,5 @@
 import Table from 'react-bootstrap/Table';
-import OperationValue from './../operations/OperationValue.component'
+import OperationValue from '../operations/OperationSpanValue.component'
 /*
  * Page principale du solde
  */
