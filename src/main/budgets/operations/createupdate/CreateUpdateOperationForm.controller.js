@@ -212,9 +212,10 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             "typeOperation": this.state.formOperationType,
             "etat": this.state.formEtat,
             "valeur": (this.state.formOperationType === "DEPENSE" ? -1 : 1) * this.state.formValeur,
-            "periodique": this.state.formOperationPeriodique !== "0",
-            "periodeMensualite": this.state.formOperationPeriodique,
-            // "prochaineMensualite": inutile - calculé automatiquement par le backend
+            "mensualite" : {
+                "periode": this.state.formOperationPeriodique
+                // "prochaineEcheance": inutile - calculé automatiquement par le backend
+            },
             "tagDerniereOperation": this.state.formTagDerniereOperation
         }
     }
@@ -231,12 +232,6 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
             const selectedCat  = [{id: operation.categorie.id, libelle: operation.categorie.libelle}];
 
-            if(operation.periodique && operation.periodeMensualite === 0){
-                operation.periodeMensualite = 1;
-                operation.prochaineMensualite = "M+1";
-            }
-
-
             this.setState({ // remplissage du formulaire
                     formIdCategorie: operation.categorie.id,
                     formLibelleCategorie: operation.categorie.libelle,
@@ -249,8 +244,8 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                     formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: operation.etat,
                     formOperationType: operation.typeOperation,
-                    formOperationPeriodique: operation.periodeMensualite,
-                    formProchaineMensualite: operation.prochaineMensualite,
+                    formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? operation.mensualite.periode : "0",
+                    formProchaineMensualite: operation.mensualite !== undefined && operation.mensualite !== null ? "dans " + operation.mensualite.prochaineEcheance + " mois": null,
                     formTagDerniereOperation: operation.tagDerniereOperation,
                     showIntercompte: false
             })

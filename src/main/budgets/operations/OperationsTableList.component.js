@@ -69,7 +69,7 @@ export default class OperationsList extends Component {
                             <td>{ operation.ssCategorie != null ? operation.ssCategorie.libelle : "-" }</td>
                             <td>{ operation.libelle }</td>
                             <td><OperationValue valueOperation={operation.valeur} /></td>
-                            <td><OperationMensualite key={operation.id} id={operation.id} periodeMensualite={operation.periodeMensualite} prochaineMensualite={ operation.prochaineMensualite } /></td>
+                            <td><OperationMensualite key={operation.id} id={operation.id} mensualite={operation.mensualite}  /></td>
                             <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
                             <td>{ this.props.budget.actif &&
                                 <OperationActions key={operation.id} id={operation.id}

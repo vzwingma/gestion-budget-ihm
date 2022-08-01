@@ -7,38 +7,38 @@ export default class OperationMensualite extends Component {
 
     /** Tooltip */
     getTooltip(){
-        return "Prochaine mensualité : " + this.props.prochaineMensualite;
+        return "Prochaine échéance dans " + this.props.mensualite.prochaineEcheance + " mois";
     }
 
     /** Libellé du badge */
     getLibelle(){
-        if(this.props.periodeMensualite === 1){
-            return "Mensuelle"
-        }
-        else if(this.props.periodeMensualite === 3){
-            return "Trimestrielle"
-        }
-        else if(this.props.periodeMensualite === 6){
-            return "Semestrielle"
-        }
-        else if(this.props.periodeMensualite === 12){
-            return "Annuelle"
+        switch (this.props.mensualite.periode) {
+            case 1:
+                return "Mensuelle";
+            case 3:
+                return "Trimestrielle";
+            case 6:
+                return "Semestrielle";
+            case 12:
+                return "Annuelle";
+            default:
+                return null;
         }
     }
 
     /** Couleur du background du badge */
     getBackground(){
-        if(this.props.periodeMensualite === 1){
-            return "light"
-        }
-        else if(this.props.periodeMensualite === 3){
-            return "info"
-        }
-        else if(this.props.periodeMensualite === 6){
-            return "warning"
-        }
-        else if(this.props.periodeMensualite === 12){
-            return "danger"
+        switch (this.props.mensualite.periode) {
+            case 1:
+                return "light";
+            case 3:
+                return "info";
+            case 6:
+                return "warning";
+            case 12:
+                return "danger";
+            default:
+                return null;
         }
     }
 
@@ -56,7 +56,7 @@ export default class OperationMensualite extends Component {
                 }
             `}</style>
             { /* Pas d'affichage pour 0 */ }
-            { this.props.periodeMensualite !== 0 &&
+            { this.props.mensualite !== null && this.props.mensualite.periode !== 0 &&
                 <><OverlayTrigger overlay={ <Tooltip>{ this.getTooltip() }</Tooltip> }>
                     <Badge bg={this.getBackground()}>{this.getLibelle()}</Badge>
                 </OverlayTrigger></>
