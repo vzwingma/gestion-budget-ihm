@@ -231,13 +231,11 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
             const selectedCat  = [{id: operation.categorie.id, libelle: operation.categorie.libelle}];
 
-            let mensualite;
             if(operation.periodique && operation.periodeMensualite === 0){
-                mensualite = 1;
+                operation.periodeMensualite = 1;
+                operation.prochaineMensualite = "M+1";
             }
-            else{
-                mensualite = operation.periodeMensualite;
-            }
+
 
             this.setState({ // remplissage du formulaire
                     formIdCategorie: operation.categorie.id,
@@ -251,7 +249,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                     formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: operation.etat,
                     formOperationType: operation.typeOperation,
-                    formOperationPeriodique: mensualite,
+                    formOperationPeriodique: operation.periodeMensualite,
                     formProchaineMensualite: operation.prochaineMensualite,
                     formTagDerniereOperation: operation.tagDerniereOperation,
                     showIntercompte: false
