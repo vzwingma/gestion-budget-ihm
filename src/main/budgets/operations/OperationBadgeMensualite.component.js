@@ -13,13 +13,13 @@ export default class OperationMensualite extends Component {
     /** Libellé du badge */
     getLibelle(){
         switch (this.props.mensualite.periode) {
-            case 1:
+            case "MENSUELLE":
                 return "Mensuelle";
-            case 3:
+            case "TRIMESTRIELLE":
                 return "Trimestrielle";
-            case 6:
+            case "SEMESTRIELLE":
                 return "Semestrielle";
-            case 12:
+            case "ANNUELLE":
                 return "Annuelle";
             default:
                 return null;
@@ -29,13 +29,13 @@ export default class OperationMensualite extends Component {
     /** Couleur du background du badge */
     getBackground(){
         switch (this.props.mensualite.periode) {
-            case 1:
+            case "MENSUELLE":
                 return "light";
-            case 3:
+            case "TRIMESTRIELLE":
                 return "info";
-            case 6:
+            case "SEMESTRIELLE":
                 return "warning";
-            case 12:
+            case "ANNUELLE":
                 return "danger";
             default:
                 return null;

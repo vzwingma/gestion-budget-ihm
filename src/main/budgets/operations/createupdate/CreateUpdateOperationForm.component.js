@@ -179,11 +179,11 @@ export default class CreateUpdateOperationForm extends Component {
                             <Col>
                                 <OverlayTrigger overlay={ <Tooltip>Prochaine mensualité : {this.state.formProchaineMensualite}</Tooltip> }>
                                 <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
-                                        <option value="0">Ponctuelle</option>
-                                        <option value="1">Mensuelle</option>
-                                        <option value="3">Trimestrielle</option>
-                                        <option value="6">Semestrielle</option>
-                                        <option value="12">Annuelle</option>
+                                        <option value="PONCTUELLE">Ponctuelle</option>
+                                        <option value="MENSUELLE">Mensuelle</option>
+                                        <option value="TRIMESTRIELLE">Trimestrielle</option>
+                                        <option value="SEMESTRIELLE">Semestrielle</option>
+                                        <option value="ANNUELLE">Annuelle</option>
                                 </Form.Select>
                                 </OverlayTrigger>
                             </Col>

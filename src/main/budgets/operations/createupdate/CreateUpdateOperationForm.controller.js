@@ -155,7 +155,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             formEtat: "PREVUE",
             formOperationType: "DEPENSE",
             formOperationPeriodique: "0",
-            formProchaineMensualite: null,
+            formProchaineMensualite: "",
             showIntercompte: false
         })
         // Ferme le formulaire ssi ce n'est pas le bouton Continue
@@ -244,8 +244,8 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                     formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: operation.etat,
                     formOperationType: operation.typeOperation,
-                    formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? operation.mensualite.periode : "0",
-                    formProchaineMensualite: operation.mensualite !== undefined && operation.mensualite !== null ? "dans " + operation.mensualite.prochaineEcheance + " mois": null,
+                    formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? operation.mensualite.periode : "PONCTUELLE",
+                    formProchaineMensualite: operation.mensualite !== undefined && operation.mensualite !== null ? "dans " + operation.mensualite.prochaineEcheance + " mois": "",
                     formTagDerniereOperation: operation.tagDerniereOperation,
                     showIntercompte: false
             })
