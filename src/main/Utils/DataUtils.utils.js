@@ -22,3 +22,19 @@ export function getLibelleDate(dateString){
     }
 
 }
+
+/**
+ * Tri par libellé
+ * @param lib1 premier libellé
+ * @param lib2 2ème libellé
+ * @returns {number} comparaison
+ */
+export function sortLibelles(lib1, lib2) {
+    if (lib1.libelle > lib2.libelle) {
+        return 1;
+    }
+    if (lib1.libelle < lib2.libelle) {
+        return -1;
+    }
+    return 0;
+}

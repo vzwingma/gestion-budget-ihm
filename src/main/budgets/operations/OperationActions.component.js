@@ -1,53 +1,36 @@
 import React, { Component } from "react";
-import { ButtonGroup } from 'react-bootstrap';
-import * as AppConstants from "../../Utils/AppEnums.constants"
-import * as ClientHTTP from './../../Services/ClientHTTP.service'
-import OperationButtonAction from "./OperationButtonAction.component"
+import {Button, ButtonGroup, Col, Modal, Row} from 'react-bootstrap';
+import OperationButtonAction from "./OperationButtonAction.component";
+import * as Controller from './OperationActions.controller';
 
 export default class OperationActions extends Component {
 
-    // Constructor
+
+
+    state = {
+        showModale: false
+    }
+
+
     /** Constructeur **/
     constructor(props){
         super(props);
-        this.handleToggleClick= this.handleToggleClick.bind(this);
-        this.updateOperation = this.updateOperation.bind(this);
-    }
-
-    // Modification de l'opération
-    updateOperation(operation){
-        console.log("Modification de l'opération " + operation.id + " -> " + operation.etat);
-
-        ClientHTTP.call(operation.etat === "SUPPRIMEE" ? "DELETE" : "POST",
-            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
-            [ this.props.budgetid, operation.id ],
-            operation)
-            .then((data) => {
-                // Update du budget global (parent)
-                this.props.onOperationChange(data);
-            })
-            .catch((e) => {
-                console.log("Erreur lors de la mise à jour de l'opération " + operation.id + " >> "+ e);
-                console.log(operation);
-            })
-    }
-
-
-    // Mise à jour de l'état de l'opération
-    handleToggleClick(event) {
-        this.props.operation.etat=event.target.attributes["action"].value;
-        this.updateOperation(this.props.operation);
+        this.handleToggleClick= Controller.handleToggleClick.bind(this);
+        this.hideShowModale = Controller.hideShowModale.bind(this);
+        this.updateOperation = Controller.updateOperation.bind(this);
     }
 
 
     render(){
         return (
             <ButtonGroup aria-label="Actions" onClick={this.handleToggleClick}>
+
                 <style type="text/css">{`
-                .btn-light {
-                    padding: 0px 1px 0px 1px;
-                }
-            `}</style>
+                    .btn-light {
+                        padding: 0px 1px 0px 1px;
+                    }
+                `}</style>
+
                 { this.props.operation.etat !== "REALISEE" &&
                     <OperationButtonAction action="REALISEE" iconAction="circle_ok.png" label="Valider l'opération"/>
                 }
@@ -58,7 +41,24 @@ export default class OperationActions extends Component {
                     <OperationButtonAction action="ANNULEE" iconAction="circle_cancel.png" label="Annuler l'opération"/>
                 }
                 { this.props.operation.etat !== "SUPPRIMEE" &&
-                    <OperationButtonAction action="SUPPRIMEE" iconAction="circle_remove.png" label="Supprimer l'opération"/>
+                    <>
+                    <OperationButtonAction action="SUPPRIMEE_A_CONFIRMER" iconAction="circle_remove.png" label="Supprimer l'opération"/>
+                    <Modal show={this.state.showModale}>
+                        <Modal.Header>
+                            <Modal.Title>Suppression d'une opération</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Row><Col>Voulez vous supprimer cette opération ?</Col></Row>
+                        </Modal.Body>
+
+                        <Modal.Footer>
+                            <ButtonGroup>
+                                <Button action="SUPPRIMEE_ANNULER" variant="secondary">Annuler</Button>
+                                <Button action="SUPPRIMEE" variant="success">Confirmer</Button>
+                            </ButtonGroup>
+                        </Modal.Footer>
+                    </Modal>
+                    </>
                 }
                 { this.props.operation.etat !== "REPORTEE" &&
                     <OperationButtonAction action="REPORTEE" iconAction="circle_arrow_right.png" label="Reporter l'opération"/>

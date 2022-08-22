@@ -35,6 +35,7 @@ export function call(httpMethod, uri, path, params, body ) {
     let jsonBody = null
     if(body !== undefined){
         jsonBody = JSON.stringify(body)
+    //    console.log("[WS] > Body: " + jsonBody);
     }
 
     return fetch(fullURL,
@@ -45,9 +46,15 @@ export function call(httpMethod, uri, path, params, body ) {
         })
         .then(res => {
             console.log("[WS] < [" + res.status + " - " + res.statusText +"]")
-            return res.json();
+            if(res.status >= 200 && res.status < 300){
+                return res.json();
+            }
+            else{
+                throw new Error(res.statusText);
+            }
         })
-        .catch((e) => {
+        .catch(e => {
             console.log("Erreur lors de l'appel HTTP " + fullURL + " :: " + e)
+            throw new Error(e);
         })
 }
