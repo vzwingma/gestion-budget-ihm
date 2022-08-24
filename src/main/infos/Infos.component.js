@@ -31,7 +31,7 @@ export default class Infos extends Component {
                 })
                 .catch(() => {
                     console.log("Erreur pour " + backEnd.idMS)
-                    var errData = {
+                    const errData = {
                         key: backEnd.idMS,
                         name: backEnd.idMS,
                         version : 'N/A',

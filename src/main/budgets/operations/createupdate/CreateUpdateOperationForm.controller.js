@@ -101,7 +101,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
     export function handleCompleteValeur(event) {
         let value = event.target.value.replaceAll(",", ".")
         if(value.indexOf(".") === -1) {
-            value = value += ".00"
+            value += ".00"
         }
         this.setState({formValeur : value})
     }
