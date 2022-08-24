@@ -1,16 +1,6 @@
 /** Client HTTP **/
 import { getOAuthToken } from './Auth.service'
 
-/**
- * Generate http Headers to backend calls
- * @returns {Headers}
- */
-    export const getHeaders = () => new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization' : 'Bearer ' + getOAuthToken()
-    });
-
 
 /**
  * Appel HTTP vers le backend
@@ -31,7 +21,7 @@ export function call(httpMethod, uri, path, params, body ) {
         })
     }
 
-    console.log("[WS] > [" + httpMethod + "/"+ fullURL + "]")
+    console.log("[WS] > [" + httpMethod + " -> "+ fullURL + "]")
     let jsonBody = null
     if(body !== undefined){
         jsonBody = JSON.stringify(body)
@@ -41,7 +31,11 @@ export function call(httpMethod, uri, path, params, body ) {
     return fetch(fullURL,
         {
             method: httpMethod,
-            headers: this.getHeaders(),
+            headers: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + getOAuthToken()
+            }),
             body: jsonBody
         })
         .then(res => {
