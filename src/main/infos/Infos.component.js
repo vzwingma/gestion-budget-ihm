@@ -32,10 +32,9 @@ export default class Infos extends Component {
                 .catch(() => {
                     console.log("Erreur pour " + backEnd.idMS)
                     const errData = {
-                        key: backEnd.idMS,
-                        name: backEnd.idMS,
+                        nom: backEnd.idMS,
                         version : 'N/A',
-                        description: backEnd.idMS
+                        description: 'Module pour les ' + backEnd.idMS
                     };
                     this.setState({ infos: [...this.state.infos, errData] })
                 })

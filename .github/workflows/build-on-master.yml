@@ -34,7 +34,7 @@ jobs:
       run: npm run test
       name: Unit tests
     -
-      run: npm run build --if-present --mode staging
+      run: npm run build --mode staging --if-present
       name: Build
     -
       run: zip -r app_build.zip build/*
