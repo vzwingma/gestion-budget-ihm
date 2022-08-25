@@ -43,6 +43,10 @@ jobs:
         run: npm run test
         name: Unit tests
       -
+        name: Update version in .env
+        run: |
+          sed -i 's/__BUDGET_IHM_VERSION__/${{ steps.get_version.outputs.VERSION }}/g' external-ressources/conf/.env.production
+      -
         run: mv external-ressources/conf/.env.production .env
         name: Set env PRODUCTION
       -
