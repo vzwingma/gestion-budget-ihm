@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
-import {sortLibelles} from '../../../Utils/DataUtils.utils'
+import {addLeadingZeros, sortLibelles} from '../../../Utils/DataUtils.utils'
 /**
  * Formulaire sur le Bouton création
  */
@@ -24,6 +24,7 @@ export default class CreateUpdateOperationForm extends Component {
         formValeur              : "",
         // TODO : Utiliser la préférence utilisateur
         formEtat                : "PREVUE",
+        formDateOperation       : "",
         formOperationType       : "DEPENSE",
         formOperationPeriodique : "0",
         formProchaineMensualite : null,
@@ -47,6 +48,7 @@ export default class CreateUpdateOperationForm extends Component {
         this.handleSelectValeur = Controller.handleSelectValeur.bind(this);
         this.handleCompleteValeur = Controller.handleCompleteValeur.bind(this);
         this.handleSelectEtat = Controller.handleSelectEtat.bind(this);
+        this.handleSelectDateOperation = Controller.handleSelectDateOperation.bind(this);
         this.handleSelectPeriode = Controller.handleSelectPeriode.bind(this);
 
         this.fillFormFromOperation = Controller.fillFormFromOperation.bind(this);
@@ -74,6 +76,11 @@ export default class CreateUpdateOperationForm extends Component {
     componentDidMount() {
         if(!this.props.modeEdition){
             this.loadCategories();
+
+            let dateNow = new Date();
+            let libDate = dateNow.getFullYear() + "-" + addLeadingZeros(dateNow.getMonth()+1) + "-" + dateNow.getDate();
+            console.log(libDate)
+            this.setState({formDateOperation: libDate});
         }
         if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
             this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations, this.state.categories);
@@ -164,7 +171,7 @@ export default class CreateUpdateOperationForm extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="etatForm">
-                            <Form.Label column sm={4} className="col-formk-label-sm">Etat</Form.Label>
+                            <Form.Label column sm={4} className="col-form-label-sm">Etat</Form.Label>
                             <Col>
                                 <Form.Select required size="sm" value={this.state.formEtat} onChange={this.handleSelectEtat}>
                                     <option value="PREVUE">Prévue</option>
@@ -174,6 +181,14 @@ export default class CreateUpdateOperationForm extends Component {
                                 </Form.Select>
                             </Col>
                         </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="dateForm">
+                            <Form.Label column sm={4} className="col-form-label-sm">Date opération</Form.Label>
+                            <Col>
+                                <Form.Control type="date" name="dateop" placeholder="Date de l'opération" size={"sm"}
+                                              value={this.state.formDateOperation} onChange={this.handleSelectDateOperation} />
+                            </Col>
+                        </Form.Group>
+
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4} className="col-form-label-sm">Dépense périodique</Form.Label>
                             <Col>

@@ -130,7 +130,7 @@ export default class DateRange extends Component {
                 display: flex;
             }
         `}</style>
-           <Pagination onClick={this.handleSelect}>
+           <Pagination onClick={this.handleSelect} size={"sm"}>
              <Pagination.First id="firstButton"/>
              <Pagination.Item id="previous">{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Pagination.Item>
              <Pagination.Item id="current" active>{ this.state.dateCurrentBudget.toLocaleString('default', { month: 'long' })} { this.state.dateCurrentBudget.getFullYear() }</Pagination.Item>

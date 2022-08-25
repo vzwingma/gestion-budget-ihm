@@ -1,4 +1,5 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
+import {getDateFromDateTime} from "../../../Utils/DataUtils.utils";
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
@@ -112,6 +113,11 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
     export function handleSelectEtat(event){
         this.setState({formEtat : event.target.value})
     }
+
+
+    export function handleSelectDateOperation(event){
+        this.setState({formDateOperation: event.target.value})
+    }
     /**
      *  Saisie de la période de l'opération
      * @param event évt de saisie
@@ -153,6 +159,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             formDescription: "",
             formValeur: "",
             formEtat: "PREVUE",
+            formDateOperation: "",
             formOperationType: "DEPENSE",
             formOperationPeriodique: "0",
             formProchaineMensualite: "",
@@ -216,6 +223,9 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                 "periode": this.state.formOperationPeriodique
                 // "prochaineEcheance": inutile - calculé automatiquement par le backend
             },
+            "autresInfos" : {
+                "dateOperation": this.state.formDateOperation
+            },
             "tagDerniereOperation": this.state.formTagDerniereOperation
         }
     }
@@ -243,6 +253,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                     formDescription: operation.libelle,
                     formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: operation.etat,
+                    formDateOperation: operation.autresInfos !== undefined && operation.autresInfos.formDateOperation !== null ? getDateFromDateTime(operation.autresInfos.dateOperation) : null,
                     formOperationType: operation.typeOperation,
                     formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? operation.mensualite.periode : "PONCTUELLE",
                     formProchaineMensualite: operation.mensualite !== undefined && operation.mensualite !== null ? "dans " + operation.mensualite.prochaineEcheance + " mois": "",

@@ -38,3 +38,11 @@ export function sortLibelles(lib1, lib2) {
     }
     return 0;
 }
+
+
+export function getDateFromDateTime(dateTime){
+    if(dateTime !== null){
+        return dateTime.substring(0, 10)
+    }
+    return dateTime
+}
