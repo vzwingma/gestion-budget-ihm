@@ -25,7 +25,7 @@ export default class Infos extends Component {
         // Itération sur tous les composants
         this.backEnds
             .filter(backEnd => backEnd.url !== undefined)
-            .map(backEnd =>
+            .forEach(backEnd =>
                 ClientHTTP.call('GET', backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO)
                     .then((data) => {
                         infosUpdated.push(data)
