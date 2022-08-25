@@ -34,12 +34,8 @@ jobs:
       - name: Get tag Version
         id: get_version
         run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2- )
-      - name: setup git config
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
       - name: Apply version
-        run: npm version ${{ steps.get_version.outputs.VERSION }}
+        run: npm version ${{ steps.get_version.outputs.VERSION }} --git-tag-version=false
       -
         run: npm ci
         name: CI Install
