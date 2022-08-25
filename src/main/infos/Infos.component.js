@@ -21,12 +21,11 @@ export default class Infos extends Component {
     /** Appels WS vers /actuator/info pour tous les µS **/
     componentDidMount() {
 
-        var infosUpdated = []
+        let infosUpdated = []
         // Itération sur tous les composants
         this.backEnds
             .filter(backEnd => backEnd.url !== undefined)
-            .map((backEnd, i) => {
-                console.log( i + "/ Chargement des infos pour " + backEnd.idMS);
+            .map(backEnd =>
                 ClientHTTP.call('GET', backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO)
                     .then((data) => {
                         infosUpdated.push(data)
@@ -42,7 +41,7 @@ export default class Infos extends Component {
                         infosUpdated.push(errData)
                         this.setState({ infos: infosUpdated })
                     })
-            })
+            )
       }
 
     /** Phase de Render à partir de la liste de statuts  **/
