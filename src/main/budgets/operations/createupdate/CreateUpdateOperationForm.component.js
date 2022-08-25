@@ -134,7 +134,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                 this.state.comptes
                                                     .sort(sortLibelles)
                                                     .map(compte => (
-                                                        <option key={compte.id} value={compte.id}>{compte.libelle}</option>
+                                                        <option key={compte.id} id={compte.id} value={compte.libelle}>{compte.libelle}</option>
                                                     ))
                                             }
                                         </Form.Select>
