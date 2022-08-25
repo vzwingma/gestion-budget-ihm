@@ -43,6 +43,9 @@ jobs:
         run: npm run test
         name: Unit tests
       -
+        run: mv external-ressources/conf/.env.production .env
+        name: Set env PRODUCTION
+      -
         run: npm run build --mode staging --if-present
         name: Build
       -
