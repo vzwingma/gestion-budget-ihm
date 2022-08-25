@@ -77,10 +77,8 @@ export default class CreateUpdateOperationForm extends Component {
         if(!this.props.modeEdition){
             this.loadCategories();
 
-            let dateNow = new Date();
-            let libDate = dateNow.getFullYear() + "-" + addLeadingZeros(dateNow.getMonth()+1) + "-" + dateNow.getDate();
-            console.log(libDate)
-            this.setState({formDateOperation: libDate});
+            const dateNow = new Date();
+            this.setState({formDateOperation: dateNow.getFullYear() + "-" + addLeadingZeros(dateNow.getMonth()+1) + "-" + dateNow.getDate()});
         }
         if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
             this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations, this.state.categories);
