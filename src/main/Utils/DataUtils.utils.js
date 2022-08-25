@@ -15,7 +15,7 @@ export function addLeadingZeros(num) {
 export function getLibelleDate(dateString){
     if( dateString != null){
         let date = new Date(Date.parse(dateString))
-        return this.addLeadingZeros(date.getDate()) + "/" + this.addLeadingZeros(date.getMonth()+1) +"/" + date.getFullYear();
+        return addLeadingZeros(date.getDate()) + "/" + addLeadingZeros(date.getMonth()+1) +"/" + date.getFullYear();
     }
     else {
         return "-"

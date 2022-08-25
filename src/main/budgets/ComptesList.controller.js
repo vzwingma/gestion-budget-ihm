@@ -36,7 +36,7 @@ import * as ClientHTTP from './../Services/ClientHTTP.service';
         // Select du compte parmi la liste
         const compteLabel =event.target.value;
         console.log("Changement de compte : " + compteLabel)
-        var selectedIdCompte = null;
+        let selectedIdCompte = null;
         Array.from(event.target.options)
              .forEach(function (option) {
                 if(option.value === compteLabel){

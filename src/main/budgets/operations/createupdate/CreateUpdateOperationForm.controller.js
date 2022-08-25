@@ -14,8 +14,8 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
         const categorieLabel =event.target.value;
         let selectedIdCategorie = null;
         Array.from(event.target.options)
-            .filter(option => option.value === categorieLabel)
-            .map(option => selectedIdCategorie = option.id);
+             .filter(option => option.value === categorieLabel)
+             .map(option => selectedIdCategorie = option.id);
 
         // selectedIdCategorie sélectionnée
         console.log("Changement de catégorie " + categorieLabel + " : [" + selectedIdCategorie + "]");
@@ -101,7 +101,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
     export function handleCompleteValeur(event) {
         let value = event.target.value.replaceAll(",", ".")
         if(value.indexOf(".") === -1) {
-            value = value += ".00"
+            value += ".00"
         }
         this.setState({formValeur : value})
     }

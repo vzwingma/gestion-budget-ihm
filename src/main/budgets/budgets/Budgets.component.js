@@ -51,7 +51,7 @@ export default class Budgets extends Component {
     // Mise à jour du contexte de budget
     shouldComponentUpdate(nextProps, nextStates){
         let componentUpdate = false;
-        let budgetUpdate = false;
+        let budgetUpdate;
         if(this.state.selectedCompte !== nextStates.selectedCompte){
             console.log("[TRIGGER] Context compte=" + nextStates.selectedCompte )
             componentUpdate = true;
