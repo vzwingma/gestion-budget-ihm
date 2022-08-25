@@ -1,4 +1,4 @@
-/*
+/**
  * Affichage d'une valeur dans la liste des opérations
  */
 
@@ -24,7 +24,7 @@ const OperationValue = ({ valueOperation }) => {
 
     // définition du libellé
     return (
-        <span className={getStyleOperation(valueOperation)}>{valueOperation.toFixed(2)} €</span>
+        <span className={ getStyleOperation(valueOperation) }>{ Math.abs(valueOperation).toFixed(2) } €</span>
     )
 };
 

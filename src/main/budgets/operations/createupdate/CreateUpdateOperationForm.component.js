@@ -26,6 +26,8 @@ export default class CreateUpdateOperationForm extends Component {
         formEtat                : "PREVUE",
         formOperationType       : "DEPENSE",
         formOperationPeriodique : "0",
+        formProchaineMensualite : null,
+        formTagDerniereOperation: false,
         // Affichage & Validation du formulaire
         showIntercompte: false,
         formValidated: false
@@ -132,7 +134,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                 this.state.comptes
                                                     .sort(sortLibelles)
                                                     .map(compte => (
-                                                        <option key={compte.id} value={compte.id}>{compte.libelle}</option>
+                                                        <option key={compte.id} id={compte.id} value={compte.libelle}>{compte.libelle}</option>
                                                     ))
                                             }
                                         </Form.Select>
@@ -175,13 +177,15 @@ export default class CreateUpdateOperationForm extends Component {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4} className="col-form-label-sm">Dépense périodique</Form.Label>
                             <Col>
+                                <OverlayTrigger overlay={ <Tooltip>Prochaine mensualité : {this.state.formProchaineMensualite}</Tooltip> }>
                                 <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
-                                        <option value="0">Ponctuelle</option>
-                                        <option value="1">Mensuelle</option>
-                                        <option value="3"  disabled>Trimestrielle</option>
-                                        <option value="6"  disabled>Semestrielle</option>
-                                        <option value="12" disabled>Annuelle</option>
+                                        <option value="PONCTUELLE">Ponctuelle</option>
+                                        <option value="MENSUELLE">Mensuelle</option>
+                                        <option value="TRIMESTRIELLE">Trimestrielle</option>
+                                        <option value="SEMESTRIELLE">Semestrielle</option>
+                                        <option value="ANNUELLE">Annuelle</option>
                                 </Form.Select>
+                                </OverlayTrigger>
                             </Col>
                         </Form.Group>
                     </Modal.Body>

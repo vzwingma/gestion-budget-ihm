@@ -31,6 +31,9 @@ export default class OperationEtat extends Component {
             { this.props.operation.etat === "REPORTEE" &&
                 <Badge bg="info">Reportée</Badge>
             }
+            { this.props.operation.etat === "PLANIFIEE" &&
+                <Badge bg="Secondary">Planifiée</Badge>
+            }
         </div>
       )
     }

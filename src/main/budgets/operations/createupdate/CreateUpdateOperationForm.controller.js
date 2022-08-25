@@ -154,7 +154,8 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             formValeur: "",
             formEtat: "PREVUE",
             formOperationType: "DEPENSE",
-            formOperationPeriodique: false,
+            formOperationPeriodique: "0",
+            formProchaineMensualite: "",
             showIntercompte: false
         })
         // Ferme le formulaire ssi ce n'est pas le bouton Continue
@@ -210,9 +211,12 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             },
             "typeOperation": this.state.formOperationType,
             "etat": this.state.formEtat,
-            "valeur": (this.state.formOperationType === "-" ? -1 : 1) * this.state.formValeur,
-            "periodique": this.state.formOperationPeriodique !== 0,
-            "tagDerniereOperation": false
+            "valeur": (this.state.formOperationType === "DEPENSE" ? -1 : 1) * this.state.formValeur,
+            "mensualite" : {
+                "periode": this.state.formOperationPeriodique
+                // "prochaineEcheance": inutile - calculé automatiquement par le backend
+            },
+            "tagDerniereOperation": this.state.formTagDerniereOperation
         }
     }
 
@@ -227,6 +231,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
             // Création dynamique des sous-catégories pour l'édition (pas de pb car disabled)
             const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
             const selectedCat  = [{id: operation.categorie.id, libelle: operation.categorie.libelle}];
+
             this.setState({ // remplissage du formulaire
                     formIdCategorie: operation.categorie.id,
                     formLibelleCategorie: operation.categorie.libelle,
@@ -239,7 +244,9 @@ import * as AppConstants from "../../../Utils/AppEnums.constants"
                     formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: operation.etat,
                     formOperationType: operation.typeOperation,
-                    formOperationPeriodique: operation.periodique ? "1" : "0",
+                    formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? operation.mensualite.periode : "PONCTUELLE",
+                    formProchaineMensualite: operation.mensualite !== undefined && operation.mensualite !== null ? "dans " + operation.mensualite.prochaineEcheance + " mois": "",
+                    formTagDerniereOperation: operation.tagDerniereOperation,
                     showIntercompte: false
             })
         }
