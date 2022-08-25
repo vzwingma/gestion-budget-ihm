@@ -1,4 +1,4 @@
-name: CI - native release apps
+name: CI - Release IHM
 
 # Controls when the action will run. 
 on:

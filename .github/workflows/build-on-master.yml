@@ -34,10 +34,10 @@ jobs:
       run: npm run test
       name: Unit tests
     -
-      run: rm -f .env.production
-      name: set env Staging
+      run: mv external-ressources/conf/.env.staging .env
+      name: Set env STAGING
     -
-      run: npm run build --mode staging --if-present
+      run: npm run build --if-present
       name: Build Staging
     -
       run: zip -r app_build.zip build/*
