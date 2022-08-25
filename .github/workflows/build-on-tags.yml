@@ -1,54 +1,18 @@
-name: CI on Master
-  # Controls when the action will run.
-# Triggers the workflow on push or pull request events on all but the master branch
+name: CI - Release IHM
+
+# Controls when the action will run. 
 on:
-    # Sequence of patterns matched against refs/heads
+  # Triggers the workflow on push or pull request events but only for tags
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags:
+      - '*'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    steps:
-    -
-      uses: actions/checkout@v3
-    -
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    -
-      name: Use Node.js 18
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    -
-      run: npm ci
-      name: CI Install
-    -
-      run: npm run test
-      name: Unit tests
-    -
-      run: mv external-ressources/conf/.env.staging .env
-      name: Set env STAGING
-    -
-      run: npm run build --if-present
-      name: Build Staging
-    -
-      run: zip -r app_build.zip build/*
-    -
-      uses: actions/upload-artifact@v2
-      name: Upload IHM app
-      with:
-        path: app_build.zip
-        name: app_build.zip
-# LINT
-  lint:
+  # BUILD
+  build-ihm:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
@@ -66,33 +30,39 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      # Update version
+      - name: Get tag Version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2- )
+      - name: Apply version
+        run: npm version ${{ steps.get_version.outputs.VERSION }}
       -
-        run: npm install eslint --save
+        run: npm ci
+        name: CI Install
       -
-        run: npm run lint
-  sonarcloud:
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - uses: actions/checkout@v3
+        run: npm run test
+        name: Unit tests
+      -
+        run: mv external-ressources/conf/.env.production .env
+        name: Set env PRODUCTION
+      -
+        run: npm run build --mode staging --if-present
+        name: Build
+      -
+        run: zip -r app_build.zip build/*
+  # Upload RELEASE
+      -
+        uses: actions/upload-artifact@v2
+        name: Upload IHM app
         with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm
-          args: >
-            -Dsonar.organization=vzwingma-github
-            -Dsonar.projectKey=vzwingma_gestion-budget-ihm
-            -Dsonar.verbose=true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          path: app_build.zip
+          name: app_build.zip
+
   # PUBLISH DOCKER IMAGES
-  docker:
+  docker-ihm:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-ihm
     steps:
       -
         uses: actions/checkout@v3
@@ -129,6 +99,11 @@ jobs:
       -
         name: Copie de la config nginx
         run: cp /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/external-ressources/docker/nginx.conf /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/nginx.conf
+      # Préparation de la version
+      -
+        name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2-)
       -
         name: Build and push IHM
         id: docker_build
@@ -137,7 +112,7 @@ jobs:
           context: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/
           file: Dockerfile-IHM
           push: true
-          tags: vzwingmabudget/gestion_budget_ihm:snapshot
+          tags: vzwingmabudget/gestion_budget_ihm:latest, vzwingmabudget/gestion_budget_ihm:${{ steps.get_version.outputs.VERSION }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

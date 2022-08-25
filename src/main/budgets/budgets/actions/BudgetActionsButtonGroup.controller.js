@@ -11,7 +11,7 @@
 
             let titrePopup = "";
             let questionPopup = "";
-            let affichagePopup = true;
+            let affichagePopup;
 
             if(action === "CLOSE_A_CONFIRMER"){
 

@@ -8,7 +8,7 @@ export default class Infos extends Component {
 
     /** Etats pour la page Infos **/
       state = {
-        infos: []
+          infos: []
       }
     /** Config Backend **/
       backEnds = [
@@ -21,23 +21,27 @@ export default class Infos extends Component {
     /** Appels WS vers /actuator/info pour tous les µS **/
     componentDidMount() {
 
+        let infosUpdated = []
         // Itération sur tous les composants
-        this.backEnds.map(backEnd => (
-            ClientHTTP.call('GET', backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO)
-                .then((data) => {
-                    this.setState({ infos: [...this.state.infos, data] })
-                })
-                .catch(() => {
-                    console.log("Erreur pour " + backEnd.idMS)
-                    var errData = {
-                        key: backEnd.idMS,
-                        name: backEnd.idMS,
-                        version : 'N/A',
-                        description: backEnd.idMS
-                    };
-                    this.setState({ infos: [...this.state.infos, errData] })
-                })
-        ))
+        this.backEnds
+            .filter(backEnd => backEnd.url !== undefined)
+            .forEach(backEnd =>
+                ClientHTTP.call('GET', backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO)
+                    .then((data) => {
+                        infosUpdated.push(data)
+                        this.setState({ infos: infosUpdated })
+                    })
+                    .catch(() => {
+                        console.log("Erreur pour " + backEnd.idMS)
+                        const errData = {
+                            nom: backEnd.idMS,
+                            version : 'N/A',
+                            description: 'Module pour les ' + backEnd.idMS
+                        };
+                        infosUpdated.push(errData)
+                        this.setState({ infos: infosUpdated })
+                    })
+            )
       }
 
     /** Phase de Render à partir de la liste de statuts  **/
@@ -59,9 +63,9 @@ export default class Infos extends Component {
                                         version={process.env.REACT_APP_BUDGET_VERSION}
                                         description="IHM REACT" />
 
-                                {this.state.infos.map((msInfos) => (
+                                {this.state.infos.map((msInfos, i) => (
                                     <ModuleInfos
-                                        key={msInfos.nom} name={msInfos.nom}
+                                        key={msInfos.nom + i} name={msInfos.nom}
                                         version={msInfos.version} description={msInfos.description} />
                                 ))}
                               </tbody>
