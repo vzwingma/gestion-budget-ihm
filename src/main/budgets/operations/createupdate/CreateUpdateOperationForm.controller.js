@@ -1,5 +1,5 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
-import {getDateFromDateTime} from "../../../Utils/DataUtils.utils";
+import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.utils";
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
@@ -159,7 +159,7 @@ import {getDateFromDateTime} from "../../../Utils/DataUtils.utils";
             formDescription: "",
             formValeur: "",
             formEtat: "PREVUE",
-            formDateOperation: "",
+            formDateOperation: getLibelleDate(new Date(), "AAAA-MM-DD"),
             formOperationType: "DEPENSE",
             formOperationPeriodique: "0",
             formProchaineMensualite: "",
