@@ -38,13 +38,13 @@ export default class BudgetActionsButtonGroupComponent extends Component {
             { /** Groupe d'actions sur le budget **/ }
                 <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick}>
                     <OverlayTrigger overlay={  <Tooltip>{(this.props.budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}</Tooltip>  }>
-                        <Button className="btn-light" action="CLOSE_A_CONFIRMER" variant="light">
+                        <Button className="btn-dark" action="CLOSE_A_CONFIRMER" variant="light">
                             <img action="CLOSE_A_CONFIRMER" src={"/img/statuts/" + (this.props.budget.actif ? "unlocked" : "locked") +".png"} className="d-inline-block align-top" alt="Confirmer changement d'état"/>
                         </Button>
                     </OverlayTrigger>
                     { this.props.budget.actif &&
                     <OverlayTrigger overlay={  <Tooltip>Réinitialiser le budget</Tooltip>  }>
-                        <Button className="btn-light" action="REINIT_A_CONFIRMER" variant="light">
+                        <Button className="btn-dark" action="REINIT_A_CONFIRMER" variant="light">
                             <img action="REINIT_A_CONFIRMER" src={"/img/statuts/circle_reinit.png"} className="d-inline-block align-top" alt="Réinitialiser le budget"/>
                         </Button>
                     </OverlayTrigger>
@@ -59,8 +59,8 @@ export default class BudgetActionsButtonGroupComponent extends Component {
 
                         <Modal.Footer>
                             <ButtonGroup>
-                                <Button action="ANNULER" variant="secondary">Annuler</Button>
-                                <Button action="CONFIRMER" variant="success">Confirmer</Button>
+                                <Button action="ANNULER"    variant="secondary">Annuler</Button>
+                                <Button action="CONFIRMER"  variant="success">Confirmer</Button>
                             </ButtonGroup>
                         </Modal.Footer>
                     </Modal>

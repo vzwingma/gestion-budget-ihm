@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Container, Row, Col} from 'react-bootstrap'
+import {Container, Row, Col, Navbar} from 'react-bootstrap'
 
 import ComptesList from "../ComptesList.component"
 import DateRange from "../DateRange.component"
@@ -81,7 +81,7 @@ export default class Budgets extends Component {
      * Render du budget
      */
     render() { return (
-        <Container fluid>
+        <>
           <Row>
             <Col sm={4}>
               <ComptesList onCompteChange={this.handleCompteChange} />
@@ -111,26 +111,24 @@ export default class Budgets extends Component {
                 <Container fluid={"xl"}>
                     { /** Liste des opérations **/ }
                     <Row>{
-                        this.state.currentBudget != null ? <OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."
+                        this.state.currentBudget != null ?
+                            <OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."
                     }</Row>
-                    <Row className="alignCenter">
-                        { /** Création d'une nouvelle opération **/ }
-                        <Col sm={10}>{
-                            this.state.currentBudget != null ?
-                                <CreateOperationButton idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/>: "Chargement...."
-                        }
-                        </Col>
-                        { /** Actions sur le budget (close / reinit) **/ }
-                        <Col className="col-sm-1">{
-                            this.state.currentBudget != null ?
-                                <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
-                        }
-                        </Col>
-                    </Row>
                 </Container>
             </Col>
           </Row>
 
-        </Container>
+        <Navbar sticky="bottom" bg="dark" variant="dark" className="justify-content-end">
+            { /** Création d'une nouvelle opération **/
+                this.state.currentBudget != null ?
+                    <CreateOperationButton idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/> : "Chargement...."
+            }
+            {/** Actions sur le budget (close / reinit) **/
+                this.state.currentBudget != null ?
+                    <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
+            }
+            {' '}
+        </Navbar>
+        </>
     ); }
 }
