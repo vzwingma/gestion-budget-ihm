@@ -29,7 +29,8 @@ import * as ClientHTTP from './../Services/ClientHTTP.service';
             return {
                 value: compte.id,
                 text: compte.libelle,
-                icon: <img src={"/img/banques/" + compte.itemIcon} className="d-inline-block align-top" alt={compte.libelle}/>
+                icon: <img src={"/img/banques/" + compte.itemIcon} className="d-inline-block align-top" alt={compte.libelle}/>,
+                isDisabled: !compte.actif
             }
         })
 

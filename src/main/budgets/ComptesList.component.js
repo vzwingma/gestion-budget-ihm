@@ -38,8 +38,7 @@ export default class ComptesList extends Component {
                     onChange={this.handleSelect}
                     getOptionLabel={e => (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            {e.icon}
-                            <span style={{ marginLeft: 5 }}>{e.text}</span>
+                            {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
                         </div>
                     )}
                 />
