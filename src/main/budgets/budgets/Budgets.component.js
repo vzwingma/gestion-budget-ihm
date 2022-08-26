@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Container, Row, Col, Navbar} from 'react-bootstrap'
+import {Row, Col, Navbar} from 'react-bootstrap'
 
 import ComptesList from "../ComptesList.component"
 import DateRange from "../DateRange.component"
@@ -82,53 +82,41 @@ export default class Budgets extends Component {
      */
     render() { return (
         <>
-          <Row>
-            <Col sm={4}>
-              <ComptesList onCompteChange={this.handleCompteChange} />
-            </Col>
-            <Col sm={8}>
-              <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={4}>
-                <Container fluid={"xl"}>
+            <Row>
+                <Col sm={4}>
+                  <ComptesList onCompteChange={this.handleCompteChange} />
+                </Col>
+                <Col sm={8}>
+                  <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={4}>
                     { /** Résumé des catégories **/ }
                     <Row>
-                        <Col>{
-                            this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..."
-                        }</Col>
+                        <Col>{ this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..." }</Col>
                     </Row>
                     { /** Soldes **/ }
                     <Row>
-                        <Col>{
-                            this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..."
-                        }</Col>
+                        <Col>{ this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..." }</Col>
                     </Row>
-                </Container>
-            </Col>
-            <Col sm={8}>
-                <Container fluid={"xl"}>
+                </Col>
+                <Col sm={8}>
                     { /** Liste des opérations **/ }
-                    <Row>{
-                        this.state.currentBudget != null ?
-                            <OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."
-                    }</Row>
-                </Container>
-            </Col>
-          </Row>
+                    <Row>{ this.state.currentBudget != null ?<OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."}</Row>
+                </Col>
+            </Row>
 
-        <Navbar sticky="bottom" bg="dark" variant="dark" className="justify-content-end">
-            { /** Création d'une nouvelle opération **/
-                this.state.currentBudget != null ?
-                    <CreateOperationButton idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/> : "Chargement...."
-            }
-            {/** Actions sur le budget (close / reinit) **/
-                this.state.currentBudget != null ?
-                    <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
-            }
-            {' '}
-        </Navbar>
+            <Navbar sticky="bottom" bg="dark" variant="dark" className="justify-content-end">
+                { /** Création d'une nouvelle opération **/
+                    this.state.currentBudget != null ?
+                        <CreateOperationButton idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/> : "Chargement...."
+                }
+                {/** Actions sur le budget (close / reinit) **/
+                    this.state.currentBudget != null ?
+                        <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
+                }
+            </Navbar>
         </>
     ); }
 }
