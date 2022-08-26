@@ -10,18 +10,23 @@ export function addLeadingZeros(num) {
 /**
  * Calcul d'un libellé d'une date depuis son time in ms
  * @param dateString date en string
- * @returns {string} date au format JJ/MM/AAAA
+ * @param pattern pattern de sortie : JJ/MM/AAAA ou AAAA-MM-DD
+ * @returns {string} date au format issu du pattern
  */
-export function getLibelleDate(dateString){
+export function getLibelleDate(dateString, pattern){
     if( dateString != null){
         let date = new Date(Date.parse(dateString))
-        return addLeadingZeros(date.getDate()) + "/" + addLeadingZeros(date.getMonth()+1) +"/" + date.getFullYear();
+        if(pattern === "JJ/MM/AAAA"){
+            return addLeadingZeros(date.getDate()) + "/" + addLeadingZeros(date.getMonth()+1) +"/" + date.getFullYear();
+        }
+        else if(pattern === "AAAA-MM-DD"){
+            return date.getFullYear() + "-" + addLeadingZeros(date.getMonth()+1) + "-" + addLeadingZeros(date.getDate())
+        }
     }
-    else {
-        return "-"
-    }
-
+    return "-"
 }
+
+
 
 /**
  * Tri par libellé
@@ -39,7 +44,11 @@ export function sortLibelles(lib1, lib2) {
     return 0;
 }
 
-
+/**
+ * Extrait la date d'un datetime
+ * @param dateTime date time fourni par le backend
+ * @returns {string|*} la première partie en JJ MM AAAA
+ */
 export function getDateFromDateTime(dateTime){
     if(dateTime !== null){
         return dateTime.substring(0, 10)

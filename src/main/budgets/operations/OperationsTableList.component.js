@@ -50,7 +50,7 @@ export default class OperationsList extends Component {
                     }
                 `}</style>
 
-                <Table striped bordered hover size="sm" variant="light">
+                <Table striped bordered hover size="sm" variant="light" responsive="lg">
                     <thead>
                         <tr>
                             <th scope="col">Jour opération</th>
@@ -70,7 +70,7 @@ export default class OperationsList extends Component {
                         <tr key={operation.id} id={operation.id} title={operation.etat}
                             onContextMenu={this.disableContextMenu} onDoubleClick={this.handleOperationUpdate} onAuxClick={this.handleOperationLast}
                             className={ "derniereOperation_" + operation.tagDerniereOperation  + " operation_" + operation.etat }>
-                            <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateOperation) }</td>
+                            <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateOperation, "JJ/MM/AAAA") }</td>
                             <td>{ operation.categorie != null ? operation.categorie.libelle : "-" }</td>
                             <td>{ operation.ssCategorie != null ? operation.ssCategorie.libelle : "-" }</td>
                             <td>{ operation.libelle }</td>
@@ -83,7 +83,7 @@ export default class OperationsList extends Component {
                                                   onOperationChange={this.handleOperationsListUpdate} />
                                 }
                             </td>
-                            <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateMaj) }</td>
+                            <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateMaj, "JJ/MM/AAAA") }</td>
                         </tr>
                     ))}
                     </tbody>

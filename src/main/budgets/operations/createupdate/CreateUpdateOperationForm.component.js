@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
-import {addLeadingZeros, sortLibelles} from '../../../Utils/DataUtils.utils'
+import {getLibelleDate, sortLibelles} from '../../../Utils/DataUtils.utils'
 /**
  * Formulaire sur le Bouton création
  */
@@ -76,9 +76,7 @@ export default class CreateUpdateOperationForm extends Component {
     componentDidMount() {
         if(!this.props.modeEdition){
             this.loadCategories();
-
-            const dateNow = new Date();
-            this.setState({formDateOperation: dateNow.getFullYear() + "-" + addLeadingZeros(dateNow.getMonth()+1) + "-" + dateNow.getDate()});
+            this.setState({formDateOperation: getLibelleDate(new Date(), "AAAA-MM-DD")});
         }
         if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
             this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations, this.state.categories);
