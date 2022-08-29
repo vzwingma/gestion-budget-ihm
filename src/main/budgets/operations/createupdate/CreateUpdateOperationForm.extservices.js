@@ -70,14 +70,14 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
      * Appels WS vers pour enregistrer l'opération intercompte sur le backend
      * @param idBudget id du budget concerné
      * @param operation opération à enregistrer
-     * @param idCompteCible id du compte cible pour la 2nde opération (intercompte)
+     * @param compteCible compte cible pour la 2nde opération (intercompte)
      */
-    export function saveOperationIntercompte(idBudget, operation, idCompteCible) {
-        console.log("Création d'une opération intercompte sur le budget : " + idBudget + " vers le compte " + idCompteCible)
+    export function saveOperationIntercompte(idBudget, operation, compteCible) {
+        console.log("Création d'une opération intercompte sur le budget : " + idBudget + " vers le compte " + compteCible.value)
         ClientHTTP
             .call('POST',
                 AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.INTERCOMPTE,
-                [idBudget, idCompteCible],
+                [idBudget, compteCible.value],
                 operation)
             .then(budgetUpdated => {
                 this.props.onOperationChange(budgetUpdated);

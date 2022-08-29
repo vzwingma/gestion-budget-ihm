@@ -77,10 +77,12 @@ import {getDateFromDateTime, getLibelleDate, sortLibelles} from "../../../Utils/
         /**
          * Si sous catégorie intercompte
          */
-        this.setState( {showIntercompte: ssCategorieSelected.value === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES})
-        if(ssCategorieSelected.value === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
+        if(ssCategorieSelected.id === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
             this.loadComptes();
-            this.setState( { formOperationType : "DEPENSE" } );
+            this.setState( { formOperationType : "DEPENSE", showIntercompte:true } );
+        }
+        else if(this.state.showIntercompte){
+            this.setState( {  showIntercompte:false } );
         }
 
 
