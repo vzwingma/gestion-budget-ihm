@@ -49,7 +49,10 @@ export default class CreateUpdateOperationForm extends Component {
         formTagDerniereOperation: false,
         // Affichage & Validation du formulaire
         showIntercompte: false,
-        formValidated: false
+        formValidated: false,
+        // Notif
+        toastShow: false,
+        toastMessage: ""
     }
 
 
