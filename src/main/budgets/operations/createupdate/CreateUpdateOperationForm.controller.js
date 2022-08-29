@@ -198,11 +198,11 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
         return {
             "libelle": this.state.formDescription,
             "categorie": {
-                "id": this.state.formCategorie.value,
+                "id": this.state.formCategorie.id,
                 "libelle": this.state.formCategorie.text
             },
             "ssCategorie": {
-                "id": this.state.formSsCategorie.value,
+                "id": this.state.formSsCategorie.id,
                 "libelle": this.state.formSsCategorie.text
             },
             "typeOperation": this.state.formOperationType,
@@ -228,8 +228,8 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
         const operation = listeOperations.find(op => op.id === idOperation);
         if(operation !== undefined){
             // Création dynamique des VO Catégories & sous-catégories pour l'édition (pas de pb car disabled)
-            const selectedCat  = [{value: operation.categorie.id, text: operation.categorie.libelle}];
-            const selectedSsCat  = [{value: operation.ssCategorie.id, text: operation.ssCategorie.libelle}];
+            const selectedCat  = [{value: operation.categorie.libelle, text: operation.categorie.libelle, id: operation.categorie.id }];
+            const selectedSsCat  = [{value: operation.ssCategorie.libelle, text: operation.ssCategorie.libelle, id: operation.ssCategorie.id }];
 
             this.setState({ // remplissage du formulaire
                     formCategorie: selectedCat[0],

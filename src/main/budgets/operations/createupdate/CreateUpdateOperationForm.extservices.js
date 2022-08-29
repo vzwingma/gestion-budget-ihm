@@ -36,7 +36,7 @@ import {sortLibelles} from "../../../Utils/DataUtils.utils";
         if(categorie.listeSSCategories !== null && categorie.listeSSCategories !== undefined){
             sousCategoriesVO = categorie.listeSSCategories.sort(sortLibelles).map(sousCat => transformCategorieBOtoVO(sousCat))
         }
-        return { value: categorie.id, text: categorie.libelle, sousCategories: sousCategoriesVO }
+        return { value: categorie.libelle, text: categorie.libelle, id: categorie.id, sousCategories: sousCategoriesVO }
     }
 
     /** Appels WS vers pour charger la liste des comptes **/

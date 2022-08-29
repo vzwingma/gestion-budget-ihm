@@ -131,8 +131,8 @@ export default class CreateUpdateOperationForm extends Component {
                         <Form.Group as={Row} className="mb-2" controlId="categoriesForm">
                             <Form.Label column sm={4} className="col-form-label-sm">Catégories</Form.Label>
                             <Col>
-                                    <RequiredSelect required isDisabled={ this.props.modeEdition }
-                                                       SelectComponent={BaseSelect}
+                                    <RequiredSelect SelectComponent={BaseSelect}
+                                            required isDisabled={ this.props.modeEdition } isSearchable={true}
                                             placeholder={"Sélectionnez une catégorie"}
                                             value={this.state.formCategorie} options={this.state.categoriesSelect}
                                             onChange={this.handleSelectCategorie}
@@ -143,7 +143,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                 )}>
                                     </RequiredSelect>
                                     <RequiredSelect required isDisabled={ this.props.modeEdition } SelectComponent={BaseSelect}
-                                            placeholder={"Sélectionnez une sous catégorie"}
+                                            placeholder={"Sélectionnez une sous catégorie"} isSearchable={true}
                                             value={this.state.formSsCategorie} options={this.state.ssCategoriesSelect}
                                             onChange={this.handleSelectSsCategorie}
                                             getOptionLabel={e => (
@@ -155,9 +155,9 @@ export default class CreateUpdateOperationForm extends Component {
                                       { this.state.showIntercompte &&
                                           <RequiredSelect SelectComponent={BaseSelect}
                                               placeholder="Sélectionnez le compte"
-                                              isDisabled={ this.props.modeEdition }
                                               value={this.state.selectedCompte}
                                               options={this.state.comptes}
+                                              isDisabled={ this.props.modeEdition } isSearchable={true}
                                               onChange={this.handleSelectCompteCible}
                                               getOptionLabel={e => (
                                                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -194,7 +194,7 @@ export default class CreateUpdateOperationForm extends Component {
                             <Form.Label column sm={4} className="col-form-label-sm">Etat</Form.Label>
                             <Col>
                                 <Select value={this.state.formEtat} options={this.listeEtats}
-                                    onChange={this.handleSelectEtat}
+                                    onChange={this.handleSelectEtat} isSearchable={true}
                                     getOptionLabel={e => (
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             {e.icon} <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
