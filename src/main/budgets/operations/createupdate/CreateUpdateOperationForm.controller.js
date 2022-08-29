@@ -114,7 +114,7 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
      */
     export function handleSubmitForm(event) {
         const form = event.currentTarget;
-        console.log("event.nativeEvent.submitter.id:" + event.nativeEvent.submitter.id)
+
         if (event.nativeEvent.submitter.id !== "btnClose") {
             console.log("Validation du formulaire")
             if (form.checkValidity() === false) {
@@ -130,7 +130,7 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
             }
         }
         // Post Creation - Clear Form
-        razForm();
+        this.razForm();
         // Ferme le formulaire ssi ce n'est pas le bouton Continue
         if(event.nativeEvent.submitter.id !== "btnValidContinue") {
             this.hideModal();
@@ -143,8 +143,8 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
         // Post Creation - Clear Form
         this.setState({ // RAZ Formulaire
             ssCategories: [],
-            formCategorie: undefined,
-            formSsCategorie: undefined,
+            formCategorie: null,
+            formSsCategorie: null,
             formCompteCible: null,
             formDescription: "",
             formValeur: "",
@@ -167,8 +167,8 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
 
         const operation = this.fillOperationFromForm();
         // Sauvegarde de l'opération
-        if(this.state.formIdCompteCible !== null){
-            this.saveOperationIntercompte(this.props.budget.id, operation, this.state.formIdCompteCible);
+        if(this.state.formCompteCible !== null){
+            this.saveOperationIntercompte(this.props.budget.id, operation, this.state.formCompteCible);
         }
         else{
             this.saveOperation(this.props.budget.id  , operation, false);

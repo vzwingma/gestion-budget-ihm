@@ -34,8 +34,8 @@ export default class CreateUpdateOperationForm extends Component {
         ssCategoriesSelect: [],
         comptes: [],
         // Formulaire
-        formCategorie           : undefined,
-        formSsCategorie         : undefined,
+        formCategorie           : null,
+        formSsCategorie         : null,
         formCompteCible         : null,
         formDescription         : "",
         formValeur              : "",
