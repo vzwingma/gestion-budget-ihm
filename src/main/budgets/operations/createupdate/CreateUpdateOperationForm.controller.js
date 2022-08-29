@@ -1,18 +1,53 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
-import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.utils";
+import {getDateFromDateTime, getLibelleDate, sortLibelles} from "../../../Utils/DataUtils.utils";
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
 
+    export function categoriesLoaded(data){
+    // Transformation des catégories en affichage
+        const mapCategories = data.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibelles)
+        const mapSsCategories = mapCategories.flatMap(cat => cat.sousCategories)
+                                             .map(ssCat => {
+                                                return { value: ssCat.text, text: ssCat.categorie.text + "/" + ssCat.text, id: ssCat.id, categorie: { value: ssCat.categorie.value, text: ssCat.categorie.text, id: ssCat.categorie.id} }
+                                            })
+                                            .sort(sortLibelles)
+        this.setState({ categoriesSelect : mapCategories, ssCategoriesSelect : mapSsCategories, ssCategoriesAll: mapSsCategories })
+    }
 
+
+    /**
+     * Transformation des catégories BO en VO
+     * @param categorie
+     * @returns {{sousCategories: *[], text: *, value}}
+     */
+    export function transformCategorieBOtoVO(categorie){
+        let sousCategoriesVO = []
+
+        if(categorie.listeSSCategories !== null && categorie.listeSSCategories !== undefined){
+            sousCategoriesVO = categorie.listeSSCategories.map(sousCat => transformSsCategorieBOtoVO(categorie, sousCat))
+        }
+        return { value: categorie.libelle, text: categorie.libelle, id: categorie.id, sousCategories: sousCategoriesVO }
+    }
+
+    /**
+     * Transformation des catégories BO en VO
+     * @param categorie catégorie
+     * @param sscategorie sous catégorie
+     * @returns {{sousCategories: *[], text: *, value}}
+     */
+    export function transformSsCategorieBOtoVO(categorie, sscategorie){
+        return { value: sscategorie.libelle, text: sscategorie.libelle, id: sscategorie.id, categorie: { value: categorie.libelle, text: categorie.libelle, id: categorie.id} }
+    }
 
     /**
      * Sélection d'une catégorie
      * @param categorieSelected événement de sélection de catégorie
      */
     export function handleSelectCategorie(categorieSelected) {
-        console.log("Changement de catégorie " + categorieSelected.text + " : [" + categorieSelected.value + "]");
+        console.log("Changement de catégorie " + categorieSelected.text + " : [" + categorieSelected.id + "]");
         this.setState({ formCategorie: categorieSelected,
+                        formSsCategorie: null,
                         ssCategoriesSelect : categorieSelected.sousCategories });
 
         /**
@@ -31,8 +66,13 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
      * @param ssCategorieSelected évt de sélection de sous catégorie
      */
     export function handleSelectSsCategorie(ssCategorieSelected) {
-        console.log("Changement de sous-catégorie : " + ssCategorieSelected.text + " [" + ssCategorieSelected.value + "]")
-        this.setState({ formSsCategorie: ssCategorieSelected});
+        console.log("Changement de sous-catégorie : " + ssCategorieSelected.text + " [" + ssCategorieSelected.id + "]")
+        const ssCatsUpdated = this.state.ssCategoriesSelect.filter(ssCat => ssCat.categorie.id === ssCategorieSelected.categorie.id)
+            .map(ssCat => {
+                ssCat.text = ssCat.text.replace(ssCat.categorie.text+"/", "")
+                return ssCat
+            })
+        this.setState({ formSsCategorie: ssCategorieSelected, formCategorie: ssCategorieSelected.categorie, ssCategoriesSelect : ssCatsUpdated});
 
         /**
          * Si sous catégorie intercompte
@@ -142,7 +182,7 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
     export function razForm(){
         // Post Creation - Clear Form
         this.setState({ // RAZ Formulaire
-            ssCategories: [],
+            ssCategoriesSelect: this.state.ssCategoriesAll,
             formCategorie: null,
             formSsCategorie: null,
             formCompteCible: null,

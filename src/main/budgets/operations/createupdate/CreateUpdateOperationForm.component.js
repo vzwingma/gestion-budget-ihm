@@ -32,6 +32,7 @@ export default class CreateUpdateOperationForm extends Component {
         // Data d'affichages du formulaire
         categoriesSelect: [],
         ssCategoriesSelect: [],
+        ssCategoriesAll: [],
         comptes: [],
         // Formulaire
         formCategorie           : null,
@@ -79,6 +80,7 @@ export default class CreateUpdateOperationForm extends Component {
         this.updateOperation = Controller.updateOperation.bind(this);
 
         this.loadCategories = ExtServices.loadCategories.bind(this);
+        this.categoriesLoaded = Controller.categoriesLoaded.bind(this);
         this.loadComptes = ExtServices.loadComptes.bind(this);
         this.saveOperation = ExtServices.saveOperation.bind(this);
         this.saveOperationIntercompte = ExtServices.saveOperationIntercompte.bind(this);
