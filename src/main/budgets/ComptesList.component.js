@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Form } from 'react-bootstrap';
 import * as Controller from './ComptesList.controller';
+import Select from 'react-select';
 /*
  * Composant Select Comptes
  */
@@ -9,7 +9,8 @@ export default class ComptesList extends Component {
 
       /** Etats pour la sélection du compte **/
       state = {
-        comptes: []
+            comptes: [],
+            selectedCompte: null
       }
 
     constructor(props) {
@@ -24,20 +25,23 @@ export default class ComptesList extends Component {
         this.loadComptes();
     }
 
-
-
-
 /**
  *  RENDER
  */
 
-    render() { return (
-        <div>
-            <Form.Group controlId="CompteForm.CompteSelect">
-                <Form.Control as="select" size="sm" onChange={this.handleSelect}>
-                    { this.state.comptes.map(compte => ( <option key={compte.id} id={compte.id}>{compte.libelle}</option> ))}
-                </Form.Control>
-            </Form.Group>
-      </div>
-    ); }
+    render() {
+        return (
+                <Select
+                    placeholder="Sélectionner le compte"
+                    value={this.state.selectedCompte}
+                    options={this.state.comptes}
+                    onChange={this.handleSelect}
+                    getOptionLabel={e => (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
+                        </div>
+                    )}
+                />
+        );
+    }
 }

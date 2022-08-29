@@ -35,10 +35,10 @@ export function getLibelleDate(dateString, pattern){
  * @returns {number} comparaison
  */
 export function sortLibelles(lib1, lib2) {
-    if (lib1.libelle > lib2.libelle) {
+    if (lib1.text > lib2.text) {
         return 1;
     }
-    if (lib1.libelle < lib2.libelle) {
+    if (lib1.text < lib2.text) {
         return -1;
     }
     return 0;

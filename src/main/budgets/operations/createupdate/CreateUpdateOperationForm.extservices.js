@@ -12,21 +12,30 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
         console.log("Chargement des catégories");
         ClientHTTP.call('GET',
             AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
-            .then(data => {
-                this.setState({ categories : data })
-
-            })
+            .then(data => this.categoriesLoaded(data))
             .catch(e => {
                 console.log("Erreur lors du chargement des catégories >> "+ e)
             })
     }
 
+
     /** Appels WS vers pour charger la liste des comptes **/
     export function loadComptes() {
+        console.log()
         ClientHTTP
             .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
             .then(data => {
-                let comptesActifs = data.filter(c => c.id !== this.props.idCompte && c.actif)
+                data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1);
+
+                // Création des comptes pour l'affichage (avec icones)
+                let comptesActifs = data.filter(c => c.id !== this.props.budget.idCompteBancaire && c.actif).map((compte) => {
+                    return {
+                        value: compte.id,
+                        text: compte.libelle,
+                        icon: <img src={"/img/banques/" + compte.itemIcon} className="d-inline-block align-top" alt={compte.libelle}/>,
+                        isDisabled: !compte.actif
+                    }
+                })
                 this.setState({ comptes: comptesActifs });
             })
             .catch(e => {
@@ -61,14 +70,14 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
      * Appels WS vers pour enregistrer l'opération intercompte sur le backend
      * @param idBudget id du budget concerné
      * @param operation opération à enregistrer
-     * @param idCompteCible id du compte cible pour la 2nde opération (intercompte)
+     * @param compteCible compte cible pour la 2nde opération (intercompte)
      */
-    export function saveOperationIntercompte(idBudget, operation, idCompteCible) {
-        console.log("Création d'une opération intercompte sur le budget : " + idBudget + " vers le compte " + idCompteCible)
+    export function saveOperationIntercompte(idBudget, operation, compteCible) {
+        console.log("Création d'une opération intercompte sur le budget : " + idBudget + " vers le compte " + compteCible.value)
         ClientHTTP
             .call('POST',
                 AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.INTERCOMPTE,
-                [idBudget, idCompteCible],
+                [idBudget, compteCible.value],
                 operation)
             .then(budgetUpdated => {
                 this.props.onOperationChange(budgetUpdated);

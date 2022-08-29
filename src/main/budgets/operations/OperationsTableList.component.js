@@ -50,7 +50,7 @@ export default class OperationsList extends Component {
                     }
                 `}</style>
 
-                <Table striped bordered hover size="sm" variant="light" responsive="lg">
+                <Table striped bordered hover size="sm" variant="light">
                     <thead>
                         <tr>
                             <th scope="col">Jour opération</th>

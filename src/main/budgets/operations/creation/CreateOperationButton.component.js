@@ -46,11 +46,13 @@ export default class CreateOperationButton extends Component {
             <>
                 { /** Bouton de création **/ }
                 <OverlayTrigger overlay={  <Tooltip>Ajouter une opération</Tooltip>  }>
-                    <Button variant="outline-primary" size="sm" disabled={!this.props.budget.actif} onClick={this.showModale}>Création</Button>
+                    <Button className="btn-dark" size="sm" disabled={!this.props.budget.actif} onClick={this.showModale}>
+                        <img src={"/img/statuts/circle_plus.png"} className="d-inline-block align-top" alt="Création une nouvelle opération"/>
+                    </Button>
                 </OverlayTrigger>
                 { /** Fenêtre modale - Formulaire  **/ }
                 { /** la gestion de l'affichage de la modale est délégué au composant supérieur **/ }
-                <CreateUpdateOperationForm idCompte={this.props.selectedCompte} budget={this.props.budget} showModale={this.state.showModale}  modeEdition={false}
+                <CreateUpdateOperationForm budget={this.props.budget} showModale={this.state.showModale}  modeEdition={false}
                                            hideModale={this.hideModale}
                                            onOperationChange={this.props.onOperationChange}/> { /** OnOpChange est appelé par le composant. this.props.OnOpChange : appelle la méthode du composant supérieur**/ }
             </>
