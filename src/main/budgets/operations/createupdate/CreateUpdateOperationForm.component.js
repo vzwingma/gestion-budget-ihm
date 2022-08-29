@@ -3,7 +3,9 @@ import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} fro
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
 import {getLibelleDate} from '../../../Utils/DataUtils.utils'
+import BaseSelect from "react-select";
 import Select from "react-select";
+import RequiredSelect from "../../../Utils/RequiredSelect";
 /**
  * Formulaire sur le Bouton création
  */
@@ -15,31 +17,25 @@ export default class CreateUpdateOperationForm extends Component {
      * @type {[{icon, text: string, value: string},{icon, text: string, value: string},{icon, text: string, value: string},{icon, text: string, value: string}]}
      */
     listeEtats = [
-        {
-            value: "PREVUE", text: "Prévue",
-            icon: <img src={"/img/statuts/circle_clock.png"} className="d-inline-block align-top" alt="Prévue"/>
-        },
-        {
-            value: "REALISEE", text: "Réalisée",
-            icon: <img src={"/img/statuts/circle_ok.png"} className="d-inline-block align-top" alt="Réalisée"/>
-        },
-        {
-            value: "REPORTEE", text: "Reportée",
-            icon: <img src={"/img/statuts/circle_arrow_right.png"} className="d-inline-block align-top" alt="Reportée"/>
-        },
-        {
-            value: "ANNULEE", text: "Annulée",
-            icon: <img src={"/img/statuts/circle_cancel.png"} className="d-inline-block align-top" alt="Annulée"/>
-        }
+        {   value: "PREVUE", text: "Prévue",
+            icon: <img src={"/img/statuts/circle_clock.png"} className="d-inline-block align-top" alt="Prévue"/>         },
+        {   value: "REALISEE", text: "Réalisée",
+            icon: <img src={"/img/statuts/circle_ok.png"} className="d-inline-block align-top" alt="Réalisée"/>        },
+        {   value: "REPORTEE", text: "Reportée",
+            icon: <img src={"/img/statuts/circle_arrow_right.png"} className="d-inline-block align-top" alt="Reportée"/>        },
+        {   value: "ANNULEE", text: "Annulée",
+            icon: <img src={"/img/statuts/circle_cancel.png"} className="d-inline-block align-top" alt="Annulée"/>        }
     ]
+
+
     state = {
         // Data d'affichages du formulaire
         categoriesSelect: [],
         ssCategoriesSelect: [],
         comptes: [],
         // Formulaire
-        formCategorie           : null,
-        formSsCategorie         : null,
+        formCategorie           : undefined,
+        formSsCategorie         : undefined,
         formCompteCible         : null,
         formDescription         : "",
         formValeur              : "",
@@ -78,6 +74,7 @@ export default class CreateUpdateOperationForm extends Component {
         this.fillOperationFromForm = Controller.fillOperationFromForm.bind(this);
 
         this.handleSubmitForm = Controller.handleSubmitForm.bind(this);
+        this.razForm = Controller.razForm.bind(this);
         this.createOperation = Controller.createOperation.bind(this);
         this.updateOperation = Controller.updateOperation.bind(this);
 
@@ -87,6 +84,7 @@ export default class CreateUpdateOperationForm extends Component {
         this.saveOperationIntercompte = ExtServices.saveOperationIntercompte.bind(this);
 
         this.hideModal = Controller.hideModal.bind(this);
+        this.cancelForm = this.cancelForm.bind(this);
    //
     }
 
@@ -107,6 +105,13 @@ export default class CreateUpdateOperationForm extends Component {
 
     }
 
+    /**
+     * Annulation du formulaire
+     */
+    cancelForm(){
+        this.razForm();
+        this.props.hideModale();
+    }
 
     /**
      *  RENDER
@@ -126,16 +131,19 @@ export default class CreateUpdateOperationForm extends Component {
                         <Form.Group as={Row} className="mb-2" controlId="categoriesForm">
                             <Form.Label column sm={4} className="col-form-label-sm">Catégories</Form.Label>
                             <Col>
-                                    <Select required isDisabled={ this.props.modeEdition }
-                                             value={this.state.formCategorie} options={this.state.categoriesSelect}
-                                             onChange={this.handleSelectCategorie}
+                                    <RequiredSelect required isDisabled={ this.props.modeEdition }
+                                                       SelectComponent={BaseSelect}
+                                            placeholder={"Sélectionnez une catégorie"}
+                                            value={this.state.formCategorie} options={this.state.categoriesSelect}
+                                            onChange={this.handleSelectCategorie}
                                                 getOptionLabel={e => (
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         <span style={{ fontSize:".875rem" }}>{e.text}</span>
                                                     </div>
                                                 )}>
-                                    </Select>
-                                    <Select required isDisabled={ this.props.modeEdition }
+                                    </RequiredSelect>
+                                    <RequiredSelect required isDisabled={ this.props.modeEdition } SelectComponent={BaseSelect}
+                                            placeholder={"Sélectionnez une sous catégorie"}
                                             value={this.state.formSsCategorie} options={this.state.ssCategoriesSelect}
                                             onChange={this.handleSelectSsCategorie}
                                             getOptionLabel={e => (
@@ -143,10 +151,10 @@ export default class CreateUpdateOperationForm extends Component {
                                                     <span style={{ fontSize:".875rem" }}>{e.text}</span>
                                                 </div>
                                             )}>
-                                    </Select>
+                                    </RequiredSelect>
                                       { this.state.showIntercompte &&
-                                          <Select
-                                              placeholder="Sélectionner le compte"
+                                          <RequiredSelect SelectComponent={BaseSelect}
+                                              placeholder="Sélectionnez le compte"
                                               isDisabled={ this.props.modeEdition }
                                               value={this.state.selectedCompte}
                                               options={this.state.comptes}
@@ -222,7 +230,7 @@ export default class CreateUpdateOperationForm extends Component {
                     <Modal.Footer>
                         <ButtonGroup>
                             <OverlayTrigger overlay={  <Tooltip>Annuler la saisie</Tooltip>  }>
-                                <Button id="btnClose" variant="secondary" onClick={ this.props.hideModale } >Annuler</Button>
+                                <Button id="btnClose" variant="secondary" onClick={ this.cancelForm } >Annuler</Button>
                             </OverlayTrigger>
                             { !this.props.modeEdition && <>
                                 <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>

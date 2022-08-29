@@ -114,25 +114,37 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
      */
     export function handleSubmitForm(event) {
         const form = event.currentTarget;
-        console.log("Validation du formulaire")
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        else{
-            if(event.nativeEvent.submitter.id === "btnValidContinue" || event.nativeEvent.submitter.id === "btnValidClose") {
-                this.createOperation();
-            }
-            else if(event.nativeEvent.submitter.id === "btnValidModif") {
-                this.updateOperation();
-            }
+        console.log("event.nativeEvent.submitter.id:" + event.nativeEvent.submitter.id)
+        if (event.nativeEvent.submitter.id !== "btnClose") {
+            console.log("Validation du formulaire")
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                if (event.nativeEvent.submitter.id === "btnValidContinue" || event.nativeEvent.submitter.id === "btnValidClose") {
+                    this.createOperation();
+                } else if (event.nativeEvent.submitter.id === "btnValidModif") {
+                    this.updateOperation();
+                }
 
+            }
         }
+        // Post Creation - Clear Form
+        razForm();
+        // Ferme le formulaire ssi ce n'est pas le bouton Continue
+        if(event.nativeEvent.submitter.id !== "btnValidContinue") {
+            this.hideModal();
+        }
+    }
+
+
+
+    export function razForm(){
         // Post Creation - Clear Form
         this.setState({ // RAZ Formulaire
             ssCategories: [],
-            formCategorie: null,
-            formSsCategorie: null,
+            formCategorie: undefined,
+            formSsCategorie: undefined,
             formCompteCible: null,
             formDescription: "",
             formValeur: "",
@@ -143,11 +155,9 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
             formProchaineMensualite: "",
             showIntercompte: false
         })
-        // Ferme le formulaire ssi ce n'est pas le bouton Continue
-        if(event.nativeEvent.submitter.id !== "btnValidContinue") {
-            this.hideModal();
-        }
+
     }
+
 
 
     /**
