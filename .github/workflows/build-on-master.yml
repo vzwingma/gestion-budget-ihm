@@ -135,6 +135,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm/
+          platforms: linux/amd64, linux/arm64/v8
           file: Dockerfile-IHM
           push: true
           tags: vzwingmabudget/gestion_budget_ihm:snapshot
