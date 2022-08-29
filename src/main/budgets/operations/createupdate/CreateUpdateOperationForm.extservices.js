@@ -1,5 +1,6 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
 import * as ClientHTTP from "../../../Services/ClientHTTP.service";
+import {sortLibelles} from "../../../Utils/DataUtils.utils";
 
 /**
  * Fonctions d'appels des services du backend sur le formulaire de création d'opérations
@@ -13,12 +14,29 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
         ClientHTTP.call('GET',
             AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
             .then(data => {
-                this.setState({ categories : data })
+                // Transformation des catégories en affichage
+                const mapCategories = data.sort(sortLibelles).map(cat => {
+                    return transformCategorieBOtoVO(cat)
+                })
+                this.setState({ categoriesSelect : mapCategories })
 
             })
             .catch(e => {
                 console.log("Erreur lors du chargement des catégories >> "+ e)
             })
+    }
+
+    /**
+     * Transformation des catégories BO en VO
+     * @param categorie
+     * @returns {{sousCategories: *[], text: *, value}}
+     */
+    export function transformCategorieBOtoVO(categorie){
+        let sousCategoriesVO = []
+        if(categorie.listeSSCategories !== null && categorie.listeSSCategories !== undefined){
+            sousCategoriesVO = categorie.listeSSCategories.map(sousCat => transformCategorieBOtoVO(sousCat))
+        }
+        return { value: categorie.id, text: categorie.libelle, sousCategories: sousCategoriesVO }
     }
 
     /** Appels WS vers pour charger la liste des comptes **/

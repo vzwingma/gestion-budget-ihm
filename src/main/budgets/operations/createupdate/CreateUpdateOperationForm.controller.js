@@ -8,57 +8,37 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
 
     /**
      * Sélection d'une catégorie
-     * @param event événement de sélection de catégorie
+     * @param categorieSelected événement de sélection de catégorie
      */
-    export function handleSelectCategorie(event) {
-        // Select du compte parmi la liste
-        const categorieLabel =event.target.value;
-        let selectedIdCategorie = null;
-        Array.from(event.target.options)
-             .filter(option => option.value === categorieLabel)
-             .map(option => selectedIdCategorie = option.id);
-
-        // selectedIdCategorie sélectionnée
-        console.log("Changement de catégorie " + categorieLabel + " : [" + selectedIdCategorie + "]");
-        this.setState({ formIdCategorie: selectedIdCategorie,
-                        formLibelleCategorie: categorieLabel,
-                        ssCategories : this.state.categories
-                                                .filter(cat => cat.id === selectedIdCategorie)
-                                                .flatMap(cat => cat.listeSSCategories)});
+    export function handleSelectCategorie(categorieSelected) {
+        console.log("Changement de catégorie " + categorieSelected.text + " : [" + categorieSelected.value + "]");
+        this.setState({ formCategorie: categorieSelected,
+                        ssCategoriesSelect : categorieSelected.sousCategories });
 
         /**
          * Set type de valeur, suivant la catégorie
          */
         // Prélèvement mensuel
-        let operationMensuelle = (selectedIdCategorie === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? "1" : "0";
+        let operationMensuelle = (categorieSelected.value === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? "1" : "0";
         this.setState( { formOperationPeriodique : operationMensuelle })
         // Virement
-        let operationType = (selectedIdCategorie === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "CREDIT" : "DEPENSE";
+        let operationType = (categorieSelected.value === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "CREDIT" : "DEPENSE";
         this.setState( { formOperationType : operationType } );
     }
 
     /**
      * Sélection d'une sous catégorie
-     * @param event évt de sélection de sous catégorie
+     * @param ssCategorieSelected évt de sélection de sous catégorie
      */
-    export function handleSelectSsCategorie(event) {
-
-        // Select du compte parmi la liste
-        const ssCategorieLabel = event.target.value;
-        let selectedIdSsCategorie = null;
-        Array.from(event.target.options)
-            .filter(option => option.value === ssCategorieLabel)
-            .map(option => selectedIdSsCategorie = option.id);
-        // selectedIdCategorie sélectionnée
-        console.log("Changement de sous-catégorie : " + ssCategorieLabel + " [" + selectedIdSsCategorie + "]")
-        this.setState({ formIdSsCategorie: selectedIdSsCategorie,
-                        formLibelleSsCategorie: ssCategorieLabel});
+    export function handleSelectSsCategorie(ssCategorieSelected) {
+        console.log("Changement de sous-catégorie : " + ssCategorieSelected.text + " [" + ssCategorieSelected.value + "]")
+        this.setState({ formSsCategorie: ssCategorieSelected});
 
         /**
          * Si sous catégorie intercompte
          */
-        this.setState( {showIntercompte: selectedIdSsCategorie === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES})
-        if(selectedIdSsCategorie === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
+        this.setState( {showIntercompte: ssCategorieSelected.value === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES})
+        if(ssCategorieSelected.value === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
             this.loadComptes();
             this.setState( { formOperationType : "DEPENSE" } );
         }
@@ -111,7 +91,7 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
      * @param event évt de saisie
      */
     export function handleSelectEtat(event){
-        this.setState({formEtat : event.target.value})
+        this.setState({formEtat : event})
     }
 
 
@@ -151,14 +131,12 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
         // Post Creation - Clear Form
         this.setState({ // RAZ Formulaire
             ssCategories: [],
-            formIdCategorie: null,
-            formLibelleCategorie: "",
-            formIdSsCategorie: null,
-            formLibelleSsCategorie: "",
+            formCategorie: null,
+            formSsCategorie: null,
             formIdCompteCible: null,
             formDescription: "",
             formValeur: "",
-            formEtat: "PREVUE",
+            formEtat: this.listeEtats[0],
             formDateOperation: getLibelleDate(new Date(), "AAAA-MM-DD"),
             formOperationType: "DEPENSE",
             formOperationPeriodique: "0",
@@ -197,6 +175,7 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
         // Sauvegarde de l'opération
         operation.id = this.props.idOperation;
         console.log("Mise à jour de l'opération : " + operation.id + " [" + this.props.idOperation + "]");
+        console.log(operation)
         this.saveOperation(this.props.budget.id  , operation, true);
 
     }
@@ -209,15 +188,15 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
         return {
             "libelle": this.state.formDescription,
             "categorie": {
-                "id": this.state.formIdCategorie,
-                "libelle": this.state.formLibelleCategorie
+                "id": this.state.formCategorie[0].value,
+                "libelle": this.state.formCategorie[0].text
             },
             "ssCategorie": {
-                "id": this.state.formIdSsCategorie,
-                "libelle": this.state.formLibelleSsCategorie
+                "id": this.state.formSsCategorie[0].value,
+                "libelle": this.state.formSsCategorie[0].text
             },
             "typeOperation": this.state.formOperationType,
-            "etat": this.state.formEtat,
+            "etat": this.state.formEtat[0].value,
             "valeur": (this.state.formOperationType === "DEPENSE" ? -1 : 1) * this.state.formValeur,
             "mensualite" : {
                 "periode": this.state.formOperationPeriodique
@@ -236,23 +215,21 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
      * @param listeOperations liste des opérations du budget
      */
     export function fillFormFromOperation(idOperation, listeOperations){
-        let operation = listeOperations.find(op => op.id === idOperation);
+        const operation = listeOperations.find(op => op.id === idOperation);
         if(operation !== undefined){
-            // Création dynamique des sous-catégories pour l'édition (pas de pb car disabled)
-            const selectedSsCat  = [{id: operation.ssCategorie.id, libelle: operation.ssCategorie.libelle}];
-            const selectedCat  = [{id: operation.categorie.id, libelle: operation.categorie.libelle}];
+            // Création dynamique des VO Catégories & sous-catégories pour l'édition (pas de pb car disabled)
+            const selectedSsCat  = [{value: operation.ssCategorie.id, text: operation.ssCategorie.libelle}];
+            const selectedCat  = [{value: operation.categorie.id, text: operation.categorie.libelle}];
 
             this.setState({ // remplissage du formulaire
-                    formIdCategorie: operation.categorie.id,
-                    formLibelleCategorie: operation.categorie.libelle,
+                    formCategorie: selectedCat,
                     categories: selectedCat,
                     ssCategories : selectedSsCat,
-                    formIdSsCategorie: operation.ssCategorie.id,
-                    formLibelleSsCategorie: operation.ssCategorie.libelle,
+                    formSsCategorie: selectedSsCat,
                     formIdCompteCible: null,
                     formDescription: operation.libelle,
                     formValeur: Math.abs(operation.valeur).toFixed(2),
-                    formEtat: operation.etat,
+                    formEtat: this.listeEtats.filter(etatSelect => etatSelect.value === operation.etat),
                     formDateOperation: operation.autresInfos !== undefined && operation.autresInfos.formDateOperation !== null ? getDateFromDateTime(operation.autresInfos.dateOperation) : null,
                     formOperationType: operation.typeOperation,
                     formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? operation.mensualite.periode : "PONCTUELLE",

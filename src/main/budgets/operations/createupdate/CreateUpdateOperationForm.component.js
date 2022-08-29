@@ -3,27 +3,48 @@ import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} fro
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
 import {getLibelleDate, sortLibelles} from '../../../Utils/DataUtils.utils'
+import Select from "react-select";
 /**
  * Formulaire sur le Bouton création
  */
 export default class CreateUpdateOperationForm extends Component {
 
 
+    /**
+     * Liste des états d'opérations, affichés
+     * @type {[{icon, text: string, value: string},{icon, text: string, value: string},{icon, text: string, value: string},{icon, text: string, value: string}]}
+     */
+    listeEtats = [
+        {
+            value: "PREVUE", text: "Prévue",
+            icon: <img src={"/img/statuts/circle_clock.png"} className="d-inline-block align-top" alt="Prévue"/>
+        },
+        {
+            value: "REALISEE", text: "Réalisée",
+            icon: <img src={"/img/statuts/circle_ok.png"} className="d-inline-block align-top" alt="Réalisée"/>
+        },
+        {
+            value: "REPORTEE", text: "Reportée",
+            icon: <img src={"/img/statuts/circle_arrow_right.png"} className="d-inline-block align-top" alt="Reportée"/>
+        },
+        {
+            value: "ANNULEE", text: "Annulée",
+            icon: <img src={"/img/statuts/circle_cancel.png"} className="d-inline-block align-top" alt="Annulée"/>
+        }
+    ]
     state = {
         // Data d'affichages du formulaire
-        categories: [],
-        ssCategories: [],
+        categoriesSelect: [],
+        ssCategoriesSelect: [],
         comptes: [],
         // Formulaire
-        formIdCategorie         : null,
-        formLibelleCategorie    : null,
-        formIdSsCategorie       : null,
-        formLibelleSsCategorie  : null,
+        formCategorie           : null,
+        formSsCategorie         : null,
         formIdCompteCible       : null,
         formDescription         : "",
         formValeur              : "",
         // TODO : Utiliser la préférence utilisateur
-        formEtat                : "PREVUE",
+        formEtat                : this.listeEtats[0],
         formDateOperation       : "",
         formOperationType       : "DEPENSE",
         formOperationPeriodique : "0",
@@ -33,6 +54,8 @@ export default class CreateUpdateOperationForm extends Component {
         showIntercompte: false,
         formValidated: false
     }
+
+
     /**
      * Constructeur du formulaire
      * @param props
@@ -103,34 +126,25 @@ export default class CreateUpdateOperationForm extends Component {
                         <Form.Group as={Row} className="mb-2" controlId="categoriesForm">
                             <Form.Label column sm={4} className="col-form-label-sm">Catégories</Form.Label>
                             <Col>
-                                <Form.Select size="sm" required disabled={ this.props.modeEdition }
-                                             id={this.state.formIdCategorie} value={this.state.formLibelleCategorie}
-                                             onChange={this.handleSelectCategorie}>
-                                        <option> </option>
-                                        {
-                                            this.state.categories != null ?
-                                            this.state.categories
-                                                .sort(sortLibelles)
-                                                .map(categorie => (
-                                                    <option key={categorie.id} id={categorie.id} value={categorie.libelle}>{categorie.libelle}</option>
-                                                ))
-                                                : null
-
-                                        }
-                                    </Form.Select>
-                                    <Form.Select size="sm" required disabled={ this.props.modeEdition }
-                                                 id={this.state.formIdSsCategorie} value={this.state.formLibelleSsCategorie}
-                                                 onChange={this.handleSelectSsCategorie}>
-                                        <option> </option>
-                                        {
-                                            this.state.ssCategories
-                                                .sort(sortLibelles)
-                                                .map((ssCategorie) => (
-                                                    <option key={ssCategorie.id} id={ssCategorie.id} value={ssCategorie.libelle}>{ssCategorie.libelle}</option>
-                                                ))
-                                        }
-                                    </Form.Select>
-                                    { this.state.showIntercompte &&
+                                    <Select required isDisabled={ this.props.modeEdition }
+                                             value={this.state.formCategorie} options={this.state.categoriesSelect}
+                                             onChange={this.handleSelectCategorie}
+                                                getOptionLabel={e => (
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                        <span style={{ fontSize:".875rem" }}>{e.text}</span>
+                                                    </div>
+                                                )}>
+                                    </Select>
+                                    <Select required isDisabled={ this.props.modeEdition }
+                                            value={this.state.formSsCategorie} options={this.state.ssCategoriesSelect}
+                                            onChange={this.handleSelectSsCategorie}
+                                            getOptionLabel={e => (
+                                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                    <span style={{ fontSize:".875rem" }}>{e.text}</span>
+                                                </div>
+                                            )}>
+                                    </Select>
+                                      { this.state.showIntercompte &&
                                         <Form.Select size="sm" required disabled={ this.props.modeEdition } onChange={ this.handleSelectCompteCible }>
                                             <option> </option>
                                             {
@@ -169,12 +183,14 @@ export default class CreateUpdateOperationForm extends Component {
                         <Form.Group as={Row} className="mb-3" controlId="etatForm">
                             <Form.Label column sm={4} className="col-form-label-sm">Etat</Form.Label>
                             <Col>
-                                <Form.Select required size="sm" value={this.state.formEtat} onChange={this.handleSelectEtat}>
-                                    <option value="PREVUE">Prévue</option>
-                                    <option value="REALISEE">Réalisée</option>
-                                    <option value="REPORTEE">Reportée</option>
-                                    <option value="ANNULEE">Annulée</option>
-                                </Form.Select>
+                                <Select value={this.state.formEtat} options={this.listeEtats}
+                                    onChange={this.handleSelectEtat}
+                                    getOptionLabel={e => (
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            {e.icon} <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
+                                        </div>
+                                    )}
+                                />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="dateForm">
