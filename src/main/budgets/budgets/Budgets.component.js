@@ -110,7 +110,7 @@ export default class Budgets extends Component {
             <Navbar fixed="bottom" bg="dark" variant="dark" className="justify-content-end">
                 { /** Création d'une nouvelle opération **/
                     this.state.currentBudget != null ?
-                        <CreateOperationButton idCompte={this.state.selectedCompte} budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/> : "Chargement...."
+                        <CreateOperationButton budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/> : "Chargement...."
                 }
                 {/** Actions sur le budget (close / reinit) **/
                     this.state.currentBudget != null ?

@@ -34,17 +34,28 @@ import {sortLibelles} from "../../../Utils/DataUtils.utils";
     export function transformCategorieBOtoVO(categorie){
         let sousCategoriesVO = []
         if(categorie.listeSSCategories !== null && categorie.listeSSCategories !== undefined){
-            sousCategoriesVO = categorie.listeSSCategories.map(sousCat => transformCategorieBOtoVO(sousCat))
+            sousCategoriesVO = categorie.listeSSCategories.sort(sortLibelles).map(sousCat => transformCategorieBOtoVO(sousCat))
         }
         return { value: categorie.id, text: categorie.libelle, sousCategories: sousCategoriesVO }
     }
 
     /** Appels WS vers pour charger la liste des comptes **/
     export function loadComptes() {
+        console.log()
         ClientHTTP
             .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
             .then(data => {
-                let comptesActifs = data.filter(c => c.id !== this.props.idCompte && c.actif)
+                data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1);
+
+                // Création des comptes pour l'affichage (avec icones)
+                let comptesActifs = data.filter(c => c.id !== this.props.budget.idCompteBancaire && c.actif).map((compte) => {
+                    return {
+                        value: compte.id,
+                        text: compte.libelle,
+                        icon: <img src={"/img/banques/" + compte.itemIcon} className="d-inline-block align-top" alt={compte.libelle}/>,
+                        isDisabled: !compte.actif
+                    }
+                })
                 this.setState({ comptes: comptesActifs });
             })
             .catch(e => {

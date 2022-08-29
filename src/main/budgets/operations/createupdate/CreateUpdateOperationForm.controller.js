@@ -66,7 +66,7 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
      * @param event évt de saisie
      */
     export function handleSelectCompteCible(event) {
-        this.setState({formIdCompteCible : event.target.selectedOptions[0].id})
+        this.setState({formCompteCible : event})
     }
     /**
      *  Saisie de la valeur de l'opération
@@ -133,7 +133,7 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
             ssCategories: [],
             formCategorie: null,
             formSsCategorie: null,
-            formIdCompteCible: null,
+            formCompteCible: null,
             formDescription: "",
             formValeur: "",
             formEtat: this.listeEtats[0],
@@ -188,15 +188,15 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
         return {
             "libelle": this.state.formDescription,
             "categorie": {
-                "id": this.state.formCategorie[0].value,
-                "libelle": this.state.formCategorie[0].text
+                "id": this.state.formCategorie.value,
+                "libelle": this.state.formCategorie.text
             },
             "ssCategorie": {
-                "id": this.state.formSsCategorie[0].value,
-                "libelle": this.state.formSsCategorie[0].text
+                "id": this.state.formSsCategorie.value,
+                "libelle": this.state.formSsCategorie.text
             },
             "typeOperation": this.state.formOperationType,
-            "etat": this.state.formEtat[0].value,
+            "etat": this.state.formEtat.value,
             "valeur": (this.state.formOperationType === "DEPENSE" ? -1 : 1) * this.state.formValeur,
             "mensualite" : {
                 "periode": this.state.formOperationPeriodique
@@ -218,18 +218,18 @@ import {getDateFromDateTime, getLibelleDate} from "../../../Utils/DataUtils.util
         const operation = listeOperations.find(op => op.id === idOperation);
         if(operation !== undefined){
             // Création dynamique des VO Catégories & sous-catégories pour l'édition (pas de pb car disabled)
-            const selectedSsCat  = [{value: operation.ssCategorie.id, text: operation.ssCategorie.libelle}];
             const selectedCat  = [{value: operation.categorie.id, text: operation.categorie.libelle}];
+            const selectedSsCat  = [{value: operation.ssCategorie.id, text: operation.ssCategorie.libelle}];
 
             this.setState({ // remplissage du formulaire
-                    formCategorie: selectedCat,
+                    formCategorie: selectedCat[0],
                     categories: selectedCat,
                     ssCategories : selectedSsCat,
-                    formSsCategorie: selectedSsCat,
-                    formIdCompteCible: null,
+                    formSsCategorie: selectedSsCat[0],
+                    formCompteCible: null,
                     formDescription: operation.libelle,
                     formValeur: Math.abs(operation.valeur).toFixed(2),
-                    formEtat: this.listeEtats.filter(etatSelect => etatSelect.value === operation.etat),
+                    formEtat: this.listeEtats.filter(etatSelect => etatSelect.value === operation.etat)[0],
                     formDateOperation: operation.autresInfos !== undefined && operation.autresInfos.formDateOperation !== null ? getDateFromDateTime(operation.autresInfos.dateOperation) : null,
                     formOperationType: operation.typeOperation,
                     formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? operation.mensualite.periode : "PONCTUELLE",

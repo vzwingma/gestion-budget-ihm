@@ -52,7 +52,7 @@ export default class CreateOperationButton extends Component {
                 </OverlayTrigger>
                 { /** Fenêtre modale - Formulaire  **/ }
                 { /** la gestion de l'affichage de la modale est délégué au composant supérieur **/ }
-                <CreateUpdateOperationForm idCompte={this.props.selectedCompte} budget={this.props.budget} showModale={this.state.showModale}  modeEdition={false}
+                <CreateUpdateOperationForm budget={this.props.budget} showModale={this.state.showModale}  modeEdition={false}
                                            hideModale={this.hideModale}
                                            onOperationChange={this.props.onOperationChange}/> { /** OnOpChange est appelé par le composant. this.props.OnOpChange : appelle la méthode du composant supérieur**/ }
             </>

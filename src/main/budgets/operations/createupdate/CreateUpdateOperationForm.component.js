@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
-import {getLibelleDate, sortLibelles} from '../../../Utils/DataUtils.utils'
+import {getLibelleDate} from '../../../Utils/DataUtils.utils'
 import Select from "react-select";
 /**
  * Formulaire sur le Bouton création
@@ -40,7 +40,7 @@ export default class CreateUpdateOperationForm extends Component {
         // Formulaire
         formCategorie           : null,
         formSsCategorie         : null,
-        formIdCompteCible       : null,
+        formCompteCible         : null,
         formDescription         : "",
         formValeur              : "",
         // TODO : Utiliser la préférence utilisateur
@@ -145,16 +145,18 @@ export default class CreateUpdateOperationForm extends Component {
                                             )}>
                                     </Select>
                                       { this.state.showIntercompte &&
-                                        <Form.Select size="sm" required disabled={ this.props.modeEdition } onChange={ this.handleSelectCompteCible }>
-                                            <option> </option>
-                                            {
-                                                this.state.comptes
-                                                    .sort(sortLibelles)
-                                                    .map(compte => (
-                                                        <option key={compte.id} id={compte.id} value={compte.libelle}>{compte.libelle}</option>
-                                                    ))
-                                            }
-                                        </Form.Select>
+                                          <Select
+                                              placeholder="Sélectionner le compte"
+                                              isDisabled={ this.props.modeEdition }
+                                              value={this.state.selectedCompte}
+                                              options={this.state.comptes}
+                                              onChange={this.handleSelectCompteCible}
+                                              getOptionLabel={e => (
+                                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                      {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
+                                                  </div>
+                                              )}
+                                          />
                                     }
                             </Col>
                         </Form.Group>
