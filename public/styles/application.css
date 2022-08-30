@@ -51,6 +51,7 @@ tbody.tbodyResume > tr > td:nth-child(3) {
 tbody.tbodyResume > tr.ligneCategorie {
     font-weight: bolder;
 }
-tbody.tbodyResume > span.ligneSsCategorie {
-    padding-left: 20px;
+span.ligneSsCategorie {
+    margin-left: 20px;
+
 }
