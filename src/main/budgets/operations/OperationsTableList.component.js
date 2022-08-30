@@ -40,22 +40,16 @@ export default class OperationsList extends Component {
 
         return (
             <>
-                <style type="text/css">{`
-
-                `}</style>
-
                 <Table striped bordered hover size="sm" variant="light">
                     <thead>
-                        <tr>
-                            <th scope="col">Jour opération</th>
-                            <th scope="col" colSpan="2">Catégorie</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Valeur</th>
-                            <th scope="col">Mensualisation</th>
-                            <th scope="col">Etat</th>
-                            <th scope="col">Actions</th>
-                            <th scope="col">Mise à Jour</th>
-                        </tr>
+                        <th scope="col">Jour opération</th>
+                        <th scope="col" colSpan="2">Catégorie</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Valeur</th>
+                        <th scope="col">Mensualisation</th>
+                        <th scope="col">Etat</th>
+                        <th scope="col">Actions</th>
+                        <th scope="col">Mise à Jour</th>
                     </thead>
                     <tbody className="tbodyOperation">
                     { this.props.budget.listeOperations

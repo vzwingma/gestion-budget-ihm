@@ -12,8 +12,7 @@ const ResumeSoldes = ({ currentBudget }) => {
 
     return (
         <Table striped bordered hover size="sm" variant="light">
-            <thead>
-            <tr>
+            <thead className="theadResume">
                 <th/>
                 <th>
                     Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
@@ -21,13 +20,14 @@ const ResumeSoldes = ({ currentBudget }) => {
                 <th>
                     Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
                 </th>
-            </tr>
             </thead>
-            <tbody className="tbodyResume"><tr className="ligneCategorie">
-                <td> Solde </td>
-                <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /> </td>
-                <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
-            </tr></tbody>
+            <tbody className="tbodyResume">
+                <tr className="ligneCategorie">
+                    <td> Solde </td>
+                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /> </td>
+                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
+                </tr>
+            </tbody>
         </Table>
     )
 };
