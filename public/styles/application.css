@@ -29,7 +29,28 @@ div.alignCenter {
     margin-right: auto;
 }
 
+/* boutons actions sur opérations*/
+.btn-light {
+    padding: 0 1px 0 1px;
+}
 
+/* badge */
+.badge {
+    width: 76px;
+    font-size: 80%;
+    vertical-align: middle;
+}
+
+/*
+Style d'opérations
+ */
+.derniereOperation_true td {
+    font-weight : bold;
+}
+
+.operation_PLANIFIEE td {
+    font-style : italic;
+}
 
 /** Style pour les résumés **/
 table {
@@ -54,4 +75,13 @@ tbody.tbodyResume > tr.ligneCategorie {
 span.ligneSsCategorie {
     margin-left: 20px;
 
+}
+
+/**
+Style data range
+ */
+
+.pagination {
+    justify-content: center;
+    display: flex;
 }

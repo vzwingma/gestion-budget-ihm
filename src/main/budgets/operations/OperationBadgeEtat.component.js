@@ -8,14 +8,6 @@ export default class OperationEtat extends Component {
       return (
 
         <div id={this.props.id}>
-
-            <style type="text/css">{`
-                .badge {
-                  width: 76px;
-                  font-size: 80%;
-                  vertical-align: middle;
-                }
-            `}</style>
             { this.props.operation.etat === "REALISEE" &&
                 <Badge bg="success">Réalisée</Badge>
             }

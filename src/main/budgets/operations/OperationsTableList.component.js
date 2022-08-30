@@ -41,13 +41,7 @@ export default class OperationsList extends Component {
         return (
             <>
                 <style type="text/css">{`
-                    .derniereOperation_true td {
-                        font-weight : bold;
-                    }
-                    
-                    .operation_PLANIFIEE td {
-                        font-style : italic;
-                    }
+
                 `}</style>
 
                 <Table striped bordered hover size="sm" variant="light">
