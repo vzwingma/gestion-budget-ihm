@@ -1,6 +1,7 @@
 import React from "react";
 import Main from "./main/Main";
 import 'bootswatch/dist/sandstone/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { createRoot } from 'react-dom/client';
 
 const container = document.getElementById('root');

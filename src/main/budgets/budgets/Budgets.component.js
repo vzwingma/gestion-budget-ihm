@@ -11,6 +11,7 @@ import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGrou
 import CreateOperationButton from "../operations/creation/CreateOperationButton.component";
 import * as Controller from './Budgets.controller'
 import * as Services from './Budgets.extservices'
+import {ToastContainer} from "react-toastify";
 
 /*
  * Page principale des budgets
@@ -21,7 +22,7 @@ export default class Budgets extends Component {
     /** Etats pour la page Budget **/
         state = {
             selectedCompte : null,
-            selectedDate : null,
+            selectedDate :  new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0),
             currentBudget: null,
             categories: null
         }
@@ -106,6 +107,12 @@ export default class Budgets extends Component {
                     <Row>{ this.state.currentBudget != null ?<OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."}</Row>
                 </Col>
             </Row>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={1000}
+                hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false}
+                pauseOnFocusLoss draggable pauseOnHover
+            />
             <Row>.</Row>
             <Navbar fixed="bottom" bg="light" variant="dark" className="justify-content-end">
                 { /** Création d'une nouvelle opération **/

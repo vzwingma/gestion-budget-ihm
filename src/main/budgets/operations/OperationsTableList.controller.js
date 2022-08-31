@@ -1,5 +1,6 @@
 import * as ClientHTTP from "../../Services/ClientHTTP.service";
 import * as AppConstants from "../../Utils/AppEnums.constants";
+import {toast} from "react-toastify";
 
 /**
  * Controleur de la liste des opérations
@@ -7,7 +8,6 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
 
     // Update du budget, suite à une action sur une opération
     export function handleOperationsListUpdate(budgetUpdated){
-        // console.log("[TRIGGER] Refresh budget [" + budgetUpdated.id+ "]");
         this.props.onOperationChange(budgetUpdated);
     }
 
@@ -70,6 +70,7 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
             })
             .catch((e) => {
                 console.log("Erreur lors de la mise à jour de l'opération " + idOperation + " >> "+ e);
+                toast.error("Erreur lors de la mise à jour de l'opération comme dernière opération traitée")
             })
 
     }
@@ -87,4 +88,5 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
         });
         // hook : màj du state pour refresh de l'ihm
         this.setState({ idOperation : idOperation});
+        toast.success("L'opération a bien été idendifiée comme dernière traitée")
     }

@@ -1,5 +1,6 @@
 import * as AppConstants from "../../Utils/AppEnums.constants"
 import * as ClientHTTP from './../../Services/ClientHTTP.service'
+import {toast} from "react-toastify";
 
 
 
@@ -16,10 +17,11 @@ import * as ClientHTTP from './../../Services/ClientHTTP.service'
             .then((data) => {
                 // Update du budget global (parent)
                 this.props.onOperationChange(data);
+                toast.success("Mise à jour de l'opération correctement effectuée")
             })
             .catch((e) => {
                 console.log("Erreur lors de la mise à jour de l'opération " + operation.id + " >> "+ e);
-                console.log(operation);
+                toast.error("Erreur lors de la mise à jour de l'opération")
             })
     }
 

@@ -22,10 +22,8 @@ export default class DateRange extends Component {
                      datePreviousBudget : new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0),
                      dateCurrentBudget : new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0),
                      dateNextBudget : new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0),
-                     idCompte : null
+                     idCompte : this.props.idCompte
                  }
-        this.props.onDateChange(new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0));
-
         this.handleSelect = this.handleSelect.bind(this);
         this.refreshDatesFromCompte = this.refreshDatesFromCompte.bind(this);
         this.intervalleLoaded = this.intervalleLoaded.bind(this);
@@ -40,9 +38,9 @@ export default class DateRange extends Component {
             this.refreshDatesFromCompte(nextProps.idCompte)
             return true;
         }
-        if(this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()){
-                console.log("[TRIGGER] Context :: date=" + nextStates.dateCurrentBudget )
-                return true;
+        else if(this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()){
+            console.log("[TRIGGER] Context :: date=" + nextStates.dateCurrentBudget )
+            return true;
         }
         return false;
     }

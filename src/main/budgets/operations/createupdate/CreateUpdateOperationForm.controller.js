@@ -1,5 +1,6 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
 import {getDateFromDateTime, getLibelleDate, sortLibelles} from "../../../Utils/DataUtils.utils";
+import {toast} from "react-toastify";
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
@@ -215,6 +216,7 @@ import {getDateFromDateTime, getLibelleDate, sortLibelles} from "../../../Utils/
         else{
             this.saveOperation(this.props.budget.id  , operation, false);
         }
+        toast.success("Création de l'opération correctement effectuée")
     }
 
 
@@ -227,9 +229,8 @@ import {getDateFromDateTime, getLibelleDate, sortLibelles} from "../../../Utils/
         // Sauvegarde de l'opération
         operation.id = this.props.idOperation;
         console.log("Mise à jour de l'opération : " + operation.id + " [" + this.props.idOperation + "]");
-        console.log(operation)
         this.saveOperation(this.props.budget.id  , operation, true);
-
+        toast.success("Mise à jour de l'opération correctement effectuée")
     }
 
     /**
