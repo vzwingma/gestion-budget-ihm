@@ -6,7 +6,7 @@ const ResumeCategorie = ({ keyCategorie, idCategorie, totalCategorie }) => {
 
     return (
         <tr key={keyCategorie} id={idCategorie} className={`${!totalCategorie.isSsCategorie ? "ligneCategorie" : ""}`}>
-            <td><span className={`${totalCategorie.isSsCategorie ? "ligneSsCategorie" : ""}`}>{totalCategorie.libelleCategorie}</span></td>
+            <td><span className={`${totalCategorie.isSsCategorie ? "ligneSsCategorie" : ""}`}>{ totalCategorie.libelleCategorie }</span></td>
             <td><OperationValue valueOperation={totalCategorie.totalAtMaintenant}/></td>
             <td><OperationValue valueOperation={totalCategorie.totalAtFinMoisCourant}/></td>
         </tr>

@@ -49,12 +49,16 @@ export default class Infos extends Component {
         return (
         <Container fluid>
             <Card border="primary" bg="light" style={{ width: '40rem', margin: '10px auto' }} >
-                <Card.Header><h4><center>Application de Budgets</center></h4></Card.Header>
+                <Card.Header>
+                    <center>
+                        <h4>Gestion de budgets</h4>
+                    <img src="/img/icon.png" width="300" height="300" className="d-inline-block align-middle" alt="Gestion de budgets"/>
+                    </center>
+                </Card.Header>
                 <Card.Body>
                     <ListGroup>
                         <ListGroup.Item>Environnement : <b>{process.env.NODE_ENV}</b></ListGroup.Item>
                         <ListGroup.Item>
-
                             <Table striped hover variant="dark" style={{ margin: '0px 0px 0px 0px' }} >
                               <tbody>
                                     <ModuleInfos
@@ -70,8 +74,8 @@ export default class Infos extends Component {
                                 ))}
                               </tbody>
                             </Table>
-
                         </ListGroup.Item>
+                        <ListGroup.Item style={{textAlign:"right"}} >by Z.corp</ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
             </Card>

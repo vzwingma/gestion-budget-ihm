@@ -32,7 +32,7 @@ export default class ComptesList extends Component {
     render() {
         return (
                 <Select
-                    placeholder="Sélectionner le compte"
+                    placeholder="Sélectionnez le compte"
                     value={this.state.selectedCompte}
                     options={this.state.comptes}
                     onChange={this.handleSelect}

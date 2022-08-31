@@ -124,12 +124,7 @@ export default class DateRange extends Component {
 
     render() { return (
     <div>
-        <style type="text/css">{`
-            .pagination {
-                justify-content: center;
-                display: flex;
-            }
-        `}</style>
+
            <Pagination onClick={this.handleSelect} size={"sm"}>
              <Pagination.First id="firstButton"/>
              <Pagination.Item id="previous">{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Pagination.Item>

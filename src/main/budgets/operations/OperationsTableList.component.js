@@ -40,33 +40,20 @@ export default class OperationsList extends Component {
 
         return (
             <>
-                <style type="text/css">{`
-                    .derniereOperation_true td {
-                        font-weight : bold;
-                    }
-                    
-                    .operation_PLANIFIEE td {
-                        font-style : italic;
-                    }
-                `}</style>
-
                 <Table striped bordered hover size="sm" variant="light">
-                    <thead>
-                        <tr>
-                            <th scope="col">Jour opération</th>
-                            <th scope="col" colSpan="2">Catégorie</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Valeur</th>
-                            <th scope="col">Mensualisation</th>
-                            <th scope="col">Etat</th>
-                            <th scope="col">Actions</th>
-                            <th scope="col">Mise à Jour</th>
-                        </tr>
+                    <thead><tr>
+                        <th scope="col">Jour opération</th>
+                        <th scope="col" colSpan="2">Catégorie</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Valeur</th>
+                        <th scope="col">Période</th>
+                        <th scope="col">Etat</th>
+                        <th scope="col">Actions</th>
+                        <th scope="col">Mise à Jour</th></tr>
                     </thead>
                     <tbody className="tbodyOperation">
-                    { this.props.budget.listeOperations
-                     //   .filter(T => T.etat !== "PLANIFIEE")
-                        .map((operation) => (
+                    { this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE").map((operation) => (
+
                         <tr key={operation.id} id={operation.id} title={operation.etat}
                             onContextMenu={this.disableContextMenu} onDoubleClick={this.handleOperationUpdate} onAuxClick={this.handleOperationLast}
                             className={ "derniereOperation_" + operation.tagDerniereOperation  + " operation_" + operation.etat }>
@@ -85,6 +72,7 @@ export default class OperationsList extends Component {
                             </td>
                             <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateMaj, "JJ/MM/AAAA") }</td>
                         </tr>
+
                     ))}
                     </tbody>
                 </Table>

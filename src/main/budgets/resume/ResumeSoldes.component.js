@@ -12,7 +12,7 @@ const ResumeSoldes = ({ currentBudget }) => {
 
     return (
         <Table striped bordered hover size="sm" variant="light">
-            <thead>
+            <thead className="theadResume">
             <tr>
                 <th/>
                 <th>
@@ -23,11 +23,13 @@ const ResumeSoldes = ({ currentBudget }) => {
                 </th>
             </tr>
             </thead>
-            <tbody className="tbodyResume"><tr className="ligneCategorie">
-                <td> Solde </td>
-                <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /> </td>
-                <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
-            </tr></tbody>
+            <tbody className="tbodyResume">
+                <tr className="ligneCategorie">
+                    <td> Solde </td>
+                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /> </td>
+                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /> </td>
+                </tr>
+            </tbody>
         </Table>
     )
 };

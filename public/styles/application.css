@@ -29,13 +29,38 @@ div.alignCenter {
     margin-right: auto;
 }
 
+/* boutons actions sur opérations*/
+.btn-light {
+    padding: 0 1px 0 1px;
+}
 
+/* badge */
+.badge {
+    width: 76px;
+    font-size: 80%;
+    vertical-align: middle;
+}
+
+/*
+Style d'opérations
+ */
+.derniereOperation_true td {
+    font-weight : bold;
+}
+
+.operation_PLANIFIEE td {
+    font-style : italic;
+}
 
 /** Style pour les résumés **/
 table {
     font-size:12px;
 }
-tbody.tbodyResume > tr > td:first-child { width:200px }
+thead.theadResume > th {
+    text-align: right;
+    padding-right: 10px;
+}
+tbody.tbodyResume > tr > td:first-child { width:33% }
 tbody.tbodyResume > tr > td:nth-child(2) {
     text-align: right;
     padding-right: 10px;
@@ -51,6 +76,16 @@ tbody.tbodyResume > tr > td:nth-child(3) {
 tbody.tbodyResume > tr.ligneCategorie {
     font-weight: bolder;
 }
-tbody.tbodyResume > span.ligneSsCategorie {
-    padding-left: 20px;
+span.ligneSsCategorie {
+    margin-left: 20px;
+
+}
+
+/**
+Style data range
+ */
+
+.pagination {
+    justify-content: center;
+    display: flex;
 }

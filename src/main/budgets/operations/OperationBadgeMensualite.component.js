@@ -47,14 +47,6 @@ export default class OperationMensualite extends Component {
       return (
 
         <div id={this.props.id}>
-
-            <style type="text/css">{`
-                .badge {
-                  width: 76px;
-                  font-size: 80%;
-                  vertical-align: middle;
-                }
-            `}</style>
             { /* Pas d'affichage pour 0 */ }
             { this.props.mensualite !== null && this.props.mensualite.periode !== 0 &&
                 <><OverlayTrigger overlay={ <Tooltip>{ this.getTooltip() }</Tooltip> }>

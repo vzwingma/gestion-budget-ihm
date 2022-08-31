@@ -106,8 +106,8 @@ export default class Budgets extends Component {
                     <Row>{ this.state.currentBudget != null ?<OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."}</Row>
                 </Col>
             </Row>
-
-            <Navbar fixed="bottom" bg="dark" variant="dark" className="justify-content-end">
+            <Row>.</Row>
+            <Navbar fixed="bottom" bg="light" variant="dark" className="justify-content-end">
                 { /** Création d'une nouvelle opération **/
                     this.state.currentBudget != null ?
                         <CreateOperationButton budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/> : "Chargement...."
