@@ -5,5 +5,5 @@ import Main from "../main/Main";
 test('renders Titre', () => {
   render(<Main />);
   const linkElement = screen.getAllByText(/Gestion de budgets/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(linkElement[0]).toBeInTheDocument();
 });
