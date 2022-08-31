@@ -1,5 +1,6 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
 import * as ClientHTTP from "../../../Services/ClientHTTP.service";
+import {toast} from "react-toastify";
 
 /**
  * Fonctions d'appels des services du backend sur le formulaire de création d'opérations
@@ -15,6 +16,7 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
             .then(data => this.categoriesLoaded(data))
             .catch(e => {
                 console.log("Erreur lors du chargement des catégories >> "+ e)
+                toast.error("Erreur lors du chargement des catégories")
             })
     }
 
@@ -40,6 +42,7 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
             })
             .catch(e => {
                 console.log("Erreur lors du chargement des comptes " + e)
+                toast.error("Erreur lors du chargement des comptes ")
             })
     }
 
@@ -62,6 +65,7 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
             })
             .catch(e => {
                 console.log("Erreur lors de l'enregistrement de l'opération " + e)
+                toast.error("Erreur lors de la mise à jour de l'opération " + operation.id)
             })
     }
 
@@ -84,5 +88,6 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
             })
             .catch(e => {
                 console.log("Erreur lors de l'enregistrement de l'opération intercomptes" + e)
+                toast.error("Erreur lors de l'enregistrement de l'opération intercomptes")
             })
     }

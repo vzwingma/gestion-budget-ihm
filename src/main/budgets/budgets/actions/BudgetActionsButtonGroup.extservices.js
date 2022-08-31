@@ -1,5 +1,6 @@
 import * as ClientHTTP from "../../../Services/ClientHTTP.service";
 import * as AppConstants from "../../../Utils/AppEnums.constants";
+import {toast} from "react-toastify";
 
 
     export function callReinitBudget(idBudget){
@@ -11,6 +12,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants";
             })
             .catch((e) => {
                 console.log("Erreur lors de la réinitialisation du budget >> "+ e)
+                toast.error("Erreur lors de la réinitialisation du budget " + idBudget)
             })
     }
 
@@ -21,9 +23,11 @@ import * as AppConstants from "../../../Utils/AppEnums.constants";
         ClientHTTP.call('POST', AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.ETAT, [idBudget, newEtatBudget])
             .then(data => {
                 console.log(data)
+                toast.success((newEtatBudget ? "Réouverture" : "Clôture") + "du budget " + idBudget + " effectuée")
                 this.props.onActionBudgetChange(data)
             })
             .catch((e) => {
                 console.log("Erreur lors de la Réouverture/Clôture du budget >> "+ e)
+                toast.error("Erreur lors de la " + (newEtatBudget ? "réouverture" : "clôture") + "du budget " + idBudget)
             })
     }

@@ -1,5 +1,6 @@
 import * as AppConstants from "../Utils/AppEnums.constants";
 import * as ClientHTTP from './../Services/ClientHTTP.service';
+import {toast} from "react-toastify";
 /**
  * Controller Select Comptes
  */
@@ -13,7 +14,10 @@ import * as ClientHTTP from './../Services/ClientHTTP.service';
             .then((data) => {
                 this.comptesLoaded(data)
             })
-            .catch(e => console.log("Erreur lors du chargement des comptes " + e))
+            .catch(e => {
+                console.log("Erreur lors du chargement des comptes " + e)
+                toast.error("Erreur lors du chargement des comptes")
+            } )
     }
 
     /**

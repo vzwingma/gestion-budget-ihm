@@ -1,5 +1,6 @@
 import * as AppConstants from "../../Utils/AppEnums.constants"
 import * as ClientHTTP from '../../Services/ClientHTTP.service'
+import {toast} from "react-toastify";
 
 /*
  * Services back-end des budgets
@@ -14,6 +15,7 @@ import * as ClientHTTP from '../../Services/ClientHTTP.service'
                     })
                     .catch((e) => {
                         console.log("Erreur lors du chargement des catégories >> "+ e)
+                        toast.error("Erreur lors du chargement des catégories")
                     })
     }
 
@@ -33,6 +35,9 @@ import * as ClientHTTP from '../../Services/ClientHTTP.service'
                             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
                             [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
                     .then(data => this.handleBudgetUpdate(data))
-                    .catch(e => console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e))
+                    .catch(e => {
+                        console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e)
+                        toast.error("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate )
+                    })
         }
     }
