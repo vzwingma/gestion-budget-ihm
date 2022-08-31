@@ -17,7 +17,7 @@
     export function handleBudgetUpdate(budgetData){
         console.log("(Re)Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length +  " opérations")
         this.setState({ currentBudget : budgetData })
-        toast.success("(Re)Chargement du budget [" + budgetData.id + "] correctement effectué ")
+        toast.success("Chargement du budget [" + budgetData.id + "] correctement effectué ")
     }
 
 
