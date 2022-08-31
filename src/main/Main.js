@@ -18,7 +18,8 @@ import {Nav, Navbar, NavItem} from "react-bootstrap";
 export default class Main extends Component {
   render() {
     return (
-      <HashRouter>
+        <>
+        <HashRouter>
           <Navbar sticky="top" bg="dark" variant="dark" >
                 <Navbar.Brand>
                     <img src="/img/favicon64.png" width="30" height="30" className="d-inline-block align-top" alt="Gestion de budgets"/>
@@ -37,6 +38,7 @@ export default class Main extends Component {
 
         <div className="App">
             <Routes>
+                <Route path="/"    element={<Infos/>}/>
                 <Route path="/login"    element={<Login/>}/>
                 <Route path="/budgets"  element={<Budgets/>} />
                 <Route path="/infos"    element={<Infos/>}/>
@@ -45,6 +47,8 @@ export default class Main extends Component {
             </Routes>
         </div>
       </HashRouter>
+
+      </>
     );
   }
 }
