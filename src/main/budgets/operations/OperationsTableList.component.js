@@ -41,7 +41,7 @@ export default class OperationsList extends Component {
         return (
             <>
                 <Table striped bordered hover size="sm" variant="light">
-                    <thead>
+                    <thead><tr>
                         <th scope="col">Jour opération</th>
                         <th scope="col" colSpan="2">Catégorie</th>
                         <th scope="col">Description</th>
@@ -49,7 +49,7 @@ export default class OperationsList extends Component {
                         <th scope="col">Période</th>
                         <th scope="col">Etat</th>
                         <th scope="col">Actions</th>
-                        <th scope="col">Mise à Jour</th>
+                        <th scope="col">Mise à Jour</th></tr>
                     </thead>
                     <tbody className="tbodyOperation">
                     { this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE").map((operation) => (
