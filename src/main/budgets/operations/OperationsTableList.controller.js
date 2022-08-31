@@ -6,13 +6,19 @@ import {toast} from "react-toastify";
  * Controleur de la liste des opérations
  */
 
-    // Update du budget, suite à une action sur une opération
+/**
+ * Update du budget, suite à une action sur une opération
+ * @param budgetUpdated budget Updated
+ */
     export function handleOperationsListUpdate(budgetUpdated){
         this.props.onOperationChange(budgetUpdated);
     }
 
 
-    // Double click sur une opération
+    /**
+     * Double click sur une opération
+     * @param event evenement de mise à jour d'opération
+     */
     export function handleOperationUpdate(event){
         if(this.props.budget.actif && event.target.parentElement.title !== "PLANIFIEE"){
             console.log("[TRIGGER] Edit opération [" + event.target.parentElement.id + "] " );
@@ -42,7 +48,12 @@ import {toast} from "react-toastify";
         }
 
     }
-    /** Désactivation du menu context lors du right click d'opération **/
+
+    /**
+     * Désactivation du menu context lors du right click d'opération
+     * @param event évément click droit
+     * @returns {boolean} etat
+     */
     export function disableContextMenu(event){
         event.preventDefault();
         event.stopPropagation();
@@ -59,6 +70,8 @@ import {toast} from "react-toastify";
 
     /**
      * Modification de l'opération sur action des boutons
+     * @param idOperation id opération
+     * @param idBudget id budget
      */
     export function callSetOperationAsLast(idOperation, idBudget){
         console.log("Dernière opération " + idOperation + " du budget " + idBudget);
