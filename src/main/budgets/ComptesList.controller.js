@@ -22,7 +22,7 @@ import {toast} from "react-toastify";
 
     /**
      * Chargement des comptes et tri suivant l'ordre
-     * @param data data
+     * @param data comptes chargés
      */
     export function comptesLoaded(data){
         console.log("Chargement de " + data.length + " comptes");
