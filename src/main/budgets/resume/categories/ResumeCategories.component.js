@@ -51,6 +51,7 @@ const ResumeCategories = ({ currentBudget, categories }) => {
 
         <Table striped bordered hover size="sm" variant="light">
           <thead className="theadResume">
+          <tr>
             <th/>
             <th>
                 Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
@@ -58,6 +59,7 @@ const ResumeCategories = ({ currentBudget, categories }) => {
             <th>
                 Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
             </th>
+          </tr>
           </thead>
           <tbody className="tbodyResume">
               {
