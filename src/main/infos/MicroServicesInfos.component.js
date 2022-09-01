@@ -3,7 +3,7 @@
  const MicroServicesInfos = ({ name, version }) => {
       return (
             <tr>
-              <td>{name}</td><td>{version}</td>
+              <td>API {name}</td><td>{version}</td>
             </tr>
       )
     };
