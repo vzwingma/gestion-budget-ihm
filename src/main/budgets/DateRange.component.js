@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Pagination } from 'react-bootstrap'
-import * as AppConstants from "../Utils/AppEnums.constants"
-import * as ClientHTTP from './../Services/ClientHTTP.service'
+import {Button, ButtonGroup, Modal, Pagination} from 'react-bootstrap'
+import * as Controller from "./DateRange.controller"
 
 /**
  * Date Range Select
@@ -17,16 +16,23 @@ export default class DateRange extends Component {
         // Init date à maintenant
         let now = new Date(Date.now())
         this.state = {
-                     datePremierBudget : null,
-                     dateDernierBudget : null,
-                     datePreviousBudget : new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0),
-                     dateCurrentBudget : new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0),
-                     dateNextBudget : new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0),
-                     idCompte : this.props.idCompte
-                 }
-        this.handleSelect = this.handleSelect.bind(this);
-        this.refreshDatesFromCompte = this.refreshDatesFromCompte.bind(this);
-        this.intervalleLoaded = this.intervalleLoaded.bind(this);
+            // Fenêtre modale
+            showModale: false,
+            datePremierBudget : null,
+            dateDernierBudget : null,
+            datePreviousBudget : new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0),
+            dateCurrentBudget : new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0),
+            dateNextBudget : new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0),
+            idCompte : this.props.idCompte
+        }
+        this.refreshDatesFromCompte = Controller.refreshDatesFromCompte.bind(this);
+
+        this.handleSelect = Controller.handleSelect.bind(this);
+        this.confirmInitNextMonth = Controller.confirmInitNextMonth.bind(this);
+        this.updateMonths = Controller.updateMonths.bind(this);
+        this.intervalleLoaded = Controller.intervalleLoaded.bind(this);
+        this.handleModalClick = Controller.handleModalClick.bind(this);
+        this.hideModale = Controller.hideModale.bind(this);
     }
 
     // Mise à jour du contexte de budget
@@ -42,77 +48,12 @@ export default class DateRange extends Component {
             console.log("[TRIGGER] Context :: date=" + nextStates.dateCurrentBudget )
             return true;
         }
+        else if(this.state.showModale !== nextStates.showModale){
+            return true
+        }
         return false;
     }
 
-    /** Appels WS vers pour charger la liste des comptes **/
-    refreshDatesFromCompte(idCompte) {
-
-        ClientHTTP.call('GET',
-                        AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,
-                [ idCompte ])
-                .then((data) => {
-                    // console.log(data)
-                    this.intervalleLoaded(data.datePremierBudget, data.dateDernierBudget)
-                })
-                .catch((e) => {
-                    console.log("Erreur lors du chargement de l'intervalle des budgets" + e)
-                })
-    }
-
-    // Chargement de l'intervalle de compte
-    intervalleLoaded(jourDepuisInitPremierBudget, jourDepuisInitDernierBudget) {
-
-        let datePremierBudget = new Date(jourDepuisInitPremierBudget * 24 * 60 * 60 * 1000);
-        let dateDernierBudget = new Date(jourDepuisInitDernierBudget * 24 * 60 * 60 * 1000);
-        console.log("Budgets disponibles entre " + datePremierBudget.toLocaleString() + " et " + dateDernierBudget.toLocaleString());
-
-        this.setState({ datePremierBudget: datePremierBudget, dateDernierBudget : dateDernierBudget });
-    }
-
-
-    // Sélection d'un mois à partir du composant
-    handleSelect(event) {
-        let newDatePreviousBudget;
-        let newDateCurrentBudget;
-        let newDateNextBudget;
-        let dateChanged = false;
-        if(event.target.id === "previous"){
-            newDateCurrentBudget = new Date(this.state.datePreviousBudget);
-            newDatePreviousBudget = new Date(this.state.datePreviousBudget.setMonth(this.state.datePreviousBudget.getMonth() - 1));
-            newDateNextBudget = new Date(this.state.dateCurrentBudget);
-            dateChanged = true;
-        }
-        else if(event.target.id === "next"){
-            newDatePreviousBudget = new Date(this.state.dateCurrentBudget);
-            newDateCurrentBudget = new Date(this.state.dateNextBudget);
-            newDateNextBudget = new Date(this.state.dateNextBudget.setMonth(this.state.dateNextBudget.getMonth() + 1));
-            dateChanged = true;
-        }
-        else if(event.target.id === "firstButton"){
-            newDatePreviousBudget = new Date(new Date(this.state.datePremierBudget).setMonth(this.state.datePremierBudget.getMonth() - 1));
-            newDateCurrentBudget = new Date(this.state.datePremierBudget);
-            newDateNextBudget = new Date(new Date(this.state.datePremierBudget).setMonth(this.state.datePremierBudget.getMonth() + 1));
-            dateChanged = true;
-        }
-        else if(event.target.id === "lastButton"){
-            newDateCurrentBudget = new Date(this.state.dateDernierBudget);
-            newDateNextBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() + 1));
-            newDatePreviousBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() - 1));
-            dateChanged = true;
-        }
-        if(dateChanged){
-            this.setState({
-                datePreviousBudget : newDatePreviousBudget,
-                dateCurrentBudget : newDateCurrentBudget,
-                dateNextBudget : newDateNextBudget
-            })
-            // Date sélectionnée, remonté à budget
-            this.props.onDateChange(newDateCurrentBudget);
-        }
-
-
-    }
 
 
 /**
@@ -121,8 +62,7 @@ export default class DateRange extends Component {
 
 
     render() { return (
-    <div>
-
+        <>
            <Pagination onClick={this.handleSelect} size={"sm"}>
              <Pagination.First id="firstButton"/>
              <Pagination.Item id="previous">{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Pagination.Item>
@@ -130,7 +70,21 @@ export default class DateRange extends Component {
              <Pagination.Item id="next">{ this.state.dateNextBudget.toLocaleString('default', { month: 'long' }) } { this.state.dateNextBudget.getFullYear() }</Pagination.Item>
              <Pagination.Last id="lastButton"/>
            </Pagination>
-        </div>
+
+            <Modal show={this.state.showModale} onHide={this.hideModale} className="modal" centered >
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmation d'ouverture</Modal.Title>
+                </Modal.Header>
+                <Modal.Body><p>L'ouverture d'un nouveau mois, va clôturer le mois courant, et reporter toutes les opérations non réalisées</p><p>Voulez vous continuer ? </p></Modal.Body>
+
+                <Modal.Footer>
+                    <ButtonGroup onClick={this.handleModalClick}>
+                        <Button action="ANNULER"    variant="secondary">Annuler</Button>
+                        <Button action="CONFIRMER"  variant="success">Confirmer</Button>
+                    </ButtonGroup>
+                </Modal.Footer>
+            </Modal>
+        </>
     ); }
 }
 

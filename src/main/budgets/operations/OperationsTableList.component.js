@@ -64,7 +64,7 @@ export default class OperationsList extends Component {
                             <td><OperationValue valueOperation={operation.valeur} /></td>
                             <td><OperationMensualite key={operation.id} id={operation.id} mensualite={operation.mensualite}  /></td>
                             <td><OperationEtat key={operation.id} id={operation.id} operation={operation} /></td>
-                            <td>{ this.props.budget.actif &&
+                            <td>{ this.props.budget.actif && operation.etat !== "PLANIFIEE" &&
                                 <OperationActions key={operation.id} id={operation.id}
                                                   operation={operation} budgetid={this.props.budget.id}
                                                   onOperationChange={this.handleOperationsListUpdate} />
