@@ -1,9 +1,8 @@
-/*
+import {toast} from "react-toastify";
+
+/**
  * Controleur des budgets
  */
-
-
-    import {toast} from "react-toastify";
 
 /** Notification lorsque le compte change **/
     export function handleCompteChange(selectedIdCompteFromComponent){
@@ -19,6 +18,3 @@
         this.setState({ currentBudget : budgetData })
         toast.success("Chargement du budget [" + budgetData.id + "] correctement effectué ")
     }
-
-
-
