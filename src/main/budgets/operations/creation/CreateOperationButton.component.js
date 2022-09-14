@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, OverlayTrigger, Tooltip} from 'react-bootstrap'
+import {Button, Tooltip} from '@mui/material';
 import CreateUpdateOperationForm from "../createupdate/CreateUpdateOperationForm.component";
 /**
  * Formulaire sur le Bouton création
@@ -45,11 +45,11 @@ export default class CreateOperationButton extends Component {
         return (
             <>
                 { /** Bouton de création **/ }
-                <OverlayTrigger overlay={  <Tooltip>Ajouter une opération</Tooltip>  }>
+                <Tooltip title="Ajouter une opération">
                     <Button className="btn-light" size="sm" disabled={!this.props.budget.actif} onClick={this.showModale}>
                         <img src={"/img/statuts/circle_plus.png"} className="d-inline-block align-top" alt="Création une nouvelle opération"/>
                     </Button>
-                </OverlayTrigger>
+                </Tooltip>
                 { /** Fenêtre modale - Formulaire  **/ }
                 { /** la gestion de l'affichage de la modale est délégué au composant supérieur **/ }
                 <CreateUpdateOperationForm budget={this.props.budget} showModale={this.state.showModale}  modeEdition={false}

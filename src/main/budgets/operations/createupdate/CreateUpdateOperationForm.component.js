@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Button, ButtonGroup, Col, Form, Modal, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
+import {Col, Form, Modal, Row} from 'react-bootstrap'
+import {Button, ButtonGroup, Tooltip} from '@mui/material';
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
 import {getLibelleDate} from '../../../Utils/DataUtils.utils'
@@ -220,7 +221,7 @@ export default class CreateUpdateOperationForm extends Component {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4} className="col-form-label-sm">Dépense périodique</Form.Label>
                             <Col>
-                                <OverlayTrigger overlay={ <Tooltip>Prochaine mensualité : {this.state.formProchaineMensualite}</Tooltip> }>
+                                <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : null }>
                                 <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
                                         <option value="PONCTUELLE">Ponctuelle</option>
                                         <option value="MENSUELLE">Mensuelle</option>
@@ -228,28 +229,28 @@ export default class CreateUpdateOperationForm extends Component {
                                         <option value="SEMESTRIELLE">Semestrielle</option>
                                         <option value="ANNUELLE">Annuelle</option>
                                 </Form.Select>
-                                </OverlayTrigger>
+                                </Tooltip>
                             </Col>
                         </Form.Group>
                     </Modal.Body>
 
                     <Modal.Footer>
                         <ButtonGroup>
-                            <OverlayTrigger overlay={  <Tooltip>Annuler la saisie</Tooltip>  }>
-                                <Button id="btnClose" variant="secondary" onClick={ this.cancelForm } >Annuler</Button>
-                            </OverlayTrigger>
+                            <Tooltip title="Annuler la saisie">
+                                <Button id="btnClose" color="secondary" onClick={ this.cancelForm } >Annuler</Button>
+                            </Tooltip>
                             { !this.props.modeEdition && <>
-                                <OverlayTrigger overlay={ <Tooltip>Valider la saisie et continuer sur une autre saisie</Tooltip>  }>
-                                    <Button id="btnValidContinue" variant="primary" type="submit" >Valider et continuer</Button>
-                                </OverlayTrigger>
-                                <OverlayTrigger overlay={ <Tooltip>Valider la saisie et fermer le formulaire</Tooltip> }>
-                                    <Button id="btnValidClose" variant="success" type="submit" >{!this.props.modeEdition ? "Valider et fermer" : "Valider" }</Button>
-                                </OverlayTrigger>
+                                <Tooltip title="Valider la saisie et continuer sur une autre saisie">
+                                    <Button id="btnValidContinue" color="primary" type="submit" >Valider et continuer</Button>
+                                </Tooltip>
+                                <Tooltip title="Valider la saisie et fermer le formulaire">
+                                    <Button id="btnValidClose" color="success" type="submit" >{!this.props.modeEdition ? "Valider et fermer" : "Valider" }</Button>
+                                </Tooltip>
                             </> }
                             { this.props.modeEdition &&
-                                <OverlayTrigger overlay={ <Tooltip>Valider la modification</Tooltip> }>
-                                    <Button id="btnValidModif" variant="success" type="submit" >Valider</Button>
-                                </OverlayTrigger>
+                                <Tooltip title="Valider la modification">
+                                    <Button id="btnValidModif" color="success" type="submit" >Valider</Button>
+                                </Tooltip>
                             }
                         </ButtonGroup>
                     </Modal.Footer>
