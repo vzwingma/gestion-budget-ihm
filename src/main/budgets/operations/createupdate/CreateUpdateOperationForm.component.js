@@ -45,7 +45,7 @@ export default class CreateUpdateOperationForm extends Component {
         formEtat                : this.listeEtats[0],
         formDateOperation       : "",
         formOperationType       : "DEPENSE",
-        formOperationPeriodique : "0",
+        formOperationPeriodique : "PONCTUELLE",
         formProchaineMensualite : null,
         formTagDerniereOperation: false,
         // Affichage & Validation du formulaire
