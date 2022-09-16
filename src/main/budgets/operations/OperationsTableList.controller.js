@@ -20,12 +20,13 @@ import {toast} from "react-toastify";
      * @param event evenement de mise à jour d'opération
      */
     export function handleOperationUpdate(event){
-        if(this.props.budget.actif && event.target.parentElement.title !== "PLANIFIEE"){
-            console.log("[TRIGGER] Edit opération [" + event.target.parentElement.id + "] " );
+        console.log(event)
+        if(this.props.budget.actif && event.row.etat !== "PLANIFIEE"){
+            console.log("[TRIGGER] Edit opération [" + event.row.id + "] " );
             // Activation de la modale
             this.setState({
-                idOperation: event.target.parentElement.id,
-                showModale : true })
+                idOperation: event.row.id,
+                showModaleEdit : true })
         }
         else{
             console.log("[NOTRIGGER] l'opération n'est pas éditable");
@@ -65,7 +66,7 @@ import {toast} from "react-toastify";
      * @param event
      */
     export function hideModale(event) {
-        this.setState({ showModale: false });
+        this.setState({ showModaleEdit: false });
     }
 
     /**

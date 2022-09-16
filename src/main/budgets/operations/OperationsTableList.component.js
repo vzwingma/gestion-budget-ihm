@@ -23,7 +23,8 @@ export default class OperationsList extends Component {
     state = {
         idOperation: null,
         idBudget: null,
-        showModale: false
+        showModale: false,
+        showModaleEdit: false
     }
 
 
@@ -44,13 +45,13 @@ export default class OperationsList extends Component {
             field: 'categorie',
             headerName: 'Catégorie',
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${params.row.categorie.libelle || '-'} `,
+            valueGetter: (params: GridValueGetterParams) => `${ (params.row.categorie !== null ? params.row.categorie.libelle : '-') || '-'} `,
         },
         {
             field: 'ssCategorie',
             headerName: '',
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${params.row.ssCategorie.libelle || '-'} `,
+            valueGetter: (params: GridValueGetterParams) => `${ (params.row.ssCategorie !== null ? params.row.ssCategorie.libelle : '-') || '-'} `,
         },
         {
             field: 'libelle',
@@ -60,7 +61,7 @@ export default class OperationsList extends Component {
         {
             field: 'valeur',
             headerName: 'Valeur',
-            type: "number",
+            type: 'number',
             editable: false, sortable: true,
             renderCell: this.renderValue
         },
@@ -80,7 +81,7 @@ export default class OperationsList extends Component {
             // Hack pour transmettre l'id budget au renderAction
             field: "actions",
             headerName: 'Actions',
-            editable: false, sortable: true,
+            editable: false, sortable: false,
             renderCell: this.renderActions,
             type: "actions"
         },
@@ -100,7 +101,8 @@ export default class OperationsList extends Component {
         this.state = {
             idOperation: null,
             idBudget: props.budget.id,
-            showModale: false
+            showModale: false,
+            showModaleEdit: false
         };
         this.handleOperationsListUpdate = Controller.handleOperationsListUpdate.bind(this);
         this.handleOperationUpdate = Controller.handleOperationUpdate.bind(this);
@@ -190,7 +192,7 @@ export default class OperationsList extends Component {
                         pageSize={20} rowsPerPageOptions={[20]}
                         disableSelectionOnClick
                         autoHeight={true}
-                        onCellClick={this.handleToggleClick}
+                        onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationUpdate}
                     />
                     <Dialog open={this.state.showModale} >
                         <DialogTitle>Suppression d'une opération</DialogTitle>
@@ -209,9 +211,9 @@ export default class OperationsList extends Component {
 
                 { /** Fenêtre modale - Formulaire  **/ }
                 { /** la gestion de l'affichage de la modale est délégué au composant supérieur **/ }
-                { this.state.showModale && this.state.idOperation != null &&
+                { this.state.showModaleEdit && this.state.idOperation != null &&
                 <CreateUpdateOperationForm idCompte={this.props.selectedCompte} budget={this.props.budget}
-                                           showModale={this.state.showModale} modeEdition={true} idOperation={this.state.idOperation}
+                                           showModale={this.state.showModaleEdit} modeEdition={true} idOperation={this.state.idOperation}
                                            hideModale={this.hideModale}
                                            onOperationChange={this.props.onOperationChange}/> }
                 { /** OnOpChange est appelé par le  composant . this.props.OnOpChange : appelle la méthode du composant supérieur**/ }
