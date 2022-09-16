@@ -41,17 +41,6 @@ div.alignCenter {
     vertical-align: middle;
 }
 
-/*
-Style d'opérations
- */
-.derniereOperation_true td {
-    font-weight : bold;
-}
-
-.operation_PLANIFIEE td {
-    font-style : italic;
-}
-
 /** Style pour les résumés **/
 table {
     font-size:12px;
