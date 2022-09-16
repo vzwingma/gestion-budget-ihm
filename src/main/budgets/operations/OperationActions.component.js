@@ -1,22 +1,9 @@
 import React, { Component } from "react";
-import {ButtonGroup } from 'react-bootstrap';
+
 import OperationButtonAction from "./OperationButtonAction.component";
-import * as Controller from './OperationActions.controller';
+import {ButtonGroup} from "@mui/material";
 
 export default class OperationActions extends Component {
-
-
-
-    state = {
-        showModale: false
-    }
-
-
-    /** Constructeur **/
-    constructor(props){
-        super(props);
-        this.hideShowModale = Controller.hideShowModale.bind(this);
-    }
 
 
     render(){

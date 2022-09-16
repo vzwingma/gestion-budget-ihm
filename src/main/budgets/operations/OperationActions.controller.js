@@ -11,7 +11,7 @@ import {toast} from "react-toastify";
         ClientHTTP.call(operation.etat === "SUPPRIMEE" ? "DELETE" : "POST",
             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
             [ idBudget, operation.id ],
-            operation)
+                    operation)
             .then((data) => {
                 // Update du budget global (parent)
                 this.props.onOperationChange(data);
@@ -34,8 +34,7 @@ import {toast} from "react-toastify";
         if(params.field === "actions" && event.target.id !== undefined && event.target.id !== ""){
             const action=event.target.id;
             if(action === "SUPPRIMEE_A_CONFIRMER"){
-                this.hideShowModale(true)
-                this.setState({operation : params.row})
+                this.setState({showModale: true, operation : params.row})
             }
             else if(action !== "SUPPRIMEE"){
                 params.row.etat=action;
@@ -54,20 +53,11 @@ import {toast} from "react-toastify";
 
         if(event.target.id !== null && event.target.id !== undefined) {
             const action = event.target.id;
-            if(action === "SUPPRIMEE_ANNULER"){
-                this.hideShowModale(false)
-            }
-            else if(action === "SUPPRIMEE"){
+            if(action === "SUPPRIMEE"){
                 let operation = this.state.operation;
                 operation.etat=action;
                 this.updateOperation(operation, this.props.budget.id);
-                this.hideShowModale(false)
             }
+            this.setState( { operation: null, showModale : false })
         }
     }
-
-    // Mise à jour de l'état de l'opération
-    export function hideShowModale(showPopup) {
-        this.setState( { showModale : showPopup })
-    }
-

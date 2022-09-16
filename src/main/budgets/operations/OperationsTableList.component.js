@@ -113,7 +113,7 @@ export default class OperationsList extends Component {
         this.handleToggleClick = ActionController.handleToggleClick.bind(this);
         this.handleToggleClickSupprimer = ActionController.handleToggleClickSupprimer.bind(this);
         this.updateOperation = ActionController.updateOperation.bind(this);
-        this.hideShowModale = ActionController.hideShowModale.bind(this);
+
     }
 
     renderMensualite(params: GridRenderCellParams<number>) {
