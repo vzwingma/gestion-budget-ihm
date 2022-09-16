@@ -20,13 +20,13 @@ export default class CreateUpdateOperationForm extends Component {
      */
     listeEtats = [
         {   value: "PREVUE", text: "Prévue",
-            icon: <img src={"/img/statuts/circle_clock.png"} className="d-inline-block align-top" alt="Prévue"/>         },
+            icon: <img src={"/img/statuts/circle_clock.png"} className="d-inline-block align-top" alt="Prévue"/>        },
         {   value: "REALISEE", text: "Réalisée",
-            icon: <img src={"/img/statuts/circle_ok.png"} className="d-inline-block align-top" alt="Réalisée"/>        },
+            icon: <img src={"/img/statuts/circle_ok.png"} className="d-inline-block align-top" alt="Réalisée"/>         },
         {   value: "REPORTEE", text: "Reportée",
-            icon: <img src={"/img/statuts/circle_arrow_right.png"} className="d-inline-block align-top" alt="Reportée"/>        },
+            icon: <img src={"/img/statuts/circle_arrow_right.png"} className="d-inline-block align-top" alt="Reportée"/>},
         {   value: "ANNULEE", text: "Annulée",
-            icon: <img src={"/img/statuts/circle_cancel.png"} className="d-inline-block align-top" alt="Annulée"/>        }
+            icon: <img src={"/img/statuts/circle_cancel.png"} className="d-inline-block align-top" alt="Annulée"/>      }
     ]
 
 

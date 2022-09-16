@@ -40,12 +40,12 @@ import {toast} from "react-toastify";
      * @param event événement
      */
     export function handleOperationLast(event){
-        if(this.props.budget.actif && event.target.parentElement.title !== "PLANIFIEE"){
-            console.log("[TRIGGER] Last opération [" + event.target.parentElement.id+ "] de [" + this.props.budget.id + "]");
-            this.callSetOperationAsLast(event.target.parentElement.id, this.props.budget.id)
+        if(this.props.budget.actif && event.row.etat === "REALISEE"){
+            console.log("[TRIGGER] Last opération [" + event.row.id+ "] de [" + this.props.budget.id + "]");
+            this.callSetOperationAsLast(event.row.id, this.props.budget.id)
         }
         else{
-            console.log("[NOTRIGGER] l'opération n'est pas éditable");
+            console.log("[NOTRIGGER] l'opération n'est pas réalisée");
         }
 
     }

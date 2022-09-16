@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import Table from 'react-bootstrap/Table';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 import OperationActions from './OperationActions.component';
@@ -11,7 +10,7 @@ import * as Controller from './OperationsTableList.controller';
 import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.component";
 import OperationMensualite from "./OperationBadgeMensualite.component";
 import * as ActionController from './OperationActions.controller';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+
 
 /*
  * Liste des opérations
@@ -122,14 +121,13 @@ export default class OperationsList extends Component {
         return <OperationMensualite key={params.id} id={params.id} mensualite={params.value} />;
     }
     renderEtat(params: GridRenderCellParams<number>) {
-        return <OperationEtat key={params.id} id={params.id} etat={params.value} />;
+        return <OperationEtat key={params.id} id={params.id} etat={params.value} derniere={params.row.tagDerniereOperation} />;
     }
     renderValue(params: GridRenderCellParams<number>) {
         return <OperationValue key={params.id} id={params.id} valueOperation={params.value} />;
     }
     renderActions(params: GridRenderCellParams<number>) {
-        return <OperationActions key={params.id} id={params.id}
-                                 operation={params.row} />
+        return <OperationActions key={params.id} id={params.id} operation={params.row} />
     }
 
 
@@ -142,43 +140,6 @@ export default class OperationsList extends Component {
 
         return (
             <>
-                <Table striped bordered hover size="sm" variant="light">
-                    <thead><tr>
-                        <th scope="col">Jour opération</th>
-                        <th scope="col" colSpan="2">Catégorie</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Valeur</th>
-                        <th scope="col">Période</th>
-                        <th scope="col">Etat</th>
-                        <th scope="col">Actions</th>
-                        <th scope="col">Mise à Jour</th></tr>
-                    </thead>
-                    <tbody className="tbodyOperation">
-                    { this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE").map((operation) => (
-
-                        <tr key={operation.id} id={operation.id} title={operation.etat}
-                            onContextMenu={this.disableContextMenu} onDoubleClick={this.handleOperationUpdate} onAuxClick={this.handleOperationLast}
-                            className={ "derniereOperation_" + operation.tagDerniereOperation  + " operation_" + operation.etat }>
-                            <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateOperation, "JJ/MM/AAAA") }</td>
-                            <td>{ operation.categorie != null ? operation.categorie.libelle : "-" }</td>
-                            <td>{ operation.ssCategorie != null ? operation.ssCategorie.libelle : "-" }</td>
-                            <td>{ operation.libelle }</td>
-                            <td><OperationValue valueOperation={operation.valeur} /></td>
-                            <td><OperationMensualite key={operation.id} id={operation.id} mensualite={operation.mensualite}  /></td>
-                            <td><OperationEtat key={operation.id} id={operation.id} etat={operation.etat}/></td>
-                            <td>{ this.props.budget.actif && operation.etat !== "PLANIFIEE" &&
-                                <OperationActions key={operation.id} id={operation.id}
-                                                  operation={operation} budgetid={this.props.budget.id}
-                                                  onOperationChange={this.handleOperationsListUpdate} />
-                                }
-                            </td>
-                            <td>{ DataUtils.getLibelleDate(operation.autresInfos.dateMaj, "JJ/MM/AAAA") }</td>
-                        </tr>
-
-                    ))}
-                    </tbody>
-                </Table>
-
                 <Box sx={{width: '100%' }}>
                     <DataGrid
                         initialState={{
@@ -192,8 +153,9 @@ export default class OperationsList extends Component {
                         pageSize={20} rowsPerPageOptions={[20]}
                         disableSelectionOnClick
                         autoHeight={true}
-                        onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationUpdate}
+                        onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast}
                     />
+                    { /* Fenêtre modale de suppression */ }
                     <Dialog open={this.state.showModale} >
                         <DialogTitle>Suppression d'une opération</DialogTitle>
                         <DialogContent>

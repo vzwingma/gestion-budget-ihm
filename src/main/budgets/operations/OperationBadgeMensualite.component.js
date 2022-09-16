@@ -49,9 +49,9 @@ export default class OperationMensualite extends Component {
 
             { /* Pas d'affichage pour 0 */ }
             { this.props.mensualite !== null && this.props.mensualite.periode !== 0 &&
-                <><Tooltip title={ this.getTooltip() }>
+                <Tooltip title={ this.getTooltip() }>
                     <Badge bg={this.getBackground()}>{this.getLibelle()}</Badge>
-                </Tooltip></>
+                </Tooltip>
             }
         </div>
       )
