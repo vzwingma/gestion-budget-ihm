@@ -11,10 +11,10 @@ import OperationEtat from './OperationBadgeEtat.component';
 import OperationValue from './OperationSpanValue.component';
 import * as DataUtils from '../../Utils/DataUtils.utils';
 import * as Controller from './OperationsTableList.controller';
+import * as Service from './OperationsTableList.extservices';
 import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.component";
 import OperationMensualite from "./OperationBadgeMensualite.component";
 import * as ActionController from './OperationActions.controller';
-import {handleOperationCreate} from "./OperationsTableList.controller";
 
 
 /*
@@ -112,8 +112,9 @@ export default class OperationsList extends Component {
         this.handleOperationsListUpdate = Controller.handleOperationsListUpdate.bind(this);
         this.handleOperationCreate = Controller.handleOperationCreate.bind(this);
         this.handleOperationUpdate = Controller.handleOperationUpdate.bind(this);
+
         this.handleOperationLast = Controller.handleOperationLast.bind(this);
-        this.callSetOperationAsLast = Controller.callSetOperationAsLast.bind(this);
+        this.callSetOperationAsLast = Service.callSetOperationAsLast.bind(this);
         this.updateOperationTag = Controller.updateOperationTag.bind(this);
         this.hideModale = Controller.hideModale.bind(this);
 
@@ -161,11 +162,10 @@ export default class OperationsList extends Component {
                         autoHeight={true}
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
-<ButtonGroup>
-    <Button onClick={this.handleOperationCreate}>Add</Button>
-    <Button onClick={this.handleOperationUpdate}>Edit</Button>
-
-</ButtonGroup>
+                    <ButtonGroup>
+                        <Button onClick={this.handleOperationCreate}>Création</Button>
+                        <Button onClick={this.handleOperationUpdate}>Edition</Button>
+                    </ButtonGroup>
 
                 </Box>
 

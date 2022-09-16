@@ -8,7 +8,6 @@ import OperationsList from "../operations/OperationsTableList.component"
 import ResumeSoldes from "../resume/ResumeSoldes.component"
 import ResumeCategories from "../resume/categories/ResumeCategories.component"
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
-import CreateOperationButton from "../operations/creation/CreateOperationButton.component";
 import * as Controller from './Budgets.controller'
 import * as Services from './Budgets.extservices'
 import {ToastContainer} from "react-toastify";
@@ -115,10 +114,6 @@ export default class Budgets extends Component {
             />
             <Row>.</Row>
             <Navbar fixed="bottom" bg="light" variant="dark" className="justify-content-end">
-                { /** Création d'une nouvelle opération **/
-                    this.state.currentBudget != null ?
-                        <CreateOperationButton budget={this.state.currentBudget} onOperationChange={this.handleBudgetUpdate}/> : "Chargement...."
-                }
                 {/** Actions sur le budget (close / reinit) **/
                     this.state.currentBudget != null ?
                         <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
