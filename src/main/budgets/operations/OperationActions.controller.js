@@ -3,16 +3,14 @@ import * as ClientHTTP from './../../Services/ClientHTTP.service'
 import {toast} from "react-toastify";
 
 
-
     /**
      * Modification de l'opération sur action des boutons
       */
-    export function updateOperation(operation){
-        console.log("Modification de l'opération " + operation.id + " -> " + operation.etat);
-
+    export function updateOperation(operation, idBudget){
+        console.log("[" +idBudget +"] Modification de l'opération " + operation.id + " -> " + operation.etat);
         ClientHTTP.call(operation.etat === "SUPPRIMEE" ? "DELETE" : "POST",
             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
-            [ this.props.budgetid, operation.id ],
+            [ idBudget, operation.id ],
             operation)
             .then((data) => {
                 // Update du budget global (parent)
@@ -26,27 +24,47 @@ import {toast} from "react-toastify";
     }
 
 
-/**
- * Mise à jour de l'état de l'opération suivant le bouton
- * @param event click sur le bouton
- */
-export function handleToggleClick(event) {
-    // Correction click hors cadre
-    if(event.target.attributes["action"] !== null && event.target.attributes["action"] !== undefined) {
-        const action = event.target.attributes["action"].value;
 
-        if(action === "SUPPRIMEE_A_CONFIRMER"){
-            this.hideShowModale(true)
-        }
-        else if(action === "SUPPRIMEE_ANNULER"){
-            this.hideShowModale(false)
-        }
-        else{
-            this.props.operation.etat=action;
-            this.updateOperation(this.props.operation);
+    /**
+     * Mise à jour de l'état de l'opération suivant le bouton
+     * @param event click sur le bouton
+     */
+    export function handleToggleClick(params: GridCellParams, event: MuiEvent<React.MouseEvent>, details: GridCallbackDetails){
+        // Correction click hors cadre
+        if(params.field === "actions" && event.target.id !== undefined && event.target.id !== ""){
+            const action=event.target.id;
+            if(action === "SUPPRIMEE_A_CONFIRMER"){
+                this.hideShowModale(true)
+                this.setState({operation : params.row})
+            }
+            else if(action !== "SUPPRIMEE"){
+                params.row.etat=action;
+                this.updateOperation(params.row, this.props.budget.id);
+            }
         }
     }
-}
+
+
+    /**
+     * Mise à jour de l'état de l'opération suivant le bouton
+     * @param event click sur le bouton
+     */
+    export function handleToggleClickSupprimer(event){
+        // Correction click hors cadre
+
+        if(event.target.id !== null && event.target.id !== undefined) {
+            const action = event.target.id;
+            if(action === "SUPPRIMEE_ANNULER"){
+                this.hideShowModale(false)
+            }
+            else if(action === "SUPPRIMEE"){
+                let operation = this.state.operation;
+                operation.etat=action;
+                this.updateOperation(operation, this.props.budget.id);
+                this.hideShowModale(false)
+            }
+        }
+    }
 
     // Mise à jour de l'état de l'opération
     export function hideShowModale(showPopup) {

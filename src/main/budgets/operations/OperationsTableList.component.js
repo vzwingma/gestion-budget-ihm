@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Table from 'react-bootstrap/Table';
-import Box from '@mui/material/Box';
+import { Button, Box } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 import OperationActions from './OperationActions.component';
@@ -10,20 +10,27 @@ import * as DataUtils from '../../Utils/DataUtils.utils';
 import * as Controller from './OperationsTableList.controller';
 import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.component";
 import OperationMensualite from "./OperationBadgeMensualite.component";
+import * as ActionController from './OperationActions.controller';
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+
 /*
  * Liste des opérations
  */
 export default class OperationsList extends Component {
 
 
-
-
-
     /** Etats pour Budget et opérations **/
     state = {
         idOperation: null,
+        idBudget: null,
         showModale: false
     }
+
+
+    /**
+     * Description de la DataGrid
+     * @type {GridColDef[]}
+     */
     columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', editable: false },
         {
@@ -31,19 +38,19 @@ export default class OperationsList extends Component {
             headerName: 'Jour opération',
             type: "date",
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateOperation, "JJ/MM/AAAA") || ''} `,
+            valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateOperation, "JJ/MM/AAAA") || '-'} `,
         },
         {
             field: 'categorie',
             headerName: 'Catégorie',
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${params.row.categorie.libelle || ''} `,
+            valueGetter: (params: GridValueGetterParams) => `${params.row.categorie.libelle || '-'} `,
         },
         {
             field: 'ssCategorie',
             headerName: '',
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${params.row.ssCategorie.libelle || ''} `,
+            valueGetter: (params: GridValueGetterParams) => `${params.row.ssCategorie.libelle || '-'} `,
         },
         {
             field: 'libelle',
@@ -53,9 +60,9 @@ export default class OperationsList extends Component {
         {
             field: 'valeur',
             headerName: 'Valeur',
-            type: 'string',
+            type: "number",
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${params.row.valeur + ' €' || ''} `,
+            renderCell: this.renderValue
         },
         {
             field: 'mensualite',
@@ -66,15 +73,23 @@ export default class OperationsList extends Component {
         {
             field: 'etat',
             headerName: 'Etat',
-            renderCell: this.renderEtat,
             editable: false, sortable: true,
+            renderCell: this.renderEtat,
+        },
+        {
+            // Hack pour transmettre l'id budget au renderAction
+            field: "actions",
+            headerName: 'Actions',
+            editable: false, sortable: true,
+            renderCell: this.renderActions,
+            type: "actions"
         },
         {
             field: 'autresInfos.dateMaj',
             headerName: 'Mise à jour',
             type: "string",
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateMaj, "JJ/MM/AAAA") || ''} `,
+            valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateMaj, "JJ/MM/AAAA") || '-'} `,
         },
     ];
 
@@ -82,6 +97,11 @@ export default class OperationsList extends Component {
 
     constructor(props){
         super(props);
+        this.state = {
+            idOperation: null,
+            idBudget: props.budget.id,
+            showModale: false
+        };
         this.handleOperationsListUpdate = Controller.handleOperationsListUpdate.bind(this);
         this.handleOperationUpdate = Controller.handleOperationUpdate.bind(this);
         this.handleOperationLast = Controller.handleOperationLast.bind(this);
@@ -89,9 +109,11 @@ export default class OperationsList extends Component {
         this.callSetOperationAsLast = Controller.callSetOperationAsLast.bind(this);
         this.updateOperationTag = Controller.updateOperationTag.bind(this);
         this.hideModale = Controller.hideModale.bind(this);
-        // Rendering
-        this.renderMensualite = this.renderMensualite.bind(this);
-        this.renderEtat = this.renderEtat.bind(this);
+
+        this.handleToggleClick = ActionController.handleToggleClick.bind(this);
+        this.handleToggleClickSupprimer = ActionController.handleToggleClickSupprimer.bind(this);
+        this.updateOperation = ActionController.updateOperation.bind(this);
+        this.hideShowModale = ActionController.hideShowModale.bind(this);
     }
 
     renderMensualite(params: GridRenderCellParams<number>) {
@@ -100,6 +122,15 @@ export default class OperationsList extends Component {
     renderEtat(params: GridRenderCellParams<number>) {
         return <OperationEtat key={params.id} id={params.id} etat={params.value} />;
     }
+    renderValue(params: GridRenderCellParams<number>) {
+        return <OperationValue key={params.id} id={params.id} valueOperation={params.value} />;
+    }
+    renderActions(params: GridRenderCellParams<number>) {
+        return <OperationActions key={params.id} id={params.id}
+                                 operation={params.row} />
+    }
+
+
     /**
      *  RENDER
      //
@@ -150,10 +181,8 @@ export default class OperationsList extends Component {
                     <DataGrid
                         initialState={{
                             columns: {
-                                columnVisibilityModel: {
-                                    // Hide columns id, the other columns will remain visible
-                                    id: false,
-                                },
+                                // Hide columns id, the other columns will remain visible
+                                columnVisibilityModel: { id: false, },
                             },
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
@@ -161,8 +190,20 @@ export default class OperationsList extends Component {
                         pageSize={20} rowsPerPageOptions={[20]}
                         disableSelectionOnClick
                         autoHeight={true}
-
+                        onCellClick={this.handleToggleClick}
                     />
+                    <Dialog open={this.state.showModale} >
+                        <DialogTitle>Suppression d'une opération</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Voulez vous supprimer cette opération ?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button id="SUPPRIMEE_ANNULER" onClick={this.handleToggleClickSupprimer} color="secondary" type="submit">Annuler</Button>
+                            <Button id="SUPPRIMEE" color="success" onClick={this.handleToggleClickSupprimer} type="submit">Confirmer</Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
 
 
