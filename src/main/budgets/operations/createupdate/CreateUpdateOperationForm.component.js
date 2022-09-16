@@ -221,7 +221,7 @@ export default class CreateUpdateOperationForm extends Component {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={4} className="col-form-label-sm">Dépense périodique</Form.Label>
                             <Col>
-                                <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : null }>
+                                <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : "" }>
                                 <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
                                         <option value="PONCTUELLE">Ponctuelle</option>
                                         <option value="MENSUELLE">Mensuelle</option>
