@@ -113,7 +113,6 @@ export default class OperationsList extends Component {
             showModale: false,
             showModaleEdit: false
         };
-        this.handleOperationsListUpdate = Controller.handleOperationsListUpdate.bind(this);
         this.handleOperationCreate = Controller.handleOperationCreate.bind(this);
         this.handleOperationUpdate = Controller.handleOperationUpdate.bind(this);
 
@@ -142,10 +141,14 @@ export default class OperationsList extends Component {
         return <OperationActions key={params.id} id={params.id} operation={params.row} />
     }
 
-
+    componentDidUpdate(prevProps) {
+        // Utilisation classique (pensez bien à comparer les props) :
+        if (this.props.budget !== prevProps.budget) {
+            this.setState({idOperation : null})
+        }
+    }
     /**
      *  RENDER
-     //
      */
 
     render() {
@@ -157,19 +160,21 @@ export default class OperationsList extends Component {
                         initialState={{
                             columns: {
                                 // Hide columns id, the other columns will remain visible
-                                columnVisibilityModel: { id: false, },
+                                columnVisibilityModel: { id: false },
                             },
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
                         pageSize={20} rowsPerPageOptions={[20]}
-                        autoHeight={true}
+                        autoHeight={true} density={"compact"} disableSelectionOnClick={!this.props.budget.actif}
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
-                    <ButtonGroup>
-                        <Button onClick={this.handleOperationCreate}>Création</Button>
-                        <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
-                    </ButtonGroup>
+                    { this.props.budget.actif &&
+                        <ButtonGroup>
+                            <Button onClick={this.handleOperationCreate}>Création</Button>
+                            <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
+                        </ButtonGroup>
+                    }
 
                 </Box>
 
@@ -177,9 +182,7 @@ export default class OperationsList extends Component {
                 <Dialog open={this.state.showModale} >
                     <DialogTitle>Suppression d'une opération</DialogTitle>
                     <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Voulez vous supprimer cette opération ?
-                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-description">Voulez vous supprimer cette opération ?</DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button id="SUPPRIMEE_ANNULER" onClick={this.handleToggleClickSupprimer} color="secondary" type="submit">Annuler</Button>

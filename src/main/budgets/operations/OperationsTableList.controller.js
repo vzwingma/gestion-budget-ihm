@@ -4,15 +4,6 @@ import {toast} from "react-toastify";
  * Controleur de la liste des opérations
  */
 
-/**
- * Update du budget, suite à une action sur une opération
- * @param budgetUpdated budget Updated
- */
-    export function handleOperationsListUpdate(budgetUpdated){
-        this.props.onOperationChange(budgetUpdated);
-    }
-
-
 
 
     /**
@@ -80,7 +71,7 @@ import {toast} from "react-toastify";
             return operation;
         });
         // hook : màj du state pour refresh de l'ihm
-        this.setState({ idOperation : idOperation});
+        this.setState({ idOperation : null});
         toast.success("L'opération a bien été idendifiée comme dernière traitée")
     }
 
