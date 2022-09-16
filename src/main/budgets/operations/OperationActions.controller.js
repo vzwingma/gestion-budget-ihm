@@ -29,7 +29,7 @@ import {toast} from "react-toastify";
      * Mise à jour de l'état de l'opération suivant le bouton
      * @param event click sur le bouton
      */
-    export function handleToggleClick(params: GridCellParams, event: MuiEvent<React.MouseEvent>, details: GridCallbackDetails){
+    export function handleToggleClick(params: GridCellParams, event: MuiEvent<React.MouseEvent>){
         // Correction click hors cadre
         if(params.field === "actions" && event.target.id !== undefined && event.target.id !== ""){
             const action=event.target.id;

@@ -15,18 +15,36 @@ import {toast} from "react-toastify";
     }
 
 
+
+
+    /**
+     * Action de création
+     */
+    export function handleOperationCreate(){
+        this.setState({
+            showModaleEdit : true,
+            idOperation: null})
+    }
+
+    /**
+     * Sélection d'une ligne d'opération
+     * @param params params
+     */
+    export function handleOperationSelect(params: GridRowParams){
+        if(this.props.budget.actif && params.etat !== "PLANIFIEE") {
+            this.setState({ idOperation : params.id })
+        }
+    }
+
     /**
      * Double click sur une opération
      * @param event evenement de mise à jour d'opération
      */
     export function handleOperationUpdate(event){
-        console.log(event)
-        if(this.props.budget.actif && event.row.etat !== "PLANIFIEE"){
-            console.log("[TRIGGER] Edit opération [" + event.row.id + "] " );
+        if(this.state.idOperation !== null){
+            console.log("[TRIGGER] Edit opération [" + this.state.idOperation + "] " );
             // Activation de la modale
-            this.setState({
-                idOperation: event.row.id,
-                showModaleEdit : true })
+            this.setState({ showModaleEdit : true })
         }
         else{
             console.log("[NOTRIGGER] l'opération n'est pas éditable");
@@ -35,8 +53,9 @@ import {toast} from "react-toastify";
     }
 
 
+
     /**
-     * Right click sur une opération - tag comme dernière opération
+     * Double click sur une opération - tag comme dernière opération
      * @param event événement
      */
     export function handleOperationLast(event){
@@ -48,25 +67,6 @@ import {toast} from "react-toastify";
             console.log("[NOTRIGGER] l'opération n'est pas réalisée");
         }
 
-    }
-
-    /**
-     * Désactivation du menu context lors du right click d'opération
-     * @param event évément click droit
-     * @returns {boolean} etat
-     */
-    export function disableContextMenu(event){
-        event.preventDefault();
-        event.stopPropagation();
-        return false;
-    }
-
-    /**
-     * Fermeture du formulaire
-     * @param event
-     */
-    export function hideModale(event) {
-        this.setState({ showModaleEdit: false });
     }
 
     /**
@@ -103,4 +103,14 @@ import {toast} from "react-toastify";
         // hook : màj du state pour refresh de l'ihm
         this.setState({ idOperation : idOperation});
         toast.success("L'opération a bien été idendifiée comme dernière traitée")
+    }
+
+
+
+    /**
+     * Fermeture du formulaire
+     * @param event
+     */
+    export function hideModale(event) {
+        this.setState({ showModaleEdit: false });
     }

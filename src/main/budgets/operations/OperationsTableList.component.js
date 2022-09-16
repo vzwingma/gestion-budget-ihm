@@ -1,5 +1,9 @@
-import React, { Component } from "react";
-import { Button, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import React, {Component} from "react";
+import {
+    Button, ButtonGroup,
+    Box, Dialog, DialogActions, DialogContent,
+    DialogContentText, DialogTitle,
+} from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 import OperationActions from './OperationActions.component';
@@ -10,6 +14,7 @@ import * as Controller from './OperationsTableList.controller';
 import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.component";
 import OperationMensualite from "./OperationBadgeMensualite.component";
 import * as ActionController from './OperationActions.controller';
+import {handleOperationCreate} from "./OperationsTableList.controller";
 
 
 /*
@@ -97,6 +102,7 @@ export default class OperationsList extends Component {
 
     constructor(props){
         super(props);
+
         this.state = {
             idOperation: null,
             idBudget: props.budget.id,
@@ -104,14 +110,15 @@ export default class OperationsList extends Component {
             showModaleEdit: false
         };
         this.handleOperationsListUpdate = Controller.handleOperationsListUpdate.bind(this);
+        this.handleOperationCreate = Controller.handleOperationCreate.bind(this);
         this.handleOperationUpdate = Controller.handleOperationUpdate.bind(this);
         this.handleOperationLast = Controller.handleOperationLast.bind(this);
-        this.disableContextMenu = Controller.disableContextMenu.bind(this);
         this.callSetOperationAsLast = Controller.callSetOperationAsLast.bind(this);
         this.updateOperationTag = Controller.updateOperationTag.bind(this);
         this.hideModale = Controller.hideModale.bind(this);
 
         this.handleToggleClick = ActionController.handleToggleClick.bind(this);
+        this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
         this.handleToggleClickSupprimer = ActionController.handleToggleClickSupprimer.bind(this);
         this.updateOperation = ActionController.updateOperation.bind(this);
 
@@ -141,7 +148,7 @@ export default class OperationsList extends Component {
         return (
             <>
                 <Box sx={{width: '100%' }}>
-                    <DataGrid
+                    <DataGrid ref={this.ref}
                         initialState={{
                             columns: {
                                 // Hide columns id, the other columns will remain visible
@@ -151,35 +158,42 @@ export default class OperationsList extends Component {
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
                         pageSize={20} rowsPerPageOptions={[20]}
-                        disableSelectionOnClick
                         autoHeight={true}
-                        onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast}
+                        onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
-                    { /* Fenêtre modale de suppression */ }
-                    <Dialog open={this.state.showModale} >
-                        <DialogTitle>Suppression d'une opération</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                Voulez vous supprimer cette opération ?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button id="SUPPRIMEE_ANNULER" onClick={this.handleToggleClickSupprimer} color="secondary" type="submit">Annuler</Button>
-                            <Button id="SUPPRIMEE" color="success" onClick={this.handleToggleClickSupprimer} type="submit">Confirmer</Button>
-                        </DialogActions>
-                    </Dialog>
+<ButtonGroup>
+    <Button onClick={this.handleOperationCreate}>Add</Button>
+    <Button onClick={this.handleOperationUpdate}>Edit</Button>
+
+</ButtonGroup>
+
                 </Box>
 
+                { /* Fenêtre modale de suppression */ }
+                <Dialog open={this.state.showModale} >
+                    <DialogTitle>Suppression d'une opération</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Voulez vous supprimer cette opération ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button id="SUPPRIMEE_ANNULER" onClick={this.handleToggleClickSupprimer} color="secondary" type="submit">Annuler</Button>
+                        <Button id="SUPPRIMEE" color="success" onClick={this.handleToggleClickSupprimer} type="submit">Confirmer</Button>
+                    </DialogActions>
+                </Dialog>
 
                 { /** Fenêtre modale - Formulaire  **/ }
                 { /** la gestion de l'affichage de la modale est délégué au composant supérieur **/ }
-                { this.state.showModaleEdit && this.state.idOperation != null &&
-                <CreateUpdateOperationForm idCompte={this.props.selectedCompte} budget={this.props.budget}
-                                           showModale={this.state.showModaleEdit} modeEdition={true} idOperation={this.state.idOperation}
-                                           hideModale={this.hideModale}
-                                           onOperationChange={this.props.onOperationChange}/> }
+                { this.state.showModaleEdit &&
+                    <CreateUpdateOperationForm idCompte={this.props.selectedCompte} budget={this.props.budget}
+                                               showModale={this.state.showModaleEdit}
+                                               modeEdition={this.state.idOperation !== null}
+                                               idOperation={this.state.idOperation}
+                                               hideModale={this.hideModale}
+                                               onOperationChange={this.props.onOperationChange}/>
+                }
                 { /** OnOpChange est appelé par le  composant . this.props.OnOpChange : appelle la méthode du composant supérieur**/ }
-
             </>
         ); }
 }
