@@ -86,10 +86,9 @@ export default class OperationsList extends Component {
             renderCell: this.renderEtat,
         },
         {
-            // Hack pour transmettre l'id budget au renderAction
             field: "actions",
-            headerName: 'Actions',
-            editable: false, sortable: false,
+            headerName: 'Actions' ,
+            editable: false, sortable: false ,
             renderCell: this.renderActions,
             type: "actions"
         },
@@ -125,7 +124,6 @@ export default class OperationsList extends Component {
         this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
         this.handleToggleClickSupprimer = ActionController.handleToggleClickSupprimer.bind(this);
         this.updateOperation = ActionController.updateOperation.bind(this);
-
     }
 
     renderMensualite(params: GridRenderCellParams<number>) {
@@ -138,11 +136,14 @@ export default class OperationsList extends Component {
         return <OperationValue key={params.id} id={params.id} valueOperation={params.value} />;
     }
     renderActions(params: GridRenderCellParams<number>) {
-        return <OperationActions key={params.id} id={params.id} operation={params.row} />
+        return  <OperationActions key={params.id} id={params.id} operation={params.row} />
     }
 
+    /**
+     * Si changement de budget, raz de l'idOperation
+     * @param prevProps
+     */
     componentDidUpdate(prevProps) {
-        // Utilisation classique (pensez bien à comparer les props) :
         if (this.props.budget !== prevProps.budget) {
             this.setState({idOperation : null})
         }
@@ -156,16 +157,17 @@ export default class OperationsList extends Component {
         return (
             <>
                 <Box sx={{width: '100%' }}>
-                    <DataGrid ref={this.ref}
+
+                    <DataGrid
                         initialState={{
                             columns: {
                                 // Hide columns id, the other columns will remain visible
-                                columnVisibilityModel: { id: false },
+                                columnVisibilityModel: { id: false},
                             },
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
-                        pageSize={20} rowsPerPageOptions={[20]}
+                        pageSize={25} rowsPerPageOptions={[25]}
                         autoHeight={true} density={"compact"} disableSelectionOnClick={!this.props.budget.actif}
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
