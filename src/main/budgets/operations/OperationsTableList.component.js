@@ -6,15 +6,15 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
-import OperationActions from './OperationActions.component';
-import OperationEtat from './OperationBadgeEtat.component';
-import OperationValue from './OperationSpanValue.component';
+import OperationActions from './renderers/OperationActions.component';
+import OperationEtat from './renderers/OperationBadgeEtat.component';
+import OperationValue from './renderers/OperationSpanValue.component';
 import * as DataUtils from '../../Utils/DataUtils.utils';
 import * as Controller from './OperationsTableList.controller';
 import * as Service from './OperationsTableList.extservices';
 import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.component";
-import OperationMensualite from "./OperationBadgeMensualite.component";
-import * as ActionController from './OperationActions.controller';
+import OperationMensualite from "./renderers/OperationBadgeMensualite.component";
+import * as ActionController from './renderers/OperationActions.controller';
 
 
 /*
@@ -43,23 +43,27 @@ export default class OperationsList extends Component {
             headerName: 'Jour opération',
             type: "date",
             editable: false, sortable: true,
+            minWidth: 120,
             valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateOperation, "JJ/MM/AAAA") || '-'} `,
         },
         {
             field: 'categorie',
             headerName: 'Catégorie',
             editable: false, sortable: true,
+            minWidth: 150,
             valueGetter: (params: GridValueGetterParams) => `${ (params.row.categorie !== null ? params.row.categorie.libelle : '-') || '-'} `,
         },
         {
             field: 'ssCategorie',
             headerName: '',
             editable: false, sortable: true,
+            minWidth: 150,
             valueGetter: (params: GridValueGetterParams) => `${ (params.row.ssCategorie !== null ? params.row.ssCategorie.libelle : '-') || '-'} `,
         },
         {
             field: 'libelle',
             headerName: 'Description',
+            minWidth: 330,
             editable: false, sortable: true,
         },
         {
@@ -164,7 +168,7 @@ export default class OperationsList extends Component {
                     />
                     <ButtonGroup>
                         <Button onClick={this.handleOperationCreate}>Création</Button>
-                        <Button onClick={this.handleOperationUpdate}>Edition</Button>
+                        <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
                     </ButtonGroup>
 
                 </Box>
