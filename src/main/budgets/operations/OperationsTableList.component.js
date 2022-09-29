@@ -2,8 +2,7 @@ import React, {Component} from "react";
 import {
     Button, ButtonGroup,
     Box, Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle,
-} from '@mui/material';
+    DialogContentText, DialogTitle} from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 import OperationActions from './renderers/OperationActions.component';
@@ -103,6 +102,7 @@ export default class OperationsList extends Component {
 
 
 
+
     constructor(props){
         super(props);
 
@@ -168,7 +168,7 @@ export default class OperationsList extends Component {
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
                         pageSize={25} rowsPerPageOptions={[25]}
-                        autoHeight={true} density={"compact"} disableSelectionOnClick={!this.props.budget.actif}
+                        autoHeight={true} disableSelectionOnClick={!this.props.budget.actif}
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
                     { this.props.budget.actif &&
