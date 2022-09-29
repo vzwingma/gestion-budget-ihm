@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import {
     Button, ButtonGroup,
     Box, Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle} from '@mui/material';
+    DialogContentText, DialogTitle, Container
+} from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 import OperationActions from './renderers/OperationActions.component';
@@ -42,27 +43,26 @@ export default class OperationsList extends Component {
             headerName: 'Jour opération',
             type: "date",
             editable: false, sortable: true,
-            minWidth: 120,
             valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateOperation, "JJ/MM/AAAA") || '-'} `,
         },
         {
             field: 'categorie',
             headerName: 'Catégorie',
+            minWidth:150,
             editable: false, sortable: true,
-            minWidth: 150,
             valueGetter: (params: GridValueGetterParams) => `${ (params.row.categorie !== null ? params.row.categorie.libelle : '-') || '-'} `,
         },
         {
             field: 'ssCategorie',
             headerName: '',
             editable: false, sortable: true,
-            minWidth: 150,
+            minWidth:150,
             valueGetter: (params: GridValueGetterParams) => `${ (params.row.ssCategorie !== null ? params.row.ssCategorie.libelle : '-') || '-'} `,
         },
         {
             field: 'libelle',
             headerName: 'Description',
-            minWidth: 330,
+            minWidth:340,
             editable: false, sortable: true,
         },
         {
@@ -156,7 +156,7 @@ export default class OperationsList extends Component {
 
         return (
             <>
-                <Box sx={{width: '100%' }}>
+                <Container maxWidth="xl">
 
                     <DataGrid
                         initialState={{
@@ -168,7 +168,8 @@ export default class OperationsList extends Component {
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
                         pageSize={25} rowsPerPageOptions={[25]}
-                        autoHeight={true} disableSelectionOnClick={!this.props.budget.actif}
+                        autoHeight={true} density={"compact"}
+                        disableSelectionOnClick={!this.props.budget.actif}
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
                     { this.props.budget.actif &&
@@ -177,8 +178,7 @@ export default class OperationsList extends Component {
                             <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
                         </ButtonGroup>
                     }
-
-                </Box>
+                </Container>
 
                 { /* Fenêtre modale de suppression */ }
                 <Dialog open={this.state.showModale} >
