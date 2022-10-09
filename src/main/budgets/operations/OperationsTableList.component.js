@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {
     Button, ButtonGroup,
     Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle, Container
+    DialogContentText, DialogTitle, Container, Tooltip
 } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
@@ -177,8 +177,12 @@ export default class OperationsList extends Component {
                     />
                     { this.props.budget.actif &&
                         <ButtonGroup className="bgButtonsCreateUpdateOps">
-                            <Button onClick={this.handleOperationCreate} color={"success"}>Création</Button>
-                            <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
+                            <Tooltip title="Créer une nouvelle opération">
+                                <Button onClick={this.handleOperationCreate} color={"success"}>Création</Button>
+                            </Tooltip>
+                            <Tooltip title="Editer l'opération sélectionnée">
+                                <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
+                            </Tooltip>
                         </ButtonGroup>
                     }
                 </Container>
