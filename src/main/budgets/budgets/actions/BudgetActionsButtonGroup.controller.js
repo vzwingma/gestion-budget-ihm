@@ -4,9 +4,8 @@
      * @param event
      */
     export function handleButtonsBudgetClick(event){
-
-        if(event.target.attributes["action"] !== null && event.target.attributes["action"] !== undefined) {
-            const action = event.target.attributes["action"].value;
+        if(event.target.id !== null && event.target.id !== undefined) {
+            const action = event.target.id;
             // console.log("[SELECT]" + action)
 
             let titrePopup = "";

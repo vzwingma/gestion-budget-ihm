@@ -15,19 +15,13 @@ tbody.tbodyOperation > tr > td:nth-child(6) {
 }
 tbody.tbodyOperation > tr > td:nth-child(7) { width:100px }
 
-/* button Créer */
-div.alignCenter {
-    position:absolute;
-    bottom: 10px;
-    display: flex;
-    width: 62%;
+/* button Créer & Editer */
+div.bgButtonsCreateUpdateOps{
+    position: relative;
+    left: 8px;
+    top: -45px;
 }
 
-.alignCenter > button {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-}
 
 /* boutons actions sur opérations*/
 .btn-light {

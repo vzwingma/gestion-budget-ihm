@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {
     Button, ButtonGroup,
     Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle, Container
+    DialogContentText, DialogTitle, Container, Tooltip
 } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
@@ -167,15 +167,22 @@ export default class OperationsList extends Component {
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
-                        pageSize={17} rowsPerPageOptions={[17]}
+                        pageSize={18} rowsPerPageOptions={[18]}
                         autoHeight={true} density={"compact"}
                         disableSelectionOnClick={!this.props.budget.actif}
+                        disableColumnMenu={true}
+                        hideFooterSelectedRowCount={true}
+
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
                     { this.props.budget.actif &&
-                        <ButtonGroup>
-                            <Button onClick={this.handleOperationCreate}>Création</Button>
-                            <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
+                        <ButtonGroup className="bgButtonsCreateUpdateOps">
+                            <Tooltip title="Créer une nouvelle opération">
+                                <Button onClick={this.handleOperationCreate} color={"success"}>Création</Button>
+                            </Tooltip>
+                            <Tooltip title="Editer l'opération sélectionnée">
+                                <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
+                            </Tooltip>
                         </ButtonGroup>
                     }
                 </Container>
@@ -187,8 +194,10 @@ export default class OperationsList extends Component {
                         <DialogContentText id="alert-dialog-description">Voulez vous supprimer cette opération ?</DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button id="SUPPRIMEE_ANNULER" onClick={this.handleToggleClickSupprimer} color="secondary" type="submit">Annuler</Button>
-                        <Button id="SUPPRIMEE" color="success" onClick={this.handleToggleClickSupprimer} type="submit">Confirmer</Button>
+                        <ButtonGroup>
+                            <Button id="SUPPRIMEE_ANNULER" onClick={this.handleToggleClickSupprimer} color="error" type="submit">Annuler</Button>
+                            <Button id="SUPPRIMEE" color="success" onClick={this.handleToggleClickSupprimer} type="submit">Confirmer</Button>
+                        </ButtonGroup>
                     </DialogActions>
                 </Dialog>
 

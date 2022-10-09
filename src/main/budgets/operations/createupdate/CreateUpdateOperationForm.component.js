@@ -237,7 +237,7 @@ export default class CreateUpdateOperationForm extends Component {
                     <Modal.Footer>
                         <ButtonGroup>
                             <Tooltip title="Annuler la saisie">
-                                <Button id="btnClose" color="secondary" onClick={ this.cancelForm } >Annuler</Button>
+                                <Button id="btnClose" color="error" onClick={ this.cancelForm } >Annuler</Button>
                             </Tooltip>
                             { !this.props.modeEdition && <>
                                 <Tooltip title="Valider la saisie et continuer sur une autre saisie">
