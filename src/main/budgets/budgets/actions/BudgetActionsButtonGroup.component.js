@@ -24,7 +24,6 @@ export default class BudgetActionsButtonGroupComponent extends Component {
     constructor(props){
         super(props);
         this.handleButtonsBudgetClick = Controller.handleButtonsBudgetClick.bind(this);
-        this.hideModale = Controller.hideModale.bind(this);
         this.callReopenCloseBudget = Service.callReopenCloseBudget.bind(this);
         this.callReinitBudget = Service.callReinitBudget.bind(this);
     }

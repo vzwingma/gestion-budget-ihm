@@ -49,9 +49,3 @@
             })
         }
     }
-
-    // Mise à jour du statut la popup
-    export function hideModale() {
-        this.setState( { showModale : false });
-    }
-
