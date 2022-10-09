@@ -177,7 +177,7 @@ export default class OperationsList extends Component {
                     />
                     { this.props.budget.actif &&
                         <ButtonGroup className="bgButtonsCreateUpdateOps">
-                            <Button onClick={this.handleOperationCreate}>Création</Button>
+                            <Button onClick={this.handleOperationCreate} color={"success"}>Création</Button>
                             <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
                         </ButtonGroup>
                     }
@@ -190,8 +190,10 @@ export default class OperationsList extends Component {
                         <DialogContentText id="alert-dialog-description">Voulez vous supprimer cette opération ?</DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button id="SUPPRIMEE_ANNULER" onClick={this.handleToggleClickSupprimer} color="secondary" type="submit">Annuler</Button>
-                        <Button id="SUPPRIMEE" color="success" onClick={this.handleToggleClickSupprimer} type="submit">Confirmer</Button>
+                        <ButtonGroup>
+                            <Button id="SUPPRIMEE_ANNULER" onClick={this.handleToggleClickSupprimer} color="error" type="submit">Annuler</Button>
+                            <Button id="SUPPRIMEE" color="success" onClick={this.handleToggleClickSupprimer} type="submit">Confirmer</Button>
+                        </ButtonGroup>
                     </DialogActions>
                 </Dialog>
 
