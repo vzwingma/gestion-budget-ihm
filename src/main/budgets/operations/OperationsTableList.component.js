@@ -170,6 +170,7 @@ export default class OperationsList extends Component {
                         pageSize={18} rowsPerPageOptions={[18]}
                         autoHeight={true} density={"compact"}
                         disableSelectionOnClick={!this.props.budget.actif}
+                        disableColumnMenu={true}
                         hideFooterSelectedRowCount={true}
 
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
