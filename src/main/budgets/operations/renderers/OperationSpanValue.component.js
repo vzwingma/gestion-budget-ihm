@@ -1,7 +1,7 @@
 /**
  * Affichage d'une valeur dans la liste des opérations
  */
-
+import {addEndingZeros} from '../../../Utils/DataUtils.utils'
 
 /**
  * Affichage du style de l'opération suivant sa valeur
@@ -24,7 +24,7 @@ const OperationValue = ({ valueOperation }) => {
 
     // définition du libellé
     return (
-        <span className={ getStyleOperation(valueOperation) }>{ Math.abs(valueOperation).toFixed(2) } €</span>
+        <span className={ getStyleOperation(valueOperation) }>{ addEndingZeros(Math.abs(valueOperation)) } €</span>
     )
 };
 
