@@ -170,10 +170,12 @@ export default class OperationsList extends Component {
                         pageSize={25} rowsPerPageOptions={[25]}
                         autoHeight={true} density={"compact"}
                         disableSelectionOnClick={!this.props.budget.actif}
+                        hideFooterSelectedRowCount={true}
+
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
                     { this.props.budget.actif &&
-                        <ButtonGroup>
+                        <ButtonGroup className="bgButtonsCreateUpdateOps">
                             <Button onClick={this.handleOperationCreate}>Création</Button>
                             <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
                         </ButtonGroup>
