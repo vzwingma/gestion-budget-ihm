@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Badge from 'react-bootstrap/Badge';
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Tooltip} from '@mui/material';
 
 export default class OperationMensualite extends Component {
 
@@ -45,13 +45,13 @@ export default class OperationMensualite extends Component {
     // Render de l'état de l'opération avec surcharge du style du bouton
     render(){
       return (
-
         <div id={this.props.id}>
+
             { /* Pas d'affichage pour 0 */ }
             { this.props.mensualite !== null && this.props.mensualite.periode !== 0 &&
-                <><OverlayTrigger overlay={ <Tooltip>{ this.getTooltip() }</Tooltip> }>
+                <Tooltip title={ this.getTooltip() }>
                     <Badge bg={this.getBackground()}>{this.getLibelle()}</Badge>
-                </OverlayTrigger></>
+                </Tooltip>
             }
         </div>
       )

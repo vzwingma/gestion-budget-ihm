@@ -41,17 +41,6 @@ div.alignCenter {
     vertical-align: middle;
 }
 
-/*
-Style d'opérations
- */
-.derniereOperation_true td {
-    font-weight : bold;
-}
-
-.operation_PLANIFIEE td {
-    font-style : italic;
-}
-
 /** Style pour les résumés **/
 table {
     font-size:12px;
@@ -71,6 +60,39 @@ tbody.tbodyResume > tr > td:nth-child(3) {
 }
 
 
+
+
+/** Style pour la datagrid **/
+.MuiDataGrid-main{
+    font-size: 12px;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+.MuiDataGrid-columnHeaders{
+    font-weight: bold;
+    color: #1e1e1c;
+    background-color: #f8f5f0;
+    border-color: #dfddd8
+}
+
+.MuiDataGrid-row:nth-child(even){
+    background-color: #f8f5f0;
+}
+.MuiDataGrid-row:nth-child(odd){
+    background-color: #ece9e4;
+}
+
+p.MuiTablePagination-displayedRows{
+    font-size: 12px;
+    display: table-cell;
+    padding-top: 17px;
+    vertical-align: middle;
+}
+
+div.MuiTablePagination-actions{
+    display: table-cell;
+    vertical-align: middle;
+}
 
 /* Lignes pour les résumés */
 tbody.tbodyResume > tr.ligneCategorie {

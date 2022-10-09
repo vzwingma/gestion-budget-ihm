@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {Button, ButtonGroup, Modal, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Button, ButtonGroup, Modal} from "react-bootstrap";
+import {Tooltip} from '@mui/material';
+
 import * as Controller from './BudgetActionsButtonGroup.controller'
 import * as Service from './BudgetActionsButtonGroup.extservices'
 
@@ -37,17 +39,17 @@ export default class BudgetActionsButtonGroupComponent extends Component {
             <>
             { /** Groupe d'actions sur le budget **/ }
                 <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick}>
-                    <OverlayTrigger overlay={  <Tooltip>{(this.props.budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}</Tooltip>  }>
+                    <Tooltip title={(this.props.budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}>
                         <Button className="btn-light" action="CLOSE_A_CONFIRMER" variant="light">
                             <img action="CLOSE_A_CONFIRMER" src={"/img/statuts/" + (this.props.budget.actif ? "unlocked" : "locked") +".png"} className="d-inline-block align-top" alt="Confirmer changement d'état"/>
                         </Button>
-                    </OverlayTrigger>
+                    </Tooltip>
                     { this.props.budget.actif &&
-                    <OverlayTrigger overlay={  <Tooltip>Réinitialiser le budget</Tooltip>  }>
+                    <Tooltip title="Réinitialiser le budget">
                         <Button className="btn-light" action="REINIT_A_CONFIRMER" variant="light">
                             <img action="REINIT_A_CONFIRMER" src={"/img/statuts/circle_reinit.png"} className="d-inline-block align-top" alt="Réinitialiser le budget"/>
                         </Button>
-                    </OverlayTrigger>
+                    </Tooltip>
                     }
                     <Modal show={this.state.showModale} onHide={this.hideModal} className="modal" centered >
                         <Modal.Header closeButton>
