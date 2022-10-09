@@ -167,7 +167,7 @@ export default class OperationsList extends Component {
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
-                        pageSize={17} rowsPerPageOptions={[17]}
+                        pageSize={18} rowsPerPageOptions={[18]}
                         autoHeight={true} density={"compact"}
                         disableSelectionOnClick={!this.props.budget.actif}
                         hideFooterSelectedRowCount={true}
