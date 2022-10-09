@@ -1,5 +1,5 @@
-import Table from 'react-bootstrap/Table';
 import ResumeCategorie from './ResumeCategorie.component'
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 /*
  * Page principale du solde par catégories
  */
@@ -48,28 +48,25 @@ const ResumeCategories = ({ currentBudget, categories }) => {
      *  RENDER
      **/
      return (
-
-        <Table striped bordered hover size="sm" variant="light">
-          <thead className="theadResume">
-          <tr>
-            <th/>
-            <th>
-                Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
-            </th>
-            <th>
-                Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }
-            </th>
-          </tr>
-          </thead>
-          <tbody className="tbodyResume">
+         <TableContainer>
+        <Table>
+            <TableHead className={"theadResume"}>
+              <TableRow>
+                <TableCell/>
+                <TableCell>Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }</TableCell>
+                <TableCell>Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody className="tbodyResume">
               {
                     // Itération sur les catégories
                    mapArbreTotaux.map((totalCategorie) => (
                         <ResumeCategorie key={totalCategorie[0]} idCategorie={totalCategorie[0]} totalCategorie={totalCategorie[1]}/>
                     ))
                }
-          </tbody>
+            </TableBody>
          </Table>
+         </TableContainer>
       )
      };
 
