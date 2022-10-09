@@ -24,8 +24,9 @@ div.bgButtonsCreateUpdateOps{
 
 
 /* boutons actions sur opérations*/
-.btn-light {
-    padding: 0 1px 0 1px;
+button.btn-actions-operation {
+    padding: 0px 1px 0px 1px;
+    min-width: 20px !important;
 }
 
 /* badge */
