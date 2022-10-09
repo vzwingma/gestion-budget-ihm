@@ -8,6 +8,24 @@ export function addLeadingZeros(num) {
 }
 
 /**
+ * Ajout de zero à la fin d'une valeur
+ * @param num nombre à compléter
+ * @returns {string} chaine sur 2 caractères avec des 0
+ */
+export function addEndingZeros(num) {
+    let n = num.toLocaleString('us-US');
+    if(n.indexOf(',') > 0){
+        let r = n.substring(n.indexOf(',')+1)
+        let e = n.substring(0, n.indexOf(','))
+        return e + "," + r.padEnd(2, '0')
+    }
+    else{
+        return n + "," + addLeadingZeros(0)
+    }
+}
+
+
+/**
  * Calcul d'un libellé d'une date depuis son time in ms
  * @param dateString date en string
  * @param pattern pattern de sortie : JJ/MM/AAAA ou AAAA-MM-DD
