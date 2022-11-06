@@ -17,7 +17,6 @@ import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.
 import OperationMensualite from "./renderers/OperationBadgeMensualite.component";
 import * as ActionController from './renderers/OperationActions.controller';
 
-
 /*
  * Liste des opérations
  */
@@ -190,7 +189,7 @@ export default class OperationsList extends Component {
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
                     { this.props.budget.actif &&
-                        <ButtonGroup className="bgButtonsCreateUpdateOps">
+                        <ButtonGroup className="bgButtonsCreateUpdateOps" variant={"light"}>
                             <Tooltip title="Créer une nouvelle opération">
                                 <Button onClick={this.handleOperationCreate} color={"success"}>
                                     <img id="CREATION" src={"/img/statuts/circle_plus.png"} className="d-inline-block align-top" alt="Création"/>

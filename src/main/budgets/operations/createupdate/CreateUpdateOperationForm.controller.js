@@ -4,7 +4,6 @@ import {toast} from "react-toastify";
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
-
     export function categoriesLoaded(data){
     // Transformation des catégories en affichage
         const mapCategories = data.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibelles)
