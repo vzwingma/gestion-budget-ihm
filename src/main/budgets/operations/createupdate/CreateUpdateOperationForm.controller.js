@@ -77,6 +77,10 @@ import {toast} from "react-toastify";
             })
         this.setState({ formSsCategorie: ssCategorieSelected, formCategorie: ssCategorieSelected.categorie, ssCategoriesSelect : ssCatsUpdated});
 
+        /** Si type Virement **/
+        let operationType = (ssCategorieSelected.categorie.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "CREDIT" : "DEPENSE";
+        this.setState( { formOperationType : operationType } )
+
         /**
          * Si sous catégorie intercompte
          */
