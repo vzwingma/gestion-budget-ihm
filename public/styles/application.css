@@ -38,15 +38,12 @@ button.btn-actions-operation {
 .MuiDataGrid-columnHeaders{
     font-weight: bold;
     color: #1e1e1c;
-    background-color: #f8f5f0;
+    background-color: #ece9e4;
     border-color: #dfddd8
 }
 
-.MuiDataGrid-row:nth-child(even){
-    background-color: #f8f5f0;
-}
 .MuiDataGrid-row:nth-child(odd){
-    background-color: #ece9e4;
+    background-color: #f8f5f0;
 }
 
 p.MuiTablePagination-displayedRows{
@@ -61,14 +58,7 @@ div.MuiTablePagination-actions{
     vertical-align: middle;
 }
 
-/* Lignes pour les résumés */
-tbody.tbodyResume > tr.ligneCategorie {
-    font-weight: bolder;
-}
-span.ligneSsCategorie {
-    margin-left: 20px;
 
-}
 
 
 /**
@@ -80,12 +70,46 @@ table {
 
 }
 thead.theadResume > tr > th  {
+    font-size: 12px;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     text-align: right !important;
     padding: 0 10px 0 0 !important;
+    height: 38px;
+    color: #1e1e1c;
+    background-color: #ece9e4;
+    border-color: #dfddd8
 }
+
+
+/* Lignes pour les résumés */
+tbody.tbodyResume > tr.ligneCategorie {
+    font-weight: bolder !important;
+    color: #1e1e1c;
+    background-color: #f8f5f0;
+    border-color: #dfddd8;
+}
+tbody.tbodyResume > tr.ligneSolde {
+    font-weight: bolder !important;
+    color: #1e1e1c;
+    border-color: #dfddd8;
+    height: 40px;
+    font-size: 16px;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+tbody.tbodyResume > tr {
+    height: 25px;
+    border-color: #dfddd8;
+}
+
+
+span.ligneSsCategorie {
+    margin-left: 20px;
+}
+
+
 tbody.tbodyResume > tr > td:first-child {
     width:33%
-
 }
 tbody.tbodyResume > tr > td:nth-child(2) {
     text-align: right;
@@ -95,7 +119,6 @@ tbody.tbodyResume > tr > td:nth-child(3) {
     text-align: right;
     padding: 0 10px 0 0 !important;
 }
-
 
 /**
 Style data range

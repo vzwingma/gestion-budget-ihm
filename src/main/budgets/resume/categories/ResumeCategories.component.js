@@ -49,23 +49,23 @@ const ResumeCategories = ({ currentBudget, categories }) => {
      **/
      return (
          <TableContainer>
-        <Table>
-            <TableHead className={"theadResume"}>
-              <TableRow>
-                <TableCell/>
-                <TableCell>Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }</TableCell>
-                <TableCell>Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody className="tbodyResume">
-              {
-                    // Itération sur les catégories
-                   mapArbreTotaux.map((totalCategorie) => (
-                        <ResumeCategorie key={totalCategorie[0]} idCategorie={totalCategorie[0]} totalCategorie={totalCategorie[1]}/>
-                    ))
-               }
-            </TableBody>
-         </Table>
+            <Table>
+                <TableHead className={"theadResume"}>
+                  <TableRow>
+                    <TableCell/>
+                    <TableCell>Au { dateCourante.getDate() } { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }</TableCell>
+                    <TableCell>Fin { dateCourante.toLocaleString('default', { month: 'long' }) } { dateCourante.getFullYear() }</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className="tbodyResume">
+                  {
+                        // Itération sur les catégories
+                       mapArbreTotaux.map((totalCategorie) => (
+                            <ResumeCategorie key={totalCategorie[0]} idCategorie={totalCategorie[0]} totalCategorie={totalCategorie[1]}/>
+                        ))
+                   }
+                </TableBody>
+             </Table>
          </TableContainer>
       )
      };

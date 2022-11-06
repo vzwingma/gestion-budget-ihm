@@ -11,6 +11,8 @@ const ResumeSoldes = ({ currentBudget }) => {
     const dateCourante = new Date(Date.now()) ;
 
     return (
+        <>
+            <br/>
         <TableContainer>
             <Table>
             <TableHead className={"theadResume"}>
@@ -21,14 +23,15 @@ const ResumeSoldes = ({ currentBudget }) => {
                 </TableRow>
             </TableHead>
             <TableBody className={"tbodyResume"}>
-                <TableRow className={"ligneCategorie"}>
-                    <TableCell>Solde</TableCell>
-                    <TableCell><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /></TableCell>
-                    <TableCell><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /></TableCell>
+                <TableRow className={"ligneSolde"}>
+                    <td>Soldes</td>
+                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /></td>
+                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /></td>
                 </TableRow>
             </TableBody>
             </Table>
         </TableContainer>
+        </>
     )
 };
 
