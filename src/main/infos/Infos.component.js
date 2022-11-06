@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ModuleInfos from "./MicroServicesInfos.component";
-import { ListGroup, Card, Container, Table } from "react-bootstrap";
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
+import {Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow} from "@mui/material";
 
 export default class Infos extends Component {
 
@@ -47,39 +47,45 @@ export default class Infos extends Component {
     /** Phase de Render à partir de la liste de statuts  **/
   render() {
         return (
-        <Container fluid>
-            <Card border="primary" bg="light" style={{ width: '40rem', margin: '10px auto' }} >
-                <Card.Header>
-                    <center>
-                        <h4>Gestion de budgets</h4>
-                    <img src="/img/icon.png" width="300" height="300" className="d-inline-block align-middle" alt="Gestion de budgets"/>
-                    </center>
-                </Card.Header>
-                <Card.Body>
-                    <ListGroup>
-                        <ListGroup.Item>Environnement : <b>{process.env.NODE_ENV}</b></ListGroup.Item>
-                        <ListGroup.Item>
-                            <Table striped hover variant="dark" style={{ margin: '0px 0px 0px 0px' }} >
-                              <tbody>
-                                    <ModuleInfos
-                                        key='ihm'
-                                        name='IHM'
-                                        version={process.env.REACT_APP_BUDGET_VERSION}
-                                        description="IHM REACT" />
+        <center>
+            <TableContainer>
+                <TableHead>
+                    <TableRow>
+                        <TableCell><center><h2>Gestion de budgets</h2></center></TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow>
+                        <TableCell> <img src="/img/icon.png" width="300" height="300" className="d-inline-block align-middle" alt="Gestion de budgets"/> </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell> Environnement : <b>{process.env.NODE_ENV}</b> </TableCell>
+                    </TableRow>
+                    <TableRow>
+
+                        <Table size={"small"}>
+                            <TableBody v>
+                                <ModuleInfos
+                                    key='ihm'
+                                    name='IHM'
+                                    version={process.env.REACT_APP_BUDGET_VERSION}
+                                    description="IHM REACT" />
 
                                 {this.state.infos.map((msInfos, i) => (
                                     <ModuleInfos
                                         key={msInfos.nom + i} name={msInfos.nom}
                                         version={msInfos.version} description={msInfos.description} />
                                 ))}
-                              </tbody>
-                            </Table>
-                        </ListGroup.Item>
-                        <ListGroup.Item style={{textAlign:"right"}} >by Z.corp</ListGroup.Item>
-                    </ListGroup>
-                </Card.Body>
-            </Card>
-        </Container>
+                            </TableBody>
+                        </Table>
+
+                    </TableRow>
+                </TableBody>
+                <TableFooter>
+                    <TableCell align={"right"}>by Z.corp</TableCell>
+                </TableFooter>
+            </TableContainer>
+        </center>
         )
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Row, Col, Navbar} from 'react-bootstrap'
+import {Navbar} from 'react-bootstrap'
 
 import ComptesList from "../ComptesList.component"
 import DateRange from "../DateRange.component"
@@ -11,6 +11,7 @@ import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGrou
 import * as Controller from './Budgets.controller'
 import * as Services from './Budgets.extservices'
 import {ToastContainer} from "react-toastify";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 /*
  * Page principale des budgets
@@ -81,44 +82,41 @@ export default class Budgets extends Component {
      * Render du budget
      */
     render() { return (
-        <>
-            <Row>
-                <Col sm={4}>
-                  <ComptesList onCompteChange={this.handleCompteChange} />
-                </Col>
-                <Col sm={8}>
-                  <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
-                </Col>
-            </Row>
-            <Row>
-                <Col sm={4}>
-                    { /** Résumé des catégories **/ }
-                    <Row>
-                        <Col>{ this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..." }</Col>
-                    </Row>
-                    { /** Soldes **/ }
-                    <Row>
-                        <Col>{ this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..." }</Col>
-                    </Row>
-                </Col>
-                <Col sm={8}>
-                    { /** Liste des opérations **/ }
-                    <Row>{ this.state.currentBudget != null ?<OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."}</Row>
-                </Col>
-            </Row>
+        <Grid2 container xl>
+            <Grid2 xs={4}>
+                    <ComptesList onCompteChange={this.handleCompteChange} />
+            </Grid2>
+            <Grid2 xs={7}>
+                    <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
+            </Grid2>
+            <Grid2 xs={1}>
+                {/** Actions sur le budget (close / reinit) **/
+                    this.state.currentBudget != null ?
+                        <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
+                }
+            </Grid2>
+
+            <Grid2  xs={4} direction={"column"}>
+                { /** Résumé des catégories **/ }
+                { this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..." }
+                { /** Soldes **/ }
+                { this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..." }
+            </Grid2>
+            <Grid2 xl={8}>
+                { /** Liste des opérations **/ }
+                { this.state.currentBudget != null ?<OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."}
+            </Grid2>
+
             <ToastContainer
                 position="bottom-left"
                 autoClose={1000}
                 hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false}
                 pauseOnFocusLoss draggable pauseOnHover
             />
-            <Row>.</Row>
+
             <Navbar fixed="bottom" bg="light" variant="dark" className="justify-content-end">
-                {/** Actions sur le budget (close / reinit) **/
-                    this.state.currentBudget != null ?
-                        <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
-                }
+
             </Navbar>
-        </>
+        </Grid2>
     ); }
 }

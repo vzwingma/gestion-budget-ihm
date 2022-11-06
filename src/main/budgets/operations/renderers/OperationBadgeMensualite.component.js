@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import Badge from 'react-bootstrap/Badge';
-import {Tooltip} from '@mui/material';
+import {Chip, Tooltip} from '@mui/material';
 
 export default class OperationMensualite extends Component {
 
@@ -30,13 +29,13 @@ export default class OperationMensualite extends Component {
     getBackground(){
         switch (this.props.mensualite.periode) {
             case "MENSUELLE":
-                return "light";
+                return "default";
             case "TRIMESTRIELLE":
                 return "info";
             case "SEMESTRIELLE":
                 return "warning";
             case "ANNUELLE":
-                return "danger";
+                return "error";
             default:
                 return null;
         }
@@ -50,7 +49,7 @@ export default class OperationMensualite extends Component {
             { /* Pas d'affichage pour 0 */ }
             { this.props.mensualite !== null && this.props.mensualite.periode !== 0 &&
                 <Tooltip title={ this.getTooltip() }>
-                    <Badge bg={this.getBackground()}>{this.getLibelle()}</Badge>
+                    <Chip color={this.getBackground()} label={this.getLibelle()} size={"small"} />
                 </Tooltip>
             }
         </div>

@@ -1,22 +1,20 @@
 import React, { Component } from "react";
-import Badge from 'react-bootstrap/Badge';
 import BadgeMUI from "@mui/material/Badge";
+import {Chip} from "@mui/material";
 
 export default class OperationEtat extends Component {
 
     // Render de l'état de l'opération avec surcharge du style du bouton, et englobé par un badge MUI pour la dernière opération
     render(){
       return (
-          <div id={this.props.id}>
-              <>
-                  { this.props.etat === "REALISEE" && !this.props.derniere  && <Badge bg="success">Réalisée</Badge>    }
-                  { this.props.etat === "REALISEE" && this.props.derniere   && <BadgeMUI  variant="dot" color="primary"><Badge bg="success">Réalisée</Badge></BadgeMUI>    }
-                  { this.props.etat === "PREVUE"      && <Badge bg="warning">Prévue</Badge>      }
-                  { this.props.etat === "ANNULEE"     && <Badge bg="Secondary">Annulée</Badge>   }
-                  { this.props.etat === "SUPPRIMEE"   && <Badge bg="danger">Supprimée</Badge>    }
-                  { this.props.etat === "REPORTEE"    && <Badge bg="info">Reportée</Badge>       }
-                  { this.props.etat === "PLANIFIEE"   && <Badge bg="Secondary">Planifiée</Badge> }
-              </>
+        <div id={this.props.id}>
+            { this.props.etat === "REALISEE"  && !this.props.derniere && <Chip color="success" label="Réalisée" size={"small"} />    }
+            { this.props.etat === "REALISEE"  && this.props.derniere  && <BadgeMUI  variant="dot" color="primary"><Chip color="success" label="Réalisée"  size={"small"}/> </BadgeMUI>    }
+            { this.props.etat === "PREVUE"    && <Chip color="warning" label="Prévue" size={"small"} />   }
+            { this.props.etat === "ANNULEE"   && <Chip color="default" label="Annulée" size={"small"} /> }
+            { this.props.etat === "SUPPRIMEE" && <Chip color="error" label="Supprimée" size={"small"} />  }
+            { this.props.etat === "REPORTEE"  && <Chip color="secondary" label="Reportée" size={"small"} /> }
+            { this.props.etat === "PLANIFIEE" && <Chip color="info" label="Planifiée" size={"small"} /> }
         </div>
       )
     }

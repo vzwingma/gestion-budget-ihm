@@ -29,10 +29,6 @@ export default class BudgetActionsButtonGroupComponent extends Component {
     }
 
 
-
-
-
-
     /**
      *  RENDER
      */
@@ -40,7 +36,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
         return (
             <>
             { /** Groupe d'actions sur le budget **/ }
-                <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick}>
+                <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick} variant={"light"}>
                     <Tooltip title={(this.props.budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}>
                         <Button className="btn-light" id="CLOSE_A_CONFIRMER" variant="light">
                             <img id="CLOSE_A_CONFIRMER" src={"/img/statuts/" + (this.props.budget.actif ? "unlocked" : "locked") +".png"} className="d-inline-block align-top" alt="Confirmer changement d'état"/>
