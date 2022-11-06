@@ -178,10 +178,14 @@ export default class OperationsList extends Component {
                     { this.props.budget.actif &&
                         <ButtonGroup className="bgButtonsCreateUpdateOps">
                             <Tooltip title="Créer une nouvelle opération">
-                                <Button onClick={this.handleOperationCreate} color={"success"}>Création</Button>
+                                <Button onClick={this.handleOperationCreate} color={"success"}>
+                                    <img id="CREATION" src={"/img/statuts/circle_plus.png"} className="d-inline-block align-top" alt="Création"/>
+                                </Button>
                             </Tooltip>
                             <Tooltip title="Editer l'opération sélectionnée">
-                                <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>Edition</Button>
+                                <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>
+                                    <img id="EDITION" src={"/img/statuts/circle_pen" +(this.state.idOperation === null ? "_disabled" : "")+ ".png"} className="d-inline-block align-top" alt="Création"/>
+                                </Button>
                             </Tooltip>
                         </ButtonGroup>
                     }
