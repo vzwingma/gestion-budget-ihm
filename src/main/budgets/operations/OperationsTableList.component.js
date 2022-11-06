@@ -9,6 +9,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import OperationActions from './renderers/OperationActions.component';
 import OperationEtat from './renderers/OperationBadgeEtat.component';
 import OperationValue from './renderers/OperationSpanValue.component';
+import OperationDescription from './renderers/OperationDescription.component';
 import * as DataUtils from '../../Utils/DataUtils.utils';
 import * as Controller from './OperationsTableList.controller';
 import * as Service from './OperationsTableList.extservices';
@@ -50,20 +51,21 @@ export default class OperationsList extends Component {
             headerName: 'Catégorie',
             minWidth:150,
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${ (params.row.categorie !== null ? params.row.categorie.libelle : '-') || '-'} `,
+            renderCell: this.renderCategorie
         },
         {
             field: 'ssCategorie',
             headerName: '',
             editable: false, sortable: true,
             minWidth:150,
-            valueGetter: (params: GridValueGetterParams) => `${ (params.row.ssCategorie !== null ? params.row.ssCategorie.libelle : '-') || '-'} `,
+            renderCell: this.renderSsCategorie
         },
         {
             field: 'libelle',
             headerName: 'Description',
             minWidth:340,
             editable: false, sortable: true,
+            renderCell: this.renderDescription
         },
         {
             field: 'valeur',
@@ -124,6 +126,18 @@ export default class OperationsList extends Component {
         this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
         this.handleToggleClickSupprimer = ActionController.handleToggleClickSupprimer.bind(this);
         this.updateOperation = ActionController.updateOperation.bind(this);
+    }
+
+    renderCategorie(params: GridRenderCellParams<number>) {
+        return <OperationDescription key={params.id} id={params.id} operation={params.row} libelle={(params.row.categorie !== null ? params.row.categorie.libelle : '-')} />;
+    }
+
+    renderSsCategorie(params: GridRenderCellParams<number>) {
+        return <OperationDescription key={params.id} id={params.id} operation={params.row} libelle={(params.row.ssCategorie !== null ? params.row.ssCategorie.libelle : '-') } />;
+    }
+
+    renderDescription(params: GridRenderCellParams<number>) {
+        return <OperationDescription key={params.id} id={params.id} operation={params.row} libelle={params.row.libelle} />;
     }
 
     renderMensualite(params: GridRenderCellParams<number>) {
