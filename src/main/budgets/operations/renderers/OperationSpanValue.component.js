@@ -20,11 +20,11 @@ export function getStyleOperation(valueOperation){
     }
 }
 
-const OperationValue = ({ valueOperation }) => {
+const OperationValue = ({ valueOperation, showSign }) => {
 
     // définition du libellé
     return (
-        <span className={ getStyleOperation(valueOperation) }>{ addEndingZeros(Math.abs(valueOperation)) } €</span>
+        <span className={ getStyleOperation(valueOperation) }> { addEndingZeros( showSign ? valueOperation : Math.abs(valueOperation)) } €</span>
     )
 };
 

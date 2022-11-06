@@ -5,16 +5,6 @@ body {
 }
 
 /** Style pour les opérations **/
-/*tbody.tbodyOperation > tr > td:first-child { width:200px } */
-tbody.tbodyOperation > tr > td:nth-child(5) {
-    text-align: right;
-    padding-right: 10px;
-}
-tbody.tbodyOperation > tr > td:nth-child(6) {
-    width:80px;
-}
-tbody.tbodyOperation > tr > td:nth-child(7) { width:100px }
-
 /* button Créer & Editer */
 div.bgButtonsCreateUpdateOps{
     position: relative;
@@ -24,8 +14,9 @@ div.bgButtonsCreateUpdateOps{
 
 
 /* boutons actions sur opérations*/
-.btn-light {
+button.btn-actions-operation {
     padding: 0 1px 0 1px;
+    min-width: 20px !important;
 }
 
 /* badge */
@@ -35,45 +26,41 @@ div.bgButtonsCreateUpdateOps{
     vertical-align: middle;
 }
 
-/** Style pour les résumés **/
-table {
-    font-size:12px;
+span.operation_REPORTEE {
+    color: #29abe0;
+    font-style: italic;
 }
-thead.theadResume > th {
-    text-align: right;
-    padding-right: 10px;
+span.operation_REALISEE {
+    color: #93c54b;
 }
-tbody.tbodyResume > tr > td:first-child { width:33% }
-tbody.tbodyResume > tr > td:nth-child(2) {
-    text-align: right;
-    padding-right: 10px;
+span.operation_ANNULEE {
+    color: #7c8889;
+    font-style: italic;
+    text-decoration-line: line-through;
 }
-tbody.tbodyResume > tr > td:nth-child(3) {
-    text-align: right;
-    padding-right: 10px;
+span.operation_SUPPRIMEE {
+    color: #7c8889;
+    font-style: italic;
+    text-decoration-line: line-through;
 }
-
 
 
 
 /** Style pour la datagrid **/
 .MuiDataGrid-main{
-    font-size: 12px;
+    font-size: 13px;
     font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
 
 .MuiDataGrid-columnHeaders{
     font-weight: bold;
     color: #1e1e1c;
-    background-color: #f8f5f0;
+    background-color: #ece9e4;
     border-color: #dfddd8
 }
 
-.MuiDataGrid-row:nth-child(even){
-    background-color: #f8f5f0;
-}
 .MuiDataGrid-row:nth-child(odd){
-    background-color: #ece9e4;
+    background-color: #f8f5f0;
 }
 
 p.MuiTablePagination-displayedRows{
@@ -88,13 +75,66 @@ div.MuiTablePagination-actions{
     vertical-align: middle;
 }
 
+
+
+
+/**
+    Style pour les résumés
+**/
+table {
+    font-size: 12px;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+
+}
+thead.theadResume > tr > th  {
+    font-size: 12px;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    text-align: right !important;
+    padding: 0 10px 0 0 !important;
+    height: 38px;
+    color: #1e1e1c;
+    background-color: #ece9e4;
+    border-color: #dfddd8
+}
+
+
 /* Lignes pour les résumés */
 tbody.tbodyResume > tr.ligneCategorie {
-    font-weight: bolder;
+    font-weight: bolder !important;
+    color: #1e1e1c;
+    background-color: #f8f5f0;
+    border-color: #dfddd8;
 }
+tbody.tbodyResume > tr.ligneSolde {
+    font-weight: bolder !important;
+    color: #1e1e1c;
+    border-color: #dfddd8;
+    height: 40px;
+    font-size: 16px;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+tbody.tbodyResume > tr {
+    height: 25px;
+    border-color: #dfddd8;
+}
+
+
 span.ligneSsCategorie {
     margin-left: 20px;
+}
 
+
+tbody.tbodyResume > tr > td:first-child {
+    width:33%
+}
+tbody.tbodyResume > tr > td:nth-child(2) {
+    text-align: right;
+    padding: 0 10px 0 0 !important;
+}
+tbody.tbodyResume > tr > td:nth-child(3) {
+    text-align: right;
+    padding: 0 10px 0 0 !important;
 }
 
 /**

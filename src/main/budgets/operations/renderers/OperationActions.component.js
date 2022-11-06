@@ -8,14 +8,7 @@ export default class OperationActions extends Component {
 
     render(){
         return (
-            <ButtonGroup aria-label="Actions">
-
-                <style type="text/css">{`
-                    .btn-light {
-                        padding: 0px 1px 0px 1px;
-                    }
-                `}</style>
-
+            <ButtonGroup aria-label="Actions" variant={"light"}>
                 { this.props.operation.etat !== "REALISEE" &&
                     <OperationButtonAction action="REALISEE" iconAction="circle_ok.png" label="Valider l'opération"/>
                 }
