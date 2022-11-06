@@ -25,8 +25,8 @@ const ResumeSoldes = ({ currentBudget }) => {
             <TableBody className={"tbodyResume"}>
                 <TableRow className={"ligneSolde"}>
                     <td>Soldes</td>
-                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} /></td>
-                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} /></td>
+                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true} /></td>
+                    <td><OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} showSign={true} /></td>
                 </TableRow>
             </TableBody>
             </Table>
