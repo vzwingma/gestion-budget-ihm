@@ -196,9 +196,11 @@ export default class OperationsList extends Component {
                                 </Button>
                             </Tooltip>
                             <Tooltip title="Editer l'opération sélectionnée">
+                                <div>
                                 <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>
                                     <img id="EDITION" src={"/img/statuts/circle_pen" +(this.state.idOperation === null ? "_disabled" : "")+ ".png"} className="d-inline-block align-top" alt="Création"/>
                                 </Button>
+                                </div>
                             </Tooltip>
                         </ButtonGroup>
                     }
