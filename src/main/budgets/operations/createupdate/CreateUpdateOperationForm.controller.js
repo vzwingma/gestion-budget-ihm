@@ -54,10 +54,10 @@ import {toast} from "react-toastify";
          * Set type de valeur, suivant la catégorie
          */
         // Prélèvement mensuel
-        let operationMensuelle = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? "MENSUELLE" : "PONCTUELLE";
+        let operationMensuelle = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? {value:"MENSUELLE", text:"Mensuelle"} : {value:"PONCTUELLE", text:"Ponctuelle"};
 
         // Virement
-        let operationType = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "CREDIT" : "DEPENSE";
+        let operationType = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? {value:"CREDIT", text:"+"} : {value:"DEPENSE", text:"-"};
         this.setState(
             { formOperationType : operationType
             , formOperationPeriodique : operationMensuelle })

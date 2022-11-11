@@ -203,6 +203,22 @@ export default class CreateUpdateOperationForm extends Component {
                                 }
                             </Grid2>
                             <Grid2 item xs={4}>
+                                <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : "" }>
+                                    <FormLabel>Dépense périodique</FormLabel>
+                                </Tooltip>
+                            </Grid2>
+                            <Grid2 item xs={8}>
+                                <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
+                                        options={this.listePeriodes} className={"MuiDataGrid-main"}
+                                        getOptionLabel={e => (
+                                            <div >
+                                                <span style={{ fontSize:".875rem" }}>{e.text}</span>
+                                            </div>
+                                        )}
+                                        onChange={this.handleSelectPeriode}>
+                                </Select>
+                            </Grid2>
+                            <Grid2 item xs={4}>
                                 <FormLabel>Description</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8}>
@@ -215,12 +231,11 @@ export default class CreateUpdateOperationForm extends Component {
                                 <FormLabel>Valeur</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8} direction={"row"}>
-                                <FormLabel>{this.state.formOperationType.text}</FormLabel>
-
                                 { /*  pattern="[0-9]*\.[0-9]{2}" */}
-                                <FormControl sx={{ m: 1 }} >
+                                <FormControl sx={{ m: 1 }} fullWidth >
                                     <Input defaultValue={this.state.formValeur} value={this.state.formValeur}
                                             onChange={this.handleSelectValeur} onBlur={this.handleCompleteValeur}
+                                            style={this.state.formOperationType.text==="+" ? {color : "#93c54b" } : {color : "#e74c3c" } }
                                             endAdornment={<InputAdornment position="start">€</InputAdornment>} />
                                 </FormControl>
                             </Grid2>
@@ -241,25 +256,10 @@ export default class CreateUpdateOperationForm extends Component {
                                 <FormLabel>Date opération</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8}>
-                                <TextField required variant={"outlined"}
-                                           type={"date"}
+                                <FormControl fullWidth className="MuiInputBase-datelabel" >
+                                <TextField required variant={"outlined"} type={"date"} className="MuiInputBase-datelabel"
                                            defaultValue={this.state.formDateOperation}  value={this.state.formDateOperation}  onChange={this.handleSelectDateOperation} />
-                            </Grid2>
-                            <Grid2 item xs={4}>
-                                <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : "" }>
-                                    <FormLabel>Dépense périodique</FormLabel>
-                                </Tooltip>
-                            </Grid2>
-                            <Grid2 item xs={8}>
-                                <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
-                                        options={this.listePeriodes} className={"MuiDataGrid-main"}
-                                        getOptionLabel={e => (
-                                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
-                                            </div>
-                                        )}
-                                        onChange={this.handleSelectPeriode}>
-                                </Select>
+                                </FormControl>
                             </Grid2>
                         </Grid2>
                         </Box>
