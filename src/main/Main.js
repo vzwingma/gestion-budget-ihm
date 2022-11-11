@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Routes, Route, NavLink, HashRouter } from "react-router-dom";
+import { Routes, Route, NavLink, HashRouter} from "react-router-dom";
 // import PrivateRoute from './PrivateRoute'
 import Budgets from "./budgets/budgets/Budgets.component";
 import Login from "./login/Login.component";
