@@ -73,3 +73,42 @@ export function getDateFromDateTime(dateTime){
     }
     return dateTime
 }
+
+
+
+/** Libellé du badge Mensualité
+ * @param periode : enum période
+ * */
+
+export function getLibelle(periode){
+    switch (periode) {
+        case "MENSUELLE":
+            return "Mensuelle";
+        case "TRIMESTRIELLE":
+            return "Trimestrielle";
+        case "SEMESTRIELLE":
+            return "Semestrielle";
+        case "ANNUELLE":
+            return "Annuelle";
+        default:
+            return "";
+    }
+}
+
+/** Couleur du background du badge Mensualité
+ * @param periode : enum période
+ * */
+export function getBackground(periode){
+    switch (periode) {
+        case "MENSUELLE":
+            return "default";
+        case "TRIMESTRIELLE":
+            return "info";
+        case "SEMESTRIELLE":
+            return "warning";
+        case "ANNUELLE":
+            return "error";
+        default:
+            return "default"
+    }
+}

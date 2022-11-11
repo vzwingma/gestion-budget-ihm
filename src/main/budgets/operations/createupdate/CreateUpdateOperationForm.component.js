@@ -3,13 +3,14 @@ import React, {Component} from 'react';
 import {
     Box,
     Button,
-    ButtonGroup,
+    ButtonGroup, Chip,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,  FormControl,
+    DialogTitle, FormControl,
     FormLabel, Input, InputAdornment, TextField,
-    Tooltip} from '@mui/material';
+    Tooltip
+} from '@mui/material';
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
 import {getLibelleDate} from '../../../Utils/DataUtils.utils'
@@ -17,7 +18,7 @@ import BaseSelect from "react-select";
 import Select from "react-select";
 import RequiredSelect from "../../../Utils/RequiredSelect";
 import Grid2 from "@mui/material/Unstable_Grid2";
-
+import { getBackground } from "../../../Utils/DataUtils.utils";
 
 /**
  * Formulaire sur le Bouton création
@@ -212,7 +213,7 @@ export default class CreateUpdateOperationForm extends Component {
                                         options={this.listePeriodes} className={"MuiDataGrid-main"}
                                         getOptionLabel={e => (
                                             <div >
-                                                <span style={{ fontSize:".875rem" }}>{e.text}</span>
+                                                <Chip color={getBackground(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span>
                                             </div>
                                         )}
                                         onChange={this.handleSelectPeriode}>
