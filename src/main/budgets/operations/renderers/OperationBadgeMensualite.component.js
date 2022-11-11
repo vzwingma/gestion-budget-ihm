@@ -6,7 +6,7 @@ export default class OperationMensualite extends Component {
 
     /** Tooltip */
     getTooltip(){
-        return "Prochaine échéance dans " + this.props.mensualite.prochaineEcheance + " mois";
+            return "Prochaine échéance dans " + this.props.mensualite.prochaineEcheance + " mois";
     }
 
     /** Libellé du badge */
@@ -21,7 +21,7 @@ export default class OperationMensualite extends Component {
             case "ANNUELLE":
                 return "Annuelle";
             default:
-                return null;
+                return "";
         }
     }
 
@@ -37,7 +37,7 @@ export default class OperationMensualite extends Component {
             case "ANNUELLE":
                 return "error";
             default:
-                return null;
+                return "default"
         }
     }
 
