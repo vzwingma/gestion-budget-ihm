@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import {Navbar} from 'react-bootstrap'
 
 import ComptesList from "../ComptesList.component"
 import DateRange from "../DateRange.component"
@@ -114,9 +113,6 @@ export default class Budgets extends Component {
                 pauseOnFocusLoss draggable pauseOnHover
             />
 
-            <Navbar fixed="bottom" bg="light" variant="dark" className="justify-content-end">
-
-            </Navbar>
         </Grid2>
     ); }
 }
