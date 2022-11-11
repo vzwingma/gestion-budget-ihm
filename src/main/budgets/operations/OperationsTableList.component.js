@@ -48,7 +48,7 @@ export default class OperationsList extends Component {
         {
             field: 'categorie',
             headerName: 'Catégorie',
-            minWidth:150,
+            minWidth:140,
             editable: false, sortable: true,
             renderCell: this.renderCategorie
         },
@@ -56,13 +56,13 @@ export default class OperationsList extends Component {
             field: 'ssCategorie',
             headerName: '',
             editable: false, sortable: true,
-            minWidth:150,
+            minWidth:140,
             renderCell: this.renderSsCategorie
         },
         {
             field: 'libelle',
             headerName: 'Description',
-            minWidth:340,
+            minWidth:330,
             editable: false, sortable: true,
             renderCell: this.renderDescription
         },
