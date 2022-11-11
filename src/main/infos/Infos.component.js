@@ -2,7 +2,15 @@ import React, { Component } from "react";
 import ModuleInfos from "./MicroServicesInfos.component";
 import * as AppConstants from "../Utils/AppEnums.constants"
 import * as ClientHTTP from './../Services/ClientHTTP.service'
-import {Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow} from "@mui/material";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableFooter,
+    TableHead,
+    TableRow
+} from "@mui/material";
 
 export default class Infos extends Component {
 
