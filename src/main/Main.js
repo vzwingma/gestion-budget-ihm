@@ -14,11 +14,11 @@ export default class Main extends Component {
   render() {
     return (
         <HashRouter>
-            <AppBar position="sticky" variant={"outlined"}>
+            <AppBar position={"fixed"} variant={"outlined"}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         <Stack direction="row" spacing={10}>
-                            <img src="/img/favicon64.png" width="40" height="40" className="d-inline-block align-top" alt="Gestion de budgets"/>
+                            <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
                             <NavLink className="nav-link" to="/infos">Infos</NavLink>
                             <NavLink className="nav-link" to="/budgets">Budgets</NavLink>
                         </Stack>

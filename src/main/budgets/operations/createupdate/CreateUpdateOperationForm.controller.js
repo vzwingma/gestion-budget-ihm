@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
  * Fonctions sur le formulaire de création d'opérations
  */
     export function categoriesLoaded(data){
-    // Transformation des catégories en affichage
+        // Transformation des catégories en affichage
         const mapCategories = data.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibelles)
         const mapSsCategories = mapCategories.flatMap(cat => cat.sousCategories)
                                              .map(ssCat => {
@@ -77,7 +77,7 @@ import {toast} from "react-toastify";
         this.setState({ formSsCategorie: ssCategorieSelected, formCategorie: ssCategorieSelected.categorie, ssCategoriesSelect : ssCatsUpdated});
 
         /** Si type Virement **/
-        let operationType = (ssCategorieSelected.categorie.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "CREDIT" : "DEPENSE";
+        let operationType = (ssCategorieSelected.categorie.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? {value:"CREDIT", text:"+"} : {value:"DEPENSE", text:"-"};
         this.setState( { formOperationType : operationType } )
 
         /**
@@ -85,7 +85,7 @@ import {toast} from "react-toastify";
          */
         if(ssCategorieSelected.id === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
             this.loadComptes();
-            this.setState( { formOperationType : "DEPENSE", showIntercompte:true } );
+            this.setState( { formOperationType : {value:"DEPENSE", text:"-"}, showIntercompte:true } );
         }
         else if(this.state.showIntercompte){
             this.setState( {  showIntercompte:false } );
@@ -107,7 +107,7 @@ import {toast} from "react-toastify";
      * @param event évt de saisie
      */
     export function handleSelectType(event) {
-        this.setState({formOperationType : event.target.value})
+        this.setState({formOperationType : event})
     }
     /**
      *  Saisie compte cible de l'opération intercompte
@@ -151,7 +151,7 @@ import {toast} from "react-toastify";
      * @param event évt de saisie
      */
     export function handleSelectPeriode(event){
-        this.setState({formOperationPeriodique : event.target.value})
+        this.setState({formOperationPeriodique : event})
     }
 
 
@@ -162,25 +162,25 @@ import {toast} from "react-toastify";
      */
     export function handleSubmitForm(event) {
         const form = event.currentTarget;
-
-        if (event.nativeEvent.submitter.id !== "btnClose") {
+console.log(event)
+        if (event.target.id !== "btnClose") {
             console.log("Validation du formulaire")
-            if (form.checkValidity() === false) {
+        /*    if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
-            } else {
-                if (event.nativeEvent.submitter.id === "btnValidContinue" || event.nativeEvent.submitter.id === "btnValidClose") {
+            } else { */
+                if (event.target.id === "btnValidContinue" || event.target.id === "btnValidClose") {
                     this.createOperation();
-                } else if (event.nativeEvent.submitter.id === "btnValidModif") {
+                } else if (event.target.id === "btnValidModif") {
                     this.updateOperation();
                 }
 
-            }
+            // }
         }
         // Post Creation - Clear Form
         this.razForm();
         // Ferme le formulaire ssi ce n'est pas le bouton Continue
-        if(event.nativeEvent.submitter.id !== "btnValidContinue") {
+        if(event.target.id !== "btnValidContinue") {
             this.hideModal();
         }
     }
@@ -214,12 +214,12 @@ import {toast} from "react-toastify";
     export function createOperation(){
 
         const operation = this.fillOperationFromForm();
-        // Sauvegarde de l'opération
+            // Sauvegarde de l'opération
         if(this.state.formCompteCible !== null){
             this.saveOperationIntercompte(this.props.budget.id, operation, this.state.formCompteCible);
         }
         else{
-            this.saveOperation(this.props.budget.id  , operation, false);
+           this.saveOperation(this.props.budget.id  , operation, false);
         }
         toast.success("Création de l'opération correctement effectuée")
     }

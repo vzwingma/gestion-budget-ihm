@@ -4,6 +4,13 @@ body {
     padding: 1px;
 }
 
+.App {
+    padding-top: 60px;
+    font-size: 13px;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+
+}
+
 /** Style pour les opérations **/
 /* button Créer & Editer */
 div.bgButtonsCreateUpdateOps{
@@ -11,7 +18,6 @@ div.bgButtonsCreateUpdateOps{
     left: 8px;
     top: -45px;
 }
-
 
 /* boutons actions sur opérations*/
 button.btn-actions-operation {
@@ -43,7 +49,12 @@ span.operation_SUPPRIMEE {
     font-style: italic;
     text-decoration-line: line-through;
 }
-
+.text-success{
+    color: #93c54b;
+}
+.text-danger{
+    color: #e74c3c;
+}
 
 
 /** Style pour la datagrid **/
@@ -125,6 +136,8 @@ span.ligneSsCategorie {
 }
 
 
+
+
 tbody.tbodyResume > tr > td:first-child {
     width:33%
 }
@@ -145,3 +158,39 @@ Style data range
     justify-content: center;
     display: flex;
 }
+/**
+Style Menu
+ */
+a.nav-link {
+    color: white;
+    outline: none;
+    text-decoration: none;
+    display: inline-block;
+    width: 19.5%;
+    margin-right: 0.625%;
+    text-align: center;
+    line-height: 3;
+}
+
+a.nav-link:hover {
+    color: #1e3852;
+}
+
+/**
+Style formulaire
+ */
+
+label.MuiFormLabel-root {
+    font-size: 14px !important;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    color: #1976d2;
+    font-weight: bolder;
+}
+
+label.MuiInputBase-input {
+    font-size: 14px !important;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    color: #1976d2;
+    font-weight: bolder;
+}
+

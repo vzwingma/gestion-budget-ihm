@@ -1,12 +1,23 @@
 import React, {Component} from 'react';
-import {Col, Form, Modal, Row} from 'react-bootstrap'
-import {Button, ButtonGroup, Tooltip} from '@mui/material';
+
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,  FormControl,
+    FormLabel, Input, InputAdornment, TextField,
+    Tooltip} from '@mui/material';
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
 import {getLibelleDate} from '../../../Utils/DataUtils.utils'
 import BaseSelect from "react-select";
 import Select from "react-select";
 import RequiredSelect from "../../../Utils/RequiredSelect";
+import Grid2 from "@mui/material/Unstable_Grid2";
+
 
 /**
  * Formulaire sur le Bouton création
@@ -29,7 +40,22 @@ export default class CreateUpdateOperationForm extends Component {
             icon: <img src={"/img/statuts/circle_cancel.png"} className="d-inline-block align-top" alt="Annulée"/>      }
     ]
 
+    listePeriodes = [
+        { value: "PONCTUELLE", text: "Ponctuelle" },
+        { value: "MENSUELLE", text: "Mensuelle" },
+        { value: "TRIMESTRIELLE", text: "Trimestrielle" },
+        { value: "SEMESTRIELLE", text: "Semestrielle" },
+        { value: "ANNUELLE", text: "Annuelle" }
+    ]
 
+    listeType = [
+        { value:"DEPENSE" , text: "-" },
+        { value: "CREDIT", text:"+" }
+    ]
+
+    /**
+     * States
+     **/
     state = {
         // Data d'affichages du formulaire
         categoriesSelect: [],
@@ -127,135 +153,139 @@ export default class CreateUpdateOperationForm extends Component {
         return (
             <>
                 { /** Fenêtre modale - Formulaire  **/ }
-                <Modal show={this.props.showModale} onHide={this.props.hideModale} className="modal" centered >
+                <Dialog open={this.props.showModale}>
 
-                    <Modal.Header closeButton>
-                        <Modal.Title>{ this.props.modeEdition ? "Edition" : "Création"} d'une opération</Modal.Title>
-                    </Modal.Header>
+                    <DialogTitle bgcolor={"#1976d2"} color={"white"}>
+                        { this.props.modeEdition ? "Edition" : "Création"} d'une opération
+                    </DialogTitle>
 
-                    <Form validated={ this.state.formValidated } onSubmit={ this.handleSubmitForm }>
-                    <Modal.Body>
-                        <Form.Group as={Row} className="mb-2" controlId="categoriesForm">
-                            <Form.Label column sm={4} className="col-form-label-sm">Catégories</Form.Label>
-                            <Col>
+                    <DialogContent>
+                        <Box marginTop={"10px"}>
+                        <Grid2 container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                            <Grid2 item xs={4}  columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                                <FormLabel>Catégories</FormLabel>
+                            </Grid2>
+                            <Grid2 item direction={"column"} xs={8} className={"MuiDataGrid-main"}>
                                     <RequiredSelect SelectComponent={BaseSelect}
-                                            required isDisabled={ this.props.modeEdition } isSearchable={true}
-                                            placeholder={"Sélectionnez une catégorie"}
-                                            value={this.state.formCategorie} options={this.state.categoriesSelect}
-                                            onChange={this.handleSelectCategorie}
-                                                getOptionLabel={e => (
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <span style={{ fontSize:".875rem" }}>{e.text}</span>
-                                                    </div>
-                                                )}>
+                                                    required isDisabled={ this.props.modeEdition } isSearchable={true}
+                                                    placeholder={"Sélectionnez une catégorie"}
+                                                    value={this.state.formCategorie} options={this.state.categoriesSelect}
+                                                    onChange={this.handleSelectCategorie}
+                                                    getOptionLabel={e => (
+                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                            <span style={{ fontSize:".875rem" }}>{e.text}</span>
+                                                        </div>
+                                                    )}>
                                     </RequiredSelect>
-                                    <RequiredSelect required isDisabled={ this.props.modeEdition } SelectComponent={BaseSelect}
-                                            placeholder={"Sélectionnez une sous catégorie"} isSearchable={true}
-                                            value={this.state.formSsCategorie} options={this.state.ssCategoriesSelect}
-                                            onChange={this.handleSelectSsCategorie}
-                                            getOptionLabel={e => (
-                                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                    <span style={{ fontSize:".875rem" }}>{e.text}</span>
-                                                </div>
-                                            )}>
+                                    <RequiredSelect required className={"MuiDataGrid-main"} isDisabled={ this.props.modeEdition } SelectComponent={BaseSelect}
+                                                    placeholder={"Sélectionnez une sous catégorie"} isSearchable={true}
+                                                    value={this.state.formSsCategorie} options={this.state.ssCategoriesSelect}
+                                                    onChange={this.handleSelectSsCategorie}
+                                                    getOptionLabel={e => (
+                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                            <span style={{ fontSize:".875rem" }}>{e.text}</span>
+                                                        </div>
+                                                    )}>
                                     </RequiredSelect>
-                                      { this.state.showIntercompte &&
-                                          <RequiredSelect SelectComponent={BaseSelect}
-                                              placeholder="Sélectionnez le compte"
-                                              value={this.state.selectedCompte}
-                                              options={this.state.comptes}
-                                              isDisabled={ this.props.modeEdition } isSearchable={true}
-                                              onChange={this.handleSelectCompteCible}
-                                              getOptionLabel={e => (
-                                                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                      {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
-                                                  </div>
-                                              )}
-                                          />
-                                    }
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-2" controlId="descriptionForm">
-                            <Form.Label column sm={4} className="col-form-label-sm">Description</Form.Label>
-                            <Col>
-                                <Form.Control type="text" required size="sm" value={this.state.formDescription} onChange={this.handleSelectDescription} />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-2" controlId="valeurForm">
-                            <Form.Label column sm={4} className="col-form-label-sm">Valeur</Form.Label>
-                            <Col sm={2}>
-                                <Form.Select disabled required size="sm" value={this.state.formOperationType} onChange={this.handleSelectType} >
-                                    <option value="DEPENSE">-</option>
-                                    <option value="CREDIT">+</option>
-                                </Form.Select>
-                            </Col>
-                            <Col sm={6}>
-                                <Form.Control required size="sm"
-                                              type="text" pattern="[0-9]*\.[0-9]{2}"
-                                              value={this.state.formValeur}
-                                              onBlur={this.handleCompleteValeur} onChange={this.handleSelectValeur} />
-                            </Col>
-                        </Form.Group>
+                                { this.state.showIntercompte &&
+                                    <RequiredSelect SelectComponent={BaseSelect} className={"MuiDataGrid-main"}
+                                                    placeholder="Sélectionnez le compte"
+                                                    value={this.state.selectedCompte}
+                                                    options={this.state.comptes}
+                                                    isDisabled={ this.props.modeEdition } isSearchable={true}
+                                                    onChange={this.handleSelectCompteCible}
+                                                    getOptionLabel={e => (
+                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                            {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
+                                                        </div>
+                                                    )}
+                                    />
+                                }
+                            </Grid2>
+                            <Grid2 item xs={4}>
+                                <FormLabel>Description</FormLabel>
+                            </Grid2>
+                            <Grid2 item xs={8}>
+                                <FormControl fullWidth sx={{ m: 1 }} >
+                                <Input defaultValue={this.state.formDescription} value={this.state.formDescription}
+                                       onChange={this.handleSelectDescription}  />
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 item xs={4}>
+                                <FormLabel>Valeur</FormLabel>
+                            </Grid2>
+                            <Grid2 item xs={8} direction={"row"}>
+                                <FormLabel>{this.state.formOperationType.text}</FormLabel>
 
-                        <Form.Group as={Row} className="mb-3" controlId="etatForm">
-                            <Form.Label column sm={4} className="col-form-label-sm">Etat</Form.Label>
-                            <Col>
+                                { /*  pattern="[0-9]*\.[0-9]{2}" */}
+                                <FormControl sx={{ m: 1 }} >
+                                    <Input defaultValue={this.state.formValeur} value={this.state.formValeur}
+                                            onChange={this.handleSelectValeur} onBlur={this.handleCompleteValeur}
+                                            endAdornment={<InputAdornment position="start">€</InputAdornment>} />
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 item xs={4}>
+                                <FormLabel>Etat</FormLabel>
+                            </Grid2>
+                            <Grid2 item xs={8}>
                                 <Select value={this.state.formEtat} options={this.listeEtats}
-                                    onChange={this.handleSelectEtat} isSearchable={true}
-                                    getOptionLabel={e => (
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            {e.icon} <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
-                                        </div>
-                                    )}
+                                        onChange={this.handleSelectEtat} isSearchable={true} className={"MuiDataGrid-main"}
+                                        getOptionLabel={e => (
+                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                {e.icon} <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
+                                            </div>
+                                        )}
                                 />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3" controlId="dateForm">
-                            <Form.Label column sm={4} className="col-form-label-sm">Date opération</Form.Label>
-                            <Col>
-                                <Form.Control type="date" name="dateop" placeholder="Date de l'opération" size={"sm"}
-                                              value={this.state.formDateOperation} onChange={this.handleSelectDateOperation} />
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={4} className="col-form-label-sm">Dépense périodique</Form.Label>
-                            <Col>
+                            </Grid2>
+                            <Grid2 item xs={4}>
+                                <FormLabel>Date opération</FormLabel>
+                            </Grid2>
+                            <Grid2 item xs={8}>
+                                <TextField required variant={"outlined"}
+                                           type={"date"}
+                                           defaultValue={this.state.formDateOperation}  value={this.state.formDateOperation}  onChange={this.handleSelectDateOperation} />
+                            </Grid2>
+                            <Grid2 item xs={4}>
                                 <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : "" }>
-                                <Form.Select required size="sm"  value={this.state.formOperationPeriodique} onChange={this.handleSelectPeriode}>
-                                        <option value="PONCTUELLE">Ponctuelle</option>
-                                        <option value="MENSUELLE">Mensuelle</option>
-                                        <option value="TRIMESTRIELLE">Trimestrielle</option>
-                                        <option value="SEMESTRIELLE">Semestrielle</option>
-                                        <option value="ANNUELLE">Annuelle</option>
-                                </Form.Select>
+                                    <FormLabel>Dépense périodique</FormLabel>
                                 </Tooltip>
-                            </Col>
-                        </Form.Group>
-                    </Modal.Body>
+                            </Grid2>
+                            <Grid2 item xs={8}>
+                                <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
+                                        options={this.listePeriodes} className={"MuiDataGrid-main"}
+                                        getOptionLabel={e => (
+                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
+                                            </div>
+                                        )}
+                                        onChange={this.handleSelectPeriode}>
+                                </Select>
+                            </Grid2>
+                        </Grid2>
+                        </Box>
+                    </DialogContent>
 
-                    <Modal.Footer>
+                    <DialogActions>
                         <ButtonGroup>
                             <Tooltip title="Annuler la saisie">
                                 <Button id="btnClose" color="error" onClick={ this.cancelForm } >Annuler</Button>
                             </Tooltip>
                             { !this.props.modeEdition && <>
                                 <Tooltip title="Valider la saisie et continuer sur une autre saisie">
-                                    <Button id="btnValidContinue" color="primary" type="submit" >Valider et continuer</Button>
+                                    <Button id="btnValidContinue" color="primary" onClick={this.handleSubmitForm} >Valider et continuer</Button>
                                 </Tooltip>
                                 <Tooltip title="Valider la saisie et fermer le formulaire">
-                                    <Button id="btnValidClose" color="success" type="submit" >{!this.props.modeEdition ? "Valider et fermer" : "Valider" }</Button>
+                                    <Button id="btnValidClose" color="success" onClick={this.handleSubmitForm} >{!this.props.modeEdition ? "Valider et fermer" : "Valider" }</Button>
                                 </Tooltip>
                             </> }
                             { this.props.modeEdition &&
                                 <Tooltip title="Valider la modification">
-                                    <Button id="btnValidModif" color="success" type="submit" >Valider</Button>
+                                    <Button id="btnValidModif" color="success" onClick={this.handleSubmitForm} >Valider</Button>
                                 </Tooltip>
                             }
                         </ButtonGroup>
-                    </Modal.Footer>
-                    </Form>
-                </Modal>
+                    </DialogActions>
+                </Dialog>
             </>
         )
     }
