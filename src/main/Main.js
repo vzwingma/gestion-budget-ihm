@@ -17,7 +17,7 @@ export default class Main extends Component {
             <AppBar position={"fixed"} variant={"outlined"}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Stack direction="row" spacing={10}>
+                        <Stack direction="row" spacing={2}>
                             <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
                             <NavLink className="nav-link" to="/infos">Infos</NavLink>
                             <NavLink className="nav-link" to="/budgets">Budgets</NavLink>

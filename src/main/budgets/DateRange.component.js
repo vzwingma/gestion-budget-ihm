@@ -66,20 +66,6 @@ export default class DateRange extends Component {
 
 /**
  *  RENDER
- *              <Modal show={this.state.showModale} onHide={this.hideModale} className="modal" centered >
- *                 <Modal.Header closeButton>
- *                     <Modal.Title>Confirmation d'ouverture</Modal.Title>
- *                 </Modal.Header>
- *                 <Modal.Body><p>L'ouverture d'un nouveau mois, va clôturer le mois courant, et reporter toutes les opérations non réalisées</p><p>Voulez vous continuer ? </p></Modal.Body>
- *
- *                 <Modal.Footer>
- *                     <ButtonGroup onClick={this.handleModalClick}>
- *                         <Button action="ANNULER"    variant="secondary">Annuler</Button>
- *                         <Button action="CONFIRMER"  variant="success">Confirmer</Button>
- *                     </ButtonGroup>
- *                 </Modal.Footer>
- *             </Modal>
-
  */
 
 
