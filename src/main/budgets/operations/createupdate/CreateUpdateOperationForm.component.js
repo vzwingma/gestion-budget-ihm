@@ -230,7 +230,7 @@ export default class CreateUpdateOperationForm extends Component {
                             </Grid2>
                             <Grid2 item xs={8}>
                                 <FormControl required fullWidth error={this.state.errorDescription} >
-                                    <Input defaultValue={this.state.formDescription} value={this.state.formDescription} onChange={this.handleSelectDescription}  />
+                                    <Input value={this.state.formDescription} onChange={this.handleSelectDescription}  />
                                     {this.state.errorDescription && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                             </Grid2>
@@ -239,7 +239,7 @@ export default class CreateUpdateOperationForm extends Component {
                             </Grid2>
                             <Grid2 item xs={8} direction={"row"}>
                                 <FormControl fullWidth error={this.state.errorValeur || this.state.errorFormatValeur} >
-                                    <Input defaultValue={this.state.formValeur} value={this.state.formValeur}
+                                    <Input value={this.state.formValeur}
                                             onChange={this.handleSelectValeur} onBlur={this.handleCompleteValeur}
                                             style={this.state.formOperationType.text==="+" ? {color : "#93c54b" } : {color : "#e74c3c" } }
                                             endAdornment={<InputAdornment position="start">€</InputAdornment>} />

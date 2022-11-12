@@ -277,6 +277,7 @@ import {toast} from "react-toastify";
      * Création d'un objet Operation à partir du formulaire
      */
     export function fillOperationFromForm(){
+        console.log( this.state.formOperationType)
         return {
             "libelle": this.state.formDescription,
             "categorie": {
@@ -323,7 +324,7 @@ import {toast} from "react-toastify";
                     formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: this.listeEtats.filter(etatSelect => etatSelect.value === operation.etat)[0],
                     formDateOperation: operation.autresInfos !== undefined && operation.autresInfos.formDateOperation !== null ? getDateFromDateTime(operation.autresInfos.dateOperation) : null,
-                    formOperationType: this.listeType.filter(t => t.value === operation.typeOperation),
+                    formOperationType: this.listeType.filter(t => t.value === operation.typeOperation)[0],
                     formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? this.listePeriodes.filter(p => p.value === operation.mensualite.periode)[0] : this.listePeriodes[0],
                     formProchaineMensualite: operation.mensualite !== undefined && operation.mensualite !== null ? "dans " + operation.mensualite.prochaineEcheance + " mois": "",
                     formTagDerniereOperation: operation.tagDerniereOperation,
