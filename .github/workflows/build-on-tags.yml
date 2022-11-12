@@ -35,7 +35,7 @@ jobs:
         id: get_version
         run: echo VERSION=$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2- )  >> $GITHUB_OUTPUT
       - name: Apply version
-        run: npm version $GITHUB_OUTPUT --git-tag-version=false
+        run: npm version $GITHUB_OUTPUT.VERSION --git-tag-version=false
       -
         run: npm ci
         name: CI Install
@@ -117,7 +117,7 @@ jobs:
           platforms: linux/amd64, linux/arm64/v8
           file: Dockerfile-IHM
           push: true
-          tags: vzwingmabudget/gestion_budget_ihm:latest, vzwingmabudget/gestion_budget_ihm:$GITHUB_OUTPUT
+          tags: vzwingmabudget/gestion_budget_ihm:latest, vzwingmabudget/gestion_budget_ihm:$GITHUB_OUTPUT.VERSION
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
