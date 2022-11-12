@@ -72,8 +72,8 @@ export default class CreateUpdateOperationForm extends Component {
         // TODO : Utiliser la préférence utilisateur
         formEtat                : this.listeEtats[0],
         formDateOperation       : "",
-        formOperationType       : "DEPENSE",
-        formOperationPeriodique : "PONCTUELLE",
+        formOperationType       : this.listeType[0],
+        formOperationPeriodique : this.listePeriodes[0],
         formProchaineMensualite : null,
         formTagDerniereOperation: false,
         // Affichage & Validation du formulaire
@@ -107,6 +107,7 @@ export default class CreateUpdateOperationForm extends Component {
         this.fillOperationFromForm = Controller.fillOperationFromForm.bind(this);
 
         this.handleSubmitForm = Controller.handleSubmitForm.bind(this);
+        this.checkValidityForm = Controller.checkValidityForm.bind(this);
         this.razForm = Controller.razForm.bind(this);
         this.createOperation = Controller.createOperation.bind(this);
         this.updateOperation = Controller.updateOperation.bind(this);
@@ -167,6 +168,7 @@ export default class CreateUpdateOperationForm extends Component {
                                 <FormLabel>Catégories</FormLabel>
                             </Grid2>
                             <Grid2 item direction={"column"} xs={8} className={"MuiDataGrid-main"}>
+                                <FormControl fullWidth required error={this.state.errorCategorie}>
                                     <RequiredSelect SelectComponent={BaseSelect}
                                                     required isDisabled={ this.props.modeEdition } isSearchable={true}
                                                     placeholder={"Sélectionnez une catégorie"}
@@ -178,6 +180,8 @@ export default class CreateUpdateOperationForm extends Component {
                                                         </div>
                                                     )}>
                                     </RequiredSelect>
+                                </FormControl>
+                                <FormControl fullWidth required error={this.state.errorSsCategorie}>
                                     <RequiredSelect required className={"MuiDataGrid-main"} isDisabled={ this.props.modeEdition } SelectComponent={BaseSelect}
                                                     placeholder={"Sélectionnez une sous catégorie"} isSearchable={true}
                                                     value={this.state.formSsCategorie} options={this.state.ssCategoriesSelect}
@@ -188,7 +192,9 @@ export default class CreateUpdateOperationForm extends Component {
                                                         </div>
                                                     )}>
                                     </RequiredSelect>
+                                </FormControl>
                                 { this.state.showIntercompte &&
+                                    <FormControl fullWidth required error={this.state.errorInterCompte}>
                                     <RequiredSelect SelectComponent={BaseSelect} className={"MuiDataGrid-main"}
                                                     placeholder="Sélectionnez le compte"
                                                     value={this.state.selectedCompte}
@@ -201,6 +207,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                         </div>
                                                     )}
                                     />
+                                    </FormControl>
                                 }
                             </Grid2>
                             <Grid2 item xs={4}>
@@ -210,30 +217,26 @@ export default class CreateUpdateOperationForm extends Component {
                             </Grid2>
                             <Grid2 item xs={8}>
                                 <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
+                                        onChange={this.handleSelectPeriode}
                                         options={this.listePeriodes} className={"MuiDataGrid-main"}
                                         getOptionLabel={e => (
-                                            <div >
-                                                <Chip color={getBackground(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span>
-                                            </div>
-                                        )}
-                                        onChange={this.handleSelectPeriode}>
-                                </Select>
+                                            <div><Chip color={getBackground(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span></div>
+                                        )} />
                             </Grid2>
                             <Grid2 item xs={4}>
                                 <FormLabel>Description</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8}>
-                                <FormControl fullWidth sx={{ m: 1 }} >
-                                <Input defaultValue={this.state.formDescription} value={this.state.formDescription}
-                                       onChange={this.handleSelectDescription}  />
+                                <FormControl required fullWidth sx={{ m: 1 }} error={this.state.errorDescription} >
+                                    <Input defaultValue={this.state.formDescription} value={this.state.formDescription} onChange={this.handleSelectDescription}  />
                                 </FormControl>
                             </Grid2>
                             <Grid2 item xs={4}>
-                                <FormLabel>Valeur</FormLabel>
+                                <FormLabel>Montant</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8} direction={"row"}>
                                 { /*  pattern="[0-9]*\.[0-9]{2}" */}
-                                <FormControl sx={{ m: 1 }} fullWidth >
+                                <FormControl sx={{ m: 1 }} fullWidth error={this.state.errorValeur} >
                                     <Input defaultValue={this.state.formValeur} value={this.state.formValeur}
                                             onChange={this.handleSelectValeur} onBlur={this.handleCompleteValeur}
                                             style={this.state.formOperationType.text==="+" ? {color : "#93c54b" } : {color : "#e74c3c" } }
@@ -257,8 +260,8 @@ export default class CreateUpdateOperationForm extends Component {
                                 <FormLabel>Date opération</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8}>
-                                <FormControl fullWidth className="MuiInputBase-datelabel" >
-                                <TextField required variant={"outlined"} type={"date"} className="MuiInputBase-datelabel"
+                                <FormControl fullWidth className="MuiInputBase-datelabel" error={this.state.errorDateOperation}>
+                                <TextField variant={"outlined"} type={"date"} className="MuiInputBase-datelabel"
                                            defaultValue={this.state.formDateOperation}  value={this.state.formDateOperation}  onChange={this.handleSelectDateOperation} />
                                 </FormControl>
                             </Grid2>
