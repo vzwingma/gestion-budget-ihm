@@ -8,13 +8,13 @@ export default class OperationEtat extends Component {
     render(){
       return (
         <div id={this.props.id}>
-            { this.props.etat === "REALISEE"  && !this.props.derniere && <Chip color="success" label="Réalisée" size={"small"} />    }
-            { this.props.etat === "REALISEE"  && this.props.derniere  && <BadgeMUI  variant="dot" color="primary"><Chip color="success" label="Réalisée"  size={"small"}/> </BadgeMUI>    }
-            { this.props.etat === "PREVUE"    && <Chip color="warning" label="Prévue" size={"small"} />   }
-            { this.props.etat === "ANNULEE"   && <Chip color="default" label="Annulée" size={"small"} /> }
-            { this.props.etat === "SUPPRIMEE" && <Chip color="error" label="Supprimée" size={"small"} />  }
-            { this.props.etat === "REPORTEE"  && <Chip color="secondary" label="Reportée" size={"small"} /> }
-            { this.props.etat === "PLANIFIEE" && <Chip color="info" label="Planifiée" size={"small"} /> }
+            { this.props.etat === "REALISEE"  && !this.props.derniere && <Chip color="success" label="Réalisée" size={"small"} className={"chipEtat"} />    }
+            { this.props.etat === "REALISEE"  && this.props.derniere  && <BadgeMUI  variant="dot" color="primary"><Chip color="success" label="Réalisée"  size={"small"}  className={"chipEtat"}/> </BadgeMUI>    }
+            { this.props.etat === "PREVUE"    && <Chip color="warning" label="Prévue" size={"small"} className={"chipEtat"} />   }
+            { this.props.etat === "ANNULEE"   && <Chip color="default" label="Annulée" size={"small"} className={"chipEtat"} /> }
+            { this.props.etat === "SUPPRIMEE" && <Chip color="error" label="Supprimée" size={"small"} className={"chipEtat"} />  }
+            { this.props.etat === "REPORTEE"  && <Chip color="secondary" label="Reportée" size={"small"} className={"chipEtat"} /> }
+            { this.props.etat === "PLANIFIEE" && <Chip color="info" label="Planifiée" size={"small"} className={"chipEtat"} /> }
         </div>
       )
     }

@@ -32,6 +32,14 @@ button.btn-actions-operation {
     vertical-align: middle;
 }
 
+.chipMensualite {
+    width: 90px;
+}
+
+.chipEtat {
+    width: 90px;
+}
+
 span.operation_REPORTEE {
     color: #29abe0;
     font-style: italic;
