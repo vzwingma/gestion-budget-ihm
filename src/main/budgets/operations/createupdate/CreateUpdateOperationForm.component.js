@@ -4,10 +4,8 @@ import {
     Box,
     Button,
     ButtonGroup, Chip,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle, FormControl,
+    Dialog, DialogActions, DialogContent,
+    DialogTitle, FormControl, FormHelperText,
     FormLabel, Input, InputAdornment, TextField,
     Tooltip
 } from '@mui/material';
@@ -180,6 +178,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                         </div>
                                                     )}>
                                     </RequiredSelect>
+                                    {this.state.errorCategorie && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                                 <FormControl fullWidth required error={this.state.errorSsCategorie}>
                                     <RequiredSelect required className={"MuiDataGrid-main"} isDisabled={ this.props.modeEdition } SelectComponent={BaseSelect}
@@ -192,21 +191,22 @@ export default class CreateUpdateOperationForm extends Component {
                                                         </div>
                                                     )}>
                                     </RequiredSelect>
+                                    {this.state.errorSsCategorie && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                                 { this.state.showIntercompte &&
                                     <FormControl fullWidth required error={this.state.errorInterCompte}>
-                                    <RequiredSelect SelectComponent={BaseSelect} className={"MuiDataGrid-main"}
-                                                    placeholder="Sélectionnez le compte"
-                                                    value={this.state.selectedCompte}
-                                                    options={this.state.comptes}
-                                                    isDisabled={ this.props.modeEdition } isSearchable={true}
-                                                    onChange={this.handleSelectCompteCible}
-                                                    getOptionLabel={e => (
-                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                            {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
-                                                        </div>
-                                                    )}
-                                    />
+                                        <RequiredSelect SelectComponent={BaseSelect} className={"MuiDataGrid-main"}
+                                                        placeholder="Sélectionnez le compte"
+                                                        value={this.state.selectedCompte}
+                                                        options={this.state.comptes}
+                                                        isDisabled={ this.props.modeEdition } isSearchable={true}
+                                                        onChange={this.handleSelectCompteCible}
+                                                        getOptionLabel={e => (
+                                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
+                                                            </div>
+                                                        )} />
+                                        {this.state.errorInterCompte && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                     </FormControl>
                                 }
                             </Grid2>
@@ -216,44 +216,52 @@ export default class CreateUpdateOperationForm extends Component {
                                 </Tooltip>
                             </Grid2>
                             <Grid2 item xs={8}>
-                                <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
-                                        onChange={this.handleSelectPeriode}
-                                        options={this.listePeriodes} className={"MuiDataGrid-main"}
-                                        getOptionLabel={e => (
-                                            <div><Chip color={getBackground(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span></div>
-                                        )} />
+                                <FormControl fullWidth required error={this.state.errorPeriode}>
+                                    <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
+                                            onChange={this.handleSelectPeriode}
+                                            options={this.listePeriodes} className={"MuiDataGrid-main"}
+                                            getOptionLabel={e => (
+                                                <div><Chip color={getBackground(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span></div>
+                                            )} />
+                                    {this.state.errorPeriode && <FormHelperText>Le champ est obligatoire</FormHelperText>}
+                                </FormControl>
                             </Grid2>
                             <Grid2 item xs={4}>
                                 <FormLabel>Description</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8}>
-                                <FormControl required fullWidth sx={{ m: 1 }} error={this.state.errorDescription} >
+                                <FormControl required fullWidth error={this.state.errorDescription} >
                                     <Input defaultValue={this.state.formDescription} value={this.state.formDescription} onChange={this.handleSelectDescription}  />
+                                    {this.state.errorDescription && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                             </Grid2>
                             <Grid2 item xs={4}>
                                 <FormLabel>Montant</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8} direction={"row"}>
-                                <FormControl sx={{ m: 1 }} fullWidth error={this.state.errorValeur} >
+                                <FormControl fullWidth error={this.state.errorValeur || this.state.errorFormatValeur} >
                                     <Input defaultValue={this.state.formValeur} value={this.state.formValeur}
                                             onChange={this.handleSelectValeur} onBlur={this.handleCompleteValeur}
                                             style={this.state.formOperationType.text==="+" ? {color : "#93c54b" } : {color : "#e74c3c" } }
                                             endAdornment={<InputAdornment position="start">€</InputAdornment>} />
+                                    {this.state.errorValeur && <FormHelperText>Le champ est obligatoire</FormHelperText>}
+                                    {!this.state.errorValeur && this.state.errorFormatValeur && <FormHelperText>Le format est incorrect : 0000.00 €</FormHelperText>}
                                 </FormControl>
                             </Grid2>
                             <Grid2 item xs={4}>
                                 <FormLabel>Etat</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8}>
-                                <Select value={this.state.formEtat} options={this.listeEtats}
-                                        onChange={this.handleSelectEtat} isSearchable={true} className={"MuiDataGrid-main"}
-                                        getOptionLabel={e => (
-                                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                {e.icon} <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
-                                            </div>
-                                        )}
-                                />
+                                <FormControl fullWidth error={this.state.errorEtat} >
+                                    <Select value={this.state.formEtat} options={this.listeEtats}
+                                            onChange={this.handleSelectEtat} isSearchable={true} className={"MuiDataGrid-main"}
+                                            getOptionLabel={e => (
+                                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                    {e.icon} <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
+                                                </div>
+                                            )} />
+                                    {this.state.errorEtat && <FormHelperText>Le champ est obligatoire</FormHelperText>}
+                                </FormControl>
                             </Grid2>
                             <Grid2 item xs={4}>
                                 <FormLabel>Date opération</FormLabel>

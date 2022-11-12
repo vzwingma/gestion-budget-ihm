@@ -194,7 +194,8 @@ import {toast} from "react-toastify";
         let validationSsCategorie = this.state.formSsCategorie === null
         let validationPeriode = this.state.formOperationPeriodique === null || this.state.formOperationPeriodique.value === null
         let validationDescription = this.state.formDescription === null || this.state.formDescription === ""
-        let validationValeur = this.state.formValeur === null || this.state.formValeur === "" || !new RegExp("(^[0-9]*\.[0-9]{2}$)").test(this.state.formValeur)
+        let validationValeur = this.state.formValeur === null || this.state.formValeur === ""
+        let validationFormatValeur = !new RegExp("(^[0-9]*\.[0-9]{2}$)").test(this.state.formValeur)
         let validationEtat = this.state.formEtat === null ||this.state.formEtat === ""
         this.setState({
             errorCategorie: validationCategorie,
@@ -202,6 +203,7 @@ import {toast} from "react-toastify";
             errorPeriode: validationPeriode,
             errorDescription: validationDescription,
             errorValeur: validationValeur,
+            errorFormatValeur: validationFormatValeur,
             errorEtat: validationEtat
         })
 
@@ -232,6 +234,7 @@ import {toast} from "react-toastify";
             errorPeriode: false,
             errorDescription: false,
             errorValeur: false,
+            errorFormatValeur: false,
             errorEtat: false
         })
 
