@@ -70,7 +70,7 @@ export default class Infos extends Component {
                         <TableCell> Environnement : <b>{process.env.NODE_ENV}</b> </TableCell>
                     </TableRow>
                     <TableRow>
-
+                        <TableCell>
                         <Table size={"small"}>
                             <TableBody v>
                                 <ModuleInfos
@@ -86,7 +86,7 @@ export default class Infos extends Component {
                                 ))}
                             </TableBody>
                         </Table>
-
+                        </TableCell>
                     </TableRow>
                 </TableBody>
                 <TableFooter>
