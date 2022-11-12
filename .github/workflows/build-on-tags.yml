@@ -33,9 +33,9 @@ jobs:
       # Update version
       - name: Get tag Version
         id: get_version
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2- )
+        run: echo VERSION=$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2- )  >> $GITHUB_OUTPUT
       - name: Apply version
-        run: npm version ${{ steps.get_version.outputs.VERSION }} --git-tag-version=false
+        run: npm version $GITHUB_OUTPUT --git-tag-version=false
       -
         run: npm ci
         name: CI Install
@@ -45,7 +45,7 @@ jobs:
       -
         name: Update version in .env
         run: |
-          sed -i 's/__BUDGET_IHM_VERSION__/${{ steps.get_version.outputs.VERSION }}/g' external-ressources/conf/.env.production
+          sed -i 's/__BUDGET_IHM_VERSION__/$GITHUB_OUTPUT/g' external-ressources/conf/.env.production
       -
         run: mv external-ressources/conf/.env.production .env
         name: Set env PRODUCTION
@@ -56,7 +56,7 @@ jobs:
         run: zip -r app_build.zip build/*
   # Upload RELEASE
       -
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         name: Upload IHM app
         with:
           path: app_build.zip
@@ -107,7 +107,7 @@ jobs:
       -
         name: Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2-)
+        run: echo VERSION=$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2-) >> $GITHUB_OUTPUT
       -
         name: Build and push IHM
         id: docker_build
@@ -117,7 +117,7 @@ jobs:
           platforms: linux/amd64, linux/arm64/v8
           file: Dockerfile-IHM
           push: true
-          tags: vzwingmabudget/gestion_budget_ihm:latest, vzwingmabudget/gestion_budget_ihm:${{ steps.get_version.outputs.VERSION }}
+          tags: vzwingmabudget/gestion_budget_ihm:latest, vzwingmabudget/gestion_budget_ihm:$GITHUB_OUTPUT
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
