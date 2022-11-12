@@ -18,9 +18,10 @@ export default class OperationMensualite extends Component {
         <div id={this.props.id}>
 
             { /* Pas d'affichage pour 0 */ }
-            { this.props.mensualite !== null && this.props.mensualite.periode !== 0 &&
+            { this.props.mensualite !== null && this.props.mensualite.periode !== 0 && this.props.mensualite.periode !== "PONCTUELLE" &&
                 <Tooltip title={ this.getTooltip() }>
-                    <Chip color={getBackground(this.props.mensualite.periode)} label={getLibelle(this.props.mensualite.periode)} size={"small"} />
+                    <Chip color={getBackground(this.props.mensualite.periode)} label={getLibelle(this.props.mensualite.periode)}
+                          size={"small"} style={{width: "100 px"}} className={"chipMensualite"} />
                 </Tooltip>
             }
         </div>
