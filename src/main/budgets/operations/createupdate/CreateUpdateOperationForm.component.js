@@ -235,7 +235,6 @@ export default class CreateUpdateOperationForm extends Component {
                                 <FormLabel>Montant</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8} direction={"row"}>
-                                { /*  pattern="[0-9]*\.[0-9]{2}" */}
                                 <FormControl sx={{ m: 1 }} fullWidth error={this.state.errorValeur} >
                                     <Input defaultValue={this.state.formValeur} value={this.state.formValeur}
                                             onChange={this.handleSelectValeur} onBlur={this.handleCompleteValeur}
