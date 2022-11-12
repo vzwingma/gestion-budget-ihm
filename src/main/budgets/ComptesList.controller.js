@@ -26,7 +26,6 @@ import {toast} from "react-toastify";
      */
     export function comptesLoaded(data){
         console.log("Chargement de " + data.length + " comptes");
-        // console.log(data);
         data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1);
         // Création des comptes pour l'affichage (avec icones)
         let comptesLabelIcons = data.map((compte) => {
