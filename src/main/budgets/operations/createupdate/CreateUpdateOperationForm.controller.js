@@ -4,9 +4,8 @@ import {toast} from "react-toastify";
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
-
     export function categoriesLoaded(data){
-    // Transformation des catégories en affichage
+        // Transformation des catégories en affichage
         const mapCategories = data.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibelles)
         const mapSsCategories = mapCategories.flatMap(cat => cat.sousCategories)
                                              .map(ssCat => {
@@ -55,10 +54,10 @@ import {toast} from "react-toastify";
          * Set type de valeur, suivant la catégorie
          */
         // Prélèvement mensuel
-        let operationMensuelle = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? "MENSUELLE" : "PONCTUELLE";
+        let operationMensuelle = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? {value:"MENSUELLE", text:"Mensuelle"} : {value:"PONCTUELLE", text:"Ponctuelle"};
 
         // Virement
-        let operationType = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "CREDIT" : "DEPENSE";
+        let operationType = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? {value:"CREDIT", text:"+"} : {value:"DEPENSE", text:"-"};
         this.setState(
             { formOperationType : operationType
             , formOperationPeriodique : operationMensuelle })
@@ -78,7 +77,7 @@ import {toast} from "react-toastify";
         this.setState({ formSsCategorie: ssCategorieSelected, formCategorie: ssCategorieSelected.categorie, ssCategoriesSelect : ssCatsUpdated});
 
         /** Si type Virement **/
-        let operationType = (ssCategorieSelected.categorie.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? "CREDIT" : "DEPENSE";
+        let operationType = (ssCategorieSelected.categorie.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? {value:"CREDIT", text:"+"} : {value:"DEPENSE", text:"-"};
         this.setState( { formOperationType : operationType } )
 
         /**
@@ -86,7 +85,7 @@ import {toast} from "react-toastify";
          */
         if(ssCategorieSelected.id === AppConstants.BUSINESS_GUID.SOUS_CAT_INTER_COMPTES){
             this.loadComptes();
-            this.setState( { formOperationType : "DEPENSE", showIntercompte:true } );
+            this.setState( { formOperationType : {value:"DEPENSE", text:"-"}, showIntercompte:true } );
         }
         else if(this.state.showIntercompte){
             this.setState( {  showIntercompte:false } );
@@ -108,7 +107,7 @@ import {toast} from "react-toastify";
      * @param event évt de saisie
      */
     export function handleSelectType(event) {
-        this.setState({formOperationType : event.target.value})
+        this.setState({formOperationType : event})
     }
     /**
      *  Saisie compte cible de l'opération intercompte
@@ -152,7 +151,7 @@ import {toast} from "react-toastify";
      * @param event évt de saisie
      */
     export function handleSelectPeriode(event){
-        this.setState({formOperationPeriodique : event.target.value})
+        this.setState({formOperationPeriodique : event})
     }
 
 
@@ -162,17 +161,18 @@ import {toast} from "react-toastify";
      * @param event événement
      */
     export function handleSubmitForm(event) {
-        const form = event.currentTarget;
 
-        if (event.nativeEvent.submitter.id !== "btnClose") {
+        if (event.target.id !== "btnClose") {
             console.log("Validation du formulaire")
-            if (form.checkValidity() === false) {
+            if (this.checkValidityForm() === false) {
                 event.preventDefault();
                 event.stopPropagation();
-            } else {
-                if (event.nativeEvent.submitter.id === "btnValidContinue" || event.nativeEvent.submitter.id === "btnValidClose") {
+                return;
+            }
+            else {
+                if (event.target.id === "btnValidContinue" || event.target.id === "btnValidClose") {
                     this.createOperation();
-                } else if (event.nativeEvent.submitter.id === "btnValidModif") {
+                } else if (event.target.id === "btnValidModif") {
                     this.updateOperation();
                 }
 
@@ -181,13 +181,38 @@ import {toast} from "react-toastify";
         // Post Creation - Clear Form
         this.razForm();
         // Ferme le formulaire ssi ce n'est pas le bouton Continue
-        if(event.nativeEvent.submitter.id !== "btnValidContinue") {
+        if(event.target.id !== "btnValidContinue") {
             this.hideModal();
         }
     }
 
+    /**
+     *  Validation du formulaire
+     */
+    export function checkValidityForm(){
+        let validationCategorie = this.state.formCategorie === null
+        let validationSsCategorie = this.state.formSsCategorie === null
+        let validationPeriode = this.state.formOperationPeriodique === null || this.state.formOperationPeriodique.value === null
+        let validationDescription = this.state.formDescription === null || this.state.formDescription === ""
+        let validationValeur = this.state.formValeur === null || this.state.formValeur === ""
+        let validationFormatValeur = !new RegExp("(^[0-9]*\.[0-9]{2}$)").test(this.state.formValeur)
+        let validationEtat = this.state.formEtat === null ||this.state.formEtat === ""
+        this.setState({
+            errorCategorie: validationCategorie,
+            errorSsCategorie: validationSsCategorie,
+            errorPeriode: validationPeriode,
+            errorDescription: validationDescription,
+            errorValeur: validationValeur,
+            errorFormatValeur: validationFormatValeur,
+            errorEtat: validationEtat
+        })
 
+        return !validationCategorie && !validationSsCategorie && !validationPeriode && !validationDescription && !validationValeur && !validationEtat;
+    }
 
+    /**
+     *  RAZ du Formulaire
+     */
     export function razForm(){
         // Post Creation - Clear Form
         this.setState({ // RAZ Formulaire
@@ -199,10 +224,18 @@ import {toast} from "react-toastify";
             formValeur: "",
             formEtat: this.listeEtats[0],
             formDateOperation: getLibelleDate(new Date(), "AAAA-MM-DD"),
-            formOperationType: "DEPENSE",
+            formOperationType: {value:"DEPENSE", text:"-"},
             formOperationPeriodique: "0",
             formProchaineMensualite: "",
-            showIntercompte: false
+            showIntercompte: false,
+
+            errorCategorie: false,
+            errorSsCategorie: false,
+            errorPeriode: false,
+            errorDescription: false,
+            errorValeur: false,
+            errorFormatValeur: false,
+            errorEtat: false
         })
 
     }
@@ -215,7 +248,8 @@ import {toast} from "react-toastify";
     export function createOperation(){
 
         const operation = this.fillOperationFromForm();
-        // Sauvegarde de l'opération
+        console.log(operation)
+            // Sauvegarde de l'opération
         if(this.state.formCompteCible !== null){
             this.saveOperationIntercompte(this.props.budget.id, operation, this.state.formCompteCible);
         }
@@ -243,7 +277,6 @@ import {toast} from "react-toastify";
      * Création d'un objet Operation à partir du formulaire
      */
     export function fillOperationFromForm(){
-
         return {
             "libelle": this.state.formDescription,
             "categorie": {
@@ -254,11 +287,11 @@ import {toast} from "react-toastify";
                 "id": this.state.formSsCategorie.id,
                 "libelle": this.state.formSsCategorie.text
             },
-            "typeOperation": this.state.formOperationType,
+            "typeOperation": this.state.formOperationType.value,
             "etat": this.state.formEtat.value,
-            "valeur": (this.state.formOperationType === "DEPENSE" ? -1 : 1) * this.state.formValeur,
+            "valeur": (this.state.formOperationType.value === "DEPENSE" ? -1 : 1) * this.state.formValeur,
             "mensualite" : {
-                "periode": this.state.formOperationPeriodique
+                "periode": this.state.formOperationPeriodique.value
                 // "prochaineEcheance": inutile - calculé automatiquement par le backend
             },
             "autresInfos" : {
@@ -290,8 +323,8 @@ import {toast} from "react-toastify";
                     formValeur: Math.abs(operation.valeur).toFixed(2),
                     formEtat: this.listeEtats.filter(etatSelect => etatSelect.value === operation.etat)[0],
                     formDateOperation: operation.autresInfos !== undefined && operation.autresInfos.formDateOperation !== null ? getDateFromDateTime(operation.autresInfos.dateOperation) : null,
-                    formOperationType: operation.typeOperation,
-                    formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? operation.mensualite.periode : "PONCTUELLE",
+                    formOperationType: this.listeType.filter(t => t.value === operation.typeOperation),
+                    formOperationPeriodique: operation.mensualite !== undefined && operation.mensualite !== null ? this.listePeriodes.filter(p => p.value === operation.mensualite.periode)[0] : this.listePeriodes[0],
                     formProchaineMensualite: operation.mensualite !== undefined && operation.mensualite !== null ? "dans " + operation.mensualite.prochaineEcheance + " mois": "",
                     formTagDerniereOperation: operation.tagDerniereOperation,
                     showIntercompte: false

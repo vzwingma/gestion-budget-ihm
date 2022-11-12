@@ -17,7 +17,6 @@ import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.
 import OperationMensualite from "./renderers/OperationBadgeMensualite.component";
 import * as ActionController from './renderers/OperationActions.controller';
 
-
 /*
  * Liste des opérations
  */
@@ -49,7 +48,7 @@ export default class OperationsList extends Component {
         {
             field: 'categorie',
             headerName: 'Catégorie',
-            minWidth:150,
+            minWidth:140,
             editable: false, sortable: true,
             renderCell: this.renderCategorie
         },
@@ -57,13 +56,13 @@ export default class OperationsList extends Component {
             field: 'ssCategorie',
             headerName: '',
             editable: false, sortable: true,
-            minWidth:150,
+            minWidth:140,
             renderCell: this.renderSsCategorie
         },
         {
             field: 'libelle',
             headerName: 'Description',
-            minWidth:340,
+            minWidth:330,
             editable: false, sortable: true,
             renderCell: this.renderDescription
         },
@@ -197,9 +196,11 @@ export default class OperationsList extends Component {
                                 </Button>
                             </Tooltip>
                             <Tooltip title="Editer l'opération sélectionnée">
+                                <div>
                                 <Button onClick={this.handleOperationUpdate} disabled={this.state.idOperation === null}>
                                     <img id="EDITION" src={"/img/statuts/circle_pen" +(this.state.idOperation === null ? "_disabled" : "")+ ".png"} className="d-inline-block align-top" alt="Création"/>
                                 </Button>
+                                </div>
                             </Tooltip>
                         </ButtonGroup>
                     }

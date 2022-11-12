@@ -1,10 +1,11 @@
  import React from 'react'
+ import {TableCell, TableRow} from "@mui/material";
 
  const MicroServicesInfos = ({ name, version }) => {
       return (
-            <tr>
-              <td>{name}</td><td>{version}</td>
-            </tr>
+            <TableRow>
+              <TableCell>{name}</TableCell><TableCell>{version}</TableCell>
+            </TableRow>
       )
     };
 

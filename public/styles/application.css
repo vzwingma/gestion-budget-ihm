@@ -4,6 +4,13 @@ body {
     padding: 1px;
 }
 
+.App {
+    padding-top: 60px;
+    font-size: 14px !important;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
+
+}
+
 /** Style pour les opérations **/
 /* button Créer & Editer */
 div.bgButtonsCreateUpdateOps{
@@ -11,7 +18,6 @@ div.bgButtonsCreateUpdateOps{
     left: 8px;
     top: -45px;
 }
-
 
 /* boutons actions sur opérations*/
 button.btn-actions-operation {
@@ -43,14 +49,20 @@ span.operation_SUPPRIMEE {
     font-style: italic;
     text-decoration-line: line-through;
 }
-
+.text-success{
+    color: #93c54b;
+}
+.text-danger{
+    color: #e74c3c;
+}
 
 
 /** Style pour la datagrid **/
 .MuiDataGrid-main{
-    font-size: 13px;
+    font-size: 14px;
     font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
+
 
 .MuiDataGrid-columnHeaders{
     font-weight: bold;
@@ -82,7 +94,7 @@ div.MuiTablePagination-actions{
     Style pour les résumés
 **/
 table {
-    font-size: 12px;
+    font-size: 14px;
     font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 
 }
@@ -125,6 +137,8 @@ span.ligneSsCategorie {
 }
 
 
+
+
 tbody.tbodyResume > tr > td:first-child {
     width:33%
 }
@@ -144,4 +158,41 @@ Style data range
 .pagination {
     justify-content: center;
     display: flex;
+}
+/**
+Style Menu
+ */
+a.nav-link {
+    color: white;
+    outline: none;
+    text-decoration: none;
+    display: inline-block;
+    width: 19.5%;
+    margin-right: 0.625%;
+    text-align: center;
+    line-height: 3;
+}
+
+a.nav-link:hover {
+    color: #1e3852;
+}
+
+/**
+Style formulaire
+ */
+
+label.MuiFormLabel-root {
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    color: #1976d2;
+    font-weight: bolder;
+}
+
+.MuiGrid2-container{
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+}
+input {
+    font-size: 14px !important;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
 }

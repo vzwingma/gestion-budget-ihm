@@ -6,8 +6,9 @@ import * as ClientHTTP from './../Services/ClientHTTP.service'
  * @param event
  */
 export function handleModalClick(event){
-        if(event.target.attributes["action"] !== null && event.target.attributes["action"] !== undefined) {
-            const action = event.target.attributes["action"].value;
+    console.log(event)
+        if(event.target.id !== null && event.target.id !== undefined) {
+            const action = event.target.id;
             if(action === "CONFIRMER"){
                 this.confirmInitNextMonth()
             }

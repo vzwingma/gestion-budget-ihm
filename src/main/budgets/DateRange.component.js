@@ -1,6 +1,14 @@
 import React, { Component } from "react";
-import {Button, ButtonGroup, Modal, Pagination} from 'react-bootstrap'
 import * as Controller from "./DateRange.controller"
+import {
+    Button,
+    ButtonGroup,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from "@mui/material";
 
 /**
  * Date Range Select
@@ -62,29 +70,31 @@ export default class DateRange extends Component {
 
 
     render() { return (
-        <>
-           <Pagination onClick={this.handleSelect} size={"sm"}>
-             <Pagination.First id="firstButton"/>
-             <Pagination.Item id="previous">{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Pagination.Item>
-             <Pagination.Item id="current" active>{ this.state.dateCurrentBudget.toLocaleString('default', { month: 'long' })} { this.state.dateCurrentBudget.getFullYear() }</Pagination.Item>
-             <Pagination.Item id="next">{ this.state.dateNextBudget.toLocaleString('default', { month: 'long' }) } { this.state.dateNextBudget.getFullYear() }</Pagination.Item>
-             <Pagination.Last id="lastButton"/>
-           </Pagination>
+        <center>
+        <ButtonGroup onClick={this.handleSelect}>
+            <Button id="firstButton" size={"small"}>{"<<"}</Button>
+            <Button id="previous" size={"small"}>{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Button>
+            <Button id="current" variant={"contained"}>{ this.state.dateCurrentBudget.toLocaleString('default', { month: 'long' })} { this.state.dateCurrentBudget.getFullYear() }</Button>
+            <Button id="next"  size={"small"}>{ this.state.dateNextBudget.toLocaleString('default', { month: 'long' }) } { this.state.dateNextBudget.getFullYear() }</Button>
+            <Button id="lastButton" size={"small"}>{">>"}</Button>
+        </ButtonGroup>
 
-            <Modal show={this.state.showModale} onHide={this.hideModale} className="modal" centered >
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirmation d'ouverture</Modal.Title>
-                </Modal.Header>
-                <Modal.Body><p>L'ouverture d'un nouveau mois, va clôturer le mois courant, et reporter toutes les opérations non réalisées</p><p>Voulez vous continuer ? </p></Modal.Body>
 
-                <Modal.Footer>
-                    <ButtonGroup onClick={this.handleModalClick}>
-                        <Button action="ANNULER"    variant="secondary">Annuler</Button>
-                        <Button action="CONFIRMER"  variant="success">Confirmer</Button>
+            { /* Fenêtre modale de suppression */ }
+            <Dialog open={this.state.showModale} >
+                <DialogTitle>Confirmation d'ouverture</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description"><p>L'ouverture d'un nouveau mois, va clôturer le mois courant, et reporter toutes les opérations non réalisées</p><p>Voulez vous continuer ? </p></DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <ButtonGroup>
+                        <Button id="ANNULER" onClick={this.handleModalClick} color="error" type="submit">Annuler</Button>
+                        <Button id="CONFIRMER" color="success" onClick={this.handleModalClick} type="submit">Confirmer</Button>
                     </ButtonGroup>
-                </Modal.Footer>
-            </Modal>
-        </>
+                </DialogActions>
+            </Dialog>
+
+        </center>
     ); }
 }
 
