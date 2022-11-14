@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BadgeMUI from "@mui/material/Badge";
-import {Chip} from "@mui/material";
+import {Chip, Tooltip} from "@mui/material";
 
 export default class OperationEtat extends Component {
 
@@ -9,7 +9,12 @@ export default class OperationEtat extends Component {
       return (
         <div id={this.props.id}>
             { this.props.etat === "REALISEE"  && !this.props.derniere && <Chip color="success" label="Réalisée" size={"small"} className={"chipEtat"} />    }
-            { this.props.etat === "REALISEE"  && this.props.derniere  && <BadgeMUI  variant="dot" color="primary"><Chip color="success" label="Réalisée"  size={"small"}  className={"chipEtat"}/> </BadgeMUI>    }
+            { this.props.etat === "REALISEE"  && this.props.derniere  &&
+                <Tooltip title="Dernière opération réalisée">
+                <BadgeMUI  variant="dot" color="primary">
+                    <Chip color="success" label="Réalisée"  size={"small"}  className={"chipEtat"}/>
+                </BadgeMUI>
+                </Tooltip> }
             { this.props.etat === "PREVUE"    && <Chip color="warning" label="Prévue" size={"small"} className={"chipEtat"} />   }
             { this.props.etat === "ANNULEE"   && <Chip color="default" label="Annulée" size={"small"} className={"chipEtat"} /> }
             { this.props.etat === "SUPPRIMEE" && <Chip color="error" label="Supprimée" size={"small"} className={"chipEtat"} />  }
