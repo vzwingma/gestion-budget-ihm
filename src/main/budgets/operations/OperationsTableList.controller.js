@@ -84,3 +84,12 @@ import {toast} from "react-toastify";
     export function hideModale(event) {
         this.setState({ showModaleEdit: false });
     }
+
+
+/**
+ * Comparateur pour trier les catégories
+ * @param v1 catégorie 1
+ * @param v2 catégorie 2
+ * @returns {number} etat de comparaison
+ */
+export const sorterCategorie: GridComparatorFn<String> = (v1, v2) => (v1 != null && v2 != null) ? v1.libelle.localeCompare(v2.libelle) : 1

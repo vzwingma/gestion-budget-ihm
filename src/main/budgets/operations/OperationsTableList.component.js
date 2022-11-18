@@ -17,6 +17,9 @@ import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.
 import OperationMensualite from "./renderers/OperationBadgeMensualite.component";
 import * as ActionController from './renderers/OperationActions.controller';
 
+
+
+
 /*
  * Liste des opérations
  */
@@ -50,6 +53,7 @@ export default class OperationsList extends Component {
             headerName: 'Catégorie',
             minWidth:140,
             editable: false, sortable: true,
+            sortComparator: Controller.sorterCategorie,
             renderCell: this.renderCategorie
         },
         {
@@ -57,6 +61,7 @@ export default class OperationsList extends Component {
             headerName: '',
             editable: false, sortable: true,
             minWidth:140,
+            sortComparator: Controller.sorterCategorie,
             renderCell: this.renderSsCategorie
         },
         {
@@ -130,15 +135,12 @@ export default class OperationsList extends Component {
     renderCategorie(params: GridRenderCellParams<number>) {
         return <OperationDescription key={params.id} id={params.id} operation={params.row} libelle={(params.row.categorie !== null ? params.row.categorie.libelle : '-')} />;
     }
-
     renderSsCategorie(params: GridRenderCellParams<number>) {
         return <OperationDescription key={params.id} id={params.id} operation={params.row} libelle={(params.row.ssCategorie !== null ? params.row.ssCategorie.libelle : '-') } />;
     }
-
     renderDescription(params: GridRenderCellParams<number>) {
         return <OperationDescription key={params.id} id={params.id} operation={params.row} libelle={params.row.libelle} />;
     }
-
     renderMensualite(params: GridRenderCellParams<number>) {
         return <OperationMensualite key={params.id} id={params.id} mensualite={params.value} />;
     }
@@ -151,6 +153,7 @@ export default class OperationsList extends Component {
     renderActions(params: GridRenderCellParams<number>) {
         return  <OperationActions key={params.id} id={params.id} operation={params.row} />
     }
+
 
     /**
      * Si changement de budget, raz de l'idOperation
