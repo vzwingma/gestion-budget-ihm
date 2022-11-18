@@ -37,11 +37,6 @@ export default class BudgetActionsButtonGroupComponent extends Component {
             <>
             { /** Groupe d'actions sur le budget **/ }
                 <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick} variant={"light"}>
-                    <Tooltip title={(this.props.budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}>
-                        <Button className="btn-light" id="CLOSE_A_CONFIRMER" variant="light">
-                            <img id="CLOSE_A_CONFIRMER" src={"/img/statuts/" + (this.props.budget.actif ? "unlocked" : "locked") +".png"} className="d-inline-block align-top" alt="Confirmer changement d'état"/>
-                        </Button>
-                    </Tooltip>
                     { this.props.budget.actif &&
                     <Tooltip title="Réinitialiser le budget">
                         <Button className="btn-light" id="REINIT_A_CONFIRMER" variant="light">
@@ -49,6 +44,11 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                         </Button>
                     </Tooltip>
                     }
+                    <Tooltip title={(this.props.budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}>
+                        <Button className="btn-light" id="CLOSE_A_CONFIRMER" variant="light">
+                            <img id="CLOSE_A_CONFIRMER" src={"/img/statuts/" + (this.props.budget.actif ? "unlocked" : "locked") +".png"} className="d-inline-block align-top" alt="Confirmer changement d'état"/>
+                        </Button>
+                    </Tooltip>
                     <Dialog open={this.state.showModale}>
                         <DialogTitle>{this.state.title}</DialogTitle>
                         <DialogContent>
