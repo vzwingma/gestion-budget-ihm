@@ -1,6 +1,6 @@
 {
   "name": "gestion-budget-ihm",
-  "version": "18.3.0-SNAPSHOT",
+  "version": "18-SNAPSHOT",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
