@@ -1,6 +1,7 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
 import {getDateFromDateTime, getLibelleDate, sortLibelles} from "../../../Utils/DataUtils.utils";
 import {toast} from "react-toastify";
+
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
@@ -139,7 +140,12 @@ import {toast} from "react-toastify";
      * @param event évt de saisie
      */
     export function handleSelectEtat(event){
-        this.setState({formEtat : event})
+        let dateOperation = ""
+        if(event.value === "REALISEE"){
+            dateOperation = getLibelleDate(new Date(), "AAAA-MM-DD")
+        }
+        this.setState({formEtat : event,
+                       formDateOperation: dateOperation})
     }
 
 
@@ -223,7 +229,7 @@ import {toast} from "react-toastify";
             formDescription: "",
             formValeur: "",
             formEtat: this.listeEtats[0],
-            formDateOperation: getLibelleDate(new Date(), "AAAA-MM-DD"),
+            formDateOperation: "", // getLibelleDate(new Date(), "AAAA-MM-DD"),
             formOperationType: {value:"DEPENSE", text:"-"},
             formOperationPeriodique: "0",
             formProchaineMensualite: "",

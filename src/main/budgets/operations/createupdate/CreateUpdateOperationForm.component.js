@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
-import {getLibelleDate, getBackground} from '../../../Utils/DataUtils.utils'
+import {getBackground} from '../../../Utils/DataUtils.utils'
 import BaseSelect from "react-select";
 import Select from "react-select";
 import RequiredSelect from "../../../Utils/RequiredSelect";
@@ -129,7 +129,6 @@ export default class CreateUpdateOperationForm extends Component {
     componentDidMount() {
         if(!this.props.modeEdition){
             this.loadCategories();
-            this.setState({formDateOperation: getLibelleDate(new Date(), "AAAA-MM-DD")});
         }
         if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
             this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations, this.state.categories);
