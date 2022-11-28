@@ -4,14 +4,14 @@ import {
     Box,
     Button,
     ButtonGroup, Chip,
-    Dialog, DialogActions, DialogContent,
+    Dialog, DialogContent,
     DialogTitle, FormControl, FormHelperText,
     FormLabel, Input, InputAdornment, TextField,
     Tooltip
 } from '@mui/material';
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
-import {getLibelleDate, getBackground} from '../../../Utils/DataUtils.utils'
+import {getBackground} from '../../../Utils/DataUtils.utils'
 import BaseSelect from "react-select";
 import Select from "react-select";
 import RequiredSelect from "../../../Utils/RequiredSelect";
@@ -129,7 +129,6 @@ export default class CreateUpdateOperationForm extends Component {
     componentDidMount() {
         if(!this.props.modeEdition){
             this.loadCategories();
-            this.setState({formDateOperation: getLibelleDate(new Date(), "AAAA-MM-DD")});
         }
         if(this.props.modeEdition && this.props.idOperation !== null && this.props.budget !== null){
             this.fillFormFromOperation(this.props.idOperation, this.props.budget.listeOperations, this.state.categories);
@@ -159,7 +158,7 @@ export default class CreateUpdateOperationForm extends Component {
                     </DialogTitle>
 
                     <DialogContent>
-                        <Box marginTop={"10px"}>
+                        <Box marginTop={"10px"} height={420}>
                         <Grid2 container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                             <Grid2 item xs={4}  columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                                 <FormLabel>Catégories</FormLabel>
@@ -209,22 +208,7 @@ export default class CreateUpdateOperationForm extends Component {
                                     </FormControl>
                                 }
                             </Grid2>
-                            <Grid2 item xs={4}>
-                                <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : "" }>
-                                    <FormLabel>Dépense périodique</FormLabel>
-                                </Tooltip>
-                            </Grid2>
-                            <Grid2 item xs={8}>
-                                <FormControl fullWidth required error={this.state.errorPeriode}>
-                                    <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
-                                            onChange={this.handleSelectPeriode}
-                                            options={this.listePeriodes} className={"MuiDataGrid-main"}
-                                            getOptionLabel={e => (
-                                                <div><Chip color={getBackground(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span></div>
-                                            )} />
-                                    {this.state.errorPeriode && <FormHelperText>Le champ est obligatoire</FormHelperText>}
-                                </FormControl>
-                            </Grid2>
+
                             <Grid2 item xs={4}>
                                 <FormLabel>Description</FormLabel>
                             </Grid2>
@@ -247,13 +231,31 @@ export default class CreateUpdateOperationForm extends Component {
                                     {!this.state.errorValeur && this.state.errorFormatValeur && <FormHelperText>Le format est incorrect : 0000.00 €</FormHelperText>}
                                 </FormControl>
                             </Grid2>
+
+                            <Grid2 item xs={4}>
+                                <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : "" }>
+                                    <FormLabel>Dépense périodique</FormLabel>
+                                </Tooltip>
+                            </Grid2>
+                            <Grid2 item xs={8}>
+                                <FormControl fullWidth required error={this.state.errorPeriode}>
+                                    <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
+                                            onChange={this.handleSelectPeriode}
+                                            options={this.listePeriodes} className={"MuiDataGrid-main"}
+                                            getOptionLabel={e => (
+                                                <div><Chip color={getBackground(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span></div>
+                                            )} />
+                                    {this.state.errorPeriode && <FormHelperText>Le champ est obligatoire</FormHelperText>}
+                                </FormControl>
+                            </Grid2>
+
                             <Grid2 item xs={4}>
                                 <FormLabel>Etat</FormLabel>
                             </Grid2>
                             <Grid2 item xs={8}>
                                 <FormControl fullWidth error={this.state.errorEtat} >
                                     <Select value={this.state.formEtat} options={this.listeEtats}
-                                            onChange={this.handleSelectEtat} isSearchable={true} className={"MuiDataGrid-main"}
+                                            onChange={this.handleSelectEtat} isSearchable={true} className={"MuiSelect-main"}
                                             getOptionLabel={e => (
                                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                                     {e.icon} <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
@@ -262,6 +264,7 @@ export default class CreateUpdateOperationForm extends Component {
                                     {this.state.errorEtat && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                             </Grid2>
+
                             <Grid2 item xs={4}>
                                 <FormLabel>Date opération</FormLabel>
                             </Grid2>
@@ -271,30 +274,29 @@ export default class CreateUpdateOperationForm extends Component {
                                            defaultValue={this.state.formDateOperation}  value={this.state.formDateOperation}  onChange={this.handleSelectDateOperation} />
                                 </FormControl>
                             </Grid2>
+                            <Grid2 marginTop={5} marginLeft={4} >
+                                <ButtonGroup>
+                                    <Tooltip title="Annuler la saisie">
+                                        <Button id="btnClose" color="error" onClick={ this.cancelForm } >Annuler</Button>
+                                    </Tooltip>
+                                    { !this.props.modeEdition && <>
+                                        <Tooltip title="Valider la saisie et continuer sur une autre saisie">
+                                            <Button id="btnValidContinue" color="primary" onClick={this.handleSubmitForm} >Valider et continuer</Button>
+                                        </Tooltip>
+                                        <Tooltip title="Valider la saisie et fermer le formulaire">
+                                            <Button id="btnValidClose" color="success" onClick={this.handleSubmitForm} >{!this.props.modeEdition ? "Valider et fermer" : "Valider" }</Button>
+                                        </Tooltip>
+                                    </> }
+                                    { this.props.modeEdition &&
+                                        <Tooltip title="Valider la modification">
+                                            <Button id="btnValidModif" color="success" onClick={this.handleSubmitForm} >Valider</Button>
+                                        </Tooltip>
+                                    }
+                                </ButtonGroup>
+                            </Grid2>
                         </Grid2>
                         </Box>
                     </DialogContent>
-
-                    <DialogActions>
-                        <ButtonGroup>
-                            <Tooltip title="Annuler la saisie">
-                                <Button id="btnClose" color="error" onClick={ this.cancelForm } >Annuler</Button>
-                            </Tooltip>
-                            { !this.props.modeEdition && <>
-                                <Tooltip title="Valider la saisie et continuer sur une autre saisie">
-                                    <Button id="btnValidContinue" color="primary" onClick={this.handleSubmitForm} >Valider et continuer</Button>
-                                </Tooltip>
-                                <Tooltip title="Valider la saisie et fermer le formulaire">
-                                    <Button id="btnValidClose" color="success" onClick={this.handleSubmitForm} >{!this.props.modeEdition ? "Valider et fermer" : "Valider" }</Button>
-                                </Tooltip>
-                            </> }
-                            { this.props.modeEdition &&
-                                <Tooltip title="Valider la modification">
-                                    <Button id="btnValidModif" color="success" onClick={this.handleSubmitForm} >Valider</Button>
-                                </Tooltip>
-                            }
-                        </ButtonGroup>
-                    </DialogActions>
                 </Dialog>
             </>
         )

@@ -43,7 +43,7 @@ export default class OperationsList extends Component {
         { field: 'id', headerName: 'ID', editable: false },
         {
             field: 'autresInfos.dateOperation',
-            headerName: 'Jour opération',
+            headerName: 'Jour opé.',
             type: "date",
             editable: false, sortable: true,
             valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateOperation, "JJ/MM/AAAA") || '-'} `,
@@ -164,6 +164,7 @@ export default class OperationsList extends Component {
             this.setState({idOperation : null})
         }
     }
+
     /**
      *  RENDER
      */
