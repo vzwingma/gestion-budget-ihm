@@ -164,6 +164,7 @@ export default class OperationsList extends Component {
             this.setState({idOperation : null})
         }
     }
+
     /**
      *  RENDER
      */
