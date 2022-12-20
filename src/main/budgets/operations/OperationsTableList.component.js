@@ -148,7 +148,7 @@ export default class OperationsList extends Component {
         return <OperationEtat key={params.id} id={params.id} etat={params.value} derniere={params.row.tagDerniereOperation} />;
     }
     renderValue(params: GridRenderCellParams<number>) {
-        return <OperationValue key={params.id} id={params.id} valueOperation={params.value} />;
+        return <OperationValue key={params.id} id={params.id} operation={params.row} valueOperation={params.value} />;
     }
     renderActions(params: GridRenderCellParams<number>) {
         return  <OperationActions key={params.id} id={params.id} operation={params.row} />

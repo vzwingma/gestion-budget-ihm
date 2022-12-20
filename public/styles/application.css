@@ -57,13 +57,16 @@ span.operation_SUPPRIMEE {
     font-style: italic;
     text-decoration-line: line-through;
 }
-.text-success{
+.text-success {
     color: #93c54b;
 }
-.text-danger{
+.text-danger {
     color: #e74c3c;
 }
-
+.text-barree {
+    font-style: italic;
+    text-decoration-line: line-through;
+}
 
 /** Style pour la datagrid **/
 .MuiDataGrid-main{
