@@ -5,26 +5,34 @@ import {addEndingZeros} from '../../../Utils/DataUtils.utils'
 
 /**
  * Affichage du style de l'opération suivant sa valeur
+ * @param operation opération
  * @param valueOperation valeur de l'opération
  * @returns {string} : class name du style
  */
-export function getStyleOperation(valueOperation){
+export function getStyleOperation(operation, valueOperation){
+
+    var style = "";
+    if(operation != null && operation.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)){
+        style += "text-barree ";
+    }
+
     if(valueOperation === 0){
-        return "";
+        style += "";
     }
     else if(valueOperation > 0){
-        return "text-success"
+        style += "text-success";
     }
     else{
-        return "text-danger"
+        style += "text-danger";
     }
+    return style;
 }
 
-const OperationValue = ({ valueOperation, showSign }) => {
+const OperationValue = ({ operation, valueOperation, showSign }) => {
 
     // définition du libellé
     return (
-        <span className={ getStyleOperation(valueOperation) }> { addEndingZeros( showSign ? valueOperation : Math.abs(valueOperation)) } €</span>
+        <span className={ getStyleOperation(operation, valueOperation) }> { addEndingZeros( showSign ? valueOperation : Math.abs(valueOperation)) } €</span>
     )
 };
 
