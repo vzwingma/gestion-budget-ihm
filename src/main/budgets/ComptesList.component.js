@@ -25,22 +25,29 @@ export default class ComptesList extends Component {
         this.loadComptes();
     }
 
+    /**
+     * Render Options
+     * @param e option
+     * @returns {JSX.Element} render de l'option
+     */
+    randerOptionLabel(e){
+        return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
+            </div>
+        )
+    }
+
 /**
  *  RENDER
  */
 
     render() {
         return (
-                <Select
-                    placeholder="Sélectionnez le compte"
-                    value={this.state.selectedCompte}
-                    options={this.state.comptes}
-                    onChange={this.handleSelect}
-                    getOptionLabel={e => (
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
-                        </div>
-                    )}
+                <Select placeholder="Sélectionnez le compte"
+                        value={this.state.selectedCompte} options={this.state.comptes}
+                        onChange={this.handleSelect}
+                        getOptionLabel={this.randerOptionLabel}
                 />
         );
     }

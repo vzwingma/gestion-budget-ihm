@@ -11,7 +11,7 @@ import {addEndingZeros} from '../../../Utils/DataUtils.utils'
  */
 export function getStyleOperation(operation, valueOperation){
 
-    var style = "";
+    let style = "";
     if(operation != null && operation.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)){
         style += "text-barree ";
     }
