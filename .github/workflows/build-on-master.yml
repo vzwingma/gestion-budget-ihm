@@ -33,7 +33,7 @@ jobs:
     -
       name: Update config in .env
       run: |
-        sed -i 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' external-ressources/conf/.env.staging; |
+        sed -i 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' external-ressources/conf/.env.staging; 
         sed -i 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.staging;
     -
       run: mv external-ressources/conf/.env.staging .env
