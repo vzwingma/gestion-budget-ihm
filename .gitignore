@@ -26,3 +26,5 @@ yarn-error.log*
 .eslintcache
 
 .env.development
+
+external-ressources/conf/.env.oidc
