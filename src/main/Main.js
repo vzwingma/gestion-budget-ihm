@@ -2,23 +2,20 @@ import React, { Component } from "react";
 import { Routes, Route, NavLink, HashRouter} from "react-router-dom";
 import { AuthProvider } from 'oidc-react';
 import * as AppConstants from "./Utils/AppEnums.constants"
+import * as AuthService from "./Services/Auth.service"
 import Budgets from "./budgets/budgets/Budgets.component";
 import Infos from "./infos/Infos.component";
 
 import {AppBar, Stack, Toolbar, Tooltip, Typography} from "@mui/material";
 
 
+
 /** Page principale avec le routeur **/
 export default class Main extends Component {
 
-    state = {
-        connectedUser: null
-    }
-
-
     oidcConfig = {
         onSignIn: async (user: any) => {
-            console.log("Connexion de l'utilisateur : " + user.profile.name)
+            AuthService.authenticate(user)
             this.setState({connectedUser: user })
         },
         authority: AppConstants.OIDC_ENUM.AUTHORITY,
@@ -28,9 +25,10 @@ export default class Main extends Component {
         scope: 'openid profile email',
         acr_values: "Level3",
         ui_locales: "nb",
-        redirectUri: AppConstants.OIDC_ENUM.URL+ '/login/response',
-        post_logout_redirect_uri:AppConstants.OIDC_ENUM.URL+ '/logout/response'
+        redirectUri: AppConstants.OIDC_ENUM.URL+ 'login/response',
+        post_logout_redirect_uri:AppConstants.OIDC_ENUM.URL+ 'logout/response'
     };
+
 
 
   render() {
@@ -43,21 +41,20 @@ export default class Main extends Component {
                             <Stack direction="row" spacing={2}>
                                 <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
                                 <NavLink className="nav-link" to="/infos">Infos</NavLink>
-                                <NavLink className="nav-link" to="/budgets">Budgets</NavLink>
+                                { AuthService.isAuthenticated() ? <NavLink className="nav-link" to="/budgets">Budgets</NavLink> : "" }
                             </Stack>
                         </Typography>
                         <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
-                            <Tooltip title={this.state.connectedUser != null ? this.state.connectedUser.profile.name : "Non connecté"}>
-                                <img src={this.state.connectedUser != null ? this.state.connectedUser.profile.picture : "/img/avatar.png"} width="60" height="60" alt="User loggé"/>
+                            <Tooltip title={ AuthService.isAuthenticated() ? AuthService.getOAuthItem(AuthService.OAUTH2_PROFILE_NAME) : "Non connecté"}>
+                                <img src={ AuthService.isAuthenticated() ? AuthService.getOAuthItem(AuthService.OAUTH2_PROFILE_PIC) : "/img/avatar.png" } width="60" height="60" alt="User loggé"/>
                             </Tooltip>
                         </Typography>
                     </Toolbar>
                 </AppBar>
-
                 <div className="App">
                     <Routes>
                         <Route path="/"    element={<Infos/>}/>
-                        { this.state.connectedUser != null ? <Route path="/budgets"  element={<Budgets/>} /> : "" }
+                        { AuthService.isAuthenticated()? <Route path="/budgets"  element={<Budgets/>} /> : "" }
                         <Route path="/infos"    element={<Infos/>}/>
                     </Routes>
                 </div>
