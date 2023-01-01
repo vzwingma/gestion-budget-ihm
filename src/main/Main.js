@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Routes, Route, NavLink, HashRouter} from "react-router-dom";
 import { AuthProvider } from 'oidc-react';
+import * as AppConstants from "./Utils/AppEnums.constants"
 import Budgets from "./budgets/budgets/Budgets.component";
 import Infos from "./infos/Infos.component";
 
-import Logout from "./login/Logout.component";
-import {AppBar, Stack, Toolbar, Typography} from "@mui/material";
+import {AppBar, Stack, Toolbar, Tooltip, Typography} from "@mui/material";
 
 
 /** Page principale avec le routeur **/
@@ -18,21 +18,18 @@ export default class Main extends Component {
 
     oidcConfig = {
         onSignIn: async (user: any) => {
-            console.log("Connexion de l'utilisateur")
-            console.log(user);
+            console.log("Connexion de l'utilisateur : " + user.profile.name)
             this.setState({connectedUser: user })
         },
-        authority: 'https://accounts.google.com/',
-        clientId:
-            '550431928138-edestj28rk5a0emk546p7ii28dl5boc5.apps.googleusercontent.com',
-        clientSecret:
-            '',
+        authority: AppConstants.OIDC_ENUM.AUTHORITY,
+        clientId: AppConstants.OIDC_ENUM.CLIENT_ID,
+        clientSecret: AppConstants.OIDC_ENUM.CLIENT_SECRET,
         responseType: 'code',
-        scopes: ['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', "auth/userinfo.email", "auth/userinfo.profile"],
-        redirectUri:
-            process.env.NODE_ENV === 'development'
-                ? 'http://localhost:3000/login/response'
-                : 'http://localhost:5011/login/response',
+        scope: 'openid profile email',
+        acr_values: "Level3",
+        ui_locales: "nb",
+        redirectUri: AppConstants.OIDC_ENUM.URL+ '/login/response',
+        post_logout_redirect_uri:AppConstants.OIDC_ENUM.URL+ '/logout/response'
     };
 
 
@@ -50,7 +47,9 @@ export default class Main extends Component {
                             </Stack>
                         </Typography>
                         <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
-                            <img src={this.state.connectedUser != null ? this.state.connectedUser.profile.picture : "/img/avatar.png"} width="60" height="60" alt="User loggé"/>
+                            <Tooltip title={this.state.connectedUser != null ? this.state.connectedUser.profile.name : "Non connecté"}>
+                                <img src={this.state.connectedUser != null ? this.state.connectedUser.profile.picture : "/img/avatar.png"} width="60" height="60" alt="User loggé"/>
+                            </Tooltip>
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -58,10 +57,8 @@ export default class Main extends Component {
                 <div className="App">
                     <Routes>
                         <Route path="/"    element={<Infos/>}/>
-                        <Route path="/budgets"  element={<Budgets/>} />
+                        { this.state.connectedUser != null ? <Route path="/budgets"  element={<Budgets/>} /> : "" }
                         <Route path="/infos"    element={<Infos/>}/>
-
-                        <Route path="/logout"   element={<Logout/>}/>
                     </Routes>
                 </div>
             </AuthProvider>

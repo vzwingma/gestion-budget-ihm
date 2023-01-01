@@ -1,4 +1,15 @@
 
+
+/*
+ Enum de la config OIDC
+ */
+export const OIDC_ENUM = {
+    AUTHORITY: process.env.REACT_APP_CONFIG_OIDC_AUTHORITY,
+    CLIENT_ID: process.env.REACT_APP_CONFIG_OIDC_CLIENT_ID,
+    CLIENT_SECRET: process.env.REACT_APP_CONFIG_OIDC_CLIENT_SECRET,
+    URL: window.location.href
+}
+
 /* Enum des Backends */
 export const BACKEND_ENUM = {
     URL_COMPTES : process.env.REACT_APP_CONFIG_URL_COMPTES,
