@@ -36,8 +36,9 @@ import {toast} from "react-toastify";
                             [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
                     .then(data => this.handleBudgetUpdate(data))
                     .catch(e => {
-                        console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e)
-                        toast.error("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate )
+                        let libErreur = "Erreur lors du chargement du budget " + selectedCompte + " du " + (selectedDate.getMonth()+1) + "/" + selectedDate.getFullYear();
+                        console.log(libErreur + " >> "+ e)
+                        toast.error(libErreur , {autoClose: false, closeOnClick: true})
                     })
         }
     }

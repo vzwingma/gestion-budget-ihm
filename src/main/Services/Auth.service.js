@@ -20,7 +20,7 @@
 
     export const authenticate = (value) => {
         console.log("Authentification par token OAuth2 ")
-        localStorage.setItem(OAUTH2_KEY, value.access_token);
+        localStorage.setItem(OAUTH2_KEY, value.id_token);
         localStorage.setItem(OAUTH2_PROFILE_NAME, value.profile.name);
         localStorage.setItem(OAUTH2_PROFILE_PIC, value.profile.picture);
     }
