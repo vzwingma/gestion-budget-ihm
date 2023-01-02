@@ -6,7 +6,8 @@ import * as AuthService from "./Services/Auth.service"
 import Budgets from "./budgets/budgets/Budgets.component";
 import Infos from "./infos/Infos.component";
 
-import {AppBar, Stack, Toolbar, Tooltip, Typography} from "@mui/material";
+import {AppBar, Stack, Toolbar, Typography} from "@mui/material";
+import Profile from "./login/Profile.component";
 
 
 
@@ -44,18 +45,14 @@ export default class Main extends Component {
                                 { AuthService.isAuthenticated() ? <NavLink className="nav-link" to="/budgets">Budgets</NavLink> : "" }
                             </Stack>
                         </Typography>
-                        <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
-                            <Tooltip title={ AuthService.isAuthenticated() ? AuthService.getOAuthItem(AuthService.OAUTH2_PROFILE_NAME) : "Non connecté"}>
-                                <img src={ AuthService.isAuthenticated() ? AuthService.getOAuthItem(AuthService.OAUTH2_PROFILE_PIC) : "/img/avatar.png" } width="60" height="60" alt="User loggé"/>
-                            </Tooltip>
-                        </Typography>
+                        <Profile/>
                     </Toolbar>
                 </AppBar>
                 <div className="App">
                     <Routes>
-                        <Route path="/"    element={<Infos/>}/>
+                        <Route path="/"      element={<Infos/>}/>
                         { AuthService.isAuthenticated()? <Route path="/budgets"  element={<Budgets/>} /> : "" }
-                        <Route path="/infos"    element={<Infos/>}/>
+                        <Route path="/infos" element={<Infos/>}/>
                     </Routes>
                 </div>
             </AuthProvider>

@@ -39,15 +39,14 @@ export const SERVICES_URL = {
     },
     PARAMETRES : {
         CATEGORIES : "/parametres/v1/categories"
+    },
+    UTILISATEURS : {
+        ACCESS_DATE : "/utilisateurs/v1/lastaccessdate",
+        USERS_PREFS : "/utilisateurs/v1/preferences"
     }
     
 /*
-    USERS_ACCESS_DATE_FULL = "/utilisateurs/v1/lastaccessdate";
-    USERS_PREFS_FULL = "/utilisateurs/v1/preferences";
-    COMPTES_ID_FULL = "/comptes/v1/{idCompte}";
     BUDGET_UP_TO_DATE_FULL = "/budgets/v1/{idBudget}/upToDate";
-    BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL = "/budgets/v1/{idCompte}/operations/libelles";
-    BUDGET_OPERATION_INTERCOMPTE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/versCompte/{idCompte}";
 */
 
 }
