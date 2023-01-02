@@ -4,9 +4,7 @@
     export const OAUTH2_PROFILE_PIC = 'oauth2ProfilePic';
     // Authentifié ?
     export const isAuthenticated = () => {
-        let connecte = localStorage.getItem(OAUTH2_KEY)
-        console.log("L'utilisateur " + (connecte ? "" : "n'") + "est " + (connecte ? "" : "pas" )+ " connecté")
-        return connecte;
+        return localStorage.getItem(OAUTH2_KEY);
     }
 
     // Authentifié ?

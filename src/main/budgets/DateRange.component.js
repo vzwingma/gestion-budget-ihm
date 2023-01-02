@@ -47,13 +47,13 @@ export default class DateRange extends Component {
     shouldComponentUpdate(nextProps, nextStates, nextContext){
         // Update ssi c'est le compte qui change
         if(nextProps.idCompte !== nextStates.idCompte){
-            console.log("[TRIGGER] Context :: Compte=" + nextProps.idCompte )
+            // console.log("[TRIGGER] Context :: Compte=" + nextProps.idCompte )
             this.setState({idCompte : nextProps.idCompte})
             this.refreshDatesFromCompte(nextProps.idCompte)
             return true;
         }
         else if(this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()){
-            console.log("[TRIGGER] Context :: date=" + nextStates.dateCurrentBudget )
+            // console.log("[TRIGGER] Context :: date=" + nextStates.dateCurrentBudget.toLocaleDateString() )
             return true;
         }
         else if(this.state.showModale !== nextStates.showModale){

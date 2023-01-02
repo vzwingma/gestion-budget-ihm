@@ -60,7 +60,7 @@ export default class Budgets extends Component {
         else if(this.state.selectedDate != null && nextStates.selectedDate != null &&
             (this.state.selectedDate.getTime() !== nextStates.selectedDate.getTime()))
         {
-            console.log("[TRIGGER] Context date=" + nextStates.selectedDate )
+            console.log("[TRIGGER] Context date=" + nextStates.selectedDate.toLocaleDateString() )
             componentUpdate = true;
             budgetUpdate = true;
         }

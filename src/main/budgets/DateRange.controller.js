@@ -30,7 +30,7 @@ export function handleModalClick(event){
         datePremierBudget.setHours(0,0,0,0);
         let dateDernierBudget = new Date(jourDepuisInitDernierBudget * 24 * 60 * 60 * 1000);
         dateDernierBudget.setHours(0,0,0,0);
-        console.log("Budgets disponibles entre " + (datePremierBudget.getMonth()+1) + "/" + datePremierBudget.getFullYear() + " et " + (dateDernierBudget.getMonth()+1) + "/" + dateDernierBudget.getFullYear());
+        console.log("Budgets disponibles entre " + datePremierBudget.toLocaleDateString() + " & " + dateDernierBudget.toLocaleDateString());
         this.setState({ datePremierBudget: datePremierBudget, dateDernierBudget : dateDernierBudget });
 
     }
