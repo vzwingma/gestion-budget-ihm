@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import ModuleInfos from "./MicroServicesInfos.component";
-import * as AppConstants from "../Utils/AppEnums.constants"
-import * as ClientHTTP from './../Services/ClientHTTP.service'
+import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppEnums.constants"
+import {call} from "./../Services/ClientHTTP.service";
 import {
     Table,
     TableBody,
     TableCell,
-    TableContainer,
     TableFooter,
     TableHead,
     TableRow
 } from "@mui/material";
+
 
 export default class Infos extends Component {
 
@@ -20,10 +20,10 @@ export default class Infos extends Component {
       }
     /** Config Backend **/
       backEnds = [
-        {idMS: 'API Paramétrage',   url: AppConstants.BACKEND_ENUM.URL_PARAMS},
-        {idMS: 'API Utilisateurs',  url: AppConstants.BACKEND_ENUM.URL_UTILISATEURS},
-        {idMS: 'API Comptes',       url: AppConstants.BACKEND_ENUM.URL_COMPTES},
-        {idMS: 'API Opérations',    url: AppConstants.BACKEND_ENUM.URL_OPERATIONS}
+        {idMS: 'API Paramétrage',   url: BACKEND_ENUM.URL_PARAMS},
+        {idMS: 'API Utilisateurs',  url: BACKEND_ENUM.URL_UTILISATEURS},
+        {idMS: 'API Comptes',       url: BACKEND_ENUM.URL_COMPTES},
+        {idMS: 'API Opérations',    url: BACKEND_ENUM.URL_OPERATIONS}
       ]
 
     /** Appels WS vers /actuator/info pour tous les µS **/
@@ -34,7 +34,7 @@ export default class Infos extends Component {
         this.backEnds
             .filter(backEnd => backEnd.url !== undefined)
             .forEach(backEnd =>
-                ClientHTTP.call('GET', backEnd.url, AppConstants.SERVICES_URL.INFOS.GET_INFO)
+                call('GET', backEnd.url, SERVICES_URL.INFOS.GET_INFO)
                     .then((data) => {
                         infosUpdated.push(data)
                         this.setState({ infos: infosUpdated })
@@ -56,7 +56,6 @@ export default class Infos extends Component {
   render() {
         return (
         <center>
-            <TableContainer>
                 <TableHead>
                     <TableRow>
                         <TableCell><center><h2>Gestion de budgets</h2></center></TableCell>
@@ -92,7 +91,6 @@ export default class Infos extends Component {
                 <TableFooter>
                     <TableCell align={"right"}>by Z.corp</TableCell>
                 </TableFooter>
-            </TableContainer>
         </center>
         )
   }
