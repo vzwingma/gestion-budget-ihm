@@ -24,7 +24,8 @@ function Profile() {
                 auth.signinSilent();
             }
         })
-    }, [auth.events, auth.signinSilent]);
+    }, [auth, auth.events, auth.signinSilent]);
+
 
     if (auth.isLoading) {
         return <div>Chargement...</div>;
