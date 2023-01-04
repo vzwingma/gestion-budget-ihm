@@ -1,12 +1,27 @@
 
-/* Enum des Backends */
+
+/**
+ Enum de la config OIDC
+ */
+export const OIDC_ENUM = {
+    AUTHORITY: process.env.REACT_APP_CONFIG_OIDC_AUTHORITY,
+    CLIENT_ID: process.env.REACT_APP_CONFIG_OIDC_CLIENT_ID,
+    CLIENT_SECRET: process.env.REACT_APP_CONFIG_OIDC_CLIENT_SECRET,
+    URL: window.location.href
+}
+
+/**
+    Enum des Backends
+*/
 export const BACKEND_ENUM = {
     URL_COMPTES : process.env.REACT_APP_CONFIG_URL_COMPTES,
     URL_PARAMS : process.env.REACT_APP_CONFIG_URL_PARAMS,
     URL_UTILISATEURS : process.env.REACT_APP_CONFIG_URL_UTILISATEURS,
     URL_OPERATIONS : process.env.REACT_APP_CONFIG_URL_OPERATIONS
 }
-/* Services */
+/**
+ *  Services
+ * */
 export const SERVICES_URL = {
     INFOS : {
         GET_INFO : "/_info"
@@ -28,18 +43,24 @@ export const SERVICES_URL = {
     },
     PARAMETRES : {
         CATEGORIES : "/parametres/v1/categories"
+    },
+    UTILISATEURS : {
+        ACCESS_DATE : "/utilisateurs/v1/lastaccessdate",
+        USERS_PREFS : "/utilisateurs/v1/preferences"
     }
-    
-/*
-    USERS_ACCESS_DATE_FULL = "/utilisateurs/v1/lastaccessdate";
-    USERS_PREFS_FULL = "/utilisateurs/v1/preferences";
-    COMPTES_ID_FULL = "/comptes/v1/{idCompte}";
-    BUDGET_UP_TO_DATE_FULL = "/budgets/v1/{idBudget}/upToDate";
-    BUDGET_COMPTE_OPERATIONS_LIBELLES_FULL = "/budgets/v1/{idCompte}/operations/libelles";
-    BUDGET_OPERATION_INTERCOMPTE_FULL = "/budgets/v1/{idBudget}/operations/{idOperation}/versCompte/{idCompte}";
-*/
-
 }
+
+export const UTILISATEUR_DROITS = {
+    DROITS : {
+        CLOTURE_BUDGET : "DROIT_RAZ_BUDGET",
+        RAZ_BUDGET : "DROIT_RAZ_BUDGET"
+    },
+    PREFERENCES : {
+        STATUT_NLLE_DEPENSE: "PREFS_STATUT_NLLE_DEPENSE",
+    }
+}
+
+
 
 export const BUSINESS_GUID = {
     CAT_VIREMENT : "ea6dcc12-3349-4047-a1e5-cd1d7254f16e",

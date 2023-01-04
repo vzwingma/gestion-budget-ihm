@@ -1,28 +1,17 @@
 /** Service d'Authentification**/
     const OAUTH2_KEY = 'oauth2TokenKey';
-    // Authentifié ?
-    export const isAuthenticated = () => {
-        if (localStorage.getItem(OAUTH2_KEY)) {
-            console.log("L'utilisateur est connecté")
-            return true;
-        }
-        else{
-            console.log("L'utilisateur n'est pas connecté")
-            return false;
-        }
-    }
 
     // Authentifié ?
     export const getOAuthToken = () => {
-        return localStorage.getItem(OAUTH2_KEY);
+        return  localStorage.getItem(OAUTH2_KEY);
     }
 
-    export const authenticate = (value) => {
-        console.log("Authentification par token OAuth2 " + value)
+    export const putTokenInStorage = (value) => {
+        console.log("putTokenInStorage OAuth2 ")
         localStorage.setItem(OAUTH2_KEY, value);
     }
 
-    export const logout = (value) => {
-        console.log("Déconnexion du token OAUTH2_KEY" )
+    export const removeTokenFromStorage = () => {
+        console.log("removeTokenFromStorage" )
         localStorage.removeItem(OAUTH2_KEY);
     }

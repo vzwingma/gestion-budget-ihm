@@ -38,12 +38,15 @@ export default class Budgets extends Component {
         this.refreshBudget = Services.reloadBudget.bind(this);
         this.loadCategories = Services.loadCategories.bind(this);
         this.categoriesLoaded = Services.categoriesLoaded.bind(this);
+
+        this.getPreferenceUtilisateur = Services.getPreferenceUtilisateur.bind(this);
     }
 
 
     /** Chargement des catégories **/
     componentDidMount(){
         this.loadCategories();
+        this.getPreferenceUtilisateur();
     }
 
 
@@ -60,7 +63,7 @@ export default class Budgets extends Component {
         else if(this.state.selectedDate != null && nextStates.selectedDate != null &&
             (this.state.selectedDate.getTime() !== nextStates.selectedDate.getTime()))
         {
-            console.log("[TRIGGER] Context date=" + nextStates.selectedDate )
+            console.log("[TRIGGER] Context date=" + nextStates.selectedDate.toLocaleDateString() )
             componentUpdate = true;
             budgetUpdate = true;
         }
@@ -90,8 +93,8 @@ export default class Budgets extends Component {
             </Grid2>
             <Grid2 xs={1}>
                 {/** Actions sur le budget (close / reinit) **/
-                    this.state.currentBudget != null ?
-                        <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
+                    (this.state.currentBudget != null && this.state.user_droits != null) ?
+                        <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} droits={this.state.user_droits} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
                 }
             </Grid2>
 
