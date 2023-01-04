@@ -6,7 +6,7 @@ import Budgets from "./budgets/budgets/Budgets.component";
 import Infos from "./infos/Infos.component";
 import { removeTokenFromStorage} from "./Services/Auth.service";
 
-import {AppBar, Stack, Toolbar, Typography} from "@mui/material";
+import {AppBar, Container, Stack, Toolbar, Typography} from "@mui/material";
 import Profile from "./menubar/Profile.component";
 import PrivateNavLinks from "./menubar/PrivateNavLinks.component";
 
@@ -36,14 +36,22 @@ export default class Main extends Component {
             <AuthProvider {...this.oidcConfig}>
                 <AppBar position={"fixed"}>
                     <Toolbar>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            <Stack direction="row" spacing={2}>
+                        <Typography variant="h6" component="div" noWrap sx={{ flexGrow: 1, fontWeight: 700,fontSize: "1.2rem" }}>
+                            <Stack direction="row">
                                 <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
                                 <NavLink className="nav-link" to="/infos">Infos</NavLink>
                                 <PrivateNavLinks/>
                             </Stack>
                         </Typography>
-                        <Profile/>
+                        <Container fixed/>
+                        <Typography variant="h6" noWrap component="div"
+                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' },
+                                    fontWeight: 300,
+                                    fontSize: "1rem",
+                                    color: 'inherit',
+                                    textDecoration: 'none',        }} >
+                            <Profile/>
+                        </Typography>
                     </Toolbar>
                 </AppBar>
                 <div className="App">

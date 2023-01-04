@@ -1,23 +1,21 @@
 import React from "react";
 import { useAuth } from "react-oidc-context";
-import {Stack, Tooltip, Typography} from "@mui/material";
-import * as Service from './Profile.extservices';
-import { putTokenInStorage } from '../Services/Auth.service'
+import { Tooltip, Typography} from "@mui/material";
+import {putTokenInStorage, removeTokenFromStorage} from '../Services/Auth.service'
+import ProfileInfos from "./ProfileInfos.component";
 
 /**
  *   Page de Gestion du profile
  **/
 function Profile() {
     const auth = useAuth();
-/*
-    switch (auth.activeNavigator) {
-        case "signinSilent":
-            return <div>Signing you in...</div>;
-        case "signoutRedirect":
-            return <div>Signing you out...</div>;
 
+    // LogOut et redirect pour nettoyer l'URL
+    function logOut(){
+        auth.removeUser();
+        removeTokenFromStorage();
+        window.location = "/";
     }
-*/
 
     React.useEffect(() => {
         // the `return` is important - addAccessTokenExpiring() returns a cleanup function
@@ -40,14 +38,11 @@ function Profile() {
         putTokenInStorage(auth.user?.id_token)
         return (
             <>
-                <Stack>
-                    <div>Dernière connexion :</div>
-                    <div>{ Service.getLastAccessDateUtilisateur() }</div>
-                </Stack>
+                <ProfileInfos/>
 
                 <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
                     <Tooltip title={  auth.user?.profile.name }>
-                        <img onClick={() => void auth.removeUser()} src={ auth.user?.profile.picture } width="60" height="60" alt="User loggé"/>
+                        <img onClick={ logOut } src={ auth.user?.profile.picture } width="60" height="60" alt="User loggé"/>
                     </Tooltip>
                 </Typography>
             </>
@@ -63,7 +58,6 @@ function Profile() {
                 </Typography>
             </>
         );
-
-
 }
 export default Profile;
+

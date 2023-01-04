@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ModuleInfos from "./MicroServicesInfos.component";
 import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppEnums.constants"
-import {call} from "./../Services/ClientHTTP.service";
+import {call} from "../Services/ClientHTTP.service";
 import {
     Table,
     TableBody,
@@ -53,7 +53,7 @@ export default class Infos extends Component {
       }
 
     /** Phase de Render à partir de la liste de statuts  **/
-  render() {
+    render() {
         return (
         <center>
                 <TableHead>
