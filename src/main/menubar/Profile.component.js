@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "react-oidc-context";
 import {Stack, Tooltip, Typography} from "@mui/material";
 import * as Service from './Profile.extservices';
-import { authenticate } from '../Services/Auth.service'
+import { putTokenInStorage } from '../Services/Auth.service'
 
 /**
  *   Page de Gestion du profile
@@ -18,6 +18,16 @@ function Profile() {
 
     }
 */
+
+    React.useEffect(() => {
+        // the `return` is important - addAccessTokenExpiring() returns a cleanup function
+        return auth.events.addAccessTokenExpiring(() => {
+            if (alert("You're about to be signed out due to inactivity. Press continue to stay signed in.")) {
+                auth.signinSilent();
+            }
+        })
+    }, [auth.events, auth.signinSilent]);
+
     if (auth.isLoading) {
         return <div>Chargement...</div>;
     }
@@ -27,7 +37,7 @@ function Profile() {
     }
 
     if(auth.isAuthenticated) {
-        authenticate(auth.user?.id_token)
+        putTokenInStorage(auth.user?.id_token)
         return (
             <>
                 <Stack>

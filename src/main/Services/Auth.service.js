@@ -6,12 +6,12 @@
         return  localStorage.getItem(OAUTH2_KEY);
     }
 
-    export const authenticate = (value) => {
+    export const putTokenInStorage = (value) => {
         console.log("Authentification par token OAuth2 ")
         localStorage.setItem(OAUTH2_KEY, value);
     }
 
-    export const logout = () => {
+    export const removeTokenFromStorage = () => {
         console.log("Déconnexion" )
         localStorage.removeItem(OAUTH2_KEY);
     }

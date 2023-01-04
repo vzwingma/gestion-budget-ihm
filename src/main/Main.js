@@ -4,7 +4,7 @@ import { AuthProvider } from 'react-oidc-context';
 import * as AppConstants from "./Utils/AppEnums.constants"
 import Budgets from "./budgets/budgets/Budgets.component";
 import Infos from "./infos/Infos.component";
-import { logout} from "./Services/Auth.service";
+import { removeTokenFromStorage} from "./Services/Auth.service";
 
 import {AppBar, Stack, Toolbar, Typography} from "@mui/material";
 import Profile from "./menubar/Profile.component";
@@ -30,7 +30,7 @@ export default class Main extends Component {
 
 
   render() {
-    logout();
+    removeTokenFromStorage();
     return (
         <HashRouter>
             <AuthProvider {...this.oidcConfig}>
