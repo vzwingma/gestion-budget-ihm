@@ -20,6 +20,7 @@ export default class Main extends Component {
         client_id: AppConstants.OIDC_ENUM.CLIENT_ID,
         client_secret: AppConstants.OIDC_ENUM.CLIENT_SECRET,
         response_type: 'code',
+        automaticSilentRenew: true,
         scope: 'openid profile email',
         acr_values: "Level3",
         ui_locales: "nb",
