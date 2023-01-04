@@ -13,7 +13,7 @@ import * as AppConstants from "../Utils/AppEnums.constants";
         ClientHTTP.call("GET", AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.ACCESS_DATE, null)
             .then((data) => {
                 const date = new Date(data.lastAccessTime*1000);
-                this.updateLastAccessDateUtilisateur(date.toLocaleDateString() + " - " + date.toLocaleTimeString());
+                return date.toLocaleDateString() + " - " + date.toLocaleTimeString();
             })
             .catch((e) => {
                 console.log("Erreur lors de la recherche de la dernière connexion >> "+ e);

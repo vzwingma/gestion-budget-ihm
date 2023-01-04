@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Routes, Route, NavLink, HashRouter} from "react-router-dom";
-import { AuthProvider } from 'oidc-react';
+import { AuthProvider } from 'react-oidc-context';
 import * as AppConstants from "./Utils/AppEnums.constants"
-import * as AuthService from "./Services/Auth.service"
 import Budgets from "./budgets/budgets/Budgets.component";
 import Infos from "./infos/Infos.component";
+import { logout} from "./Services/Auth.service";
 
 import {AppBar, Stack, Toolbar, Typography} from "@mui/material";
-import Profile from "./login/Profile.component";
+import Profile from "./menubar/Profile.component";
+import PrivateNavLinks from "./menubar/PrivateNavLinks.component";
 
 
 
@@ -15,34 +16,31 @@ import Profile from "./login/Profile.component";
 export default class Main extends Component {
 
     oidcConfig = {
-        onSignIn: async (user: any) => {
-            AuthService.authenticate(user)
-            this.setState({connectedUser: user })
-        },
         authority: AppConstants.OIDC_ENUM.AUTHORITY,
-        clientId: AppConstants.OIDC_ENUM.CLIENT_ID,
-        clientSecret: AppConstants.OIDC_ENUM.CLIENT_SECRET,
-        responseType: 'code',
+        client_id: AppConstants.OIDC_ENUM.CLIENT_ID,
+        client_secret: AppConstants.OIDC_ENUM.CLIENT_SECRET,
+        response_type: 'code',
         scope: 'openid profile email',
         acr_values: "Level3",
         ui_locales: "nb",
-        redirectUri: AppConstants.OIDC_ENUM.URL+ 'login/response',
+        redirect_uri: AppConstants.OIDC_ENUM.URL+ 'login/response',
         post_logout_redirect_uri:AppConstants.OIDC_ENUM.URL+ 'logout/response'
     };
 
 
 
   render() {
+    logout();
     return (
         <HashRouter>
             <AuthProvider {...this.oidcConfig}>
-                <AppBar position={"fixed"} variant={"outlined"}>
+                <AppBar position={"fixed"}>
                     <Toolbar>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             <Stack direction="row" spacing={2}>
                                 <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
                                 <NavLink className="nav-link" to="/infos">Infos</NavLink>
-                                { AuthService.isAuthenticated() ? <NavLink className="nav-link" to="/budgets">Budgets</NavLink> : "" }
+                                <PrivateNavLinks/>
                             </Stack>
                         </Typography>
                         <Profile/>
@@ -50,9 +48,9 @@ export default class Main extends Component {
                 </AppBar>
                 <div className="App">
                     <Routes>
-                        <Route path="/"      element={<Infos/>}/>
-                        { AuthService.isAuthenticated()? <Route path="/budgets"  element={<Budgets/>} /> : "" }
-                        <Route path="/infos" element={<Infos/>}/>
+                        <Route path="/"         element={<Infos/>}/>
+                        <Route path="/budgets"  element={<Budgets/>} />
+                        <Route path="/infos"    element={<Infos/>}/>
                     </Routes>
                 </div>
             </AuthProvider>
