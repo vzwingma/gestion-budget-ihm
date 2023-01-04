@@ -1,6 +1,6 @@
 
 
-/*
+/**
  Enum de la config OIDC
  */
 export const OIDC_ENUM = {
@@ -10,14 +10,18 @@ export const OIDC_ENUM = {
     URL: window.location.href
 }
 
-/* Enum des Backends */
+/**
+    Enum des Backends
+*/
 export const BACKEND_ENUM = {
     URL_COMPTES : process.env.REACT_APP_CONFIG_URL_COMPTES,
     URL_PARAMS : process.env.REACT_APP_CONFIG_URL_PARAMS,
     URL_UTILISATEURS : process.env.REACT_APP_CONFIG_URL_UTILISATEURS,
     URL_OPERATIONS : process.env.REACT_APP_CONFIG_URL_OPERATIONS
 }
-/* Services */
+/**
+ *  Services
+ * */
 export const SERVICES_URL = {
     INFOS : {
         GET_INFO : "/_info"
@@ -44,12 +48,19 @@ export const SERVICES_URL = {
         ACCESS_DATE : "/utilisateurs/v1/lastaccessdate",
         USERS_PREFS : "/utilisateurs/v1/preferences"
     }
-    
-/*
-    BUDGET_UP_TO_DATE_FULL = "/budgets/v1/{idBudget}/upToDate";
-*/
-
 }
+
+export const UTILISATEUR_DROITS = {
+    DROITS : {
+        CLOTURE_BUDGET : "DROIT_RAZ_BUDGET",
+        RAZ_BUDGET : "DROIT_RAZ_BUDGET"
+    },
+    PREFERENCES : {
+        STATUT_NLLE_DEPENSE: "PREFS_STATUT_NLLE_DEPENSE",
+    }
+}
+
+
 
 export const BUSINESS_GUID = {
     CAT_VIREMENT : "ea6dcc12-3349-4047-a1e5-cd1d7254f16e",
