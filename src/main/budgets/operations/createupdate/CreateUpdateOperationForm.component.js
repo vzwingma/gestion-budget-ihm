@@ -234,7 +234,7 @@ export default class CreateUpdateOperationForm extends Component {
 
                             <Grid2 item xs={4}>
                                 <Tooltip title={this.props.modeEdition ? "Prochaine mensualité : " + this.state.formProchaineMensualite : "" }>
-                                    <FormLabel>Dépense périodique</FormLabel>
+                                    <FormLabel>Période</FormLabel>
                                 </Tooltip>
                             </Grid2>
                             <Grid2 item xs={8}>

@@ -230,8 +230,8 @@ import {toast} from "react-toastify";
             formValeur: "",
             formEtat: this.listeEtats[0],
             formDateOperation: "", // getLibelleDate(new Date(), "AAAA-MM-DD"),
-            formOperationType: {value:"DEPENSE", text:"-"},
-            formOperationPeriodique: "0",
+            formOperationType: this.listeType[0],
+            formOperationPeriodique: this.listePeriodes[0],
             formProchaineMensualite: "",
             showIntercompte: false,
 
