@@ -78,9 +78,9 @@ export default class Infos extends Component {
                                     version={process.env.REACT_APP_BUDGET_VERSION}
                                     description="IHM REACT" />
 
-                                {this.state.infos.map((msInfos, i) => (
+                                {this.state.infos.map((msInfos) => (
                                     <ModuleInfos
-                                        key={msInfos.nom + i} name={msInfos.nom}
+                                        key={msInfos.nom} name={msInfos.nom}
                                         version={msInfos.version} description={msInfos.description} />
                                 ))}
                             </TableBody>

@@ -143,6 +143,26 @@ export default class CreateUpdateOperationForm extends Component {
         this.razForm();
         this.props.hideModale();
     }
+    /**
+     * Render Options
+     * @param e option
+     * @returns {JSX.Element} render de l'option
+     */
+    renderOptionLabel(e){
+        return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span style={{ fontSize:".875rem" }}>{e.text}</span>
+            </div>
+        )
+    }
+
+    renderOptionIconLabel(e){
+        return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
+            </div>
+        )
+    }
 
     /**
      *  RENDER
@@ -170,11 +190,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                     placeholder={"Sélectionnez une catégorie"}
                                                     value={this.state.formCategorie} options={this.state.categoriesSelect}
                                                     onChange={this.handleSelectCategorie}
-                                                    getOptionLabel={e => (
-                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                            <span style={{ fontSize:".875rem" }}>{e.text}</span>
-                                                        </div>
-                                                    )}>
+                                                    getOptionLabel={this.renderOptionLabel}>
                                     </RequiredSelect>
                                     {this.state.errorCategorie && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
@@ -183,11 +199,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                     placeholder={"Sélectionnez une sous catégorie"} isSearchable={true}
                                                     value={this.state.formSsCategorie} options={this.state.ssCategoriesSelect}
                                                     onChange={this.handleSelectSsCategorie}
-                                                    getOptionLabel={e => (
-                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                            <span style={{ fontSize:".875rem" }}>{e.text}</span>
-                                                        </div>
-                                                    )}>
+                                                    getOptionLabel={this.renderOptionLabel}>
                                     </RequiredSelect>
                                     {this.state.errorSsCategorie && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
@@ -199,11 +211,7 @@ export default class CreateUpdateOperationForm extends Component {
                                                         options={this.state.comptes}
                                                         isDisabled={ this.props.modeEdition } isSearchable={true}
                                                         onChange={this.handleSelectCompteCible}
-                                                        getOptionLabel={e => (
-                                                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                                {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
-                                                            </div>
-                                                        )} />
+                                                        getOptionLabel={this.renderOptionIconLabel} />
                                         {this.state.errorInterCompte && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                     </FormControl>
                                 }
@@ -256,11 +264,7 @@ export default class CreateUpdateOperationForm extends Component {
                                 <FormControl fullWidth error={this.state.errorEtat} >
                                     <Select value={this.state.formEtat} options={this.listeEtats}
                                             onChange={this.handleSelectEtat} isSearchable={true} className={"MuiSelect-main"}
-                                            getOptionLabel={e => (
-                                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                    {e.icon} <span style={{ marginLeft: 15, fontSize:".875rem" }}>{e.text}</span>
-                                                </div>
-                                            )} />
+                                            getOptionLabel={this.renderOptionIconLabel} />
                                     {this.state.errorEtat && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                             </Grid2>
