@@ -36,8 +36,21 @@ import {toast} from "react-toastify";
                             [ selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth()+1 ])
                     .then(data => this.handleBudgetUpdate(data))
                     .catch(e => {
-                        console.log("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate + " >> "+ e)
-                        toast.error("Erreur lors du chargement du budget " + selectedCompte + " du " + selectedDate )
+                        let libErreur = "Erreur lors du chargement du budget " + selectedCompte + " du " + (selectedDate.getMonth()+1) + "/" + selectedDate.getFullYear();
+                        console.log(libErreur + " >> "+ e)
+                        toast.error(libErreur , {autoClose: false, closeOnClick: true})
                     })
         }
+    }
+
+
+    export function getPreferenceUtilisateur(){
+        ClientHTTP.call("GET", AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.USERS_PREFS, null)
+            .then((data) => {
+                this.setState({ user_droits : data.droits, user_preferences: data.preferences })
+            })
+            .catch((e) => {
+                console.log("Erreur lors de la recherche de la dernière connexion >> "+ e);
+            })
+
     }
