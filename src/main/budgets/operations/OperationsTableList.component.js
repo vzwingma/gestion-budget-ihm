@@ -181,6 +181,9 @@ export default class OperationsList extends Component {
                                 // Hide columns id, the other columns will remain visible
                                 columnVisibilityModel: { id: false},
                             },
+                            sorting: {
+                                sortModel: [{ field: 'autresInfos.dateOperation', sort: 'desc' }],
+                            },
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
