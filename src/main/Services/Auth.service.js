@@ -7,11 +7,9 @@
     }
 
     export const putTokenInStorage = (value) => {
-        console.log("putTokenInStorage OAuth2 ")
         localStorage.setItem(OAUTH2_KEY, value);
     }
 
     export const removeTokenFromStorage = () => {
-        console.log("removeTokenFromStorage" )
         localStorage.removeItem(OAUTH2_KEY);
     }

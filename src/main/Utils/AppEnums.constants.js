@@ -21,7 +21,7 @@ export const BACKEND_ENUM = {
 }
 /**
  *  Services
- * */
+ **/
 export const SERVICES_URL = {
     INFOS : {
         GET_INFO : "/_info"
@@ -49,7 +49,9 @@ export const SERVICES_URL = {
         USERS_PREFS : "/utilisateurs/v1/preferences"
     }
 }
-
+/**
+ *  Droits de l'utilisateur
+ **/
 export const UTILISATEUR_DROITS = {
     DROITS : {
         CLOTURE_BUDGET : "DROIT_RAZ_BUDGET",
