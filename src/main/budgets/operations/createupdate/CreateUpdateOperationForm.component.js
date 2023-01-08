@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
-import {getBackground} from '../../../Utils/DataUtils.utils'
+import {getBackgroundColorForPeriode} from '../../../Utils/DataUtils.utils'
 import BaseSelect from "react-select";
 import Select from "react-select";
 import RequiredSelect from "../../../Utils/RequiredSelect";
@@ -251,7 +251,7 @@ export default class CreateUpdateOperationForm extends Component {
                                             onChange={this.handleSelectPeriode}
                                             options={this.listePeriodes} className={"MuiDataGrid-main"}
                                             getOptionLabel={e => (
-                                                <div><Chip color={getBackground(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span></div>
+                                                <div><Chip color={getBackgroundColorForPeriode(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span></div>
                                             )} />
                                     {this.state.errorPeriode && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>

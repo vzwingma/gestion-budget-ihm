@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {Chip, Tooltip} from '@mui/material';
 
-import {getLibelle, getBackground} from "../../../Utils/DataUtils.utils";
+import {getLibellePeriode, getBackgroundColorForPeriode} from "../../../Utils/DataUtils.utils";
 
 export default class OperationMensualite extends Component {
 
@@ -20,7 +20,7 @@ export default class OperationMensualite extends Component {
             { /* Pas d'affichage pour 0 */ }
             { this.props.mensualite !== null && this.props.mensualite.periode !== 0 && this.props.mensualite.periode !== "PONCTUELLE" &&
                 <Tooltip title={ this.getTooltip() }>
-                    <Chip color={getBackground(this.props.mensualite.periode)} label={getLibelle(this.props.mensualite.periode)}
+                    <Chip color={getBackgroundColorForPeriode(this.props.mensualite.periode)} label={getLibellePeriode(this.props.mensualite.periode)}
                           size={"small"} style={{width: "100 px"}} className={"chipMensualite"} />
                 </Tooltip>
             }
