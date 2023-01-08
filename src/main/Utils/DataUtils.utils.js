@@ -105,7 +105,7 @@ export function sortDatesOperation(strDate1, strDate2) {
         const pattern = /(\d{2})\/(\d{2})\/(\d{4})/;
         let date1 = new Date(libDate1.replace(pattern,'$3-$2-$1'));
         let date2 = new Date(libDate2.replace(pattern,'$3-$2-$1'))
-        if (date1 > date2) {
+        if (date1 >= date2) {
             sort = 1;
         }
         else if (date1 < date2) {
