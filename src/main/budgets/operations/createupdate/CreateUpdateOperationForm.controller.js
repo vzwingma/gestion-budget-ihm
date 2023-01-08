@@ -1,5 +1,5 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
-import {getDateFromDateTime, getLibelleDate, sortLibelles} from "../../../Utils/DataUtils.utils";
+import {getDateFromDateTime, getDateForForm, sortLibellesCategories} from "../../../Utils/DataUtils.utils";
 import {toast} from "react-toastify";
 
 /**
@@ -7,12 +7,12 @@ import {toast} from "react-toastify";
  */
     export function categoriesLoaded(data){
         // Transformation des catégories en affichage
-        const mapCategories = data.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibelles)
+        const mapCategories = data.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibellesCategories)
         const mapSsCategories = mapCategories.flatMap(cat => cat.sousCategories)
                                              .map(ssCat => {
                                                 return { value: ssCat.text, text: ssCat.categorie.text + "/" + ssCat.text, id: ssCat.id, categorie: { value: ssCat.categorie.value, text: ssCat.categorie.text, id: ssCat.categorie.id} }
                                             })
-                                            .sort(sortLibelles)
+                                            .sort(sortLibellesCategories)
         this.setState({ categoriesSelect : mapCategories, ssCategoriesSelect : mapSsCategories, ssCategoriesAll: mapSsCategories })
     }
 
@@ -142,7 +142,7 @@ import {toast} from "react-toastify";
     export function handleSelectEtat(event){
         let dateOperation = ""
         if(event.value === "REALISEE"){
-            dateOperation = getLibelleDate(new Date(), "AAAA-MM-DD")
+            dateOperation = getDateForForm(new Date())
         }
         this.setState({formEtat : event,
                        formDateOperation: dateOperation})
