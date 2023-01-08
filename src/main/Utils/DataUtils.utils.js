@@ -90,24 +90,32 @@ export function sortLibellesCategories(lib1, lib2) {
 export function sortDatesOperation(strDate1, strDate2) {
     let libDate1 = strDate1.trim();
     let libDate2 = strDate2.trim();
+    let sort;
+
     if((libDate1 === null || libDate1 === '-') && (libDate2 === null || libDate2 === '-')){
-        return 0;
+        sort = 0;
     }
-    if((libDate1 === null || libDate1 === '-')){
-        return -1;
+    else if((libDate1 === null || libDate1 === '-')){
+        sort = -1;
     }
-    if((libDate2 === null || libDate2 === '-')){
-        return 1;
+    else if((libDate2 === null || libDate2 === '-')){
+        sort = 1;
     }
-    let date1 = new Date(Date.parse(libDate1))
-    let date2 = new Date(Date.parse(libDate2))
-    if (date1 > date2) {
-        return 1;
+    else{
+        const pattern = /(\d{2})\/(\d{2})\/(\d{4})/;
+        let date1 = new Date(libDate1.replace(pattern,'$3-$2-$1'));
+        let date2 = new Date(libDate2.replace(pattern,'$3-$2-$1'))
+        if (date1 > date2) {
+            sort = 1;
+        }
+        else if (date1 < date2) {
+            sort = -1;
+        }
+        else{
+            sort = 0;
+        }
     }
-    if (date1 < date2) {
-        return -1;
-    }
-    return 0;
+    return sort;
 }
 
 
