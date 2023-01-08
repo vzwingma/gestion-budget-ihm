@@ -18,9 +18,7 @@ import OperationMensualite from "./renderers/OperationBadgeMensualite.component"
 import * as ActionController from './renderers/OperationActions.controller';
 
 
-
-
-/*
+/**
  * Liste des opérations
  */
 export default class OperationsList extends Component {
@@ -46,7 +44,8 @@ export default class OperationsList extends Component {
             headerName: 'Jour opé.',
             type: "date",
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateOperation, "JJ/MM/AAAA") || '-'} `,
+            sortComparator: Controller.sorterDate,
+            valueGetter: (params: GridValueGetterParams) => `${DataUtils.getRenderLibelleDate(params.row.autresInfos.dateOperation) || '-'} `,
         },
         {
             field: 'categorie',
@@ -102,7 +101,8 @@ export default class OperationsList extends Component {
             headerName: 'Mise à jour',
             type: "string",
             editable: false, sortable: true,
-            valueGetter: (params: GridValueGetterParams) => `${DataUtils.getLibelleDate(params.row.autresInfos.dateMaj, "JJ/MM/AAAA") || '-'} `,
+            sortComparator: Controller.sorterDate,
+            valueGetter: (params: GridValueGetterParams) => `${DataUtils.getRenderLibelleDate(params.row.autresInfos.dateMaj) || '-'} `,
         },
     ];
 

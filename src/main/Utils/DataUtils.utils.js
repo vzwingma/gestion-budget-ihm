@@ -28,39 +28,28 @@ export function addEndingZeros(num) {
 /**
  * Calcul d'un libellé d'une date depuis son time in ms
  * @param dateString date en string
- * @param pattern pattern de sortie : JJ/MM/AAAA ou AAAA-MM-DD
  * @returns {string} date au format issu du pattern
  */
-export function getLibelleDate(dateString, pattern){
+export function getRenderLibelleDate(dateString){
     if( dateString != null){
         let date = new Date(Date.parse(dateString))
-        if(pattern === "JJ/MM/AAAA"){
-            return addLeadingZeros(date.getDate()) + "/" + addLeadingZeros(date.getMonth()+1) +"/" + date.getFullYear();
-        }
-        else if(pattern === "AAAA-MM-DD"){
-            return date.getFullYear() + "-" + addLeadingZeros(date.getMonth()+1) + "-" + addLeadingZeros(date.getDate())
-        }
+        return addLeadingZeros(date.getDate()) + "/" + addLeadingZeros(date.getMonth()+1) +"/" + date.getFullYear();
     }
     return "-"
 }
 
-
-
 /**
- * Tri par libellé
- * @param lib1 premier libellé
- * @param lib2 2ème libellé
- * @returns {number} comparaison
+ * Calcul d'un libellé d'une date depuis son time in ms
+ * @param date date a afficher
+ * @returns {string} date au format issu du pattern YYYY-MM-DD
  */
-export function sortLibelles(lib1, lib2) {
-    if (lib1.text > lib2.text) {
-        return 1;
+export function getDateForForm(date){
+    if( date != null){
+        return date.getFullYear() + "-" + addLeadingZeros(date.getMonth()+1) + "-" + addLeadingZeros(date.getDate());
     }
-    if (lib1.text < lib2.text) {
-        return -1;
-    }
-    return 0;
+    return null
 }
+
 
 /**
  * Extrait la date d'un datetime
@@ -76,11 +65,58 @@ export function getDateFromDateTime(dateTime){
 
 
 
+/**
+ * Tri par libellé
+ * @param lib1 premier libellé
+ * @param lib2 2ème libellé
+ * @returns {number} comparaison
+ */
+export function sortLibellesCategories(lib1, lib2) {
+    if (lib1.text > lib2.text) {
+        return 1;
+    }
+    if (lib1.text < lib2.text) {
+        return -1;
+    }
+    return 0;
+}
+
+/**
+ * Tri par date
+ * @param strDate1 : string premiere date
+ * @param strDate2 : string 2ème date
+ * @returns {number} comparaison
+ */
+export function sortDatesOperation(strDate1, strDate2) {
+    let libDate1 = strDate1.trim();
+    let libDate2 = strDate2.trim();
+    if((libDate1 === null || libDate1 === '-') && (libDate2 === null || libDate2 === '-')){
+        return 0;
+    }
+    if((libDate1 === null || libDate1 === '-')){
+        return -1;
+    }
+    if((libDate2 === null || libDate2 === '-')){
+        return 1;
+    }
+    let date1 = new Date(Date.parse(libDate1))
+    let date2 = new Date(Date.parse(libDate2))
+    if (date1 > date2) {
+        return 1;
+    }
+    if (date1 < date2) {
+        return -1;
+    }
+    return 0;
+}
+
+
+
 /** Libellé du badge Mensualité
- * @param periode : enum période
+ * @param periode : string enum période
  * */
 
-export function getLibelle(periode){
+export function getLibellePeriode(periode){
     switch (periode) {
         case "MENSUELLE":
             return "Mensuelle";
@@ -96,9 +132,9 @@ export function getLibelle(periode){
 }
 
 /** Couleur du background du badge Mensualité
- * @param periode : enum période
+ * @param periode : string enum période
  * */
-export function getBackground(periode){
+export function getBackgroundColorForPeriode(periode){
     switch (periode) {
         case "MENSUELLE":
             return "default";
