@@ -41,7 +41,7 @@ function Profile() {
 
                 <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
                     <Tooltip title={  auth.user?.profile.name }>
-                        <img onClick={ logOut } src={ auth.user?.profile.picture } width="60" height="60" alt="User loggé"/>
+                        <img onClick={ logOut } src={ auth.user?.profile.picture } width="60" height="60" alt="User loggé"  referrerpolicy="no-referrer"/>
                     </Tooltip>
                 </Typography>
             </>
