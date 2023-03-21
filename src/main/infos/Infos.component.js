@@ -89,7 +89,9 @@ export default class Infos extends Component {
                     </TableRow>
                 </TableBody>
                 <TableFooter>
-                    <TableCell align={"right"}>by Z.corp</TableCell>
+                    <TableRow>
+                        <TableCell align={"right"}>by Zed.corp</TableCell>
+                    </TableRow>
                 </TableFooter>
         </center>
         )

@@ -42,7 +42,7 @@ export default class OperationsList extends Component {
         {
             field: 'autresInfos.dateOperation',
             headerName: 'Jour opé.',
-            type: "date",
+            type: 'string',
             editable: false, sortable: true,
             sortComparator: Controller.sorterDate,
             valueGetter: (params: GridValueGetterParams) => `${DataUtils.getRenderLibelleDate(params.row.autresInfos.dateOperation) || '-'} `,
@@ -99,7 +99,7 @@ export default class OperationsList extends Component {
         {
             field: 'autresInfos.dateMaj',
             headerName: 'Mise à jour',
-            type: "string",
+            type: 'string',
             editable: false, sortable: true,
             sortComparator: Controller.sorterDate,
             valueGetter: (params: GridValueGetterParams) => `${DataUtils.getRenderLibelleDate(params.row.autresInfos.dateMaj) || '-'} `,
