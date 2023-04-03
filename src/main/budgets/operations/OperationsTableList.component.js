@@ -180,11 +180,14 @@ export default class OperationsList extends Component {
                         initialState={{
                             columns: {
                                 // Hide columns id, the other columns will remain visible
-                                columnVisibilityModel: { id: false, actions: (this.props.budget.actif) } ,
+                                columnVisibilityModel: { id: false } ,
                             },
                             sorting: {
                                 sortModel: [{ field: 'autresInfos.dateOperation', sort: 'desc' }],
                             },
+                        }}
+                        columnVisibilityModel={{
+                            actions: (this.props.budget.actif)
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
