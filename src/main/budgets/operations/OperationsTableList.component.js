@@ -187,6 +187,7 @@ export default class OperationsList extends Component {
                             },
                         }}
                         columnVisibilityModel={{
+                            id: false,
                             actions: (this.props.budget.actif)
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
