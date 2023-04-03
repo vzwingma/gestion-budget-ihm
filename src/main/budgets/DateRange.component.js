@@ -54,9 +54,11 @@ export default class DateRange extends Component {
         }
         else if(this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()){
             // console.log("[TRIGGER] Context :: date=" + nextStates.dateCurrentBudget.toLocaleDateString() )
+            this.refreshDatesFromCompte(nextProps.idCompte)
             return true;
         }
         else if(this.state.showModale !== nextStates.showModale){
+            this.refreshDatesFromCompte(nextProps.idCompte)
             return true
         }
         return false;
