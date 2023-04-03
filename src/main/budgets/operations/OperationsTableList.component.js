@@ -90,11 +90,11 @@ export default class OperationsList extends Component {
             renderCell: this.renderEtat,
         },
         {
-            field: "actions",
+            field: 'actions',
             headerName: 'Actions' ,
             editable: false, sortable: false ,
             renderCell: this.renderActions,
-            type: "actions"
+            type: 'actions'
         },
         {
             field: 'autresInfos.dateMaj',
@@ -161,7 +161,7 @@ export default class OperationsList extends Component {
      */
     componentDidUpdate(prevProps) {
         if (this.props.budget !== prevProps.budget) {
-            this.setState({idOperation : null})
+            this.setState({idOperation : null })
         }
     }
 
@@ -173,17 +173,22 @@ export default class OperationsList extends Component {
 
         return (
             <>
+
                 <Container maxWidth="xl">
 
                     <DataGrid
                         initialState={{
                             columns: {
                                 // Hide columns id, the other columns will remain visible
-                                columnVisibilityModel: { id: false},
+                                columnVisibilityModel: { id: false } ,
                             },
                             sorting: {
                                 sortModel: [{ field: 'autresInfos.dateOperation', sort: 'desc' }],
                             },
+                        }}
+                        columnVisibilityModel={{
+                            id: false,
+                            actions: (this.props.budget.actif)
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}

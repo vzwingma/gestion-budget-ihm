@@ -73,7 +73,7 @@ import {sortDatesOperation} from "../../Utils/DataUtils.utils";
         });
         // hook : màj du state pour refresh de l'ihm
         this.setState({ idOperation : null});
-        toast.success("L'opération a bien été idendifiée comme dernière traitée")
+        toast.success("L'opération a bien été identifiée comme dernière traitée")
     }
 
 
