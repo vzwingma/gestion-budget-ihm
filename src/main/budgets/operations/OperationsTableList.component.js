@@ -185,6 +185,7 @@ export default class OperationsList extends Component {
                             sorting: {
                                 sortModel: [{ field: 'autresInfos.dateOperation', sort: 'desc' }],
                             },
+                            pagination: { paginationModel: { pageSize: 18 } },
                         }}
                         columnVisibilityModel={{
                             id: false,
@@ -192,12 +193,11 @@ export default class OperationsList extends Component {
                         }}
                         rows={this.props.budget.listeOperations.filter(T => T.etat !== "PLANIFIEE")}
                         columns={this.columns}
-                        pageSize={18} rowsPerPageOptions={[18]}
+                        pageSizeOptions={[ 100 ]}
                         autoHeight={true} density={"compact"}
                         disableSelectionOnClick={!this.props.budget.actif}
                         disableColumnMenu={true}
                         hideFooterSelectedRowCount={true}
-
                         onCellClick={this.handleToggleClick} onRowDoubleClick={this.handleOperationLast} onRowClick={this.handleOperationSelect}
                     />
                     { this.props.budget.actif &&
