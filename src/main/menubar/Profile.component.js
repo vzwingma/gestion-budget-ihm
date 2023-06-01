@@ -52,7 +52,7 @@ function Profile() {
             <>
                 <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
                     <Tooltip title="Non connecté. Cliquez pour vous identifier">
-                        <img onClick={() => void auth.signinRedirect()} src="/img/avatar.png" width="60" height="60" alt="User loggé"/>
+                        <img onClick={() => auth.signinRedirect()} src="/img/avatar.png" width="60" height="60" alt="User loggé"/>
                     </Tooltip>
                 </Typography>
             </>
