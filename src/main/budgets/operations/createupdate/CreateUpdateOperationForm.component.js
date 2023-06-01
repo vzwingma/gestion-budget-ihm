@@ -3,10 +3,17 @@ import React, {Component} from 'react';
 import {
     Box,
     Button,
-    ButtonGroup, Chip,
-    Dialog, DialogContent,
-    DialogTitle, FormControl, FormHelperText,
-    FormLabel, Input, InputAdornment, TextField,
+    ButtonGroup,
+    Chip,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    Input,
+    InputAdornment,
+    TextField,
     Tooltip
 } from '@mui/material';
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
@@ -148,21 +155,39 @@ export default class CreateUpdateOperationForm extends Component {
      * @param e option
      * @returns {JSX.Element} render de l'option
      */
-    renderOptionLabel(e){
+    renderOptionLabel(e) {
         return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span style={{ fontSize:".875rem" }}>{e.text}</span>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+                <span style={{fontSize: ".875rem"}}>{e.text}</span>
             </div>
         )
     }
 
-    renderOptionIconLabel(e){
+    /**
+     * Render Options icone
+     * @param e option
+     * @returns {JSX.Element} render de l'option
+     */
+    renderOptionIconLabel(e) {
         return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                {e.icon} <span style={{ marginLeft: 5, fontSize:12 }}>{e.text}</span>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+                {e.icon} <span style={{marginLeft: 5, fontSize: 12}}>{e.text}</span>
             </div>
         )
     }
+
+    /**
+     * Render Options Période
+     * @param e option
+     * @returns {JSX.Element} render de l'option
+     */
+    renderOptionPeriode(e) {
+        return (
+            <div><Chip color={getBackgroundColorForPeriode(e.value)} label="  " size={"small"}/> <span
+                style={{fontSize: ".875rem"}}>{e.text}</span></div>
+        )
+    }
+
 
     /**
      *  RENDER
@@ -170,7 +195,7 @@ export default class CreateUpdateOperationForm extends Component {
     render() {
         return (
             <>
-                { /** Fenêtre modale - Formulaire  **/ }
+                { /** Fenêtre modale - Formulaire  **/}
                 <Dialog open={this.props.showModale}>
 
                     <DialogTitle bgcolor={"#1976d2"} color={"white"}>
@@ -247,12 +272,11 @@ export default class CreateUpdateOperationForm extends Component {
                             </Grid2>
                             <Grid2 item xs={8}>
                                 <FormControl fullWidth required error={this.state.errorPeriode}>
-                                    <Select required size="sm" value={this.state.formOperationPeriodique} placeholder={"Sélectionnez une période"}
+                                    <Select required size="sm" value={this.state.formOperationPeriodique}
+                                            placeholder={"Sélectionnez une période"}
                                             onChange={this.handleSelectPeriode}
                                             options={this.listePeriodes} className={"MuiDataGrid-main"}
-                                            getOptionLabel={e => (
-                                                <div><Chip color={getBackgroundColorForPeriode(e.value)} label="  " size={"small"} /> <span style={{ fontSize:".875rem" }}>{e.text}</span></div>
-                                            )} />
+                                            getOptionLabel={e => this.renderOptionPeriode(e)}/>
                                     {this.state.errorPeriode && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                             </Grid2>
