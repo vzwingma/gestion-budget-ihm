@@ -74,7 +74,6 @@ export default class CreateUpdateOperationForm extends Component {
         formCompteCible         : null,
         formDescription         : "",
         formValeur              : "",
-        // TODO : Utiliser la préférence utilisateur
         formEtat                : this.listeEtats[0],
         formDateOperation       : "",
         formOperationType       : this.listeType[0],
