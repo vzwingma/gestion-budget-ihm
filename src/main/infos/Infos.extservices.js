@@ -1,4 +1,4 @@
-import {SERVICES_URL} from "../Utils/AppEnums.constants"
+import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppEnums.constants"
 import {call} from "../Services/ClientHTTP.service";
 
 
@@ -7,8 +7,18 @@ import {call} from "../Services/ClientHTTP.service";
  * @returns {Promise<void>}
  */
 export async function getInfosFromMicroServices() {
+
+    /** Config Backend **/
+    const backEnds = [
+        {idMS: 'API Paramétrage', url: BACKEND_ENUM.URL_PARAMS},
+        {idMS: 'API Utilisateurs', url: BACKEND_ENUM.URL_UTILISATEURS},
+        {idMS: 'API Comptes', url: BACKEND_ENUM.URL_COMPTES},
+        {idMS: 'API Opérations', url: BACKEND_ENUM.URL_OPERATIONS}
+    ]
+
+
     let infosUpdated = []
-    for await (const backEnd of this.backEnds.filter(backEnd => backEnd.url !== undefined)) {
+    for await (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
         call('GET', backEnd.url, SERVICES_URL.INFOS.GET_INFO)
             .then((data) => {
                 infosUpdated.push(data)
