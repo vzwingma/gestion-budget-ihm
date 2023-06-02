@@ -1,20 +1,11 @@
 import React, {Component} from "react";
 import ModuleInfos from "./MicroServicesInfos.component";
-import {BACKEND_ENUM} from "../Utils/AppEnums.constants"
 import {Table, TableBody, TableCell, TableFooter, TableHead, TableRow} from "@mui/material";
 import * as Services from "./Infos.extservices";
 
 
 export default class Infos extends Component {
 
-
-    /** Config Backend **/
-    backEnds = [
-        {idMS: 'API Paramétrage', url: BACKEND_ENUM.URL_PARAMS},
-        {idMS: 'API Utilisateurs', url: BACKEND_ENUM.URL_UTILISATEURS},
-        {idMS: 'API Comptes', url: BACKEND_ENUM.URL_COMPTES},
-        {idMS: 'API Opérations', url: BACKEND_ENUM.URL_OPERATIONS}
-    ]
 
 
     constructor(props) {
