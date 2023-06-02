@@ -1,56 +1,39 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import ModuleInfos from "./MicroServicesInfos.component";
-import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppEnums.constants"
-import {call} from "../Services/ClientHTTP.service";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableRow
-} from "@mui/material";
+import {BACKEND_ENUM} from "../Utils/AppEnums.constants"
+import {Table, TableBody, TableCell, TableFooter, TableHead, TableRow} from "@mui/material";
+import * as Services from "./Infos.extservices";
 
 
 export default class Infos extends Component {
 
-    /** Etats pour la page Infos **/
-      state = {
-          infos: []
-      }
+
     /** Config Backend **/
-      backEnds = [
-        {idMS: 'API Paramétrage',   url: BACKEND_ENUM.URL_PARAMS},
-        {idMS: 'API Utilisateurs',  url: BACKEND_ENUM.URL_UTILISATEURS},
-        {idMS: 'API Comptes',       url: BACKEND_ENUM.URL_COMPTES},
-        {idMS: 'API Opérations',    url: BACKEND_ENUM.URL_OPERATIONS}
-      ]
+    backEnds = [
+        {idMS: 'API Paramétrage', url: BACKEND_ENUM.URL_PARAMS},
+        {idMS: 'API Utilisateurs', url: BACKEND_ENUM.URL_UTILISATEURS},
+        {idMS: 'API Comptes', url: BACKEND_ENUM.URL_COMPTES},
+        {idMS: 'API Opérations', url: BACKEND_ENUM.URL_OPERATIONS}
+    ]
+
+
+    constructor(props) {
+        super(props);
+        /** Etats pour la page Infos **/
+
+        this.state = {
+            infos: []
+        };
+        this.getInfosFromMicroServices = Services.getInfosFromMicroServices.bind(this);
+    }
+
 
     /** Appels WS vers /actuator/info pour tous les µS **/
     componentDidMount() {
 
-        let infosUpdated = []
-        // Itération sur tous les composants
-        this.backEnds
-            .filter(backEnd => backEnd.url !== undefined)
-            .forEach(backEnd =>
-                call('GET', backEnd.url, SERVICES_URL.INFOS.GET_INFO)
-                    .then((data) => {
-                        infosUpdated.push(data)
-                        this.setState({ infos: infosUpdated })
-                    })
-                    .catch(() => {
-                        console.log("Erreur pour " + backEnd.idMS)
-                        const errData = {
-                            nom: backEnd.idMS,
-                            version : 'N/A',
-                            description: 'Module pour les ' + backEnd.idMS
-                        };
-                        infosUpdated.push(errData)
-                        this.setState({ infos: infosUpdated })
-                    })
-            )
-      }
+        this.getInfosFromMicroServices();
+
+    }
 
     /** Phase de Render à partir de la liste de statuts  **/
     render() {
