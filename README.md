@@ -1,10 +1,10 @@
 
 ## Application Web de gestion du budget
 
-| Module | Version |
-|----------|----------|
-| [IHM](https://github.com/vzwingma/gestion-budget-ihm) |  [![GitHub version](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-ihm.svg)](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-ihm) |
-| [Services](https://github.com/vzwingma/gestion-budget-services) | [![GitHub version](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-services.svg)](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-services)
+| Module                                                                       | Version                                                                                                                                               |
+|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [IHM](https://github.com/vzwingma/gestion-budget-ihm)                        | [![GitHub version](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-ihm.svg)](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-ihm)               |
+| [Services serverless](https://github.com/vzwingma/gestion-budget-serverless) | [![GitHub version](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-serverless.svg)](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-serverless) |
 
 ### Statut
 [![CI on Master](https://github.com/vzwingma/gestion-budget-ihm/actions/workflows/build-on-master.yml/badge.svg)](https://github.com/vzwingma/gestion-budget-ihm/actions/workflows/build-on-master.yml)
