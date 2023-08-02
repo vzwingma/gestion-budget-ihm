@@ -1,5 +1,6 @@
 /** Client HTTP **/
-import { getOAuthToken } from './Auth.service'
+import {getOAuthToken} from './Auth.service'
+import * as AppConstants from "../Utils/AppEnums.constants";
 
 
 /**
@@ -31,9 +32,10 @@ export function call(httpMethod, uri, path, params, body ) {
     return fetch(fullURL,
         {
             method: httpMethod,
+            mode: "cors",
             headers: new Headers({
-                'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'X-Api-Key': AppConstants.API_GW_ENUM.API_KEY,
                 'Authorization' : 'Bearer ' + getOAuthToken()
             }),
             body: jsonBody
@@ -44,6 +46,7 @@ export function call(httpMethod, uri, path, params, body ) {
                 return res.json();
             }
             else{
+                console.log(res)
                 throw new Error(res.statusText);
             }
         })

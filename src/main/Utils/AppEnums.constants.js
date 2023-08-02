@@ -10,14 +10,18 @@ export const OIDC_ENUM = {
     URL: window.location.href
 }
 
+export const API_GW_ENUM = {
+    API_KEY: process.env.REACT_APP_CONFIG_API_KEY
+}
+
 /**
     Enum des Backends
 */
 export const BACKEND_ENUM = {
-    URL_COMPTES: process.env.REACT_APP_CONFIG_URL_BACKENDS + "/comptes/v2",
-    URL_PARAMS: process.env.REACT_APP_CONFIG_URL_BACKENDS + "/parametres/v2",
-    URL_UTILISATEURS: process.env.REACT_APP_CONFIG_URL_BACKENDS + "/utilisateurs/v2",
-    URL_OPERATIONS: process.env.REACT_APP_CONFIG_URL_BACKENDS + "/budgets/v2"
+    URL_COMPTES: process.env.REACT_APP_CONFIG_URL_COMPTES + "/comptes/v2",
+    URL_PARAMS: process.env.REACT_APP_CONFIG_URL_PARAMS + "/parametres/v2",
+    URL_UTILISATEURS: process.env.REACT_APP_CONFIG_URL_UTILISATEURS + "/utilisateurs/v2",
+    URL_OPERATIONS: process.env.REACT_APP_CONFIG_URL_OPERATIONS + "/budgets/v2"
 }
 /**
  *  Services
