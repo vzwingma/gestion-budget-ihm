@@ -33,7 +33,7 @@ jobs:
       name: CI Install
     -
       name: Update config in .env
-      run: sed -e 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' -e 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' -e 's/__CONFIG_URL_BACKENDS__/${{ vars.CONFIG_URL_BACKENDS }}/g' -e 's/__API_GW_API_KEY__/${{ vars.API_GW_API_KEY }}/g' external-ressources/conf/.env.staging;
+      run: sed -e 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' -e 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' -e 's/__CONFIG_URL_BACKENDS__/${{ vars.CONFIG_URL_BACKENDS }}/g' -e 's/__API_GW_API_KEY__/${{ secrets.API_GW_API_KEY }}/g' external-ressources/conf/.env.staging;
     -
       run: mv external-ressources/conf/.env.staging .env
       name: Set env STAGING
