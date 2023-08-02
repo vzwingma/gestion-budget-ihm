@@ -101,7 +101,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    name: deploy to S3
+    name: deploy to S3 QUA
     needs: build
     steps:
       -
@@ -123,4 +123,4 @@ jobs:
           delete-removed: true
           no-cache: true
           private: true
-          files-to-include: ".*/*,*/*,**"
+          filesToInclude: ".*/*,*/*,**"
