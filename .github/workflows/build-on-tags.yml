@@ -1,4 +1,4 @@
-name: CI - Release IHM
+name: CI/CD - Release IHM
 
 # Controls when the action will run.
 on:

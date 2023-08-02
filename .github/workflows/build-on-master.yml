@@ -1,4 +1,4 @@
-name: CI on Master
+name: CI/CD - Snapshot IHM
   # Controls when the action will run.
 # Triggers the workflow on push or pull request events on all but the master branch
 on:
