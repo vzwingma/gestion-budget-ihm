@@ -10,14 +10,18 @@ export const OIDC_ENUM = {
     URL: window.location.href
 }
 
+export const API_GW_ENUM = {
+    API_KEY: process.env.REACT_APP_CONFIG_API_KEY
+}
+
 /**
     Enum des Backends
 */
 export const BACKEND_ENUM = {
-    URL_COMPTES : process.env.REACT_APP_CONFIG_URL_COMPTES,
-    URL_PARAMS : process.env.REACT_APP_CONFIG_URL_PARAMS,
-    URL_UTILISATEURS : process.env.REACT_APP_CONFIG_URL_UTILISATEURS,
-    URL_OPERATIONS : process.env.REACT_APP_CONFIG_URL_OPERATIONS
+    URL_COMPTES: process.env.REACT_APP_CONFIG_URL_COMPTES + "/comptes/v2",
+    URL_PARAMS: process.env.REACT_APP_CONFIG_URL_PARAMS + "/parametres/v2",
+    URL_UTILISATEURS: process.env.REACT_APP_CONFIG_URL_UTILISATEURS + "/utilisateurs/v2",
+    URL_OPERATIONS: process.env.REACT_APP_CONFIG_URL_OPERATIONS + "/budgets/v2"
 }
 /**
  *  Services
@@ -27,26 +31,26 @@ export const SERVICES_URL = {
         GET_INFO : "/_info"
     },
     COMPTES : {
-        GET_ALL : "/comptes/v1"
+        GET_ALL: "/tous"
     },
     BUDGETS : {
-        REINIT: "/budgets/v1/{{}}",
-        INTERVALLE : "/budgets/v1/{{}}/intervalles",
-        GET : "/budgets/v1/query?idCompte={{}}&annee={{}}&mois={{}}",
-        ETAT : "/budgets/v1/{{}}/etat?actif={{}}"
+        REINIT: "/{{}}",
+        INTERVALLE: "/{{}}/intervalles",
+        GET: "/query?idCompte={{}}&annee={{}}&mois={{}}",
+        ETAT: "/{{}}/etat?actif={{}}"
     },
     OPERATIONS : {
-        CREATE : "/budgets/v1/{{}}/operations",
-        UPDATE : "/budgets/v1/{{}}/operations/{{}}",
-        DERNIERE : "/budgets/v1/{{}}/operations/{{}}/derniereOperation",
-        INTERCOMPTE : "/budgets/v1/{{}}/operations/versCompte/{{}}"
+        CREATE: "/{{}}/operations",
+        UPDATE: "/{{}}/operations/{{}}",
+        DERNIERE: "/{{}}/operations/{{}}/derniereOperation",
+        INTERCOMPTE: "/{{}}/operations/versCompte/{{}}"
     },
     PARAMETRES : {
-        CATEGORIES : "/parametres/v1/categories"
+        CATEGORIES: "/categories"
     },
     UTILISATEURS : {
-        ACCESS_DATE : "/utilisateurs/v1/lastaccessdate",
-        USERS_PREFS : "/utilisateurs/v1/preferences"
+        ACCESS_DATE: "/lastaccessdate",
+        USERS_PREFS: "/preferences"
     }
 }
 /**
