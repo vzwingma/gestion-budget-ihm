@@ -93,6 +93,21 @@ import {sortDatesOperation} from "../../Utils/DataUtils.utils";
  * @param v2 catégorie 2
  * @returns {number} etat de comparaison
  */
-export const sorterCategorie: GridComparatorFn<string> = (v1, v2) => (v1 != null && v2 != null) ? v1.libelle.localeCompare(v2.libelle) : 1
+export const sorterCategorie: GridComparatorFn<string> = (v1, v2) => (v1 != null && v1.libelle != null && v2 != null && v2.libelle != null) ? v1.libelle.localeCompare(v2.libelle) : 1
 
+/**
+ * Comparateur pour trier les dates
+ * @param d1    date 1
+ * @param d2    date 2
+ * @returns {number|number} etat de comparaison
+ */
 export const sorterDate: GridComparatorFn<string> = (d1, d2) => (d1 != null && d2 != null) ? sortDatesOperation(d1, d2) : 1
+
+/**
+ * Comparateur pour trier les mensualités
+ * @param m1    mensualité 1
+ * @param m2    mensualité 2
+ * @returns {number|number} etat de comparaison
+ */
+export const sorterMensualite: GridComparatorFn<string> = (m1, m2) => (m1 != null && m2 != null) ? (m1.rangPeriode > m2.rangPeriode ? 1 : -1) : 1
+

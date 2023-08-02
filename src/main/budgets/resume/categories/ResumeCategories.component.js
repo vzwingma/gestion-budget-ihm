@@ -26,7 +26,7 @@ const ResumeCategories = ({ currentBudget, categories }) => {
         mapArbreTotaux.push(totalCat);
         // Itération des catégories
         categories
-            .filter(catParam => catParam.id === idCategorie)
+            .filter(catParam => catParam != null && catParam.id === idCategorie)
             .flatMap(catParam => catParam.listeSSCategories)
             .map(ssCatParam => (
                 mapTotauxSsCategories
