@@ -31,7 +31,7 @@ export const SERVICES_URL = {
         GET_INFO : "/_info"
     },
     COMPTES : {
-        GET_ALL: "/"
+        GET_ALL: "/tous"
     },
     BUDGETS : {
         REINIT: "/{{}}",
