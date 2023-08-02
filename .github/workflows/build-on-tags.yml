@@ -43,10 +43,13 @@ jobs:
       -
         run: npm run test
         name: Unit tests
-      -
-        name: Update config in .env
+      - name: Update config in .env.production
         run: |
-          sed -e 's/__BUDGET_IHM_VERSION__/${{ steps.get_version.outputs.VERSION }}/g' -e 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' -e 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' -e 's/__CONFIG_URL_BACKENDS__/${{ vars.CONFIG_URL_BACKENDS }}/g' -e 's/__API_GW_API_KEY__/${{ secrets.API_GW_API_KEY }}/g' external-ressources/conf/.env.production;
+          sed -i 's/__BUDGET_IHM_VERSION__/${{ steps.get_version.outputs.VERSION }}/g' external-ressources/conf/.env.production;
+          sed -i 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' external-ressources/conf/.env.production;
+          sed -i 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.production;
+          sed -i 's/__CONFIG_URL_BACKENDS__/${{ vars.CONFIG_URL_BACKENDS }}/g' external-ressources/conf/.env.production;
+          sed -i 's/__API_GW_API_KEY__/${{ secrets.API_GW_API_KEY }}/g' external-ressources/conf/.env.production;
       -
         run: mv external-ressources/conf/.env.production .env
         name: Set env PRODUCTION
