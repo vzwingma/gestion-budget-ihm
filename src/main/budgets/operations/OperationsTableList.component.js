@@ -1,10 +1,16 @@
 import React, {Component} from "react";
 import {
-    Button, ButtonGroup,
-    Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle, Container, Tooltip
+    Button,
+    ButtonGroup,
+    Container,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Tooltip
 } from '@mui/material';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import {DataGrid, GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
 
 import OperationActions from './renderers/OperationActions.component';
 import OperationEtat from './renderers/OperationBadgeEtat.component';
@@ -82,6 +88,7 @@ export default class OperationsList extends Component {
             headerName: 'Période',
             editable: false, sortable: true,
             renderCell: this.renderMensualite,
+            sortComparator: Controller.sorterMensualite,
         },
         {
             field: 'etat',
