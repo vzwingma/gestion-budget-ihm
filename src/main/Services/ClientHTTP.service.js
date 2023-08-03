@@ -2,7 +2,7 @@
 import {getOAuthToken} from './Auth.service'
 import * as AppConstants from "../Utils/AppEnums.constants";
 
-
+var alreadyTraced = false;
 /**
  * Appel HTTP vers le backend
  * @param httpMethod méthode HTTP
@@ -28,9 +28,12 @@ export function call(httpMethod, uri, path, params, body ) {
         jsonBody = JSON.stringify(body)
     //    console.log("[WS] > Body: " + jsonBody);
     }
-    if (process.env.REACT_APP_CONFIG_DEBUG) {
+    if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
         console.log("[WS] > [X-Api-Key] : " + AppConstants.API_GW_ENUM.API_KEY);
         console.log("[WS] > [Bearer] : " + getOAuthToken());
+        if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
+            alreadyTraced = true;
+        }
     }
 
     return fetch(fullURL,
@@ -45,7 +48,7 @@ export function call(httpMethod, uri, path, params, body ) {
             body: jsonBody
         })
         .then(res => {
-            console.log("[WS] < [" + res.status + " - " + res.statusText +"]")
+            console.log("[WS] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
             if(res.status >= 200 && res.status < 300){
                 return res.json();
             }
