@@ -112,12 +112,9 @@ jobs:
           name: app_build.zip
       -
         name: Unzip app archive
-        run: |
-          unzip app_build.zip
-          ls 
-          ls build
+        run: unzip app_build.zip
       - name: Deploy
-        uses: reggionick/s3-deploy@v4
+        uses: reggionick/s3-deploy@v3
         with:
           folder: build
           bucket: budget-app-ihm-qua
@@ -126,7 +123,7 @@ jobs:
           delete-removed: true
           no-cache: true
           private: true
-          files-to-include: ".*/*,*/*,**"
+          filesToInclude: ".*/*,*/*,**"
   # PUBLISH DOCKER IMAGES
   docker:
     runs-on: ubuntu-latest
