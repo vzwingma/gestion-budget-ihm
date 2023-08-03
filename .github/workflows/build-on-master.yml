@@ -123,7 +123,7 @@ jobs:
           delete-removed: true
           no-cache: true
           private: true
-          filesToInclude: ".*/*,*/*,**"
+          files-to-include: ".*/*,*/*,**"
   # PUBLISH DOCKER IMAGES
   docker:
     runs-on: ubuntu-latest
