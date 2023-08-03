@@ -91,6 +91,7 @@ jobs:
           bucket: budget-app-ihm
           bucket-region: eu-west-3
           invalidation: /
+          dist-id: ECVOXDF9144XV
           delete-removed: true
           no-cache: true
           private: true
