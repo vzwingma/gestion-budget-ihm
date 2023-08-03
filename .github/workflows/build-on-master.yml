@@ -119,6 +119,8 @@ jobs:
           folder: build
           bucket: budget-app-ihm-qua
           bucket-region: eu-west-3
+          invalidation: /
+          dist-id: E1PBK2ENEPNHGV
           delete-removed: true
           no-cache: true
           private: true
