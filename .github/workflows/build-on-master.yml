@@ -112,7 +112,10 @@ jobs:
           name: app_build.zip
       -
         name: Unzip app archive
-        run: unzip app_build.zip
+        run: |
+          unzip app_build.zip
+          ls 
+          ls build
       - name: Deploy
         uses: reggionick/s3-deploy@v4
         with:
