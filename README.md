@@ -7,9 +7,10 @@
 | [Services serverless](https://github.com/vzwingma/gestion-budget-serverless) | [![GitHub version](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-serverless.svg)](https://badge.fury.io/gh/vzwingma%2Fgestion-budget-serverless) |
 
 ### Statut
-[![CI on Master](https://github.com/vzwingma/gestion-budget-ihm/actions/workflows/build-on-master.yml/badge.svg)](https://github.com/vzwingma/gestion-budget-ihm/actions/workflows/build-on-master.yml)
-[![GitHub issues](https://img.shields.io/github/issues-raw/vzwingma/gestion-budget-ihm.svg?style=flat-square)](https://github.com/vzwingma/gestion-budget-ihm/issues)
+[![CI/CD - Snapshot IHM](https://github.com/vzwingma/gestion-budget-ihm/actions/workflows/build-on-master.yml/badge.svg)](https://github.com/vzwingma/gestion-budget-ihm/actions/workflows/build-on-master.yml)
+[![CI/CD - Release IHM](https://github.com/vzwingma/gestion-budget-ihm/actions/workflows/build-on-tags.yml/badge.svg)](https://github.com/vzwingma/gestion-budget-ihm/actions/workflows/build-on-tags.yml)
 
+[![GitHub issues](https://img.shields.io/github/issues-raw/vzwingma/gestion-budget-ihm.svg?style=flat-square)](https://github.com/vzwingma/gestion-budget-ihm/issues)
 [![Known Vulnerabilities](https://snyk.io/test/github/vzwingma/gestion-budget-ihm/badge.svg?targetFile=package.json)](https://snyk.io/test/github/vzwingma/gestion-budget-ihm?targetFile=package.json)
 [![Dépendences](https://img.shields.io/librariesio/github/vzwingma/gestion-budget-ihm.png)](https://libraries.io/github/vzwingma/gestion-budget-ihm)
 
