@@ -1,5 +1,5 @@
-import * as AppConstants from "../Utils/AppEnums.constants";
-import * as ClientHTTP from './../Services/ClientHTTP.service';
+import * as AppConstants from "../../Utils/AppEnums.constants";
+import * as ClientHTTP from '../../Services/ClientHTTP.service';
 import {toast} from "react-toastify";
 
 /**
@@ -33,8 +33,8 @@ import {toast} from "react-toastify";
             .filter((compte) => compte.actif)
             .map((compte) => {
             return {
-                value: compte.id,
-                text: compte.libelle,
+                id: compte.id,
+                libelle: compte.libelle,
                 icon: <img src={"/img/banques/" + compte.itemIcon} className="d-inline-block align-top" alt={compte.libelle}/>,
                 isDisabled: !compte.actif
             }

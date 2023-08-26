@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 
-import ComptesList from "../ComptesList.component"
-import DateRange from "../DateRange.component"
-import ResumeSoldes from "../resume/ResumeSoldes.component"
-import ResumeCategories from "../resume/categories/ResumeCategories.component"
+import ComptesList from "../budgets/budgetsMenuBar/ComptesList.component"
+import DateRange from "../budgets/budgetsMenuBar/DateRange.component"
+import ResumeSoldes from "../budgets/resume/ResumeSoldes.component"
+import ResumeCategories from "../budgets/resume/categories/ResumeCategories.component"
 import * as Controller from './Analyses.controller'
 import * as Services from './Analyses.extservices'
 import {ToastContainer} from "react-toastify";

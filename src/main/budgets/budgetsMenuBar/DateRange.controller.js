@@ -1,5 +1,5 @@
-import * as AppConstants from "./../Utils/AppEnums.constants"
-import * as ClientHTTP from './../Services/ClientHTTP.service'
+import * as AppConstants from "../../Utils/AppEnums.constants"
+import * as ClientHTTP from '../../Services/ClientHTTP.service'
 
 /**
  * Click sur la fenêtre modale

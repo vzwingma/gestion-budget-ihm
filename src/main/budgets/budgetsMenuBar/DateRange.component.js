@@ -1,14 +1,6 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as Controller from "./DateRange.controller"
-import {
-    Button,
-    ButtonGroup,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle
-} from "@mui/material";
+import {Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 
 /**
  * Date Range Select

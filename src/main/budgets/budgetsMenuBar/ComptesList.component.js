@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as Controller from './ComptesList.controller';
-import Select from 'react-select';
+import {Table, TableBody} from "@mui/material";
+import CompteItem from "./CompteItem.component";
 /*
  * Composant Select Comptes
  */
@@ -44,11 +45,15 @@ export default class ComptesList extends Component {
 
     render() {
         return (
-                <Select placeholder="Sélectionnez le compte"
-                        value={this.state.selectedCompte} options={this.state.comptes}
-                        onChange={this.handleSelect}
-                        getOptionLabel={this.randerOptionLabel}
-                />
+
+            <Table size={"small"}>
+                <TableBody v>
+                    {this.state.comptes.map((compte) => (
+                        <CompteItem
+                            compte={compte}/>
+                    ))}
+                </TableBody>
+            </Table>
         );
     }
 }
