@@ -2,14 +2,14 @@ import React, {Component} from "react";
 import {HashRouter, Route, Routes} from "react-router-dom";
 import {AuthProvider} from 'react-oidc-context';
 import * as AppConstants from "./Utils/AppEnums.constants"
-import Analyses from "./budgets/analyses/Analyses.component";
-import Budgets from "./budgets/budgets/Budgets.component";
+import Analyses from "./analyses/Analyses.component";
 import Infos from "./infos/Infos.component";
 import {removeTokenFromStorage} from "./Services/Auth.service";
 
 import {AppBar, Stack, Typography} from "@mui/material";
 import Profile from "./menubar/Profile.component";
 import PrivateNavLinks from "./menubar/PrivateNavLinks.component";
+import MainBudget from "./budgets/MainBudget.component";
 
 
 /** Page principale avec le routeur **/
@@ -35,7 +35,7 @@ export default class Main extends Component {
     return (
         <HashRouter>
             <AuthProvider {...this.oidcConfig}>
-                <AppBar position={"fixed"}>
+                <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
                     <Stack direction="row" alignItems="flex-start" spacing={1}>
                         <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
                         <Typography variant="h6" component="div" noWrap
@@ -57,7 +57,7 @@ export default class Main extends Component {
                 <div className="App">
                     <Routes>
                         <Route path="/"         element={<Infos/>}/>
-                        <Route path="/budgets"  element={<Budgets/>} />
+                        <Route path="/budgets" element={<MainBudget/>}/>
                         <Route path="/analyses" element={<Analyses/>}/>
                         <Route path="/infos"    element={<Infos/>}/>
                     </Routes>

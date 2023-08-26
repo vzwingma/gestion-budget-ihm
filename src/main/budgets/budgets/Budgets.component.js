@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
-import ComptesList from "../ComptesList.component"
-import DateRange from "../DateRange.component"
+import ComptesList from "../budgetsMenuBar/ComptesList.component"
+import DateRange from "../budgetsMenuBar/DateRange.component"
 import OperationsList from "../operations/OperationsTableList.component"
 
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
