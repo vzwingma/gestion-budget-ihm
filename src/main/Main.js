@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Routes, Route, NavLink, HashRouter} from "react-router-dom";
-import { AuthProvider } from 'react-oidc-context';
+import React, {Component} from "react";
+import {HashRouter, Route, Routes} from "react-router-dom";
+import {AuthProvider} from 'react-oidc-context';
 import * as AppConstants from "./Utils/AppEnums.constants"
+import Analyses from "./budgets/analyses/Analyses.component";
 import Budgets from "./budgets/budgets/Budgets.component";
 import Infos from "./infos/Infos.component";
-import { removeTokenFromStorage} from "./Services/Auth.service";
+import {removeTokenFromStorage} from "./Services/Auth.service";
 
-import {AppBar, Container, Stack, Toolbar, Typography} from "@mui/material";
+import {AppBar, Stack, Typography} from "@mui/material";
 import Profile from "./menubar/Profile.component";
 import PrivateNavLinks from "./menubar/PrivateNavLinks.component";
-
 
 
 /** Page principale avec le routeur **/
@@ -36,29 +36,29 @@ export default class Main extends Component {
         <HashRouter>
             <AuthProvider {...this.oidcConfig}>
                 <AppBar position={"fixed"}>
-                    <Toolbar>
-                        <Typography variant="h6" component="div" noWrap sx={{ flexGrow: 1, fontWeight: 700,fontSize: "1.2rem" }}>
-                            <Stack direction="row">
-                                <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
-                                <NavLink className="nav-link" to="/infos">Infos</NavLink>
+                    <Stack direction="row" alignItems="flex-start" spacing={1}>
+                        <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
+                        <Typography variant="h6" component="div" noWrap
+                                    sx={{flexGrow: 1, fontWeight: 700, fontSize: "1.2rem"}}>
                                 <PrivateNavLinks/>
-                            </Stack>
                         </Typography>
-                        <Container fixed/>
                         <Typography variant="h6" noWrap component="div"
-                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' },
-                                    fontWeight: 300,
-                                    fontSize: "1rem",
-                                    color: 'inherit',
-                                    textDecoration: 'none',        }} >
+                                    sx={{
+                                        mr: 2, display: {xs: 'none', md: 'flex'},
+                                        fontWeight: 300,
+                                        fontSize: "1rem",
+                                        color: 'inherit',
+                                        textDecoration: 'none',
+                                    }}>
                             <Profile/>
                         </Typography>
-                    </Toolbar>
+                    </Stack>
                 </AppBar>
                 <div className="App">
                     <Routes>
                         <Route path="/"         element={<Infos/>}/>
                         <Route path="/budgets"  element={<Budgets/>} />
+                        <Route path="/analyses" element={<Analyses/>}/>
                         <Route path="/infos"    element={<Infos/>}/>
                     </Routes>
                 </div>
