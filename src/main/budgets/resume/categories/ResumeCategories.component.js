@@ -30,7 +30,7 @@ const ResumeCategories = ({ currentBudget, categories }) => {
             .flatMap(catParam => catParam.listeSSCategories)
             .map(ssCatParam => (
                 mapTotauxSsCategories
-                    .filter(totalSScat => totalSScat[0] === ssCatParam.id)
+                    .filter(totalSScat => totalSScat !== null && totalSScat[0] !== null && totalSScat[0] === ssCatParam.id)
                     .map(totalSScat => buildResumeSousCategorie(totalSScat))
             ));
     }

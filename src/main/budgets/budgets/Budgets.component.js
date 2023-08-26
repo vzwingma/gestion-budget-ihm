@@ -1,16 +1,15 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 import ComptesList from "../ComptesList.component"
 import DateRange from "../DateRange.component"
 import OperationsList from "../operations/OperationsTableList.component"
 
-import ResumeSoldes from "../resume/ResumeSoldes.component"
-import ResumeCategories from "../resume/categories/ResumeCategories.component"
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
 import * as Controller from './Budgets.controller'
 import * as Services from './Budgets.extservices'
 import {ToastContainer} from "react-toastify";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import BudgetsSoldes from "./BudgetsSoldes.component";
 
 /*
  * Page principale des budgets
@@ -55,8 +54,9 @@ export default class Budgets extends Component {
     shouldComponentUpdate(nextProps, nextStates){
         let componentUpdate = false;
         let budgetUpdate;
-        if(this.state.selectedCompte !== nextStates.selectedCompte){
-            console.log("[TRIGGER] Context compte=" + nextStates.selectedCompte )
+        if ((this.state.selectedCompte !== null && nextStates.selectedCompte !== null)
+            && (this.state.selectedCompte !== nextStates.selectedCompte)) {
+            console.log("[TRIGGER] Context compte=" + nextStates.selectedCompte.value)
             componentUpdate = true;
             budgetUpdate = true;
         }
@@ -74,7 +74,7 @@ export default class Budgets extends Component {
         }
         if(budgetUpdate){
             console.log("[TRIGGER] Update budget")
-            this.refreshBudget(nextStates.selectedCompte, nextStates.selectedDate );
+            this.refreshBudget(nextStates.selectedCompte !== null ? nextStates.selectedCompte.value : null, nextStates.selectedDate);
         }
         return componentUpdate;
     }
@@ -84,14 +84,15 @@ export default class Budgets extends Component {
      * Render du budget
      */
     render() { return (
-        <Grid2 container xl>
-            <Grid2 xs={4}>
+        <Grid2 container>
+            <Grid2 md={4}>
                     <ComptesList onCompteChange={this.handleCompteChange} />
             </Grid2>
-            <Grid2 xs={7}>
-                    <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
+            <Grid2 md={7}>
+                <DateRange onDateChange={this.handleDateChange}
+                           idCompte={this.state.selectedCompte != null ? this.state.selectedCompte.value : null}/>
             </Grid2>
-            <Grid2 xs={1}>
+            <Grid2 md={1}>
                 {/** Actions sur le budget (close / reinit) **/
                     (this.state.currentBudget != null && this.state.user_droits != null) ?
                         <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} droits={this.state.user_droits} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
@@ -99,14 +100,13 @@ export default class Budgets extends Component {
             </Grid2>
 
             <Grid2  xs={4} direction={"column"}>
-                { /** Résumé des catégories **/ }
-                { this.state.currentBudget != null ? <ResumeCategories currentBudget={this.state.currentBudget} categories={this.state.categories} />: "Chargement..." }
-                { /** Soldes **/ }
-                { this.state.currentBudget != null ? <ResumeSoldes currentBudget={this.state.currentBudget} /> : "Chargement..." }
+                { /** Soldes **/} { /** Liste des opérations **/}
+                {this.state.currentBudget != null ? <><BudgetsSoldes currentCompte={this.state.selectedCompte}
+                                                                     currentBudget={this.state.currentBudget}/><OperationsList
+                    onOperationChange={this.handleBudgetUpdate}
+                    budget={this.state.currentBudget}/></> : "Chargement..."}
             </Grid2>
             <Grid2 xl={8}>
-                { /** Liste des opérations **/ }
-                { this.state.currentBudget != null ?<OperationsList onOperationChange={this.handleBudgetUpdate} budget={this.state.currentBudget} />: "Chargement..."}
             </Grid2>
 
             <ToastContainer

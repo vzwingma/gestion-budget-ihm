@@ -1,6 +1,7 @@
 import * as AppConstants from "../Utils/AppEnums.constants";
 import * as ClientHTTP from './../Services/ClientHTTP.service';
 import {toast} from "react-toastify";
+
 /**
  * Controller Select Comptes
  */
@@ -28,7 +29,9 @@ import {toast} from "react-toastify";
         console.log("Chargement de " + data.length + " comptes");
         data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1);
         // Création des comptes pour l'affichage (avec icones)
-        let comptesLabelIcons = data.map((compte) => {
+        let comptesLabelIcons = data
+            .filter((compte) => compte.actif)
+            .map((compte) => {
             return {
                 value: compte.id,
                 text: compte.libelle,
@@ -39,7 +42,7 @@ import {toast} from "react-toastify";
 
         this.setState({ comptes: comptesLabelIcons,
             selectedCompte: comptesLabelIcons[0] });
-        this.props.onCompteChange(comptesLabelIcons[0].value);
+        this.props.onCompteChange(comptesLabelIcons[0]);
     }
 
     /**
