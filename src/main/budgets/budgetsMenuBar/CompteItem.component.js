@@ -1,12 +1,12 @@
 import React from 'react'
 import {Container, Stack, Typography} from "@mui/material";
 
-const CompteItem = ({compte, selectedCompte, onClick}) => {
+const CompteItem = ({compte, selectedIdCompte, onClick}) => {
     return (
         <Container fluid
                    sx={{
-                       backgroundColor: (compte.id === selectedCompte.id ? 'primary.main' : 'unset'),
-                       borderRadius: (compte.id === selectedCompte.id ? '5% 0% 5% 0%' : 'unset'),
+                       backgroundColor: (compte.id === selectedIdCompte ? 'primary.main' : 'unset'),
+                       borderRadius: (compte.id === selectedIdCompte ? '5% 0% 5% 0%' : 'unset'),
                        '&:hover': {
                            backgroundColor: 'primary.main',
                            color: 'white',

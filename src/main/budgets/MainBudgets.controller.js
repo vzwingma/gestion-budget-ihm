@@ -5,7 +5,8 @@
 /** Notification lorsque le compte change **/
 export function handleCompteChange(selectedCompteFromComponent) {
     console.log("[TRIGGER] NewContext compte=" + selectedCompteFromComponent.id)
-    this.setState({selectedCompte: selectedCompteFromComponent})
+    this.setState(
+        {selectedCompte: selectedCompteFromComponent, budgetMenuOpen: false})
 }
 
 // Notification lorsque la date change

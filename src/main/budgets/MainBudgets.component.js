@@ -16,6 +16,7 @@ export default class MainBudget extends Component {
         comptes: [],
         selectedCompte: null,
         selectedDate: new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0),
+        budgetMenuOpen: true
     }
 
 
@@ -36,7 +37,7 @@ export default class MainBudget extends Component {
     render() {
         return (
             <>
-                <Drawer variant={"temporary"} anchor="left" open={true}>
+                <Drawer variant={"temporary"} anchor="left" open={this.state.budgetMenuOpen}>
                     <Stack spacing={2}>
                         <Box sx={{height: 80}}/>
 
@@ -46,7 +47,8 @@ export default class MainBudget extends Component {
                         <Stack spacing={2}>
                             {this.state.comptes.map((compte) => (
                                 <div onClick={() => this.handleCompteChange(compte)}>
-                                    <CompteItem compte={compte} selectedCompte={this.state.selectedCompte}/>
+                                    <CompteItem compte={compte}
+                                                selectedIdCompte={this.state.selectedCompte != null ? this.state.selectedCompte.id : null}/>
                                 </div>
                             ))}
                         </Stack>
@@ -54,7 +56,7 @@ export default class MainBudget extends Component {
                     </Stack>
                 </Drawer>
 
-                {this.state.selectedCompte != null && this.state.selectedDate != null && false ?
+                {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
                     <Budgets selectedCompte={this.state.selectedCompte}
                              selectedDate={this.state.selectedDate}/> : "Chargement..."}
             </>

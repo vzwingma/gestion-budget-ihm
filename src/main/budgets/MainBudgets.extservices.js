@@ -44,7 +44,5 @@ export function comptesLoaded(data) {
 
     this.setState({
         comptes: comptesLabelIcons,
-        selectedCompte: comptesLabelIcons[0]
     });
-    //  this.props.onCompteChange(comptesLabelIcons[0]);
 }
