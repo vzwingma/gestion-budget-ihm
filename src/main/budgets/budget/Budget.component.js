@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
 import OperationsList from "../operations/OperationsTableList.component"
-
+import {sortDatesOperations} from "../../Utils/DataUtils.utils"
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
 import * as Controller from './Budget.controller'
 import * as Services from './Budget.extservices'
@@ -114,9 +114,14 @@ export default class Budget extends Component {
                     (this.state.currentBudget != null ?
                         <Stack spacing={2} divider={<Divider orientation="horizontal" flexItem/>}>
                             {this.state.currentBudget.listeOperations
-                                .filter(T => T.etat !== "PLANIFIEE")
+                                .filter(operation => operation.etat !== "PLANIFIEE")
+                                .sort((ope1, ope2) => sortDatesOperations(ope1.autresInfos.dateOperation, ope2.autresInfos.dateOperation))
                                 .map((operation) => (
-                                    <OperationItem operation={operation}/>
+                                    <>
+                                        {operation.autresInfos.dateOperation}
+                                        <OperationItem operation={operation}/>
+                                    </>
+
                                 ))}
                         </Stack> : <CircularProgress/>)
                 }
@@ -128,7 +133,7 @@ export default class Budget extends Component {
                                         budget={this.state.currentBudget}/> : <CircularProgress/>)
                 }
             </Grid2>
-
+            </Grid2>
             <ToastContainer
                 position="bottom-left"
                 autoClose={1000}
@@ -136,7 +141,7 @@ export default class Budget extends Component {
                 pauseOnFocusLoss draggable pauseOnHover
             />
 
-        </Grid2>
+
         </>
     ); }
 }

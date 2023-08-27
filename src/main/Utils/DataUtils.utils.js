@@ -81,6 +81,34 @@ export function sortLibellesCategories(lib1, lib2) {
     return 0;
 }
 
+
+/**
+ * Tri par date
+ * @param strDate1 : string premiere date
+ * @param strDate2 : string 2ème date
+ * @returns {number} comparaison
+ */
+export function sortDatesOperations(date1, date2) {
+    let sort;
+
+    if (date1 === null && date2 === null) {
+        sort = 0;
+    } else if (date1 === null) {
+        sort = 1;
+    } else if (date2 === null) {
+        sort = -1;
+    } else {
+        if (date1 >= date2) {
+            sort = -1;
+        } else if (date1 < date2) {
+            sort = 1;
+        } else {
+            sort = 0;
+        }
+    }
+    return sort;
+}
+
 /**
  * Tri par date
  * @param strDate1 : string premiere date
