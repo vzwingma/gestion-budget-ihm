@@ -3,16 +3,18 @@ import React, {Component} from "react";
 import OperationsList from "../operations/OperationsTableList.component"
 
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
-import * as Controller from './Budgets.controller'
-import * as Services from './Budgets.extservices'
+import * as Controller from './Budget.controller'
+import * as Services from './Budget.extservices'
 import {ToastContainer} from "react-toastify";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import BudgetsSoldes from "./BudgetsSoldes.component";
+import BudgetsSoldes from "./BudgetSoldes.component";
+import {CircularProgress, Stack} from "@mui/material";
+import OperationItem from "../operations/OperationItem.component";
 
 /*
  * Page principale des budgets
  */
-export default class Budgets extends Component {
+export default class Budget extends Component {
 
 
     /** Etats pour la page Budget **/
@@ -86,13 +88,14 @@ export default class Budgets extends Component {
      * Render du budget
      */
     render() { return (
+        <>
         <Grid2 container>
-            <Grid2 md={3}></Grid2>
+            <Grid2 md={3}>---</Grid2>
             <Grid2 md={7}>
                 { /** Soldes **/}
                 {this.state.currentBudget != null ?
                     <BudgetsSoldes currentCompte={this.props.selectedCompte}
-                                   currentBudget={this.state.currentBudget}/> : "Chargement..."
+                                   currentBudget={this.state.currentBudget}/> : <CircularProgress/>
                 }
             </Grid2>
             <Grid2 md={2} right={true}>
@@ -100,17 +103,34 @@ export default class Budgets extends Component {
                     (this.state.currentBudget != null && this.state.user_droits != null) ?
                         <BudgetActionsButtonGroupComponent budget={this.state.currentBudget}
                                                            droits={this.state.user_droits}
-                                                           onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
+                                                           onActionBudgetChange={this.handleBudgetUpdate}/> :
+                        <CircularProgress/>
                 }
             </Grid2>
+        </Grid2>
+            <Grid2 container sx={{overflowY: "scroll", maxHeight: (window.innerHeight - 150)}}>
             <Grid2 md={4} direction={"column"}>
                 { /** Liste des opérations **/
                     (this.state.currentBudget != null ?
-                        <OperationsList onOperationChange={this.handleBudgetUpdate}
-                                        budget={this.state.currentBudget}/> : "Chargement...")
+                        <Stack spacing={2}>
+                            {this.state.currentBudget.listeOperations
+                                .filter(T => T.etat !== "PLANIFIEE")
+                                .map((operation) => (
+                                    <>
+                                        <OperationItem operation={operation}/>
+                                        <OperationItem operation={operation}/>
+                                        <OperationItem operation={operation}/>
+                                    </>
+                                ))}
+                        </Stack> : <CircularProgress/>)
                 }
             </Grid2>
             <Grid2 md={8}>
+                { /** Liste des opérations **/
+                    (this.state.currentBudget != null ?
+                        <OperationsList onOperationChange={this.handleBudgetUpdate}
+                                        budget={this.state.currentBudget}/> : <CircularProgress/>)
+                }
             </Grid2>
 
             <ToastContainer
@@ -121,5 +141,6 @@ export default class Budgets extends Component {
             />
 
         </Grid2>
+        </>
     ); }
 }

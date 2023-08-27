@@ -1,4 +1,4 @@
-import OperationValue from '../../operations/renderers/OperationSpanValue.component'
+import OperationValue from '../budgets/operations/renderers/OperationSpanValue.component'
 /*
  * Page principale du solde pour 1 catégorie
  */

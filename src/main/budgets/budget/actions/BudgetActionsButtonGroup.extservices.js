@@ -3,7 +3,7 @@ import * as AppConstants from "../../../Utils/AppEnums.constants";
 import {toast} from "react-toastify";
 
 
-    export function callReinitBudget(idBudget){
+export function callReinitBudget(idBudget){
         console.log("Reinitialisation du budget [" + idBudget + "]");
         ClientHTTP.call('DELETE', AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.REINIT, [idBudget])
             .then(data => {

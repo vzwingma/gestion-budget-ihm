@@ -1,7 +1,8 @@
 import React from 'react'
 import {Container, Stack, Typography} from "@mui/material";
 
-const CompteItem = ({compte, selectedIdCompte, onClick}) => {
+const CompteItem = ({compte, selectedIdCompte}) => {
+
     return (
         <Container fluid
                    sx={{
@@ -12,8 +13,7 @@ const CompteItem = ({compte, selectedIdCompte, onClick}) => {
                            color: 'white',
                            opacity: [0.7, 0.6, 0.5],
                        },
-                   }}
-                   onClick={onClick}>
+                   }}>
             <Stack direction={"row"} spacing={5}>
                 <img src={"/img/banques/" + compte.icon} width={50} height={50} alt={compte.libelle}/>
                 <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>

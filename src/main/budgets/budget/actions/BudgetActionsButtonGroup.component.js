@@ -42,6 +42,12 @@ export default class BudgetActionsButtonGroupComponent extends Component {
         /** Groupe d'actions sur le budget **/
         return (
                 <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick} variant={"light"}>
+                    <Tooltip title="Créer une nouvelle opération">
+                        <Button onClick={this.handleOperationCreate} color={"success"}>
+                            <img id="CREATION" src={"/img/statuts/circle_plus.png"} className="d-inline-block align-top"
+                                 alt="Création"/>
+                        </Button>
+                    </Tooltip>
                     { this.props.budget.actif && this.props.droits != null && this.props.droits[UTILISATEUR_DROITS.DROITS.RAZ_BUDGET] &&
                     <Tooltip title="Réinitialiser le budget">
                         <Button className="btn-light" id="REINIT_A_CONFIRMER" variant="light">

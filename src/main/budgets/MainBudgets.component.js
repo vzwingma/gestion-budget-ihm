@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {Box, Drawer, Stack} from "@mui/material";
+import {Box, CircularProgress, Drawer, Stack} from "@mui/material";
 import DateRange from "./budgetsMenuBar/DateRange.component";
 import * as Controller from "./MainBudgets.controller";
 import * as Services from "./MainBudgets.extservices";
-import Budgets from "./budgets/Budgets.component";
+import Budget from "./budget/Budget.component";
 import CompteItem from "./budgetsMenuBar/CompteItem.component";
 
 /*
@@ -57,8 +57,8 @@ export default class MainBudget extends Component {
                 </Drawer>
 
                 {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
-                    <Budgets selectedCompte={this.state.selectedCompte}
-                             selectedDate={this.state.selectedDate}/> : "Chargement..."}
+                    <Budget selectedCompte={this.state.selectedCompte}
+                            selectedDate={this.state.selectedDate}/> : <CircularProgress/>}
             </>
         );
     }

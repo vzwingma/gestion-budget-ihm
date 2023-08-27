@@ -4,8 +4,6 @@ import React from "react";
 /*
  * Page principale du solde
  */
-
-
 const BudgetsSoldes = ({currentCompte, currentBudget}) => {
 
     // définition de la date courante
