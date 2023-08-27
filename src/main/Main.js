@@ -9,7 +9,7 @@ import {removeTokenFromStorage} from "./Services/Auth.service";
 import {AppBar, Stack, Typography} from "@mui/material";
 import Profile from "./menubar/Profile.component";
 import PrivateNavLinks from "./menubar/PrivateNavLinks.component";
-import MainBudget from "./budgets/MainBudget.component";
+import MainBudget from "./budgets/MainBudgets.component";
 
 
 /** Page principale avec le routeur **/

@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 
-import ComptesList from "../budgetsMenuBar/ComptesList.component"
-import DateRange from "../budgetsMenuBar/DateRange.component"
 import OperationsList from "../operations/OperationsTableList.component"
 
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
@@ -85,13 +83,6 @@ export default class Budgets extends Component {
      */
     render() { return (
         <Grid2 container>
-            <Grid2 md={4}>
-                    <ComptesList onCompteChange={this.handleCompteChange} />
-            </Grid2>
-            <Grid2 md={7}>
-                <DateRange onDateChange={this.handleDateChange}
-                           idCompte={this.state.selectedCompte != null ? this.state.selectedCompte.value : null}/>
-            </Grid2>
             <Grid2 md={1}>
                 {/** Actions sur le budget (close / reinit) **/
                     (this.state.currentBudget != null && this.state.user_droits != null) ?

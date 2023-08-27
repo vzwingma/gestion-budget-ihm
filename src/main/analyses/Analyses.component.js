@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 
-import ComptesList from "../budgets/budgetsMenuBar/ComptesList.component"
 import DateRange from "../budgets/budgetsMenuBar/DateRange.component"
 import ResumeSoldes from "../budgets/resume/ResumeSoldes.component"
 import ResumeCategories from "../budgets/resume/categories/ResumeCategories.component"
@@ -75,7 +74,7 @@ export default class Analyses extends Component {
         return (
             <Grid2 container xl>
                 <Grid2 xs={4}>
-                    <ComptesList onCompteChange={this.handleCompteChange}/>
+
                 </Grid2>
                 <Grid2 xs={7}>
                     <DateRange onDateChange={this.handleDateChange} idCompte={this.state.selectedCompte}/>
