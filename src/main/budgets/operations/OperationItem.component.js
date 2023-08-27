@@ -11,9 +11,9 @@ const OperationItem = ({operation}) => {
         <Box sx={{
             height: 56,
             '&:hover': {
-                backgroundColor: 'primary.main',
-                color: 'white',
-                opacity: [0.7, 0.6, 0.5],
+                backgroundColor: '#f5f6fb',
+                color: '#808080',
+
             },
         }}>
             <Grid2 container spacing={6}>
@@ -23,7 +23,8 @@ const OperationItem = ({operation}) => {
                              borderRadius: "50%",
                              backgroundColor: Controller.getCategorieColor(operation.categorie),
                              border: '5px solid ' + Controller.getOperationStateColor(operation.etat),
-                             padding: '6px'
+                             padding: '6px',
+                             color: '#FFFFFF'
                          }}>
                         <center>{Controller.getSousCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
@@ -41,7 +42,7 @@ const OperationItem = ({operation}) => {
 
                 </Grid2>
                 <Grid2 md={3}>
-                    <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
+                    <Typography variant={"h6"} component="div" align={"right"} sx={{spacing: 2}}>
                         <OperationValue valueOperation={operation.valeur} showSign={true}/>
                     </Typography>
                 </Grid2>

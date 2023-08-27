@@ -149,7 +149,6 @@ export function getSousCategorieIcon(operationSsCategorie) {
 
 export function getOperationStateColor(operationState) {
     if (operationState != null) {
-        console.log(operationState)
         switch (operationState) {
             case 'REALISEE':
                 return "#2e7d32"
@@ -163,6 +162,8 @@ export function getOperationStateColor(operationState) {
                 return "#9c27b0"
             case 'PLANIFIEE':
                 return "#0288d1"
+            default:
+                return "grey";
         }
     }
     return "grey";
