@@ -8,7 +8,7 @@ import * as Services from './Budget.extservices'
 import {ToastContainer} from "react-toastify";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import BudgetsSoldes from "./BudgetSoldes.component";
-import {CircularProgress, Stack} from "@mui/material";
+import {CircularProgress, Divider, Stack} from "@mui/material";
 import OperationItem from "../operations/OperationItem.component";
 
 /*
@@ -112,15 +112,11 @@ export default class Budget extends Component {
             <Grid2 md={4} direction={"column"}>
                 { /** Liste des opérations **/
                     (this.state.currentBudget != null ?
-                        <Stack spacing={2}>
+                        <Stack spacing={2} divider={<Divider orientation="horizontal" flexItem/>}>
                             {this.state.currentBudget.listeOperations
                                 .filter(T => T.etat !== "PLANIFIEE")
                                 .map((operation) => (
-                                    <>
-                                        <OperationItem operation={operation}/>
-                                        <OperationItem operation={operation}/>
-                                        <OperationItem operation={operation}/>
-                                    </>
+                                    <OperationItem operation={operation}/>
                                 ))}
                         </Stack> : <CircularProgress/>)
                 }

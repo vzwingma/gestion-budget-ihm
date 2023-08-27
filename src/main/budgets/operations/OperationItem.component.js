@@ -22,12 +22,11 @@ const OperationItem = ({operation}) => {
                          sx={{
                              borderRadius: "50%",
                              backgroundColor: Controller.getCategorieColor(operation.categorie),
-                             border: '5px solid grey',
+                             border: '5px solid ' + Controller.getOperationStateColor(operation.etat),
                              padding: '6px'
                          }}>
                         <center>{Controller.getSousCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
-
                 </Grid2>
                 <Grid2 md={7}>
                     <Stack direction={"column"}>

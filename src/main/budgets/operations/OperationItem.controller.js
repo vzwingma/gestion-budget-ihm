@@ -59,6 +59,7 @@ export function getCategorieColor(operationCategorie) {
     return "#808080"
 }
 
+// Icone Sous catégories
 export function getSousCategorieIcon(operationSsCategorie) {
     if (operationSsCategorie != null) {
         switch (operationSsCategorie.id) {
@@ -143,4 +144,26 @@ export function getSousCategorieIcon(operationSsCategorie) {
                 return <QuestionMarkRounded/>
         }
     }
+}
+
+
+export function getOperationStateColor(operationState) {
+    if (operationState != null) {
+        console.log(operationState)
+        switch (operationState) {
+            case 'REALISEE':
+                return "#2e7d32"
+            case 'PREVUE':
+                return "#ed6c02"
+            case 'ANNULEE':
+                return "#ebebeb"
+            case 'SUPPRIMEE':
+                return "#ed1b24"
+            case 'REPORTEE':
+                return "#9c27b0"
+            case 'PLANIFIEE':
+                return "#0288d1"
+        }
+    }
+    return "grey";
 }
