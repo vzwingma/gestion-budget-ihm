@@ -41,8 +41,9 @@ export function comptesLoaded(data) {
                 isDisabled: !compte.actif
             }
         })
-
+    toast.success("Chargement des " + comptesLabelIcons.length + " comptes correctement effectué ")
     this.setState({
         comptes: comptesLabelIcons,
     });
+
 }

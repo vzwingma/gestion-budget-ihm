@@ -17,8 +17,6 @@ export default class Budgets extends Component {
 
     /** Etats pour la page Budget **/
         state = {
-            selectedCompte : null,
-            selectedDate :  new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0),
             currentBudget: null,
             categories: null
         }
@@ -28,8 +26,6 @@ export default class Budgets extends Component {
     /** Constructeur **/
     constructor(props){
         super(props);
-        this.handleCompteChange = Controller.handleCompteChange.bind(this);
-        this.handleDateChange = Controller.handleDateChange.bind(this);
         this.handleBudgetUpdate = Controller.handleBudgetUpdate.bind(this);
 
         this.refreshBudget = Services.reloadBudget.bind(this);
@@ -37,6 +33,11 @@ export default class Budgets extends Component {
         this.categoriesLoaded = Services.categoriesLoaded.bind(this);
 
         this.getPreferenceUtilisateur = Services.getPreferenceUtilisateur.bind(this);
+
+        this.setState({
+            selectedCompte: this.props.selectedCompte,
+            selectedDate: this.props.selectedDate
+        });
     }
 
 
@@ -44,6 +45,7 @@ export default class Budgets extends Component {
     componentDidMount(){
         this.loadCategories();
         this.getPreferenceUtilisateur();
+        this.refreshBudget(this.props.selectedCompte.id, this.props.selectedDate);
     }
 
 
@@ -52,6 +54,7 @@ export default class Budgets extends Component {
     shouldComponentUpdate(nextProps, nextStates){
         let componentUpdate = false;
         let budgetUpdate;
+        /**
         if ((this.state.selectedCompte !== null && nextStates.selectedCompte !== null)
             && (this.state.selectedCompte !== nextStates.selectedCompte)) {
             console.log("[TRIGGER] Context compte=" + nextStates.selectedCompte.value)
@@ -65,7 +68,8 @@ export default class Budgets extends Component {
             componentUpdate = true;
             budgetUpdate = true;
         }
-        else if(this.state.currentBudget !== nextStates.currentBudget){
+        else **/
+        if (this.state.currentBudget !== nextStates.currentBudget) {
             console.log("[TRIGGER] Context budget=" + nextStates.currentBudget.id )
             componentUpdate = true;
             budgetUpdate = false;
@@ -83,21 +87,30 @@ export default class Budgets extends Component {
      */
     render() { return (
         <Grid2 container>
-            <Grid2 md={1}>
-                {/** Actions sur le budget (close / reinit) **/
-                    (this.state.currentBudget != null && this.state.user_droits != null) ?
-                        <BudgetActionsButtonGroupComponent budget={this.state.currentBudget} droits={this.state.user_droits} onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
+            <Grid2 md={3}></Grid2>
+            <Grid2 md={7}>
+                { /** Soldes **/}
+                {this.state.currentBudget != null ?
+                    <BudgetsSoldes currentCompte={this.props.selectedCompte}
+                                   currentBudget={this.state.currentBudget}/> : "Chargement..."
                 }
             </Grid2>
-
-            <Grid2  xs={4} direction={"column"}>
-                { /** Soldes **/} { /** Liste des opérations **/}
-                {this.state.currentBudget != null ? <><BudgetsSoldes currentCompte={this.state.selectedCompte}
-                                                                     currentBudget={this.state.currentBudget}/><OperationsList
-                    onOperationChange={this.handleBudgetUpdate}
-                    budget={this.state.currentBudget}/></> : "Chargement..."}
+            <Grid2 md={2} right={true}>
+                {/** Actions sur le budget (close / reinit) **/
+                    (this.state.currentBudget != null && this.state.user_droits != null) ?
+                        <BudgetActionsButtonGroupComponent budget={this.state.currentBudget}
+                                                           droits={this.state.user_droits}
+                                                           onActionBudgetChange={this.handleBudgetUpdate}/> : "Chargement...."
+                }
             </Grid2>
-            <Grid2 xl={8}>
+            <Grid2 md={4} direction={"column"}>
+                { /** Liste des opérations **/
+                    (this.state.currentBudget != null ?
+                        <OperationsList onOperationChange={this.handleBudgetUpdate}
+                                        budget={this.state.currentBudget}/> : "Chargement...")
+                }
+            </Grid2>
+            <Grid2 md={8}>
             </Grid2>
 
             <ToastContainer

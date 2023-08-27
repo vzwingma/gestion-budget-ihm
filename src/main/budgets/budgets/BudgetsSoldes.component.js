@@ -1,5 +1,6 @@
 import OperationValue from '../operations/renderers/OperationSpanValue.component'
-import {Box, Tooltip} from "@mui/material";
+import {Stack, Tooltip, Typography} from "@mui/material";
+import React from "react";
 /*
  * Page principale du solde
  */
@@ -11,7 +12,7 @@ const BudgetsSoldes = ({currentCompte, currentBudget}) => {
     const dateCourante = new Date(Date.now());
 
     function getTooltipAuj() {
-        return "Au" + dateCourante.getDate() + " " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear()
+        return "Au " + dateCourante.getDate() + " " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear()
     }
 
     function getTooltipFin() {
@@ -19,19 +20,22 @@ const BudgetsSoldes = ({currentCompte, currentBudget}) => {
     }
 
     return (
-        <>
-            <Box>
-                {currentCompte.icon} {currentCompte.text}
-            </Box>
+        <Stack direction={"row"} spacing={1} justifyContent="space-evenly" alignItems="center">
+            <img src={"/img/banques/" + currentCompte.icon} width={50} height={50} alt={currentCompte.libelle}/>
+            <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
+                {currentCompte.libelle}
+            </Typography>
             <Tooltip title={getTooltipAuj()}>
-                <Box>
+                <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
                     <OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true}/>
-                </Box></Tooltip>
+                </Typography>
+            </Tooltip>
             <Tooltip title={getTooltipFin()}>
-                <Box>
+                <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
                     <OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} showSign={true}/>
-                </Box></Tooltip>
-        </>
+                </Typography>
+            </Tooltip>
+        </Stack>
 
     )
 };

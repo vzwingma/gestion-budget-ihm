@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import {
-    Tooltip,
-    Button, ButtonGroup,
-    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
+    Button,
+    ButtonGroup,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Tooltip
 } from '@mui/material';
 
 import * as Controller from './BudgetActionsButtonGroup.controller'
@@ -34,10 +39,8 @@ export default class BudgetActionsButtonGroupComponent extends Component {
      *  RENDER
      */
     render() {
-
+        /** Groupe d'actions sur le budget **/
         return (
-            <>
-            { /** Groupe d'actions sur le budget **/ }
                 <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick} variant={"light"}>
                     { this.props.budget.actif && this.props.droits != null && this.props.droits[UTILISATEUR_DROITS.DROITS.RAZ_BUDGET] &&
                     <Tooltip title="Réinitialiser le budget">
@@ -68,7 +71,6 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                     </Dialog>
 
                 </ButtonGroup>
-            </>
         )
     }
 }
