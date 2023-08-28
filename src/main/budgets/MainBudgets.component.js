@@ -46,10 +46,9 @@ export default class MainBudget extends Component {
 
                         <Stack spacing={2}>
                             {this.state.comptes.map((compte) => (
-                                <div onClick={() => this.handleCompteChange(compte)}>
                                     <CompteItem compte={compte}
-                                                selectedIdCompte={this.state.selectedCompte != null ? this.state.selectedCompte.id : null}/>
-                                </div>
+                                                selectedIdCompte={this.state.selectedCompte != null ? this.state.selectedCompte.id : null}
+                                                onClick={this.handleCompteChange}/>
                             ))}
                         </Stack>
 

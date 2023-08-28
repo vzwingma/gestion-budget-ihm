@@ -28,7 +28,9 @@ export default class Budget extends Component {
     /** Constructeur **/
     constructor(props){
         super(props);
+
         this.handleBudgetUpdate = Controller.handleBudgetUpdate.bind(this);
+        this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
 
         this.refreshBudget = Services.reloadBudget.bind(this);
         this.loadCategories = Services.loadCategories.bind(this);
@@ -118,11 +120,7 @@ export default class Budget extends Component {
                                     .filter(operation => operation.etat !== "PLANIFIEE")
                                     .sort((ope1, ope2) => sortOperations(ope1, ope2))
                                     .map((operation) => (
-                                    <>
-                                        {operation.autresInfos.dateOperation}
-                                        <OperationItem operation={operation}/>
-                                    </>
-
+                                        <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
                                     ))
                             }
                         </Stack> : <CircularProgress/>)

@@ -4,7 +4,7 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationValue from "./renderers/OperationSpanValue.component";
 import * as Controller from "./OperationItem.controller";
 
-const OperationItem = ({operation}) => {
+const OperationItem = ({operation, onClick}) => {
 
 
     return (
@@ -14,8 +14,8 @@ const OperationItem = ({operation}) => {
                 backgroundColor: '#f5f6fb',
                 color: '#808080',
                 cursor: 'pointer',
-            },
-        }}>
+            }
+        }} onClick={() => onClick(operation)}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
                     <Box width={25} height={25}
