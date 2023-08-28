@@ -14,9 +14,7 @@ export function getStyleOperation(operation, valueOperation){
     let style = "";
     if(operation?.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)){
         style += "text-barree ";
-    }
-
-    if(valueOperation === 0){
+    } else if (valueOperation === 0) {
         style += "";
     }
     else if(valueOperation > 0){
