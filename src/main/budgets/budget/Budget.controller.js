@@ -14,5 +14,4 @@ import {toast} from "react-toastify";
 export function handleOperationSelect(operation) {
     console.log("Selection de l'opération [" + operation.id + "]");
     this.setState({currentOperation: operation})
-    toast.success("Chargement de l'opération [" + operation.id + "] correctement effectué ")
 }

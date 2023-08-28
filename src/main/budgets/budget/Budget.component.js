@@ -1,15 +1,14 @@
 import React, {Component} from "react";
 
-import OperationsList from "../operations/OperationsTableList.component"
 import {sortOperations} from "../../Utils/DataUtils.utils"
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
 import * as Controller from './Budget.controller'
 import * as Services from './Budget.extservices'
-import {ToastContainer} from "react-toastify";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import BudgetsSoldes from "./BudgetSoldes.component";
 import {CircularProgress, Divider, Stack} from "@mui/material";
 import OperationItem from "../operations/OperationItem.component";
+import OperationDetailItem from "../operations/OperationDetailItem.component";
 
 /**
  * Page principale des budgets
@@ -133,26 +132,13 @@ export default class Budget extends Component {
                     }
                 </Grid2>
                 <Grid2 md={8}>
-                    { /** Liste des opérations **/
-                        (this.state.currentBudget != null ?
-                            <OperationsList onOperationChange={this.handleBudgetUpdate}
-                                            budget={this.state.currentBudget}/> : <CircularProgress/>)
-                    }
                     {
                         (this.state.currentOperation != null ?
-                                <div>this.state.currentOperation </div> : <CircularProgress/>
+                                <OperationDetailItem operation={this.state.currentOperation}/> : <></>
                         )
                     }
                 </Grid2>
             </Grid2>
-            <ToastContainer
-                position="bottom-left"
-                autoClose={1000}
-                hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false}
-                pauseOnFocusLoss draggable pauseOnHover
-            />
-
-
         </>
     ); }
 }
