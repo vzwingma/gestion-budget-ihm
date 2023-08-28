@@ -13,7 +13,7 @@ const OperationItem = ({operation}) => {
             '&:hover': {
                 backgroundColor: '#f5f6fb',
                 color: '#808080',
-
+                cursor: 'pointer',
             },
         }}>
             <Grid2 container spacing={6}>
@@ -43,7 +43,7 @@ const OperationItem = ({operation}) => {
                 </Grid2>
                 <Grid2 md={3}>
                     <Typography variant={"h6"} component="div" align={"right"} sx={{spacing: 2}}>
-                        <OperationValue valueOperation={operation.valeur} showSign={true}/>
+                        <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}/>
                     </Typography>
                 </Grid2>
             </Grid2>

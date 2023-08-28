@@ -83,22 +83,32 @@ export function sortLibellesCategories(lib1, lib2) {
 
 
 /**
- * Tri par date
- * @param strDate1 : string premiere date
- * @param strDate2 : string 2ème date
+ * Tri des opérations, par date sinon par statut
+ * @param op1 : Operation 1ère opération
+ * @param op2 : Operation 2ème opération
  * @returns {number} comparaison
  */
-export function sortDatesOperations(date1, date2) {
+export function sortOperations(ope1, ope2) {
     let sort;
-
-    if (date1 === null && date2 === null) {
-        sort = 0;
-    } else if (date1 === null) {
+    // Opérations prévues en 1er
+    if (ope1.etat === "PREVUE" && ope2.etat === "PREVUE") {
+        return 0;
+    } else if (ope1.etat === "PREVUE") {
+        return -1;
+    } else if (ope2.etat === "PREVUE") {
+        return 1;
+    }
+    // Sinon tri par date opération, sinon par autre état
+    else if (ope1.autresInfos.dateOperation === null && ope2.autresInfos.dateOperation === null) {
+        sort = ope1.etat === ope2.etat ? 0 : ope1.etat > ope2.etat ? 1 : -1;
+    } else if (ope1.autresInfos.dateOperation === null) {
         sort = 1;
-    } else if (date2 === null) {
+    } else if (ope2.autresInfos.dateOperation === null) {
         sort = -1;
     } else {
-        if (date1 >= date2) {
+        let date1 = ope1.autresInfos.dateOperation
+        let date2 = ope2.autresInfos.dateOperation
+        if (date1 > date2) {
             sort = -1;
         } else if (date1 < date2) {
             sort = 1;

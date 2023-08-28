@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
 import OperationsList from "../operations/OperationsTableList.component"
-import {sortDatesOperations} from "../../Utils/DataUtils.utils"
+import {sortOperations} from "../../Utils/DataUtils.utils"
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
 import * as Controller from './Budget.controller'
 import * as Services from './Budget.extservices'
@@ -112,17 +112,19 @@ export default class Budget extends Component {
             <Grid2 md={4} direction={"column"}>
                 { /** Liste des opérations **/
                     (this.state.currentBudget != null ?
-                        <Stack spacing={2} divider={<Divider orientation="horizontal" flexItem/>}>
-                            {this.state.currentBudget.listeOperations
-                                .filter(operation => operation.etat !== "PLANIFIEE")
-                                .sort((ope1, ope2) => sortDatesOperations(ope1.autresInfos.dateOperation, ope2.autresInfos.dateOperation))
-                                .map((operation) => (
+                        <Stack spacing={1} divider={<Divider orientation="horizontal" flexItem/>}>
+                            {
+                                this.state.currentBudget.listeOperations
+                                    .filter(operation => operation.etat !== "PLANIFIEE")
+                                    .sort((ope1, ope2) => sortOperations(ope1, ope2))
+                                    .map((operation) => (
                                     <>
                                         {operation.autresInfos.dateOperation}
                                         <OperationItem operation={operation}/>
                                     </>
 
-                                ))}
+                                    ))
+                            }
                         </Stack> : <CircularProgress/>)
                 }
             </Grid2>

@@ -12,6 +12,7 @@ const CompteItem = ({compte, selectedIdCompte}) => {
                            backgroundColor: 'primary.main',
                            color: 'white',
                            opacity: [0.7, 0.6, 0.5],
+                           cursor: 'pointer',
                        },
                    }}>
             <Stack direction={"row"} spacing={5}>
