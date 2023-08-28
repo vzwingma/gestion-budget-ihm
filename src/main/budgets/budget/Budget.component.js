@@ -6,9 +6,10 @@ import * as Controller from './Budget.controller'
 import * as Services from './Budget.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import BudgetsSoldes from "./BudgetSoldes.component";
-import {CircularProgress, Divider, Stack} from "@mui/material";
+import {Box, CircularProgress, Divider, Stack} from "@mui/material";
 import OperationItem from "../operations/OperationItem.component";
 import OperationDetailItem from "../operations/OperationDetailItem.component";
+import MenuIcon from '@mui/icons-material/Menu';
 
 /**
  * Page principale des budgets
@@ -95,31 +96,32 @@ export default class Budget extends Component {
      * Render du budget
      */
     render() { return (
-        <>
-        <Grid2 container>
-            <Grid2 md={3}>---</Grid2>
-            <Grid2 md={7}>
-                { /** Soldes **/}
-                {this.state.currentBudget != null ?
-                    <BudgetsSoldes currentCompte={this.props.selectedCompte}
-                                   currentBudget={this.state.currentBudget}/> : <CircularProgress/>
-                }
+        <Box height={window.outerHeight - 195}>
+            <Grid2 container>
+                <Grid2 md={3}><MenuIcon onClick={this.props.onOpenMenu}/></Grid2>
+                <Grid2 md={7}>
+                    { /** Soldes **/}
+                    {this.state.currentBudget != null ?
+                        <BudgetsSoldes currentCompte={this.props.selectedCompte}
+                                       currentBudget={this.state.currentBudget}/> : <CircularProgress/>
+                    }
+                </Grid2>
+                <Grid2 md={2} right={true}>
+                    {/** Actions sur le budget (close / reinit) **/
+                        (this.state.currentBudget != null && this.state.user_droits != null) ?
+                            <BudgetActionsButtonGroupComponent budget={this.state.currentBudget}
+                                                               droits={this.state.user_droits}
+                                                               onActionBudgetChange={this.handleBudgetUpdate}/> :
+                            <CircularProgress/>
+                    }
+                </Grid2>
             </Grid2>
-            <Grid2 md={2} right={true}>
-                {/** Actions sur le budget (close / reinit) **/
-                    (this.state.currentBudget != null && this.state.user_droits != null) ?
-                        <BudgetActionsButtonGroupComponent budget={this.state.currentBudget}
-                                                           droits={this.state.user_droits}
-                                                           onActionBudgetChange={this.handleBudgetUpdate}/> :
-                        <CircularProgress/>
-                }
-            </Grid2>
-        </Grid2>
-            <Grid2 container sx={{overflowY: "scroll", maxHeight: (window.innerHeight - 150)}}>
+            <Grid2 container>
                 <Grid2 md={4} direction={"column"}>
                     { /** Liste des opérations **/
                         (this.state.currentBudget != null ?
-                            <Stack spacing={1} divider={<Divider orientation="horizontal" flexItem/>}>
+                            <Stack spacing={1} divider={<Divider orientation="horizontal" flexItem/>}
+                                   sx={{overflowY: "auto", overflowX: "hidden"}}>
                                 {
                                     this.state.currentBudget.listeOperations
                                         .filter(operation => operation.etat !== "PLANIFIEE")
@@ -132,13 +134,12 @@ export default class Budget extends Component {
                     }
                 </Grid2>
                 <Grid2 md={8}>
-                    {
-                        (this.state.currentOperation != null ?
+                    {(this.state.currentOperation != null ?
                                 <OperationDetailItem operation={this.state.currentOperation}/> : <></>
-                        )
-                    }
+                    )}
                 </Grid2>
             </Grid2>
-        </>
-    ); }
+        </Box>
+    )
+    }
 }

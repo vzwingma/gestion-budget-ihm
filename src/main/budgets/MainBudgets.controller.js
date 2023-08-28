@@ -9,6 +9,11 @@ export function handleCompteChange(selectedCompteFromComponent) {
         {selectedCompte: selectedCompteFromComponent, budgetMenuOpen: false})
 }
 
+export function handleOpenMenuBar() {
+    this.setState(
+        {selectedCompte: null, budgetMenuOpen: true})
+}
+
 // Notification lorsque la date change
 export function handleDateChange(selectedDateFromComponent) {
     console.log("[TRIGGER] NewContext date=" + selectedDateFromComponent)
