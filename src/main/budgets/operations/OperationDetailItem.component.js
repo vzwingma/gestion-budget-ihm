@@ -62,9 +62,10 @@ const OperationDetailItem = ({operation, onClick}) => {
                         </Typography>
                     </Grid2>
                     <Grid2 md={3}>
+                        {(operation.mensualite != null ?
                         <Typography variant={"subtitle1"} component="div" align={"left"} sx={{spacing: 2}}>
                             {operation.mensualite.periode}
-                        </Typography>
+                        </Typography> : <></>)}
                     </Grid2>
                     <Grid2 md={1}/>
                 </Grid2>
