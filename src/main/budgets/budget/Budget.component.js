@@ -11,7 +11,7 @@ import BudgetsSoldes from "./BudgetSoldes.component";
 import {CircularProgress, Divider, Stack} from "@mui/material";
 import OperationItem from "../operations/OperationItem.component";
 
-/*
+/**
  * Page principale des budgets
  */
 export default class Budget extends Component {
@@ -20,6 +20,7 @@ export default class Budget extends Component {
     /** Etats pour la page Budget **/
         state = {
             currentBudget: null,
+            currentOperation: null,
             categories: null
         }
 
@@ -78,6 +79,11 @@ export default class Budget extends Component {
             componentUpdate = true;
             budgetUpdate = false;
         }
+        if (this.state.currentOperation !== nextStates.currentOperation) {
+            console.log("[TRIGGER] Context operation=" + nextStates.currentOperation.id)
+            componentUpdate = true;
+            budgetUpdate = false;
+        }
         if(budgetUpdate){
             console.log("[TRIGGER] Update budget")
             this.refreshBudget(nextStates.selectedCompte !== null ? nextStates.selectedCompte.value : null, nextStates.selectedDate);
@@ -111,28 +117,33 @@ export default class Budget extends Component {
             </Grid2>
         </Grid2>
             <Grid2 container sx={{overflowY: "scroll", maxHeight: (window.innerHeight - 150)}}>
-            <Grid2 md={4} direction={"column"}>
-                { /** Liste des opérations **/
-                    (this.state.currentBudget != null ?
-                        <Stack spacing={1} divider={<Divider orientation="horizontal" flexItem/>}>
-                            {
-                                this.state.currentBudget.listeOperations
-                                    .filter(operation => operation.etat !== "PLANIFIEE")
-                                    .sort((ope1, ope2) => sortOperations(ope1, ope2))
-                                    .map((operation) => (
-                                        <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
-                                    ))
-                            }
-                        </Stack> : <CircularProgress/>)
-                }
-            </Grid2>
-            <Grid2 md={8}>
-                { /** Liste des opérations **/
-                    (this.state.currentBudget != null ?
-                        <OperationsList onOperationChange={this.handleBudgetUpdate}
-                                        budget={this.state.currentBudget}/> : <CircularProgress/>)
-                }
-            </Grid2>
+                <Grid2 md={4} direction={"column"}>
+                    { /** Liste des opérations **/
+                        (this.state.currentBudget != null ?
+                            <Stack spacing={1} divider={<Divider orientation="horizontal" flexItem/>}>
+                                {
+                                    this.state.currentBudget.listeOperations
+                                        .filter(operation => operation.etat !== "PLANIFIEE")
+                                        .sort((ope1, ope2) => sortOperations(ope1, ope2))
+                                        .map((operation) => (
+                                            <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
+                                        ))
+                                }
+                            </Stack> : <CircularProgress/>)
+                    }
+                </Grid2>
+                <Grid2 md={8}>
+                    { /** Liste des opérations **/
+                        (this.state.currentBudget != null ?
+                            <OperationsList onOperationChange={this.handleBudgetUpdate}
+                                            budget={this.state.currentBudget}/> : <CircularProgress/>)
+                    }
+                    {
+                        (this.state.currentOperation != null ?
+                                <div>this.state.currentOperation </div> : <CircularProgress/>
+                        )
+                    }
+                </Grid2>
             </Grid2>
             <ToastContainer
                 position="bottom-left"

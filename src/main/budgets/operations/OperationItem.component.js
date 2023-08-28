@@ -31,10 +31,10 @@ const OperationItem = ({operation, onClick}) => {
                 </Grid2>
                 <Grid2 md={7}>
                     <Stack direction={"column"}>
-                        <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
+                        <Typography variant={"subtitle1"} component="div" align={"left"} sx={{spacing: 2}}>
                             {operation.libelle}
                         </Typography>
-                        <Typography variant={"body2"} component="div" align={"left"}
+                        <Typography variant={"caption"} component="div" align={"left"}
                                     sx={{spacing: 2, color: "#808080"}}>
                             {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                         </Typography>
@@ -42,7 +42,7 @@ const OperationItem = ({operation, onClick}) => {
 
                 </Grid2>
                 <Grid2 md={3}>
-                    <Typography variant={"h6"} component="div" align={"right"} sx={{spacing: 2}}>
+                    <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
                         <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}/>
                     </Typography>
                 </Grid2>

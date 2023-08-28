@@ -5,6 +5,7 @@ import * as Controller from "./MainBudgets.controller";
 import * as Services from "./MainBudgets.extservices";
 import Budget from "./budget/Budget.component";
 import CompteItem from "./budgetsMenuBar/CompteItem.component";
+import {ToastContainer} from "react-toastify";
 
 /*
 Page principale de gestion des budgets
@@ -58,6 +59,13 @@ export default class MainBudget extends Component {
                 {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
                     <Budget selectedCompte={this.state.selectedCompte} selectedDate={this.state.selectedDate}/> :
                     <CircularProgress/>}
+
+                <ToastContainer
+                    position="bottom-left"
+                    autoClose={1000}
+                    hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false}
+                    pauseOnFocusLoss draggable pauseOnHover
+                />
             </>
         );
     }
