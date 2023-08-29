@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Box, CircularProgress, Drawer, Stack} from "@mui/material";
+import {Box, CircularProgress, Divider, Drawer, Stack} from "@mui/material";
 import DateRange from "./budgetsMenuBar/DateRange.component";
 import * as Controller from "./MainBudgets.controller";
 import * as Services from "./MainBudgets.extservices";
@@ -43,10 +43,9 @@ export default class MainBudget extends Component {
                     <Stack spacing={2}>
                         <Box sx={{height: 80}}/>
 
-                        <DateRange onDateChange={this.handleDateChange}
-                                   idCompte={this.state.selectedCompte != null ? this.state.selectedCompte.id : null}/>
+                        <DateRange onDateChange={this.handleDateChange} selectedDate={this.state.selectedDate}/>
 
-                        <Stack spacing={2}>
+                        <Stack divider={<Divider orientation="horizontal" flexItem/>}>
                             {this.state.comptes.map((compte) => (
                                     <CompteItem compte={compte}
                                                 selectedIdCompte={this.state.selectedCompte != null ? this.state.selectedCompte.id : null}

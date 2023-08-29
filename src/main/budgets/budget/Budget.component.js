@@ -96,8 +96,8 @@ export default class Budget extends Component {
      * Render du budget
      */
     render() { return (
-        <Box height={window.outerHeight - 195}>
-            <Grid2 container>
+        <Box>
+            <Grid2 container marginTop={1}>
                 <Grid2 md={3}><MenuIcon onClick={this.props.onOpenMenu}/></Grid2>
                 <Grid2 md={7}>
                     { /** Soldes **/}
@@ -116,12 +116,13 @@ export default class Budget extends Component {
                     }
                 </Grid2>
             </Grid2>
+            <Divider variant="middle" sx={{margin: 1}}/>
             <Grid2 container>
                 <Grid2 md={4} direction={"column"}>
                     { /** Liste des opérations **/
                         (this.state.currentBudget != null ?
                             <Stack spacing={1} divider={<Divider orientation="horizontal" flexItem/>}
-                                   sx={{overflowY: "auto", overflowX: "hidden"}}>
+                                   sx={{overflowY: "auto", overflowX: "hidden"}} maxHeight={window.innerHeight - 195}>
                                 {
                                     this.state.currentBudget.listeOperations
                                         .filter(operation => operation.etat !== "PLANIFIEE")

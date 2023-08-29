@@ -8,10 +8,11 @@ const CompteItem = ({compte, selectedIdCompte, onClick}) => {
                    sx={{
                        backgroundColor: (compte.id === selectedIdCompte ? 'primary.main' : 'unset'),
                        borderRadius: (compte.id === selectedIdCompte ? '5% 0% 5% 0%' : 'unset'),
+                       padding: 1,
                        '&:hover': {
                            backgroundColor: 'primary.main',
                            color: 'white',
-                           opacity: [0.7, 0.6, 0.5],
+                           opacity: [0.8],
                            cursor: 'pointer',
                        },
                    }} onClick={() => onClick(compte)}>
