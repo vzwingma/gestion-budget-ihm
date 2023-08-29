@@ -1,12 +1,8 @@
-import * as AppConstants from "../../Utils/AppEnums.constants"
-import * as ClientHTTP from '../../Services/ClientHTTP.service'
-
 /**
  * Click sur la fenêtre modale
  * @param event
  */
 export function handleModalClick(event){
-    console.log(event)
         if(event.target.id !== null && event.target.id !== undefined) {
             const action = event.target.id;
             if(action === "CONFIRMER"){
@@ -18,21 +14,6 @@ export function handleModalClick(event){
 
     export function hideModale(){
         this.setState({showModale: false})
-    }
-
-
-    /**
-     * Chargement de l'intervalle de compte
-      */
-
-    export function intervalleLoaded(jourDepuisInitPremierBudget, jourDepuisInitDernierBudget) {
-        let datePremierBudget = new Date(jourDepuisInitPremierBudget * 24 * 60 * 60 * 1000);
-        datePremierBudget.setHours(0,0,0,0);
-        let dateDernierBudget = new Date(jourDepuisInitDernierBudget * 24 * 60 * 60 * 1000);
-        dateDernierBudget.setHours(0,0,0,0);
-        console.log("Budgets disponibles entre " + datePremierBudget.toLocaleDateString() + " & " + dateDernierBudget.toLocaleDateString());
-        this.setState({ datePremierBudget: datePremierBudget, dateDernierBudget : dateDernierBudget });
-
     }
 
 
@@ -52,26 +33,16 @@ export function handleModalClick(event){
             dateChanged = true;
         }
         else if(event.target.id === "next"){
+            console.log(this.state.dateCurrentBudget)
             // Popup de confirmation, car cela va initialiser un nouveau budget et cloturer l'actuel
-            if(this.state.dateDernierBudget <= this.state.dateCurrentBudget){
+            let moisEnCours = new Date().setMonth(new Date().getMonth() - 1);
+            if (moisEnCours <= this.state.dateCurrentBudget) {
                 console.log("Attention cela va initier un nouveau mois et fermer le mois courant");
                 this.setState({ showModale: true })
             }
             else{
                 this.confirmInitNextMonth();
             }
-        }
-        else if(event.target.id === "firstButton"){
-            newDatePreviousBudget = new Date(new Date(this.state.datePremierBudget).setMonth(this.state.datePremierBudget.getMonth() - 1));
-            newDateCurrentBudget = new Date(this.state.datePremierBudget);
-            newDateNextBudget = new Date(new Date(this.state.datePremierBudget).setMonth(this.state.datePremierBudget.getMonth() + 1));
-            dateChanged = true;
-        }
-        else if(event.target.id === "lastButton"){
-            newDateCurrentBudget = new Date(this.state.dateDernierBudget);
-            newDateNextBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() + 1));
-            newDatePreviousBudget = new Date(new Date(this.state.dateDernierBudget).setMonth(this.state.dateDernierBudget.getMonth() - 1));
-            dateChanged = true;
         }
         if(dateChanged){
             this.updateMonths(newDatePreviousBudget, newDateCurrentBudget, newDateNextBudget);
@@ -105,20 +76,4 @@ export function handleModalClick(event){
             })
         // Date sélectionnée, remonté à budget
         this.props.onDateChange(newDateCurrentBudget);
-    }
-
-
-    /** Appels WS vers pour charger la liste suite à modif des comptes **/
-    export function refreshDatesFromCompte(idCompte) {
-
-        ClientHTTP.call('GET',
-            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.INTERVALLE,
-            [ idCompte ])
-            .then((data) => {
-                // console.log(data)
-                this.intervalleLoaded(data.datePremierBudget, data.dateDernierBudget)
-            })
-            .catch((e) => {
-                console.log("Erreur lors du chargement de l'intervalle des budgets" + e)
-            })
     }
