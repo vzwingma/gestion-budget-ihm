@@ -24,12 +24,12 @@ const BudgetsSoldes = ({currentCompte, currentBudget}) => {
                 {currentCompte.libelle}
             </Typography>
             <Tooltip title={getTooltipAuj()}>
-                <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
+                <Typography variant={"h6"}>
                     <OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true}/>
                 </Typography>
             </Tooltip>
             <Tooltip title={getTooltipFin()}>
-                <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
+                <Typography variant={"caption"}>
                     <OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} showSign={true}/>
                 </Typography>
             </Tooltip>

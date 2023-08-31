@@ -34,7 +34,7 @@ import {
 
 // Couleur de la catégorie
 export function getCategorieColor(operationCategorie) {
-    if (operationCategorie != null) {
+    if (operationCategorie != null && operationCategorie.id != null) {
         switch (operationCategorie.id) {
             case 'ea6dcc12-3349-4047-a1e5-cd1d7254f16e': // Virement
                 return "#18c95d"

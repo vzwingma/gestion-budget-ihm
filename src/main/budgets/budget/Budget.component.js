@@ -135,9 +135,11 @@ export default class Budget extends Component {
                     }
                 </Grid2>
                 <Grid2 md={8}>
-                    {(this.state.currentOperation != null ?
-                                <OperationDetailItem operation={this.state.currentOperation}/> : <></>
-                    )}
+
+                    {this.state.currentOperation != null && this.state.currentBudget != null ?
+                        <OperationDetailItem operation={this.state.currentOperation}
+                                             budget={this.state.currentBudget}/> : <></>
+                    }
                 </Grid2>
             </Grid2>
         </Box>

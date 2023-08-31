@@ -1,7 +1,13 @@
 import React from "react";
 
-import OperationButtonAction from "./renderers/OperationButtonAction.component";
-import {ButtonGroup} from "@mui/material";
+import {Box, ButtonGroup, Tooltip} from "@mui/material";
+import {
+    ArrowForwardRounded,
+    CheckCircleOutlined,
+    CloseRounded,
+    DeleteForeverRounded,
+    HistoryRounded
+} from "@mui/icons-material";
 
 const OperationItemActions = ({operation}) => {
 
@@ -9,21 +15,59 @@ const OperationItemActions = ({operation}) => {
     return (
         <ButtonGroup aria-label="Actions" variant={"light"}>
             {operation.etat !== "REALISEE" &&
-                <OperationButtonAction action="REALISEE" iconAction="circle_ok.png" label="Valider l'opération"/>
+                <Tooltip title="Valider l'opération">
+                    <Box width={28} height={28} sx={{
+                        borderRadius: "50%",
+                        backgroundColor: '#2e7d32', color: '#FFFFFF',
+                        padding: '4px 2px 0px 2px'
+                    }}>
+                        <center><CheckCircleOutlined/></center>
+                    </Box>
+                </Tooltip>
             }
             {operation.etat !== "PREVUE" &&
-                <OperationButtonAction action="PREVUE" iconAction="circle_clock.png" label="Prévoir l'opération"/>
+                <Tooltip title="Prévoir l'opération">
+                    <Box width={28} height={28} sx={{
+                        borderRadius: "50%",
+                        backgroundColor: '#ed6c02', color: '#FFFFFF',
+                        padding: '4px 3px 0px 2px'
+                    }}>
+                        <center><HistoryRounded/></center>
+                    </Box>
+                </Tooltip>
             }
             {operation.etat !== "ANNULEE" &&
-                <OperationButtonAction action="ANNULEE" iconAction="circle_cancel.png" label="Annuler l'opération"/>
+                <Tooltip title="Annuler l'opération">
+                    <Box width={28} height={28} sx={{
+                        borderRadius: "50%",
+                        backgroundColor: '#cbcbcb', color: '#FFFFFF',
+                        padding: '4px 3px 0px 2px'
+                    }}>
+                        <center><CloseRounded/></center>
+                    </Box>
+                </Tooltip>
             }
             {operation.etat !== "SUPPRIMEE" &&
-                <OperationButtonAction action="SUPPRIMEE_A_CONFIRMER" iconAction="circle_remove.png"
-                                       label="Supprimer l'opération"/>
+                <Tooltip title="Supprimer l'opération">
+                    <Box width={28} height={28} sx={{
+                        borderRadius: "50%",
+                        backgroundColor: '#ed1b24', color: '#FFFFFF',
+                        padding: '4px 2px 0px 2px'
+                    }}>
+                        <center><DeleteForeverRounded/></center>
+                    </Box>
+                </Tooltip>
             }
             {operation.etat !== "REPORTEE" &&
-                <OperationButtonAction action="REPORTEE" iconAction="circle_arrow_right.png"
-                                       label="Reporter l'opération"/>
+                <Tooltip title="Reporter l'opération">
+                    <Box width={28} height={28} sx={{
+                        borderRadius: "50%",
+                        backgroundColor: '#9c27b0', color: '#FFFFFF',
+                        padding: '4px 2px 0px 2px'
+                    }}>
+                        <center><ArrowForwardRounded/></center>
+                    </Box>
+                </Tooltip>
             }
         </ButtonGroup>
     )

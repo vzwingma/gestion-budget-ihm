@@ -18,7 +18,7 @@ const CompteItem = ({compte, selectedIdCompte, onClick}) => {
                    }} onClick={() => onClick(compte)}>
             <Stack direction={"row"} spacing={5}>
                 <img src={"/img/banques/" + compte.icon} width={50} height={50} alt={compte.libelle}/>
-                <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
+                <Typography variant={"h6"}>
                     {compte.libelle}
                 </Typography>
             </Stack>
