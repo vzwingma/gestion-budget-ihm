@@ -3,12 +3,13 @@ import React, {Component} from "react";
 import {sortOperations} from "../../Utils/DataUtils.utils"
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
 import * as Controller from './Budget.controller'
+import * as ControllerOperation from './../operations/OperationItem.controller'
 import * as Services from './Budget.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import BudgetsSoldes from "./BudgetSoldes.component";
 import {Box, CircularProgress, Divider, Stack} from "@mui/material";
 import OperationItem from "../operations/OperationItem.component";
-import OperationDetailItem from "../operations/OperationDetailItem.component";
+import OperationDetailItem from "../operations/OperationDetail.component";
 import MenuIcon from '@mui/icons-material/Menu';
 
 /**
@@ -32,6 +33,8 @@ export default class Budget extends Component {
 
         this.handleBudgetUpdate = Controller.handleBudgetUpdate.bind(this);
         this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
+
+        this.handleOperationAction = ControllerOperation.handleOperationAction.bind(this);
 
         this.refreshBudget = Services.reloadBudget.bind(this);
         this.loadCategories = Services.loadCategories.bind(this);
@@ -59,21 +62,6 @@ export default class Budget extends Component {
     shouldComponentUpdate(nextProps, nextStates){
         let componentUpdate = false;
         let budgetUpdate;
-        /**
-        if ((this.state.selectedCompte !== null && nextStates.selectedCompte !== null)
-            && (this.state.selectedCompte !== nextStates.selectedCompte)) {
-            console.log("[TRIGGER] Context compte=" + nextStates.selectedCompte.value)
-            componentUpdate = true;
-            budgetUpdate = true;
-        }
-        else if(this.state.selectedDate != null && nextStates.selectedDate != null &&
-            (this.state.selectedDate.getTime() !== nextStates.selectedDate.getTime()))
-        {
-            console.log("[TRIGGER] Context date=" + nextStates.selectedDate.toLocaleDateString() )
-            componentUpdate = true;
-            budgetUpdate = true;
-        }
-        else **/
         if (this.state.currentBudget !== nextStates.currentBudget) {
             console.log("[TRIGGER] Context budget=" + nextStates.currentBudget.id )
             componentUpdate = true;
@@ -138,7 +126,9 @@ export default class Budget extends Component {
 
                     {this.state.currentOperation != null && this.state.currentBudget != null ?
                         <OperationDetailItem operation={this.state.currentOperation}
-                                             budget={this.state.currentBudget}/> : <></>
+                                             budget={this.state.currentBudget}
+                                             onActionEtat={this.handleOperationAction}
+                                             handleBudgetUpdate={this.handleBudgetUpdate}/> : <></>
                     }
                 </Grid2>
             </Grid2>

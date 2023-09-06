@@ -3,9 +3,18 @@ import {Box, Container, Stack, Typography} from "@mui/material";
 import OperationValue from "./renderers/OperationSpanValue.component";
 import * as Controller from "./renderers/OperationItem.controller";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import OperationItemActionsComponent from "./OperationItemActions.component";
+import OperationItemActionsComponent from "./OperationDetailActions.component";
 
-const OperationDetailItem = ({operation, budget}) => {
+/**
+ * Page de détail d'une opération
+ * @param operation opération sélectionnée
+ * @param budget budget associée
+ * @param onActionEtat fonction appelée lors d'un changement d'état
+ * @param handleBudgetUpdate opération de mise à jour du budget
+ * @returns {JSX.Element} composant
+ * @constructor
+ */
+const OperationDetailItem = ({operation, budget, onActionEtat, handleBudgetUpdate}) => {
 
 
     return (
@@ -15,7 +24,7 @@ const OperationDetailItem = ({operation, budget}) => {
                      sx={{
                          borderRadius: "50%",
                          backgroundColor: Controller.getCategorieColor(operation.categorie), color: '#FFFFFF',
-                         padding: '16px 6px 0px 6px',
+                         padding: '16px 8px 0px 8px',
                      }}>
                     <center>{Controller.getSousCategorieIcon(operation.ssCategorie)}</center>
                 </Box>
@@ -35,7 +44,9 @@ const OperationDetailItem = ({operation, budget}) => {
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Etat</Typography>
                     </Grid2>
                     <Grid2 md={3}>
-                        <Typography variant={"caption"} sx={{color: "#808080"}}>Période</Typography>
+                        {(operation.mensualite != null ?
+                                <Typography variant={"caption"} sx={{color: "#808080"}}>Période</Typography> : <></>
+                        )}
                     </Grid2>
 
                     <Grid2 md={6}>
@@ -69,7 +80,9 @@ const OperationDetailItem = ({operation, budget}) => {
                     </Grid2>
                     <Grid2 md={6}>
                         {budget != null && budget.actif ?
-                            <OperationItemActionsComponent operation={operation}/> : <></>
+                            <OperationItemActionsComponent operation={operation} budget={budget}
+                                                           onActionEtat={onActionEtat}
+                                                           handleBudgetUpdate={handleBudgetUpdate}/> : <></>
                         }
                     </Grid2>
                     <Grid2 md={3}>

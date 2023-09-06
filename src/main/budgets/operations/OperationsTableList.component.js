@@ -21,7 +21,7 @@ import * as Controller from './OperationsTableList.controller';
 import * as Service from './OperationsTableList.extservices';
 import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.component";
 import OperationMensualite from "./renderers/OperationBadgeMensualite.component";
-import * as ActionController from './renderers/OperationActions.controller';
+import * as ActionController from './OperationItem.controller';
 
 
 /**
