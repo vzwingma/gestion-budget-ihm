@@ -14,28 +14,33 @@ import {
  * @param operation opération
  * @param budget budget
  * @param onActionEtat fonction appelée lors d'un changement d'état
+ * @param handleBudgetUpdate fonction appelée pour déclencher la mise à jour du budget
  * @returns {JSX.Element}
  * @constructor
  */
 const OperationItemActions = ({operation, budget, onActionEtat, handleBudgetUpdate}) => {
 
     return (
-        <ButtonGroup onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}>
+        <ButtonGroup>
             {operation.etat !== "REALISEE" &&
                 <Tooltip title="Valider l'opération">
                     <IconButton
                         sx={{backgroundColor: '#2e7d32', color: '#FFFFFF', padding: '5px 5px 0px 5px', marginX: '1px'}}
-                        id={"REALISEE"}>
-                        <center id={"REALISEE"}><CheckCircleOutlined id={"REALISEE"}/></center>
+                        id={"REALISEE"} onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}>
+                        <center id={"REALISEE"}><CheckCircleOutlined id={"REALISEE"}
+                                                                     onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}/>
+                        </center>
                     </IconButton>
                 </Tooltip>
             }
             {operation.etat !== "PREVUE" &&
                 <Tooltip title="Prévoir l'opération">
                     <IconButton
-                        sx={{backgroundColor: '#ed6c02', color: '#FFFFFF', padding: '5px 5px 0px 5px', marginX: '1px'}}
-                        id={"PREVUE"}>
-                        <center id={"PREVUE"}><HistoryRounded id={"PREVUE"}/></center>
+                        sx={{backgroundColor: '#ed6c02', color: '#FFFFFF', padding: '5px 5px 0px 4px', marginX: '1px'}}
+                        id={"PREVUE"} onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}>
+                        <center id={"PREVUE"}><HistoryRounded id={"PREVUE"}
+                                                              onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}/>
+                        </center>
                     </IconButton>
                 </Tooltip>
             }
@@ -43,8 +48,10 @@ const OperationItemActions = ({operation, budget, onActionEtat, handleBudgetUpda
                 <Tooltip title="Annuler l'opération">
                     <IconButton
                         sx={{backgroundColor: '#cbcbcb', color: '#FFFFFF', padding: '5px 5px 0px 5px', marginX: '1px'}}
-                        id={"ANNULEE"}>
-                        <center id={"ANNULEE"}><CloseRounded id={"ANNULEE"}/></center>
+                        id={"ANNULEE"} onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}>
+                        <center id={"ANNULEE"}><CloseRounded id={"ANNULEE"}
+                                                             onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}/>
+                        </center>
                     </IconButton>
                 </Tooltip>
             }
@@ -52,8 +59,10 @@ const OperationItemActions = ({operation, budget, onActionEtat, handleBudgetUpda
                 <Tooltip title="Supprimer l'opération">
                     <IconButton
                         sx={{backgroundColor: '#ed1b24', color: '#FFFFFF', padding: '5px 5px 0px 5px', marginX: '1px'}}
-                        id={"SUPPRIMEE"}>
-                        <center id={"SUPPRIMEE"}><DeleteForeverRounded id={"SUPPRIMEE"}/></center>
+                        id={"SUPPRIMEE"} onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}>
+                        <center id={"SUPPRIMEE"}><DeleteForeverRounded id={"SUPPRIMEE"}
+                                                                       onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}/>
+                        </center>
                     </IconButton>
                 </Tooltip>
             }
@@ -61,8 +70,10 @@ const OperationItemActions = ({operation, budget, onActionEtat, handleBudgetUpda
                 <Tooltip title="Reporter l'opération">
                     <IconButton
                         sx={{backgroundColor: '#9c27b0', color: '#FFFFFF', padding: '5px 5px 0px 5px', marginX: '1px'}}
-                        id={"REPORTEE"}>
-                        <center id={"REPORTEE"}><ArrowForwardRounded id={"REPORTEE"}/></center>
+                        id={"REPORTEE"} onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}>
+                        <center id={"REPORTEE"}><ArrowForwardRounded id={"REPORTEE"}
+                                                                     onClick={(e) => onActionEtat(e, budget, operation, handleBudgetUpdate)}/>
+                        </center>
                     </IconButton>
                 </Tooltip>
             }
