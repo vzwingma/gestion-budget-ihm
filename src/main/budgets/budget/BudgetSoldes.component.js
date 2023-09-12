@@ -1,5 +1,5 @@
 import OperationValue from '../operations/renderers/OperationSpanValue.component'
-import {Stack, Tooltip, Typography} from "@mui/material";
+import {Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
 /*
  * Page principale du solde
@@ -18,23 +18,24 @@ const BudgetsSoldes = ({currentCompte, currentBudget}) => {
     }
 
     return (
-        <Stack direction={"row"} spacing={1} justifyContent="space-evenly" alignItems="center">
+        <Stack direction={"row"} spacing={1} justifyContent="left" alignItems="center" marginTop={"3pt"}>
             <img src={"/img/banques/" + currentCompte.icon} width={50} height={50} alt={currentCompte.libelle}/>
-            <Typography variant={"h6"} component="div" align={"left"} sx={{spacing: 2}}>
+            <Typography variant={"h6"} component="div" width={300} textAlign={"center"}>
                 {currentCompte.libelle}
             </Typography>
+            <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
-                <Typography variant={"h6"}>
+                <Typography variant={"h6"} width={120} textAlign={"center"}>
                     <OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true}/>
                 </Typography>
             </Tooltip>
             <Tooltip title={getTooltipFin()}>
-                <Typography variant={"caption"}>
-                    <OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} showSign={true}/>
+                <Typography variant={"caption"} width={100} textAlign={"center"}>
+                    (<OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} showSign={true}/> )
                 </Typography>
             </Tooltip>
+            <Divider orientation="vertical" flexItem/>
         </Stack>
-
     )
 };
 

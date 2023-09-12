@@ -53,9 +53,9 @@ import {toast} from "react-toastify";
             if(action === "SUPPRIMEE_A_CONFIRMER"){
                 this.setState({showModale: true, operation: operation})
             }
-            else if(action !== "SUPPRIMEE" ){
+            // else if(action !== "SUPPRIMEE" ){
                 updateOperation(operation, action, budget, handleBudgetUpdate);
-            }
+            // }
         }
     }
 

@@ -86,7 +86,7 @@ export default class Budget extends Component {
     render() { return (
         <Box>
             <Grid2 container marginTop={1}>
-                <Grid2 md={3}><MenuIcon onClick={this.props.onOpenMenu}/></Grid2>
+                <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu}/></Grid2>
                 <Grid2 md={7}>
                     { /** Soldes **/}
                     {this.state.currentBudget != null ?
@@ -94,7 +94,7 @@ export default class Budget extends Component {
                                        currentBudget={this.state.currentBudget}/> : <CircularProgress/>
                     }
                 </Grid2>
-                <Grid2 md={2} right={true}>
+                <Grid2 md={1}>
                     {/** Actions sur le budget (close / reinit) **/
                         (this.state.currentBudget != null && this.state.user_droits != null) ?
                             <BudgetActionsButtonGroupComponent budget={this.state.currentBudget}
