@@ -84,7 +84,7 @@ export default class Budget extends Component {
      * Render du budget
      */
     render() { return (
-        <Box>
+        <Box sx={{overflow: "hidden"}}>
             <Grid2 container marginTop={1}>
                 <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu}/></Grid2>
                 <Grid2 md={7}>
@@ -125,10 +125,13 @@ export default class Budget extends Component {
                 <Grid2 md={8}>
 
                     {this.state.currentOperation != null && this.state.currentBudget != null ?
-                        <OperationDetailItem operation={this.state.currentOperation}
+
+                        <Box height={window.innerHeight - 195}><OperationDetailItem
+                            operation={this.state.currentOperation}
                                              budget={this.state.currentBudget}
                                              onActionEtat={this.handleOperationAction}
-                                             handleBudgetUpdate={this.handleBudgetUpdate}/> : <></>
+                            handleBudgetUpdate={this.handleBudgetUpdate}/></Box> : <></>
+
                     }
                 </Grid2>
             </Grid2>

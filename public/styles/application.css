@@ -10,30 +10,64 @@ body {
     font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
 }
 
-/** Style pour les opérations **/
-/* button Créer & Editer */
-div.bgButtonsCreateUpdateOps{
-    position: relative;
-    left: 8px;
-    top: -45px;
+/** Style pour les budgets **/
+/* button Créer & Réinit & Close/Open */
+button.buttonsActionsBudget {
+    color: #FFFFFF;
+    padding: 10px 10px 5px 10px;
+    margin-right: 2px;
 }
 
 /* boutons actions sur opérations*/
-button.btn-actions-operation {
-    padding: 0 1px 0 1px;
-    min-width: 20px !important;
+button.buttonsActionsOperations {
+    color: #FFFFFF;
+    padding: 5px 5px 0px 5px;
+    margin-right: 1px;
 }
 
-.text-success {
+/* Couleurs des opérations */
+.text-CREDIT {
     color: #93c54b;
 }
-.text-danger {
+
+.text-DEBIT {
     color: #e74c3c;
 }
-.text-barree {
+
+.text-ANNULEE {
     font-style: italic;
     text-decoration-line: line-through;
 }
+
+.color_REALISEE {
+    background-color: #2e7d32 !important;
+}
+
+.color_PREVUE {
+    background-color: #ed6c02 !important;
+}
+
+.color_ANNULEE {
+    background-color: #cbcbcb !important;
+}
+
+.color_SUPPRIMEE {
+    background-color: #ed1b24 !important;
+}
+
+.color_REPORTEE {
+    background-color: #9c27b0 !important;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -56,55 +90,6 @@ thead.theadResume > tr > th  {
 }
 
 
-/* Lignes pour les résumés */
-tbody.tbodyResume > tr.ligneCategorie {
-    font-weight: bolder !important;
-    color: #1e1e1c;
-    background-color: #f8f5f0;
-    border-color: #dfddd8;
-}
-tbody.tbodyResume > tr.ligneSolde {
-    font-weight: bolder !important;
-    color: #1e1e1c;
-    border-color: #dfddd8;
-    height: 40px;
-    font-size: 16px;
-    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-}
-
-tbody.tbodyResume > tr {
-    height: 25px;
-    border-color: #dfddd8;
-}
-
-
-span.ligneSsCategorie {
-    margin-left: 20px;
-}
-
-
-
-
-tbody.tbodyResume > tr > td:first-child {
-    width:33%
-}
-tbody.tbodyResume > tr > td:nth-child(2) {
-    text-align: right;
-    padding: 0 10px 0 0 !important;
-}
-tbody.tbodyResume > tr > td:nth-child(3) {
-    text-align: right;
-    padding: 0 10px 0 0 !important;
-}
-
-/**
-Style data range
- */
-
-.pagination {
-    justify-content: center;
-    display: flex;
-}
 /**
 Style Menu
  */

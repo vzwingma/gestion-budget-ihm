@@ -13,15 +13,15 @@ export function getStyleOperation(operation, valueOperation){
 
     let style = "";
     if(operation?.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)){
-        style += "text-barree ";
+        style += "text-ANNULEE ";
     } else if (valueOperation === 0) {
         style += "";
     }
     else if(valueOperation > 0){
-        style += "text-success";
+        style += "text-CREDIT";
     }
     else{
-        style += "text-danger";
+        style += "text-DEBIT";
     }
     return style;
 }
