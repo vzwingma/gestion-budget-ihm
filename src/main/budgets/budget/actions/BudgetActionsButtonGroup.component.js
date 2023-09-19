@@ -60,9 +60,9 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                     <Tooltip title="Réinitialiser le budget">
                         <IconButton
                             className={"buttonsActionsBudget"} sx={{backgroundColor: '#EDC109'}}
-                            id={"REINIT_A_CONFIRMER"} onClick={this.handleOperationCreate}>
+                            id={"REINIT_A_CONFIRMER"}>
                             <center id={"REINIT_A_CONFIRMER"}>
-                                <RestartAltRounded id={"REINIT_A_CONFIRMER"} onClick={this.handleOperationCreate}/>
+                                <RestartAltRounded id={"REINIT_A_CONFIRMER"}/>
                             </center>
                         </IconButton>
                     </Tooltip>
@@ -73,16 +73,16 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                         {(this.props.budget.actif ?
                             <IconButton
                                 className={"buttonsActionsBudget"} sx={{backgroundColor: '#2e7d32'}}
-                                id={"CLOSE_A_CONFIRMER"} onClick={this.handleOperationCreate}>
+                                id={"CLOSE_A_CONFIRMER"}>
                                 <center id={"CLOSE_A_CONFIRMER"}>
-                                    <LockOpenRounded id={"CLOSE_A_CONFIRMER"} onClick={this.handleOperationCreate}/>
+                                    <LockOpenRounded id={"CLOSE_A_CONFIRMER"}/>
                                 </center>
                             </IconButton> :
                             <IconButton
                                 className={"buttonsActionsBudget"} sx={{backgroundColor: '#C70039'}}
-                                id={"CLOSE_A_CONFIRMER"} onClick={this.handleOperationCreate}>
+                                id={"CLOSE_A_CONFIRMER"}>
                                 <center id={"CLOSE_A_CONFIRMER"}>
-                                    <LockRounded id={"CLOSE_A_CONFIRMER"} onClick={this.handleOperationCreate}/>
+                                    <LockRounded id={"CLOSE_A_CONFIRMER"}/>
                                 </center>
                             </IconButton>)}
                     </Tooltip>
