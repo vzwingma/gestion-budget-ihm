@@ -4,6 +4,13 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationValue from "./renderers/OperationSpanValue.component";
 import * as Controller from "./renderers/OperationItem.controller";
 
+/**
+ * Tuile  d'une opération dans la liste des opérations
+ * @param operation opération affichée
+ * @param onClick action lors du click
+ * @returns {JSX.Element} tuile
+ * @constructor constructeur
+ */
 const OperationItem = ({operation, onClick}) => {
 
 
