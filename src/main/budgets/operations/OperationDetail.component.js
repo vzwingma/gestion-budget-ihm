@@ -67,7 +67,7 @@ const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
 
 
                     <Grid2 md={6} paddingTop={3}>
-                        {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE && operation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE ?
+                        {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE ?
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                         }
 
@@ -82,7 +82,7 @@ const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
 
                     </Grid2>
                     <Grid2 md={6}>
-                        {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE && operation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE ?
+                        {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions currentOperation={operation}
                                                     currentBudget={budget}
                                                     onActionOperationChange={onActionOperationChange}/> : <></>

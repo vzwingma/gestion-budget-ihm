@@ -20,7 +20,7 @@ export function handleOperationAction(event) {
             updateOperation(this.props.currentOperation, action, this.props.currentBudget, this.props.onActionOperationChange);
         }
         // Après l'action d'update SUPPRIMEE, on clot la popup
-        if (action === "SUPPRIMEE") {
+        if (action === AppConstants.OPERATIONS_ENUM.SUPPRIMEE) {
             this.setState({currentOperation: null, showModale: false})
         }
     }
