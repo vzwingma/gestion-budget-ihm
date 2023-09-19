@@ -9,7 +9,8 @@ import {toast} from "react-toastify";
  */
 export function handleOperationAction(event) {
     /** Correction click hors cadre */
-    if (event.target.id !== undefined && event.target.id !== "") {
+
+    if (event.target !== undefined && event.target !== "") {
         let action = event.target.id;
         if (action === "") {
             action = event.target.parentNode.id
