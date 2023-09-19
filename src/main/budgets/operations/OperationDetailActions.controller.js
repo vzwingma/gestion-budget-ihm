@@ -10,7 +10,10 @@ import {toast} from "react-toastify";
 export function handleOperationAction(event) {
     /** Correction click hors cadre */
     if (event.target.id !== undefined && event.target.id !== "") {
-        const action = event.target.id;
+        let action = event.target.id;
+        if (action === "") {
+            action = event.target.parentNode.id
+        }
         if (action === "SUPPRIMEE_A_CONFIRMER") {
             this.setState({showModale: true, currentOperation: this.props.currentOperation});
         } else if (action === "ANNULER") {

@@ -16,6 +16,9 @@ import * as Service from './BudgetActionsButtonGroup.extservices'
 import {UTILISATEUR_DROITS} from "../../../Utils/AppEnums.constants";
 import {AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded} from "@mui/icons-material";
 
+/**
+ * Actions sur le budget
+ */
 export default class BudgetActionsButtonGroupComponent extends Component {
 
     state = {
@@ -32,6 +35,8 @@ export default class BudgetActionsButtonGroupComponent extends Component {
     constructor(props){
         super(props);
         this.handleButtonsBudgetClick = Controller.handleButtonsBudgetClick.bind(this);
+        this.handleButtonCreateClick = Controller.handleButtonCreateClick.bind(this);
+
         this.callReopenCloseBudget = Service.callReopenCloseBudget.bind(this);
         this.callReinitBudget = Service.callReinitBudget.bind(this);
     }
@@ -43,16 +48,15 @@ export default class BudgetActionsButtonGroupComponent extends Component {
     render() {
         /** Groupe d'actions sur le budget **/
         return (
-            <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick} variant={"light"}
+            <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick}
+                         variant={"light"}
                          sx={{marginLeft: "-10px"}}>
                     {this.props.budget.actif &&
                     <Tooltip title="Créer une nouvelle opération">
                         <IconButton
                             className={"buttonsActionsBudget"} sx={{backgroundColor: '#209ED8', marginX: '10px'}}
-                            id={"CREATION"} onClick={this.handleOperationCreate}>
-                            <center id={"CREATION"}>
-                                <AddchartRounded id={"REALISEE"} onClick={this.handleOperationCreate}/>
-                            </center>
+                            id={"CREATE"}>
+                            <center><AddchartRounded id={"CREATE"}/></center>
                         </IconButton>
                     </Tooltip>
                     }
@@ -61,9 +65,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                         <IconButton
                             className={"buttonsActionsBudget"} sx={{backgroundColor: '#EDC109'}}
                             id={"REINIT_A_CONFIRMER"}>
-                            <center id={"REINIT_A_CONFIRMER"}>
-                                <RestartAltRounded id={"REINIT_A_CONFIRMER"}/>
-                            </center>
+                            <center><RestartAltRounded id={"REINIT_A_CONFIRMER"}/></center>
                         </IconButton>
                     </Tooltip>
                     }
@@ -74,16 +76,12 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                             <IconButton
                                 className={"buttonsActionsBudget"} sx={{backgroundColor: '#2e7d32'}}
                                 id={"CLOSE_A_CONFIRMER"}>
-                                <center id={"CLOSE_A_CONFIRMER"}>
-                                    <LockOpenRounded id={"CLOSE_A_CONFIRMER"}/>
-                                </center>
+                                <center><LockOpenRounded id={"CLOSE_A_CONFIRMER"}/></center>
                             </IconButton> :
                             <IconButton
                                 className={"buttonsActionsBudget"} sx={{backgroundColor: '#C70039'}}
                                 id={"CLOSE_A_CONFIRMER"}>
-                                <center id={"CLOSE_A_CONFIRMER"}>
-                                    <LockRounded id={"CLOSE_A_CONFIRMER"}/>
-                                </center>
+                                <center><LockRounded id={"CLOSE_A_CONFIRMER"}/></center>
                             </IconButton>)}
                     </Tooltip>
                     }
@@ -95,8 +93,8 @@ export default class BudgetActionsButtonGroupComponent extends Component {
 
                         <DialogActions>
                             <ButtonGroup>
-                                <Button id="ANNULER"    color="error">Annuler</Button>
-                                <Button id="CONFIRMER"  color="success">Confirmer</Button>
+                                <Button id="ANNULER" color="error">Annuler</Button>
+                                <Button id="CONFIRMER" color="success">Confirmer</Button>
                             </ButtonGroup>
                         </DialogActions>
                     </Dialog>

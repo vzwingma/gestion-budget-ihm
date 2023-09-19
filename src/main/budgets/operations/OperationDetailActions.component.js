@@ -66,7 +66,7 @@ export default class OperationDetailActions extends Component {
                         <IconButton
                             className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.REALISEE}
                             id={AppConstants.OPERATIONS_ENUM.REALISEE}>
-                            <center id={AppConstants.OPERATIONS_ENUM.REALISEE}>
+                            <center>
                                 <CheckCircleOutlined id={AppConstants.OPERATIONS_ENUM.REALISEE}/>
                             </center>
                         </IconButton>
@@ -77,7 +77,7 @@ export default class OperationDetailActions extends Component {
                         <IconButton
                             className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.PREVUE}
                             id={AppConstants.OPERATIONS_ENUM.PREVUE}>
-                            <center id={AppConstants.OPERATIONS_ENUM.PREVUE}>
+                            <center>
                                 <HistoryRounded id={AppConstants.OPERATIONS_ENUM.PREVUE}/>
                             </center>
                         </IconButton>
@@ -88,7 +88,7 @@ export default class OperationDetailActions extends Component {
                         <IconButton
                             className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.ANNULEE}
                             id={AppConstants.OPERATIONS_ENUM.ANNULEE}>
-                            <center id={AppConstants.OPERATIONS_ENUM.ANNULEE}>
+                            <center>
                                 <CloseRounded id={AppConstants.OPERATIONS_ENUM.ANNULEE}/>
                             </center>
                         </IconButton>
@@ -99,7 +99,7 @@ export default class OperationDetailActions extends Component {
                         <IconButton
                             className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.SUPPRIMEE}
                             id={"SUPPRIMEE_A_CONFIRMER"}>
-                            <center id={"SUPPRIMEE_A_CONFIRMER"}>
+                            <center>
                                 <DeleteForeverRounded id={"SUPPRIMEE_A_CONFIRMER"}
                                                       onClick={this.handleOperationAction}/>
                             </center>
@@ -111,7 +111,7 @@ export default class OperationDetailActions extends Component {
                         <IconButton
                             className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.REPORTEE}
                             id={AppConstants.OPERATIONS_ENUM.REPORTEE}>
-                            <center id={AppConstants.OPERATIONS_ENUM.REPORTEE}>
+                            <center>
                                 <ArrowForwardRounded id={AppConstants.OPERATIONS_ENUM.REPORTEE}/>
                             </center>
                         </IconButton>
