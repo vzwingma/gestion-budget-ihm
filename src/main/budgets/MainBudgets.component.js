@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import {Box, CircularProgress, Divider, Drawer, Stack} from "@mui/material";
-import DateRange from "./budgetsMenuBar/DateRange.component";
+import DateRange from "./menuBar/DateRange.component";
 import * as Controller from "./MainBudgets.controller";
 import * as Services from "./MainBudgets.extservices";
 import Budget from "./budget/Budget.component";
-import CompteItem from "./budgetsMenuBar/CompteItem.component";
+import CompteItem from "./menuBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
 
 /*

@@ -22,3 +22,12 @@ export function handleOperationSelect(operation) {
     console.log("Selection de l'opération [" + operation.id + "]");
     this.setState({currentOperation: operation})
 }
+
+
+/**
+ * Création d'une nouvelle opération
+ */
+export function handleButtonCreateClick() {
+    console.log("CREATE")
+    this.setState({currentOperation: null})
+}

@@ -13,7 +13,7 @@ export function handleButtonsBudgetClick(event) {
         let questionPopup = "";
         let affichagePopup;
         if (action === "CREATE") {
-            handleButtonCreateClick();
+            this.props.onActionOperationCreate()
         } else if (action === "CLOSE_A_CONFIRMER") {
             titrePopup = "Activité du budget";
             questionPopup = "Voulez vous vraiment " + (this.props.budget.actif ? "clôturer" : "réouvrir") + " le budget ?";
@@ -45,9 +45,3 @@ export function handleButtonsBudgetClick(event) {
     }
 }
 
-/**
- * Création d'une nouvelle opération
- */
-export function handleButtonCreateClick() {
-    console.log("CREATE")
-}

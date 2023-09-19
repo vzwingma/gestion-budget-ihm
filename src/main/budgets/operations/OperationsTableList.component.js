@@ -12,16 +12,12 @@ import {
 } from '@mui/material';
 import {DataGrid, GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
 
-import OperationActions from './renderers/OperationActions.component';
-import OperationEtat from './renderers/OperationBadgeEtat.component';
+
 import OperationValue from './renderers/OperationSpanValue.component';
 import OperationDescription from './renderers/OperationDescription.component';
 import * as DataUtils from '../../Utils/DataUtils.utils';
 import * as Controller from './OperationsTableList.controller';
-import * as Service from './OperationsTableList.extservices';
 import CreateUpdateOperationForm from "./createupdate/CreateUpdateOperationForm.component";
-import OperationMensualite from "./renderers/OperationBadgeMensualite.component";
-import * as ActionController from './OperationItem.controller';
 
 
 /**

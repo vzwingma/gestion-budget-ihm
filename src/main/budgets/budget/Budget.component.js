@@ -11,6 +11,7 @@ import OperationItem from "../operations/OperationItem.component";
 import OperationDetailItem from "../operations/OperationDetail.component";
 import MenuIcon from '@mui/icons-material/Menu';
 
+
 /**
  * Page principale des budgets
  */
@@ -18,13 +19,11 @@ export default class Budget extends Component {
 
 
     /** Etats pour la page Budget **/
-        state = {
+    state = {
             currentBudget: null,
             currentOperation: null,
-            categories: null,
-            showModale: false
-        }
-
+        categories: null
+    }
 
 
     /** Constructeur **/
@@ -32,7 +31,10 @@ export default class Budget extends Component {
         super(props);
 
         this.handleBudgetUpdate = Controller.handleBudgetUpdate.bind(this);
+
         this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
+        this.handleButtonCreateClick = Controller.handleButtonCreateClick.bind(this);
+
         this.refreshBudget = Services.reloadBudget.bind(this);
         this.loadCategories = Services.loadCategories.bind(this);
         this.categoriesLoaded = Services.categoriesLoaded.bind(this);
@@ -54,8 +56,12 @@ export default class Budget extends Component {
     }
 
 
-    /** Appels WS vers pour charger la liste des opérations pour le mois et le budget **/
-    // Mise à jour du contexte de budget
+    /**
+     * Mise à jour du contexte de budget
+     * @param nextProps next Props
+     * @param nextStates nexte States
+     * @returns {boolean} s'il faut mettre à jour
+     */
     shouldComponentUpdate(nextProps, nextStates){
         let componentUpdate = false;
         let budgetUpdate;
@@ -65,12 +71,12 @@ export default class Budget extends Component {
             budgetUpdate = false;
         }
         if (this.state.currentOperation !== nextStates.currentOperation) {
-            console.log("[TRIGGER] Context operation=" + nextStates.currentOperation.id)
+            console.log("[TRIGGER] Context operation=" + (nextStates.currentOperation !== null ? nextStates.currentOperation.id : "Nouvelle opération"))
             componentUpdate = true;
             budgetUpdate = false;
         }
         if(budgetUpdate){
-            console.log("[TRIGGER] Update budget")
+            console.log("[TRIGGER] refresh du budget")
             this.refreshBudget(nextStates.selectedCompte !== null ? nextStates.selectedCompte.value : null, nextStates.selectedDate);
         }
         return componentUpdate;
@@ -96,7 +102,8 @@ export default class Budget extends Component {
                         (this.state.currentBudget != null && this.state.user_droits != null) ?
                             <BudgetActionsButtonGroupComponent budget={this.state.currentBudget}
                                                                droits={this.state.user_droits}
-                                                               onActionBudgetChange={this.handleBudgetUpdate}/> :
+                                                               onActionBudgetChange={this.handleBudgetUpdate}
+                                                               onActionOperationCreate={this.handleButtonCreateClick}/> :
                             <CircularProgress/>
                     }
                 </Grid2>
@@ -121,11 +128,11 @@ export default class Budget extends Component {
                 </Grid2>
                 <Grid2 md={8}>
                     {this.state.currentOperation != null && this.state.currentBudget != null ?
-                            <Box height={window.innerHeight - 195}>
+                        <Box height={window.innerHeight - 195}>
                                 <OperationDetailItem operation={this.state.currentOperation}
                                                      budget={this.state.currentBudget}
                                                      onActionOperationChange={this.handleBudgetUpdate}/>
-                            </Box>
+                        </Box>
                         :
                         <></>
                     }

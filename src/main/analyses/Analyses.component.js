@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import DateRange from "../budgets/budgetsMenuBar/DateRange.component"
+import DateRange from "../budgets/menuBar/DateRange.component"
 import ResumeSoldes from "./ResumeSoldes.component"
 import ResumeCategories from "./ResumeCategories.component"
 import * as Controller from './Analyses.controller'
