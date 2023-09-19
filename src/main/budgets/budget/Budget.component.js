@@ -7,7 +7,19 @@ import * as ControllerOperation from './../operations/OperationItem.controller'
 import * as Services from './Budget.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import BudgetsSoldes from "./BudgetSoldes.component";
-import {Box, CircularProgress, Divider, Stack} from "@mui/material";
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Divider,
+    Stack
+} from "@mui/material";
 import OperationItem from "../operations/OperationItem.component";
 import OperationDetailItem from "../operations/OperationDetail.component";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -125,12 +137,29 @@ export default class Budget extends Component {
                 <Grid2 md={8}>
 
                     {this.state.currentOperation != null && this.state.currentBudget != null ?
+                        <>
+                            <Box height={window.innerHeight - 195}>
+                                <OperationDetailItem operation={this.state.currentOperation}
+                                                     budget={this.state.currentBudget}
+                                                     onActionEtat={this.handleOperationAction}
+                                                     handleBudgetUpdate={this.handleBudgetUpdate}/>
+                            </Box>
+                            <Dialog open={this.state.showModale}>
+                                <DialogTitle>{this.state.title}</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>{this.state.question}</DialogContentText>
+                                </DialogContent>
 
-                        <Box height={window.innerHeight - 195}><OperationDetailItem
-                            operation={this.state.currentOperation}
-                                             budget={this.state.currentBudget}
-                                             onActionEtat={this.handleOperationAction}
-                            handleBudgetUpdate={this.handleBudgetUpdate}/></Box> : <></>
+                                <DialogActions>
+                                    <ButtonGroup>
+                                        <Button id="ANNULER" color="error">Annuler</Button>
+                                        <Button id="CONFIRMER" color="success">Confirmer</Button>
+                                    </ButtonGroup>
+                                </DialogActions>
+                            </Dialog>
+                        </>
+                        :
+                        <></>
 
                     }
                 </Grid2>
