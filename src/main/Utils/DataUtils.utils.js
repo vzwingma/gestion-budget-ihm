@@ -158,24 +158,6 @@ export function sortDatesOperation(strDate1, strDate2) {
 
 
 
-/** Libellé du badge Mensualité
- * @param periode : string enum période
- * */
-
-export function getLibellePeriode(periode){
-    switch (periode) {
-        case "MENSUELLE":
-            return "Mensuelle";
-        case "TRIMESTRIELLE":
-            return "Trimestrielle";
-        case "SEMESTRIELLE":
-            return "Semestrielle";
-        case "ANNUELLE":
-            return "Annuelle";
-        default:
-            return "";
-    }
-}
 
 /** Couleur du background du badge Mensualité
  * @param periode : string enum période
