@@ -73,3 +73,17 @@ export const BUSINESS_GUID = {
     CAT_PRELEVEMENT_MENSUEL : "504beea7-ed52-438a-aced-15e9603b82ab",
     SOUS_CAT_INTER_COMPTES : "ed3f6100-5dbd-4b68-860e-0c97ae1bbc63"
 }
+
+
+/**
+ * Etat des opérations
+ * @type {{REALISEE: string, PLANIFIEE: string, PREVUE: string, REPORTEE: string, ANNULEE: string, SUPPRIMEE: string}}
+ */
+export const OPERATIONS_ENUM = {
+    REALISEE: "REALISEE",
+    SUPPRIMEE: "SUPPRIMEE",
+    PREVUE: "PREVUE",
+    ANNULEE: "ANNULEE",
+    REPORTEE: "REPORTEE",
+    PLANIFIEE: "PLANIFIEE"
+}

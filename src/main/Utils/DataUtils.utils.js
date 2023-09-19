@@ -1,3 +1,5 @@
+import * as AppConstants from "./AppEnums.constants";
+
 /**
  * Ajout de leading zero devant une valeur
  * @param num nombre à compléter
@@ -91,11 +93,11 @@ export function sortLibellesCategories(lib1, lib2) {
 export function sortOperations(ope1, ope2) {
     let sort;
     // Opérations prévues en 1er
-    if (ope1.etat === "PREVUE" && ope2.etat === "PREVUE") {
+    if (ope1.etat === AppConstants.OPERATIONS_ENUM.PREVUE && ope2.etat === AppConstants.OPERATIONS_ENUM.PREVUE) {
         return 0;
-    } else if (ope1.etat === "PREVUE") {
+    } else if (ope1.etat === AppConstants.OPERATIONS_ENUM.PREVUE) {
         return -1;
-    } else if (ope2.etat === "PREVUE") {
+    } else if (ope2.etat === AppConstants.OPERATIONS_ENUM.PREVUE) {
         return 1;
     }
     // Sinon tri par date opération, sinon par autre état

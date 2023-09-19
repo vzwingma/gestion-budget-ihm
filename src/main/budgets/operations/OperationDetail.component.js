@@ -4,6 +4,7 @@ import OperationValue from "./renderers/OperationSpanValue.component";
 import * as Controller from "./renderers/OperationItem.controller";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "./OperationDetailActions.component";
+import * as AppConstants from "../../Utils/AppEnums.constants";
 
 /**
  * Page de détail d'une opération
@@ -63,7 +64,7 @@ const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
 
 
                     <Grid2 md={6} paddingTop={3}>
-                        {budget != null && budget.actif && operation.etat !== "SUPPRIMEE" && operation.etat !== "REPORTEE" ?
+                        {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE && operation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE ?
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                         }
 
@@ -78,7 +79,7 @@ const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
 
                     </Grid2>
                     <Grid2 md={6}>
-                        {budget != null && budget.actif && operation.etat !== "SUPPRIMEE" && operation.etat !== "REPORTEE" ?
+                        {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE && operation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE ?
                             <OperationDetailActions currentOperation={operation} currentBudget={budget}
                                                     onActionOperationChange={onActionOperationChange}/> : <></>
                         }

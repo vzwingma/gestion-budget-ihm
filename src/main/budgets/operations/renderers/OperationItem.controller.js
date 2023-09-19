@@ -31,6 +31,7 @@ import {
     TravelExploreRounded,
     VolunteerActivismOutlined
 } from "@mui/icons-material";
+import * as AppConstants from "../../../Utils/AppEnums.constants"
 
 // Couleur de la catégorie
 export function getCategorieColor(operationCategorie) {
@@ -150,17 +151,17 @@ export function getSousCategorieIcon(operationSsCategorie) {
 export function getOperationStateColor(operationState) {
     if (operationState != null) {
         switch (operationState) {
-            case 'REALISEE':
+            case AppConstants.OPERATIONS_ENUM.REALISEE:
                 return "#2e7d32"
-            case 'PREVUE':
+            case AppConstants.OPERATIONS_ENUM.PREVUE:
                 return "#ed6c02"
-            case 'ANNULEE':
+            case AppConstants.OPERATIONS_ENUM.ANNULEE:
                 return "#ebebeb"
-            case 'SUPPRIMEE':
+            case AppConstants.OPERATIONS_ENUM.SUPPRIMEE:
                 return "#ed1b24"
-            case 'REPORTEE':
+            case AppConstants.OPERATIONS_ENUM.REPORTEE:
                 return "#9c27b0"
-            case 'PLANIFIEE':
+            case AppConstants.OPERATIONS_ENUM.PLANIFIEE:
                 return "#0288d1"
             default:
                 return "grey";

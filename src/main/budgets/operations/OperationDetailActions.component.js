@@ -19,6 +19,7 @@ import {
     HistoryRounded
 } from "@mui/icons-material";
 import * as Controller from "./OperationDetailActions.controller";
+import * as AppConstants from "../../Utils/AppEnums.constants";
 
 
 /**
@@ -60,43 +61,43 @@ export default class OperationDetailActions extends Component {
 
         return (
             <ButtonGroup onClick={this.handleOperationAction}>
-                {this.props.currentOperation.etat !== "REALISEE" &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.REALISEE &&
                     <Tooltip title="Valider l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_REALISEE"}
-                            id={"REALISEE"}>
-                            <center id={"REALISEE"}>
-                                <CheckCircleOutlined id={"REALISEE"}/>
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.REALISEE}
+                            id={AppConstants.OPERATIONS_ENUM.REALISEE}>
+                            <center id={AppConstants.OPERATIONS_ENUM.REALISEE}>
+                                <CheckCircleOutlined id={AppConstants.OPERATIONS_ENUM.REALISEE}/>
                             </center>
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== "PREVUE" &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.PREVUE &&
                     <Tooltip title="Prévoir l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_PREVUE"}
-                            id={"PREVUE"}>
-                            <center id={"PREVUE"}>
-                                <HistoryRounded id={"PREVUE"}/>
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.PREVUE}
+                            id={AppConstants.OPERATIONS_ENUM.PREVUE}>
+                            <center id={AppConstants.OPERATIONS_ENUM.PREVUE}>
+                                <HistoryRounded id={AppConstants.OPERATIONS_ENUM.PREVUE}/>
                             </center>
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== "ANNULEE" &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.ANNULEE &&
                     <Tooltip title="Annuler l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_ANNULEE"}
-                            id={"ANNULEE"}>
-                            <center id={"ANNULEE"}>
-                                <CloseRounded id={"ANNULEE"}/>
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.ANNULEE}
+                            id={AppConstants.OPERATIONS_ENUM.ANNULEE}>
+                            <center id={AppConstants.OPERATIONS_ENUM.ANNULEE}>
+                                <CloseRounded id={AppConstants.OPERATIONS_ENUM.ANNULEE}/>
                             </center>
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== "SUPPRIMEE" &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE &&
                     <Tooltip title="Supprimer l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_SUPPRIMEE"}
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.SUPPRIMEE}
                             id={"SUPPRIMEE_A_CONFIRMER"}>
                             <center id={"SUPPRIMEE_A_CONFIRMER"}>
                                 <DeleteForeverRounded id={"SUPPRIMEE_A_CONFIRMER"}
@@ -105,22 +106,22 @@ export default class OperationDetailActions extends Component {
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== "REPORTEE" &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE &&
                     <Tooltip title="Reporter l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_REPORTEE"}
-                            id={"REPORTEE"}>
-                            <center id={"REPORTEE"}>
-                                <ArrowForwardRounded id={"REPORTEE"}/>
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.REPORTEE}
+                            id={AppConstants.OPERATIONS_ENUM.REPORTEE}>
+                            <center id={AppConstants.OPERATIONS_ENUM.REPORTEE}>
+                                <ArrowForwardRounded id={AppConstants.OPERATIONS_ENUM.REPORTEE}/>
                             </center>
                         </IconButton>
                     </Tooltip>
                 }
 
                 <Dialog open={this.state.showModale}>
-                    <DialogTitle>Supprimer</DialogTitle>
+                    <DialogTitle>Suppression de l'opération</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>Voulez vous supprimer ?</DialogContentText>
+                        <DialogContentText>Voulez vous supprimer l'opération ?</DialogContentText>
                     </DialogContent>
 
                     <DialogActions>
