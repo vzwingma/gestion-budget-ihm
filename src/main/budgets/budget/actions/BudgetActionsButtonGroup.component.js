@@ -50,8 +50,8 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                         <IconButton
                             className={"buttonsActionsBudget"} sx={{backgroundColor: '#209ED8', marginX: '10px'}}
                             id={"CREATION"} onClick={this.handleOperationCreate}>
-                            <center id={"CREATION"}><AddchartRounded id={"REALISEE"}
-                                                                     onClick={this.handleOperationCreate}/>
+                            <center id={"CREATION"}>
+                                <AddchartRounded id={"REALISEE"} onClick={this.handleOperationCreate}/>
                             </center>
                         </IconButton>
                     </Tooltip>
@@ -61,8 +61,8 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                         <IconButton
                             className={"buttonsActionsBudget"} sx={{backgroundColor: '#EDC109'}}
                             id={"REINIT_A_CONFIRMER"} onClick={this.handleOperationCreate}>
-                            <center id={"REINIT_A_CONFIRMER"}><RestartAltRounded id={"REINIT_A_CONFIRMER"}
-                                                                                 onClick={this.handleOperationCreate}/>
+                            <center id={"REINIT_A_CONFIRMER"}>
+                                <RestartAltRounded id={"REINIT_A_CONFIRMER"} onClick={this.handleOperationCreate}/>
                             </center>
                         </IconButton>
                     </Tooltip>
