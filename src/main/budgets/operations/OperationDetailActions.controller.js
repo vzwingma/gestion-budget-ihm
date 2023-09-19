@@ -41,14 +41,16 @@ export function updateOperation(operation, action, budget, handleBudgetUpdate) {
             console.log("[" + budget.id + "] Modification de l'opération " + operation.id + " : " + operation.etat + " -> " + action);
             operation.etat = action;
 
-            ClientHTTP.call(operation.etat === "SUPPRIMEE" ? "DELETE" : "POST",
+            ClientHTTP.call(operation.etat === AppConstants.OPERATIONS_ENUM.SUPPRIMEE ? "DELETE" : "POST",
                 AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
                 [budget.id, operation.id],
                 operation)
                 .then((data) => {
+
                     // Update du budget global (parent)
                     handleBudgetUpdate(data);
                     toast.success("Mise à jour de l'opération correctement effectuée")
+
                 })
                 .catch((e) => {
                     console.log("Erreur lors de la mise à jour de l'opération " + operation.id + " >> " + e);

@@ -1,5 +1,5 @@
 import * as AppConstants from "../../../Utils/AppEnums.constants"
-import {getDateFromDateTime, getDateForForm, sortLibellesCategories} from "../../../Utils/DataUtils.utils";
+import {getDateForForm, getDateFromDateTime, sortLibellesCategories} from "../../../Utils/DataUtils.utils";
 import {toast} from "react-toastify";
 
 /**
@@ -254,8 +254,8 @@ import {toast} from "react-toastify";
     export function createOperation(){
 
         const operation = this.fillOperationFromForm();
-        console.log(operation)
-            // Sauvegarde de l'opération
+
+        // Sauvegarde de l'opération
         if(this.state.formCompteCible !== null){
             this.saveOperationIntercompte(this.props.budget.id, operation, this.state.formCompteCible);
         }

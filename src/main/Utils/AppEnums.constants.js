@@ -10,22 +10,30 @@ export const OIDC_ENUM = {
     URL: window.location.href
 }
 
+/**
+ * Enum des valeur API KEY
+ * @type {{API_KEY: *}}
+ */
 export const API_GW_ENUM = {
     API_KEY: process.env.REACT_APP_CONFIG_API_KEY
 }
 
 /**
-    Enum des Backends
-*/
+ * Enum des Backends
+ * @type {{URL_PARAMS: string, URL_COMPTES: string, URL_UTILISATEURS: string, URL_OPERATIONS: string}}
+ */
 export const BACKEND_ENUM = {
     URL_COMPTES: process.env.REACT_APP_CONFIG_URL_COMPTES + "/comptes/v2",
     URL_PARAMS: process.env.REACT_APP_CONFIG_URL_PARAMS + "/parametres/v2",
     URL_UTILISATEURS: process.env.REACT_APP_CONFIG_URL_UTILISATEURS + "/utilisateurs/v2",
     URL_OPERATIONS: process.env.REACT_APP_CONFIG_URL_OPERATIONS + "/budgets/v2"
 }
+
+
 /**
- *  Services
- **/
+ * Services
+ * @type {{COMPTES: {GET_ALL: string}, OPERATIONS: {INTERCOMPTE: string, CREATE: string, DERNIERE: string, UPDATE: string}, PARAMETRES: {CATEGORIES: string}, BUDGETS: {ETAT: string, GET: string, INTERVALLE: string, REINIT: string}, INFOS: {GET_INFO: string}, UTILISATEURS: {USERS_PREFS: string, ACCESS_DATE: string}}}
+ */
 export const SERVICES_URL = {
     INFOS : {
         GET_INFO : "/_info"
@@ -53,9 +61,12 @@ export const SERVICES_URL = {
         USERS_PREFS: "/preferences"
     }
 }
+
+
 /**
- *  Droits de l'utilisateur
- **/
+ * Droits de l'utilisateur
+ * @type {{DROITS: {CLOTURE_BUDGET: string, RAZ_BUDGET: string}, PREFERENCES: {STATUT_NLLE_DEPENSE: string}}}
+ */
 export const UTILISATEUR_DROITS = {
     DROITS : {
         CLOTURE_BUDGET : "DROIT_RAZ_BUDGET",
@@ -67,7 +78,10 @@ export const UTILISATEUR_DROITS = {
 }
 
 
-
+/**
+ * GUID métiers
+ * @type {{CAT_VIREMENT: string, SOUS_CAT_INTER_COMPTES: string, CAT_PRELEVEMENT_MENSUEL: string}}
+ */
 export const BUSINESS_GUID = {
     CAT_VIREMENT : "ea6dcc12-3349-4047-a1e5-cd1d7254f16e",
     CAT_PRELEVEMENT_MENSUEL : "504beea7-ed52-438a-aced-15e9603b82ab",

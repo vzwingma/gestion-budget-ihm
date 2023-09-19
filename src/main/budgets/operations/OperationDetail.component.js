@@ -1,10 +1,11 @@
 import React from 'react'
 import {Box, Container, Stack, Typography} from "@mui/material";
 import OperationValue from "./renderers/OperationSpanValue.component";
-import * as Controller from "./renderers/OperationItem.controller";
+import * as Renderer from "./renderers/OperationItem.renderer";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "./OperationDetailActions.component";
 import * as AppConstants from "../../Utils/AppEnums.constants";
+
 
 /**
  * Page de détail d'une opération
@@ -23,10 +24,10 @@ const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
                 <Box width={40} height={40}
                      sx={{
                          borderRadius: "50%",
-                         backgroundColor: Controller.getCategorieColor(operation.categorie), color: '#FFFFFF',
+                         backgroundColor: Renderer.getCategorieColor(operation.categorie), color: '#FFFFFF',
                          padding: '16px 8px 0px 8px',
                      }}>
-                    <center>{Controller.getSousCategorieIcon(operation.ssCategorie)}</center>
+                    <center>{Renderer.getSousCategorieIcon(operation.ssCategorie)}</center>
                 </Box>
 
                 <Typography variant={"h4"}>
@@ -54,11 +55,13 @@ const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
                             variant={"overline"}> {operation.categorie.libelle} / {operation.ssCategorie.libelle} </Typography>
                     </Grid2>
                     <Grid2 md={3}>
-                        <Typography variant={"overline"}>{operation.etat} </Typography>
+                        <Typography variant={"overline"}
+                                    color={Renderer.getOperationStateColor(operation.etat)}>{operation.etat} </Typography>
                     </Grid2>
                     <Grid2 md={3}>
                         {(operation.mensualite != null ?
-                                <Typography variant={"overline"}>{operation.mensualite.periode}</Typography> : <></>
+                                <Typography variant={"overline"}
+                                            color={Renderer.getPeriodeColor(operation.mensualite.periode)}>{operation.mensualite.periode}</Typography> : <></>
                         )}
                     </Grid2>
 
@@ -80,7 +83,8 @@ const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
                     </Grid2>
                     <Grid2 md={6}>
                         {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE && operation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE ?
-                            <OperationDetailActions currentOperation={operation} currentBudget={budget}
+                            <OperationDetailActions currentOperation={operation}
+                                                    currentBudget={budget}
                                                     onActionOperationChange={onActionOperationChange}/> : <></>
                         }
                     </Grid2>

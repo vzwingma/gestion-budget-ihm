@@ -2,7 +2,7 @@ import React from 'react'
 import {Box, Stack, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationValue from "./renderers/OperationSpanValue.component";
-import * as Renderer from "./renderers/OperationItem.controller";
+import * as Renderer from "./renderers/OperationItem.renderer";
 
 /**
  * Tuile  d'une opération dans la liste des opérations

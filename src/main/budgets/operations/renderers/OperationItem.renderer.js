@@ -169,3 +169,23 @@ export function getOperationStateColor(operationState) {
     }
     return "grey";
 }
+
+
+/** Couleur du background du badge Mensualité
+ * @param periode : string enum période
+ * */
+export function getPeriodeColor(periode) {
+
+    switch (periode) {
+        case "MENSUELLE":
+            return "#616161";
+        case "TRIMESTRIELLE":
+            return "#3498db";
+        case "SEMESTRIELLE":
+            return "#f1c40f";
+        case "ANNUELLE":
+            return "#e74c3c";
+        default:
+            return "#616161"
+    }
+}

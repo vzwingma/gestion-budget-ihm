@@ -86,8 +86,8 @@ export function sortLibellesCategories(lib1, lib2) {
 
 /**
  * Tri des opérations, par date sinon par statut
- * @param op1 : Operation 1ère opération
- * @param op2 : Operation 2ème opération
+ * @param ope1 : Opération 1ère opération
+ * @param ope2 : Opération 2ème opération
  * @returns {number} comparaison
  */
 export function sortOperations(ope1, ope2) {
@@ -159,22 +159,3 @@ export function sortDatesOperation(strDate1, strDate2) {
 }
 
 
-
-
-/** Couleur du background du badge Mensualité
- * @param periode : string enum période
- * */
-export function getBackgroundColorForPeriode(periode){
-    switch (periode) {
-        case "MENSUELLE":
-            return "default";
-        case "TRIMESTRIELLE":
-            return "info";
-        case "SEMESTRIELLE":
-            return "warning";
-        case "ANNUELLE":
-            return "error";
-        default:
-            return "default"
-    }
-}
