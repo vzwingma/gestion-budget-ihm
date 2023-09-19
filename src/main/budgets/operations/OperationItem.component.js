@@ -2,7 +2,7 @@ import React from 'react'
 import {Box, Stack, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationValue from "./renderers/OperationSpanValue.component";
-import * as Controller from "./renderers/OperationItem.controller";
+import * as Renderer from "./renderers/OperationItem.controller";
 
 /**
  * Tuile  d'une opération dans la liste des opérations
@@ -28,12 +28,12 @@ const OperationItem = ({operation, onClick}) => {
                     <Box width={25} height={25}
                          sx={{
                              borderRadius: "50%",
-                             backgroundColor: Controller.getCategorieColor(operation.categorie),
-                             border: '5px solid ' + Controller.getOperationStateColor(operation.etat),
+                             backgroundColor: Renderer.getCategorieColor(operation.categorie),
+                             border: '5px solid ' + Renderer.getOperationStateColor(operation.etat),
                              padding: '6px',
                              color: '#FFFFFF'
                          }}>
-                        <center>{Controller.getSousCategorieIcon(operation.ssCategorie)}</center>
+                        <center>{Renderer.getSousCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
                 </Grid2>
                 <Grid2 md={7}>

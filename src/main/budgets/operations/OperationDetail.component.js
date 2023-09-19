@@ -3,18 +3,17 @@ import {Box, Container, Stack, Typography} from "@mui/material";
 import OperationValue from "./renderers/OperationSpanValue.component";
 import * as Controller from "./renderers/OperationItem.controller";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import OperationItemActionsComponent from "./OperationDetailActions.component";
+import OperationDetailActions from "./OperationDetailActions.component";
 
 /**
  * Page de détail d'une opération
  * @param operation opération sélectionnée
  * @param budget budget associée
- * @param onActionEtat fonction appelée lors d'un changement d'état
- * @param handleBudgetUpdate opération de mise à jour du budget
+ * @param onActionOperationChange opération de mise à jour du budget
  * @returns {JSX.Element} composant
  * @constructor
  */
-const OperationDetailItem = ({operation, budget, onActionEtat, handleBudgetUpdate}) => {
+const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
 
 
     return (
@@ -64,7 +63,7 @@ const OperationDetailItem = ({operation, budget, onActionEtat, handleBudgetUpdat
 
 
                     <Grid2 md={6} paddingTop={3}>
-                        {budget != null && budget.actif ?
+                        {budget != null && budget.actif && operation.etat !== "SUPPRIMEE" && operation.etat !== "REPORTEE" ?
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                         }
 
@@ -79,10 +78,9 @@ const OperationDetailItem = ({operation, budget, onActionEtat, handleBudgetUpdat
 
                     </Grid2>
                     <Grid2 md={6}>
-                        {budget != null && budget.actif ?
-                            <OperationItemActionsComponent operation={operation} budget={budget}
-                                                           onActionEtat={onActionEtat}
-                                                           handleBudgetUpdate={handleBudgetUpdate}/> : <></>
+                        {budget != null && budget.actif && operation.etat !== "SUPPRIMEE" && operation.etat !== "REPORTEE" ?
+                            <OperationDetailActions currentOperation={operation} currentBudget={budget}
+                                                    onActionOperationChange={onActionOperationChange}/> : <></>
                         }
                     </Grid2>
                     <Grid2 md={3}>
@@ -95,7 +93,6 @@ const OperationDetailItem = ({operation, budget, onActionEtat, handleBudgetUpdat
 
                     </Grid2>
                 </Grid2>
-
 
             </Stack>
         </Container>
