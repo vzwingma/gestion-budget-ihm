@@ -48,7 +48,7 @@ button.buttonsActionsOperations {
 }
 
 .color_ANNULEE {
-    background-color: #cbcbcb !important;
+    background-color: #ebebeb !important;
 }
 
 .color_SUPPRIMEE {
@@ -59,9 +59,9 @@ button.buttonsActionsOperations {
     background-color: #9c27b0 !important;
 }
 
-
-
-
+.color_PLANIFIEE {
+    background-color: #0288d1 !important;
+}
 
 
 
