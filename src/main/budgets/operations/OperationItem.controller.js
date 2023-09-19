@@ -12,7 +12,8 @@ import {toast} from "react-toastify";
       */
     export function updateOperation(operation, action, budget, handleBudgetUpdate) {
 
-        if (budget.actif) {
+    if (budget.actif) {
+        if (operation.etat !== action) {
             console.log("[" + budget.id + "] Modification de l'opération " + operation.id + " : " + operation.etat + " -> " + action);
             operation.etat = action;
 
@@ -26,9 +27,10 @@ import {toast} from "react-toastify";
                     toast.success("Mise à jour de l'opération correctement effectuée")
                 })
                 .catch((e) => {
-                    console.log("Erreur lors de la mise à jour de l'opération " + operation.id + " >> "+ e);
+                    console.log("Erreur lors de la mise à jour de l'opération " + operation.id + " >> " + e);
                     toast.error("Erreur lors de la mise à jour de l'opération")
                 })
+        }
         }
         else{
             console.log("Impossible de modifier l'opération " + operation.id + " sur un budget clos");
@@ -52,10 +54,9 @@ import {toast} from "react-toastify";
             const action=event.target.id;
             if(action === "SUPPRIMEE_A_CONFIRMER"){
                 this.setState({showModale: true, operation: operation})
-            }
-            // else if(action !== "SUPPRIMEE" ){
+            } else if (action !== "SUPPRIMEE") {
                 updateOperation(operation, action, budget, handleBudgetUpdate);
-            // }
+            }
         }
     }
 
