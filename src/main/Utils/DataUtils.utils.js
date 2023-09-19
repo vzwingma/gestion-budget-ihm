@@ -86,8 +86,8 @@ export function sortLibellesCategories(lib1, lib2) {
 
 /**
  * Tri des opérations, par date sinon par statut
- * @param ope1 : Opération 1ère opération
- * @param ope2 : Opération 2ème opération
+ * @param {Operation} ope1 :  1ère opération
+ * @param {Operation} ope2 2ème opération
  * @returns {number} comparaison
  */
 export function sortOperations(ope1, ope2) {

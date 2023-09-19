@@ -3,6 +3,10 @@ import * as AppConstants from "../../../Utils/AppEnums.constants";
 import {toast} from "react-toastify";
 
 
+/**
+ * Réinit du budget
+ * @param {String} idBudget id du budget
+ */
 export function callReinitBudget(idBudget){
         console.log("Reinitialisation du budget [" + idBudget + "]");
         ClientHTTP.call('DELETE', AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.REINIT, [idBudget])
@@ -17,7 +21,12 @@ export function callReinitBudget(idBudget){
     }
 
 
-    export function callReopenCloseBudget(idBudget, newEtatBudget){
+/**
+ *
+ * @param {String} idBudget id du budget
+ * @param {boolean} newEtatBudget nouvel état du budget : ouverture/cloture
+ */
+export function callReopenCloseBudget(idBudget, newEtatBudget) {
         console.log((newEtatBudget ? "Réouverture" : "Clôture") + " du budget " + idBudget)
 
         ClientHTTP.call('POST', AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.ETAT, [idBudget, newEtatBudget])

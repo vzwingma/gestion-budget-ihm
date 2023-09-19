@@ -14,6 +14,7 @@ export function handleButtonsBudgetClick(event) {
         let affichagePopup;
         if (action === "CREATE") {
             this.props.onActionOperationCreate()
+            return
         } else if (action === "CLOSE_A_CONFIRMER") {
             titrePopup = "Activité du budget";
             questionPopup = "Voulez vous vraiment " + (this.props.budget.actif ? "clôturer" : "réouvrir") + " le budget ?";
@@ -32,14 +33,12 @@ export function handleButtonsBudgetClick(event) {
                 this.callReinitBudget(this.props.budget.id);
             }
         }
-        if (action !== "CREATE") {
             this.setState({
                 title: titrePopup,
                 question: questionPopup,
                 showModale: affichagePopup,
                 action: action
             })
-        }
     } else if (event.target.className === "btn-close") {
         this.setState({showModale: false})
     }
