@@ -62,9 +62,10 @@ export default class Budget extends Component {
      * Mise à jour du contexte de budget
      * @param nextProps next Props
      * @param nextStates nexte States
+     * @param {any} nextContext  next Context
      * @returns {boolean} s'il faut mettre à jour
      */
-    shouldComponentUpdate(nextProps, nextStates){
+    shouldComponentUpdate(nextProps, nextStates, nextContext) {
         let componentUpdate = false;
         let budgetUpdate;
         if (this.state.currentBudget !== nextStates.currentBudget) {

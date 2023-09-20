@@ -30,7 +30,13 @@ export default class DateRange extends Component {
         this.hideModale = Controller.hideModale.bind(this);
     }
 
-    // Mise à jour du contexte de budget
+    /**
+     *  Mise à jour du contexte de budget
+     * @param nextProps next properties
+     * @param nextStates next states
+     * @param nextContext next Context
+     * @returns {boolean} s'il faut refresh ou pas
+     */
     shouldComponentUpdate(nextProps, nextStates, nextContext){
         if (this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()) {
             return true;

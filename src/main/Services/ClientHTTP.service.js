@@ -2,7 +2,7 @@
 import {getOAuthToken} from './Auth.service'
 import * as AppConstants from "../Utils/AppEnums.constants";
 
-var alreadyTraced = false;
+let alreadyTraced = false;
 /**
  * Appel HTTP vers le backend
  * @param httpMethod méthode HTTP

@@ -27,18 +27,6 @@ export function addEndingZeros(num) {
 }
 
 
-/**
- * Calcul d'un libellé d'une date depuis son time in ms
- * @param dateString date en string
- * @returns {string} date au format issu du pattern
- */
-export function getRenderLibelleDate(dateString){
-    if( dateString != null){
-        let date = new Date(Date.parse(dateString))
-        return addLeadingZeros(date.getDate()) + "/" + addLeadingZeros(date.getMonth()+1) +"/" + date.getFullYear();
-    }
-    return "-"
-}
 
 /**
  * Calcul d'un libellé d'une date depuis son time in ms
@@ -120,42 +108,4 @@ export function sortOperations(ope1, ope2) {
     }
     return sort;
 }
-
-/**
- * Tri par date
- * @param strDate1 : string premiere date
- * @param strDate2 : string 2ème date
- * @returns {number} comparaison
- */
-export function sortDatesOperation(strDate1, strDate2) {
-    let libDate1 = strDate1.trim();
-    let libDate2 = strDate2.trim();
-    let sort;
-
-    if((libDate1 === null || libDate1 === '-') && (libDate2 === null || libDate2 === '-')){
-        sort = 0;
-    }
-    else if((libDate1 === null || libDate1 === '-')){
-        sort = -1;
-    }
-    else if((libDate2 === null || libDate2 === '-')){
-        sort = 1;
-    }
-    else{
-        const pattern = /(\d{2})\/(\d{2})\/(\d{4})/;
-        let date1 = new Date(libDate1.replace(pattern,'$3-$2-$1'));
-        let date2 = new Date(libDate2.replace(pattern,'$3-$2-$1'))
-        if (date1 >= date2) {
-            sort = 1;
-        }
-        else if (date1 < date2) {
-            sort = -1;
-        }
-        else{
-            sort = 0;
-        }
-    }
-    return sort;
-}
-
 
