@@ -1,4 +1,4 @@
-import OperationValue from '../operations/renderers/OperationSpanValue.component'
+import OperationValue from '../operations/renderers/OperationSpanValue.renderer'
 import {Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
 /*

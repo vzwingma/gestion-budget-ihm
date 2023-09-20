@@ -1,6 +1,6 @@
 import React from 'react'
 import {Box, Container, Stack, Typography} from "@mui/material";
-import OperationValue from "./renderers/OperationSpanValue.component";
+import OperationValue from "./renderers/OperationSpanValue.renderer";
 import * as Renderer from "./renderers/OperationItem.renderer";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "./OperationDetailActions.component";
@@ -15,7 +15,7 @@ import * as AppConstants from "../../Utils/AppEnums.constants";
  * @returns {JSX.Element} composant
  * @constructor
  */
-const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
+const OperationDetailPage = ({operation, budget, onActionOperationChange}) => {
 
 
     return (
@@ -104,4 +104,4 @@ const OperationDetailItem = ({operation, budget, onActionOperationChange}) => {
     )
 };
 
-export default OperationDetailItem
+export default OperationDetailPage

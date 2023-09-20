@@ -1,4 +1,4 @@
-import OperationValue from '../budgets/operations/renderers/OperationSpanValue.component'
+import OperationValue from '../budgets/operations/renderers/OperationSpanValue.renderer'
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 /*
  * Page principale du solde

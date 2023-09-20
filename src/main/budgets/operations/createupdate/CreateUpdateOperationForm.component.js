@@ -4,7 +4,6 @@ import {
     Box,
     Button,
     ButtonGroup,
-    Chip,
     Dialog,
     DialogContent,
     DialogTitle,
@@ -18,10 +17,8 @@ import {
 } from '@mui/material';
 import * as ExtServices from './CreateUpdateOperationForm.extservices'
 import * as Controller from './CreateUpdateOperationForm.controller'
-import {getBackgroundColorForPeriode} from '../../../Utils/DataUtils.utils'
 import BaseSelect from "react-select";
 import Select from "react-select";
-import RequiredSelect from "../../../Utils/RequiredSelect";
 import Grid2 from "@mui/material/Unstable_Grid2";
 
 
@@ -182,7 +179,7 @@ export default class CreateUpdateOperationForm extends Component {
      */
     renderOptionPeriode(e) {
         return (
-            <div><Chip color={getBackgroundColorForPeriode(e.value)} label="  " size={"small"}/> <span
+            <div> <span
                 style={{fontSize: ".875rem"}}>{e.text}</span></div>
         )
     }
@@ -195,7 +192,7 @@ export default class CreateUpdateOperationForm extends Component {
         return (
             <>
                 { /** Fenêtre modale - Formulaire  **/}
-                <Dialog open={this.props.showModale}>
+                <Dialog open={this.props.showModalCreate}>
 
                     <DialogTitle bgcolor={"#1976d2"} color={"white"}>
                         { this.props.modeEdition ? "Edition" : "Création"} d'une opération
@@ -209,27 +206,28 @@ export default class CreateUpdateOperationForm extends Component {
                             </Grid2>
                             <Grid2 item direction={"column"} xs={8} className={"MuiDataGrid-main"}>
                                 <FormControl fullWidth required error={this.state.errorCategorie}>
-                                    <RequiredSelect SelectComponent={BaseSelect}
+                                    <Select SelectComponent={BaseSelect}
                                                     required isDisabled={ this.props.modeEdition } isSearchable={true}
                                                     placeholder={"Sélectionnez une catégorie"}
                                                     value={this.state.formCategorie} options={this.state.categoriesSelect}
                                                     onChange={this.handleSelectCategorie}
                                                     getOptionLabel={this.renderOptionLabel}>
-                                    </RequiredSelect>
+                                    </Select>
                                     {this.state.errorCategorie && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                                 <FormControl fullWidth required error={this.state.errorSsCategorie}>
-                                    <RequiredSelect required className={"MuiDataGrid-main"} isDisabled={ this.props.modeEdition } SelectComponent={BaseSelect}
+                                    <Select required className={"MuiDataGrid-main"} isDisabled={this.props.modeEdition}
+                                            SelectComponent={BaseSelect}
                                                     placeholder={"Sélectionnez une sous catégorie"} isSearchable={true}
                                                     value={this.state.formSsCategorie} options={this.state.ssCategoriesSelect}
                                                     onChange={this.handleSelectSsCategorie}
                                                     getOptionLabel={this.renderOptionLabel}>
-                                    </RequiredSelect>
+                                    </Select>
                                     {this.state.errorSsCategorie && <FormHelperText>Le champ est obligatoire</FormHelperText>}
                                 </FormControl>
                                 { this.state.showIntercompte &&
                                     <FormControl fullWidth required error={this.state.errorInterCompte}>
-                                        <RequiredSelect SelectComponent={BaseSelect} className={"MuiDataGrid-main"}
+                                        <Select SelectComponent={BaseSelect} className={"MuiDataGrid-main"}
                                                         placeholder="Sélectionnez le compte"
                                                         value={this.state.selectedCompte}
                                                         options={this.state.comptes}

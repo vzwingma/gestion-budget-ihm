@@ -28,6 +28,5 @@ export function handleOperationSelect(operation) {
  * Création d'une nouvelle opération
  */
 export function handleButtonCreateClick() {
-    console.log("CREATE")
-    this.setState({currentOperation: null})
+    this.setState({currentOperation: null, showModalCreate: true})
 }
