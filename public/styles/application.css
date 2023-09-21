@@ -27,11 +27,11 @@ button.buttonsActionsOperations {
 
 /* Couleurs des opérations */
 .text-CREDIT {
-    color: #93c54b;
+    color: #93c54b !important;
 }
 
-.text-DEBIT {
-    color: #e74c3c;
+.text-DEPENSE {
+    color: #e74c3c !important;
 }
 
 .text-ANNULEE {
@@ -39,6 +39,7 @@ button.buttonsActionsOperations {
     text-decoration-line: line-through;
 }
 
+/** Bouton action sur les opérations **/
 .color_REALISEE {
     background-color: #2e7d32 !important;
 }
@@ -64,8 +65,9 @@ button.buttonsActionsOperations {
 }
 
 
-
-
+.editableField {
+    cursor: pointer
+}
 
 
 

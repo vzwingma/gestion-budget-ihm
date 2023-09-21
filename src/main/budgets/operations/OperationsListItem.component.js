@@ -15,14 +15,16 @@ const OperationItem = ({operation, onClick}) => {
 
 
     return (
-        <Box sx={{
-            height: 56,
-            '&:hover': {
-                backgroundColor: '#f5f6fb',
-                color: '#808080',
-                cursor: 'pointer',
-            }
-        }} onClick={() => onClick(operation)}>
+        <Box id={operation.id}
+             sx={{
+                 height: 56,
+                 '&:hover': {
+                     backgroundColor: '#f5f6fb',
+                     color: '#808080',
+                     cursor: 'pointer',
+                 }
+             }}
+             onClick={() => onClick(operation)}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
                     <Box width={25} height={25}

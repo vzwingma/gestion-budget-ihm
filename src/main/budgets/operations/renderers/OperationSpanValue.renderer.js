@@ -21,16 +21,26 @@ export function getStyleOperation(operation, valueOperation){
         style += "text-CREDIT";
     }
     else{
-        style += "text-DEBIT";
+        style += "text-DEPENSE";
     }
     return style;
 }
 
-const OperationValue = ({ operation, valueOperation, showSign }) => {
+/**
+ * Affichage d'une opération
+ * @param operation opération
+ * @param valueOperation valeur de l'opération
+ * @param showSign affichage du signe
+ * @param id id de l'élément
+ * @returns {JSX.Element} JSX
+ * @constructor
+ */
+const OperationValue = ({operation, valueOperation, showSign, id}) => {
 
     // définition du libellé
     return (
-        <span className={ getStyleOperation(operation, valueOperation) }> { addEndingZeros( showSign ? valueOperation : Math.abs(valueOperation)) } €</span>
+        <span id={id}
+              className={getStyleOperation(operation, valueOperation)}> {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €</span>
     )
 };
 
