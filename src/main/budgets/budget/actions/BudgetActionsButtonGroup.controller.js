@@ -1,14 +1,13 @@
+import * as DataUtils from "../../../Utils/DataUtils.utils";
+
 /**
  * Action sur le bouton ou sur la modale
  * @param event
  */
 export function handleButtonsBudgetClick(event) {
 
-    if (event.target.id !== null && event.target.id !== undefined) {
-        let action = event.target.id;
-        if (action === "") {
-            action = event.target.parentNode.id
-        }
+    if (event.target !== null) {
+        let action = DataUtils.getEventTargetId(event.target);
         let titrePopup = "";
         let questionPopup = "";
         let affichagePopup;

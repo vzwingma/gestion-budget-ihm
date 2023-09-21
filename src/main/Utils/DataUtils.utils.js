@@ -15,7 +15,9 @@ export function addLeadingZeros(num) {
  * @returns {string} chaine sur 2 caractères avec des 0
  */
 export function addEndingZeros(num) {
+
     let n = num.toLocaleString('us-US');
+    n = n.replaceAll(".", ",")
     if(n.indexOf(',') > 0){
         let r = n.substring(n.indexOf(',')+1)
         let e = n.substring(0, n.indexOf(','))
@@ -107,5 +109,21 @@ export function sortOperations(ope1, ope2) {
         }
     }
     return sort;
+}
+
+
+/**
+ * Recherche de l'id d'un élément DOM depuis le target du click
+ * @param eventTarget event Target
+ * @returns {*} ID du DOM
+ */
+export function getEventTargetId(eventTarget) {
+    if (eventTarget != null) {
+        if (eventTarget.id !== null && eventTarget.id !== "") {
+            return eventTarget.id;
+        } else {
+            return getEventTargetId(eventTarget.parentNode);
+        }
+    }
 }
 
