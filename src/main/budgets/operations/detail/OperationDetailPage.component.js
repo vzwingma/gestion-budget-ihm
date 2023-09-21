@@ -26,40 +26,48 @@ class OperationDetailPage extends Component {
     state = {
         editForm: {
             value: false,
-            libelle: false
+            libelle: false,
+            dateOperation: false,
         },
         errors: {
-            valeur: null
+            valeur: null,
+            libelle: null
         }
     }
 
     /** Constructeur **/
     constructor(props) {
         super(props);
-        this.fillOperationFormFromOperation = Controller.fillOperationFormFromOperation.bind(this)
-
         this.handleOperationEditionClick = Controller.handleOperationEditionClick.bind(this);
 
         this.handleValidateOperationForm = Controller.handleValidateOperationForm.bind(this);
-        this.handleCancelOperationForm = Controller.handleCloseOperationForm.bind(this);
+        this.handleCloseOperationForm = Controller.handleCloseOperationForm.bind(this);
 
         this.saveOperation = Service.saveOperation.bind(this);
     }
 
 
     /**
+     * Init de l'opération du formulaire à la sélection d'une nouvelle opération
+     */
+    componentDidMount() {
+        this.setState({editOperation: Controller.fillOperationFormFromOperation(this.props.operation)});
+    }
+
+    /**
      * Réinit de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
         if (this.props.operation.id !== prevProps.operation.id) {
-            this.setState({editOperation: this.fillOperationFormFromOperation(this.props.operation)});
+            this.setState({editOperation: Controller.fillOperationFormFromOperation(this.props.operation)});
+            this.handleCloseOperationForm();
         }
     }
 
 
     /**
      * Fonctions pour remplir l'état à partir de la saisie
-     * @param e
+     * @param e click
      */
     fillLibelleForm(e) {
         let editOperation = this.state.editOperation
@@ -70,13 +78,23 @@ class OperationDetailPage extends Component {
     fillValeurForm(e) {
         let editOperation = this.state.editOperation
         let value = e.target.value.replaceAll(",", ".")
-        if (value.indexOf(".") === -1) {
+        if (value !== null && value !== "" && value.indexOf(".") === -1) {
             value += ".00"
         }
         editOperation.valeur = value
         this.setState({editOperation: editOperation})
     }
 
+    fillDateOperationForm(e) {
+        let editOperation = this.state.editOperation
+        editOperation.autresInfos.dateOperation = e.target.value
+        this.setState({editOperation: editOperation})
+    }
+
+    /**
+     * RENDER
+     * @returns {JSX.Element}
+     */
 
     render() {
         let {operation, budget} = this.props;
@@ -158,8 +176,9 @@ class OperationDetailPage extends Component {
                                 variant={"overline"}> {operation.categorie.libelle} / {operation.ssCategorie.libelle} </Typography>
                         </Grid2>
                         <Grid2 md={3}>
-                            <Typography variant={"overline"}
-                                        color={Renderer.getOperationStateColor(operation.etat)}>{operation.etat} </Typography>
+                            <Typography variant={"overline"} color={Renderer.getOperationStateColor(operation.etat)}>
+                                {operation.etat}
+                            </Typography>
                         </Grid2>
                         <Grid2 md={3}>
                             {(operation.mensualite != null ?
@@ -179,10 +198,8 @@ class OperationDetailPage extends Component {
 
                         </Grid2>
                         <Grid2 md={3} paddingTop={3}>
-                            {operation.autresInfos.dateOperation != null ?
-                                <Typography variant={"caption"} sx={{color: "#808080"}}>Date
-                                    d'opération</Typography> : <></>
-                            }
+                            <Typography variant={"caption"} sx={{color: "#808080"}}>Date
+                                d'opération</Typography> : <></>
                         </Grid2>
                         <Grid2 md={3} paddingTop={3}>
 
@@ -194,11 +211,24 @@ class OperationDetailPage extends Component {
                                                         saveOperation={this.saveOperation}/> : <></>
                             }
                         </Grid2>
+                        { /** DATE OPERATION **/}
                         <Grid2 md={3}>
-                            {operation.autresInfos.dateOperation != null ?
-                                <Typography
-                                    variant={"subtitle1"}> {operation.autresInfos.dateOperation} </Typography> : <></>
+                            {(!this.state.editForm.dateOperation) ?
+
+                                <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
+                                            className={"editableField"}>
+                                    {operation.autresInfos.dateOperation != null ? new Date(Date.parse(operation.autresInfos.dateOperation)).toLocaleDateString("fr") : "jj/mm/aaaa"}
+                                </Typography>
+                                :
+                                <TextField
+                                    id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION + OPERATION_EDITION_FORM_IDS.INPUT}
+                                    defaultValue={operation.autresInfos.dateOperation}
+                                    variant={"standard"} type={"date"}
+                                    error={this.state.errors.dateOperation != null}
+                                    helperText={this.state.errors.dateOperation}
+                                    onChange={(e) => this.fillDateOperationForm(e)}/>
                             }
+
                         </Grid2>
                         <Grid2 md={4}>
 

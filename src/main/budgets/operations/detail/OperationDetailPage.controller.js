@@ -13,6 +13,7 @@ export function handleValidateOperationForm() {
         this.props.operation.libelle = this.state.editOperation.libelle;
     }
 
+    console.log(this.state.editOperation.valeur)
     // Valeur
     if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
         errors.valeur = "Le champ Valeur est obligatoire";
@@ -24,11 +25,14 @@ export function handleValidateOperationForm() {
         this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * this.state.editOperation.valeur;
     }
 
+    // DateOperation
+    this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
+
     if (hasErrors) {
         this.setState({errors: errors})
     } else {
         this.saveOperation(this.props.operation, this.props.budget);
-        this.handleCancelOperationForm();
+        this.handleCloseOperationForm();
     }
 
 
@@ -38,17 +42,8 @@ export function handleValidateOperationForm() {
  *    let validationCategorie = this.state.formCategorie === null
  *         let validationSsCategorie = this.state.formSsCategorie === null
  *         let validationPeriode = this.state.formOperationPeriodique === null || this.state.formOperationPeriodique.value === null
- *         let validationFormatValeur = !/(^\d*.\d{2}$)/.test(this.state.formValeur)
  *         let validationEtat = this.state.formEtat === null ||this.state.formEtat === ""
- *         this.setState({
- *             errorCategorie: validationCategorie,
- *             errorSsCategorie: validationSsCategorie,
- *             errorPeriode: validationPeriode,
- *             errorDescription: validationDescription,
- *             errorValeur: validationValeur,
- *             errorFormatValeur: validationFormatValeur,
- *             errorEtat: validationEtat
- *         })
+
  */
 
 
@@ -60,6 +55,7 @@ export function handleCloseOperationForm() {
     let editForm = this.state.editForm;
     editForm.value = false;
     editForm.libelle = false;
+    editForm.dateOperation = false;
 
     this.setState({editForm: editForm, errors: []})
 
@@ -79,7 +75,7 @@ export function handleOperationEditionClick(event) {
 
         // Validation du formulairea
         if (enterKeyPress) {
-            this.handleValidateOperationForm(event);
+            this.handleValidateOperationForm();
         } else if (!idElement.endsWith(OPERATION_EDITION_FORM_IDS.INPUT)) {
             let editForm = this.state.editForm;
 
@@ -90,9 +86,11 @@ export function handleOperationEditionClick(event) {
                 case OPERATION_EDITION_FORM_IDS.LIBELLE:
                     editForm.libelle = true;
                     break;
-
+                case OPERATION_EDITION_FORM_IDS.DATE_OPERATION:
+                    editForm.dateOperation = true;
+                    break;
                 case OPERATION_EDITION_FORM_IDS.FORM:
-                    this.handleCancelOperationForm(event);
+                    this.handleValidateOperationForm();
                     break;
                 default:
                     break;
@@ -108,6 +106,7 @@ export const OPERATION_EDITION_FORM_IDS = {
     FORM: "OPERATION_FORM",
     VALUE: "OPERATION_VALUE",
     LIBELLE: "OPERATION_LIBELLE",
+    DATE_OPERATION: "OPERATION_DATE_OPERATION",
     INPUT: "_INPUT",
 }
 
