@@ -48,10 +48,12 @@ class OperationDetailPage extends Component {
 
 
     /**
-     * Init
+     * Réinit de l'opération du formulaire à la sélection d'une nouvelle opération
      */
-    componentDidMount() {
-        this.setState({editOperation: this.fillOperationFormFromOperation(this.props.operation)});
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        if (this.props.operation.id !== prevProps.operation.id) {
+            this.setState({editOperation: this.fillOperationFormFromOperation(this.props.operation)});
+        }
     }
 
 

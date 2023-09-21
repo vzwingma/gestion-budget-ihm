@@ -26,8 +26,7 @@ export default class Budget extends Component {
         selectedCompte: this.props.selectedCompte,
         selectedDate: this.props.selectedDate,
 
-        categories: null,
-        showModalCreate: false
+        categories: null
     }
 
 

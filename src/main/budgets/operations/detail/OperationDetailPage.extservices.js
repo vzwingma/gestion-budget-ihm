@@ -28,7 +28,7 @@ export function saveOperation(operation, budget) {
             })
     } else {
         console.log("Impossible de modifier l'opération " + operation.id + " sur un budget clos");
-        toast.warn("Impossible de modifier une opération sur un budget clos")
+        toast.warn("Impossible de sauvegarder une opération sur un budget clos")
     }
 
 }
