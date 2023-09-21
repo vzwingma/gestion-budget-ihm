@@ -8,9 +8,8 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import BudgetsSoldes from "./BudgetSoldes.component";
 import {Box, CircularProgress, Divider, Stack} from "@mui/material";
 import OperationItem from "../operations/OperationsListItem.component";
-import OperationDetailPage from "../operations/OperationDetailPage.component";
+import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import MenuIcon from '@mui/icons-material/Menu';
-import CreateUpdateOperationForm from "../operations/createupdate/CreateUpdateOperationForm.component";
 
 
 /**
@@ -23,6 +22,10 @@ export default class Budget extends Component {
     state = {
         currentBudget: null,
         currentOperation: null,
+
+        selectedCompte: this.props.selectedCompte,
+        selectedDate: this.props.selectedDate,
+
         categories: null,
         showModalCreate: false
     }
@@ -43,10 +46,7 @@ export default class Budget extends Component {
 
         this.getPreferenceUtilisateur = Services.getPreferenceUtilisateur.bind(this);
 
-        this.setState({
-            selectedCompte: this.props.selectedCompte,
-            selectedDate: this.props.selectedDate
-        });
+
     }
 
 
@@ -132,24 +132,14 @@ export default class Budget extends Component {
                 <Grid2 md={8}>
                     <Box height={window.innerHeight - 195}>
 
-                        {this.state.currentBudget != null ?
-                            (this.state.currentOperation != null ?
-                                /** Affichage d'une opération **/
-                                <OperationDetailPage operation={this.state.currentOperation}
-                                                     budget={this.state.currentBudget}
-                                                     onActionOperationChange={this.handleBudgetUpdate}/>
+                        {this.state.currentBudget != null && this.state.currentOperation != null ?
+                            /** Affichage d'une opération **/
+                            <OperationDetailPage operation={this.state.currentOperation}
+                                                 budget={this.state.currentBudget}
+                                                 onOperationChange={this.handleBudgetUpdate}/>
+                            : <></>
+                        }
 
-                                : this.state.showModalCreate &&
-                                /** Création d'une opération **/
-                                <CreateUpdateOperationForm idCompte={this.props.selectedCompte}
-                                                           budget={this.state.currentBudget}
-                                                           showModalCreate={this.state.showModalCreate}
-                                                           modeEdition={this.state.idOperation !== null}
-                                                           idOperation={this.state.idOperation}
-                                                           hideModale={this.hideModale}
-                                                           onOperationChange={this.props.onOperationChange}/>) :
-                        <></>
-                    }
                     </Box>
                 </Grid2>
             </Grid2>
