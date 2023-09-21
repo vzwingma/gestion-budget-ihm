@@ -66,20 +66,13 @@ export default class Budget extends Component {
      */
     shouldComponentUpdate(nextProps, nextStates, nextContext) {
         let componentUpdate = false;
-        let budgetUpdate;
         if (this.state.currentBudget !== nextStates.currentBudget) {
             console.log("[TRIGGER] Context budget=" + nextStates.currentBudget.id )
             componentUpdate = true;
-            budgetUpdate = false;
         }
         if (this.state.currentOperation !== nextStates.currentOperation) {
             console.log("[TRIGGER] Context operation=" + (nextStates.currentOperation !== null ? nextStates.currentOperation.id : "Nouvelle opération"))
             componentUpdate = true;
-            budgetUpdate = false;
-        }
-        if(budgetUpdate){
-            console.log("[TRIGGER] refresh du budget")
-            this.refreshBudget(nextStates.selectedCompte !== null ? nextStates.selectedCompte.value : null, nextStates.selectedDate);
         }
         return componentUpdate;
     }

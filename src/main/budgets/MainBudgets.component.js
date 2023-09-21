@@ -57,7 +57,8 @@ export default class MainBudget extends Component {
                 </Drawer>
 
                 {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
-                    <Budget selectedCompte={this.state.selectedCompte} selectedDate={this.state.selectedDate}
+                    <Budget selectedCompte={this.state.selectedCompte}
+                            selectedDate={this.state.selectedDate}
                             onOpenMenu={this.handleOpenMenuBar}/> :
                     <CircularProgress/>}
 
