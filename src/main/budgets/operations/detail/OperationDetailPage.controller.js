@@ -13,16 +13,19 @@ export function handleValidateOperationForm() {
         this.props.operation.libelle = this.state.editOperation.libelle;
     }
 
-    console.log(this.state.editOperation.valeur)
     // Valeur
     if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
         errors.valeur = "Le champ Valeur est obligatoire";
         hasErrors = true;
-    } else if (!/(^\d*.\d{2}$)/.test(this.state.editOperation.valeur)) {
-        errors.valeur = "Le format est incorrect : 0000.00 €";
-        hasErrors = true;
     } else {
-        this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * this.state.editOperation.valeur;
+        let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
+
+        if (!/(^\d*.\d{2}$)/.test(valeur)) {
+            errors.valeur = "Le format est incorrect : 0000.00 €";
+            hasErrors = true;
+        } else {
+            this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
+        }
     }
 
     // DateOperation
@@ -114,7 +117,7 @@ export const OPERATION_EDITION_FORM_IDS = {
 /**
  * Création d'un objet Operation à partir du formulaire
  */
-export function fillOperationFormFromOperation(operation) {
+export function cloneOperation(operation) {
     return {
         "id": operation.id,
         "libelle": operation.libelle,

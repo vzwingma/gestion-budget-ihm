@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Box, Container, InputAdornment, Stack, TextField, Typography} from "@mui/material";
+import {Box, Container, InputAdornment, MenuItem, Stack, TextField, Typography} from "@mui/material";
 import OperationValue from "../renderers/OperationSpanValue.renderer";
 import * as Renderer from "../renderers/OperationItem.renderer";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -9,7 +9,7 @@ import * as Controller from "./OperationDetailPage.controller";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.controller";
 import * as Service from "./OperationDetailPage.extservices";
 import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
-
+import {addEndingZeros} from '../../../Utils/DataUtils.utils'
 
 /**
  * Page de détail d'une opération
@@ -47,21 +47,19 @@ class OperationDetailPage extends Component {
     }
 
 
+    listePeriodes = [
+        {value: "PONCTUELLE", text: "Ponctuelle"},
+        {value: "MENSUELLE", text: "Mensuelle"},
+        {value: "TRIMESTRIELLE", text: "Trimestrielle"},
+        {value: "SEMESTRIELLE", text: "Semestrielle"},
+        {value: "ANNUELLE", text: "Annuelle"}
+    ]
+
     /**
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     componentDidMount() {
-        this.setState({editOperation: Controller.fillOperationFormFromOperation(this.props.operation)});
-    }
-
-    /**
-     * Réinit de l'opération du formulaire à la sélection d'une nouvelle opération
-     */
-    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        if (this.props.operation.id !== prevProps.operation.id) {
-            this.setState({editOperation: Controller.fillOperationFormFromOperation(this.props.operation)});
-            this.handleCloseOperationForm();
-        }
+        this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
     }
 
 
@@ -75,19 +73,27 @@ class OperationDetailPage extends Component {
         this.setState({editOperation: editOperation})
     }
 
-    fillValeurForm(e) {
-        let editOperation = this.state.editOperation
-        let value = e.target.value.replaceAll(",", ".")
-        if (value !== null && value !== "" && value.indexOf(".") === -1) {
-            value += ".00"
+    /**
+     * Réinit de l'opération du formulaire à la sélection d'une nouvelle opération
+     */
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        if (this.props.operation.id !== prevProps.operation.id) {
+            this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
+            this.handleCloseOperationForm();
         }
-        editOperation.valeur = value
-        this.setState({editOperation: editOperation})
     }
 
     fillDateOperationForm(e) {
         let editOperation = this.state.editOperation
         editOperation.autresInfos.dateOperation = e.target.value
+        this.setState({editOperation: editOperation})
+    }
+
+    fillValeurForm(e) {
+        let editOperation = this.state.editOperation
+        console.log("n=" + e.target.value)
+        editOperation.valeur = addEndingZeros(e.target.value)
+        console.log("fillValeurForm=" + editOperation.valeur)
         this.setState({editOperation: editOperation})
     }
 
@@ -181,13 +187,29 @@ class OperationDetailPage extends Component {
                             </Typography>
                         </Grid2>
                         <Grid2 md={3}>
-                            {(operation.mensualite != null ?
-                                    <Typography variant={"overline"}
-                                                color={Renderer.getPeriodeColor(operation.mensualite.periode)}>{operation.mensualite.periode}</Typography>
+                            { /** PERIODE **/
+                                (!this.state.editForm.dateOperation) ?
+                                    (operation.mensualite != null ?
+                                        <Typography variant={"overline"}
+                                                    color={Renderer.getPeriodeColor(operation.mensualite.periode)}>
+                                            {operation.mensualite.periode}
+                                        </Typography>
                                     :
-                                    <Typography variant={"overline"}
-                                                color={Renderer.getPeriodeColor("PONCTUELLE")}>PONCTUELLE</Typography>
-                            )}
+                                        <Typography variant={"overline"}
+                                                    color={Renderer.getPeriodeColor("PONCTUELLE")}>PONCTUELLE</Typography>)
+                                    :
+                                    <TextField required size="sm" select
+                                               value={operation.mensualite != null ? operation.mensualite.periode : "PONCTUELLE"}
+                                               placeholder={"Sélectionnez une période"}
+                                               onChange={this.handleSelectPeriode}
+                                               variant="standard">
+                                        {this.listePeriodes.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.text}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                            }
                         </Grid2>
 
 
