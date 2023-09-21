@@ -19,7 +19,7 @@ import {toast} from "react-toastify";
  * @param operation opération
  */
 export function handleOperationSelect(operation) {
-    console.log("Selection de l'opération [" + operation.id + "]");
+    // console.log("Selection de l'opération [" + operation.id + "]");
     this.setState({currentOperation: operation})
 }
 
@@ -28,5 +28,5 @@ export function handleOperationSelect(operation) {
  * Création d'une nouvelle opération
  */
 export function handleButtonCreateClick() {
-    this.setState({currentOperation: null, showModalCreate: true})
+    this.setState({currentOperation: null})
 }
