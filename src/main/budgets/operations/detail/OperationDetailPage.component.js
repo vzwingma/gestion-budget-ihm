@@ -174,21 +174,22 @@ class OperationDetailPage extends Component {
 
 
                     <Grid2 container width={"100%"}>
-                        <Grid2 md={6}>
-                            <Typography variant={"caption"} sx={{color: "#808080"}}>Catégories</Typography>
+                        <Grid2 md={5}>
+                            <Typography variant={"caption"} sx={{color: "#808080"}}>Catégorie</Typography>
                         </Grid2>
-                        <Grid2 md={3}>
+                        <Grid2 md={4}>
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Etat</Typography>
                         </Grid2>
                         <Grid2 md={3}>
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Période</Typography>
                         </Grid2>
 
-                        <Grid2 md={6}>
+
+                        <Grid2 md={5}>
                             <Typography
                                 variant={"overline"}> {operation.categorie.libelle} / {operation.ssCategorie.libelle} </Typography>
                         </Grid2>
-                        <Grid2 md={3}>
+                        <Grid2 md={4}>
                             <Typography variant={"overline"} color={Renderer.getOperationStateColor(operation.etat)}>
                                 {operation.etat}
                             </Typography>
@@ -221,30 +222,31 @@ class OperationDetailPage extends Component {
                         </Grid2>
 
 
-                        <Grid2 md={6} paddingTop={3}>
+                        <Grid2 md={5} paddingTop={3}>
+
+                        </Grid2>
+                        <Grid2 md={4} paddingTop={3}>
                             {budget != null && budget.actif && operation.etat !== OPERATIONS_ENUM.SUPPRIMEE ?
                                 <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                             }
-
                         </Grid2>
                         <Grid2 md={3} paddingTop={3}>
-                            <Typography variant={"caption"} sx={{color: "#808080"}}>Date
-                                d'opération</Typography> : <></>
+                            <Typography variant={"caption"} sx={{color: "#808080"}}>Date d'opération</Typography>
                         </Grid2>
-                        <Grid2 md={3} paddingTop={3}>
 
+
+                        <Grid2 md={5}>
                         </Grid2>
-                        <Grid2 md={6}>
+                        <Grid2 md={4}>
                             {budget != null && budget.actif && operation.etat !== OPERATIONS_ENUM.SUPPRIMEE ?
                                 <OperationDetailActions currentOperation={operation}
                                                         currentBudget={budget}
                                                         saveOperation={this.saveOperation}/> : <></>
                             }
                         </Grid2>
-                        { /** DATE OPERATION **/}
                         <Grid2 md={3}>
+                            { /** DATE OPERATION **/}
                             {(!this.state.editForm.dateOperation) ?
-
                                 <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
                                             className={"editableField"}
                                             sx={{color: (operation.autresInfos.dateOperation != null ? "#000000" : "#E0E0E0")}}>
@@ -259,10 +261,6 @@ class OperationDetailPage extends Component {
                                     helperText={this.state.errors.dateOperation}
                                     onChange={(e) => this.fillDateOperationForm(e)}/>
                             }
-
-                        </Grid2>
-                        <Grid2 md={4}>
-
                         </Grid2>
                     </Grid2>
 

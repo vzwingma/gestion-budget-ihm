@@ -18,6 +18,7 @@ const OperationItem = ({operation, onClick}) => {
         <Box id={operation.id}
              sx={{
                  height: 56,
+                 marginY: 1,
                  '&:hover': {
                      backgroundColor: '#f5f6fb',
                      color: '#808080',

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Divider, Stack} from "@mui/material";
+import {Container, Divider, Stack} from "@mui/material";
 import OperationItem from "./OperationsListItem.component";
 import {getLabelDate} from "../../Utils/DataUtils.utils";
 
@@ -25,7 +25,10 @@ const OperationsListe = ({operationGroupedByDate, onClick}) => {
         let renderList = []
         for (var dateOperationKey in operationGroupedByDate) {
             if (dateOperationKey !== null && dateOperationKey !== "null") {
-                renderList.push(<span>{getLabelDate(dateOperationKey)}</span>)
+                renderList.push(<Container
+                    sx={{backgroundColor: '#e1e5f1 !important', padding: '10px', color: '#7991b3'}}>
+                    <center>{getLabelDate(dateOperationKey)}</center>
+                </Container>)
             }
             operationGroupedByDate[dateOperationKey]
                 .map((operation) => renderList.push(
@@ -36,8 +39,7 @@ const OperationsListe = ({operationGroupedByDate, onClick}) => {
     }
 
 
-    return <Stack divider={<Divider orientation="horizontal" flexItem/>}
-                  spacing={1}
+    return <Stack divider={<Divider orientation="horizontal"/>}
                   sx={{overflowY: "auto", overflowX: "hidden"}} maxHeight={window.innerHeight - 195}>
         {
             iterate(operationGroupedByDate)
