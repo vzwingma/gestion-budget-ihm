@@ -1,4 +1,4 @@
-import * as AppConstants from "../../../Utils/AppEnums.constants"
+import * as AppConstants from "../../../Utils/AppTechEnums.constants"
 import * as ClientHTTP from "../../../Services/ClientHTTP.service";
 import {toast} from "react-toastify";
 

@@ -1,4 +1,4 @@
-import * as AppConstants from "./AppEnums.constants";
+import * as AppConstants from "./AppBusinessEnums.constants";
 
 /**
  * Ajout de leading zero devant une valeur

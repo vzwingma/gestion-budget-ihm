@@ -1,4 +1,4 @@
-import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppEnums.constants"
+import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppTechEnums.constants"
 import {call} from "../Services/ClientHTTP.service";
 
 

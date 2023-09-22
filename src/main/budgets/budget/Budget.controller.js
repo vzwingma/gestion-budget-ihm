@@ -1,5 +1,5 @@
 import {toast} from "react-toastify";
-import {LISTE_PERIODES_MENSUALITE} from "../operations/detail/OperationDetailPage.constants";
+import {PERIODES_MENSUALITE_ENUM} from "../../Utils/AppBusinessEnums.constants";
 
 /**
  * Controleur des budgets
@@ -20,9 +20,9 @@ import {LISTE_PERIODES_MENSUALITE} from "../operations/detail/OperationDetailPag
  * @param operation opération
  */
 export function handleOperationSelect(operation) {
-    // console.log("Selection de l'opération [" + operation.id + "]");
-    if (operation.mensualite === null) {
-        operation.mensualite = {periode: LISTE_PERIODES_MENSUALITE.at(0).value}
+    console.log("Selection de l'opération [" + operation.id + "]");
+    if (operation.mensualite == null) {
+        operation.mensualite = {periode: PERIODES_MENSUALITE_ENUM.at(0)}
     }
     this.setState({currentOperation: operation})
 }

@@ -1,6 +1,7 @@
 import * as ClientHTTP from "../../../Services/ClientHTTP.service";
-import * as AppConstants from "../../../Utils/AppEnums.constants";
 import {toast} from "react-toastify";
+import {OPERATIONS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {BACKEND_ENUM, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
 
 
 /**
@@ -11,8 +12,8 @@ import {toast} from "react-toastify";
 export function saveOperation(operation, budget) {
 
     if (budget.actif) {
-        ClientHTTP.call(operation.etat === AppConstants.OPERATIONS_ENUM.SUPPRIMEE ? "DELETE" : "POST",
-            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.UPDATE,
+        ClientHTTP.call(operation.etat === OPERATIONS_ENUM.SUPPRIMEE ? "DELETE" : "POST",
+            BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.UPDATE,
             [budget.id, operation.id],
             operation)
             .then((data) => {

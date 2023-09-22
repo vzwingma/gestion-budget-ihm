@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {HashRouter, Route, Routes} from "react-router-dom";
 import {AuthProvider} from 'react-oidc-context';
-import * as AppConstants from "./Utils/AppEnums.constants"
+import * as AppConstants from "./Utils/AppTechEnums.constants"
 import Analyses from "./analyses/Analyses.component";
 import Infos from "./infos/Infos.component";
 import {removeTokenFromStorage} from "./Services/Auth.service";

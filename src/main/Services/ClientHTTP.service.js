@@ -1,6 +1,6 @@
 /** Client HTTP **/
 import {getOAuthToken} from './Auth.service'
-import * as AppConstants from "../Utils/AppEnums.constants";
+import * as AppConstants from "../Utils/AppTechEnums.constants";
 
 let alreadyTraced = false;
 /**

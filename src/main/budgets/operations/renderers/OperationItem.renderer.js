@@ -31,9 +31,13 @@ import {
     TravelExploreRounded,
     VolunteerActivismOutlined
 } from "@mui/icons-material";
-import * as AppConstants from "../../../Utils/AppEnums.constants"
+import {OPERATIONS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
-// Couleur de la catégorie
+/**
+ * Couleur de la catégorie
+ * @param operationCategorie catégorie de l'opération
+ * @returns {string} color catégorie
+ */
 export function getCategorieColor(operationCategorie) {
     if (operationCategorie != null && operationCategorie.id != null) {
         switch (operationCategorie.id) {
@@ -151,17 +155,17 @@ export function getSousCategorieIcon(operationSsCategorie) {
 export function getOperationStateColor(operationState) {
     if (operationState != null) {
         switch (operationState) {
-            case AppConstants.OPERATIONS_ENUM.REALISEE:
+            case OPERATIONS_ENUM.REALISEE:
                 return "#2e7d32"
-            case AppConstants.OPERATIONS_ENUM.PREVUE:
+            case OPERATIONS_ENUM.PREVUE:
                 return "#ed6c02"
-            case AppConstants.OPERATIONS_ENUM.ANNULEE:
+            case OPERATIONS_ENUM.ANNULEE:
                 return "#ebebeb"
-            case AppConstants.OPERATIONS_ENUM.SUPPRIMEE:
+            case OPERATIONS_ENUM.SUPPRIMEE:
                 return "#ed1b24"
-            case AppConstants.OPERATIONS_ENUM.REPORTEE:
+            case OPERATIONS_ENUM.REPORTEE:
                 return "#9c27b0"
-            case AppConstants.OPERATIONS_ENUM.PLANIFIEE:
+            case OPERATIONS_ENUM.PLANIFIEE:
                 return "#0288d1"
             default:
                 return "grey";
@@ -171,21 +175,23 @@ export function getOperationStateColor(operationState) {
 }
 
 
-/** Couleur du background du badge Mensualité
- * @param periode : string enum période
+/** Libellé & Couleur du background de l'attribut Mensualité
+ * @param periodeKey : string enum période
  * */
-export function getPeriodeColor(periode) {
+export function getPeriodeRenderer(periodeKey) {
 
-    switch (periode) {
+    switch (periodeKey) {
+        case "PONCTUELLE":
+            return {value: periodeKey, text: "Ponctuelle", color: "#616161"}
         case "MENSUELLE":
-            return "#616161";
+            return {value: periodeKey, text: "Mensuelle", color: "#616161"}
         case "TRIMESTRIELLE":
-            return "#3498db";
+            return {value: periodeKey, text: "Trimestrielle", color: "#3498db"}
         case "SEMESTRIELLE":
-            return "#f1c40f";
+            return {value: periodeKey, text: "Semestrielle", color: "#f1c40f"}
         case "ANNUELLE":
-            return "#e74c3c";
+            return {value: periodeKey, text: "Annuelle", color: "#e74c3c"}
         default:
-            return "#616161"
+            return {value: periodeKey, text: "N/D", color: "#616161"}
     }
 }

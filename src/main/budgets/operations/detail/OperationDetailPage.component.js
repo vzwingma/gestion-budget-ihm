@@ -4,12 +4,12 @@ import OperationValue from "../renderers/OperationSpanValue.renderer";
 import * as Renderer from "../renderers/OperationItem.renderer";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "./OperationDetailActions.component";
-import * as AppConstants from "../../../Utils/AppEnums.constants";
 import * as Controller from "./OperationDetailPage.controller";
-import {LISTE_PERIODES_MENSUALITE, OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
+import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import * as Service from "./OperationDetailPage.extservices";
 import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
 import {addEndingZeros} from '../../../Utils/DataUtils.utils'
+import {OPERATIONS_ENUM, PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
 /**
  * Page de détail d'une opération
@@ -95,11 +95,6 @@ class OperationDetailPage extends Component {
 
     fillPeriodeForm(e) {
         let editOperation = this.state.editOperation
-
-        if (editOperation.mensualite === null) {
-            editOperation.mensualite = {periode: "PONCTUELLE"}
-        }
-        console.log(editOperation.mensualite)
         editOperation.mensualite.periode = e.target.value
         this.setState({editOperation: editOperation})
     }
@@ -197,11 +192,12 @@ class OperationDetailPage extends Component {
                         </Grid2>
                         <Grid2 md={3}>
                             { /** PERIODE **/
+
                                 (!this.state.editForm.mensualite) ?
                                     <Typography id={OPERATION_EDITION_FORM_IDS.MENSUALITE} variant={"overline"}
                                                 className={"editableField"}
-                                                color={Renderer.getPeriodeColor(operation.mensualite.periode)}>
-                                        {operation.mensualite.periode}
+                                                color={Renderer.getPeriodeRenderer(operation.mensualite.periode).color}>
+                                        {Renderer.getPeriodeRenderer(operation.mensualite.periode).text}
                                     </Typography>
                                     :
                                     <TextField
@@ -211,9 +207,10 @@ class OperationDetailPage extends Component {
                                                placeholder={"Sélectionnez une période"}
                                         onChange={(e) => this.fillPeriodeForm(e)}
                                                variant="standard">
-                                        {LISTE_PERIODES_MENSUALITE.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.text}
+                                        {PERIODES_MENSUALITE_ENUM.map((option) => (
+                                            <MenuItem key={option} value={option}
+                                                      color={Renderer.getPeriodeRenderer(option).color}>
+                                                {Renderer.getPeriodeRenderer(option).text}
                                             </MenuItem>
                                         ))}
                                     </TextField>
@@ -222,7 +219,7 @@ class OperationDetailPage extends Component {
 
 
                         <Grid2 md={6} paddingTop={3}>
-                            {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE ?
+                            {budget != null && budget.actif && operation.etat !== OPERATIONS_ENUM.SUPPRIMEE ?
                                 <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                             }
 
@@ -235,7 +232,7 @@ class OperationDetailPage extends Component {
 
                         </Grid2>
                         <Grid2 md={6}>
-                            {budget != null && budget.actif && operation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE ?
+                            {budget != null && budget.actif && operation.etat !== OPERATIONS_ENUM.SUPPRIMEE ?
                                 <OperationDetailActions currentOperation={operation}
                                                         currentBudget={budget}
                                                         saveOperation={this.saveOperation}/> : <></>

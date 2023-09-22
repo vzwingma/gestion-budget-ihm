@@ -1,3 +1,4 @@
+
 /**
  * Constantes des ID pour le formulaire
  * @type {{INPUT: string, FORM: string, DATE_OPERATION: string, LIBELLE: string, VALUE: string}}
@@ -12,15 +13,4 @@ export const OPERATION_EDITION_FORM_IDS = {
 }
 
 
-/**
- * Constantes des périodes pour la liste SELECT
- * @type {[{text: string, value: string},{text: string, value: string},{text: string, value: string},{text: string, value: string},{text: string, value: string}]}
- */
-export const LISTE_PERIODES_MENSUALITE = [
-    {value: "PONCTUELLE", text: "Ponctuelle"},
-    {value: "MENSUELLE", text: "Mensuelle"},
-    {value: "TRIMESTRIELLE", text: "Trimestrielle"},
-    {value: "SEMESTRIELLE", text: "Semestrielle"},
-    {value: "ANNUELLE", text: "Annuelle"}
-]
 

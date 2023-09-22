@@ -13,7 +13,7 @@ import {
 
 import * as Controller from './BudgetActionsButtonGroup.controller'
 import * as Service from './BudgetActionsButtonGroup.extservices'
-import {UTILISATEUR_DROITS} from "../../../Utils/AppEnums.constants";
+import {UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
 import {AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded} from "@mui/icons-material";
 
 /**

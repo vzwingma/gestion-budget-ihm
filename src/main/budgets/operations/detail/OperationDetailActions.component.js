@@ -19,7 +19,7 @@ import {
     HistoryRounded
 } from "@mui/icons-material";
 import * as Controller from "./OperationDetailActions.controller";
-import * as AppConstants from "../../../Utils/AppEnums.constants";
+import * as AppConstants from "../../../Utils/AppBusinessEnums.constants";
 
 
 /**
