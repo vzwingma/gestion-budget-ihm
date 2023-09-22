@@ -83,6 +83,17 @@ export default class OperationDetailActions extends Component {
                         </IconButton>
                     </Tooltip>
                 }
+                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE &&
+                    <Tooltip title="Reporter l'opération">
+                        <IconButton
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.REPORTEE}
+                            id={AppConstants.OPERATIONS_ENUM.REPORTEE}>
+                            <center>
+                                <ArrowForwardRounded id={AppConstants.OPERATIONS_ENUM.REPORTEE}/>
+                            </center>
+                        </IconButton>
+                    </Tooltip>
+                }
                 {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.ANNULEE &&
                     <Tooltip title="Annuler l'opération">
                         <IconButton
@@ -106,17 +117,7 @@ export default class OperationDetailActions extends Component {
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE &&
-                    <Tooltip title="Reporter l'opération">
-                        <IconButton
-                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.REPORTEE}
-                            id={AppConstants.OPERATIONS_ENUM.REPORTEE}>
-                            <center>
-                                <ArrowForwardRounded id={AppConstants.OPERATIONS_ENUM.REPORTEE}/>
-                            </center>
-                        </IconButton>
-                    </Tooltip>
-                }
+
 
                 <Dialog open={this.state.showModale}>
                     <DialogTitle>Suppression de l'opération</DialogTitle>

@@ -28,6 +28,7 @@ class OperationDetailPage extends Component {
             value: false,
             libelle: false,
             dateOperation: false,
+            mensualite: true,
         },
         errors: {
             valeur: null,
@@ -54,6 +55,13 @@ class OperationDetailPage extends Component {
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     componentDidMount() {
+        if (this.props.operation.id === -1) {
+            this.setState({
+                editForm: {
+                    libelle: true, value: true, dateOperation: true, mensualite: true
+                }
+            })
+        }
         this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
     }
 

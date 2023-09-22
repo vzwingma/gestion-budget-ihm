@@ -126,7 +126,6 @@ export function handleCloseOperationForm() {
 
 
 
-
 /**
  * Création d'un objet Operation à partir du formulaire
  */

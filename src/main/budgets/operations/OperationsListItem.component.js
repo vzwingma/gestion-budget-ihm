@@ -15,7 +15,7 @@ const OperationItem = ({operation, onClick}) => {
 
 
     return (
-        <Box id={operation.id}
+        <Box key={"liste_" + operation.id}
              sx={{
                  height: 56,
                  marginY: 1,

@@ -44,5 +44,27 @@ export function handleOperationSelect(operation) {
  */
 export function handleButtonCreateClick() {
     // TODO : Création d'une nouvelle opération
-    this.setState({currentOperation: null})
+    let newOperation = {
+        "id": -1,
+        "libelle": null,
+        "categorie": {
+            "id": null,
+            "libelle": null
+        },
+        "ssCategorie": {
+            "id": null,
+            "libelle": null
+        },
+        "typeOperation": null,
+        "etat": "PREVUE",
+        "valeur": 0,
+        "mensualite": {
+            periode: "PONCTUELLE"
+        },
+        "autresInfos": {
+            "dateOperation": null
+        }
+    }
+
+    this.setState({currentOperation: newOperation})
 }
