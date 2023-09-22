@@ -1,4 +1,5 @@
 import {toast} from "react-toastify";
+import {LISTE_PERIODES_MENSUALITE} from "../operations/detail/OperationDetailPage.constants";
 
 /**
  * Controleur des budgets
@@ -20,6 +21,9 @@ import {toast} from "react-toastify";
  */
 export function handleOperationSelect(operation) {
     // console.log("Selection de l'opération [" + operation.id + "]");
+    if (operation.mensualite === null) {
+        operation.mensualite = {periode: LISTE_PERIODES_MENSUALITE.at(0).value}
+    }
     this.setState({currentOperation: operation})
 }
 
@@ -28,5 +32,6 @@ export function handleOperationSelect(operation) {
  * Création d'une nouvelle opération
  */
 export function handleButtonCreateClick() {
+    // TODO : Création d'une nouvelle opération
     this.setState({currentOperation: null})
 }

@@ -29,6 +29,35 @@ export function addEndingZeros(num) {
 }
 
 
+/**
+ * Recherche de l'id d'un élément DOM depuis le target du click
+ * @param eventTarget event Target
+ * @returns {*} ID du DOM
+ */
+export function getEventTargetId(eventTarget) {
+    if (eventTarget != null) {
+        if (eventTarget.id !== null && eventTarget.id !== "") {
+            return eventTarget.id;
+        } else {
+            return getEventTargetId(eventTarget.parentNode);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Calcul d'un libellé d'une date depuis son time in ms
@@ -110,20 +139,3 @@ export function sortOperations(ope1, ope2) {
     }
     return sort;
 }
-
-
-/**
- * Recherche de l'id d'un élément DOM depuis le target du click
- * @param eventTarget event Target
- * @returns {*} ID du DOM
- */
-export function getEventTargetId(eventTarget) {
-    if (eventTarget != null) {
-        if (eventTarget.id !== null && eventTarget.id !== "") {
-            return eventTarget.id;
-        } else {
-            return getEventTargetId(eventTarget.parentNode);
-        }
-    }
-}
-

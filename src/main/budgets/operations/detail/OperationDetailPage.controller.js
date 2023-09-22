@@ -1,45 +1,6 @@
 import * as DataUtils from "../../../Utils/DataUtils.utils";
+import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 
-
-export function handleValidateOperationForm() {
-
-    let errors = this.state.errors;
-    let hasErrors = false;
-    // Description
-    if (this.state.editOperation.libelle === null || this.state.editOperation.libelle === "") {
-        errors.libelle = "Le champ Description est obligatoire";
-        hasErrors = true;
-    } else {
-        this.props.operation.libelle = this.state.editOperation.libelle;
-    }
-
-    // Valeur
-    if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
-        errors.valeur = "Le champ Valeur est obligatoire";
-        hasErrors = true;
-    } else {
-        let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
-
-        if (!/(^\d*.\d{2}$)/.test(valeur)) {
-            errors.valeur = "Le format est incorrect : 0000.00 €";
-            hasErrors = true;
-        } else {
-            this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
-        }
-    }
-
-    // DateOperation
-    this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
-
-    if (hasErrors) {
-        this.setState({errors: errors})
-    } else {
-        this.saveOperation(this.props.operation, this.props.budget);
-        this.handleCloseOperationForm();
-    }
-
-
-}
 
 /**
  *    let validationCategorie = this.state.formCategorie === null
@@ -49,20 +10,6 @@ export function handleValidateOperationForm() {
 
  */
 
-
-/**
- * Fermeture des items en édition de la page
- */
-export function handleCloseOperationForm() {
-
-    let editForm = this.state.editForm;
-    editForm.value = false;
-    editForm.libelle = false;
-    editForm.dateOperation = false;
-
-    this.setState({editForm: editForm, errors: []})
-
-}
 
 
 /**
@@ -92,6 +39,9 @@ export function handleOperationEditionClick(event) {
                 case OPERATION_EDITION_FORM_IDS.DATE_OPERATION:
                     editForm.dateOperation = true;
                     break;
+                case OPERATION_EDITION_FORM_IDS.MENSUALITE:
+                    editForm.mensualite = true;
+                    break;
                 case OPERATION_EDITION_FORM_IDS.FORM:
                     this.handleValidateOperationForm();
                     break;
@@ -105,13 +55,76 @@ export function handleOperationEditionClick(event) {
 }
 
 
-export const OPERATION_EDITION_FORM_IDS = {
-    FORM: "OPERATION_FORM",
-    VALUE: "OPERATION_VALUE",
-    LIBELLE: "OPERATION_LIBELLE",
-    DATE_OPERATION: "OPERATION_DATE_OPERATION",
-    INPUT: "_INPUT",
+/**
+ * Validation du formulaire
+ */
+export function handleValidateOperationForm() {
+
+    if (this.isInEditMode()) {
+        let errors = this.state.errors;
+        let hasErrors = false;
+        // Description
+        if (this.state.editOperation.libelle === null || this.state.editOperation.libelle === "") {
+            errors.libelle = "Le champ Description est obligatoire";
+            hasErrors = true;
+        } else {
+            this.props.operation.libelle = this.state.editOperation.libelle;
+        }
+
+        // Valeur
+        if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
+            errors.valeur = "Le champ Valeur est obligatoire";
+            hasErrors = true;
+        } else {
+            let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
+
+            if (!/(^\d*.\d{2}$)/.test(valeur)) {
+                errors.valeur = "Le format est incorrect : 0000.00 €";
+                hasErrors = true;
+            } else {
+                this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
+            }
+        }
+
+        // DateOperation
+        this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
+
+        if (hasErrors) {
+            this.setState({errors: errors})
+        } else {
+            this.saveOperation(this.props.operation, this.props.budget);
+            this.handleCloseOperationForm();
+        }
+    }
 }
+
+/**
+ * Test si en mode édition d'au moins un champ
+ * @returns {*|boolean}
+ */
+export function isInEditMode() {
+    let editForm = this.state.editForm;
+    return editForm.value || editForm.libelle || editForm.dateOperation || editForm.mensualite;
+}
+
+
+/**
+ * Fermeture des items en édition de la page
+ */
+export function handleCloseOperationForm() {
+
+    let editForm = this.state.editForm;
+    editForm.value = false;
+    editForm.libelle = false;
+    editForm.dateOperation = false;
+    editForm.mensualite = false;
+
+    this.setState({editForm: editForm, errors: []})
+
+}
+
+
+
 
 
 /**
