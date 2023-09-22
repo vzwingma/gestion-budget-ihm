@@ -122,6 +122,7 @@ export default class Budget extends Component {
                             /** Affichage d'une opération **/
                             <OperationDetailPage operation={this.state.currentOperation}
                                                  budget={this.state.currentBudget}
+                                                 listeCategories={this.state.categories}
                                                  onOperationChange={this.handleBudgetUpdate}/>
                             : <></>
                         }

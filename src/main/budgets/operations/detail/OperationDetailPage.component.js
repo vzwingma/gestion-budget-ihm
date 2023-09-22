@@ -1,15 +1,17 @@
 import React, {Component} from 'react'
-import {Box, Container, InputAdornment, MenuItem, Stack, TextField, Typography} from "@mui/material";
+import {Autocomplete, Box, Container, InputAdornment, MenuItem, Stack, TextField, Typography} from "@mui/material";
 import OperationValue from "../renderers/OperationSpanValue.renderer";
 import * as Renderer from "../renderers/OperationItem.renderer";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "./OperationDetailActions.component";
 import * as Controller from "./OperationDetailPage.controller";
+import {transformCategorieBOtoVO} from "./OperationDetailPage.controller";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import * as Service from "./OperationDetailPage.extservices";
 import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
-import {addEndingZeros, getLabelDate} from '../../../Utils/DataUtils.utils'
+import {addEndingZeros, getLabelDate, sortLibellesCategories} from '../../../Utils/DataUtils.utils'
 import {OPERATIONS_ENUM, PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+
 
 /**
  * Page de détail d'une opération
@@ -28,13 +30,16 @@ class OperationDetailPage extends Component {
             value: false,
             libelle: false,
             dateOperation: false,
-            mensualite: true,
+            mensualite: false,
+            categories: false
         },
         errors: {
             valeur: null,
             libelle: null
-        }
+        },
+        listeAllCategories: null
     }
+
 
     /** Constructeur **/
     constructor(props) {
@@ -49,18 +54,27 @@ class OperationDetailPage extends Component {
     }
 
 
-
-
     /**
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     componentDidMount() {
-        if (this.props.operation.id === -1) {
-            this.setState({
-                editForm: {
-                    libelle: true, value: true, dateOperation: true, mensualite: true
-                }
-            })
+
+        if (this.state.listeAllCategories == null) {
+            /**
+             * Chargement des catégories
+             */
+            const mapCategories = this.props.listeCategories.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibellesCategories)
+            const mapSsCategories = mapCategories.flatMap(cat => cat.sousCategories)
+                .map(ssCat => {
+                    return {
+                        value: ssCat.text,
+                        text: ssCat.categorie.text + "/" + ssCat.text,
+                        id: ssCat.id,
+                        categorie: {value: ssCat.categorie.value, text: ssCat.categorie.text, id: ssCat.categorie.id}
+                    }
+                })
+                .sort(sortLibellesCategories)
+            this.setState({listeAllCategories: mapSsCategories})
         }
         this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
     }
@@ -72,7 +86,16 @@ class OperationDetailPage extends Component {
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
         if (this.props.operation.id !== prevProps.operation.id) {
             this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
-            this.handleCloseOperationForm();
+
+            if (this.props.operation.id === -1) {
+                this.setState({
+                    editForm: {
+                        libelle: true, value: true, dateOperation: true, mensualite: true, categories: true
+                    }
+                })
+            } else {
+                this.handleCloseOperationForm();
+            }
         }
     }
 
@@ -108,6 +131,14 @@ class OperationDetailPage extends Component {
         let editOperation = this.state.editOperation
         editOperation.mensualite.periode = e.target.value
         this.setState({editOperation: editOperation})
+    }
+
+    fillCategorieForm(e) {
+        console.log(e)
+    }
+
+    fillSsCategorieForm(e) {
+        console.log(e)
     }
 
 
@@ -194,8 +225,18 @@ class OperationDetailPage extends Component {
 
 
                         <Grid2 md={5}>
-                            <Typography
-                                variant={"overline"}> {operation.categorie.libelle} / {operation.ssCategorie.libelle} </Typography>
+                            {
+                                /** CATEGORIES **/
+                                !this.state.editForm.categories ?
+                                    <Typography variant={"overline"}>
+                                        {operation.categorie.libelle} / {operation.ssCategorie.libelle}
+                                    </Typography>
+                                    :
+                                    <Autocomplete
+                                        renderInput={(params) => <TextField {...params} variant={"standard"}/>}
+                                        options={this.state.listeAllCategories}
+                                        getOptionLabel={option => option.text}/>
+                            }
                         </Grid2>
                         <Grid2 md={4}>
                             <Typography variant={"overline"} color={Renderer.getOperationStateColor(operation.etat)}>

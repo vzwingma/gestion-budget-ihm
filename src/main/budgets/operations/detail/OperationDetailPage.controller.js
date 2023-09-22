@@ -124,7 +124,34 @@ export function handleCloseOperationForm() {
 }
 
 
+/**
+ * Transformation des catégories BO en VO
+ * @param categorie catégorie
+ * @param sscategorie sous catégorie
+ * @returns {{sousCategories: *[], text: *, value}}
+ */
+export function transformSsCategorieBOtoVO(categorie, sscategorie) {
+    return {
+        value: sscategorie.libelle,
+        text: sscategorie.libelle,
+        id: sscategorie.id,
+        categorie: {value: categorie.libelle, text: categorie.libelle, id: categorie.id}
+    }
+}
 
+/**
+ * Transformation des catégories BO en VO
+ * @param categorie
+ * @returns {{sousCategories: *[], text: *, value}}
+ */
+export function transformCategorieBOtoVO(categorie) {
+    let sousCategoriesVO = []
+
+    if (categorie.listeSSCategories !== null && categorie.listeSSCategories !== undefined) {
+        sousCategoriesVO = categorie.listeSSCategories.map(sousCat => transformSsCategorieBOtoVO(categorie, sousCat))
+    }
+    return {value: categorie.libelle, text: categorie.libelle, id: categorie.id, sousCategories: sousCategoriesVO}
+}
 
 /**
  * Création d'un objet Operation à partir du formulaire

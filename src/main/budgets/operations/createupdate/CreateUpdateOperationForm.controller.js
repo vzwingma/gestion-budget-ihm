@@ -1,45 +1,16 @@
-import * as AppConstants from "../../../Utils/AppTechEnums.constants"
-import {getDateForForm, getDateFromDateTime, sortLibellesCategories} from "../../../Utils/DataUtils.utils";
+import {getDateForForm, getDateFromDateTime} from "../../../Utils/DataUtils.utils";
 import {toast} from "react-toastify";
+import * as AppConstants from "../../../Utils/AppBusinessEnums.constants";
+import {BUSINESS_GUID} from "../../../Utils/AppBusinessEnums.constants";
 
 /**
  * Fonctions sur le formulaire de création d'opérations
  */
     export function categoriesLoaded(data){
-        // Transformation des catégories en affichage
-        const mapCategories = data.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibellesCategories)
-        const mapSsCategories = mapCategories.flatMap(cat => cat.sousCategories)
-                                             .map(ssCat => {
-                                                return { value: ssCat.text, text: ssCat.categorie.text + "/" + ssCat.text, id: ssCat.id, categorie: { value: ssCat.categorie.value, text: ssCat.categorie.text, id: ssCat.categorie.id} }
-                                            })
-                                            .sort(sortLibellesCategories)
-        this.setState({ categoriesSelect : mapCategories, ssCategoriesSelect : mapSsCategories, ssCategoriesAll: mapSsCategories })
+
     }
 
 
-    /**
-     * Transformation des catégories BO en VO
-     * @param categorie
-     * @returns {{sousCategories: *[], text: *, value}}
-     */
-    export function transformCategorieBOtoVO(categorie){
-        let sousCategoriesVO = []
-
-        if(categorie.listeSSCategories !== null && categorie.listeSSCategories !== undefined){
-            sousCategoriesVO = categorie.listeSSCategories.map(sousCat => transformSsCategorieBOtoVO(categorie, sousCat))
-        }
-        return { value: categorie.libelle, text: categorie.libelle, id: categorie.id, sousCategories: sousCategoriesVO }
-    }
-
-    /**
-     * Transformation des catégories BO en VO
-     * @param categorie catégorie
-     * @param sscategorie sous catégorie
-     * @returns {{sousCategories: *[], text: *, value}}
-     */
-    export function transformSsCategorieBOtoVO(categorie, sscategorie){
-        return { value: sscategorie.libelle, text: sscategorie.libelle, id: sscategorie.id, categorie: { value: categorie.libelle, text: categorie.libelle, id: categorie.id} }
-    }
 
     /**
      * Sélection d'une catégorie
@@ -55,10 +26,16 @@ import {toast} from "react-toastify";
          * Set type de valeur, suivant la catégorie
          */
         // Prélèvement mensuel
-        let operationMensuelle = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? {value:"MENSUELLE", text:"Mensuelle"} : {value:"PONCTUELLE", text:"Ponctuelle"};
+        let operationMensuelle = (categorieSelected.id === BUSINESS_GUID.CAT_PRELEVEMENT_MENSUEL) ? {
+                value: "MENSUELLE",
+                text: "Mensuelle"
+            } : {value: "PONCTUELLE", text: "Ponctuelle"};
 
         // Virement
-        let operationType = (categorieSelected.id === AppConstants.BUSINESS_GUID.CAT_VIREMENT) ? {value:"CREDIT", text:"+"} : {value:"DEPENSE", text:"-"};
+        let operationType = (categorieSelected.id === BUSINESS_GUID.CAT_VIREMENT) ? {
+            value: "CREDIT",
+            text: "+"
+        } : {value: "DEPENSE", text: "-"};
         this.setState(
             { formOperationType : operationType
             , formOperationPeriodique : operationMensuelle })
