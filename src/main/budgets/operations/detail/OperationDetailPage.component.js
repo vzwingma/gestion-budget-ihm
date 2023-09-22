@@ -8,7 +8,7 @@ import * as Controller from "./OperationDetailPage.controller";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import * as Service from "./OperationDetailPage.extservices";
 import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
-import {addEndingZeros} from '../../../Utils/DataUtils.utils'
+import {addEndingZeros, getLabelDate} from '../../../Utils/DataUtils.utils'
 import {OPERATIONS_ENUM, PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
 /**
@@ -80,10 +80,13 @@ class OperationDetailPage extends Component {
         this.setState({editOperation: editOperation})
     }
 
-
     fillDateOperationForm(e) {
         let editOperation = this.state.editOperation
-        editOperation.autresInfos.dateOperation = e.target.value
+        let value = e.target.value
+        if (value === "") {
+            value = null;
+        }
+        editOperation.autresInfos.dateOperation = value;
         this.setState({editOperation: editOperation})
     }
 
@@ -243,8 +246,9 @@ class OperationDetailPage extends Component {
                             {(!this.state.editForm.dateOperation) ?
 
                                 <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
-                                            className={"editableField"}>
-                                    {operation.autresInfos.dateOperation != null ? new Date(Date.parse(operation.autresInfos.dateOperation)).toLocaleDateString("fr") : "jj/mm/aaaa"}
+                                            className={"editableField"}
+                                            sx={{color: (operation.autresInfos.dateOperation != null ? "#000000" : "#E0E0E0")}}>
+                                    {operation.autresInfos.dateOperation != null ? getLabelDate(operation.autresInfos.dateOperation) : "jj/mm/aaaa"}
                                 </Typography>
                                 :
                                 <TextField

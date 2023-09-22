@@ -44,11 +44,14 @@ export function getEventTargetId(eventTarget) {
     }
 }
 
-
-
-
-
-
+/**
+ * Retourne le label Fr d'une date
+ * @param dateOperation date à afficher
+ * @returns {string} label FR de la date
+ */
+export function getLabelDate(dateOperation) {
+    return new Date(Date.parse(dateOperation)).toLocaleDateString("fr");
+}
 
 
 

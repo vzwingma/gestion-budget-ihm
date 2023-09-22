@@ -1,15 +1,14 @@
 import React, {Component} from "react";
 
-import {sortOperations} from "../../Utils/DataUtils.utils"
 import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGroup.component";
 import * as Controller from './Budget.controller'
 import * as Services from './Budget.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import BudgetsSoldes from "./BudgetSoldes.component";
-import {Box, CircularProgress, Divider, Stack} from "@mui/material";
-import OperationItem from "../operations/OperationsListItem.component";
+import {Box, CircularProgress, Divider} from "@mui/material";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import MenuIcon from '@mui/icons-material/Menu';
+import OperationsListe from "../operations/OperationsListe.component";
 
 
 /**
@@ -22,6 +21,7 @@ export default class Budget extends Component {
     state = {
         currentBudget: null,
         currentOperation: null,
+        operationsGroupedByDateOperation: null,
 
         selectedCompte: this.props.selectedCompte,
         selectedDate: this.props.selectedDate,
@@ -108,17 +108,11 @@ export default class Budget extends Component {
                 <Grid2 md={4} direction={"column"}>
                     { /** Liste des opérations **/
                         (this.state.currentBudget != null ?
-                            <Stack spacing={1} divider={<Divider orientation="horizontal" flexItem/>}
-                                   sx={{overflowY: "auto", overflowX: "hidden"}} maxHeight={window.innerHeight - 195}>
-                                {
-                                    this.state.currentBudget.listeOperations
-                                        .filter(operation => operation.etat !== "PLANIFIEE")
-                                        .sort((ope1, ope2) => sortOperations(ope1, ope2))
-                                        .map((operation) => (
-                                            <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
-                                        ))
-                                }
-                            </Stack> : <CircularProgress/>)
+                                <OperationsListe operationGroupedByDate={this.state.operationsGroupedByDateOperation}
+                                                 onClick={this.handleOperationSelect}/>
+                                :
+                                <CircularProgress/>
+                        )
                     }
                 </Grid2>
                 <Grid2 md={8}>

@@ -1,5 +1,6 @@
 import {toast} from "react-toastify";
 import {PERIODES_MENSUALITE_ENUM} from "../../Utils/AppBusinessEnums.constants";
+import {sortOperations} from "../../Utils/DataUtils.utils";
 
 /**
  * Controleur des budgets
@@ -11,7 +12,17 @@ import {PERIODES_MENSUALITE_ENUM} from "../../Utils/AppBusinessEnums.constants";
  */
     export function handleBudgetUpdate(budgetData){
         console.log("(Re)Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length +  " opérations")
-        this.setState({ currentBudget : budgetData })
+
+    let operationsGroupedByDateOperation = budgetData.listeOperations
+        .filter(operation => operation.etat !== "PLANIFIEE")
+        .sort((ope1, ope2) => sortOperations(ope1, ope2))
+        .reduce((group, operation) => {
+            group[operation.autresInfos.dateOperation] = group[operation.autresInfos.dateOperation] ?? [];
+            group[operation.autresInfos.dateOperation].push(operation);
+            return group;
+        }, {});
+
+    this.setState({currentBudget: budgetData, operationsGroupedByDateOperation: operationsGroupedByDateOperation})
         toast.success("Chargement du budget [" + budgetData.id + "] correctement effectué ")
     }
 
@@ -20,7 +31,7 @@ import {PERIODES_MENSUALITE_ENUM} from "../../Utils/AppBusinessEnums.constants";
  * @param operation opération
  */
 export function handleOperationSelect(operation) {
-    console.log("Selection de l'opération [" + operation.id + "]");
+    // console.log("Selection de l'opération [" + operation.id + "]");
     if (operation.mensualite == null) {
         operation.mensualite = {periode: PERIODES_MENSUALITE_ENUM.at(0)}
     }
