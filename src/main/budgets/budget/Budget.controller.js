@@ -43,26 +43,26 @@ export function handleOperationSelect(operation) {
  * Création d'une nouvelle opération
  */
 export function handleButtonCreateClick() {
-    // TODO : Création d'une nouvelle opération
-    let newOperation = {
-        "id": -1,
-        "libelle": null,
-        "categorie": {
-            "id": null,
-            "libelle": null
+
+    let newOperation: Operation = {
+        id: -1,
+        libelle: null,
+        categorie: {
+            id: null,
+            libelle: null
         },
-        "ssCategorie": {
-            "id": null,
-            "libelle": null
+        ssCategorie: {
+            id: null,
+            libelle: null
         },
-        "typeOperation": null,
-        "etat": "PREVUE",
-        "valeur": 0,
-        "mensualite": {
+        typeOperation: null,
+        etat: "PREVUE",
+        valeur: 0,
+        mensualite: {
             periode: "PONCTUELLE"
         },
-        "autresInfos": {
-            "dateOperation": null
+        autresInfos: {
+            dateOperation: null
         }
     }
 

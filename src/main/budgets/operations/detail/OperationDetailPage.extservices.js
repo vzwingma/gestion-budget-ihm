@@ -2,7 +2,7 @@ import * as ClientHTTP from "../../../Services/ClientHTTP.service";
 import {toast} from "react-toastify";
 import {OPERATIONS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 import {BACKEND_ENUM, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
-
+import {v4 as uuidGen} from 'uuid';
 
 /**
  * Modification de l'opération sur action
@@ -12,6 +12,11 @@ import {BACKEND_ENUM, SERVICES_URL} from "../../../Utils/AppTechEnums.constants"
 export function saveOperation(operation, budget) {
 
     if (budget.actif) {
+        console.log((operation.id === -1 ? "Création" : "Mise à jour") + " d'une opération sur le budget : " + budget.id)
+        if (operation.id === -1) {
+            operation.id = uuidGen();
+        }
+
         ClientHTTP.call(operation.etat === OPERATIONS_ENUM.SUPPRIMEE ? "DELETE" : "POST",
             BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.UPDATE,
             [budget.id, operation.id],
