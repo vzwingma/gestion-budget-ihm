@@ -98,11 +98,9 @@ class OperationDetailPage extends Component {
      */
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
 
-        console.log("****    [" + this.props.operation.id + "]")
         if (this.props.operation.id !== prevProps.operation.id) {
             this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
-            if (this.props.operation.id === -1 || this.props.operation.id === "-1") {
-                console.log("****    [" + this.props.operation.id + "]")
+            if (this.props.operation.id === -1) {
                 this.setState({
                     editForm: {
                         libelle: true, value: true, dateOperation: true, mensualite: true, categories: true
