@@ -4,7 +4,7 @@ import {Container, Stack, Typography} from "@mui/material";
 const CompteItem = ({compte, selectedIdCompte, onClick}) => {
 
     return (
-        <Container id={compte.id}
+        <Container key={compte.id}
                    sx={{
                        backgroundColor: (compte.id === selectedIdCompte ? 'primary.main' : 'unset'),
                        borderRadius: (compte.id === selectedIdCompte ? '5% 0% 5% 0%' : 'unset'),
