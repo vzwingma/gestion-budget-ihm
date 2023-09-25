@@ -20,8 +20,8 @@ import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import * as Service from "./OperationDetailPage.extservices";
 import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
 import {addEndingZeros, getLabelDate, sortLibellesCategories} from '../../../Utils/DataUtils.utils'
-import * as AppConstants from "../../../Utils/AppBusinessEnums.constants";
 import {
+    BUSINESS_GUID,
     OPERATIONS_ENUM,
     PERIODES_MENSUALITE_ENUM,
     TYPE_OPERATION_ENUM
@@ -160,7 +160,7 @@ class OperationDetailPage extends Component {
         this.setState({editOperation: editOperation})
 
         /** Si type Virement **/
-        editOperation.typeOperation = (AppConstants.BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id) ? TYPE_OPERATION_ENUM.CREDIT : TYPE_OPERATION_ENUM.DEPENSE;
+        editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id) ? TYPE_OPERATION_ENUM.CREDIT : TYPE_OPERATION_ENUM.DEPENSE;
 
         /** Adaptation sur la sélection de catégorie **/
 
@@ -289,7 +289,6 @@ class OperationDetailPage extends Component {
                         </Grid2>
                         <Grid2 md={3}>
                             { /** PERIODE **/
-
                                 (!this.state.editForm.mensualite) ?
                                     <Typography id={OPERATION_EDITION_FORM_IDS.MENSUALITE} variant={"overline"}
                                                 className={"editableField"}
