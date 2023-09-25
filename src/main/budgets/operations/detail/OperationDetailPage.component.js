@@ -5,12 +5,12 @@ import * as Renderer from "../renderers/OperationItem.renderer";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "./OperationDetailActions.component";
 import * as Controller from "./OperationDetailPage.controller";
-import {transformCategorieBOtoVO} from "./OperationDetailPage.controller";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import * as Service from "./OperationDetailPage.extservices";
 import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
 import {addEndingZeros, getLabelDate, sortLibellesCategories} from '../../../Utils/DataUtils.utils'
 import {OPERATIONS_ENUM, PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {defaultProps} from "react-select/base";
 
 
 /**
@@ -63,15 +63,13 @@ class OperationDetailPage extends Component {
             /**
              * Chargement des catégories
              */
-            const mapCategories = this.props.listeCategories.map(cat => transformCategorieBOtoVO(cat)).sort(sortLibellesCategories)
-            const mapSsCategories = mapCategories.flatMap(cat => cat.sousCategories)
-                .map(ssCat => {
-                    return {
-                        value: ssCat.text,
-                        text: ssCat.categorie.text + "/" + ssCat.text,
-                        id: ssCat.id,
-                        categorie: {value: ssCat.categorie.value, text: ssCat.categorie.text, id: ssCat.categorie.id}
+            const mapSsCategories = this.props.listeCategories
+                .sort(sortLibellesCategories)
+                .flatMap(cat => {
+                    for (let ssCat in cat.listeSSCategories) {
+                        cat.listeSSCategories[ssCat].categorieParente = cat
                     }
+                    return cat.listeSSCategories
                 })
                 .sort(sortLibellesCategories)
             this.setState({listeAllCategories: mapSsCategories})
@@ -84,6 +82,7 @@ class OperationDetailPage extends Component {
      * Réinit de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+
         if (this.props.operation.id !== prevProps.operation.id) {
             this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
 
@@ -134,12 +133,12 @@ class OperationDetailPage extends Component {
     }
 
     fillCategorieForm(e) {
-        console.log(e)
+        console.log(e.target.value)
+        let editOperation = this.state.editOperation
+        //editOperation.categorie = e.target.value
+        //this.setState({editOperation: editOperation})
     }
 
-    fillSsCategorieForm(e) {
-        console.log(e)
-    }
 
 
 
@@ -233,9 +232,15 @@ class OperationDetailPage extends Component {
                                     </Typography>
                                     :
                                     <Autocomplete
+                                        id={OPERATION_EDITION_FORM_IDS.CATEGORIE + OPERATION_EDITION_FORM_IDS.INPUT}
+                                        {...defaultProps}
                                         renderInput={(params) => <TextField {...params} variant={"standard"}/>}
+                                        groupBy={(option) => option.categorieParente.libelle}
                                         options={this.state.listeAllCategories}
-                                        getOptionLabel={option => option.text}/>
+                                        getOptionLabel={option => option.libelle}
+                                        defaultValue={operation.ssCategorie}
+                                        onChange={(e) => this.fillCategorieForm(e)}
+                                    />
                             }
                         </Grid2>
                         <Grid2 md={4}>

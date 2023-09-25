@@ -145,7 +145,7 @@ export function getSousCategorieIcon(operationSsCategorie) {
                 return <ShoppingCartCheckoutRounded/>
 
             default:
-                console.warn("L'opération " + operationSsCategorie.id + " n'a pas d'icone définie")
+                // console.warn("L'opération " + operationSsCategorie.id + " n'a pas d'icone définie")
                 return <QuestionMarkRounded/>
         }
     }

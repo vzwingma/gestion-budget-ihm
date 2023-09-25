@@ -118,7 +118,7 @@ export function handleCloseOperationForm() {
     editForm.libelle = false;
     editForm.dateOperation = false;
     editForm.mensualite = false;
-
+    editForm.categories = false;
     this.setState({editForm: editForm, errors: []})
 
 }
@@ -132,10 +132,9 @@ export function handleCloseOperationForm() {
  */
 export function transformSsCategorieBOtoVO(categorie, sscategorie) {
     return {
-        value: sscategorie.libelle,
-        text: sscategorie.libelle,
+        libelle: sscategorie.libelle,
         id: sscategorie.id,
-        categorie: {value: categorie.libelle, text: categorie.libelle, id: categorie.id}
+        categorie: {libelle: categorie.libelle, id: categorie.id}
     }
 }
 
@@ -150,7 +149,7 @@ export function transformCategorieBOtoVO(categorie) {
     if (categorie.listeSSCategories !== null && categorie.listeSSCategories !== undefined) {
         sousCategoriesVO = categorie.listeSSCategories.map(sousCat => transformSsCategorieBOtoVO(categorie, sousCat))
     }
-    return {value: categorie.libelle, text: categorie.libelle, id: categorie.id, sousCategories: sousCategoriesVO}
+    return {libelle: categorie.libelle, id: categorie.id, sousCategories: sousCategoriesVO}
 }
 
 /**
