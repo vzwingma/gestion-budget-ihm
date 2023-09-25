@@ -1,5 +1,16 @@
 import React, {Component} from 'react'
-import {Autocomplete, Box, Container, InputAdornment, MenuItem, Stack, TextField, Typography} from "@mui/material";
+import {
+    Autocomplete,
+    Box,
+    Container,
+    FormControl,
+    FormHelperText,
+    InputAdornment,
+    MenuItem,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import OperationValue from "../renderers/OperationSpanValue.renderer";
 import * as Renderer from "../renderers/OperationItem.renderer";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -9,8 +20,12 @@ import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import * as Service from "./OperationDetailPage.extservices";
 import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
 import {addEndingZeros, getLabelDate, sortLibellesCategories} from '../../../Utils/DataUtils.utils'
-import {OPERATIONS_ENUM, PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constants";
-import {defaultProps} from "react-select/base";
+import * as AppConstants from "../../../Utils/AppBusinessEnums.constants";
+import {
+    OPERATIONS_ENUM,
+    PERIODES_MENSUALITE_ENUM,
+    TYPE_OPERATION_ENUM
+} from "../../../Utils/AppBusinessEnums.constants";
 
 
 /**
@@ -133,10 +148,29 @@ class OperationDetailPage extends Component {
     }
 
     fillCategorieForm(e) {
-        console.log(e.target.value)
+        const ssCat = this.state.listeAllCategories
+            .filter(ssCat => {
+                return ssCat.libelle === e.target.textContent
+            })[0]
+
         let editOperation = this.state.editOperation
-        //editOperation.categorie = e.target.value
-        //this.setState({editOperation: editOperation})
+        editOperation.categorie.id = ssCat.categorieParente.id
+        editOperation.categorie.libelle = ssCat.categorieParente.libelle
+        editOperation.ssCategorie.id = ssCat.id
+        editOperation.ssCategorie.libelle = ssCat.libelle
+        this.setState({editOperation: editOperation})
+
+        /** Si type Virement **/
+        editOperation.typeOperation = (AppConstants.BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id) ? TYPE_OPERATION_ENUM.CREDIT : TYPE_OPERATION_ENUM.DEPENSE;
+
+        /** Adaptation sur la sélection de catégorie **/
+
+        let currentOperation = this.props.operation
+        currentOperation.categorie.id = ssCat.categorieParente.id
+        currentOperation.categorie.libelle = ssCat.categorieParente.libelle
+        currentOperation.ssCategorie.id = ssCat.id
+        currentOperation.ssCategorie.libelle = ssCat.libelle
+        currentOperation.typeOperation = editOperation.typeOperation
     }
 
 
@@ -231,16 +265,22 @@ class OperationDetailPage extends Component {
                                         {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                                     </Typography>
                                     :
-                                    <Autocomplete
-                                        id={OPERATION_EDITION_FORM_IDS.CATEGORIE + OPERATION_EDITION_FORM_IDS.INPUT}
-                                        {...defaultProps}
-                                        renderInput={(params) => <TextField {...params} variant={"standard"}/>}
-                                        groupBy={(option) => option.categorieParente.libelle}
-                                        options={this.state.listeAllCategories}
-                                        getOptionLabel={option => option.libelle}
-                                        defaultValue={operation.ssCategorie}
-                                        onChange={(e) => this.fillCategorieForm(e)}
-                                    />
+                                    <FormControl fullWidth required error={this.state.errors.categorie != null}>
+                                        <Autocomplete
+                                            id={OPERATION_EDITION_FORM_IDS.CATEGORIE + OPERATION_EDITION_FORM_IDS.INPUT}
+                                            renderInput={(params) => <TextField {...params} variant={"standard"}/>}
+                                            options={this.state.listeAllCategories}
+                                            groupBy={(option) => option.categorieParente.libelle}
+                                            defaultValue={operation.ssCategorie.libelle}
+                                            autoComplete={true}
+                                            getOptionLabel={option => option.libelle}
+                                            isOptionEqualToValue={(option, value) => {
+                                                return option.id === (value != null ? value.id : null)
+                                            }}
+                                            onChange={(e) => this.fillCategorieForm(e)}
+                                        />
+                                        <FormHelperText>{this.state.errors.categorie}</FormHelperText>
+                                    </FormControl>
                             }
                         </Grid2>
                         <Grid2 md={4}>

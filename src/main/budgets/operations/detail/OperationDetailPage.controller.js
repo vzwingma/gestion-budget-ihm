@@ -1,10 +1,10 @@
 import * as DataUtils from "../../../Utils/DataUtils.utils";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
+import {TYPE_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
 
 /**
- *    let validationCategorie = this.state.formCategorie === null
- *         let validationSsCategorie = this.state.formSsCategorie === null
+
  *         let validationPeriode = this.state.formOperationPeriodique === null || this.state.formOperationPeriodique.value === null
  *         let validationEtat = this.state.formEtat === null ||this.state.formEtat === ""
 
@@ -23,7 +23,7 @@ export function handleOperationEditionClick(event) {
 
         const enterKeyPress = event.type === 'keyup' && (event.code === 'Enter' || event.code === 'NumpadEnter');
 
-        // Validation du formulairea
+        // Validation du formulaire
         if (enterKeyPress) {
             this.handleValidateOperationForm();
         } else if (!idElement.endsWith(OPERATION_EDITION_FORM_IDS.INPUT)) {
@@ -89,12 +89,32 @@ export function handleValidateOperationForm() {
         // DateOperation
         this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
 
+        // Catégorie / ssCatégorie
+        if (this.state.editOperation.categorie.id === null || this.state.editOperation.categorie.libelle === null) {
+            errors.categorie = "Le champ Catégorie est obligatoire"
+            hasErrors = true
+        } else if (this.state.editOperation.ssCategorie.id === null || this.state.editOperation.ssCategorie.libelle === null) {
+            errors.categorie = "Le champ Catégorie est obligatoire"
+            hasErrors = true
+        } else {
+            this.props.operation.categorie = this.state.editOperation.categorie
+            this.props.operation.ssCategorie = this.state.editOperation.ssCategorie
+        }
+
         if (hasErrors) {
             this.setState({errors: errors})
         } else {
+
+            if (this.props.operation.id === "-1") {
+                this.props.operation.id = null;
+            }
+            console.log("SAUVEGARDE DE l'OPERATION");
+            console.log(this.props.operation);
+
             this.saveOperation(this.props.operation, this.props.budget);
             this.handleCloseOperationForm();
         }
+
     }
 }
 
@@ -124,33 +144,6 @@ export function handleCloseOperationForm() {
 }
 
 
-/**
- * Transformation des catégories BO en VO
- * @param categorie catégorie
- * @param sscategorie sous catégorie
- * @returns {{sousCategories: *[], text: *, value}}
- */
-export function transformSsCategorieBOtoVO(categorie, sscategorie) {
-    return {
-        libelle: sscategorie.libelle,
-        id: sscategorie.id,
-        categorie: {libelle: categorie.libelle, id: categorie.id}
-    }
-}
-
-/**
- * Transformation des catégories BO en VO
- * @param categorie
- * @returns {{sousCategories: *[], text: *, value}}
- */
-export function transformCategorieBOtoVO(categorie) {
-    let sousCategoriesVO = []
-
-    if (categorie.listeSSCategories !== null && categorie.listeSSCategories !== undefined) {
-        sousCategoriesVO = categorie.listeSSCategories.map(sousCat => transformSsCategorieBOtoVO(categorie, sousCat))
-    }
-    return {libelle: categorie.libelle, id: categorie.id, sousCategories: sousCategoriesVO}
-}
 
 /**
  * Création d'un objet Operation à partir du formulaire
@@ -164,12 +157,12 @@ export function cloneOperation(operation) {
             "libelle": operation.categorie.libelle
         },
         "ssCategorie": {
-            "id": operation.ssCategorie.id,
-            "libelle": operation.ssCategorie.libelle
+            "id": operation.ssCategorie.id != null ? operation.ssCategorie.id : null,
+            "libelle": operation.ssCategorie.libelle != null ? operation.ssCategorie.libelle : ""
         },
         "typeOperation": operation.typeOperation,
         "etat": operation.etat,
-        "valeur": (operation.typeOperation === "DEPENSE" ? -1 : 1) * operation.valeur,
+        "valeur": (operation.typeOperation === TYPE_OPERATION_ENUM.DEPENSE ? -1 : 1) * operation.valeur,
         "mensualite": operation.mensualite,
         "autresInfos": {
             "dateOperation": operation.autresInfos.dateOperation

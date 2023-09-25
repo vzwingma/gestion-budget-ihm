@@ -50,3 +50,13 @@ export const PERIODES_MENSUALITE_ENUM = [
     "SEMESTRIELLE",
     "ANNUELLE"
 ]
+
+
+/**
+ * Constantes des type d'opération
+ * @type {{CREDIT: string, DEPENSE: string}}
+ */
+export const TYPE_OPERATION_ENUM = {
+    CREDIT: "CREDIT",
+    DEPENSE: "DEPENSE"
+}
