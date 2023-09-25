@@ -1,7 +1,7 @@
 import * as DataUtils from "../../../Utils/DataUtils.utils";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import {TYPE_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
-
+import {v4 as uuidv4} from 'uuid';
 
 /**
 
@@ -105,12 +105,10 @@ export function handleValidateOperationForm() {
             this.setState({errors: errors})
         } else {
 
-            if (this.props.operation.id === "-1") {
-                this.props.operation.id = null;
-            }
-            console.log("SAUVEGARDE DE l'OPERATION");
-            console.log(this.props.operation);
+            if (this.props.operation.id === -1) {
 
+                this.props.operation.id = uuidv4();
+            }
             this.saveOperation(this.props.operation, this.props.budget);
             this.handleCloseOperationForm();
         }
