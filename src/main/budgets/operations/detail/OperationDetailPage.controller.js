@@ -33,9 +33,6 @@ export function handleOperationEditionClick(event) {
                 case OPERATION_EDITION_FORM_IDS.MENSUALITE:
                     editForm.mensualite = true;
                     break;
-                case OPERATION_EDITION_FORM_IDS.FORM:
-                    this.handleValidateOperationForm();
-                    break;
                 default:
                     break;
             }
@@ -102,6 +99,7 @@ export function handleValidateOperationForm() {
 
     }
 }
+
 
 /**
  * Test si en mode édition d'au moins un champ

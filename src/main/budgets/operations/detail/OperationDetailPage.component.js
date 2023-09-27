@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {
     Autocomplete,
     Box,
+    Button,
     Container,
     FormControl,
     FormHelperText,
@@ -189,6 +190,7 @@ class OperationDetailPage extends Component {
                        fixed maxWidth={"md"}
                        onClick={this.handleOperationEditionClick}
                        onKeyUp={this.handleOperationEditionClick}>
+
                 <Stack direction={"column"} spacing={5} sx={{alignItems: "center"}}>
                     <Box width={40} height={40}
                          sx={{
@@ -217,7 +219,7 @@ class OperationDetailPage extends Component {
                                            )
                                        }}
                                        defaultValue={Math.abs(operation.valeur)}
-                                       variant="standard"
+                                       variant="standard" sx={{width: "850px"}}
                                        error={this.state.errors.valeur != null} helperText={this.state.errors.valeur}
                                        onChange={(e) => this.fillValeurForm(e)}/>
                         }
@@ -237,7 +239,7 @@ class OperationDetailPage extends Component {
                                            )
                                        }}
                                        defaultValue={operation.libelle}
-                                       variant="standard" sx={{width: "800px"}}
+                                       variant="standard" sx={{width: "850px"}}
                                        error={this.state.errors.libelle != null} helperText={this.state.errors.libelle}
                                        onChange={(e) => this.fillLibelleForm(e)}/>
                         }
@@ -269,6 +271,7 @@ class OperationDetailPage extends Component {
                                         <Autocomplete
                                             id={OPERATION_EDITION_FORM_IDS.CATEGORIE + OPERATION_EDITION_FORM_IDS.INPUT}
                                             renderInput={(params) => <TextField {...params} variant={"standard"}/>}
+                                            sx={{width: "90%"}}
                                             options={this.state.listeAllCategories}
                                             groupBy={(option) => option.categorieParente.libelle}
                                             defaultValue={operation.ssCategorie.libelle}
@@ -299,7 +302,7 @@ class OperationDetailPage extends Component {
                                     :
                                     <TextField
                                         id={OPERATION_EDITION_FORM_IDS.MENSUALITE + OPERATION_EDITION_FORM_IDS.INPUT}
-                                        required size="sm" select
+                                        required select fullWidth
                                         value={operation.mensualite.periode}
                                                placeholder={"Sélectionnez une période"}
                                         onChange={(e) => this.fillPeriodeForm(e)}
@@ -351,13 +354,20 @@ class OperationDetailPage extends Component {
                                 <TextField
                                     id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION + OPERATION_EDITION_FORM_IDS.INPUT}
                                     defaultValue={operation.autresInfos.dateOperation}
-                                    variant={"standard"} type={"date"}
+                                    variant={"standard"} type={"date"} fullWidth
                                     error={this.state.errors.dateOperation != null}
                                     helperText={this.state.errors.dateOperation}
                                     onChange={(e) => this.fillDateOperationForm(e)}/>
                             }
                         </Grid2>
                     </Grid2>
+
+                    {this.isInEditMode() &&
+                        <Button
+                            fullWidth
+                            variant="outlined" color="success"
+                            onClick={this.handleValidateOperationForm}>Valider</Button>
+                    }
 
                 </Stack>
             </Container>
