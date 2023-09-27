@@ -209,7 +209,8 @@ export function getPeriodeRenderer(periodeKey) {
  */
 export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
     if (operationLibelle != null) {
-        if (operationLibelle.indexOf("[" !== -1)) {
+        const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
+        if (operationLibelleParts != null) {
             const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
             const compte = (listeComptes.filter((compte) => compte.libelle === operationLibelleParts[2]))
             return <Tooltip title={"Transfert intercompte vers " + compte[0].libelle}>
