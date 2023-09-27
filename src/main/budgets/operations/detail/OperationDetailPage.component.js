@@ -49,9 +49,12 @@ class OperationDetailPage extends Component {
             mensualite: false,
             categories: false
         },
+        intercompte: null,
         errors: {
             valeur: null,
-            libelle: null
+            libelle: null,
+            categorie: null,
+            compte: null
         },
         listeAllCategories: null
     }
@@ -146,6 +149,10 @@ class OperationDetailPage extends Component {
         let editOperation = this.state.editOperation
         editOperation.mensualite.periode = e.target.value
         this.setState({editOperation: editOperation})
+    }
+
+    fillIntercompteForm(e) {
+        this.setState({intercompte: e.target.value})
     }
 
     fillCategorieForm(e) {
@@ -274,7 +281,6 @@ class OperationDetailPage extends Component {
                                             sx={{width: "90%"}}
                                             options={this.state.listeAllCategories}
                                             groupBy={(option) => option.categorieParente.libelle}
-                                            defaultValue={operation.ssCategorie.libelle}
                                             autoComplete={true}
                                             getOptionLabel={option => option.libelle}
                                             isOptionEqualToValue={(option, value) => {
@@ -319,7 +325,9 @@ class OperationDetailPage extends Component {
 
 
                         <Grid2 md={5} paddingTop={3}>
-
+                            {this.isInEditMode() && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
+                                <Typography variant={"caption"} sx={{color: "#808080"}}>Compte de
+                                    transfert</Typography> : <></>}
                         </Grid2>
                         <Grid2 md={4} paddingTop={3}>
                             {budget != null && budget.actif && operation.etat !== OPERATIONS_ENUM.SUPPRIMEE ?
@@ -332,6 +340,26 @@ class OperationDetailPage extends Component {
 
 
                         <Grid2 md={5}>
+                            { /** COMPTE DE TRANSFERT  **/
+                                this.isInEditMode() && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
+                                    <TextField
+                                        id={OPERATION_EDITION_FORM_IDS.INTERCOMPTES + OPERATION_EDITION_FORM_IDS.INPUT}
+                                        required select sx={{width: "90%"}}
+                                        placeholder={"Sélectionnez un compte"}
+                                        error={this.state.errors.intercompte != null}
+                                        helperText={this.state.errors.intercompte}
+                                        onChange={(e) => this.fillIntercompteForm(e)}
+                                        variant="standard">
+                                        {this.props.listeComptes.map((compte) => (
+                                            <MenuItem key={compte.id} value={compte.id}>
+                                                <img src={"/img/banques/" + compte.icon}
+                                                     width={20} height={20}
+                                                     alt={compte.libelle}
+                                                     style={{marginRight: "5px"}}/>
+                                                {compte.libelle}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField> : <></>}
                         </Grid2>
                         <Grid2 md={4}>
                             { /** ACTIONS SUR OPERATION **/}
@@ -373,8 +401,6 @@ class OperationDetailPage extends Component {
             </Container>
         )
     }
-
-
 }
 
 export default OperationDetailPage

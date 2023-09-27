@@ -1,6 +1,6 @@
 import * as DataUtils from "../../../Utils/DataUtils.utils";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
-import {TYPE_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {BUSINESS_GUID, TYPE_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
 
 /**
@@ -89,7 +89,19 @@ export function handleValidateOperationForm() {
             this.props.operation.ssCategorie = this.state.editOperation.ssCategorie
         }
 
+        if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES) {
+            console.log(this.state.intercompte)
+            if (this.state.intercompte === null) {
+                errors.intercompte = "Le compte de transfert est obligatoire"
+                hasErrors = true
+            } else {
+
+            }
+        }
+
+
         if (hasErrors) {
+            console.log(errors)
             this.setState({errors: errors})
         } else {
 
