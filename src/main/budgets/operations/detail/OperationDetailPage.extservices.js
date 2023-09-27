@@ -47,7 +47,7 @@ export function saveOperation(operation, budget) {
  * @param compteCible compte cible pour la 2nde opération (intercompte)
  */
 export function saveOperationIntercompte(operation, budget, compteCible) {
-    console.log("Création d'une opération intercompte sur le budget : " + budget.id + " vers le compte " + compteCible)
+    console.log("Création d'une opération intercompte sur le budget [" + budget.id + "] vers le compte [" + compteCible + "]")
     ClientHTTP
         .call('POST',
             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.INTERCOMPTE,

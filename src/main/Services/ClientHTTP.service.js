@@ -26,7 +26,9 @@ export function call(httpMethod, uri, path, params, body ) {
     let jsonBody = null
     if(body !== undefined){
         jsonBody = JSON.stringify(body)
-    //    console.log("[WS] > Body: " + jsonBody);
+        if (process.env.REACT_APP_CONFIG_DEBUG) {
+            console.log("[WS] > Body: " + jsonBody);
+        }
     }
     if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
         console.log("[WS] > [X-Api-Key] : " + AppConstants.API_GW_ENUM.API_KEY);

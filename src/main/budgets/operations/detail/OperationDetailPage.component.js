@@ -352,14 +352,16 @@ class OperationDetailPage extends Component {
                                         helperText={this.state.errors.intercompte}
                                         onChange={(e) => this.fillIntercompteForm(e)}
                                         variant="standard">
-                                        {this.props.listeComptes.map((compte) => (
-                                            <MenuItem key={compte.id} value={compte.id}>
-                                                <img src={"/img/banques/" + compte.icon}
-                                                     width={20} height={20}
-                                                     alt={compte.libelle}
-                                                     style={{marginRight: "5px"}}/>
-                                                {compte.libelle}
-                                            </MenuItem>
+                                        {this.props.listeComptes
+                                            .filter((compte) => this.props.budget.idCompteBancaire !== compte.id)
+                                            .map((compte) => (
+                                                <MenuItem key={compte.id} value={compte.id}>
+                                                    <img src={"/img/banques/" + compte.icon}
+                                                         width={20} height={20}
+                                                         alt={compte.libelle}
+                                                         style={{marginRight: "5px"}}/>
+                                                    {compte.libelle}
+                                                </MenuItem>
                                         ))}
                                     </TextField> : <></>}
                         </Grid2>
