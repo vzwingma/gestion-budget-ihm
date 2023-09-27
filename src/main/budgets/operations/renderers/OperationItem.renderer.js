@@ -220,7 +220,7 @@ export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
                 {operationLibelleParts[4]}
             </Tooltip>
         } else if (operationLibelle.startsWith("[En Retard]")) {
-            return <><WatchLaterRounded sx={{color: "#ed6c02"}}/>{operationLibelle.replaceAll("[En Retard]", "")}</>
+            return <><WatchLaterRounded sx={{color: "#A0A0A0"}}/>{operationLibelle.replaceAll("[En Retard]", "")}</>
         } else {
             return operationLibelle;
         }
