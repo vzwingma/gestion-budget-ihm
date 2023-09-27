@@ -109,6 +109,7 @@ export default class Budget extends Component {
                     { /** Liste des opérations **/
                         (this.state.currentBudget != null ?
                                 <OperationsListe operationGroupedByDate={this.state.operationsGroupedByDateOperation}
+                                                 listeComptes={this.props.listeComptes}
                                                  onClick={this.handleOperationSelect}/>
                                 :
                                 <CircularProgress/>
@@ -123,6 +124,7 @@ export default class Budget extends Component {
                             <OperationDetailPage operation={this.state.currentOperation}
                                                  budget={this.state.currentBudget}
                                                  listeCategories={this.state.categories}
+                                                 listeComptes={this.props.listeComptes}
                                                  onOperationChange={this.handleBudgetUpdate}/>
                             : <></>
                         }

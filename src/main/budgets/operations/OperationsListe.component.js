@@ -7,13 +7,14 @@ import {getLabelDate} from "../../Utils/DataUtils.utils";
 /**
  * Tuile  d'une liste d'opérations
  * @param operationGroupedByDate opérations groupées par date d'opérations
+ * @param listeComptes liste des comptes
  * @param onClick action lors du click
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const OperationsListe = ({operationGroupedByDate, onClick}) => {
+const OperationsListe = ({operationGroupedByDate, listeComptes, onClick}) => {
 
     /**
      * Iterate groupe
@@ -32,7 +33,8 @@ const OperationsListe = ({operationGroupedByDate, onClick}) => {
             }
             operationGroupedByDate[dateOperationKey]
                 .map((operation) => renderList.push(
-                    <OperationItem operation={operation} onClick={() => onClick(operation)}/>)
+                    <OperationItem operation={operation} listeComptes={listeComptes}
+                                   onClick={() => onClick(operation)}/>)
                 )
         }
         return renderList;

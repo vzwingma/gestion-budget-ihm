@@ -229,7 +229,7 @@ class OperationDetailPage extends Component {
                     <Typography variant={"button"} sx={{fontSize: "large"}} className={"editableField"}>
                         {(!this.state.editForm.libelle) ?
                             <span className={"editableField"}
-                                  id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{operation.libelle}</span>
+                                  id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}</span>
                             :
                             <TextField id={OPERATION_EDITION_FORM_IDS.LIBELLE + OPERATION_EDITION_FORM_IDS.INPUT}
                                        required label="Libellé"

@@ -59,6 +59,7 @@ export default class MainBudget extends Component {
                 {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
                     <Budget selectedCompte={this.state.selectedCompte}
                             selectedDate={this.state.selectedDate}
+                            listeComptes={this.state.comptes}
                             onOpenMenu={this.handleOpenMenuBar}/> :
                     <CircularProgress/>}
 

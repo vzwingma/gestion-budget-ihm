@@ -29,9 +29,12 @@ import {
     ShoppingCartCheckoutRounded,
     TollRounded,
     TravelExploreRounded,
-    VolunteerActivismOutlined
+    VolunteerActivismOutlined,
+    WatchLaterRounded
 } from "@mui/icons-material";
 import {OPERATIONS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {Tooltip} from "@mui/material";
+import React from "react";
 
 /**
  * Couleur de la catégorie
@@ -194,4 +197,34 @@ export function getPeriodeRenderer(periodeKey) {
         default:
             return {value: periodeKey, text: "N/D", color: "#616161"}
     }
+}
+
+
+/**
+ * Render du libellé de l'opération
+ * @param operationLibelle libellé de l'opération
+ * @param listeComptes liste des comptes
+ * @param maxVue vue élargie pour max
+ * @returns {null}
+ */
+export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
+    if (operationLibelle != null) {
+        if (operationLibelle.startsWith("[vers ")) {
+            const operationLibelleParts = (operationLibelle.match("(\\[vers )(.*)(\\])(.*)"));
+            const compte = (listeComptes.filter((compte) => compte.libelle === operationLibelleParts[2]))
+            return <Tooltip title={"Transfert intercompte vers " + compte[0].libelle}>
+                <img src={"/img/banques/" + compte[0].icon}
+                     width={maxVue ? 30 : 15} height={maxVue ? 30 : 15}
+                     alt={compte[0].libelle}
+                     style={{marginRight: "5px"}}/>
+                {operationLibelleParts[4]}
+            </Tooltip>
+        } else if (operationLibelle.startsWith("[En Retard]")) {
+            return <><WatchLaterRounded sx={{color: "#ed6c02"}}/>{operationLibelle.replaceAll("[En Retard]", "")}</>
+        } else {
+            return operationLibelle;
+        }
+
+    }
+    return null;
 }
