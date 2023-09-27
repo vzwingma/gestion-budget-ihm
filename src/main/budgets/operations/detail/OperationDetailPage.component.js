@@ -71,6 +71,7 @@ class OperationDetailPage extends Component {
         this.handleCloseOperationForm = Controller.handleCloseOperationForm.bind(this);
 
         this.saveOperation = Service.saveOperation.bind(this);
+        this.saveOperationIntercompte = Service.saveOperationIntercompte.bind(this);
     }
 
 
@@ -345,6 +346,7 @@ class OperationDetailPage extends Component {
                                     <TextField
                                         id={OPERATION_EDITION_FORM_IDS.INTERCOMPTES + OPERATION_EDITION_FORM_IDS.INPUT}
                                         required select sx={{width: "90%"}}
+                                        value={this.state.intercompte}
                                         placeholder={"Sélectionnez un compte"}
                                         error={this.state.errors.intercompte != null}
                                         helperText={this.state.errors.intercompte}

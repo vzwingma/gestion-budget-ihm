@@ -1,6 +1,7 @@
 import * as ClientHTTP from "../../../Services/ClientHTTP.service";
 import {toast} from "react-toastify";
 import {OPERATIONS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import * as AppConstants from "../../../Utils/AppTechEnums.constants";
 import {BACKEND_ENUM, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
 import {v4 as uuidGen} from 'uuid';
 
@@ -25,7 +26,7 @@ export function saveOperation(operation, budget) {
 
                 // Update du budget global (parent)
                 this.props.onOperationChange(data);
-                toast.success("Mise à jour de l'opération correctement effectuée")
+                toast.success((operation.id === -1 ? "Création" : "Mise à jour") + " de l'opération correctement effectuée")
 
             })
             .catch((e) => {
@@ -37,4 +38,27 @@ export function saveOperation(operation, budget) {
         toast.warn("Impossible de sauvegarder une opération sur un budget clos")
     }
 
+}
+
+/**
+ * Appels WS vers pour enregistrer l'opération intercompte sur le backend
+ * @param operation opération à enregistrer
+ * @param budget budget concerné
+ * @param compteCible compte cible pour la 2nde opération (intercompte)
+ */
+export function saveOperationIntercompte(operation, budget, compteCible) {
+    console.log("Création d'une opération intercompte sur le budget : " + budget.id + " vers le compte " + compteCible)
+    ClientHTTP
+        .call('POST',
+            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.INTERCOMPTE,
+            [budget.id, compteCible],
+            operation)
+        .then(budgetUpdated => {
+            this.props.onOperationChange(budgetUpdated);
+            toast.success("Création de l'opération inter-comptes correctement effectuée")
+        })
+        .catch(e => {
+            console.log("Erreur lors de l'enregistrement de l'opération intercomptes" + e)
+            toast.error("Erreur lors de l'enregistrement de l'opération intercomptes")
+        })
 }

@@ -49,7 +49,7 @@ export function handleOperationEditionClick(event) {
 export function handleValidateOperationForm() {
 
     if (this.isInEditMode()) {
-        let errors = this.state.errors;
+        let errors = {};
         let hasErrors = false;
         // Description
         if (this.state.editOperation.libelle === null || this.state.editOperation.libelle === "") {
@@ -90,7 +90,6 @@ export function handleValidateOperationForm() {
         }
 
         if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES) {
-            console.log(this.state.intercompte)
             if (this.state.intercompte === null) {
                 errors.intercompte = "Le compte de transfert est obligatoire"
                 hasErrors = true
@@ -99,13 +98,19 @@ export function handleValidateOperationForm() {
             }
         }
 
-
         if (hasErrors) {
-            console.log(errors)
             this.setState({errors: errors})
         } else {
 
-            this.saveOperation(this.props.operation, this.props.budget);
+
+            if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES) {
+                // Create Update Opération Intercomptes
+                this.saveOperationIntercompte(this.props.operation, this.props.budget, this.state.intercompte);
+            } else {
+                // Create Update Opération
+                this.saveOperation(this.props.operation, this.props.budget);
+            }
+
             this.handleCloseOperationForm();
         }
 

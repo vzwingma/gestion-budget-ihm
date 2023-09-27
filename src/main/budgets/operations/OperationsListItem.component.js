@@ -5,7 +5,7 @@ import OperationValue from "./renderers/OperationSpanValue.renderer";
 import * as Renderer from "./renderers/OperationItem.renderer";
 
 /**
- * Tuile  d'une opération dans la liste des opérations
+ * Tuile d'une opération dans la liste des opérations
  * @param operation opération affichée
  * @param listeComptes liste des comptes
  * @param onClick action lors du click
