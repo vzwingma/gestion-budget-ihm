@@ -209,15 +209,19 @@ export function getPeriodeRenderer(periodeKey) {
  */
 export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
     if (operationLibelle != null) {
-        if (operationLibelle.startsWith("[vers ")) {
-            const operationLibelleParts = (operationLibelle.match("(\\[vers )(.*)(\\])(.*)"));
+        if (operationLibelle.indexOf("[" !== -1)) {
+            const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
             const compte = (listeComptes.filter((compte) => compte.libelle === operationLibelleParts[2]))
             return <Tooltip title={"Transfert intercompte vers " + compte[0].libelle}>
+                {operationLibelleParts[1].startsWith("[En Retard]") ?
+                    <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
                 <img src={"/img/banques/" + compte[0].icon}
-                     width={maxVue ? 30 : 15} height={maxVue ? 30 : 15}
+                     width={maxVue ? 30 : 20} height={maxVue ? 30 : 20}
                      alt={compte[0].libelle}
                      style={{marginRight: "5px"}}/>
-                {operationLibelleParts[4]}
+                <span>
+                     {operationLibelleParts[4]}
+                </span>
             </Tooltip>
         } else if (operationLibelle.startsWith("[En Retard]")) {
             return <><WatchLaterRounded sx={{color: "#A0A0A0"}}/>{operationLibelle.replaceAll("[En Retard]", "")}</>
