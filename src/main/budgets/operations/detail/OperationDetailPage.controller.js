@@ -4,15 +4,6 @@ import {TYPE_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
 
 /**
-
- *         let validationPeriode = this.state.formOperationPeriodique === null || this.state.formOperationPeriodique.value === null
- *         let validationEtat = this.state.formEtat === null ||this.state.formEtat === ""
-
- */
-
-
-
-/**
  * Click sur un élément à éditer de la page de détail
  * @param event click
  */
@@ -119,6 +110,15 @@ export function handleValidateOperationForm() {
 export function isInEditMode() {
     let editForm = this.state.editForm;
     return editForm.value || editForm.libelle || editForm.dateOperation || editForm.mensualite;
+}
+
+/**
+ * Test si en mode édition d'au moins un champ
+ * @returns {*|boolean}
+ */
+export function isInCreateMode() {
+    let editForm = this.state.editForm;
+    return editForm.value && editForm.libelle && editForm.dateOperation && editForm.mensualite;
 }
 
 

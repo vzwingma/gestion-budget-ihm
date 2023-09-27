@@ -61,6 +61,7 @@ class OperationDetailPage extends Component {
         super(props);
         this.handleOperationEditionClick = Controller.handleOperationEditionClick.bind(this);
         this.isInEditMode = Controller.isInEditMode.bind(this);
+        this.isInCreateMode = Controller.isInCreateMode.bind(this);
 
         this.handleValidateOperationForm = Controller.handleValidateOperationForm.bind(this);
         this.handleCloseOperationForm = Controller.handleCloseOperationForm.bind(this);
@@ -330,9 +331,11 @@ class OperationDetailPage extends Component {
                         <Grid2 md={5}>
                         </Grid2>
                         <Grid2 md={4}>
+                            { /** ACTIONS SUR OPERATION **/}
                             {budget != null && budget.actif && operation.etat !== OPERATIONS_ENUM.SUPPRIMEE ?
                                 <OperationDetailActions currentOperation={operation}
                                                         currentBudget={budget}
+                                                        isInCreateMode={this.isInCreateMode}
                                                         saveOperation={this.saveOperation}/> : <></>
                             }
                         </Grid2>

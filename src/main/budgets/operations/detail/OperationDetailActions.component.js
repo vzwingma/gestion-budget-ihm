@@ -48,10 +48,7 @@ export default class OperationDetailActions extends Component {
 
         this.handleOperationAction = Controller.handleOperationAction.bind(this);
         this.updateOperation = Controller.updateOperation.bind(this);
-
         this.setState({
-            currentOperation: this.props.currentOperation,
-            currentBudget: this.props.currentBudget,
             showModale: false
         });
     }
@@ -94,7 +91,7 @@ export default class OperationDetailActions extends Component {
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.ANNULEE &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.ANNULEE && !this.props.isInCreateMode() &&
                     <Tooltip title="Annuler l'opération">
                         <IconButton
                             className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.ANNULEE}
@@ -105,7 +102,7 @@ export default class OperationDetailActions extends Component {
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE && !this.props.isInCreateMode() &&
                     <Tooltip title="Supprimer l'opération">
                         <IconButton
                             className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.SUPPRIMEE}

@@ -18,8 +18,9 @@ const CompteItem = ({compte, selectedIdCompte, onClick}) => {
                    }}
                    onClick={() => onClick(compte)}>
             <Stack direction={"row"} spacing={5}>
-                <img src={"/img/banques/" + compte.icon} width={50} height={50} alt={compte.libelle}/>
-                <Typography variant={"h6"}>
+                <img src={"/img/banques/" + compte.icon} width={50} height={50} alt={compte.libelle}
+                     key={"img_" + compte.id}/>
+                <Typography variant={"h6"} key={"lib_" + compte.id}>
                     {compte.libelle}
                 </Typography>
             </Stack>
