@@ -15,7 +15,7 @@ import {
 import OperationValue from "../renderers/OperationSpanValue.renderer";
 import * as Renderer from "../renderers/OperationItem.renderer";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import OperationDetailActions from "./OperationDetailActions.component";
+import OperationDetailActions from "../actions/OperationDetailActions.component";
 import * as Controller from "./OperationDetailPage.controller";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import * as Service from "./OperationDetailPage.extservices";
