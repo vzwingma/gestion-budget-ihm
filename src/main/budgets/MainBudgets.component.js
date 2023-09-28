@@ -7,8 +7,8 @@ import Budget from "./budget/Budget.component";
 import CompteItem from "./menuBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
 
-/*
-Page principale de gestion des budgets
+/**
+ *    Page principale de gestion des budgets
 */
 export default class MainBudget extends Component {
 
@@ -49,7 +49,6 @@ export default class MainBudget extends Component {
                             {this.state.comptes.map((compte) => (
                                 <CompteItem compte={compte}
                                             selectedIdCompte={this.state.selectedCompte != null ? this.state.selectedCompte.id : null}
-
                                             selectedDate={this.state.selectedDate}
                                             onClick={this.handleCompteChange}/>
                             ))}
