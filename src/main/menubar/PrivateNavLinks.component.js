@@ -12,7 +12,7 @@ function PrivateNavLinks() {
         return <Stack direction="row" divider={<Divider orientation="vertical" flexItem/>} spacing={1}>
             <NavLink className="nav-link" to="/infos">Infos</NavLink>
             <NavLink className="nav-link" to="/budgets">Budgets</NavLink>
-            <NavLink className="nav-link" to="/analyses">Analyses</NavLink>
+            { /* <NavLink className="nav-link" to="/analyses" >Analyses</NavLink> */}
         </Stack>
     } else {
         return <NavLink className="nav-link" to="/infos">Infos</NavLink>
