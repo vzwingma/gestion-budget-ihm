@@ -91,15 +91,19 @@ export function getDateFromDateTime(dateTime){
 
 /**
  * Tri par libellé
- * @param lib1 premier libellé
- * @param lib2 2ème libellé
+ * @param categorie1 premier libellé
+ * @param categorie2 2ème libellé
  * @returns {number} comparaison
  */
-export function sortLibellesCategories(lib1, lib2) {
-    if (lib1.text > lib2.text) {
+export function sortLibellesCategories(categorie1, categorie2) {
+
+    if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
         return 1;
-    }
-    if (lib1.text < lib2.text) {
+    } else if (categorie1.categorieParente.libelle < categorie2.categorieParente.libelle) {
+        return -1;
+    } else if (categorie1.libelle > categorie2.libelle) {
+        return 1;
+    } else if (categorie1.libelle < categorie2.libelle) {
         return -1;
     }
     return 0;

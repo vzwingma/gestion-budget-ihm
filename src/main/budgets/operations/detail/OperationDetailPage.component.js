@@ -91,7 +91,6 @@ class OperationDetailPage extends Component {
              * Chargement des catégories
              */
             const mapSsCategories = this.props.listeCategories
-                .sort(sortLibellesCategories)
                 .flatMap(cat => {
                     for (let ssCat in cat.listeSSCategories) {
                         cat.listeSSCategories[ssCat].categorieParente = cat
@@ -99,6 +98,9 @@ class OperationDetailPage extends Component {
                     return cat.listeSSCategories
                 })
                 .sort(sortLibellesCategories)
+
+            console.log(mapSsCategories)
+
             this.setState({listeAllCategories: mapSsCategories})
         }
         this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
