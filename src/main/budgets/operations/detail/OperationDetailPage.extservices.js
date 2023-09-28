@@ -13,14 +13,15 @@ import {v4 as uuidGen} from 'uuid';
 export function saveOperation(operation, budget) {
 
     if (budget.actif) {
+        let creation = operation.id === -1
         console.log((operation.id === -1 ? "Création" : "Mise à jour") + " d'une opération sur le budget : " + budget.id)
         if (operation.id === -1) {
             operation.id = uuidGen();
         }
 
         ClientHTTP.call(operation.etat === OPERATIONS_ENUM.SUPPRIMEE ? "DELETE" : "POST",
-            BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.UPDATE,
-            [budget.id, operation.id],
+            BACKEND_ENUM.URL_OPERATIONS, !creation ? SERVICES_URL.OPERATIONS.UPDATE : SERVICES_URL.OPERATIONS.CREATE,
+            [budget.id, !creation ? operation.id : null],
             operation)
             .then((data) => {
 
