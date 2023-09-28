@@ -333,7 +333,7 @@ class OperationDetailPage extends Component {
 
 
                         <Grid2 md={5} paddingTop={3}>
-                            {this.isInEditMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
+                            {this.isInCreateMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
                                 <Typography variant={"caption"} sx={{color: "#808080"}}>Compte de
                                     transfert</Typography> : <></>}
                         </Grid2>
@@ -349,7 +349,7 @@ class OperationDetailPage extends Component {
 
                         <Grid2 md={5}>
                             { /** COMPTE DE TRANSFERT  **/
-                                this.isInEditMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
+                                this.isInCreateMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
                                     <TextField
                                         id={OPERATION_EDITION_FORM_IDS.INTERCOMPTES + OPERATION_EDITION_FORM_IDS.INPUT}
                                         required select sx={{width: "90%"}}
