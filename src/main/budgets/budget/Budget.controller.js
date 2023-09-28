@@ -23,7 +23,7 @@ import {sortOperations} from "../../Utils/DataUtils.utils";
         }, {});
 
     this.setState({currentBudget: budgetData, operationsGroupedByDateOperation: operationsGroupedByDateOperation})
-        toast.success("Chargement du budget [" + budgetData.id + "] correctement effectué ")
+    toast.success("Chargement du budget correctement effectué ")
     }
 
 /**

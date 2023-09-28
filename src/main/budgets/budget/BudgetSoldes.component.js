@@ -31,12 +31,12 @@ const BudgetsSoldes = ({currentCompte, currentBudget}) => {
             </Stack>
             <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
-                <Typography variant={"h6"} width={120} textAlign={"center"}>
+                <Typography variant={"h6"} width={120} textAlign={"center"} sx={{cursor: "help"}}>
                     <OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true}/>
                 </Typography>
             </Tooltip>
             <Tooltip title={getTooltipFin()}>
-                <Typography variant={"caption"} width={100} textAlign={"center"}>
+                <Typography variant={"caption"} width={100} textAlign={"center"} sx={{cursor: "help"}}>
                     (<OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant} showSign={true}/> )
                 </Typography>
             </Tooltip>
