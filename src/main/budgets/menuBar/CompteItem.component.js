@@ -7,27 +7,26 @@ import * as AppConstants from "../../Utils/AppTechEnums.constants";
 /**
  * Tuile affichant un compte
  * @param compte compte
- * @param selectedIdCompte compte sélectionné
  * @param selectedDate date sélectionnée
  * @param onClick action sur click
  * @returns {JSX.Element}
  * @constructor
  */
-const CompteItem = ({compte, selectedIdCompte, selectedDate, onClick}) => {
+const CompteItem = ({compte, selectedDate, onClick}) => {
 
     const [soldes, setSoldes] = useState(0);
 
     /**
      Get SOLDES du budget depuis le back-end
      **/
-    function getSoldesBudget(selectedCompte, selectedDate) {
-        if (selectedCompte != null && selectedDate != null) {
+    function getSoldesBudget(compte, selectedDate) {
+        if (compte != null && selectedDate != null) {
             ClientHTTP.call('GET',
                 AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.SOLDES,
-                [selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
+                [compte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
                 .then(data => setSoldes((prevState) => data.soldeAtMaintenant))
                 .catch(e => {
-                    let libErreur = "Erreur lors du chargement du budget " + selectedCompte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
+                    let libErreur = "Erreur lors du chargement du budget " + compte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
                     console.log(libErreur + " >> " + e)
                 });
         }
@@ -36,14 +35,12 @@ const CompteItem = ({compte, selectedIdCompte, selectedDate, onClick}) => {
 
     useEffect(() => {
         getSoldesBudget(compte.id, selectedDate)
-    }, [compte, selectedDate, selectedIdCompte]);
+    }, [compte, selectedDate]);
 
 
     return (
         <Container key={compte.id}
                    sx={{
-                       backgroundColor: (compte.id === selectedIdCompte ? 'primary.main' : 'unset'),
-                       borderRadius: (compte.id === selectedIdCompte ? '5% 0% 5% 0%' : 'unset'),
                        padding: 1,
                        '&:hover': {
                            backgroundColor: 'primary.main',

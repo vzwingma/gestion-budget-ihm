@@ -65,6 +65,7 @@ export default class Budget extends Component {
      * @returns {boolean} s'il faut mettre à jour
      */
     shouldComponentUpdate(nextProps, nextStates, nextContext) {
+
         let componentUpdate = false;
         if (this.state.currentBudget !== nextStates.currentBudget) {
             console.log("[TRIGGER] Context budget=" + nextStates.currentBudget.id )
