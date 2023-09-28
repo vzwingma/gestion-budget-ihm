@@ -43,6 +43,7 @@ export const SERVICES_URL = {
         REINIT: "/{{}}",
         INTERVALLE: "/{{}}/intervalles",
         GET: "/query?idCompte={{}}&annee={{}}&mois={{}}",
+        SOLDES: "/soldes?idCompte={{}}&annee={{}}&mois={{}}",
         ETAT: "/{{}}/etat?actif={{}}"
     },
     OPERATIONS: {

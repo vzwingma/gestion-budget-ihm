@@ -44,7 +44,10 @@ import {toast} from "react-toastify";
     }
 
 
-    export function getPreferenceUtilisateur(){
+/**
+ * Get préférences
+ */
+export function getPreferenceUtilisateur() {
         ClientHTTP.call("GET", AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.USERS_PREFS, null)
             .then((data) => {
                 this.setState({ user_droits : data.droits, user_preferences: data.preferences })
