@@ -48,9 +48,6 @@ export default class OperationDetailActions extends Component {
 
         this.handleOperationAction = Controller.handleOperationAction.bind(this);
         this.updateOperation = Controller.updateOperation.bind(this);
-        this.setState({
-            showModale: false
-        });
     }
 
 

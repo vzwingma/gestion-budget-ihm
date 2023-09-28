@@ -221,8 +221,8 @@ export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
                      alt={compte[0].libelle}
                      style={{marginRight: "5px"}}/>
                 <span>
-                     {operationLibelleParts[4]}
-                </span>
+                        {operationLibelleParts[4]}
+                    </span>
             </Tooltip>
         } else if (operationLibelle.startsWith("[En Retard]")) {
             return <><WatchLaterRounded sx={{color: "#A0A0A0"}}/>{operationLibelle.replaceAll("[En Retard]", "")}</>
