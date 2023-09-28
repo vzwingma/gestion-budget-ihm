@@ -152,6 +152,7 @@ export function getSousCategorieIcon(operationSsCategorie) {
                 return <QuestionMarkRounded/>
         }
     }
+    return <QuestionMarkRounded/>
 }
 
 

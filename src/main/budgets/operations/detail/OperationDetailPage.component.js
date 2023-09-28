@@ -40,29 +40,35 @@ import {
 class OperationDetailPage extends Component {
 
 
-    /** Etats pour la page de détail d'une opération **/
-    state = {
-        editForm: {
-            value: false,
-            libelle: false,
-            dateOperation: false,
-            mensualite: false,
-            categories: false
-        },
-        intercompte: null,
-        errors: {
-            valeur: null,
-            libelle: null,
-            categorie: null,
-            compte: null
-        },
-        listeAllCategories: null
-    }
 
 
     /** Constructeur **/
     constructor(props) {
         super(props);
+        let editMode = this.props.operation.id === -1;
+
+        /** Etats pour la page de détail d'une opération **/
+        this.state = (
+            {
+                editForm: {
+                    value: editMode,
+                    libelle: editMode,
+                    dateOperation: editMode,
+                    mensualite: editMode,
+                    categories: editMode
+                },
+                intercompte: null,
+                errors: {
+                    valeur: null,
+                    libelle: null,
+                    categorie: null,
+                    compte: null
+                },
+                listeAllCategories: null,
+                editOperation: null
+            }
+        )
+
         this.handleOperationEditionClick = Controller.handleOperationEditionClick.bind(this);
         this.isInEditMode = Controller.isInEditMode.bind(this);
         this.isInCreateMode = Controller.isInCreateMode.bind(this);
@@ -106,6 +112,7 @@ class OperationDetailPage extends Component {
 
         if (this.props.operation.id !== prevProps.operation.id) {
             this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
+
             if (this.props.operation.id === -1) {
                 this.setState({
                     editForm: {
@@ -326,7 +333,7 @@ class OperationDetailPage extends Component {
 
 
                         <Grid2 md={5} paddingTop={3}>
-                            {this.isInEditMode() && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
+                            {this.isInEditMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
                                 <Typography variant={"caption"} sx={{color: "#808080"}}>Compte de
                                     transfert</Typography> : <></>}
                         </Grid2>
@@ -342,7 +349,7 @@ class OperationDetailPage extends Component {
 
                         <Grid2 md={5}>
                             { /** COMPTE DE TRANSFERT  **/
-                                this.isInEditMode() && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
+                                this.isInEditMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
                                     <TextField
                                         id={OPERATION_EDITION_FORM_IDS.INTERCOMPTES + OPERATION_EDITION_FORM_IDS.INPUT}
                                         required select sx={{width: "90%"}}
