@@ -30,10 +30,10 @@ export const BUSINESS_GUID = {
  * @type {{REALISEE: string, PLANIFIEE: string, PREVUE: string, REPORTEE: string, ANNULEE: string, SUPPRIMEE: string}}
  */
 export const OPERATIONS_ENUM = {
-    REALISEE: "REALISEE",
-    SUPPRIMEE: "SUPPRIMEE",
     PREVUE: "PREVUE",
+    REALISEE: "REALISEE",
     ANNULEE: "ANNULEE",
+    SUPPRIMEE: "SUPPRIMEE",
     REPORTEE: "REPORTEE",
     PLANIFIEE: "PLANIFIEE"
 }

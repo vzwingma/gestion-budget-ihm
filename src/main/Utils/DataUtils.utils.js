@@ -117,32 +117,47 @@ export function sortLibellesCategories(categorie1, categorie2) {
  * @returns {number} comparaison
  */
 export function sortOperations(ope1, ope2) {
-    let sort;
-    // Opérations prévues en 1er
-    if (ope1.etat === AppConstants.OPERATIONS_ENUM.PREVUE && ope2.etat === AppConstants.OPERATIONS_ENUM.PREVUE) {
-        return 0;
-    } else if (ope1.etat === AppConstants.OPERATIONS_ENUM.PREVUE) {
+
+    // Premier TRI : Par date
+    if (ope1.autresInfos.dateOperation === null && ope2.autresInfos.dateOperation !== null) {
         return -1;
-    } else if (ope2.etat === AppConstants.OPERATIONS_ENUM.PREVUE) {
+    } else if (ope2.autresInfos.dateOperation === null && ope1.autresInfos.dateOperation !== null) {
         return 1;
-    }
-    // Sinon tri par date opération, sinon par autre état
-    else if (ope1.autresInfos.dateOperation === null && ope2.autresInfos.dateOperation === null) {
-        sort = ope1.etat === ope2.etat ? 0 : ope1.etat > ope2.etat ? 1 : -1;
-    } else if (ope1.autresInfos.dateOperation === null) {
-        sort = 1;
-    } else if (ope2.autresInfos.dateOperation === null) {
-        sort = -1;
     } else {
         let date1 = ope1.autresInfos.dateOperation
         let date2 = ope2.autresInfos.dateOperation
         if (date1 > date2) {
-            sort = -1;
+            return -1;
         } else if (date1 < date2) {
-            sort = 1;
-        } else {
-            sort = 0;
+            return 1;
         }
     }
-    return sort;
+
+    const rangOpe1 = getRangEtatOperation(ope1.etat)
+    const rangOpe2 = getRangEtatOperation(ope2.etat)
+
+    // 2ème TRI : par Etat
+    if (rangOpe1 > rangOpe2) {
+        return 1;
+    } else if (rangOpe1 < rangOpe2) {
+        return -1;
+    }
+    return 0;
+
+}
+
+
+/**
+ * Rang opération
+ * @param etatOperation
+ * @returns {number}
+ */
+function getRangEtatOperation(etatOperation) {
+    let rang = 0;
+    for (var etat in AppConstants.OPERATIONS_ENUM) {
+        if (etat === etatOperation) {
+            return rang;
+        }
+        rang++;
+    }
 }
