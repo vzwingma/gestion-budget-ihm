@@ -142,6 +142,16 @@ export function sortOperations(ope1, ope2) {
     } else if (rangOpe1 < rangOpe2) {
         return -1;
     }
+
+    // 3ème TRI : par date mise à jour
+    let dateM1 = ope1.autresInfos.dateMaj
+    let dateM2 = ope2.autresInfos.dateMaj
+    if (dateM1 > dateM2) {
+        return -1;
+    } else if (dateM1 < dateM2) {
+        return 1;
+    }
+    // Normalement n'arrive jamais
     return 0;
 
 }
