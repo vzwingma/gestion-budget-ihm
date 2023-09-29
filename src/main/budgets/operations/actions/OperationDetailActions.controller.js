@@ -1,6 +1,6 @@
 import {toast} from "react-toastify";
 import * as DataUtils from "../../../Utils/DataUtils.utils";
-import {OPERATIONS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
 
 /**
@@ -24,7 +24,7 @@ export function handleOperationAction(event) {
             }
         }
         // Après l'action d'update SUPPRIMEE, on clot la popup
-        if (action === OPERATIONS_ENUM.SUPPRIMEE) {
+        if (action === OPERATION_ETATS_ENUM.SUPPRIMEE) {
             this.setState({currentOperation: null, showModale: false})
         }
     }

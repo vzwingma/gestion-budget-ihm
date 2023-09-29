@@ -1,6 +1,6 @@
 import * as DataUtils from "../../../Utils/DataUtils.utils";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
-import {BUSINESS_GUID, TYPE_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {BUSINESS_GUID, TYPES_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
 
 /**
@@ -171,7 +171,7 @@ export function cloneOperation(operation) {
         },
         "typeOperation": operation.typeOperation,
         "etat": operation.etat,
-        "valeur": (operation.typeOperation === TYPE_OPERATION_ENUM.DEPENSE ? -1 : 1) * operation.valeur,
+        "valeur": (operation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1) * operation.valeur,
         "mensualite": operation.mensualite,
         "autresInfos": {
             "dateOperation": operation.autresInfos.dateOperation

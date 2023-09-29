@@ -29,7 +29,7 @@ export const BUSINESS_GUID = {
  * Etat des opérations
  * @type {{REALISEE: string, PLANIFIEE: string, PREVUE: string, REPORTEE: string, ANNULEE: string, SUPPRIMEE: string}}
  */
-export const OPERATIONS_ENUM = {
+export const OPERATION_ETATS_ENUM = {
     PREVUE: "PREVUE",
     REALISEE: "REALISEE",
     ANNULEE: "ANNULEE",
@@ -56,7 +56,7 @@ export const PERIODES_MENSUALITE_ENUM = [
  * Constantes des type d'opération
  * @type {{CREDIT: string, DEPENSE: string}}
  */
-export const TYPE_OPERATION_ENUM = {
+export const TYPES_OPERATION_ENUM = {
     CREDIT: "CREDIT",
     DEPENSE: "DEPENSE"
 }

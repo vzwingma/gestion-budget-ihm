@@ -23,9 +23,9 @@ import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-ma
 import {addEndingZeros, getLabelDate, sortLibellesCategories} from '../../../Utils/DataUtils.utils'
 import {
     BUSINESS_GUID,
-    OPERATIONS_ENUM,
+    OPERATION_ETATS_ENUM,
     PERIODES_MENSUALITE_ENUM,
-    TYPE_OPERATION_ENUM
+    TYPES_OPERATION_ENUM
 } from "../../../Utils/AppBusinessEnums.constants";
 
 
@@ -177,7 +177,7 @@ class OperationDetailPage extends Component {
         this.setState({editOperation: editOperation})
 
         /** Si type Virement **/
-        editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id) ? TYPE_OPERATION_ENUM.CREDIT : TYPE_OPERATION_ENUM.DEPENSE;
+        editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
 
         /** Adaptation sur la sélection de catégorie **/
 
@@ -338,7 +338,7 @@ class OperationDetailPage extends Component {
                                     transfert</Typography> : <></>}
                         </Grid2>
                         <Grid2 md={4} paddingTop={3}>
-                            {budget != null && budget.actif && operation.etat !== OPERATIONS_ENUM.SUPPRIMEE ?
+                            {budget != null && budget.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                                 <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                             }
                         </Grid2>
@@ -374,7 +374,7 @@ class OperationDetailPage extends Component {
                         </Grid2>
                         <Grid2 md={4}>
                             { /** ACTIONS SUR OPERATION **/}
-                            {budget != null && budget.actif && operation.etat !== OPERATIONS_ENUM.SUPPRIMEE ?
+                            {budget != null && budget.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                                 <OperationDetailActions currentOperation={operation}
                                                         currentBudget={budget}
                                                         isInCreateMode={this.isInCreateMode}

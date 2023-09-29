@@ -154,7 +154,7 @@ export function sortOperations(ope1, ope2) {
  */
 function getRangEtatOperation(etatOperation) {
     let rang = 0;
-    for (var etat in AppConstants.OPERATIONS_ENUM) {
+    for (var etat in AppConstants.OPERATION_ETATS_ENUM) {
         if (etat === etatOperation) {
             return rang;
         }

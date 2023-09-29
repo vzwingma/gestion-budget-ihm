@@ -32,7 +32,7 @@ import {
     VolunteerActivismOutlined,
     WatchLaterRounded
 } from "@mui/icons-material";
-import {OPERATIONS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 import {Tooltip} from "@mui/material";
 import React from "react";
 
@@ -159,17 +159,17 @@ export function getSousCategorieIcon(operationSsCategorie) {
 export function getOperationStateColor(operationState) {
     if (operationState != null) {
         switch (operationState) {
-            case OPERATIONS_ENUM.REALISEE:
+            case OPERATION_ETATS_ENUM.REALISEE:
                 return "#2e7d32"
-            case OPERATIONS_ENUM.PREVUE:
+            case OPERATION_ETATS_ENUM.PREVUE:
                 return "#ed6c02"
-            case OPERATIONS_ENUM.ANNULEE:
+            case OPERATION_ETATS_ENUM.ANNULEE:
                 return "#ebebeb"
-            case OPERATIONS_ENUM.SUPPRIMEE:
+            case OPERATION_ETATS_ENUM.SUPPRIMEE:
                 return "#ed1b24"
-            case OPERATIONS_ENUM.REPORTEE:
+            case OPERATION_ETATS_ENUM.REPORTEE:
                 return "#9c27b0"
-            case OPERATIONS_ENUM.PLANIFIEE:
+            case OPERATION_ETATS_ENUM.PLANIFIEE:
                 return "#0288d1"
             default:
                 return "grey";

@@ -55,54 +55,54 @@ export default class OperationDetailActions extends Component {
 
         return (
             <ButtonGroup onClick={this.handleOperationAction}>
-                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.REALISEE &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATION_ETATS_ENUM.REALISEE &&
                     <Tooltip title="Valider l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.REALISEE}
-                            id={AppConstants.OPERATIONS_ENUM.REALISEE}>
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATION_ETATS_ENUM.REALISEE}
+                            id={AppConstants.OPERATION_ETATS_ENUM.REALISEE}>
                             <center>
-                                <CheckCircleOutlined id={AppConstants.OPERATIONS_ENUM.REALISEE}/>
+                                <CheckCircleOutlined id={AppConstants.OPERATION_ETATS_ENUM.REALISEE}/>
                             </center>
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.PREVUE &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATION_ETATS_ENUM.PREVUE &&
                     <Tooltip title="Prévoir l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.PREVUE}
-                            id={AppConstants.OPERATIONS_ENUM.PREVUE}>
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATION_ETATS_ENUM.PREVUE}
+                            id={AppConstants.OPERATION_ETATS_ENUM.PREVUE}>
                             <center>
-                                <HistoryRounded id={AppConstants.OPERATIONS_ENUM.PREVUE}/>
+                                <HistoryRounded id={AppConstants.OPERATION_ETATS_ENUM.PREVUE}/>
                             </center>
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.REPORTEE &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATION_ETATS_ENUM.REPORTEE &&
                     <Tooltip title="Reporter l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.REPORTEE}
-                            id={AppConstants.OPERATIONS_ENUM.REPORTEE}>
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATION_ETATS_ENUM.REPORTEE}
+                            id={AppConstants.OPERATION_ETATS_ENUM.REPORTEE}>
                             <center>
-                                <ArrowForwardRounded id={AppConstants.OPERATIONS_ENUM.REPORTEE}/>
+                                <ArrowForwardRounded id={AppConstants.OPERATION_ETATS_ENUM.REPORTEE}/>
                             </center>
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.ANNULEE && !this.props.isInCreateMode() &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATION_ETATS_ENUM.ANNULEE && !this.props.isInCreateMode() &&
                     <Tooltip title="Annuler l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.ANNULEE}
-                            id={AppConstants.OPERATIONS_ENUM.ANNULEE}>
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATION_ETATS_ENUM.ANNULEE}
+                            id={AppConstants.OPERATION_ETATS_ENUM.ANNULEE}>
                             <center>
-                                <CloseRounded id={AppConstants.OPERATIONS_ENUM.ANNULEE}/>
+                                <CloseRounded id={AppConstants.OPERATION_ETATS_ENUM.ANNULEE}/>
                             </center>
                         </IconButton>
                     </Tooltip>
                 }
-                {this.props.currentOperation.etat !== AppConstants.OPERATIONS_ENUM.SUPPRIMEE && !this.props.isInCreateMode() &&
+                {this.props.currentOperation.etat !== AppConstants.OPERATION_ETATS_ENUM.SUPPRIMEE && !this.props.isInCreateMode() &&
                     <Tooltip title="Supprimer l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_" + AppConstants.OPERATIONS_ENUM.SUPPRIMEE}
+                            className={"buttonsActionsOperations color_" + AppConstants.OPERATION_ETATS_ENUM.SUPPRIMEE}
                             id={"SUPPRIMEE_A_CONFIRMER"}>
                             <center>
                                 <DeleteForeverRounded id={"SUPPRIMEE_A_CONFIRMER"}

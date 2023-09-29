@@ -1,6 +1,6 @@
 import * as ClientHTTP from "../../../Services/ClientHTTP.service";
 import {toast} from "react-toastify";
-import {OPERATIONS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 import * as AppConstants from "../../../Utils/AppTechEnums.constants";
 import {BACKEND_ENUM, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
 import {v4 as uuidGen} from 'uuid';
@@ -19,7 +19,7 @@ export function saveOperation(operation, budget) {
             operation.id = uuidGen();
         }
 
-        ClientHTTP.call(operation.etat === OPERATIONS_ENUM.SUPPRIMEE ? "DELETE" : "POST",
+        ClientHTTP.call(operation.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ? "DELETE" : "POST",
             BACKEND_ENUM.URL_OPERATIONS, !creation ? SERVICES_URL.OPERATIONS.UPDATE : SERVICES_URL.OPERATIONS.CREATE,
             [budget.id, !creation ? operation.id : null],
             operation)
