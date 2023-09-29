@@ -31,7 +31,6 @@ import {sortOperations} from "../../Utils/DataUtils.utils";
  * @param operation opération
  */
 export function handleOperationSelect(operation) {
-    // console.log("Selection de l'opération [" + operation.id + "]");
     if (operation.mensualite == null) {
         operation.mensualite = {periode: PERIODES_MENSUALITE_ENUM.at(0)}
     }

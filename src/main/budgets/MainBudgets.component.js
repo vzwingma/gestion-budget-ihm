@@ -47,7 +47,8 @@ export default class MainBudget extends Component {
 
                         <Stack divider={<Divider orientation="horizontal" flexItem/>}>
                             {this.state.comptes.map((compte) => (
-                                <CompteItem compte={compte}
+                                <CompteItem key={compte.id}
+                                            compte={compte}
                                             selectedDate={this.state.selectedDate}
                                             onClick={this.handleCompteChange}/>
                             ))}

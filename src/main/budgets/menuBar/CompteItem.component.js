@@ -39,8 +39,7 @@ const CompteItem = ({compte, selectedDate, onClick}) => {
 
 
     return (
-        <Container key={compte.id}
-                   sx={{
+        <Container sx={{
                        padding: 1,
                        '&:hover': {
                            backgroundColor: 'primary.main',

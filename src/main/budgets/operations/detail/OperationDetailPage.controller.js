@@ -78,10 +78,7 @@ export function handleValidateOperationForm() {
         this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
 
         // Catégorie / ssCatégorie
-        if (this.state.editOperation.categorie.id === null || this.state.editOperation.categorie.libelle === null) {
-            errors.categorie = "Le champ Catégorie est obligatoire"
-            hasErrors = true
-        } else if (this.state.editOperation.ssCategorie.id === null || this.state.editOperation.ssCategorie.libelle === null) {
+        if (this.state.editOperation.categorie.id === null || this.state.editOperation.categorie.libelle === null || this.state.editOperation.ssCategorie.id === null || this.state.editOperation.ssCategorie.libelle === null) {
             errors.categorie = "Le champ Catégorie est obligatoire"
             hasErrors = true
         } else {
@@ -93,8 +90,6 @@ export function handleValidateOperationForm() {
             if (this.state.intercompte === null) {
                 errors.intercompte = "Le compte de transfert est obligatoire"
                 hasErrors = true
-            } else {
-
             }
         }
 

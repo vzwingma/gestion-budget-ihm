@@ -16,12 +16,10 @@ export function handleOperationAction(event) {
             this.setState({showModale: true, currentOperation: this.props.currentOperation});
         } else if (action === "ANNULER") {
             this.setState({showModale: false});
+        } else if (this.props.isInCreateMode()) {
+            this.props.currentOperation.etat = action
         } else {
-            if (this.props.isInCreateMode()) {
-                this.props.currentOperation.etat = action
-            } else {
-                this.updateOperation(this.props.currentOperation, action, this.props.currentBudget, this.props.onActionOperationChange);
-            }
+            this.updateOperation(this.props.currentOperation, action, this.props.currentBudget, this.props.onActionOperationChange);
         }
         // Après l'action d'update SUPPRIMEE, on clot la popup
         if (action === OPERATION_ETATS_ENUM.SUPPRIMEE) {

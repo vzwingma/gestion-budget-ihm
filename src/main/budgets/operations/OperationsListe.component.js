@@ -24,7 +24,7 @@ const OperationsListe = ({operationGroupedByDate, listeComptes, onClick}) => {
     function iterate(operationGroupedByDate) {
 
         let renderList = []
-        for (var dateOperationKey in operationGroupedByDate) {
+        for (let dateOperationKey in operationGroupedByDate) {
             if (dateOperationKey !== null && dateOperationKey !== "null") {
                 renderList.push(<Container key={"liste_" + dateOperationKey}
                     sx={{backgroundColor: '#e1e5f1 !important', padding: '10px', color: '#7991b3'}}>

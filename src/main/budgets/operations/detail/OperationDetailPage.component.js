@@ -338,7 +338,7 @@ class OperationDetailPage extends Component {
                                     transfert</Typography> : <></>}
                         </Grid2>
                         <Grid2 md={4} paddingTop={3}>
-                            {budget != null && budget.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
+                            {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                                 <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                             }
                         </Grid2>
@@ -374,7 +374,7 @@ class OperationDetailPage extends Component {
                         </Grid2>
                         <Grid2 md={4}>
                             { /** ACTIONS SUR OPERATION **/}
-                            {budget != null && budget.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
+                            {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                                 <OperationDetailActions currentOperation={operation}
                                                         currentBudget={budget}
                                                         isInCreateMode={this.isInCreateMode}
