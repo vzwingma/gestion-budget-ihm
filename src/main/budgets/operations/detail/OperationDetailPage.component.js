@@ -99,8 +99,6 @@ class OperationDetailPage extends Component {
                 })
                 .sort(sortLibellesCategories)
 
-            console.log(mapSsCategories)
-
             this.setState({listeAllCategories: mapSsCategories})
         }
         this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
