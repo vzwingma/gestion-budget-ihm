@@ -83,8 +83,8 @@ export default class Budget extends Component {
      * Render du budget
      */
     render() { return (
-        <Box sx={{overflow: "hidden"}}>
-            <Grid2 container marginTop={1}>
+        <Box sx={{overflow: "hidden"}} maxHeight>
+            <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
                 <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}/></Grid2>
                 <Grid2 md={7}>
                     { /** Soldes **/}
@@ -105,8 +105,8 @@ export default class Budget extends Component {
                 </Grid2>
             </Grid2>
             <Divider variant="middle" sx={{margin: 1}}/>
-            <Grid2 container>
-                <Grid2 md={4} direction={"column"}>
+            <Grid2 container sx={{overflow: "hidden"}}>
+                <Grid2 md={4} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
                     { /** Liste des opérations **/
                         (this.state.currentBudget != null ?
                                 <OperationsListe operationGroupedByDate={this.state.operationsGroupedByDateOperation}
@@ -117,9 +117,7 @@ export default class Budget extends Component {
                         )
                     }
                 </Grid2>
-                <Grid2 md={8}>
-                    <Box height={window.innerHeight - 195}>
-
+                <Grid2 md={8} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
                         {this.state.currentBudget != null && this.state.currentOperation != null ?
                             /** Affichage d'une opération **/
                             <OperationDetailPage operation={this.state.currentOperation}
@@ -129,8 +127,6 @@ export default class Budget extends Component {
                                                  onOperationChange={this.handleBudgetUpdate}/>
                             : <></>
                         }
-
-                    </Box>
                 </Grid2>
             </Grid2>
         </Box>

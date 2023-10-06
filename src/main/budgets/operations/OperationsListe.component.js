@@ -42,7 +42,7 @@ const OperationsListe = ({operationGroupedByDate, listeComptes, onClick}) => {
 
 
     return <Stack divider={<Divider orientation="horizontal"/>}
-                  sx={{overflowY: "auto", overflowX: "hidden"}} maxHeight={window.innerHeight - 195}>
+                  sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
         {
             iterate(operationGroupedByDate)
         }
