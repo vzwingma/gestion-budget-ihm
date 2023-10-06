@@ -99,7 +99,6 @@ export function handleValidateOperationForm() {
             this.setState({errors: errors})
         } else {
 
-
             if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES) {
                 // Create Update Opération Intercomptes
                 this.saveOperationIntercompte(this.props.operation, this.props.budget, this.state.intercompte);
