@@ -3,14 +3,14 @@ import {Box, CircularProgress, Divider, Drawer, Stack} from "@mui/material";
 import DateRange from "../mainpages/menuBar/DateRange.component";
 import * as Controller from "../mainpages/MainPages.controller";
 import * as Services from "../mainpages/MainPages.extservices";
-import Budget from "./budget/Budget.component";
 import CompteItem from "../mainpages/menuBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
+import Analyse from "./analyse/Analyse.component";
 
 /**
  *    Page principale de gestion des budgets
-*/
-export default class MainBudget extends Component {
+ */
+export default class MainAnalyses extends Component {
 
     /** Etats pour la page Budget **/
     state = {
@@ -58,10 +58,9 @@ export default class MainBudget extends Component {
                 </Drawer>
 
                 {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
-                    <Budget selectedCompte={this.state.selectedCompte}
-                            selectedDate={this.state.selectedDate}
-                            listeComptes={this.state.comptes}
-                            onOpenMenu={this.handleOpenMenuBar}/>
+                    <Analyse selectedCompte={this.state.selectedCompte}
+                             selectedDate={this.state.selectedDate}
+                             onOpenMenu={this.handleOpenMenuBar}/>
                     :
                     <CircularProgress/>}
 

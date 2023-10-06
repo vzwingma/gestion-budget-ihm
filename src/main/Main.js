@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {HashRouter, Route, Routes} from "react-router-dom";
 import {AuthProvider} from 'react-oidc-context';
 import * as AppConstants from "./Utils/AppTechEnums.constants"
-import Analyses from "./analyses/Analyses.component";
 import Infos from "./infos/Infos.component";
 import {removeTokenFromStorage} from "./Services/Auth.service";
 
@@ -10,6 +9,7 @@ import {AppBar, Stack, Typography} from "@mui/material";
 import Profile from "./menubar/Profile.component";
 import PrivateNavLinks from "./menubar/PrivateNavLinks.component";
 import MainBudget from "./budgets/MainBudgets.component";
+import MainAnalyses from "./analyses/MainAnalyses.component";
 
 
 /** Page principale avec le routeur **/
@@ -59,7 +59,7 @@ export default class Main extends Component {
                     <Routes>
                         <Route path="/"         element={<Infos/>}/>
                         <Route path="/budgets" element={<MainBudget/>}/>
-                        <Route path="/analyses" element={<Analyses/>}/>
+                        <Route path="/analyses" element={<MainAnalyses/>}/>
                         <Route path="/infos"    element={<Infos/>}/>
                     </Routes>
                 </div>

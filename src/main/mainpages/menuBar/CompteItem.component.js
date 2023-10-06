@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Container, Stack, Typography} from "@mui/material";
-import OperationValue from "../operations/renderers/OperationSpanValue.renderer";
+import OperationValue from "../../budgets/operations/renderers/OperationSpanValue.renderer";
 import * as ClientHTTP from "../../Services/ClientHTTP.service";
 import * as AppConstants from "../../Utils/AppTechEnums.constants";
 
