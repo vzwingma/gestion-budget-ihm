@@ -6,13 +6,17 @@ import {
     AssuredWorkloadRounded,
     AtmRounded,
     BalanceRounded,
+    BrunchDiningRounded,
     CarRentalRounded,
     ConstructionRounded,
     ContactPhoneRounded,
+    CreditScoreRounded,
     CurrencyExchangeRounded,
+    DescriptionRounded,
     DirectionsBusRounded,
     ElectricBoltRounded,
     ElectricCarRounded,
+    EmojiTransportationRounded,
     EuroSymbolRounded,
     GasMeterRounded,
     HealthAndSafetyRounded,
@@ -22,11 +26,13 @@ import {
     LocalHospitalRounded,
     LocalParkingRounded,
     LocalTaxiRounded,
+    MedicationLiquidRounded,
     NoCrashRounded,
     PhoneAndroidRounded,
     QuestionMarkRounded,
     RestaurantMenuRounded,
     ShoppingCartCheckoutRounded,
+    SportsEsportsRounded,
     TollRounded,
     TravelExploreRounded,
     VolunteerActivismOutlined,
@@ -72,6 +78,9 @@ export function getSousCategorieIcon(operationSsCategorie) {
     if (operationSsCategorie != null) {
         switch (operationSsCategorie.id) {
             // VIREMENTS
+            case 'ea6dcc12-3349-4047-a1e5-cd1d7254f16e': // VIREMENTS
+                return <AccountBalanceRounded/>
+
             case '885e0d9a-6f3c-4002-b521-30169baf7123': // Remboursement
                 return <AddCardRounded/>
             case 'ed3f6100-5dbd-4b68-860e-0c97ae1bbc63': // Intercomptes
@@ -80,6 +89,9 @@ export function getSousCategorieIcon(operationSsCategorie) {
                 return <EuroSymbolRounded/>
 
             // DIVERS
+            case '94669a73-2563-4a31-8d67-35a8d96d8686': // DIVERS
+                return <SportsEsportsRounded/>
+
             case '76c99cbf-babb-40e6-ac13-0ac08661c9a7': // Dépense
                 return <AddShoppingCartRounded/>
             case '430a455b-e5ba-4b13-b031-bcf0e63f102e': // Retrait
@@ -90,6 +102,9 @@ export function getSousCategorieIcon(operationSsCategorie) {
                 return <ConstructionRounded/>
 
             // PRELEVEMENTS
+            case '504beea7-ed52-438a-aced-15e9603b82ab': // PRELEVEMENTS
+                return <CreditScoreRounded/>
+
             case '6ae3d4c2-f0cc-4abc-b0ce-da39c1a06846': // Assurance
                 return <AssuredWorkloadRounded/>
             case 'dc5a2d65-19f5-4f3d-a44a-e63e9abe3ac6': // Loyer
@@ -110,12 +125,18 @@ export function getSousCategorieIcon(operationSsCategorie) {
                 return <AccountBalanceRounded/>
 
             // FRAIS REMBOURSABLES
+            case 'b20a46a5-92ab-47a8-a70d-ecb64ddf02ce': // FRAIS REMBOURSABLES
+                return <MedicationLiquidRounded/>
+
             case '6e96b0c3-ecc5-4be8-8087-0087b5e46baf': // Santé
                 return <HealthAndSafetyRounded/>
             case 'bd28c498-a774-4a67-b6ec-a135d39fca46': // Pro
                 return <ContactPhoneRounded/>
 
             // TRANSPORT
+            case 'c35fde2a-55ec-4a27-9519-5ef5daf46799': // TRANSPORTS
+                return <EmojiTransportationRounded/>
+
             case 'e9dadc12-73d2-4956-8936-044115de7723': // Taxi
                 return <LocalTaxiRounded/>
             case 'cdd8dbcf-1475-4bd7-b69c-20467f844d91': // Parking
@@ -134,16 +155,22 @@ export function getSousCategorieIcon(operationSsCategorie) {
                 return <DirectionsBusRounded/>
 
             // FRAIS
+            case '270f314a-b3e5-4e05-bc96-4e2fadc4a9d3': // FRAIS
+                return <DescriptionRounded/>
+
             case 'eeb2f9a5-49b4-4c44-86bf-3bd626412d8e': // Santé
                 return <LocalHospitalRounded/>
             case 'f9cbdc91-73d2-4956-8936-044115de7723': // Banque
                 return <AccountBalanceWalletRounded/>
 
             // ALIMENTATION
+            case '8f1614c9-503c-4e7d-8cb5-0c9a9218b84a': // ALIMENTATION
+                return <RestaurantMenuRounded/>
+
             case '62607c4a-b32d-4abf-85c7-ac0c10cdb65c': // Cantine
                 return <LocalCafeRounded/>
             case '84022f20-f31a-4369-a4bb-de62ab778fd0': // Restaurant
-                return <RestaurantMenuRounded/>
+                return <BrunchDiningRounded/>
             case '467496e4-9059-4b9b-8773-21f230c8c5c6': // Courses
                 return <ShoppingCartCheckoutRounded/>
 

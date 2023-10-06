@@ -75,17 +75,10 @@ export default class Analyse extends Component {
                 <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
                     <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}/></Grid2>
                     <Grid2 md={7}>
-                        { /** Soldes **/}
-                        {this.state.currentBudget != null ?
-                            <CircularProgress/> : <CircularProgress/>
-                        }
+
                     </Grid2>
                     <Grid2 md={1}>
-                        {/** Actions sur le budget (close / reinit) **/
-                            (this.state.currentBudget != null && this.state.user_droits != null) ?
-                                <CircularProgress/> :
-                                <CircularProgress/>
-                        }
+
                     </Grid2>
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
