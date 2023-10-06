@@ -1,3 +1,5 @@
+import * as AppConstants from "./AppBusinessEnums.constants";
+
 /**
  * Ajout de leading zero devant une valeur
  * @param num nombre à compléter
@@ -13,7 +15,9 @@ export function addLeadingZeros(num) {
  * @returns {string} chaine sur 2 caractères avec des 0
  */
 export function addEndingZeros(num) {
+
     let n = num.toLocaleString('us-US');
+    n = n.replaceAll(".", ",")
     if(n.indexOf(',') > 0){
         let r = n.substring(n.indexOf(',')+1)
         let e = n.substring(0, n.indexOf(','))
@@ -26,17 +30,37 @@ export function addEndingZeros(num) {
 
 
 /**
- * Calcul d'un libellé d'une date depuis son time in ms
- * @param dateString date en string
- * @returns {string} date au format issu du pattern
+ * Recherche de l'id d'un élément DOM depuis le target du click
+ * @param eventTarget event Target
+ * @returns {*} ID du DOM
  */
-export function getRenderLibelleDate(dateString){
-    if( dateString != null){
-        let date = new Date(Date.parse(dateString))
-        return addLeadingZeros(date.getDate()) + "/" + addLeadingZeros(date.getMonth()+1) +"/" + date.getFullYear();
+export function getEventTargetId(eventTarget) {
+    if (eventTarget != null) {
+        if (eventTarget.id !== null && eventTarget.id !== "") {
+            return eventTarget.id;
+        } else {
+            return getEventTargetId(eventTarget.parentNode);
+        }
     }
-    return "-"
 }
+
+/**
+ * Retourne le label Fr d'une date
+ * @param dateOperation date à afficher
+ * @returns {string} label FR de la date
+ */
+export function getLabelDate(dateOperation) {
+    return new Date(Date.parse(dateOperation)).toLocaleDateString("fr");
+}
+
+
+
+
+
+
+
+
+
 
 /**
  * Calcul d'un libellé d'une date depuis son time in ms
@@ -67,92 +91,83 @@ export function getDateFromDateTime(dateTime){
 
 /**
  * Tri par libellé
- * @param lib1 premier libellé
- * @param lib2 2ème libellé
+ * @param categorie1 premier libellé
+ * @param categorie2 2ème libellé
  * @returns {number} comparaison
  */
-export function sortLibellesCategories(lib1, lib2) {
-    if (lib1.text > lib2.text) {
+export function sortLibellesCategories(categorie1, categorie2) {
+
+    if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
         return 1;
-    }
-    if (lib1.text < lib2.text) {
+    } else if (categorie1.categorieParente.libelle < categorie2.categorieParente.libelle) {
+        return -1;
+    } else if (categorie1.libelle > categorie2.libelle) {
+        return 1;
+    } else if (categorie1.libelle < categorie2.libelle) {
         return -1;
     }
     return 0;
 }
 
+
 /**
- * Tri par date
- * @param strDate1 : string premiere date
- * @param strDate2 : string 2ème date
+ * Tri des opérations, par date sinon par statut
+ * @param {Operation} ope1 :  1ère opération
+ * @param {Operation} ope2 2ème opération
  * @returns {number} comparaison
  */
-export function sortDatesOperation(strDate1, strDate2) {
-    let libDate1 = strDate1.trim();
-    let libDate2 = strDate2.trim();
-    let sort;
+export function sortOperations(ope1, ope2) {
 
-    if((libDate1 === null || libDate1 === '-') && (libDate2 === null || libDate2 === '-')){
-        sort = 0;
-    }
-    else if((libDate1 === null || libDate1 === '-')){
-        sort = -1;
-    }
-    else if((libDate2 === null || libDate2 === '-')){
-        sort = 1;
-    }
-    else{
-        const pattern = /(\d{2})\/(\d{2})\/(\d{4})/;
-        let date1 = new Date(libDate1.replace(pattern,'$3-$2-$1'));
-        let date2 = new Date(libDate2.replace(pattern,'$3-$2-$1'))
-        if (date1 >= date2) {
-            sort = 1;
-        }
-        else if (date1 < date2) {
-            sort = -1;
-        }
-        else{
-            sort = 0;
+    // Premier TRI : Par date
+    if (ope1.autresInfos.dateOperation === null && ope2.autresInfos.dateOperation !== null) {
+        return -1;
+    } else if (ope2.autresInfos.dateOperation === null && ope1.autresInfos.dateOperation !== null) {
+        return 1;
+    } else {
+        let date1 = ope1.autresInfos.dateOperation
+        let date2 = ope2.autresInfos.dateOperation
+        if (date1 > date2) {
+            return -1;
+        } else if (date1 < date2) {
+            return 1;
         }
     }
-    return sort;
+
+    const rangOpe1 = getRangEtatOperation(ope1.etat)
+    const rangOpe2 = getRangEtatOperation(ope2.etat)
+
+    // 2ème TRI : par Etat
+    if (rangOpe1 > rangOpe2) {
+        return 1;
+    } else if (rangOpe1 < rangOpe2) {
+        return -1;
+    }
+
+    // 3ème TRI : par date mise à jour
+    let dateM1 = ope1.autresInfos.dateMaj
+    let dateM2 = ope2.autresInfos.dateMaj
+    if (dateM1 > dateM2) {
+        return -1;
+    } else if (dateM1 < dateM2) {
+        return 1;
+    }
+    // Normalement n'arrive jamais
+    return 0;
+
 }
 
 
-
-/** Libellé du badge Mensualité
- * @param periode : string enum période
- * */
-
-export function getLibellePeriode(periode){
-    switch (periode) {
-        case "MENSUELLE":
-            return "Mensuelle";
-        case "TRIMESTRIELLE":
-            return "Trimestrielle";
-        case "SEMESTRIELLE":
-            return "Semestrielle";
-        case "ANNUELLE":
-            return "Annuelle";
-        default:
-            return "";
-    }
-}
-
-/** Couleur du background du badge Mensualité
- * @param periode : string enum période
- * */
-export function getBackgroundColorForPeriode(periode){
-    switch (periode) {
-        case "MENSUELLE":
-            return "default";
-        case "TRIMESTRIELLE":
-            return "info";
-        case "SEMESTRIELLE":
-            return "warning";
-        case "ANNUELLE":
-            return "error";
-        default:
-            return "default"
+/**
+ * Rang opération
+ * @param etatOperation
+ * @returns {number}
+ */
+function getRangEtatOperation(etatOperation) {
+    let rang = 0;
+    for (let etat in AppConstants.OPERATION_ETATS_ENUM) {
+        if (etat === etatOperation) {
+            return rang;
+        }
+        rang++;
     }
 }

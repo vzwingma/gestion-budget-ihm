@@ -40,9 +40,6 @@ export default class Infos extends Component {
                         <TableCell> <img src="/img/icon.png" width="300" height="300" className="d-inline-block align-middle" alt="Gestion de budgets"/> </TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell> Environnement : <b>{process.env.NODE_ENV}</b> </TableCell>
-                    </TableRow>
-                    <TableRow>
                         <TableCell>
                         <Table size={"small"}>
                             <TableBody v>

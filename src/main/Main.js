@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Routes, Route, NavLink, HashRouter} from "react-router-dom";
-import { AuthProvider } from 'react-oidc-context';
-import * as AppConstants from "./Utils/AppEnums.constants"
-import Budgets from "./budgets/budgets/Budgets.component";
+import React, {Component} from "react";
+import {HashRouter, Route, Routes} from "react-router-dom";
+import {AuthProvider} from 'react-oidc-context';
+import * as AppConstants from "./Utils/AppTechEnums.constants"
+import Analyses from "./analyses/Analyses.component";
 import Infos from "./infos/Infos.component";
-import { removeTokenFromStorage} from "./Services/Auth.service";
+import {removeTokenFromStorage} from "./Services/Auth.service";
 
-import {AppBar, Container, Stack, Toolbar, Typography} from "@mui/material";
+import {AppBar, Stack, Typography} from "@mui/material";
 import Profile from "./menubar/Profile.component";
 import PrivateNavLinks from "./menubar/PrivateNavLinks.component";
-
+import MainBudget from "./budgets/MainBudgets.component";
 
 
 /** Page principale avec le routeur **/
@@ -35,35 +35,36 @@ export default class Main extends Component {
     return (
         <HashRouter>
             <AuthProvider {...this.oidcConfig}>
-                <AppBar position={"fixed"}>
-                    <Toolbar>
-                        <Typography variant="h6" component="div" noWrap sx={{ flexGrow: 1, fontWeight: 700,fontSize: "1.2rem" }}>
-                            <Stack direction="row">
-                                <img src="/img/favicon64.png" width="60" height="60" alt="Gestion de budgets"/>
-                                <NavLink className="nav-link" to="/infos">Infos</NavLink>
+                <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+                    <Stack direction="row" alignItems="flex-start" spacing={1}>
+                        <img src="/img/favicon64.png" width="60" height="60" style={{margin: "4px"}}
+                             alt="Gestion de budgets"/>
+                        <Typography variant="h6" component="div" noWrap
+                                    sx={{flexGrow: 1, fontWeight: 700, fontSize: "1.2rem"}}>
                                 <PrivateNavLinks/>
-                            </Stack>
                         </Typography>
-                        <Container fixed/>
                         <Typography variant="h6" noWrap component="div"
-                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' },
-                                    fontWeight: 300,
-                                    fontSize: "1rem",
-                                    color: 'inherit',
-                                    textDecoration: 'none',        }} >
+                                    sx={{
+                                        mr: 2, display: {xs: 'none', md: 'flex'},
+                                        fontWeight: 300,
+                                        fontSize: "1rem",
+                                        color: 'inherit',
+                                        textDecoration: 'none',
+                                    }}>
                             <Profile/>
                         </Typography>
-                    </Toolbar>
+                    </Stack>
                 </AppBar>
                 <div className="App">
                     <Routes>
                         <Route path="/"         element={<Infos/>}/>
-                        <Route path="/budgets"  element={<Budgets/>} />
+                        <Route path="/budgets" element={<MainBudget/>}/>
+                        <Route path="/analyses" element={<Analyses/>}/>
                         <Route path="/infos"    element={<Infos/>}/>
                     </Routes>
                 </div>
             </AuthProvider>
         </HashRouter>
-    );
+    )
   }
 }

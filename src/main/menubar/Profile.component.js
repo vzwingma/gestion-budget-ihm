@@ -1,6 +1,6 @@
 import React from "react";
-import { useAuth } from "react-oidc-context";
-import { Tooltip, Typography} from "@mui/material";
+import {useAuth} from "react-oidc-context";
+import {CircularProgress, Tooltip, Typography} from "@mui/material";
 import {putTokenInStorage, removeTokenFromStorage} from '../Services/Auth.service'
 import ProfileInfos from "./ProfileInfos.component";
 
@@ -26,7 +26,7 @@ function Profile() {
 
 
     if (auth.isLoading) {
-        return <div>Chargement...</div>;
+        return <CircularProgress/>;
     }
 
     if (auth.error) {
@@ -41,7 +41,8 @@ function Profile() {
 
                 <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
                     <Tooltip title={  auth.user?.profile.name }>
-                        <img onClick={ logOut } src={ auth.user?.profile.picture } width="60" height="60" alt="User loggé"  referrerPolicy="no-referrer"/>
+                        <img onClick={logOut} src={auth.user?.profile.picture} width="60" height="60"
+                             style={{margin: "4px"}} alt="User loggé" referrerPolicy="no-referrer"/>
                     </Tooltip>
                 </Typography>
             </>
