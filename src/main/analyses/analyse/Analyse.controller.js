@@ -23,7 +23,7 @@ export function calculateResumes(budgetData) {
     let operationsGroupedByCategories = budgetData.listeOperations
         .reduce((group, operation) => {
             this.populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat);
-            //  this.populateCategorie(operation.resumesSsCategories, operation, operation.ssCategorie);
+            this.populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat);
             return group;
         }, {});
 
@@ -40,8 +40,10 @@ export function calculateResumes(budgetData) {
  */
 export function populateCategorie(group, operation, categorie, totauxParEtats) {
 
+
     group[categorie.id] = group[categorie.id] ?? this.createNewResumeCategorie();
     group[categorie.id].categorie = categorie;
+
     if (operation.etat === "REALISEE") {
         group[categorie.id].nbTransactions = group[categorie.id].nbTransactions + 1;
         group[categorie.id].totalRealise = group[categorie.id].totalRealise + operation.valeur;
@@ -49,7 +51,6 @@ export function populateCategorie(group, operation, categorie, totauxParEtats) {
     } else if (operation.etat === "PREVUE") {
         group[categorie.id].nbTransactionsPrevues = group[categorie.id].nbTransactionsPrevues + 1;
         group[categorie.id].totalPrevue = group[categorie.id].totalPrevue + operation.valeur;
-
     }
 
 }

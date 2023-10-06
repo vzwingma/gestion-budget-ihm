@@ -37,7 +37,7 @@ const OperationItem = ({operation, listeComptes, onClick}) => {
                              padding: '6px',
                              color: '#FFFFFF'
                          }}>
-                        <center>{Renderer.getSousCategorieIcon(operation.ssCategorie)}</center>
+                        <center>{Renderer.getCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
                 </Grid2>
                 <Grid2 md={7}>

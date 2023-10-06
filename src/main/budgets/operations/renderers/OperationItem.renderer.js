@@ -74,7 +74,7 @@ export function getCategorieColor(operationCategorie) {
 }
 
 // Icone Sous catégories
-export function getSousCategorieIcon(operationSsCategorie) {
+export function getCategorieIcon(operationSsCategorie) {
     if (operationSsCategorie != null) {
         switch (operationSsCategorie.id) {
             // VIREMENTS

@@ -32,7 +32,7 @@ const CategoriesItem = ({resumeCategorie}) => {
                              padding: '6px',
                              color: '#FFFFFF'
                          }}>
-                        <center>{Renderer.getSousCategorieIcon(resumeCategorie.categorie)}</center>
+                        <center>{Renderer.getCategorieIcon(resumeCategorie.categorie)}</center>
                     </Box>
                 </Grid2>
                 <Grid2 md={7}>

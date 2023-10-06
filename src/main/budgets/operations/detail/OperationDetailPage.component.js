@@ -213,7 +213,7 @@ class OperationDetailPage extends Component {
                              backgroundColor: Renderer.getCategorieColor(operation.categorie), color: '#FFFFFF',
                              padding: '16px 8px 0px 8px'
                          }}>
-                        <center>{Renderer.getSousCategorieIcon(operation.ssCategorie)}</center>
+                        <center>{Renderer.getCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
 
                     { /** VALEUR **/}
