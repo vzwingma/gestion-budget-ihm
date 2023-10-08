@@ -1,4 +1,3 @@
-import {toast} from "react-toastify";
 import {PERIODES_MENSUALITE_ENUM} from "../../Utils/AppBusinessEnums.constants";
 import {sortOperations} from "../../Utils/DataUtils.utils";
 
@@ -22,8 +21,8 @@ import {sortOperations} from "../../Utils/DataUtils.utils";
             return group;
         }, {});
 
-    this.setState({currentBudget: budgetData, operationsGroupedByDateOperation: operationsGroupedByDateOperation})
-    toast.success("Chargement du budget correctement effectué ")
+    this.setState({currentBudget: budgetData, operationsGroupedByDateOperation: operationsGroupedByDateOperation});
+    console.log("Chargement du budget correctement effectué");
     }
 
 /**
