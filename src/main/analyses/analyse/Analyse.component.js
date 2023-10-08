@@ -4,7 +4,6 @@ import * as Controller from './Analyse.controller'
 import * as Services from './Analyse.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {Box, CircularProgress, Divider} from "@mui/material";
-import OperationDetailPage from "../../budgets/operations/detail/OperationDetailPage.component";
 import MenuIcon from '@mui/icons-material/Menu';
 import CategoriesListe from "../categories/CategoriesListe.component";
 
@@ -18,11 +17,11 @@ export default class Analyse extends Component {
     /** Etats pour la page Budget **/
     state = {
         currentBudget: null,
-        currentOperation: null,
         operationsGroupedByCategories: null,
 
         selectedCompte: this.props.selectedCompte,
         selectedDate: this.props.selectedDate,
+        resumeSelectedCategorie: null,
 
         categories: null
     }
@@ -35,6 +34,9 @@ export default class Analyse extends Component {
         this.calculateResumes = Controller.calculateResumes.bind(this);
         this.createNewResumeCategorie = Controller.createNewResumeCategorie.bind(this);
         this.populateCategorie = Controller.populateCategorie.bind(this);
+
+        this.handleCategorieSelect = Controller.handleCategorieSelect.bind(this);
+
     }
 
 
@@ -62,6 +64,10 @@ export default class Analyse extends Component {
             console.log("[TRIGGER] Context operation=" + (nextStates.currentOperation !== null ? nextStates.currentOperation.id : "Nouvelle opération"))
             componentUpdate = true;
         }
+        if (this.state.resumeSelectedCategorie !== nextStates.resumeSelectedCategorie) {
+            console.log("[TRIGGER] Context Resumé Catégorie=" + nextStates.resumeSelectedCategorie.categorie.id)
+            componentUpdate = true;
+        }
         return componentUpdate;
     }
 
@@ -83,26 +89,29 @@ export default class Analyse extends Component {
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
                 <Grid2 container sx={{overflow: "hidden"}}>
-                    <Grid2 md={4} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
+                    <Grid2 md={2} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
                         { /** Liste des catégories **/
                             (this.state.currentBudget != null ?
                                     <CategoriesListe
-                                        operationsGroupedByCategories={this.state.operationsGroupedByCategories}/>
+                                        operationsGroupedByCategories={this.state.operationsGroupedByCategories}
+                                        onClick={this.handleCategorieSelect}/>
+                                    :
+                                    <CircularProgress/>
+                            )
+                        }
+                    </Grid2>
+                    <Grid2 md={2} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
+                        { /** Liste des sous-catégories **/
+                            (this.state.currentBudget !== null && this.state.resumeSelectedCategorie !== null ?
+                                    <CategoriesListe
+                                        operationsGroupedByCategories={this.state.resumeSelectedCategorie.resumesSsCategories}/>
                                     :
                                     <CircularProgress/>
                             )
                         }
                     </Grid2>
                     <Grid2 md={8} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
-                        {this.state.currentBudget != null && this.state.currentOperation != null ?
-                            /** Affichage d'une opération **/
-                            <OperationDetailPage operation={this.state.currentOperation}
-                                                 budget={this.state.currentBudget}
-                                                 listeCategories={this.state.categories}
-                                                 listeComptes={this.props.listeComptes}
-                                                 onOperationChange={this.calculateResumes}/>
-                            : <></>
-                        }
+                        <CircularProgress/>
                     </Grid2>
                 </Grid2>
             </Box>

@@ -6,13 +6,13 @@ import CategoriesItem from "./CategoriesListItem.component";
 /**
  * Tuile d'une liste de catégories
  * @param operationsGroupedByCategories opérations groupées par catégories
+ * @param selection d'une catégorie
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const CategoriesListe = ({operationsGroupedByCategories}) => {
-
+const CategoriesListe = ({operationsGroupedByCategories, onClick}) => {
     /**
      * Iterate groupe
      * @param operationsGroupedByCategories liste des opérations par catégories
@@ -24,7 +24,8 @@ const CategoriesListe = ({operationsGroupedByCategories}) => {
         for (let categorieId in operationsGroupedByCategories) {
 
             renderList.push(
-                <CategoriesItem resumeCategorie={operationsGroupedByCategories[categorieId]}/>
+                <CategoriesItem resumeCategorie={operationsGroupedByCategories[categorieId]}
+                                onClick={() => onClick(operationsGroupedByCategories[categorieId])}/>
             );
         }
         return renderList;

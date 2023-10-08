@@ -1,8 +1,9 @@
 import {toast} from "react-toastify";
-import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
+import * as Renderer from "../../budgets/operations/renderers/OperationItem.renderer";
 
 /**
- * Controleur des budgets
+ * Controleur des analyses
  */
 
 /**
@@ -23,8 +24,9 @@ export function calculateResumes(budgetData) {
     let operationsGroupedByCategories = budgetData.listeOperations
         .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE)
         .reduce((group, operation) => {
-            this.populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat);
-            this.populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat);
+            let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
+            this.populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
+            this.populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
             return group;
         }, {});
 
@@ -38,12 +40,14 @@ export function calculateResumes(budgetData) {
  * @param operation opération à traiter
  * @param categorie catégorie
  * @param totauxParEtats totauxParEtats
+ * @param couleurCategorie couleur de la catégorie (et ses ssous catégories
  */
-export function populateCategorie(group, operation, categorie, totauxParEtats) {
+export function populateCategorie(group, operation, categorie, totauxParEtats, couleurCategorie) {
 
 
     group[categorie.id] = group[categorie.id] ?? this.createNewResumeCategorie();
     group[categorie.id].categorie = categorie;
+    group[categorie.id].couleurCategorie = couleurCategorie;
 
     if (operation.etat === "REALISEE") {
         group[categorie.id].nbTransactions = group[categorie.id].nbTransactions + 1;
@@ -59,14 +63,14 @@ export function populateCategorie(group, operation, categorie, totauxParEtats) {
 
 /**
  * Sélection d'une opération
- * @param operation opération
+ * @param resumeSelectedCategorie opération
  */
-export function handleOperationSelect(operation) {
-    if (operation.mensualite == null) {
-        operation.mensualite = {periode: PERIODES_MENSUALITE_ENUM.at(0)}
-    }
-    this.setState({currentOperation: operation})
+export function handleCategorieSelect(resumeSelectedCategorie) {
+    console.log(resumeSelectedCategorie)
+    this.setState({resumeSelectedCategorie: resumeSelectedCategorie})
 }
+
+
 
 /**
  * Création d'un résumé de catégorie
@@ -77,6 +81,7 @@ export function createNewResumeCategorie() {
     let newResumeCategorie: ResumeCategorie =
         {
             categorie: {},
+            couleurCategorie: "#808080",
             resumesSsCategories: {},
             nbTransactions: 0,
             nbTransactionsPrevues: 0,
