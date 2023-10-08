@@ -241,9 +241,10 @@ export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
         const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
         if (operationLibelleParts != null) {
             const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
+            const direction = operationLibelleParts[1] === "[vers " ? "vers" : "depuis"
             const compte = (listeComptes.filter((compte) => compte.libelle === operationLibelleParts[2]))
             if (compte[0]?.libelle) {
-                return <Tooltip title={"Transfert intercompte vers " + compte[0].libelle}>
+                return <Tooltip title={"Transfert intercompte " + direction + " " + compte[0].libelle}>
                     {operationLibelleParts[1].startsWith("[En Retard]") ?
                         <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
                     <img src={"/img/banques/" + compte[0].icon}
