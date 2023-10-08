@@ -60,17 +60,19 @@ export function handleValidateOperationForm() {
         }
 
         // Valeur
-        if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
-            errors.valeur = "Le champ Valeur est obligatoire";
-            hasErrors = true;
-        } else {
-            let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
-
-            if (!/(^\d*.\d{2}$)/.test(valeur)) {
-                errors.valeur = "Le format est incorrect : 0000.00 €";
+        if (this.state.editForm.value) {
+            if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
+                errors.valeur = "Le champ Valeur est obligatoire";
                 hasErrors = true;
             } else {
-                this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
+                let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
+                console.log(valeur)
+                if (!/(^\d*.\d{2}$)/.test(valeur)) {
+                    errors.valeur = "Le format est incorrect : 0000.00 €";
+                    hasErrors = true;
+                } else {
+                    this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
+                }
             }
         }
 
@@ -96,7 +98,6 @@ export function handleValidateOperationForm() {
         if (hasErrors) {
             this.setState({errors: errors})
         } else {
-
 
             if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES) {
                 // Create Update Opération Intercomptes

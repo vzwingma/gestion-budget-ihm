@@ -118,7 +118,7 @@ export function sortLibellesCategories(categorie1, categorie2) {
  */
 export function sortOperations(ope1, ope2) {
 
-    // Premier TRI : Par date
+    // Premier TRI : Par date d'opération
     if (ope1.autresInfos.dateOperation === null && ope2.autresInfos.dateOperation !== null) {
         return -1;
     } else if (ope2.autresInfos.dateOperation === null && ope1.autresInfos.dateOperation !== null) {
