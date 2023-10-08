@@ -66,7 +66,6 @@ export function handleValidateOperationForm() {
                 hasErrors = true;
             } else {
                 let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
-
                 if (!/(^\d*.\d{2}$)/.test(valeur)) {
                     errors.valeur = "Le format est incorrect : 0000.00 €";
                     hasErrors = true;
@@ -99,7 +98,6 @@ export function handleValidateOperationForm() {
             console.log(errors)
             this.setState({errors: errors})
         } else {
-
 
             if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES) {
                 // Create Update Opération Intercomptes
