@@ -60,20 +60,21 @@ export function handleValidateOperationForm() {
         }
 
         // Valeur
-        if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
-            errors.valeur = "Le champ Valeur est obligatoire";
-            hasErrors = true;
-        } else {
-            let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
-
-            if (!/(^\d*.\d{2}$)/.test(valeur)) {
-                errors.valeur = "Le format est incorrect : 0000.00 €";
+        if (this.state.editForm.value) {
+            if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
+                errors.valeur = "Le champ Valeur est obligatoire";
                 hasErrors = true;
             } else {
-                this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
+                let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
+
+                if (!/(^\d*.\d{2}$)/.test(valeur)) {
+                    errors.valeur = "Le format est incorrect : 0000.00 €";
+                    hasErrors = true;
+                } else {
+                    this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
+                }
             }
         }
-
         // DateOperation
         this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
 
@@ -94,6 +95,8 @@ export function handleValidateOperationForm() {
         }
 
         if (hasErrors) {
+            console.log("Erreurs présentes dans le formulaire")
+            console.log(errors)
             this.setState({errors: errors})
         } else {
 
