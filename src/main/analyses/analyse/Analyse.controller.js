@@ -65,9 +65,8 @@ export function populateCategorie(group, operation, categorie, totauxParEtats, c
  * Sélection d'une opération
  * @param resumeSelectedCategorie opération
  */
-export function handleCategorieSelect(resumeSelectedCategorie) {
-    console.log(resumeSelectedCategorie)
-    this.setState({resumeSelectedCategorie: resumeSelectedCategorie})
+export function handleCategorieSelect(rang, resumeSelectedCategorie) {
+    this.setState({rangSelectedCategorie: rang, resumeSelectedCategorie: resumeSelectedCategorie})
 }
 
 

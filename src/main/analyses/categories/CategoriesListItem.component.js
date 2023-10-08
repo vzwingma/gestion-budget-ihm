@@ -23,7 +23,7 @@ const CategoriesItem = ({resumeCategorie, onClick}) => {
                      color: '#808080',
                      cursor: 'pointer',
                  }
-             }} onClick={() => onClick(resumeCategorie)}>
+             }} onClick={() => onClick()}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
                     <Box width={25} height={25}

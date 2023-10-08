@@ -1,10 +1,11 @@
 import React from 'react'
-import {Divider, Stack} from "@mui/material";
+import {Box, Divider, Stack} from "@mui/material";
 import CategoriesItem from "./CategoriesListItem.component";
 
 
 /**
  * Tuile d'une liste de catégories
+ * @param rangSelectedCategorie : rang de la catégorie
  * @param operationsGroupedByCategories opérations groupées par catégories
  * @param selection d'une catégorie
  * @returns {JSX.Element} tuile
@@ -12,7 +13,7 @@ import CategoriesItem from "./CategoriesListItem.component";
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const CategoriesListe = ({operationsGroupedByCategories, onClick}) => {
+const CategoriesListe = ({rangSelectedCategorie, operationsGroupedByCategories, onClick}) => {
     /**
      * Iterate groupe
      * @param operationsGroupedByCategories liste des opérations par catégories
@@ -22,22 +23,30 @@ const CategoriesListe = ({operationsGroupedByCategories, onClick}) => {
 
         let renderList = []
         for (let categorieId in operationsGroupedByCategories) {
-
+            const r = renderList.length
             renderList.push(
-                <CategoriesItem resumeCategorie={operationsGroupedByCategories[categorieId]}
-                                onClick={() => onClick(operationsGroupedByCategories[categorieId])}/>
+                <CategoriesItem key={categorieId}
+                                resumeCategorie={operationsGroupedByCategories[categorieId]}
+                                onClick={() => onClick(r, operationsGroupedByCategories[categorieId])}/>
             );
         }
         return renderList;
     }
 
 
-    return <Stack divider={<Divider orientation="horizontal"/>}
-                  sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
+    return <Box sx={{height: window.innerHeight - 175, overflow: "hidden"}}>
         {
-            iterate(operationsGroupedByCategories)
+            (rangSelectedCategorie !== null) ? <Box width={25} height={rangSelectedCategorie * 73}></Box> : <></>
         }
-    </Stack>
+        <Stack divider={<Divider orientation="horizontal"/>}
+               sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
+            <></>
+            {
+                iterate(operationsGroupedByCategories)
+            }
+            <></>
+        </Stack>
+    </Box>
 };
 
 export default CategoriesListe

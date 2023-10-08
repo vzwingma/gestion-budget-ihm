@@ -93,6 +93,7 @@ export default class Analyse extends Component {
                         { /** Liste des catégories **/
                             (this.state.currentBudget != null ?
                                     <CategoriesListe
+                                        rangSelectedCategorie={null}
                                         operationsGroupedByCategories={this.state.operationsGroupedByCategories}
                                         onClick={this.handleCategorieSelect}/>
                                     :
@@ -104,6 +105,7 @@ export default class Analyse extends Component {
                         { /** Liste des sous-catégories **/
                             (this.state.currentBudget !== null && this.state.resumeSelectedCategorie !== null ?
                                     <CategoriesListe
+                                        rangSelectedCategorie={this.state.rangSelectedCategorie}
                                         operationsGroupedByCategories={this.state.resumeSelectedCategorie.resumesSsCategories}/>
                                     :
                                     <CircularProgress/>
