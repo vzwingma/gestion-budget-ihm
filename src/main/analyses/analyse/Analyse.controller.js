@@ -1,5 +1,5 @@
 import {toast} from "react-toastify";
-import {PERIODES_MENSUALITE_ENUM} from "../../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../../Utils/AppBusinessEnums.constants";
 
 /**
  * Controleur des budgets
@@ -13,14 +13,15 @@ export function calculateResumes(budgetData) {
     console.log("Calcul de l'analyse du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
 
     let totauxGroupedByEtat = budgetData.listeOperations
-        .filter(operation => operation.etat === "PREVUE" || operation.etat === "REALISEE")
+        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.PREVUE || operation.etat === OPERATION_ETATS_ENUM.REALISEE)
         .reduce((group, operation) => {
             group[operation.etat] = group[operation.etat] ?? 0;
-            group[operation.etat] = group[operation.etat] + operation.valeur
+            group[operation.etat] = group[operation.etat] + Math.abs(operation.valeur)
             return group;
         }, {});
 
     let operationsGroupedByCategories = budgetData.listeOperations
+        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE)
         .reduce((group, operation) => {
             this.populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat);
             this.populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat);
@@ -28,7 +29,7 @@ export function calculateResumes(budgetData) {
         }, {});
 
     this.setState({currentBudget: budgetData, operationsGroupedByCategories: operationsGroupedByCategories})
-    toast.success("Chargement du budget correctement effectué ")
+    toast.success("Analyse du budget correctement effectué ")
 }
 
 /**
@@ -47,7 +48,7 @@ export function populateCategorie(group, operation, categorie, totauxParEtats) {
     if (operation.etat === "REALISEE") {
         group[categorie.id].nbTransactions = group[categorie.id].nbTransactions + 1;
         group[categorie.id].totalRealise = group[categorie.id].totalRealise + operation.valeur;
-        group[categorie.id].pourcentage = Math.round((group[categorie.id].totalRealise / totauxParEtats["REALISEE"]) * 100);
+        group[categorie.id].pourcentage = Math.round((Math.abs(group[categorie.id].totalRealise) / Math.abs(totauxParEtats["REALISEE"])) * 100);
     } else if (operation.etat === "PREVUE") {
         group[categorie.id].nbTransactionsPrevues = group[categorie.id].nbTransactionsPrevues + 1;
         group[categorie.id].totalPrevue = group[categorie.id].totalPrevue + operation.valeur;
