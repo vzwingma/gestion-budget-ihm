@@ -46,7 +46,9 @@ export default class MainBudget extends Component {
                         <DateRange onDateChange={this.handleDateChange} selectedDate={this.state.selectedDate}/>
 
                         <Stack divider={<Divider orientation="horizontal" flexItem/>}>
-                            {this.state.comptes.map((compte) => (
+                            {this.state.comptes
+                                .filter((compte) => !compte.isDisabled)
+                                .map((compte) => (
                                 <CompteItem key={compte.id}
                                             compte={compte}
                                             selectedDate={this.state.selectedDate}

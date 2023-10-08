@@ -38,6 +38,7 @@ export default class Budget extends Component {
 
         this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
         this.handleButtonCreateClick = Controller.handleButtonCreateClick.bind(this);
+        this.createNewOperation = Controller.createNewOperation.bind(this);
 
         this.refreshBudget = Services.reloadBudget.bind(this);
         this.loadCategories = Services.loadCategories.bind(this);
