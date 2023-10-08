@@ -66,7 +66,6 @@ export function handleValidateOperationForm() {
                 hasErrors = true;
             } else {
                 let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
-                console.log(valeur)
                 if (!/(^\d*.\d{2}$)/.test(valeur)) {
                     errors.valeur = "Le format est incorrect : 0000.00 €";
                     hasErrors = true;
@@ -75,7 +74,6 @@ export function handleValidateOperationForm() {
                 }
             }
         }
-
         // DateOperation
         this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
 
@@ -96,6 +94,8 @@ export function handleValidateOperationForm() {
         }
 
         if (hasErrors) {
+            console.log("Erreurs présentes dans le formulaire")
+            console.log(errors)
             this.setState({errors: errors})
         } else {
 
