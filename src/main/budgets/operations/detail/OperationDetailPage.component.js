@@ -177,7 +177,7 @@ class OperationDetailPage extends Component {
         this.setState({editOperation: editOperation})
 
         /** Si type Virement **/
-        editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+        editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
 
         /** Adaptation sur la sélection de catégorie **/
 
@@ -217,8 +217,8 @@ class OperationDetailPage extends Component {
                     </Box>
 
                     { /** VALEUR **/}
-                    <Typography variant={"h4"} className={"editableField"}>
-                        {(!this.state.editForm.value) ?
+                    <Typography variant={"h4"} className={budget?.actif ? "editableField" : ""}>
+                        {(!this.state.editForm.value || !budget?.actif) ?
                             <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}
                                             id={OPERATION_EDITION_FORM_IDS.VALUE}/>
                             :
@@ -241,10 +241,11 @@ class OperationDetailPage extends Component {
                     </Typography>
 
                     { /** LIBELLE **/}
-                    <Typography variant={"button"} sx={{fontSize: "large"}} className={"editableField"}>
-                        {(!this.state.editForm.libelle) ?
-                            <span className={"editableField"}
-                                  id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}</span>
+                    <Typography variant={"button"} sx={{fontSize: "large"}}
+                                className={budget?.actif ? "editableField" : ""}>
+                        {(!this.state.editForm.libelle || !budget?.actif) ?
+                            <span
+                                id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}</span>
                             :
                             <TextField id={OPERATION_EDITION_FORM_IDS.LIBELLE + OPERATION_EDITION_FORM_IDS.INPUT}
                                        required label="Libellé"
@@ -277,7 +278,7 @@ class OperationDetailPage extends Component {
                         <Grid2 md={5}>
                             {
                                 /** CATEGORIES **/
-                                !this.state.editForm.categories ?
+                                !this.state.editForm.categories || !budget?.actif ?
                                     <Typography variant={"overline"}>
                                         {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                                     </Typography>
@@ -307,9 +308,9 @@ class OperationDetailPage extends Component {
                         </Grid2>
                         <Grid2 md={3}>
                             { /** PERIODE **/
-                                (!this.state.editForm.mensualite) ?
+                                (!this.state.editForm.mensualite || !budget?.actif) ?
                                     <Typography id={OPERATION_EDITION_FORM_IDS.MENSUALITE} variant={"overline"}
-                                                className={"editableField"}
+                                                className={budget?.actif ? "editableField" : ""}
                                                 color={Renderer.getPeriodeRenderer(operation.mensualite.periode).color}>
                                         {Renderer.getPeriodeRenderer(operation.mensualite.periode).text}
                                     </Typography>
@@ -349,7 +350,7 @@ class OperationDetailPage extends Component {
 
                         <Grid2 md={5}>
                             { /** COMPTE DE TRANSFERT  **/
-                                this.isInCreateMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
+                                budget?.actif && this.isInCreateMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
                                     <TextField
                                         id={OPERATION_EDITION_FORM_IDS.INTERCOMPTES + OPERATION_EDITION_FORM_IDS.INPUT}
                                         required select sx={{width: "90%"}}
@@ -383,9 +384,9 @@ class OperationDetailPage extends Component {
                         </Grid2>
                         <Grid2 md={3}>
                             { /** DATE OPERATION **/}
-                            {(!this.state.editForm.dateOperation) ?
+                            {(!this.state.editForm.dateOperation || !budget?.actif) ?
                                 <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
-                                            className={"editableField"}
+                                            className={budget?.actif ? "editableField" : ""}
                                             sx={{color: (operation.autresInfos.dateOperation != null ? "#000000" : "#E0E0E0")}}>
                                     {operation.autresInfos.dateOperation != null ? getLabelDate(operation.autresInfos.dateOperation) : "jj/mm/aaaa"}
                                 </Typography>
@@ -401,7 +402,7 @@ class OperationDetailPage extends Component {
                         </Grid2>
                     </Grid2>
 
-                    {this.isInEditMode() &&
+                    {budget?.actif && this.isInEditMode() &&
                         <Button
                             fullWidth
                             variant="outlined" color="success"

@@ -90,6 +90,7 @@ export default class Budget extends Component {
                     { /** Soldes **/}
                     {this.state.currentBudget != null ?
                         <BudgetsSoldes currentCompte={this.props.selectedCompte}
+                                       currentDate={this.props.selectedDate}
                                        currentBudget={this.state.currentBudget}/> : <CircularProgress/>
                     }
                 </Grid2>
