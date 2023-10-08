@@ -177,7 +177,7 @@ class OperationDetailPage extends Component {
         this.setState({editOperation: editOperation})
 
         /** Si type Virement **/
-        editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+        editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
 
         /** Adaptation sur la sélection de catégorie **/
 

@@ -1,10 +1,23 @@
 import OperationValue from '../operations/renderers/OperationSpanValue.renderer'
 import {Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
-/*
- * Page principale du solde
+import PropTypes from "prop-types";
+
+/**
+ * Page principale d'affichage du solde
+ * @param currentCompte compte courant
+ * @param currentDate date courante
+ * @param currentBudget budget courant
+ * @returns {JSX.Element} element JSX
+ * @constructor
  */
 const BudgetsSoldes = ({currentCompte, currentDate, currentBudget}) => {
+
+    BudgetsSoldes.propTypes = {
+        currentCompte: PropTypes.object.isRequired,
+        currentDate: PropTypes.any.isRequired,
+        currentBudget: PropTypes.object.isRequired
+    }
 
     // définition de la date courante
     const dateCourante = new Date(Date.now());
