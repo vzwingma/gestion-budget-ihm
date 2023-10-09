@@ -4,7 +4,7 @@ import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGrou
 import * as Controller from './Budget.controller'
 import * as Services from './Budget.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
-import BudgetsSoldes from "./BudgetSoldes.component";
+import BudgetTitre from "./BudgetTitre.component";
 import {Box, CircularProgress, Divider} from "@mui/material";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -88,9 +88,9 @@ export default class Budget extends Component {
             <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
                 <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}/></Grid2>
                 <Grid2 md={7}>
-                    { /** Soldes **/}
+                    { /** Titre **/}
                     {this.state.currentBudget != null ?
-                        <BudgetsSoldes currentCompte={this.props.selectedCompte}
+                        <BudgetTitre currentCompte={this.props.selectedCompte}
                                        currentDate={this.props.selectedDate}
                                        currentBudget={this.state.currentBudget}/> : <CircularProgress/>
                     }

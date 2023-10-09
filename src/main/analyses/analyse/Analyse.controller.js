@@ -1,6 +1,6 @@
 import {toast} from "react-toastify";
 import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
-import * as Renderer from "../../budgets/operations/renderers/OperationItem.renderer";
+import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
 
 /**
  * Controleur des analyses

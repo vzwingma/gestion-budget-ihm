@@ -7,6 +7,7 @@ import {Box, CircularProgress, Divider} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import CategoriesListe from "../categories/CategoriesListe.component";
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
+import AnalyseTitre from "./AnalyseTitre.component";
 
 /**
  * Page principale d'une analyse
@@ -83,7 +84,11 @@ export default class Analyse extends Component {
                 <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
                     <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}/></Grid2>
                     <Grid2 md={7}>
-
+                        {this.state.currentBudget != null ?
+                            <AnalyseTitre currentCompte={this.props.selectedCompte}
+                                          currentDate={this.props.selectedDate}
+                                          currentBudget={this.state.currentBudget}/> : <CircularProgress/>
+                        }
                     </Grid2>
                     <Grid2 md={1}>
 
@@ -91,7 +96,7 @@ export default class Analyse extends Component {
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
                 <Grid2 container sx={{overflow: "hidden"}}>
-                    <Grid2 md={2} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
+                    <Grid2 md={3} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
                         { /** Liste des catégories **/
                             (this.state.currentBudget != null ?
                                     <CategoriesListe
@@ -104,7 +109,7 @@ export default class Analyse extends Component {
                             )
                         }
                     </Grid2>
-                    <Grid2 md={2} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
+                    <Grid2 md={3} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
                         { /** Liste des sous-catégories **/
                             (this.state.currentBudget !== null && this.state.resumeSelectedCategorie !== null ?
                                     <CategoriesListe
@@ -117,7 +122,7 @@ export default class Analyse extends Component {
                             )
                         }
                     </Grid2>
-                    <Grid2 md={8} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
+                    <Grid2 md={6} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
                         {this.state.currentBudget != null ?
                             <GraphAnalyses
                                 typeAnalyse={this.state.selectedTypeAnalyse}

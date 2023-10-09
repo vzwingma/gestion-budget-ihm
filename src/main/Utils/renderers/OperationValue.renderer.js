@@ -1,7 +1,7 @@
 /**
  * Affichage d'une valeur dans la liste des opérations
  */
-import {addEndingZeros} from '../../../Utils/DataUtils.utils'
+import {addEndingZeros} from '../DataUtils.utils'
 
 /**
  * Affichage du style de l'opération suivant sa valeur

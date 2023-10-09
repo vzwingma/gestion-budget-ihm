@@ -1,8 +1,9 @@
 import React from 'react'
 import {Box, Stack, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import OperationValue from "./renderers/OperationSpanValue.renderer";
-import * as Renderer from "./renderers/OperationItem.renderer";
+import OperationValue from "../../Utils/renderers/OperationValue.renderer";
+import * as Renderer from "../../Utils/renderers/OperationItem.renderer";
+import * as CategorieRenderer from "../../Utils/renderers/CategorieItem.renderer";
 
 /**
  * Tuile d'une opération dans la liste des opérations
@@ -32,12 +33,12 @@ const OperationItem = ({operation, listeComptes, onClick}) => {
                     <Box width={25} height={25}
                          sx={{
                              borderRadius: "50%",
-                             backgroundColor: Renderer.getCategorieColor(operation.categorie),
+                             backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),
                              border: '5px solid ' + Renderer.getOperationStateColor(operation.etat),
                              padding: '6px',
                              color: '#FFFFFF'
                          }}>
-                        <center>{Renderer.getCategorieIcon(operation.ssCategorie)}</center>
+                        <center>{CategorieRenderer.getCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
                 </Grid2>
                 <Grid2 md={7}>
