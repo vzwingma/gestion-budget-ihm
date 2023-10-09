@@ -8,13 +8,13 @@ import CategoriesItem from "./CategoriesListItem.component";
  * @param rangSelectedCategorie : int rang de la catégorie
  * @param analysesGroupedByCategories : Object opérations groupées par catégories
  * @param typeAnalyse : Enum par défaut "REALISEE_DEPENSE"
- * @param onClick : Event selection d'une catégorie
+ * @param selectCategorie : Event selection d'une catégorie
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, typeAnalyse, onClick}) => {
+const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, typeAnalyse, selectCategorie}) => {
     /**
      * Iterate groupe
      * @param analysesGroupedByCategories liste des opérations par catégories
@@ -31,7 +31,7 @@ const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, ty
                     <CategoriesItem key={categorieId}
                                     resumeCategorie={analysesGroupedByCategories[categorieId]}
                                     typeAnalyse={typeAnalyse}
-                                    onClick={() => onClick(r, analysesGroupedByCategories[categorieId])}/>
+                                    selectCategorie={() => selectCategorie(r, analysesGroupedByCategories[categorieId])}/>
                 );
 
             }

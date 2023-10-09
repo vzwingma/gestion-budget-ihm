@@ -18,6 +18,7 @@ export default class Analyse extends Component {
     state = {
         currentBudget: null,
         resumeSelectedCategorie: null,
+        resumeSelectedSsCategorie: null,
 
         analysesGroupedByCategories: null,
 
@@ -36,6 +37,7 @@ export default class Analyse extends Component {
         this.populateCategorie = Controller.populateCategorie.bind(this);
 
         this.handleCategorieSelect = Controller.handleCategorieSelect.bind(this);
+        this.handleSsCategorieSelect = Controller.handleSsCategorieSelect.bind(this);
 
     }
 
@@ -61,6 +63,11 @@ export default class Analyse extends Component {
             componentUpdate = true;
         } else if (this.state.resumeSelectedCategorie !== nextStates.resumeSelectedCategorie) {
             console.log("[TRIGGER] Context Resumé Catégorie=" + nextStates.resumeSelectedCategorie.categorie.id)
+            componentUpdate = true;
+        } else if (this.state.resumeSelectedSsCategorie !== nextStates.resumeSelectedSsCategorie) {
+            if (nextStates.resumeSelectedSsCategorie !== null) {
+                console.log("[TRIGGER] Context Resumé SsCatégorie=" + nextStates.resumeSelectedSsCategorie.categorie.id)
+            }
             componentUpdate = true;
         }
         return componentUpdate;
@@ -91,7 +98,7 @@ export default class Analyse extends Component {
                                         rangSelectedCategorie={null}
                                         typeAnalyse={this.state.selectedTypeAnalyse}
                                         analysesGroupedByCategories={this.state.analysesGroupedByCategories}
-                                        onClick={this.handleCategorieSelect}/>
+                                        selectCategorie={this.handleCategorieSelect}/>
                                     :
                                     <CircularProgress/>
                             )
@@ -104,8 +111,7 @@ export default class Analyse extends Component {
                                         rangSelectedCategorie={this.state.rangSelectedCategorie}
                                         typeAnalyse={this.state.selectedTypeAnalyse}
                                         analysesGroupedByCategories={this.state.resumeSelectedCategorie.resumesSsCategories}
-                                        onClick={() => {
-                                        }}/>
+                                        selectCategorie={this.handleSsCategorieSelect}/>
                                     :
                                     <></>
                             )
@@ -115,7 +121,9 @@ export default class Analyse extends Component {
                         {this.state.currentBudget != null ?
                             <GraphAnalyses
                                 typeAnalyse={this.state.selectedTypeAnalyse}
-                                analysesGroupedByCategories={this.state.analysesGroupedByCategories}/>
+                                analysesGroupedByCategories={this.state.analysesGroupedByCategories}
+                                resumeSelectedCategorie={this.state.resumeSelectedCategorie}
+                                resumeSelectedSsCategorie={this.state.resumeSelectedSsCategorie}/>
                             :
                             <CircularProgress/>
                         }

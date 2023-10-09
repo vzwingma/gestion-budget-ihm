@@ -73,13 +73,26 @@ export function populateCategorie(group, operation, categorie, totauxParEtats, c
 
 
 /**
- * Sélection d'une opération
- * @param resumeSelectedCategorie opération
+ * Sélection d'une catégorie
+ * @param rang : int Rang de la catégorie dans la liste
+ * @param resumeSelectedCategorie résumé d'une catégorie
  */
 export function handleCategorieSelect(rang, resumeSelectedCategorie) {
-    this.setState({rangSelectedCategorie: rang, resumeSelectedCategorie: resumeSelectedCategorie})
+    this.setState({
+        rangSelectedCategorie: rang,
+        resumeSelectedCategorie: resumeSelectedCategorie,
+        resumeSelectedSsCategorie: null
+    })
 }
 
+/**
+ * Sélection d'une sous catégorie
+ * @param rang : int Rang de la catégorie dans la liste
+ * @param resumeSelectedSsCategorie résumé d'une sous catégorie
+ */
+export function handleSsCategorieSelect(rang, resumeSelectedSsCategorie) {
+    this.setState({resumeSelectedSsCategorie: resumeSelectedSsCategorie})
+}
 
 
 /**

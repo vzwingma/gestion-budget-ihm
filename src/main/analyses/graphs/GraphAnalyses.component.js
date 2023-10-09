@@ -5,10 +5,17 @@ import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
  * Graphique Analyses
  * @param typeAnalyse : string type d'analyse
  * @param analysesGroupedByCategories : array analyses graoupée par catégories
+ * @param resumeSelectedCategorie : object résumé de la catégorie sélectionnée
+ * @param resumeSelectedSsCategorie : object résumé de la sous catégorie sélectionnée
  * @returns {JSX.Element} graphiques
  * @constructor
  */
-const GraphAnalyses = ({typeAnalyse, analysesGroupedByCategories}) => {
+const GraphAnalyses = ({
+                           typeAnalyse,
+                           analysesGroupedByCategories,
+                           resumeSelectedCategorie,
+                           resumeSelectedSsCategorie
+                       }) => {
 
 
     let dataCategories = [];
@@ -23,6 +30,7 @@ const GraphAnalyses = ({typeAnalyse, analysesGroupedByCategories}) => {
 
                 let resume = analysesGroupedByCategories[categorieId];
                 dataCategories.push({
+                    id: resume.categorie.id,
                     name: resume.categorie.libelle,
                     value: Math.abs(resume.total[typeAnalyse]),
                     color: resume.couleurCategorie
@@ -33,6 +41,7 @@ const GraphAnalyses = ({typeAnalyse, analysesGroupedByCategories}) => {
 
                     if (ssResume.nbTransactions[typeAnalyse] > 0) {
                         dataSsCategories.push({
+                            id: ssResume.categorie.id,
                             name: ssResume.categorie.libelle,
                             value: Math.abs(ssResume.total[typeAnalyse]),
                             color: resume.couleurCategorie
@@ -52,7 +61,8 @@ const GraphAnalyses = ({typeAnalyse, analysesGroupedByCategories}) => {
                     <Pie data={dataCategories} dataKey="value" cx="50%" cy="50%" innerRadius={100} outerRadius={250}>
                         {
                             dataCategories.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color + "5A"}/>
+                                <Cell key={`cell-${index}`}
+                                      fill={entry.color + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
                             ))
                         }
                     </Pie>
@@ -60,7 +70,8 @@ const GraphAnalyses = ({typeAnalyse, analysesGroupedByCategories}) => {
                          label>
                         {
                             dataSsCategories.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color + "5A"}/>
+                                <Cell key={`cell-${index}`}
+                                      fill={entry.color + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}/>
                             ))
                         }
                     </Pie>

@@ -8,11 +8,11 @@ import * as Renderer from "./../../budgets/operations/renderers/OperationItem.re
  * Tuile d'un résumé de catégories
  * @param resumeCategorie résumé de catégories
  * @param typeAnalyse type d'analyse
- * @param onClick onclick sur un résumé de catégories
+ * @param selectCategorie selection d'un résumé de catégories
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const CategoriesItem = ({resumeCategorie, typeAnalyse, onClick}) => {
+const CategoriesItem = ({resumeCategorie, typeAnalyse, selectCategorie}) => {
 
     return (
         <Box key={"liste_" + resumeCategorie.categorie.id}
@@ -24,7 +24,7 @@ const CategoriesItem = ({resumeCategorie, typeAnalyse, onClick}) => {
                      color: '#808080',
                      cursor: 'pointer',
                  }
-             }} onClick={() => onClick()}>
+             }} onMouseOver={() => selectCategorie()}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
                     <Box width={25} height={25}
