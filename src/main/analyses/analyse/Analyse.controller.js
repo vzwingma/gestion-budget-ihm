@@ -14,15 +14,21 @@ export function calculateResumes(budgetData) {
     console.log("Calcul de l'analyse du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
 
     let totauxGroupedByEtat = budgetData.listeOperations
-        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.PREVUE || operation.etat === OPERATION_ETATS_ENUM.REALISEE)
+        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
         .reduce((group, operation) => {
-            group[operation.etat] = group[operation.etat] ?? 0;
-            group[operation.etat] = group[operation.etat] + Math.abs(operation.valeur)
+            group[operation.etat + "_" + operation.typeOperation] = group[operation.etat + "_" + operation.typeOperation] ?? 0;
+            group[operation.etat + "_" + operation.typeOperation] = group[operation.etat + "_" + operation.typeOperation] + Math.abs(operation.valeur)
+            // On ajoute les opérations réalisées aux prévues
+            if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
+                group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] = group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] ?? 0;
+                group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] = group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] + Math.abs(operation.valeur)
+            }
             return group;
         }, {});
 
+
     let analysesGroupedByCategories = budgetData.listeOperations
-        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE)
+        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
         .reduce((group, operation) => {
             let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
             this.populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
@@ -49,14 +55,19 @@ export function populateCategorie(group, operation, categorie, totauxParEtats, c
     group[categorie.id].categorie = categorie;
     group[categorie.id].couleurCategorie = couleurCategorie;
 
-    if (operation.etat === "REALISEE") {
-        group[categorie.id].nbTransactions = group[categorie.id].nbTransactions + 1;
-        group[categorie.id].totalRealise = group[categorie.id].totalRealise + operation.valeur;
-        group[categorie.id].pourcentage = Math.round((Math.abs(group[categorie.id].totalRealise) / Math.abs(totauxParEtats["REALISEE"])) * 100);
-    } else if (operation.etat === "PREVUE") {
-        group[categorie.id].nbTransactionsPrevues = group[categorie.id].nbTransactionsPrevues + 1;
-        group[categorie.id].totalPrevue = group[categorie.id].totalPrevue + operation.valeur;
+    // init des tableaux
+    if (group[categorie.id].nbTransactions[operation.etat + "_" + operation.typeOperation] === undefined) {
+        group[categorie.id].nbTransactions[operation.etat + "_" + operation.typeOperation] = 0;
     }
+    if (group[categorie.id].total[operation.etat + "_" + operation.typeOperation] === undefined) {
+        group[categorie.id].total[operation.etat + "_" + operation.typeOperation] = 0;
+    }
+    if (group[categorie.id].pourcentage[operation.etat + "_" + operation.typeOperation] === undefined) {
+        group[categorie.id].pourcentage[operation.etat + "_" + operation.typeOperation] = 0;
+    }
+    group[categorie.id].nbTransactions[operation.etat + "_" + operation.typeOperation] = group[categorie.id].nbTransactions[operation.etat + "_" + operation.typeOperation] + 1;
+    group[categorie.id].total[operation.etat + "_" + operation.typeOperation] = group[categorie.id].total[operation.etat + "_" + operation.typeOperation] + operation.valeur;
+    group[categorie.id].pourcentage[operation.etat + "_" + operation.typeOperation] = Math.round((Math.abs(group[categorie.id].total[operation.etat + "_" + operation.typeOperation]) / Math.abs(totauxParEtats[operation.etat + "_" + operation.typeOperation])) * 100);
 
 }
 
@@ -82,11 +93,9 @@ export function createNewResumeCategorie() {
             categorie: {},
             couleurCategorie: "#808080",
             resumesSsCategories: {},
-            nbTransactions: 0,
-            nbTransactionsPrevues: 0,
-            pourcentage: 0,
-            totalRealise: 0,
-            totalPrevue: 0
+            nbTransactions: [],
+            pourcentage: [],
+            total: []
         }
     return newResumeCategorie;
 }

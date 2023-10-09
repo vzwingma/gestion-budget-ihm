@@ -7,11 +7,12 @@ import * as Renderer from "./../../budgets/operations/renderers/OperationItem.re
 /**
  * Tuile d'un résumé de catégories
  * @param resumeCategorie résumé de catégories
+ * @param typeAnalyse type d'analyse
  * @param onClick onclick sur un résumé de catégories
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const CategoriesItem = ({resumeCategorie, onClick}) => {
+const CategoriesItem = ({resumeCategorie, typeAnalyse, onClick}) => {
 
     return (
         <Box key={"liste_" + resumeCategorie.categorie.id}
@@ -43,14 +44,15 @@ const CategoriesItem = ({resumeCategorie, onClick}) => {
                         </Typography>
                         <Typography variant={"caption"} component="div" align={"left"}
                                     sx={{spacing: 2, color: "#808080"}}>
-                            {resumeCategorie.pourcentage} % - {resumeCategorie.nbTransactions} transactions
+                            {resumeCategorie.pourcentage[typeAnalyse]} %
+                            - {resumeCategorie.nbTransactions[typeAnalyse]} transactions
                         </Typography>
                     </Stack>
 
                 </Grid2>
                 <Grid2 md={3}>
                     <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
-                        <OperationValue valueOperation={resumeCategorie.totalRealise} showSign={true}/>
+                        <OperationValue valueOperation={resumeCategorie.total[typeAnalyse]} showSign={true}/>
                     </Typography>
                 </Grid2>
             </Grid2>

@@ -8,7 +8,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CategoriesListe from "../categories/CategoriesListe.component";
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
 
-
 /**
  * Page principale d'une analyse
  */
@@ -18,13 +17,13 @@ export default class Analyse extends Component {
     /** Etats pour la page Budget **/
     state = {
         currentBudget: null,
+        resumeSelectedCategorie: null,
+
         analysesGroupedByCategories: null,
 
         selectedCompte: this.props.selectedCompte,
         selectedDate: this.props.selectedDate,
-        resumeSelectedCategorie: null,
-
-        categories: null
+        selectedTypeAnalyse: "REALISEE_DEPENSE"
     }
 
 
@@ -60,12 +59,7 @@ export default class Analyse extends Component {
         if (this.state.currentBudget !== nextStates.currentBudget) {
             console.log("[TRIGGER] Context budget=" + nextStates.currentBudget.id)
             componentUpdate = true;
-        }
-        if (this.state.currentOperation !== nextStates.currentOperation) {
-            console.log("[TRIGGER] Context operation=" + (nextStates.currentOperation !== null ? nextStates.currentOperation.id : "Nouvelle opération"))
-            componentUpdate = true;
-        }
-        if (this.state.resumeSelectedCategorie !== nextStates.resumeSelectedCategorie) {
+        } else if (this.state.resumeSelectedCategorie !== nextStates.resumeSelectedCategorie) {
             console.log("[TRIGGER] Context Resumé Catégorie=" + nextStates.resumeSelectedCategorie.categorie.id)
             componentUpdate = true;
         }
@@ -95,6 +89,7 @@ export default class Analyse extends Component {
                             (this.state.currentBudget != null ?
                                     <CategoriesListe
                                         rangSelectedCategorie={null}
+                                        typeAnalyse={this.state.selectedTypeAnalyse}
                                         analysesGroupedByCategories={this.state.analysesGroupedByCategories}
                                         onClick={this.handleCategorieSelect}/>
                                     :
@@ -107,6 +102,7 @@ export default class Analyse extends Component {
                             (this.state.currentBudget !== null && this.state.resumeSelectedCategorie !== null ?
                                     <CategoriesListe
                                         rangSelectedCategorie={this.state.rangSelectedCategorie}
+                                        typeAnalyse={this.state.selectedTypeAnalyse}
                                         analysesGroupedByCategories={this.state.resumeSelectedCategorie.resumesSsCategories}
                                         onClick={() => {
                                         }}/>
@@ -117,7 +113,9 @@ export default class Analyse extends Component {
                     </Grid2>
                     <Grid2 md={8} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
                         {this.state.currentBudget != null ?
-                            <GraphAnalyses analysesGroupedByCategories={this.state.analysesGroupedByCategories}/>
+                            <GraphAnalyses
+                                typeAnalyse={this.state.selectedTypeAnalyse}
+                                analysesGroupedByCategories={this.state.analysesGroupedByCategories}/>
                             :
                             <CircularProgress/>
                         }

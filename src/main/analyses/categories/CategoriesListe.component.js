@@ -5,15 +5,16 @@ import CategoriesItem from "./CategoriesListItem.component";
 
 /**
  * Tuile d'une liste de catégories
- * @param rangSelectedCategorie : rang de la catégorie
- * @param analysesGroupedByCategories opérations groupées par catégories
- * @param selection d'une catégorie
+ * @param rangSelectedCategorie : int rang de la catégorie
+ * @param analysesGroupedByCategories : Object opérations groupées par catégories
+ * @param typeAnalyse : Enum par défaut "REALISEE_DEPENSE"
+ * @param onClick : Event selection d'une catégorie
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, onClick}) => {
+const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, typeAnalyse, onClick}) => {
     /**
      * Iterate groupe
      * @param analysesGroupedByCategories liste des opérations par catégories
@@ -23,12 +24,18 @@ const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, on
 
         let renderList = []
         for (let categorieId in analysesGroupedByCategories) {
-            const r = renderList.length
-            renderList.push(
-                <CategoriesItem key={categorieId}
-                                resumeCategorie={analysesGroupedByCategories[categorieId]}
-                                onClick={() => onClick(r, analysesGroupedByCategories[categorieId])}/>
-            );
+
+            if (analysesGroupedByCategories[categorieId].nbTransactions[typeAnalyse] > 0) {
+                const r = renderList.length
+                renderList.push(
+                    <CategoriesItem key={categorieId}
+                                    resumeCategorie={analysesGroupedByCategories[categorieId]}
+                                    typeAnalyse={typeAnalyse}
+                                    onClick={() => onClick(r, analysesGroupedByCategories[categorieId])}/>
+                );
+
+            }
+
         }
         return renderList;
     }
