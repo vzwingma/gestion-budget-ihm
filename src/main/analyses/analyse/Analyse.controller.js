@@ -21,7 +21,7 @@ export function calculateResumes(budgetData) {
             return group;
         }, {});
 
-    let operationsGroupedByCategories = budgetData.listeOperations
+    let analysesGroupedByCategories = budgetData.listeOperations
         .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE)
         .reduce((group, operation) => {
             let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
@@ -30,7 +30,7 @@ export function calculateResumes(budgetData) {
             return group;
         }, {});
 
-    this.setState({currentBudget: budgetData, operationsGroupedByCategories: operationsGroupedByCategories})
+    this.setState({currentBudget: budgetData, analysesGroupedByCategories: analysesGroupedByCategories})
     toast.success("Analyse du budget correctement effectué ")
 }
 

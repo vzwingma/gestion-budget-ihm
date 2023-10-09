@@ -182,7 +182,11 @@ export function getCategorieIcon(operationSsCategorie) {
     return <QuestionMarkRounded/>
 }
 
-
+/**
+ * Couleur d'une opération selon son état
+ * @param operationState état de l'opération
+ * @returns {string} couleur
+ */
 export function getOperationStateColor(operationState) {
     if (operationState != null) {
         switch (operationState) {

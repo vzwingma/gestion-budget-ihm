@@ -6,6 +6,7 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import {Box, CircularProgress, Divider} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import CategoriesListe from "../categories/CategoriesListe.component";
+import GraphAnalyses from "../graphs/GraphAnalyses.component";
 
 
 /**
@@ -17,7 +18,7 @@ export default class Analyse extends Component {
     /** Etats pour la page Budget **/
     state = {
         currentBudget: null,
-        operationsGroupedByCategories: null,
+        analysesGroupedByCategories: null,
 
         selectedCompte: this.props.selectedCompte,
         selectedDate: this.props.selectedDate,
@@ -30,7 +31,7 @@ export default class Analyse extends Component {
     /** Constructeur **/
     constructor(props) {
         super(props);
-        this.loadBudget = Services.reloadBudget.bind(this);
+        this.loadBudget = Services.loadBudget.bind(this);
         this.calculateResumes = Controller.calculateResumes.bind(this);
         this.createNewResumeCategorie = Controller.createNewResumeCategorie.bind(this);
         this.populateCategorie = Controller.populateCategorie.bind(this);
@@ -94,7 +95,7 @@ export default class Analyse extends Component {
                             (this.state.currentBudget != null ?
                                     <CategoriesListe
                                         rangSelectedCategorie={null}
-                                        operationsGroupedByCategories={this.state.operationsGroupedByCategories}
+                                        analysesGroupedByCategories={this.state.analysesGroupedByCategories}
                                         onClick={this.handleCategorieSelect}/>
                                     :
                                     <CircularProgress/>
@@ -106,14 +107,20 @@ export default class Analyse extends Component {
                             (this.state.currentBudget !== null && this.state.resumeSelectedCategorie !== null ?
                                     <CategoriesListe
                                         rangSelectedCategorie={this.state.rangSelectedCategorie}
-                                        operationsGroupedByCategories={this.state.resumeSelectedCategorie.resumesSsCategories}/>
+                                        analysesGroupedByCategories={this.state.resumeSelectedCategorie.resumesSsCategories}
+                                        onClick={() => {
+                                        }}/>
                                     :
-                                    <CircularProgress/>
+                                    <></>
                             )
                         }
                     </Grid2>
                     <Grid2 md={8} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
-                        <CircularProgress/>
+                        {this.state.currentBudget != null ?
+                            <GraphAnalyses analysesGroupedByCategories={this.state.analysesGroupedByCategories}/>
+                            :
+                            <CircularProgress/>
+                        }
                     </Grid2>
                 </Grid2>
             </Box>

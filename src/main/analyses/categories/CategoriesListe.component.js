@@ -6,28 +6,28 @@ import CategoriesItem from "./CategoriesListItem.component";
 /**
  * Tuile d'une liste de catégories
  * @param rangSelectedCategorie : rang de la catégorie
- * @param operationsGroupedByCategories opérations groupées par catégories
+ * @param analysesGroupedByCategories opérations groupées par catégories
  * @param selection d'une catégorie
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const CategoriesListe = ({rangSelectedCategorie, operationsGroupedByCategories, onClick}) => {
+const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, onClick}) => {
     /**
      * Iterate groupe
-     * @param operationsGroupedByCategories liste des opérations par catégories
+     * @param analysesGroupedByCategories liste des opérations par catégories
      * @returns {JSX.Element}
      */
-    function iterate(operationsGroupedByCategories) {
+    function iterate(analysesGroupedByCategories) {
 
         let renderList = []
-        for (let categorieId in operationsGroupedByCategories) {
+        for (let categorieId in analysesGroupedByCategories) {
             const r = renderList.length
             renderList.push(
                 <CategoriesItem key={categorieId}
-                                resumeCategorie={operationsGroupedByCategories[categorieId]}
-                                onClick={() => onClick(r, operationsGroupedByCategories[categorieId])}/>
+                                resumeCategorie={analysesGroupedByCategories[categorieId]}
+                                onClick={() => onClick(r, analysesGroupedByCategories[categorieId])}/>
             );
         }
         return renderList;
@@ -42,7 +42,7 @@ const CategoriesListe = ({rangSelectedCategorie, operationsGroupedByCategories, 
                sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
             <></>
             {
-                iterate(operationsGroupedByCategories)
+                iterate(analysesGroupedByCategories)
             }
             <></>
         </Stack>

@@ -9,8 +9,9 @@ import {toast} from "react-toastify";
 /**
  Chargement du budget depuis le back-end
  **/
-export function reloadBudget(selectedCompte, selectedDate) {
+export function loadBudget(selectedCompte, selectedDate) {
     if (selectedCompte != null && selectedDate != null) {
+
         ClientHTTP.call('GET',
             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
             [selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
