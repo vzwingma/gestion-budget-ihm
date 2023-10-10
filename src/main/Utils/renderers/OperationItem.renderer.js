@@ -63,32 +63,49 @@ export function getPeriodeRenderer(periodeKey) {
 export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
 
     if (operationLibelle != null) {
-        const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
-        if (operationLibelleParts != null) {
-            const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
-            const direction = operationLibelleParts[1] === "[vers " ? "vers" : "depuis"
-            const compte = (listeComptes.filter((compte) => compte.libelle === operationLibelleParts[2]))
-            if (compte[0]?.libelle) {
-                return <Tooltip title={"Transfert intercompte " + direction + " " + compte[0].libelle}>
-                    {operationLibelleParts[1].startsWith("[En Retard]") ?
-                        <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
-                    <img src={"/img/banques/" + compte[0].icon}
-                         width={maxVue ? 30 : 20} height={maxVue ? 30 : 20}
-                         alt={compte[0].libelle}
-                         style={{marginRight: "5px"}}/>
-                    <span>{operationLibelleParts[4]}</span>
-                </Tooltip>
-            } else {
-                return operationLibelle
-            }
-
-
+        if ((operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)")) != null) {
+            return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue)
         } else if (operationLibelle.startsWith("[En Retard]")) {
-            return <><WatchLaterRounded sx={{color: "#A0A0A0"}}/>{operationLibelle.replaceAll("[En Retard]", "")}</>
+            return getOperationEnRetardLibelle(operationLibelle)
         } else {
             return operationLibelle;
         }
 
     }
     return null;
+}
+
+/**
+ * Libellé d'une opération intercompte
+ * @param operationLibelle : string libellé
+ * @param listeComptes : array : liste des comptes
+ * @param maxVue : number hauteur max de la vue
+ * @returns {*|JSX.Element}
+ */
+function getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue) {
+    const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
+    const direction = operationLibelleParts[1] === "[vers " ? "vers" : "depuis"
+    const compte = (listeComptes.filter((compte) => compte.libelle === operationLibelleParts[2]))
+    if (compte[0]?.libelle) {
+        return <Tooltip title={"Transfert intercompte " + direction + " " + compte[0].libelle}>
+            {operationLibelleParts[1].startsWith("[En Retard]") ?
+                <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
+            <img src={"/img/banques/" + compte[0].icon}
+                 width={maxVue ? 30 : 20} height={maxVue ? 30 : 20}
+                 alt={compte[0].libelle}
+                 style={{marginRight: "5px"}}/>
+            <span>{operationLibelleParts[4]}</span>
+        </Tooltip>
+    } else {
+        return operationLibelle
+    }
+}
+
+/**
+ * Ajout de l'icone quand en retard
+ * @param operationLibelle
+ * @returns {JSX.Element}
+ */
+function getOperationEnRetardLibelle(operationLibelle) {
+    return <><WatchLaterRounded sx={{color: "#A0A0A0"}}/>{operationLibelle.replaceAll("[En Retard]", "")}</>
 }
