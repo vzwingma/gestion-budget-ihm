@@ -35,7 +35,7 @@ const GraphAnalyses = ({
                 dataCategories.push({
                     id: resume.categorie.id,
                     categorie: resume.categorie,
-                    name: resume.categorie.libelle,
+                    name: resume.categorie.libelle + " : " + resume.pourcentage[typeAnalyse] + "%",
                     value: Math.abs(resume.total[typeAnalyse])
                 })
 
@@ -46,7 +46,7 @@ const GraphAnalyses = ({
                         dataSsCategories.push({
                             id: ssResume.categorie.id,
                             categorie: resume.categorie,
-                            name: ssResume.categorie.libelle,
+                            name: ssResume.categorie.libelle + " : " + ssResume.pourcentage[typeAnalyse] + "%",
                             value: Math.abs(ssResume.total[typeAnalyse])
                         })
                     }
@@ -66,23 +66,23 @@ const GraphAnalyses = ({
                     <Pie data={dataCategories} dataKey="value"
                          cx="50%" cy="50%" innerRadius={100} outerRadius={230}
                          isAnimationActive={false}>
-                        {dataCategories.map((entry, index) => (
+                        {dataCategories.map((entry) => (
                             <Cell key={`cell-${entry.categorie}`}
                                       fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
                             ))
                         }
-                        <LabelList data={dataSsCategories} dataKey="name" stroke={"#000"}/>
+                        <LabelList data={dataSsCategories} dataKey="name" stroke={"black"} strokeWidth={0.5}/>
                     </Pie>
                     <Pie data={dataSsCategories} dataKey="value"
                          cx="50%" cy="50%" innerRadius={250} outerRadius={350}
                          isAnimationActive={false}>
-                        {dataSsCategories.map((entry, index) => (
+                        {dataSsCategories.map((entry) => (
                             <Cell key={`cell-${entry.categorie.id}`}
                                   fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
                             />
                             ))
                         }
-                        <LabelList data={dataSsCategories} dataKey="name" stroke={"#000"}/>
+                        <LabelList data={dataSsCategories} dataKey="name" stroke={"black"} strokeWidth={0.5}/>
                     </Pie>
                 </PieChart>
             </ResponsiveContainer>

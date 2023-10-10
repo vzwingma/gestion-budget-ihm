@@ -7,27 +7,20 @@ import PropTypes from "prop-types";
  * Page principale d'affichage du solde
  * @param currentCompte compte courant
  * @param currentDate date courante
- * @param currentBudget budget courant
  * @returns {JSX.Element} element JSX
  * @constructor
  */
-const AnalyseTitre = ({currentCompte, currentDate, currentBudget}) => {
+const AnalyseTitre = ({currentCompte, currentDate}) => {
 
     AnalyseTitre.propTypes = {
         currentCompte: PropTypes.object.isRequired,
         currentDate: PropTypes.any.isRequired,
-        currentBudget: PropTypes.object.isRequired
     }
 
-    // définition de la date courante
-    const dateCourante = new Date(Date.now());
 
     function getTooltipAuj() {
+        const dateCourante = new Date(Date.now());
         return "Au " + dateCourante.getDate() + " " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear()
-    }
-
-    function getTooltipFin() {
-        return "Fin " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear();
     }
 
     return (
@@ -45,20 +38,9 @@ const AnalyseTitre = ({currentCompte, currentDate, currentBudget}) => {
             <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
                 <Typography variant={"h6"} width={120} textAlign={"center"} sx={{cursor: "help"}}>
-                    <OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true}/>
+                    <OperationValue valueOperation={100} showSign={true}/>
                 </Typography>
             </Tooltip>
-            {
-                (currentBudget.actif) ?
-                    <Tooltip title={getTooltipFin()}>
-                        <Typography variant={"caption"} width={100} textAlign={"center"} sx={{cursor: "help"}}>
-                            (<OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant}
-                                             showSign={true}/> )
-                        </Typography>
-                    </Tooltip>
-                    : <></>
-            }
-
             <Divider orientation="vertical" flexItem/>
         </Stack>
     )

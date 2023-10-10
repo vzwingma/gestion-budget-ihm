@@ -81,12 +81,12 @@ export default class Analyse extends Component {
         return (
             <Box sx={{overflow: "hidden"}} maxHeight>
                 <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
-                    <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}/></Grid2>
+                    <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
+                                            fontSize={"large"}/></Grid2>
                     <Grid2 md={7}>
                         {this.state.currentBudget != null ?
                             <AnalyseTitre currentCompte={this.props.selectedCompte}
-                                          currentDate={this.props.selectedDate}
-                                          currentBudget={this.state.currentBudget}/> : <CircularProgress/>
+                                          currentDate={this.props.selectedDate}/> : <CircularProgress/>
                         }
                     </Grid2>
                     <Grid2 md={1}>
