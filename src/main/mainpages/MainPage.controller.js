@@ -1,8 +1,4 @@
 /**
- * Controleur de la liste des budgets
- */
-
-/**
  * Notification lorsque le compte change
  * @param selectedCompteFromComponent : compte sélectionnée
  */
@@ -12,6 +8,9 @@ export function handleCompteChange(selectedCompteFromComponent) {
         {selectedCompte: selectedCompteFromComponent, budgetMenuOpen: false})
 }
 
+/**
+ * Affichage de la menubar des comptes
+ */
 export function handleOpenMenuBar() {
     this.setState(
         {selectedCompte: null, budgetMenuOpen: true})

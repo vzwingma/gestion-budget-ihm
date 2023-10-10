@@ -12,8 +12,10 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import OperationValue from "../renderers/OperationSpanValue.renderer";
-import * as Renderer from "../renderers/OperationItem.renderer";
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
+import * as Renderer from "../../../Utils/renderers/OperationItem.renderer";
+import * as CategorieRenderer from "../../../Utils/renderers/CategorieItem.renderer";
+
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "../actions/OperationDetailActions.component";
 import * as Controller from "./OperationDetailPage.controller";
@@ -27,7 +29,7 @@ import {
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
 } from "../../../Utils/AppBusinessEnums.constants";
-
+import PropTypes from "prop-types";
 
 /**
  * Page de détail d'une opération
@@ -210,10 +212,11 @@ class OperationDetailPage extends Component {
                     <Box width={40} height={40}
                          sx={{
                              borderRadius: "50%",
-                             backgroundColor: Renderer.getCategorieColor(operation.categorie), color: '#FFFFFF',
+                             backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),
+                             color: '#FFFFFF',
                              padding: '16px 8px 0px 8px'
                          }}>
-                        <center>{Renderer.getSousCategorieIcon(operation.ssCategorie)}</center>
+                        <center>{CategorieRenderer.getCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
 
                     { /** VALEUR **/}
@@ -415,4 +418,12 @@ class OperationDetailPage extends Component {
     }
 }
 
+// Properties Types
+OperationDetailPage.propTypes = {
+    operation: PropTypes.object.isRequired,
+    budget: PropTypes.object.isRequired,
+    listeCategories: PropTypes.array.isRequired,
+    listeComptes: PropTypes.array.isRequired,
+    onOperationChange: PropTypes.func.isRequired
+}
 export default OperationDetailPage

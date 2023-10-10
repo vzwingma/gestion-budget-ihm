@@ -1,8 +1,19 @@
 /** Client HTTP **/
-import {getOAuthToken} from './Auth.service'
+import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
 import * as AppConstants from "../Utils/AppTechEnums.constants";
 
 let alreadyTraced = false;
+
+
+/**
+ * Log Out de la session si les tokens sont expirés
+ */
+function logOut() {
+
+    removeTokenFromStorage();
+    window.location = "/";
+}
+
 /**
  * Appel HTTP vers le backend
  * @param httpMethod méthode HTTP
@@ -53,6 +64,9 @@ export function call(httpMethod, uri, path, params, body ) {
             console.log("[WS] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
             if(res.status >= 200 && res.status < 300){
                 return res.json();
+            } else if (res.status === 403) {
+                console.log("Session expirée")
+                logOut();
             }
             else{
                 console.log(res)

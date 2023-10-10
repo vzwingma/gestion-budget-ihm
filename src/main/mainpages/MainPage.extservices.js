@@ -1,8 +1,3 @@
-/**
- * Services de la liste des comptes
- */
-
-
 import * as ClientHTTP from "../Services/ClientHTTP.service";
 import * as AppConstants from "../Utils/AppTechEnums.constants";
 import {toast} from "react-toastify";
@@ -32,7 +27,6 @@ export function comptesLoaded(data) {
     data.sort((c1, c2) => (c1.ordre > c2.ordre) ? 1 : -1);
     // Création des comptes pour l'affichage (avec icones)
     let comptesLabelIcons = data
-        .filter((compte) => compte.actif)
         .map((compte) => {
             return {
                 id: compte.id,
@@ -41,7 +35,6 @@ export function comptesLoaded(data) {
                 isDisabled: !compte.actif
             }
         })
-    toast.success("Chargement des " + comptesLabelIcons.length + " comptes correctement effectué ")
     this.setState({
         comptes: comptesLabelIcons,
     });

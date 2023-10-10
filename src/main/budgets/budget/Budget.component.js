@@ -4,11 +4,12 @@ import BudgetActionsButtonGroupComponent from "./actions/BudgetActionsButtonGrou
 import * as Controller from './Budget.controller'
 import * as Services from './Budget.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
-import BudgetsSoldes from "./BudgetSoldes.component";
+import BudgetTitre from "./BudgetTitre.component";
 import {Box, CircularProgress, Divider} from "@mui/material";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import MenuIcon from '@mui/icons-material/Menu';
 import OperationsListe from "../operations/OperationsListe.component";
+import PropTypes from "prop-types";
 
 
 /**
@@ -38,6 +39,7 @@ export default class Budget extends Component {
 
         this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
         this.handleButtonCreateClick = Controller.handleButtonCreateClick.bind(this);
+        this.createNewOperation = Controller.createNewOperation.bind(this);
 
         this.refreshBudget = Services.reloadBudget.bind(this);
         this.loadCategories = Services.loadCategories.bind(this);
@@ -85,11 +87,11 @@ export default class Budget extends Component {
     render() { return (
         <Box sx={{overflow: "hidden"}} maxHeight>
             <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}/></Grid2>
+                <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"} fontSize={"large"}/></Grid2>
                 <Grid2 md={7}>
-                    { /** Soldes **/}
+                    { /** Titre **/}
                     {this.state.currentBudget != null ?
-                        <BudgetsSoldes currentCompte={this.props.selectedCompte}
+                        <BudgetTitre currentCompte={this.props.selectedCompte}
                                        currentDate={this.props.selectedDate}
                                        currentBudget={this.state.currentBudget}/> : <CircularProgress/>
                     }
@@ -133,4 +135,11 @@ export default class Budget extends Component {
         </Box>
     )
     }
+}
+
+Budget.propTypes = {
+    selectedCompte: PropTypes.object.isRequired,
+    selectedDate: PropTypes.object.isRequired,
+    listeComptes: PropTypes.array.isRequired,
+    onOpenMenu: PropTypes.func.isRequired
 }

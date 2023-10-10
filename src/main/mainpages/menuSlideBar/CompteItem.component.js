@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import {Container, Stack, Typography} from "@mui/material";
-import OperationValue from "../operations/renderers/OperationSpanValue.renderer";
+import OperationValue from "../../Utils/renderers/OperationValue.renderer";
 import * as ClientHTTP from "../../Services/ClientHTTP.service";
 import * as AppConstants from "../../Utils/AppTechEnums.constants";
+import PropTypes from "prop-types";
 
 /**
  * Tuile affichant un compte
- * @param compte compte
- * @param selectedDate date sélectionnée
- * @param onClick action sur click
+ * @param compte : object compte
+ * @param selectedDate : date date sélectionnée
+ * @param onClick : function action sur click
  * @returns {JSX.Element}
  * @constructor
  */
@@ -65,5 +66,9 @@ const CompteItem = ({compte, selectedDate, onClick}) => {
 
     )
 };
-
+CompteItem.propTypes = {
+    compte: PropTypes.object.isRequired,
+    selectedDate: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired
+}
 export default CompteItem

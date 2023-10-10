@@ -42,6 +42,11 @@ export function handleOperationSelect(operation) {
  */
 export function handleButtonCreateClick() {
 
+    this.setState({currentOperation: this.createNewOperation()})
+}
+
+export function createNewOperation() {
+
     let newOperation: Operation = {
         id: -1,
         libelle: null,
@@ -63,6 +68,5 @@ export function handleButtonCreateClick() {
             dateOperation: null
         }
     }
-
-    this.setState({currentOperation: newOperation})
+    return newOperation;
 }

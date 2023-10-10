@@ -1,18 +1,21 @@
 import React, {Component} from "react";
 import {Box, CircularProgress, Divider, Drawer, Stack} from "@mui/material";
-import DateRange from "./menuBar/DateRange.component";
-import * as Controller from "./MainBudgets.controller";
-import * as Services from "./MainBudgets.extservices";
-import Budget from "./budget/Budget.component";
-import CompteItem from "./menuBar/CompteItem.component";
+import DateRange from "./menuSlideBar/DateRange.component";
+import * as Controller from "./MainPage.controller";
+import * as Services from "./MainPage.extservices";
+import Budget from "../budgets/budget/Budget.component";
+import CompteItem from "./menuSlideBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
+import Analyse from "../analyses/analyse/Analyse.component";
+import PropTypes from "prop-types";
 
 /**
- *    Page principale de gestion des budgets
-*/
-export default class MainBudget extends Component {
+ * Page principale de gestion des budgets
+ * @param fonction : string fonction à afficher
+ */
+export default class MainPage extends Component {
 
-    /** Etats pour la page Budget **/
+    /** Etats pour la page Budget/Analyse **/
     state = {
         comptes: [],
         selectedCompte: null,
@@ -46,7 +49,9 @@ export default class MainBudget extends Component {
                         <DateRange onDateChange={this.handleDateChange} selectedDate={this.state.selectedDate}/>
 
                         <Stack divider={<Divider orientation="horizontal" flexItem/>}>
-                            {this.state.comptes.map((compte) => (
+                            {this.state.comptes
+                                .filter((compte) => !compte.isDisabled)
+                                .map((compte) => (
                                 <CompteItem key={compte.id}
                                             compte={compte}
                                             selectedDate={this.state.selectedDate}
@@ -58,10 +63,16 @@ export default class MainBudget extends Component {
                 </Drawer>
 
                 {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
-                    <Budget selectedCompte={this.state.selectedCompte}
-                            selectedDate={this.state.selectedDate}
-                            listeComptes={this.state.comptes}
-                            onOpenMenu={this.handleOpenMenuBar}/>
+                    this.props.fonction === "BUDGET" ?
+                        <Budget selectedCompte={this.state.selectedCompte}
+                                selectedDate={this.state.selectedDate}
+                                listeComptes={this.state.comptes}
+                                onOpenMenu={this.handleOpenMenuBar}/> : <></>
+                        &&
+                        this.props.fonction === "ANALYSE" ?
+                            <Analyse selectedCompte={this.state.selectedCompte}
+                                     selectedDate={this.state.selectedDate}
+                                     onOpenMenu={this.handleOpenMenuBar}/> : <></>
                     :
                     <CircularProgress/>}
 
@@ -74,4 +85,7 @@ export default class MainBudget extends Component {
             </>
         );
     }
+}
+MainPage.propTypes = {
+    fonction: PropTypes.string.isRequired
 }

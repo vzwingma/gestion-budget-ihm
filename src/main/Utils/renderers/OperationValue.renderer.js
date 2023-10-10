@@ -1,7 +1,8 @@
 /**
  * Affichage d'une valeur dans la liste des opérations
  */
-import {addEndingZeros} from '../../../Utils/DataUtils.utils'
+import {addEndingZeros} from '../DataUtils.utils'
+import PropTypes from "prop-types";
 
 /**
  * Affichage du style de l'opération suivant sa valeur
@@ -28,20 +29,25 @@ export function getStyleOperation(operation, valueOperation){
 
 /**
  * Affichage d'une opération
- * @param operation opération
- * @param valueOperation valeur de l'opération
- * @param showSign affichage du signe
- * @param id id de l'élément
+ * @param operation : Object opération
+ * @param valueOperation : number valeur de l'opération
+ * @param showSign : boolean affichage du signe
  * @returns {JSX.Element} JSX
  * @constructor
  */
-const OperationValue = ({operation, valueOperation, showSign, id}) => {
+const OperationValue = ({operation, valueOperation, showSign}) => {
 
     // définition du libellé
     return (
-        <span id={id}
-              className={getStyleOperation(operation, valueOperation)}> {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €</span>
+        <span
+            className={getStyleOperation(operation, valueOperation)}> {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €</span>
     )
 };
+
+OperationValue.propTypes = {
+    operation: PropTypes.object,
+    valueOperation: PropTypes.number.isRequired,
+    showSign: PropTypes.bool,
+}
 
 export default OperationValue
