@@ -1,7 +1,7 @@
 import {Cell, LabelList, Pie, PieChart, ResponsiveContainer} from "recharts";
 import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
 import React from "react";
-import {Tooltip} from "@mui/material";
+import PropTypes from "prop-types";
 
 /**
  * Graphique Analyses
@@ -71,7 +71,7 @@ const GraphAnalyses = ({
                                       fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
                             ))
                         }
-                        <LabelList data={dataSsCategories} dataKey="name"/>
+                        <LabelList data={dataSsCategories} dataKey="name" stroke={"#000"}/>
                     </Pie>
                     <Pie data={dataSsCategories} dataKey="value"
                          cx="50%" cy="50%" innerRadius={250} outerRadius={350}
@@ -82,12 +82,17 @@ const GraphAnalyses = ({
                             />
                             ))
                         }
-                        <LabelList data={dataSsCategories} dataKey="name"/>
+                        <LabelList data={dataSsCategories} dataKey="name" stroke={"#000"}/>
                     </Pie>
-                    <Tooltip/>
                 </PieChart>
             </ResponsiveContainer>
     );
 }
-
+// Properties Types
+GraphAnalyses.propTypes = {
+    typeAnalyse: PropTypes.string.isRequired,
+    analysesGroupedByCategories: PropTypes.array.isRequired,
+    resumeSelectedCategorie: PropTypes.object,
+    resumeSelectedSsCategorie: PropTypes.object,
+}
 export default GraphAnalyses

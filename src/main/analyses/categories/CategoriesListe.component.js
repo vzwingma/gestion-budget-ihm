@@ -1,6 +1,7 @@
 import React from 'react'
 import {Box, Divider, Stack} from "@mui/material";
-import CategoriesItem from "./CategoriesListItem.component";
+import CategoriesListItem from "./CategoriesListItem.component";
+import PropTypes from "prop-types";
 
 
 /**
@@ -8,7 +9,7 @@ import CategoriesItem from "./CategoriesListItem.component";
  * @param rangSelectedCategorie : int rang de la catégorie
  * @param analysesGroupedByCategories : Object opérations groupées par catégories
  * @param typeAnalyse : Enum par défaut "REALISEE_DEPENSE"
- * @param selectCategorie : Event selection d'une catégorie
+ * @param selectCategorie : function selection d'une catégorie
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
@@ -28,10 +29,10 @@ const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, ty
             if (analysesGroupedByCategories[categorieId].nbTransactions[typeAnalyse] > 0) {
                 const r = renderList.length
                 renderList.push(
-                    <CategoriesItem key={categorieId}
-                                    resumeCategorie={analysesGroupedByCategories[categorieId]}
-                                    typeAnalyse={typeAnalyse}
-                                    selectCategorie={() => selectCategorie(r, analysesGroupedByCategories[categorieId])}/>
+                    <CategoriesListItem key={categorieId}
+                                        resumeCategorie={analysesGroupedByCategories[categorieId]}
+                                        typeAnalyse={typeAnalyse}
+                                        selectCategorie={() => selectCategorie(r, analysesGroupedByCategories[categorieId])}/>
                 );
 
             }
@@ -55,5 +56,11 @@ const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, ty
         </Stack>
     </Box>
 };
-
+// Properties Types
+CategoriesListe.propTypes = {
+    rangSelectedCategorie: PropTypes.number.isRequired,
+    analysesGroupedByCategories: PropTypes.object.isRequired,
+    typeAnalyse: PropTypes.string.isRequired,
+    selectCategorie: PropTypes.func.isRequired
+}
 export default CategoriesListe

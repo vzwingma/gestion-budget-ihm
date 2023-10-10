@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CategoriesListe from "../categories/CategoriesListe.component";
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseTitre.component";
+import PropTypes from "prop-types";
 
 /**
  * Page principale d'une analyse
@@ -137,4 +138,10 @@ export default class Analyse extends Component {
             </Box>
         )
     }
+}
+// Properties Types
+Analyse.propTypes = {
+    selectedCompte: PropTypes.object.isRequired,
+    selectedDate: PropTypes.object.isRequired,
+    onOpenMenu: PropTypes.func.isRequired,
 }

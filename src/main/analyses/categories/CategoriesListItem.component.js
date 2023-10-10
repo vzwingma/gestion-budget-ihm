@@ -3,16 +3,17 @@ import {Box, Stack, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationValue from "../../Utils/renderers/OperationValue.renderer";
 import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
+import PropTypes from "prop-types";
 
 /**
  * Tuile d'un résumé de catégories
- * @param resumeCategorie résumé de catégories
- * @param typeAnalyse type d'analyse
- * @param selectCategorie selection d'un résumé de catégories
+ * @param resumeCategorie : object résumé de catégories
+ * @param typeAnalyse : string type d'analyse
+ * @param selectCategorie : function selection d'un résumé de catégories
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const CategoriesItem = ({resumeCategorie, typeAnalyse, selectCategorie}) => {
+const CategoriesListItem = ({resumeCategorie, typeAnalyse, selectCategorie}) => {
 
     return (
         <Box key={"liste_" + resumeCategorie.categorie.id}
@@ -60,5 +61,10 @@ const CategoriesItem = ({resumeCategorie, typeAnalyse, selectCategorie}) => {
 
     )
 };
-
-export default CategoriesItem
+// Properties Types
+CategoriesListItem.propTypes = {
+    resumeCategorie: PropTypes.object.isRequired,
+    typeAnalyse: PropTypes.string.isRequired,
+    selectCategorie: PropTypes.func.isRequired
+}
+export default CategoriesListItem
