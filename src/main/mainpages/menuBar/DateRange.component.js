@@ -24,7 +24,6 @@ export default class DateRange extends Component {
             datePreviousBudget: new Date(selectedDate.getFullYear(), selectedDate.getMonth() - 1, 1, 0, 0, 0),
             dateCurrentBudget: new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1, 0, 0, 0),
             dateNextBudget: new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 1, 0, 0, 0),
-            idCompte : this.props.idCompte
         }
         this.handleSelect = Controller.handleSelect.bind(this);
         this.confirmInitNextMonth = Controller.confirmInitNextMonth.bind(this);

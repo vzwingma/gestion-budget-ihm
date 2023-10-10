@@ -33,7 +33,6 @@ export function handleModalClick(event){
             dateChanged = true;
         }
         else if(event.target.id === "next"){
-            console.log(this.state.dateCurrentBudget)
             // Popup de confirmation, car cela va initialiser un nouveau budget et cloturer l'actuel
             let moisEnCours = new Date().setMonth(new Date().getMonth() - 1);
             if (moisEnCours <= this.state.dateCurrentBudget) {
