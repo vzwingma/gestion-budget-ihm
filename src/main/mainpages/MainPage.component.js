@@ -7,9 +7,11 @@ import Budget from "../budgets/budget/Budget.component";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
 import Analyse from "../analyses/analyse/Analyse.component";
+import PropTypes from "prop-types";
 
 /**
- *    Page principale de gestion des budgets
+ * Page principale de gestion des budgets
+ * @param fonction : string fonction à afficher
  */
 export default class MainPage extends Component {
 
@@ -65,13 +67,12 @@ export default class MainPage extends Component {
                         <Budget selectedCompte={this.state.selectedCompte}
                                 selectedDate={this.state.selectedDate}
                                 listeComptes={this.state.comptes}
-                                onOpenMenu={this.handleOpenMenuBar}/>
-                        : this.props.fonction === "ANALYSE" ?
+                                onOpenMenu={this.handleOpenMenuBar}/> : <></>
+                        &&
+                        this.props.fonction === "ANALYSE" ?
                             <Analyse selectedCompte={this.state.selectedCompte}
                                      selectedDate={this.state.selectedDate}
-                                     onOpenMenu={this.handleOpenMenuBar}/>
-                            :
-                            <CircularProgress/>
+                                     onOpenMenu={this.handleOpenMenuBar}/> : <></>
                     :
                     <CircularProgress/>}
 
@@ -84,4 +85,7 @@ export default class MainPage extends Component {
             </>
         );
     }
+}
+MainPage.propTypes = {
+    fonction: PropTypes.string.isRequired
 }
