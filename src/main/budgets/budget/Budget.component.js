@@ -9,6 +9,7 @@ import {Box, CircularProgress, Divider} from "@mui/material";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import MenuIcon from '@mui/icons-material/Menu';
 import OperationsListe from "../operations/OperationsListe.component";
+import PropTypes from "prop-types";
 
 
 /**
@@ -134,4 +135,11 @@ export default class Budget extends Component {
         </Box>
     )
     }
+}
+
+Budget.propTypes = {
+    selectedCompte: PropTypes.object.isRequired,
+    selectedDate: PropTypes.object.isRequired,
+    listeComptes: PropTypes.array.isRequired,
+    onOpenMenu: PropTypes.func.isRequired
 }

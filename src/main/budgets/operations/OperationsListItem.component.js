@@ -4,12 +4,13 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationValue from "../../Utils/renderers/OperationValue.renderer";
 import * as Renderer from "../../Utils/renderers/OperationItem.renderer";
 import * as CategorieRenderer from "../../Utils/renderers/CategorieItem.renderer";
+import PropTypes from "prop-types";
 
 /**
  * Tuile d'une opération dans la liste des opérations
- * @param operation opération affichée
- * @param listeComptes liste des comptes
- * @param onClick action lors du click
+ * @param operation : object opération affichée
+ * @param listeComptes : array liste des comptes
+ * @param onClick : function action lors du click
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
@@ -63,5 +64,9 @@ const OperationItem = ({operation, listeComptes, onClick}) => {
 
     )
 };
-
+OperationItem.propTypes = {
+    operation: PropTypes.object.isRequired,
+    listeComptes: PropTypes.array.isRequired,
+    onClick: PropTypes.func.isRequired
+}
 export default OperationItem

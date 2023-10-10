@@ -1,9 +1,12 @@
 import React, {Component} from "react";
 import * as Controller from "./DateRange.controller"
 import {Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import PropTypes from "prop-types";
 
 /**
  * Date Range Select
+ * @param selectedDate : date date sélectionnée
+ * @param onDateChange : function sélection d'une date
  */
 export default class DateRange extends Component {
 
@@ -80,4 +83,7 @@ export default class DateRange extends Component {
         </center>
     ); }
 }
-
+DateRange.propTypes = {
+    selectedDate: PropTypes.object.isRequired,
+    onDateChange: PropTypes.func.isRequired
+}
