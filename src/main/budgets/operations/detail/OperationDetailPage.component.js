@@ -220,8 +220,9 @@ class OperationDetailPage extends Component {
                     </Box>
 
                     { /** VALEUR **/}
-                    <Typography variant={"h4"} className={budget?.actif ? "editableField" : ""}>
-                        {(!this.state.editForm.value || !budget?.actif) ?
+                    <Typography variant={"h4"} className={budget?.actif ? "editableField" : ""}
+                                id={OPERATION_EDITION_FORM_IDS.VALUE}>
+                        {(!this.state.editForm.value) ?
                             <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}
                                             id={OPERATION_EDITION_FORM_IDS.VALUE}/>
                             :
@@ -245,8 +246,9 @@ class OperationDetailPage extends Component {
 
                     { /** LIBELLE **/}
                     <Typography variant={"button"} sx={{fontSize: "large"}}
-                                className={budget?.actif ? "editableField" : ""}>
-                        {(!this.state.editForm.libelle || !budget?.actif) ?
+                                className={budget?.actif ? "editableField" : ""}
+                                id={OPERATION_EDITION_FORM_IDS.LIBELLE}>
+                        {(!this.state.editForm.libelle) ?
                             <span
                                 id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}</span>
                             :
@@ -281,7 +283,7 @@ class OperationDetailPage extends Component {
                         <Grid2 md={5}>
                             {
                                 /** CATEGORIES **/
-                                !this.state.editForm.categories || !budget?.actif ?
+                                !this.state.editForm.categories ?
                                     <Typography variant={"overline"}>
                                         {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                                     </Typography>
@@ -311,7 +313,7 @@ class OperationDetailPage extends Component {
                         </Grid2>
                         <Grid2 md={3}>
                             { /** PERIODE **/
-                                (!this.state.editForm.mensualite || !budget?.actif) ?
+                                (!this.state.editForm.mensualite) ?
                                     <Typography id={OPERATION_EDITION_FORM_IDS.MENSUALITE} variant={"overline"}
                                                 className={budget?.actif ? "editableField" : ""}
                                                 color={Renderer.getPeriodeRenderer(operation.mensualite.periode).color}>
@@ -353,7 +355,7 @@ class OperationDetailPage extends Component {
 
                         <Grid2 md={5}>
                             { /** COMPTE DE TRANSFERT  **/
-                                budget?.actif && this.isInCreateMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
+                                this.isInCreateMode() && this.state.editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === this.state.editOperation.ssCategorie.id) ?
                                     <TextField
                                         id={OPERATION_EDITION_FORM_IDS.INTERCOMPTES + OPERATION_EDITION_FORM_IDS.INPUT}
                                         required select sx={{width: "90%"}}
@@ -387,7 +389,7 @@ class OperationDetailPage extends Component {
                         </Grid2>
                         <Grid2 md={3}>
                             { /** DATE OPERATION **/}
-                            {(!this.state.editForm.dateOperation || !budget?.actif) ?
+                            {(!this.state.editForm.dateOperation) ?
                                 <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
                                             className={budget?.actif ? "editableField" : ""}
                                             sx={{color: (operation.autresInfos.dateOperation != null ? "#000000" : "#E0E0E0")}}>

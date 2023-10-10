@@ -9,9 +9,9 @@ import {BUSINESS_GUID, TYPES_OPERATION_ENUM} from "../../../Utils/AppBusinessEnu
  */
 export function handleOperationEditionClick(event) {
 
-    if (event.target !== null && event.target !== undefined) {
-        const idElement = DataUtils.getEventTargetId(event.target);
 
+    if (event.target !== null && event.target !== undefined && this.props.budget?.actif) {
+        const idElement = DataUtils.getEventTargetId(event.target);
         const enterKeyPress = event.type === 'keyup' && (event.code === 'Enter' || event.code === 'NumpadEnter');
 
         // Validation du formulaire
@@ -38,7 +38,6 @@ export function handleOperationEditionClick(event) {
             }
             this.setState({editForm: editForm})
         }
-
     }
 }
 
@@ -86,11 +85,9 @@ export function handleValidateOperationForm() {
             this.props.operation.ssCategorie = this.state.editOperation.ssCategorie
         }
 
-        if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES) {
-            if (this.state.intercompte === null) {
-                errors.intercompte = "Le compte de transfert est obligatoire"
-                hasErrors = true
-            }
+        if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.isInCreateMode() && this.state.intercompte === null) {
+            errors.intercompte = "Le compte de transfert est obligatoire"
+            hasErrors = true
         }
 
         if (hasErrors) {
@@ -99,7 +96,7 @@ export function handleValidateOperationForm() {
             this.setState({errors: errors})
         } else {
 
-            if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES) {
+            if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.isInCreateMode()) {
                 // Create Update Opération Intercomptes
                 this.saveOperationIntercompte(this.props.operation, this.props.budget, this.state.intercompte);
             } else {
