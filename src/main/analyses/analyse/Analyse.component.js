@@ -35,8 +35,6 @@ export default class Analyse extends Component {
         super(props);
         this.loadBudget = Services.loadBudget.bind(this);
         this.calculateResumes = Controller.calculateResumes.bind(this);
-        this.createNewResumeCategorie = Controller.createNewResumeCategorie.bind(this);
-        this.populateCategorie = Controller.populateCategorie.bind(this);
 
         this.handleCategorieSelect = Controller.handleCategorieSelect.bind(this);
         this.handleSsCategorieSelect = Controller.handleSsCategorieSelect.bind(this);

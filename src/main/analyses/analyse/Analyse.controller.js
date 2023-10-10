@@ -6,6 +6,26 @@ import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
  * Controleur des analyses
  */
 
+
+/**
+ * Création d'un résumé de catégorie
+ * @returns {ResumeCategorie} résumé de catégorie
+ */
+function createNewResumeCategorie() {
+
+    let newResumeCategorie: ResumeCategorie =
+        {
+            categorie: {},
+            couleurCategorie: "#808080",
+            resumesSsCategories: {},
+            nbTransactions: [],
+            pourcentage: [],
+            total: []
+        }
+    return newResumeCategorie;
+}
+
+
 /**
  *  Notification lorsque le budget est mis à jour
  * @param budgetData budget
@@ -31,8 +51,8 @@ export function calculateResumes(budgetData) {
         .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
         .reduce((group, operation) => {
             let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
-            this.populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
-            this.populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
+            populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
+            populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
             return group;
         }, {});
 
@@ -48,10 +68,10 @@ export function calculateResumes(budgetData) {
  * @param totauxParEtats totauxParEtats
  * @param couleurCategorie couleur de la catégorie (et ses ssous catégories
  */
-export function populateCategorie(group, operation, categorie, totauxParEtats, couleurCategorie) {
+function populateCategorie(group, operation, categorie, totauxParEtats, couleurCategorie) {
 
 
-    group[categorie.id] = group[categorie.id] ?? this.createNewResumeCategorie();
+    group[categorie.id] = group[categorie.id] ?? createNewResumeCategorie();
     group[categorie.id].categorie = categorie;
     group[categorie.id].couleurCategorie = couleurCategorie;
 
@@ -92,23 +112,4 @@ export function handleCategorieSelect(rang, resumeSelectedCategorie) {
  */
 export function handleSsCategorieSelect(rang, resumeSelectedSsCategorie) {
     this.setState({resumeSelectedSsCategorie: resumeSelectedSsCategorie})
-}
-
-
-/**
- * Création d'un résumé de catégorie
- * @returns {ResumeCategorie} résumé de catégorie
- */
-export function createNewResumeCategorie() {
-
-    let newResumeCategorie: ResumeCategorie =
-        {
-            categorie: {},
-            couleurCategorie: "#808080",
-            resumesSsCategories: {},
-            nbTransactions: [],
-            pourcentage: [],
-            total: []
-        }
-    return newResumeCategorie;
 }

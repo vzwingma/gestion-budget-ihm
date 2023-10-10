@@ -67,7 +67,7 @@ const GraphAnalyses = ({
                          cx="50%" cy="50%" innerRadius={100} outerRadius={230}
                          isAnimationActive={false}>
                         {dataCategories.map((entry, index) => (
-                                <Cell key={`cell-${index}`}
+                            <Cell key={`cell-${entry.categorie}`}
                                       fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
                             ))
                         }
@@ -77,7 +77,7 @@ const GraphAnalyses = ({
                          cx="50%" cy="50%" innerRadius={250} outerRadius={350}
                          isAnimationActive={false}>
                         {dataSsCategories.map((entry, index) => (
-                            <Cell key={`cell-${index}`}
+                            <Cell key={`cell-${entry.categorie.id}`}
                                   fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
                             />
                             ))
