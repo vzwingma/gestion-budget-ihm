@@ -71,21 +71,75 @@ export function getCategorieColor(operationCategorie) {
     return "#808080"
 }
 
-// Icone par catégories et sous catégorie
+
+/**
+ * Icone par catégories et sous catégorie
+ * @param operationCategorie : object catégprie
+ * @returns {JSX.Element} icone MaterialUI
+ */
 export function getCategorieIcon(operationCategorie) {
     if (operationCategorie != null) {
-        switch (operationCategorie.id) {
-            // VIREMENTS
-            case 'ea6dcc12-3349-4047-a1e5-cd1d7254f16e': // VIREMENTS
-                return <AccountBalanceRounded/>
 
-            case '885e0d9a-6f3c-4002-b521-30169baf7123': // Remboursement
-                return <AddCardRounded/>
-            case 'ed3f6100-5dbd-4b68-860e-0c97ae1bbc63': // Intercomptes
-                return <CurrencyExchangeRounded/>
-            case 'd005de34-f768-4e96-8ccd-70399792c48f': // Salaires
-                return <EuroSymbolRounded/>
+        let icon = getCategorieIconVirement(operationCategorie.id)
+        if (icon != null) {
+            return icon;
+        }
+        icon = getCategorieIconPrelevement(operationCategorie.id)
+        if (icon != null) {
+            return icon;
+        }
+        icon = getCategorieIconFrais(operationCategorie.id)
+        if (icon != null) {
+            return icon;
+        }
+        icon = getCategorieIconFraisRemboursable(operationCategorie.id)
+        if (icon != null) {
+            return icon;
+        }
+        icon = getCategorieIconAlimentation(operationCategorie.id)
+        if (icon != null) {
+            return icon;
+        }
+        icon = getCategorieIconDivers(operationCategorie.id)
+        if (icon != null) {
+            return icon;
+        }
+        icon = getCategorieIconTransport(operationCategorie.id)
+        if (icon != null) {
+            return icon;
+        }
+    }
+    return <QuestionMarkRounded/>
+}
 
+/**
+ * Catégorie Virement
+ * @param idCategorie : string idCatégorie
+ * @returns {JSX.Element|null}
+ */
+function getCategorieIconVirement(idCategorie) {
+    switch (idCategorie) {
+        case 'ea6dcc12-3349-4047-a1e5-cd1d7254f16e': // VIREMENTS
+            return <AccountBalanceRounded/>
+
+        case '885e0d9a-6f3c-4002-b521-30169baf7123': // Remboursement
+            return <AddCardRounded/>
+        case 'ed3f6100-5dbd-4b68-860e-0c97ae1bbc63': // Intercomptes
+            return <CurrencyExchangeRounded/>
+        case 'd005de34-f768-4e96-8ccd-70399792c48f': // Salaires
+            return <EuroSymbolRounded/>
+        default:
+            return null
+    }
+}
+
+/**
+ * Catégorie Divers
+ * @param idCategorie : string idCatégorie
+ * @returns {JSX.Element|null}
+ */
+function getCategorieIconDivers(idCategorie) {
+    switch (idCategorie) {
             // DIVERS
             case '94669a73-2563-4a31-8d67-35a8d96d8686': // DIVERS
                 return <SportsEsportsRounded/>
@@ -98,39 +152,70 @@ export function getCategorieIcon(operationCategorie) {
                 return <TravelExploreRounded/>
             case '603072b2-2bfc-43ad-b2de-028c9f28ba0a': // Travaux
                 return <ConstructionRounded/>
+        default:
+            return null
+    }
+}
 
-            // PRELEVEMENTS
-            case '504beea7-ed52-438a-aced-15e9603b82ab': // PRELEVEMENTS
-                return <CreditScoreRounded/>
+/**
+ * Catégorie Prelevement
+ * @param idCategorie : string idCatégorie
+ * @returns {JSX.Element|null}
+ */
+function getCategorieIconPrelevement(idCategorie) {
+    switch (idCategorie) {
+        case '504beea7-ed52-438a-aced-15e9603b82ab': // PRELEVEMENTS
+            return <CreditScoreRounded/>
 
-            case '6ae3d4c2-f0cc-4abc-b0ce-da39c1a06846': // Assurance
-                return <AssuredWorkloadRounded/>
-            case 'dc5a2d65-19f5-4f3d-a44a-e63e9abe3ac6': // Loyer
-                return <HomeRounded/>
-            case '55fc700b-24c6-4d95-9005-667af949537d': // Telecom
-                return <PhoneAndroidRounded/>
-            case '0f19a626-98ab-418c-8e94-865e6ea0d4a3': // Impots
-                return <BalanceRounded/>
-            case '1da40127-af16-4245-9ea8-6eca974905c6': // Electricite
-                return <ElectricBoltRounded/>
-            case '1da29b11-3100-446e-a257-0d0a240e3f8e': // Don
-                return <VolunteerActivismOutlined/>
-            case 'ccac974b-52c7-4b0b-94d4-8831b13800d1': // Gaz
-                return <GasMeterRounded/>
-            case 'db0b202a-0c90-44e5-8e34-7caa609e07fb': // Charges Appartement
-                return <HomeRounded/>
-            case '11f405f8-7301-4663-8c99-23d1f99598bb': // Remboursement crédit
-                return <AccountBalanceRounded/>
+        case '6ae3d4c2-f0cc-4abc-b0ce-da39c1a06846': // Assurance
+            return <AssuredWorkloadRounded/>
+        case 'dc5a2d65-19f5-4f3d-a44a-e63e9abe3ac6': // Loyer
+            return <HomeRounded/>
+        case '55fc700b-24c6-4d95-9005-667af949537d': // Telecom
+            return <PhoneAndroidRounded/>
+        case '0f19a626-98ab-418c-8e94-865e6ea0d4a3': // Impots
+            return <BalanceRounded/>
+        case '1da40127-af16-4245-9ea8-6eca974905c6': // Electricite
+            return <ElectricBoltRounded/>
+        case '1da29b11-3100-446e-a257-0d0a240e3f8e': // Don
+            return <VolunteerActivismOutlined/>
+        case 'ccac974b-52c7-4b0b-94d4-8831b13800d1': // Gaz
+            return <GasMeterRounded/>
+        case 'db0b202a-0c90-44e5-8e34-7caa609e07fb': // Charges Appartement
+            return <HomeRounded/>
+        case '11f405f8-7301-4663-8c99-23d1f99598bb': // Remboursement crédit
+            return <AccountBalanceRounded/>
+        default:
+            return null
+    }
+}
 
-            // FRAIS REMBOURSABLES
-            case 'b20a46a5-92ab-47a8-a70d-ecb64ddf02ce': // FRAIS REMBOURSABLES
+/**
+ * Catégorie Frais Remboursable
+ * @param idCategorie : string idCatégorie
+ * @returns {JSX.Element|null}
+ */
+function getCategorieIconFraisRemboursable(idCategorie) {
+    switch (idCategorie) {
+        case 'b20a46a5-92ab-47a8-a70d-ecb64ddf02ce': // FRAIS REMBOURSABLES
                 return <MedicationLiquidRounded/>
 
             case '6e96b0c3-ecc5-4be8-8087-0087b5e46baf': // Santé
                 return <HealthAndSafetyRounded/>
             case 'bd28c498-a774-4a67-b6ec-a135d39fca46': // Pro
                 return <ContactPhoneRounded/>
+        default:
+            return null
+    }
+}
 
+/**
+ * Catégorie Transport
+ * @param idCategorie : string idCatégorie
+ * @returns {JSX.Element|null}
+ */
+function getCategorieIconTransport(idCategorie) {
+    switch (idCategorie) {
             // TRANSPORT
             case 'c35fde2a-55ec-4a27-9519-5ef5daf46799': // TRANSPORTS
                 return <EmojiTransportationRounded/>
@@ -151,7 +236,18 @@ export function getCategorieIcon(operationCategorie) {
                 return <NoCrashRounded/>
             case '80698e57-4f34-42f8-b3ee-0487df01f0a1': // Transport en commun
                 return <DirectionsBusRounded/>
+        default:
+            return null
+    }
+}
 
+/**
+ * Catégorie Frais
+ * @param idCategorie : string idCatégorie
+ * @returns {JSX.Element|null}
+ */
+function getCategorieIconFrais(idCategorie) {
+    switch (idCategorie) {
             // FRAIS
             case '270f314a-b3e5-4e05-bc96-4e2fadc4a9d3': // FRAIS
                 return <DescriptionRounded/>
@@ -160,7 +256,18 @@ export function getCategorieIcon(operationCategorie) {
                 return <LocalHospitalRounded/>
             case 'f9cbdc91-73d2-4956-8936-044115de7723': // Banque
                 return <AccountBalanceWalletRounded/>
+        default:
+            return null
+    }
+}
 
+/**
+ * Catégorie Alimentation
+ * @param idCategorie : string idCatégorie
+ * @returns {JSX.Element|null}
+ */
+function getCategorieIconAlimentation(idCategorie) {
+    switch (idCategorie) {
             // ALIMENTATION
             case '8f1614c9-503c-4e7d-8cb5-0c9a9218b84a': // ALIMENTATION
                 return <RestaurantMenuRounded/>
@@ -171,11 +278,7 @@ export function getCategorieIcon(operationCategorie) {
                 return <BrunchDiningRounded/>
             case '467496e4-9059-4b9b-8773-21f230c8c5c6': // Courses
                 return <ShoppingCartCheckoutRounded/>
-
-            default:
-                // console.warn("L'opération " + operationSsCategorie.id + " n'a pas d'icone définie")
-                return <QuestionMarkRounded/>
-        }
+        default:
+            return null
     }
-    return <QuestionMarkRounded/>
 }
