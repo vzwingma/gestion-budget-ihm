@@ -17,7 +17,7 @@ function PrivateNavLinks() {
                      to="/analyses">Analyses</NavLink>
         </Stack>
     } else {
-        return <NavLink className="nav-link" to="/infos">Infos</NavLink>
+        return <Stack direction="row" spacing={1}><NavLink className="nav-link" to="/infos">Infos</NavLink></Stack>
     }
 }
 export default PrivateNavLinks;
