@@ -6,8 +6,8 @@ import Infos from "./infos/Infos.component";
 import {removeTokenFromStorage} from "./Services/Auth.service";
 
 import {AppBar, Stack, Typography} from "@mui/material";
-import Profile from "./menubar/Profile.component";
-import PrivateNavLinks from "./menubar/PrivateNavLinks.component";
+import Profile from "./menuTopBar/Profile.component";
+import PrivateNavLinks from "./menuTopBar/PrivateNavLinks.component";
 import MainBudget from "./budgets/MainBudgets.component";
 import MainAnalyses from "./analyses/MainAnalyses.component";
 

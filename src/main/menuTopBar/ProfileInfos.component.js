@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {Stack} from "@mui/material";
 import * as Service from "./ProfileInfos.extservices"
 
