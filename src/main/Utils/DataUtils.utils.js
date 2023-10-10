@@ -56,39 +56,6 @@ export function getLabelDate(dateOperation) {
 
 
 
-
-
-
-
-
-
-/**
- * Calcul d'un libellé d'une date depuis son time in ms
- * @param date date a afficher
- * @returns {string} date au format issu du pattern YYYY-MM-DD
- */
-export function getDateForForm(date){
-    if( date != null){
-        return date.getFullYear() + "-" + addLeadingZeros(date.getMonth()+1) + "-" + addLeadingZeros(date.getDate());
-    }
-    return null
-}
-
-
-/**
- * Extrait la date d'un datetime
- * @param dateTime date time fourni par le backend
- * @returns {string|*} la première partie en JJ MM AAAA
- */
-export function getDateFromDateTime(dateTime){
-    if(dateTime !== null){
-        return dateTime.substring(0, 10)
-    }
-    return dateTime
-}
-
-
-
 /**
  * Tri par libellé
  * @param categorie1 premier libellé
@@ -97,11 +64,14 @@ export function getDateFromDateTime(dateTime){
  */
 export function sortLibellesCategories(categorie1, categorie2) {
 
-    if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
-        return 1;
-    } else if (categorie1.categorieParente.libelle < categorie2.categorieParente.libelle) {
-        return -1;
-    } else if (categorie1.libelle > categorie2.libelle) {
+    if (categorie1.categorieParente !== null && categorie1.categorieParente !== undefined && categorie2.categorieParente !== null && categorie2.categorieParente !== undefined) {
+        if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
+            return 1;
+        } else if (categorie1.categorieParente.libelle < categorie2.categorieParente.libelle) {
+            return -1;
+        }
+    }
+    if (categorie1.libelle > categorie2.libelle) {
         return 1;
     } else if (categorie1.libelle < categorie2.libelle) {
         return -1;
