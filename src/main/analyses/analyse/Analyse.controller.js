@@ -37,11 +37,11 @@ export function calculateResumes(budgetData) {
         .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
         .reduce((group, operation) => {
             group[operation.etat + "_" + operation.typeOperation] = group[operation.etat + "_" + operation.typeOperation] ?? 0;
-            group[operation.etat + "_" + operation.typeOperation] = group[operation.etat + "_" + operation.typeOperation] + Math.abs(operation.valeur)
+            group[operation.etat + "_" + operation.typeOperation] = group[operation.etat + "_" + operation.typeOperation] + operation.valeur
             // On ajoute les opérations réalisées aux prévues
             if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
                 group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] = group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] ?? 0;
-                group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] = group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] + Math.abs(operation.valeur)
+                group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] = group[OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation] + operation.valeur
             }
             return group;
         }, {});
@@ -56,7 +56,11 @@ export function calculateResumes(budgetData) {
             return group;
         }, {});
 
-    this.setState({currentBudget: budgetData, analysesGroupedByCategories: analysesGroupedByCategories})
+    this.setState({
+        currentBudget: budgetData,
+        analysesGroupedByCategories: analysesGroupedByCategories,
+        totauxGroupedByEtat: totauxGroupedByEtat
+    })
     toast.success("Analyse du budget correctement effectué ")
 }
 

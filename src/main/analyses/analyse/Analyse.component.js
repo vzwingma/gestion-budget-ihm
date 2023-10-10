@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import * as Controller from './Analyse.controller'
 import * as Services from './Analyse.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {Box, CircularProgress, Divider} from "@mui/material";
+import {Box, CircularProgress, Divider, Switch} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import CategoriesListe from "../categories/CategoriesListe.component";
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
@@ -81,16 +81,21 @@ export default class Analyse extends Component {
         return (
             <Box sx={{overflow: "hidden"}} maxHeight>
                 <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
-                    <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
+                    <Grid2 md={2}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
                                             fontSize={"large"}/></Grid2>
-                    <Grid2 md={7}>
-                        {this.state.currentBudget != null ?
+                    <Grid2 md={8}>
+                        {this.state.currentBudget !== null && this.state.totauxGroupedByEtat !== null ?
                             <AnalyseTitre currentCompte={this.props.selectedCompte}
-                                          currentDate={this.props.selectedDate}/> : <CircularProgress/>
+                                          currentDate={this.props.selectedDate}
+                                          totalOperations={this.state.totauxGroupedByEtat[this.state.selectedTypeAnalyse]}/> :
+                            <CircularProgress/>
                         }
                     </Grid2>
                     <Grid2 md={1}>
-
+                        Prévue <Switch defaultChecked/> Réalisée
+                    </Grid2>
+                    <Grid2 md={1} sx={{textAlign: "right"}}>
+                        Débit <Switch/> Crédit
                     </Grid2>
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
