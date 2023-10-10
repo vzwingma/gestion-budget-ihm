@@ -80,6 +80,7 @@ a.nav-link {
     display: inline-block;
     width: 150px;
     margin-right: 0.625%;
+    margin-top: 10px;
     text-align: center;
     line-height: 3.5;
     height: 66px;
@@ -94,6 +95,7 @@ a.nav-link_selected {
     display: inline-block;
     width: 150px;
     margin-right: 0.625%;
+    border-top: 4px solid #1976d2;
     text-align: center;
     line-height: 3.5;
     height: 66px;

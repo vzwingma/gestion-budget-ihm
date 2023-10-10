@@ -3,12 +3,14 @@ import React, {Component} from "react";
 import * as Controller from './Analyse.controller'
 import * as Services from './Analyse.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {Box, CircularProgress, Divider, Switch} from "@mui/material";
+import {Box, Chip, CircularProgress, Divider, Stack, Switch} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import CategoriesListe from "../categories/CategoriesListe.component";
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseTitre.component";
 import PropTypes from "prop-types";
+import * as Renderer from "../../Utils/renderers/OperationItem.renderer";
+import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
 
 /**
  * Page principale d'une analyse
@@ -39,6 +41,8 @@ export default class Analyse extends Component {
         this.handleCategorieSelect = Controller.handleCategorieSelect.bind(this);
         this.handleSsCategorieSelect = Controller.handleSsCategorieSelect.bind(this);
 
+        this.selectEtatOperation = Controller.selectEtatOperation.bind(this);
+        this.selectTypeOperation = Controller.selectTypeOperation.bind(this);
     }
 
 
@@ -62,14 +66,16 @@ export default class Analyse extends Component {
             console.log("[TRIGGER] Context budget=" + nextStates.currentBudget.id)
             componentUpdate = true;
         } else if (this.state.resumeSelectedCategorie !== nextStates.resumeSelectedCategorie) {
-            console.log("[TRIGGER] Context Resumé Catégorie=" + nextStates.resumeSelectedCategorie.categorie.id)
             componentUpdate = true;
         } else if (this.state.resumeSelectedSsCategorie !== nextStates.resumeSelectedSsCategorie) {
-            if (nextStates.resumeSelectedSsCategorie !== null) {
-                console.log("[TRIGGER] Context Resumé SsCatégorie=" + nextStates.resumeSelectedSsCategorie.categorie.id)
+            componentUpdate = true;
+        } else if (this.state.selectedTypeAnalyse !== nextStates.selectedTypeAnalyse) {
+            if (nextStates.selectedTypeAnalyse !== null) {
+                console.log("[TRIGGER] Context TypeAnalyse=" + nextStates.selectedTypeAnalyse)
             }
             componentUpdate = true;
         }
+
         return componentUpdate;
     }
 
@@ -83,7 +89,7 @@ export default class Analyse extends Component {
                 <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
                     <Grid2 md={2}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
                                             fontSize={"large"}/></Grid2>
-                    <Grid2 md={8}>
+                    <Grid2 md={7}>
                         {this.state.currentBudget !== null && this.state.totauxGroupedByEtat !== null ?
                             <AnalyseTitre currentCompte={this.props.selectedCompte}
                                           currentDate={this.props.selectedDate}
@@ -91,11 +97,18 @@ export default class Analyse extends Component {
                             <CircularProgress/>
                         }
                     </Grid2>
-                    <Grid2 md={1}>
-                        Prévue <Switch defaultChecked/> Réalisée
-                    </Grid2>
-                    <Grid2 md={1} sx={{textAlign: "right"}}>
-                        Débit <Switch/> Crédit
+                    <Grid2 md={3}>
+                        <Stack direction={"row-reverse"} alignItems={"end"}>
+                            <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"}/>
+                            <Switch onClick={this.selectTypeOperation}/>
+                            <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"}/>
+
+                            <Chip label={"Réalisée"} variant="outlined"
+                                  sx={{color: Renderer.getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE)}}/>
+                            <Switch defaultChecked onClick={this.selectEtatOperation}/>
+                            <Chip label={"Prévue"} variant="outlined"
+                                  sx={{color: Renderer.getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE)}}/>
+                        </Stack>
                     </Grid2>
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
