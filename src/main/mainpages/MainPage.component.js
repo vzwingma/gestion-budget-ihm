@@ -1,18 +1,19 @@
 import React, {Component} from "react";
 import {Box, CircularProgress, Divider, Drawer, Stack} from "@mui/material";
-import DateRange from "../mainpages/menuBar/DateRange.component";
-import * as Controller from "../mainpages/MainPages.controller";
-import * as Services from "../mainpages/MainPages.extservices";
-import Budget from "./budget/Budget.component";
-import CompteItem from "../mainpages/menuBar/CompteItem.component";
+import DateRange from "./menuSlideBar/DateRange.component";
+import * as Controller from "./MainPage.controller";
+import * as Services from "./MainPage.extservices";
+import Budget from "../budgets/budget/Budget.component";
+import CompteItem from "./menuSlideBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
+import Analyse from "../analyses/analyse/Analyse.component";
 
 /**
  *    Page principale de gestion des budgets
-*/
-export default class MainBudget extends Component {
+ */
+export default class MainPage extends Component {
 
-    /** Etats pour la page Budget **/
+    /** Etats pour la page Budget/Analyse **/
     state = {
         comptes: [],
         selectedCompte: null,
@@ -60,10 +61,17 @@ export default class MainBudget extends Component {
                 </Drawer>
 
                 {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
-                    <Budget selectedCompte={this.state.selectedCompte}
-                            selectedDate={this.state.selectedDate}
-                            listeComptes={this.state.comptes}
-                            onOpenMenu={this.handleOpenMenuBar}/>
+                    this.props.fonction === "BUDGET" ?
+                        <Budget selectedCompte={this.state.selectedCompte}
+                                selectedDate={this.state.selectedDate}
+                                listeComptes={this.state.comptes}
+                                onOpenMenu={this.handleOpenMenuBar}/>
+                        : this.props.fonction === "ANALYSE" ?
+                            <Analyse selectedCompte={this.state.selectedCompte}
+                                     selectedDate={this.state.selectedDate}
+                                     onOpenMenu={this.handleOpenMenuBar}/>
+                            :
+                            <CircularProgress/>
                     :
                     <CircularProgress/>}
 

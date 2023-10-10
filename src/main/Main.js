@@ -8,8 +8,7 @@ import {removeTokenFromStorage} from "./Services/Auth.service";
 import {AppBar, Stack, Typography} from "@mui/material";
 import Profile from "./menuTopBar/Profile.component";
 import PrivateNavLinks from "./menuTopBar/PrivateNavLinks.component";
-import MainBudget from "./budgets/MainBudgets.component";
-import MainAnalyses from "./analyses/MainAnalyses.component";
+import MainPage from "./mainpages/MainPage.component";
 
 
 /** Page principale avec le routeur **/
@@ -35,9 +34,9 @@ export default class Main extends Component {
     return (
         <HashRouter>
             <AuthProvider {...this.oidcConfig}>
-                <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+                <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1, height: "66px"}}>
                     <Stack direction="row" alignItems="flex-start" spacing={1}>
-                        <img src="/img/favicon64.png" width="60" height="60" style={{margin: "4px"}}
+                        <img src="/img/favicon64.png" width="60" height="60" style={{margin: "2px"}}
                              alt="Gestion de budgets"/>
                         <Typography variant="h6" component="div" noWrap
                                     sx={{flexGrow: 1, fontWeight: 700, fontSize: "1.2rem"}}>
@@ -58,8 +57,8 @@ export default class Main extends Component {
                 <div className="App">
                     <Routes>
                         <Route path="/"         element={<Infos/>}/>
-                        <Route path="/budgets" element={<MainBudget/>}/>
-                        <Route path="/analyses" element={<MainAnalyses/>}/>
+                        <Route path="/budgets" element={<MainPage fonction="BUDGET"/>}/>
+                        <Route path="/analyses" element={<MainPage fonction="ANALYSE"/>}/>
                         <Route path="/infos"    element={<Infos/>}/>
                     </Routes>
                 </div>

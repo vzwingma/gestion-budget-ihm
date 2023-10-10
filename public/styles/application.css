@@ -71,17 +71,36 @@ button.buttonsActionsOperations {
 
 
 /**
-Style Menu
+Style Top Menu
  */
 a.nav-link {
     color: white;
     outline: none;
     text-decoration: none;
     display: inline-block;
-    width: 100px;
+    width: 150px;
     margin-right: 0.625%;
     text-align: center;
-    line-height: 3;
+    line-height: 3.5;
+    height: 66px;
+}
+
+a.nav-link_selected {
+    color: #1976d2;
+    background-color: white;
+    border-radius: 20px 20px 0px 0px;
+    outline: none;
+    text-decoration: none;
+    display: inline-block;
+    width: 150px;
+    margin-right: 0.625%;
+    text-align: center;
+    line-height: 3.5;
+    height: 66px;
+}
+
+a.nav-link_selected:hover {
+    color: #1e3852;
 }
 
 a.nav-link:hover {

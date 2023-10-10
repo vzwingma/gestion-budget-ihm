@@ -39,10 +39,11 @@ function Profile() {
             <>
                 <ProfileInfos/>
 
-                <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
+                <Typography variant={"subtitle1"} component="div" sx={{flexGrow: 10, marginLeft: "20px"}}
+                            align={"right"}>
                     <Tooltip title={  auth.user?.profile.name }>
-                        <img onClick={logOut} src={auth.user?.profile.picture} width="60" height="60"
-                             style={{margin: "4px"}} alt="User loggé" referrerPolicy="no-referrer"/>
+                        <img onClick={logOut} src={auth.user?.profile.picture} width="62" height="62"
+                             style={{margin: "2px"}} alt="User loggé" referrerPolicy="no-referrer"/>
                     </Tooltip>
                 </Typography>
             </>
@@ -50,13 +51,11 @@ function Profile() {
     }
 
         return (
-            <>
                 <Typography variant={"subtitle1"} component="div" sx={{ flexGrow: 10 }} align={"right"}>
                     <Tooltip title="Non connecté. Cliquez pour vous identifier">
                         <img onClick={() => auth.signinRedirect()} src="/img/avatar.png" width="60" height="60" alt="User loggé"/>
                     </Tooltip>
                 </Typography>
-            </>
         );
 }
 export default Profile;
