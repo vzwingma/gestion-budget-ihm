@@ -29,7 +29,7 @@ import {
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
 } from "../../../Utils/AppBusinessEnums.constants";
-
+import PropTypes from "prop-types";
 
 /**
  * Page de détail d'une opération
@@ -418,4 +418,12 @@ class OperationDetailPage extends Component {
     }
 }
 
+// Properties Types
+OperationDetailPage.propTypes = {
+    operation: PropTypes.object.isRequired,
+    budget: PropTypes.object.isRequired,
+    listeCategories: PropTypes.array.isRequired,
+    listeComptes: PropTypes.array.isRequired,
+    onOperationChange: PropTypes.func.isRequired
+}
 export default OperationDetailPage
