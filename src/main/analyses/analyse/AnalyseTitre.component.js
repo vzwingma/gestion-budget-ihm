@@ -16,7 +16,7 @@ const AnalyseTitre = ({currentCompte, currentDate, totalOperations}) => {
     AnalyseTitre.propTypes = {
         currentCompte: PropTypes.object.isRequired,
         currentDate: PropTypes.any.isRequired,
-        totalOperations: PropTypes.object.isRequired
+        totalOperations: PropTypes.array
     }
 
 

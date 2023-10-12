@@ -37,6 +37,9 @@ export function getStyleOperation(operation, valueOperation){
  */
 const OperationValue = ({operation, valueOperation, showSign}) => {
 
+    if (valueOperation === undefined) {
+        valueOperation = 0;
+    }
     // définition du libellé
     return (
         <span

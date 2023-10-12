@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const CategoriesListItem = ({resumeCategorie, typeAnalyse, selectCategorie}) => {
+const AnalyseCategorieListItem = ({resumeCategorie, typeAnalyse, selectCategorie}) => {
 
     return (
         <Box key={"liste_" + resumeCategorie.categorie.id}
@@ -62,9 +62,9 @@ const CategoriesListItem = ({resumeCategorie, typeAnalyse, selectCategorie}) => 
     )
 };
 // Properties Types
-CategoriesListItem.propTypes = {
+AnalyseCategorieListItem.propTypes = {
     resumeCategorie: PropTypes.object.isRequired,
     typeAnalyse: PropTypes.string.isRequired,
     selectCategorie: PropTypes.func.isRequired
 }
-export default CategoriesListItem
+export default AnalyseCategorieListItem

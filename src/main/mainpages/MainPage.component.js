@@ -39,6 +39,27 @@ export default class MainPage extends Component {
         this.loadComptes();
     }
 
+
+    /**
+     * Render de la page principale, suivant la fonction sélectionnée
+     * @returns {JSX.Element}
+     */
+    renderSubMainPage() {
+        const fonction = this.props.fonction;
+        if (fonction === "BUDGET") {
+            return <Budget selectedCompte={this.state.selectedCompte}
+                           selectedDate={this.state.selectedDate}
+                           listeComptes={this.state.comptes}
+                           onOpenMenu={this.handleOpenMenuBar}/>
+        } else if (fonction === "ANALYSE") {
+            return <Analyse selectedCompte={this.state.selectedCompte}
+                            selectedDate={this.state.selectedDate}
+                            onOpenMenu={this.handleOpenMenuBar}/>
+        } else {
+            return <></>
+        }
+    }
+
     render() {
         return (
             <>
@@ -63,16 +84,7 @@ export default class MainPage extends Component {
                 </Drawer>
 
                 {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
-                    this.props.fonction === "BUDGET" ?
-                        <Budget selectedCompte={this.state.selectedCompte}
-                                selectedDate={this.state.selectedDate}
-                                listeComptes={this.state.comptes}
-                                onOpenMenu={this.handleOpenMenuBar}/> : <></>
-                        &&
-                        this.props.fonction === "ANALYSE" ?
-                            <Analyse selectedCompte={this.state.selectedCompte}
-                                     selectedDate={this.state.selectedDate}
-                                     onOpenMenu={this.handleOpenMenuBar}/> : <></>
+                    this.renderSubMainPage()
                     :
                     <CircularProgress/>}
 

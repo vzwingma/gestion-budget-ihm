@@ -5,7 +5,7 @@ import * as Services from './Analyse.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {Box, Chip, CircularProgress, Divider, Stack, Switch} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import CategoriesListe from "../categories/CategoriesListe.component";
+import AnalyseCategoriesListe from "../categories/AnalyseCategoriesListe.component";
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseTitre.component";
 import PropTypes from "prop-types";
@@ -114,9 +114,9 @@ export default class Analyse extends Component {
                 <Divider variant="middle" sx={{margin: 1}}/>
                 <Grid2 container sx={{overflow: "hidden"}}>
                     <Grid2 md={3} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
-                        { /** Liste des catégories **/
+                        { /** Liste des résumés par catégories **/
                             (this.state.currentBudget != null ?
-                                    <CategoriesListe
+                                    <AnalyseCategoriesListe
                                         rangSelectedCategorie={null}
                                         typeAnalyse={this.state.selectedTypeAnalyse}
                                         analysesGroupedByCategories={this.state.analysesGroupedByCategories}
@@ -129,7 +129,7 @@ export default class Analyse extends Component {
                     <Grid2 md={3} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
                         { /** Liste des sous-catégories **/
                             (this.state.currentBudget !== null && this.state.resumeSelectedCategorie !== null ?
-                                    <CategoriesListe
+                                    <AnalyseCategoriesListe
                                         rangSelectedCategorie={this.state.rangSelectedCategorie}
                                         typeAnalyse={this.state.selectedTypeAnalyse}
                                         analysesGroupedByCategories={this.state.resumeSelectedCategorie.resumesSsCategories}

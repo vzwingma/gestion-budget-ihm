@@ -56,7 +56,6 @@ export function calculateResumes(budgetData) {
         .reduce((group, operation) => {
             let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
             populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
-            console.log(group[operation.categorie.id].resumesSsCategories)
             populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
             return group;
         }, {});
