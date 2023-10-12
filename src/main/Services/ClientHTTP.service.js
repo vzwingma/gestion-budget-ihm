@@ -15,6 +15,52 @@ function logOut() {
 }
 
 /**
+ * Calcul de l'URL complétée
+ * @param uri URI de base
+ * @param path chemin de la ressource
+ * @param params paramètres (optionnels)
+ * @returns {*}
+ */
+function evaluateURL(uri, path, params) {
+    let fullURL = uri + path;
+    if (params != null) {
+        params.forEach(param => {
+            fullURL = fullURL.replace("{{}}", param)
+        })
+    }
+    return fullURL;
+}
+
+/**
+ * Completion du body
+ * @param body : string body
+ * @returns {json:null} body en JSON si body n'est pas null ou undefined
+ */
+function evaluateBody(body) {
+    let jsonBody = null
+    if (body !== undefined) {
+        jsonBody = JSON.stringify(body)
+        if (process.env.REACT_APP_CONFIG_DEBUG) {
+            console.log("[WS] > Body: " + jsonBody);
+        }
+    }
+    return jsonBody;
+}
+
+/**
+ * Log de l'authentification
+ */
+function logAuth() {
+    if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
+        console.log("[WS] > [X-Api-Key] : " + AppConstants.API_GW_ENUM.API_KEY);
+        console.log("[WS] > [Bearer] : " + getOAuthToken());
+        if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
+            alreadyTraced = true;
+        }
+    }
+}
+
+/**
  * Appel HTTP vers le backend
  * @param httpMethod méthode HTTP
  * @param uri URI de base
@@ -26,28 +72,12 @@ function logOut() {
 export function call(httpMethod, uri, path, params, body ) {
 
     // Calcul de l'URL complétée
-    let fullURL = uri + path;
-    if(params != null){
-        params.forEach(param => {
-            fullURL = fullURL.replace("{{}}", param)
-        })
-    }
+    const fullURL = evaluateURL(uri, path, params);
 
     console.log("[WS] > [" + httpMethod + " -> "+ fullURL + "]")
-    let jsonBody = null
-    if(body !== undefined){
-        jsonBody = JSON.stringify(body)
-        if (process.env.REACT_APP_CONFIG_DEBUG) {
-            console.log("[WS] > Body: " + jsonBody);
-        }
-    }
-    if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
-        console.log("[WS] > [X-Api-Key] : " + AppConstants.API_GW_ENUM.API_KEY);
-        console.log("[WS] > [Bearer] : " + getOAuthToken());
-        if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
-            alreadyTraced = true;
-        }
-    }
+    const jsonBody = evaluateBody(body);
+
+    logAuth();
 
     return fetch(fullURL,
         {
@@ -67,8 +97,7 @@ export function call(httpMethod, uri, path, params, body ) {
             } else if (res.status === 403) {
                 console.log("Session expirée")
                 logOut();
-            }
-            else{
+            } else {
                 console.log(res)
                 throw new Error(res.statusText);
             }
