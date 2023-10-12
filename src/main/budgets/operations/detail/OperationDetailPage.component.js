@@ -76,6 +76,7 @@ class OperationDetailPage extends Component {
         this.isInCreateMode = Controller.isInCreateMode.bind(this);
 
         this.handleValidateOperationForm = Controller.handleValidateOperationForm.bind(this);
+        this.validateForm = Controller.validateForm.bind(this);
         this.handleCloseOperationForm = Controller.handleCloseOperationForm.bind(this);
 
         this.saveOperation = Service.saveOperation.bind(this);

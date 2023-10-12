@@ -41,59 +41,68 @@ export function handleOperationEditionClick(event) {
     }
 }
 
+/**
+ * validation du formulaire
+ */
+export function validateForm() {
 
+    let errors = {};
+    let hasErrors = false;
+    // Description
+    if (this.state.editOperation.libelle === null || this.state.editOperation.libelle === "") {
+        errors.libelle = "Le champ Description est obligatoire";
+        hasErrors = true;
+    } else {
+        this.props.operation.libelle = this.state.editOperation.libelle;
+    }
+
+    // Valeur
+    if (this.state.editForm.value) {
+        if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
+            errors.valeur = "Le champ Valeur est obligatoire";
+            hasErrors = true;
+        } else {
+            let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
+            if (!/(^\d*.\d{2}$)/.test(valeur)) {
+                errors.valeur = "Le format est incorrect : 0000.00 €";
+                hasErrors = true;
+            } else {
+                this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
+            }
+        }
+    }
+    // DateOperation
+    this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
+
+    // Catégorie / ssCatégorie
+    if (this.state.editOperation.categorie.id === null || this.state.editOperation.categorie.libelle === null || this.state.editOperation.ssCategorie.id === null || this.state.editOperation.ssCategorie.libelle === null) {
+        errors.categorie = "Le champ Catégorie est obligatoire"
+        hasErrors = true
+    } else {
+        this.props.operation.categorie = this.state.editOperation.categorie
+        this.props.operation.ssCategorie = this.state.editOperation.ssCategorie
+    }
+
+    if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.isInCreateMode() && this.state.intercompte === null) {
+        errors.intercompte = "Le compte de transfert est obligatoire"
+        hasErrors = true
+    }
+    return {errors, hasErrors}
+}
 /**
  * Validation du formulaire
  */
 export function handleValidateOperationForm() {
 
     if (this.isInEditMode()) {
-        let errors = {};
-        let hasErrors = false;
-        // Description
-        if (this.state.editOperation.libelle === null || this.state.editOperation.libelle === "") {
-            errors.libelle = "Le champ Description est obligatoire";
-            hasErrors = true;
-        } else {
-            this.props.operation.libelle = this.state.editOperation.libelle;
-        }
 
-        // Valeur
-        if (this.state.editForm.value) {
-            if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
-                errors.valeur = "Le champ Valeur est obligatoire";
-                hasErrors = true;
-            } else {
-                let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
-                if (!/(^\d*.\d{2}$)/.test(valeur)) {
-                    errors.valeur = "Le format est incorrect : 0000.00 €";
-                    hasErrors = true;
-                } else {
-                    this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
-                }
-            }
-        }
-        // DateOperation
-        this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
 
-        // Catégorie / ssCatégorie
-        if (this.state.editOperation.categorie.id === null || this.state.editOperation.categorie.libelle === null || this.state.editOperation.ssCategorie.id === null || this.state.editOperation.ssCategorie.libelle === null) {
-            errors.categorie = "Le champ Catégorie est obligatoire"
-            hasErrors = true
-        } else {
-            this.props.operation.categorie = this.state.editOperation.categorie
-            this.props.operation.ssCategorie = this.state.editOperation.ssCategorie
-        }
+        const validation = this.validateForm();
 
-        if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.isInCreateMode() && this.state.intercompte === null) {
-            errors.intercompte = "Le compte de transfert est obligatoire"
-            hasErrors = true
-        }
-
-        if (hasErrors) {
+        if (validation.hasErrors) {
             console.log("Erreurs présentes dans le formulaire")
-            console.log(errors)
-            this.setState({errors: errors})
+            console.log(validation.errors)
+            this.setState({errors: validation.errors})
         } else {
 
             if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.isInCreateMode()) {
