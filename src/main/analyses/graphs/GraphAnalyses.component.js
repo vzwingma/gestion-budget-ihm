@@ -61,10 +61,10 @@ const GraphAnalyses = ({
 
     return (
             <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={800} height={800}>
+                <PieChart width="90%" height="90%">
 
                     <Pie data={dataCategories} dataKey="value"
-                         cx="50%" cy="50%" innerRadius={100} outerRadius={230}
+                         cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
                          isAnimationActive={false}>
                         {dataCategories.map((entry) => (
                             <Cell key={`cell-${entry.categorie}`}
@@ -74,7 +74,7 @@ const GraphAnalyses = ({
                         <LabelList data={dataSsCategories} dataKey="name" stroke={"black"} strokeWidth={0.5}/>
                     </Pie>
                     <Pie data={dataSsCategories} dataKey="value"
-                         cx="50%" cy="50%" innerRadius={250} outerRadius={350}
+                         cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
                          isAnimationActive={false}>
                         {dataSsCategories.map((entry) => (
                             <Cell key={`cell-${entry.categorie.id}`}
