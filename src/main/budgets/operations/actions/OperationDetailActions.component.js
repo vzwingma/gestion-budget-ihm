@@ -36,8 +36,6 @@ export default class OperationDetailActions extends Component {
 
     /** Etats pour la page OperationDetailActions **/
     state = {
-        currentBudget: null,
-        currentOperation: null,
         showModale: false
     }
 

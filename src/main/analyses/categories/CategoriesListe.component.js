@@ -33,7 +33,7 @@ const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, ty
         arrayAnalysesGroupedByCategories
             .sort((resume1, resume2) => sortLibellesCategories(resume1.categorie, resume2.categorie))
             .filter(analysesOfCategorie => analysesOfCategorie.nbTransactions[typeAnalyse] > 0)
-            .map(analysesOfCategorie => {
+            .forEach(analysesOfCategorie => {
                 const r = renderList.length
                 renderList.push(
                     <CategoriesListItem key={analysesOfCategorie.categorie.id}

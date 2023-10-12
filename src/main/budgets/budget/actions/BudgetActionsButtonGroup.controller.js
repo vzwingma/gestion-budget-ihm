@@ -6,7 +6,7 @@ import * as DataUtils from "../../../Utils/DataUtils.utils";
  */
 export function handleButtonsBudgetClick(event) {
 
-    if (event.target !== null) {
+    if (event.target.className !== "btn-close") {
         let action = DataUtils.getEventTargetId(event.target);
         let titrePopup = "";
         let questionPopup = "";
@@ -38,7 +38,7 @@ export function handleButtonsBudgetClick(event) {
                 showModale: affichagePopup,
                 action: action
             })
-    } else if (event.target.className === "btn-close") {
+    } else {
         this.setState({showModale: false})
     }
 }
