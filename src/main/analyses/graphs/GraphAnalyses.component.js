@@ -2,6 +2,7 @@ import {Cell, LabelList, Pie, PieChart, ResponsiveContainer} from "recharts";
 import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
 import React from "react";
 import PropTypes from "prop-types";
+import {sortLibellesCategories} from "../../Utils/DataUtils.utils";
 
 /**
  * Graphique Analyses
@@ -23,41 +24,40 @@ const GraphAnalyses = ({
     let dataCategories = [];
     let dataSsCategories = [];
 
-
-    /** Init du tableau pour l'affichage du graphique **/
-    function populatesGraph() {
-
+    /**
+     * Populate des data pour les graphs d'une catégorie
+     * @param analysesGroupedByCategories : object analyses groupées des catégories
+     * @param dataCategories : array tableau pour alimenter le graphique
+     * @param parentCategorie : object catégorie parente
+     */
+    function populateGraphCategorie(analysesGroupedByCategories, dataCategories, parentCategorie) {
+        const arrayAnalysesGroupedByCategories = []
+        // transform en array
         for (let categorieId in analysesGroupedByCategories) {
-
-            if (analysesGroupedByCategories[categorieId].nbTransactions[typeAnalyse] > 0) {
-
-                let resume = analysesGroupedByCategories[categorieId];
-                dataCategories.push({
-                    id: resume.categorie.id,
-                    categorie: resume.categorie,
-                    name: resume.categorie.libelle + " : " + resume.pourcentage[typeAnalyse] + "%",
-                    value: Math.abs(resume.total[typeAnalyse])
-                })
-
-                for (let idSsCategorie in resume.resumesSsCategories) {
-                    let ssResume = resume.resumesSsCategories[idSsCategorie]
-
-                    if (ssResume.nbTransactions[typeAnalyse] > 0) {
-                        dataSsCategories.push({
-                            id: ssResume.categorie.id,
-                            categorie: resume.categorie,
-                            name: ssResume.categorie.libelle + " : " + ssResume.pourcentage[typeAnalyse] + "%",
-                            value: Math.abs(ssResume.total[typeAnalyse])
-                        })
-                    }
-                }
-
-            }
+            arrayAnalysesGroupedByCategories.push(analysesGroupedByCategories[categorieId]);
         }
+
+        // Populate datagategories
+        arrayAnalysesGroupedByCategories
+            .filter(analysesOfCategorie => analysesOfCategorie.nbTransactions[typeAnalyse] > 0)
+            .sort((analysesOfCategorie1, analysesOfCategorie2) => sortLibellesCategories(analysesOfCategorie1.categorie, analysesOfCategorie2.categorie))
+            .forEach((analysesOfCategorie) => {
+
+                dataCategories.push({
+                    id: analysesOfCategorie.categorie.id,
+                    categorie: parentCategorie != null ? parentCategorie : analysesOfCategorie.categorie,
+                    name: analysesOfCategorie.categorie.libelle + " : " + analysesOfCategorie.pourcentage[typeAnalyse] + "%",
+                    value: Math.abs(analysesOfCategorie.total[typeAnalyse])
+                })
+                // Populate pour les sous catégories
+                if (analysesOfCategorie.resumesSsCategories !== undefined && analysesOfCategorie.resumesSsCategories !== null) {
+                    populateGraphCategorie(analysesOfCategorie.resumesSsCategories, dataSsCategories, analysesOfCategorie.categorie);
+                }
+            })
     }
 
-    // Alimentation du graphique
-    populatesGraph();
+    /** Init du tableau pour l'affichage du graphique **/
+    populateGraphCategorie(analysesGroupedByCategories, dataCategories);
 
     return (
             <ResponsiveContainer width="100%" height="100%">
@@ -91,7 +91,7 @@ const GraphAnalyses = ({
 // Properties Types
 GraphAnalyses.propTypes = {
     typeAnalyse: PropTypes.string.isRequired,
-    analysesGroupedByCategories: PropTypes.array.isRequired,
+    analysesGroupedByCategories: PropTypes.object.isRequired,
     resumeSelectedCategorie: PropTypes.object,
     resumeSelectedSsCategorie: PropTypes.object,
 }
