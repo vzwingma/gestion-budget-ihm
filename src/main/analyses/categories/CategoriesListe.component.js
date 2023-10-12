@@ -31,8 +31,8 @@ const CategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, ty
 
         let renderList = []
         arrayAnalysesGroupedByCategories
-            .sort((resume1, resume2) => sortLibellesCategories(resume1.categorie, resume2.categorie))
             .filter(analysesOfCategorie => analysesOfCategorie.nbTransactions[typeAnalyse] > 0)
+            .sort((resume1, resume2) => sortLibellesCategories(resume1.categorie, resume2.categorie))
             .forEach(analysesOfCategorie => {
                 const r = renderList.length
                 renderList.push(
