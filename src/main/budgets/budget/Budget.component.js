@@ -95,7 +95,7 @@ export default class Budget extends Component {
     render() { return (
         <Box sx={{overflow: "hidden"}} maxHeight>
             <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid2 md={0.2}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
+                <Grid2 md={0.33}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
                                           fontSize={"large"}/></Grid2>
                 <Grid2 md={3} paddingTop={"6px"}>
                     <Paper component="form"
@@ -104,7 +104,7 @@ export default class Budget extends Component {
                                display: 'flex',
                                alignItems: 'center',
                                width: '100%',
-                               marginLeft: '35px'
+                               paddingRight: "10px"
                            }}>
                         <InputBase
                             sx={{ml: 1, flex: 1, color: "#808080"}}
@@ -117,7 +117,7 @@ export default class Budget extends Component {
 
                     </Paper>
                 </Grid2>
-                <Grid2 md={2}></Grid2>
+                <Grid2 md={1.5}/>
                 <Grid2 md={6}>
                     { /** Titre **/}
                     {this.state.currentBudget != null ?
@@ -126,7 +126,7 @@ export default class Budget extends Component {
                                      currentBudget={this.state.currentBudget}/> : <CircularProgress/>
                     }
                 </Grid2>
-                <Grid2 md={0.8}>
+                <Grid2 md={1}>
                     {/** Actions sur le budget (close / reinit) **/
                         (this.state.currentBudget != null && this.state.user_droits != null) ?
                             <BudgetActionsButtonGroupComponent budget={this.state.currentBudget}
