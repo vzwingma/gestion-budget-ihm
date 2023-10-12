@@ -42,8 +42,6 @@ import PropTypes from "prop-types";
 class OperationDetailPage extends Component {
 
 
-
-
     /** Constructeur **/
     constructor(props) {
         super(props);
@@ -77,6 +75,14 @@ class OperationDetailPage extends Component {
 
         this.handleValidateOperationForm = Controller.handleValidateOperationForm.bind(this);
         this.validateForm = Controller.validateForm.bind(this);
+        // Description
+        this.validateDescription = Controller.validateDescription.bind(this);
+        // Valeur
+        this.validateFormMontant = Controller.validateFormMontant.bind(this);
+        // Catégorie / ssCatégorie
+        this.validateFormCategories = Controller.validateFormCategories.bind(this);
+        this.validateFormTransfertIntercompte = Controller.validateFormTransfertIntercompte.bind(this);
+
         this.handleCloseOperationForm = Controller.handleCloseOperationForm.bind(this);
 
         this.saveOperation = Service.saveOperation.bind(this);
