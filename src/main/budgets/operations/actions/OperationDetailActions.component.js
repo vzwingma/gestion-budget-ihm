@@ -132,6 +132,6 @@ export default class OperationDetailActions extends Component {
 OperationDetailActions.propTypes = {
     currentOperation: PropTypes.object.isRequired,
     currentBudget: PropTypes.object.isRequired,
-    isInCreateMode: PropTypes.bool.isRequired,
+    isInCreateMode: PropTypes.func.isRequired,
     saveOperation: PropTypes.func.isRequired
 }
