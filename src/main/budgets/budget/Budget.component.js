@@ -118,7 +118,7 @@ export default class Budget extends Component {
                     </Paper>
                 </Grid2>
                 <Grid2 md={1.5}/>
-                <Grid2 md={6}>
+                <Grid2 md={6.1}>
                     { /** Titre **/}
                     {this.state.currentBudget != null ?
                         <BudgetTitre currentCompte={this.props.selectedCompte}

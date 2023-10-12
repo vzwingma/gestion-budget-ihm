@@ -8,6 +8,7 @@ import {
     DialogContentText,
     DialogTitle,
     IconButton,
+    Stack,
     Tooltip
 } from '@mui/material';
 
@@ -52,27 +53,8 @@ export default class BudgetActionsButtonGroupComponent extends Component {
     render() {
         /** Groupe d'actions sur le budget **/
         return (
-            <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick}
-                         variant={"light"}>
-                    {this.props.budget.actif &&
-                    <Tooltip title="Créer une nouvelle opération">
-                        <IconButton
-                            className={"buttonsActionsBudget"} sx={{backgroundColor: '#209ED8', marginX: '10px'}}
-                            id={"CREATE"}>
-                            <center><AddchartRounded id={"CREATE"}/></center>
-                        </IconButton>
-                    </Tooltip>
-                    }
-                    { this.props.budget.actif && this.props.droits != null && this.props.droits[UTILISATEUR_DROITS.DROITS.RAZ_BUDGET] &&
-                    <Tooltip title="Réinitialiser le budget">
-                        <IconButton
-                            className={"buttonsActionsBudget"} sx={{backgroundColor: '#EDC109'}}
-                            id={"REINIT_A_CONFIRMER"}>
-                            <center><RestartAltRounded id={"REINIT_A_CONFIRMER"}/></center>
-                        </IconButton>
-                    </Tooltip>
-                    }
-                    { this.props.droits?.[UTILISATEUR_DROITS.DROITS.CLOTURE_BUDGET] &&
+            <Stack direction={"row-reverse"} alignItems={"end"} onClick={this.handleButtonsBudgetClick}>
+                {this.props.droits?.[UTILISATEUR_DROITS.DROITS.CLOTURE_BUDGET] &&
                     <Tooltip title={(this.props.budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}>
 
                         {(this.props.budget.actif ?
@@ -87,7 +69,27 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                                 <center><LockRounded id={"CLOSE_A_CONFIRMER"}/></center>
                             </IconButton>)}
                     </Tooltip>
-                    }
+                }
+
+                {this.props.budget.actif && this.props.droits != null && this.props.droits[UTILISATEUR_DROITS.DROITS.RAZ_BUDGET] &&
+                    <Tooltip title="Réinitialiser le budget">
+                        <IconButton
+                            className={"buttonsActionsBudget"} sx={{backgroundColor: '#EDC109'}}
+                            id={"REINIT_A_CONFIRMER"}>
+                            <center><RestartAltRounded id={"REINIT_A_CONFIRMER"}/></center>
+                        </IconButton>
+                    </Tooltip>
+                }
+
+                {this.props.budget.actif &&
+                    <Tooltip title="Créer une nouvelle opération">
+                        <IconButton
+                            className={"buttonsActionsBudget"} sx={{backgroundColor: '#209ED8', marginX: '10px'}}
+                            id={"CREATE"}>
+                            <center><AddchartRounded id={"CREATE"}/></center>
+                        </IconButton>
+                    </Tooltip>
+                }
                     <Dialog open={this.state.showModale}>
                         <DialogTitle>{this.state.title}</DialogTitle>
                         <DialogContent>
@@ -102,7 +104,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                         </DialogActions>
                     </Dialog>
 
-                </ButtonGroup>
+            </Stack>
         )
     }
 }
