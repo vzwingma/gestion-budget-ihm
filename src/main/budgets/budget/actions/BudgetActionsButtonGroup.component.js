@@ -53,8 +53,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
         /** Groupe d'actions sur le budget **/
         return (
             <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick}
-                         variant={"light"}
-                         sx={{marginLeft: "-10px"}}>
+                         variant={"light"}>
                     {this.props.budget.actif &&
                     <Tooltip title="Créer une nouvelle opération">
                         <IconButton
@@ -109,7 +108,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
 }
 BudgetActionsButtonGroupComponent.propTypes = {
     budget: PropTypes.object.isRequired,
-    droits: PropTypes.array.isRequired,
+    droits: PropTypes.object.isRequired,
     onActionBudgetChange: PropTypes.func.isRequired,
     onActionOperationCreate: PropTypes.func.isRequired
 }

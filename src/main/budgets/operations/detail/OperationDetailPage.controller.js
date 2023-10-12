@@ -42,53 +42,129 @@ export function handleOperationEditionClick(event) {
 }
 
 
+    let errors = {};
+    let hasErrors = false;
+
+/**
+ * validation du formulaire - Description
+ */
+export function validateDescription() {
+    // Description
+    if (this.state.editOperation.libelle === null || this.state.editOperation.libelle === "") {
+        errors.libelle = "Le champ Description est obligatoire";
+        hasErrors = true;
+    } else {
+        this.props.operation.libelle = this.state.editOperation.libelle;
+    }
+}
+
+/**
+ * validation du formulaire - Montant
+ */
+export function validateFormMontant() {
+    if (this.state.editForm.value) {
+        if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
+            errors.valeur = "Le champ Valeur est obligatoire";
+            hasErrors = true;
+        } else {
+            const valeurCalculee = calculateValeur(this.state.editOperation.valeur.replaceAll(",", "."));
+            console.log("Valeur calculee : " + valeurCalculee)
+            if (valeurCalculee != null) {
+                if (!validateValue(valeurCalculee)) {
+                    errors.valeur = "Le format est incorrect : 0000.00 €";
+                    hasErrors = true;
+                } else {
+                    this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeurCalculee;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * validation du formulaire - Catégories
+ */
+export function validateFormCategories() {
+    if (this.state.editOperation.categorie.id === null || this.state.editOperation.categorie.libelle === null || this.state.editOperation.ssCategorie.id === null || this.state.editOperation.ssCategorie.libelle === null) {
+        errors.categorie = "Le champ Catégorie est obligatoire"
+        hasErrors = true
+    } else {
+        this.props.operation.categorie = this.state.editOperation.categorie
+        this.props.operation.ssCategorie = this.state.editOperation.ssCategorie
+    }
+}
+
+/**
+ * validation du formulaire - Transfert intercomptes
+ */
+export function validateFormTransfertIntercompte() {
+    if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.state.intercompte === null) {
+        errors.intercompte = "Le champ Intercompte est obligatoire"
+        hasErrors = true
+    } else {
+        this.props.operation.intercompte = this.state.intercompte
+    }
+}
+
+/**
+ * validation du formulaire
+ */
+export function validateForm() {
+    errors = {};
+    hasErrors = false;
+    // Description
+    this.validateDescription();
+
+    // Valeur
+    this.validateFormMontant();
+    // DateOperation
+    this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
+
+    // Catégorie / ssCatégorie
+    this.validateFormCategories();
+
+    this.validateFormTransfertIntercompte();
+}
+
+
+/**
+ * Calcul de la valeur d'une opération (en prenant en compte les opérations
+ * @param formValue : string valeur saisie du formulaire
+ * @returns {number} total
+ */
+function calculateValeur(formValue) {
+
+    try {
+        // eslint-disable-next-line no-eval
+        return eval(formValue);
+    } catch (e) {
+        console.error("Erreur dans la valeur saisie " + formValue + " : " + e)
+        errors.valeur = "Le champ Montant est incorrect";
+        hasErrors = true;
+        return null;
+    }
+}
+
+
+/**
+ * Validation du format de la valeur saisie
+ * @param valeur valeur
+ * @returns {boolean} vrai si la valeur est correcte
+ */
+function validateValue(valeur) {
+    const valeurATester = ("" + valeur).replaceAll(",", ".");
+    const test = /(^\d*(.\d{2})?$)/.test(valeurATester);
+    console.log("Valeur à tester : " + valeurATester + "- >" + test)
+    return (test);
+}
+
 /**
  * Validation du formulaire
  */
 export function handleValidateOperationForm() {
 
     if (this.isInEditMode()) {
-        let errors = {};
-        let hasErrors = false;
-        // Description
-        if (this.state.editOperation.libelle === null || this.state.editOperation.libelle === "") {
-            errors.libelle = "Le champ Description est obligatoire";
-            hasErrors = true;
-        } else {
-            this.props.operation.libelle = this.state.editOperation.libelle;
-        }
-
-        // Valeur
-        if (this.state.editForm.value) {
-            if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
-                errors.valeur = "Le champ Valeur est obligatoire";
-                hasErrors = true;
-            } else {
-                let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
-                if (!/(^\d*.\d{2}$)/.test(valeur)) {
-                    errors.valeur = "Le format est incorrect : 0000.00 €";
-                    hasErrors = true;
-                } else {
-                    this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
-                }
-            }
-        }
-        // DateOperation
-        this.props.operation.autresInfos.dateOperation = this.state.editOperation.autresInfos.dateOperation;
-
-        // Catégorie / ssCatégorie
-        if (this.state.editOperation.categorie.id === null || this.state.editOperation.categorie.libelle === null || this.state.editOperation.ssCategorie.id === null || this.state.editOperation.ssCategorie.libelle === null) {
-            errors.categorie = "Le champ Catégorie est obligatoire"
-            hasErrors = true
-        } else {
-            this.props.operation.categorie = this.state.editOperation.categorie
-            this.props.operation.ssCategorie = this.state.editOperation.ssCategorie
-        }
-
-        if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.isInCreateMode() && this.state.intercompte === null) {
-            errors.intercompte = "Le compte de transfert est obligatoire"
-            hasErrors = true
-        }
+        this.validateForm();
 
         if (hasErrors) {
             console.log("Erreurs présentes dans le formulaire")
@@ -149,6 +225,7 @@ export function handleCloseOperationForm() {
 
 /**
  * Création d'un objet Operation à partir du formulaire
+ * @param operation : object : Operation à copier
  */
 export function cloneOperation(operation) {
     return {

@@ -25,6 +25,14 @@ import {sortOperations} from "../../Utils/DataUtils.utils";
     console.log("Chargement du budget correctement effectué");
     }
 
+
+/**
+ * Callback de filtre d'opération
+ * @param event event
+ */
+export function handleOperationFilter(event) {
+    this.setState({filterOperations: event.target.value});
+}
 /**
  * Sélection d'une opération
  * @param operation opération
@@ -45,6 +53,10 @@ export function handleButtonCreateClick() {
     this.setState({currentOperation: this.createNewOperation()})
 }
 
+/**
+ * Création d'une nouvelle opération
+ * @returns {Operation}
+ */
 export function createNewOperation() {
 
     let newOperation: Operation = {

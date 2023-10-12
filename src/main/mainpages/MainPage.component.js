@@ -73,11 +73,11 @@ export default class MainPage extends Component {
                             {this.state.comptes
                                 .filter((compte) => !compte.isDisabled)
                                 .map((compte) => (
-                                <CompteItem key={compte.id}
-                                            compte={compte}
-                                            selectedDate={this.state.selectedDate}
-                                            onClick={this.handleCompteChange}/>
-                            ))}
+                                    <CompteItem key={compte.id}
+                                                compte={compte}
+                                                selectedDate={this.state.selectedDate}
+                                                onClick={this.handleCompteChange}/>
+                                ))}
                         </Stack>
 
                     </Stack>

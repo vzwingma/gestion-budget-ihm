@@ -37,14 +37,16 @@ export function getStyleOperation(operation, valueOperation){
  */
 const OperationValue = ({operation, valueOperation, showSign}) => {
 
-    if (valueOperation === undefined) {
-        valueOperation = 0;
+    if (valueOperation === undefined || valueOperation === null) {
+        return <></>
+    } else {
+        // définition du libellé
+        return (
+            <span className={getStyleOperation(operation, valueOperation)}>
+                {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €
+            </span>
+        )
     }
-    // définition du libellé
-    return (
-        <span
-            className={getStyleOperation(operation, valueOperation)}> {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €</span>
-    )
 };
 
 OperationValue.propTypes = {

@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 /**
  * Tuile  d'une liste d'opérations
  * @param operationGroupedByDate opérations groupées par date d'opérations
+ * @param filterOperations filtre des opérations
  * @param listeComptes liste des comptes
  * @param onClick action lors du click
  * @returns {JSX.Element} tuile
@@ -15,7 +16,8 @@ import PropTypes from "prop-types";
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const OperationsListe = ({operationGroupedByDate, listeComptes, onClick}) => {
+const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes, onClick}) => {
+
 
     /**
      * Iterate groupe
@@ -33,7 +35,12 @@ const OperationsListe = ({operationGroupedByDate, listeComptes, onClick}) => {
                 </Container>)
             }
             operationGroupedByDate[dateOperationKey]
-                .map((operation) => renderList.push(
+                .filter((operation) => filterOperations === null
+                    || filterOperations === ""
+                    || operation.libelle.toLowerCase().includes(filterOperations.toLowerCase())
+                    || operation.categorie.libelle.toLowerCase().includes(filterOperations.toLowerCase())
+                    || operation.ssCategorie.libelle.toLowerCase().includes(filterOperations.toLowerCase()))
+                .forEach((operation) => renderList.push(
                     <OperationItem operation={operation} listeComptes={listeComptes}
                                    onClick={() => onClick(operation)}/>)
                 )
@@ -51,6 +58,7 @@ const OperationsListe = ({operationGroupedByDate, listeComptes, onClick}) => {
 };
 OperationsListe.propTypes = {
     operationGroupedByDate: PropTypes.object.isRequired,
+    filterOperations: PropTypes.string.isRequired,
     listeComptes: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired
 }

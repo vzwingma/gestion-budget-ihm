@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
  */
 const CompteItem = ({compte, selectedDate, onClick}) => {
 
-    const [soldes, setSoldes] = useState(0);
+    const [soldes, setSoldes] = useState(null);
 
     /**
      Get SOLDES du budget depuis le back-end
