@@ -42,8 +42,9 @@ const OperationValue = ({operation, valueOperation, showSign}) => {
     } else {
         // définition du libellé
         return (
-            <span
-                className={getStyleOperation(operation, valueOperation)}> {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €</span>
+            <span className={getStyleOperation(operation, valueOperation)}>
+                {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €
+            </span>
         )
     }
 };
