@@ -83,7 +83,7 @@ a.nav-link {
     margin-top: 10px;
     text-align: center;
     line-height: 3.5;
-    height: 66px;
+    height: 62px;
 }
 
 a.nav-link_selected {
@@ -98,7 +98,7 @@ a.nav-link_selected {
     border-top: 4px solid #1976d2;
     text-align: center;
     line-height: 3.5;
-    height: 66px;
+    height: 62px;
 }
 
 a.nav-link_selected:hover {
