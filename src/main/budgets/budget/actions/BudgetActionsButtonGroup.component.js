@@ -109,7 +109,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
 }
 BudgetActionsButtonGroupComponent.propTypes = {
     budget: PropTypes.object.isRequired,
-    droits: PropTypes.array.isRequired,
+    droits: PropTypes.object.isRequired,
     onActionBudgetChange: PropTypes.func.isRequired,
     onActionOperationCreate: PropTypes.func.isRequired
 }
