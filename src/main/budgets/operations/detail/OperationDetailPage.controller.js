@@ -135,7 +135,8 @@ export function validateForm() {
 function calculateValeur(formValue) {
 
     try {
-        return Function(`'use strict'; return (${formValue})`)();
+        // eslint-disable-next-line no-eval
+        return eval(formValue);
     } catch (e) {
         console.error("Erreur dans la valeur saisie " + formValue + " : " + e)
         errors.valeur = "Le champ Montant est incorrect";
