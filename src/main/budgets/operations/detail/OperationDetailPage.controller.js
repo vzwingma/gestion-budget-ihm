@@ -97,7 +97,13 @@ export function validateForm() {
  * @returns {number} total
  */
 function calculateValeur(formValue) {
-    return Function(`'use strict'; return (${formValue})`)()
+    if (/[\d+\\.\\+\\-\\*\\/()]*/.test(formValue)) {
+        return Function(`'use strict'; return (${formValue})`)()
+    } else {
+        console.error("Erreur dans la valeur saisie " + formValue)
+        return null;
+    }
+
 }
 
 
