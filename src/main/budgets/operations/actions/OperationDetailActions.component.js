@@ -20,24 +20,22 @@ import {
 } from "@mui/icons-material";
 import * as Controller from "./OperationDetailActions.controller";
 import * as AppConstants from "../../../Utils/AppBusinessEnums.constants";
+import PropTypes from "prop-types";
 
 
 /**
  * Composant affichant la liste des actions possibles sur l'opération
- * @param operation opération
- * @param budget budget
- * @param onActionEtat fonction appelée lors d'un changement d'état
- * @param onActionOperationChange fonction appelée pour déclencher la mise à jour du budget
+ * @param currentOperation opération
+ * @param currentBudget budget
+ * @param isInCreateMode booléen mode création ?
+ * @param saveOperation fonction appelée pour déclencher la sauvegarde de l'opération
  * @returns {JSX.Element}
  * @constructor
  */
 export default class OperationDetailActions extends Component {
 
-
     /** Etats pour la page OperationDetailActions **/
     state = {
-        currentBudget: null,
-        currentOperation: null,
         showModale: false
     }
 
@@ -130,4 +128,10 @@ export default class OperationDetailActions extends Component {
 
         );
     }
+}
+OperationDetailActions.propTypes = {
+    currentOperation: PropTypes.object.isRequired,
+    currentBudget: PropTypes.object.isRequired,
+    isInCreateMode: PropTypes.bool.isRequired,
+    saveOperation: PropTypes.func.isRequired
 }

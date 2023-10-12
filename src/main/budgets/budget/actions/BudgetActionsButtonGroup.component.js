@@ -15,9 +15,14 @@ import * as Controller from './BudgetActionsButtonGroup.controller'
 import * as Service from './BudgetActionsButtonGroup.extservices'
 import {UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
 import {AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded} from "@mui/icons-material";
+import PropTypes from "prop-types";
 
 /**
  * Actions sur le budget
+ * @param budget : Object budget en cours
+ * @param droits : array liste des droits de l'utilsiateur
+ * @param onActionBudgetChange : function callback lors d'une mise à jour sur le budget
+ * @param onActionOperationCreate : function callback lors du click sur créer
  */
 export default class BudgetActionsButtonGroupComponent extends Component {
 
@@ -101,4 +106,10 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                 </ButtonGroup>
         )
     }
+}
+BudgetActionsButtonGroupComponent.propTypes = {
+    budget: PropTypes.object.isRequired,
+    droits: PropTypes.array.isRequired,
+    onActionBudgetChange: PropTypes.func.isRequired,
+    onActionOperationCreate: PropTypes.func.isRequired
 }
