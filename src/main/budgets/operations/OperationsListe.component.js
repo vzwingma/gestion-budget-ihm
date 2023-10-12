@@ -2,6 +2,7 @@ import React from 'react'
 import {Container, Divider, Stack} from "@mui/material";
 import OperationItem from "./OperationsListItem.component";
 import {getLabelDate} from "../../Utils/DataUtils.utils";
+import PropTypes from "prop-types";
 
 
 /**
@@ -48,5 +49,9 @@ const OperationsListe = ({operationGroupedByDate, listeComptes, onClick}) => {
         }
     </Stack>
 };
-
+OperationsListe.propTypes = {
+    operationGroupedByDate: PropTypes.object.isRequired,
+    listeComptes: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired
+}
 export default OperationsListe

@@ -11,9 +11,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import OperationsListe from "../operations/OperationsListe.component";
 import PropTypes from "prop-types";
 
-
 /**
  * Page principale des budgets
+ * @param selectedCompte : object compte sélectionné
+ * @param selectedDate : object date sélectionnée
+ * @param listeComptes : array liste des comptes
+ * @param onOpenMenu : function callback d'ouverture du menu
  */
 export default class Budget extends Component {
 
@@ -21,6 +24,7 @@ export default class Budget extends Component {
     /** Etats pour la page Budget **/
     state = {
         currentBudget: null,
+        user_droits: null,
         currentOperation: null,
         operationsGroupedByDateOperation: null,
 
