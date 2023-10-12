@@ -122,8 +122,10 @@ export function validateForm() {
 
     // Catégorie / ssCatégorie
     this.validateFormCategories();
-
-    this.validateFormTransfertIntercompte();
+    // Intercompte
+    if (this.isInCreateMode()) {
+        this.validateFormTransfertIntercompte();
+    }
 }
 
 
