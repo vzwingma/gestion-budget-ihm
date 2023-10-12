@@ -62,12 +62,12 @@ export function validateForm() {
             errors.valeur = "Le champ Valeur est obligatoire";
             hasErrors = true;
         } else {
-            let valeur = ("" + this.state.editOperation.valeur).replaceAll(",", ".");
-            if (!/(^\d*.\d{2}$)/.test(valeur)) {
+            const valeurCalculee = calculateValeur(this.state.editOperation.valeur.replaceAll(",", "."));
+            if (validateValue(valeurCalculee)) {
                 errors.valeur = "Le format est incorrect : 0000.00 €";
                 hasErrors = true;
             } else {
-                this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeur;
+                this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeurCalculee;
             }
         }
     }
@@ -89,14 +89,34 @@ export function validateForm() {
     }
     return {errors, hasErrors}
 }
+
+
+/**
+ * Calcul de la valeur d'une opération (en prenant en compte les opérations
+ * @param formValue : string valeur saisie du formulaire
+ * @returns {number} total
+ */
+function calculateValeur(formValue) {
+    return Function(`'use strict'; return (${formValue})`)()
+}
+
+
+/**
+ * Validation du format de la valeur saisie
+ * @param valeur valeur
+ * @returns {boolean} vrai si la valeur est correcte
+ */
+function validateValue(valeur) {
+    const valeurATester = ("" + valeur).replaceAll(",", ".");
+    return (!/(^\d*(.\d{2})?$)/.test(valeurATester));
+}
+
 /**
  * Validation du formulaire
  */
 export function handleValidateOperationForm() {
 
     if (this.isInEditMode()) {
-
-
         const validation = this.validateForm();
 
         if (validation.hasErrors) {
@@ -158,6 +178,7 @@ export function handleCloseOperationForm() {
 
 /**
  * Création d'un objet Operation à partir du formulaire
+ * @param operation : object : Operation à copier
  */
 export function cloneOperation(operation) {
     return {
