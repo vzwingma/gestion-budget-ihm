@@ -53,8 +53,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
         /** Groupe d'actions sur le budget **/
         return (
             <ButtonGroup aria-label="ActionsBudget" onClick={this.handleButtonsBudgetClick}
-                         variant={"light"}
-                         sx={{marginLeft: "-10px"}}>
+                         variant={"light"}>
                     {this.props.budget.actif &&
                     <Tooltip title="Créer une nouvelle opération">
                         <IconButton

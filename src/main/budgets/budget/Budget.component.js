@@ -5,7 +5,7 @@ import * as Controller from './Budget.controller'
 import * as Services from './Budget.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import BudgetTitre from "./BudgetTitre.component";
-import {Box, CircularProgress, Divider} from "@mui/material";
+import {Box, CircularProgress, Divider, TextField} from "@mui/material";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import MenuIcon from '@mui/icons-material/Menu';
 import OperationsListe from "../operations/OperationsListe.component";
@@ -31,6 +31,7 @@ export default class Budget extends Component {
         selectedCompte: this.props.selectedCompte,
         selectedDate: this.props.selectedDate,
 
+        filterOperations: null,
         categories: null
     }
 
@@ -43,6 +44,7 @@ export default class Budget extends Component {
 
         this.handleOperationSelect = Controller.handleOperationSelect.bind(this);
         this.handleButtonCreateClick = Controller.handleButtonCreateClick.bind(this);
+        this.handleOperationFilter = Controller.handleOperationFilter.bind(this);
         this.createNewOperation = Controller.createNewOperation.bind(this);
 
         this.refreshBudget = Services.reloadBudget.bind(this);
@@ -91,13 +93,18 @@ export default class Budget extends Component {
     render() { return (
         <Box sx={{overflow: "hidden"}} maxHeight>
             <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid2 md={4}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"} fontSize={"large"}/></Grid2>
-                <Grid2 md={7}>
+                <Grid2 md={0.3}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
+                                          fontSize={"large"}/></Grid2>
+                <Grid2 md={2.7} paddingTop={"10px"}>
+                    <TextField id="search-basic" fullWidth size={"small"} onChange={this.handleOperationFilter}/>
+                </Grid2>
+                <Grid2 md={2}></Grid2>
+                <Grid2 md={6}>
                     { /** Titre **/}
                     {this.state.currentBudget != null ?
                         <BudgetTitre currentCompte={this.props.selectedCompte}
-                                       currentDate={this.props.selectedDate}
-                                       currentBudget={this.state.currentBudget}/> : <CircularProgress/>
+                                     currentDate={this.props.selectedDate}
+                                     currentBudget={this.state.currentBudget}/> : <CircularProgress/>
                     }
                 </Grid2>
                 <Grid2 md={1}>
