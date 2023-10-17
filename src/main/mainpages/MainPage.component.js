@@ -63,7 +63,10 @@ export default class MainPage extends Component {
     render() {
         return (
             <>
-                <Drawer variant={"temporary"} anchor="left" open={this.state.budgetMenuOpen}>
+                <Drawer variant={"temporary"} anchor="left" open={this.state.budgetMenuOpen}
+                        ModalProps={{
+                            keepMounted: true,
+                        }}>
                     <Stack spacing={2}>
                         <Box sx={{height: 80}}/>
 
@@ -76,6 +79,7 @@ export default class MainPage extends Component {
                                     <CompteItem key={compte.id}
                                                 compte={compte}
                                                 selectedDate={this.state.selectedDate}
+                                                onRefreshMenuBar={this.state.budgetMenuOpen}
                                                 onClick={this.handleCompteChange}/>
                                 ))}
                         </Stack>

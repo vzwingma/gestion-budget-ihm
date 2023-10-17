@@ -9,11 +9,12 @@ import PropTypes from "prop-types";
  * Tuile affichant un compte
  * @param compte : object compte
  * @param selectedDate : date date sélectionnée
+ * @param onRefreshMenuBar : function action sur refresh menu bar
  * @param onClick : function action sur click
  * @returns {JSX.Element}
  * @constructor
  */
-const CompteItem = ({compte, selectedDate, onClick}) => {
+const CompteItem = ({compte, selectedDate, onRefreshMenuBar, onClick}) => {
 
     const [soldes, setSoldes] = useState(null);
 
@@ -36,7 +37,7 @@ const CompteItem = ({compte, selectedDate, onClick}) => {
 
     useEffect(() => {
         getSoldesBudget(compte.id, selectedDate)
-    }, [compte, selectedDate]);
+    }, [compte, selectedDate, onRefreshMenuBar]);
 
 
     return (
@@ -69,6 +70,7 @@ const CompteItem = ({compte, selectedDate, onClick}) => {
 CompteItem.propTypes = {
     compte: PropTypes.object.isRequired,
     selectedDate: PropTypes.object.isRequired,
+    onRefreshMenuBar: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired
 }
 export default CompteItem
