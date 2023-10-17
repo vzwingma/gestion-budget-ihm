@@ -25,6 +25,13 @@ button.buttonsActionsOperations {
     margin-right: 1px;
 }
 
+button.buttonsActionsOperationsP {
+    color: #FFFFFF;
+    padding: 5px 6px 0px 4px;
+    margin-right: 1px;
+}
+
+
 /* Couleurs des opérations */
 .text-CREDIT {
     color: #93c54b !important;

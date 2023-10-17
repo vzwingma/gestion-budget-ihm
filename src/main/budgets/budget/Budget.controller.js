@@ -77,7 +77,7 @@ export function createNewOperation() {
             periode: "PONCTUELLE"
         },
         autresInfos: {
-            dateOperation: null
+            dateOperation: ""
         }
     }
     return newOperation;

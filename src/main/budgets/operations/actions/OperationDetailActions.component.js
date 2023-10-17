@@ -67,7 +67,7 @@ export default class OperationDetailActions extends Component {
                 {this.props.currentOperation.etat !== AppConstants.OPERATION_ETATS_ENUM.PREVUE &&
                     <Tooltip title="Prévoir l'opération">
                         <IconButton
-                            className={"buttonsActionsOperations color_" + AppConstants.OPERATION_ETATS_ENUM.PREVUE}
+                            className={"buttonsActionsOperationsP color_" + AppConstants.OPERATION_ETATS_ENUM.PREVUE}
                             id={AppConstants.OPERATION_ETATS_ENUM.PREVUE}>
                             <center>
                                 <HistoryRounded id={AppConstants.OPERATION_ETATS_ENUM.PREVUE}/>
@@ -132,6 +132,6 @@ export default class OperationDetailActions extends Component {
 OperationDetailActions.propTypes = {
     currentOperation: PropTypes.object.isRequired,
     currentBudget: PropTypes.object.isRequired,
-    isInCreateMode: PropTypes.bool.isRequired,
+    isInCreateMode: PropTypes.func.isRequired,
     saveOperation: PropTypes.func.isRequired
 }

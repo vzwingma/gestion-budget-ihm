@@ -41,6 +41,12 @@ export function handleOperationEditionClick(event) {
     }
 }
 
+export function handleDateOperationFromAction(valeurDate) {
+    let editOperation = this.state.editOperation
+    editOperation.autresInfos.dateOperation = valeurDate;
+    this.setState({editOperation: editOperation})
+}
+
 
     let errors = {};
     let hasErrors = false;
@@ -67,8 +73,8 @@ export function validateFormMontant() {
             errors.valeur = "Le champ Valeur est obligatoire";
             hasErrors = true;
         } else {
-            const valeurCalculee = calculateValeur(this.state.editOperation.valeur.replaceAll(",", "."));
-            console.log("Valeur calculee : " + valeurCalculee)
+            const formValeur = "" + this.state.editOperation.valeur;
+            const valeurCalculee = calculateValeur(formValeur.replaceAll(",", "."));
             if (valeurCalculee != null) {
                 if (!validateValue(valeurCalculee)) {
                     errors.valeur = "Le format est incorrect : 0000.00 €";
@@ -122,8 +128,10 @@ export function validateForm() {
 
     // Catégorie / ssCatégorie
     this.validateFormCategories();
-
-    this.validateFormTransfertIntercompte();
+    // Intercompte
+    if (this.isInCreateMode()) {
+        this.validateFormTransfertIntercompte();
+    }
 }
 
 
