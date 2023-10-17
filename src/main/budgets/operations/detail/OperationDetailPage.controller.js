@@ -67,8 +67,8 @@ export function validateFormMontant() {
             errors.valeur = "Le champ Valeur est obligatoire";
             hasErrors = true;
         } else {
-            const valeurCalculee = calculateValeur(this.state.editOperation.valeur.replaceAll(",", "."));
-            console.log("Valeur calculee : " + valeurCalculee)
+            const formValeur = "" + this.state.editOperation.valeur;
+            const valeurCalculee = calculateValeur(formValeur.replaceAll(",", "."));
             if (valeurCalculee != null) {
                 if (!validateValue(valeurCalculee)) {
                     errors.valeur = "Le format est incorrect : 0000.00 €";
