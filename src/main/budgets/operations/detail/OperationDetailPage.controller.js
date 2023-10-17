@@ -41,6 +41,12 @@ export function handleOperationEditionClick(event) {
     }
 }
 
+export function handleDateOperationFromAction(valeurDate) {
+    let editOperation = this.state.editOperation
+    editOperation.autresInfos.dateOperation = valeurDate;
+    this.setState({editOperation: editOperation})
+}
+
 
     let errors = {};
     let hasErrors = false;

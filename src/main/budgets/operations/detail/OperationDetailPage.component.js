@@ -74,12 +74,11 @@ class OperationDetailPage extends Component {
         this.isInCreateMode = Controller.isInCreateMode.bind(this);
 
         this.handleValidateOperationForm = Controller.handleValidateOperationForm.bind(this);
+        this.handleDateOperationFromAction = Controller.handleDateOperationFromAction.bind(this);
+
         this.validateForm = Controller.validateForm.bind(this);
-        // Description
         this.validateDescription = Controller.validateDescription.bind(this);
-        // Valeur
         this.validateFormMontant = Controller.validateFormMontant.bind(this);
-        // Catégorie / ssCatégorie
         this.validateFormCategories = Controller.validateFormCategories.bind(this);
         this.validateFormTransfertIntercompte = Controller.validateFormTransfertIntercompte.bind(this);
 
@@ -134,8 +133,6 @@ class OperationDetailPage extends Component {
         }
     }
 
-
-
     /**
      * Fonctions pour remplir l'état à partir de la saisie
      * @param e click
@@ -147,14 +144,15 @@ class OperationDetailPage extends Component {
     }
 
     fillDateOperationForm(e) {
-        let editOperation = this.state.editOperation
-        let value = e.target.value
+        let value = e.target.value;
         if (value === "") {
             value = null;
         }
+        let editOperation = this.state.editOperation
         editOperation.autresInfos.dateOperation = value;
         this.setState({editOperation: editOperation})
     }
+
 
     fillValeurForm(e) {
         let editOperation = this.state.editOperation
@@ -391,6 +389,7 @@ class OperationDetailPage extends Component {
                                 <OperationDetailActions currentOperation={operation}
                                                         currentBudget={budget}
                                                         isInCreateMode={this.isInCreateMode}
+                                                        handleDateOperationFromAction={this.handleDateOperationFromAction}
                                                         saveOperation={this.saveOperation}/> : <></>
                             }
                         </Grid2>
@@ -405,7 +404,7 @@ class OperationDetailPage extends Component {
                                 :
                                 <TextField
                                     id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION + OPERATION_EDITION_FORM_IDS.INPUT}
-                                    defaultValue={operation.autresInfos.dateOperation}
+                                    value={operation.autresInfos.dateOperation}
                                     variant={"standard"} type={"date"} fullWidth
                                     error={this.state.errors.dateOperation != null}
                                     helperText={this.state.errors.dateOperation}
