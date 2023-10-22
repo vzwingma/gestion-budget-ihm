@@ -161,9 +161,9 @@ function calculateValeur(formValue) {
  */
 function validateValue(valeur) {
     const valeurATester = ("" + valeur).replaceAll(",", ".");
-    const test = /(^\d*(.\d{2})?$)/.test(valeurATester);
-    console.log("Valeur à tester : " + valeurATester + "- >" + test)
-    return (test);
+    const test = /(^\d*(.\d{1,2})?$)/.test(valeurATester);
+    console.debug("Valeur à tester : [" + valeurATester + "]", test);
+    return test;
 }
 
 /**
@@ -175,8 +175,7 @@ export function handleValidateOperationForm() {
         this.validateForm();
 
         if (hasErrors) {
-            console.log("Erreurs présentes dans le formulaire")
-            console.log(errors)
+            console.log("Erreurs présentes dans le formulaire", errors)
             this.setState({errors: errors})
         } else {
 
