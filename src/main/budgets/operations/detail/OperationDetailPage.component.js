@@ -404,7 +404,7 @@ class OperationDetailPage extends Component {
                                 :
                                 <TextField
                                     id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION + OPERATION_EDITION_FORM_IDS.INPUT}
-                                    value={operation.autresInfos.dateOperation}
+                                    defaultValue={operation.autresInfos.dateOperation}
                                     variant={"standard"} type={"date"} fullWidth
                                     error={this.state.errors.dateOperation != null}
                                     helperText={this.state.errors.dateOperation}
