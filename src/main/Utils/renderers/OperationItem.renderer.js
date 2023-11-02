@@ -85,7 +85,7 @@ export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
 function getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue) {
     const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
     const direction = operationLibelleParts[1] === "[vers " ? "vers" : "depuis"
-    const compte = (listeComptes.filter((compte) => compte.libelle === operationLibelleParts[2]))
+    const compte = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))
     if (compte[0]?.libelle) {
         return <Tooltip title={"Transfert intercompte " + direction + " " + compte[0].libelle}>
             {operationLibelleParts[1].startsWith("[En Retard]") ?
