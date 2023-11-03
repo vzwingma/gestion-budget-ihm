@@ -28,18 +28,22 @@ const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes
 
         let renderList = []
         for (let dateOperationKey in operationGroupedByDate) {
-            if (dateOperationKey !== null && dateOperationKey !== "null") {
+
+            const operationsFilteredForDate = operationGroupedByDate[dateOperationKey]
+                .filter((operation) => filterOperations === null
+                    || filterOperations === ""
+                    || operation.libelle.toLowerCase().includes(filterOperations.toLowerCase())
+                    || operation.categorie.libelle.toLowerCase().includes(filterOperations.toLowerCase())
+                    || operation.ssCategorie.libelle.toLowerCase().includes(filterOperations.toLowerCase()));
+
+            if (dateOperationKey !== null && dateOperationKey !== "null" && operationsFilteredForDate.length > 0) {
                 renderList.push(<Container key={"liste_" + dateOperationKey}
                     sx={{backgroundColor: '#e1e5f1 !important', padding: '10px', color: '#7991b3'}}>
                     <center>{getLabelDate(dateOperationKey)}</center>
                 </Container>)
             }
-            operationGroupedByDate[dateOperationKey]
-                .filter((operation) => filterOperations === null
-                    || filterOperations === ""
-                    || operation.libelle.toLowerCase().includes(filterOperations.toLowerCase())
-                    || operation.categorie.libelle.toLowerCase().includes(filterOperations.toLowerCase())
-                    || operation.ssCategorie.libelle.toLowerCase().includes(filterOperations.toLowerCase()))
+
+            operationsFilteredForDate
                 .forEach((operation) => renderList.push(
                     <OperationItem operation={operation} listeComptes={listeComptes}
                                    onClick={() => onClick(operation)}/>)
