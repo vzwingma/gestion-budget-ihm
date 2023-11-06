@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import ModuleInfos from "./MicroServicesInfos.component";
-import {Table, TableBody, TableCell, TableFooter, TableHead, TableRow} from "@mui/material";
+import {Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography} from "@mui/material";
 import * as Services from "./Infos.extservices";
 
 
@@ -32,12 +32,17 @@ export default class Infos extends Component {
         <center>
                 <TableHead>
                     <TableRow>
-                        <TableCell><center><h2>Gestion de budgets</h2></center></TableCell>
+                        <TableCell>
+                            <center><Typography variant={"h3"}> Gestion de budgets</Typography></center>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     <TableRow>
-                        <TableCell> <img src="/img/icon.png" width="300" height="300" className="d-inline-block align-middle" alt="Gestion de budgets"/> </TableCell>
+                        <TableCell>
+                            <center><img src="/img/icon.png" width="300" height="362"
+                                         className="d-inline-block align-middle" alt="Gestion de budgets"/></center>
+                        </TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>
@@ -61,7 +66,7 @@ export default class Infos extends Component {
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <TableCell align={"right"}>by Zed.corp</TableCell>
+                        <TableCell align={"right"} style={{color: "#114b65"}}>by Zed.corp</TableCell>
                     </TableRow>
                 </TableFooter>
         </center>

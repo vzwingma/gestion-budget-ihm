@@ -34,7 +34,9 @@ export default class Main extends Component {
     return (
         <HashRouter>
             <AuthProvider {...this.oidcConfig}>
-                <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1, height: "66px"}}>
+
+                <AppBar position={"fixed"} enableColorOnDark
+                        sx={{zIndex: (theme) => theme.zIndex.drawer + 1, height: "66px"}}>
                     <Stack direction="row" alignItems="flex-start" spacing={1}>
                         <img src="/img/favicon64.png" width="60" height="60" style={{margin: "2px"}}
                              alt="Gestion de budgets"/>

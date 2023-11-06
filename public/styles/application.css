@@ -10,6 +10,10 @@ body {
     font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
 }
 
+h3, h6, .MuiTypography-h6 {
+    color: #114b65;
+}
+
 /** Style pour les budgets **/
 /* button Créer & Réinit & Close/Open */
 button.buttonsActionsBudget {
@@ -109,9 +113,9 @@ a.nav-link_selected {
 }
 
 a.nav-link_selected:hover {
-    color: #1e3852;
+    color: #114b65;
 }
 
 a.nav-link:hover {
-    color: #1e3852;
+    color: #114b65;
 }
