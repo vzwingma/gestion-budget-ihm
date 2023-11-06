@@ -37,10 +37,11 @@ const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes
                     || operation.ssCategorie.libelle.toLowerCase().includes(filterOperations.toLowerCase()));
 
             if (dateOperationKey !== null && dateOperationKey !== "null" && operationsFilteredForDate.length > 0) {
-                renderList.push(<Container key={"liste_" + dateOperationKey}
+                renderList.push(
+                    <Container key={"liste_" + dateOperationKey}
                                            className={"listeItemSeparator"}>
-                    <center>{getLabelDate(dateOperationKey)}</center>
-                </Container>)
+                        <center>{getLabelDate(dateOperationKey)}</center>
+                    </Container>)
             }
 
             operationsFilteredForDate

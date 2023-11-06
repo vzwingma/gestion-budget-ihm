@@ -36,11 +36,12 @@ const OperationItem = ({operation, listeComptes, onClick}) => {
                 </Grid2>
                 <Grid2 md={7}>
                     <Stack direction={"column"}>
-                        <Typography variant={"subtitle1"} component="div" align={"left"} sx={{spacing: 2}}>
+                        <Typography variant={"subtitle1"} component="div" align={"left"}
+                                    sx={{spacing: 2, paddingLeft: 2}}>
                             {Renderer.getOperationLibelle(operation.libelle, listeComptes, false)}
                         </Typography>
                         <Typography variant={"caption"} component="div" align={"left"}
-                                    sx={{spacing: 2, color: "#808080"}}>
+                                    sx={{spacing: 2, paddingLeft: 2, color: "#808080"}}>
                             {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                         </Typography>
                     </Stack>
