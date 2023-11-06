@@ -213,7 +213,7 @@ class OperationDetailPage extends Component {
                        onClick={this.handleOperationEditionClick}
                        onKeyUp={this.handleOperationEditionClick}>
 
-                <Stack direction={"column"} spacing={5} sx={{alignItems: "center"}}>
+                <Stack direction={"column"} spacing={5} sx={{alignItems: "center", marginTop: "20px"}}>
                     <Box width={56} height={56}
                          sx={{
                              borderRadius: "50%",

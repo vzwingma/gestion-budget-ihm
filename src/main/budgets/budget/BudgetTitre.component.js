@@ -1,7 +1,8 @@
 import OperationValue from '../../Utils/renderers/OperationValue.renderer'
-import {Divider, Stack, Tooltip, Typography} from "@mui/material";
+import {Box, Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import PropTypes from "prop-types";
+import {EventOutlined} from "@mui/icons-material";
 
 /**
  * Page principale d'affichage du solde
@@ -51,10 +52,13 @@ const BudgetsSoldes = ({currentCompte, currentDate, currentBudget}) => {
             {
                 (currentBudget.actif) ?
                     <Tooltip title={getTooltipFin()}>
-                        <Typography variant={"caption"} width={100} textAlign={"center"} sx={{cursor: "help"}}>
-                            (<OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant}
-                                             showSign={true}/> )
+                        <Box sx={{cursor: "help", height: "40px", width: "100px"}}>
+                            <EventOutlined sx={{paddingTop: "8px", color: "#808080"}}/>
+                            <Typography variant={"caption"} textAlign={"center"}>
+                                <OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant}
+                                                showSign={true}/>
                         </Typography>
+                        </Box>
                     </Tooltip>
                     : <></>
             }

@@ -23,15 +23,22 @@ const OperationItem = ({operation, listeComptes, onClick}) => {
              onClick={() => onClick(operation)}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
-                    <Box width={46} height={46}
+                    <Box width={50} height={50}
                          sx={{
-                             borderRadius: "50%",
+                             borderRadius: '50%',
+                             border: '3px solid ' + Renderer.getOperationStateColor(operation.etat),
+                         }}>
+
+                        <Box width={44} height={44}
+                         sx={{
+                             borderRadius: '50%',
                              backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),
-                             border: '5px solid ' + Renderer.getOperationStateColor(operation.etat),
+                             border: '3px solid black',
                              padding: '6px',
                              color: '#FFFFFF'
                          }}>
                         <center>{CategorieRenderer.getCategorieIcon(operation.ssCategorie)}</center>
+                    </Box>
                     </Box>
                 </Grid2>
                 <Grid2 md={7}>

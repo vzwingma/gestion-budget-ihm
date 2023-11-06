@@ -41,7 +41,7 @@ button.buttonsActionsOperationsP {
 
 /* Couleurs des opérations */
 .text-CREDIT {
-    color: #93c54b !important;
+    color: #2e7d32 !important;
 }
 
 .text-DEPENSE {
@@ -64,6 +64,7 @@ button.buttonsActionsOperationsP {
 
 .color_ANNULEE {
     background-color: #ebebeb !important;
+    color: #121212 !important;
 }
 
 .color_SUPPRIMEE {
