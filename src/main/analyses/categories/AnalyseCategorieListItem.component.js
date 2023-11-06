@@ -20,7 +20,7 @@ const AnalyseCategorieListItem = ({resumeCategorie, typeAnalyse, selectCategorie
              className={"listeItem"} onMouseOver={() => selectCategorie()}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
-                    <Box width={25} height={25}
+                    <Box width={40} height={40}
                          sx={{
                              borderRadius: "50%",
                              backgroundColor: resumeCategorie.couleurCategorie,

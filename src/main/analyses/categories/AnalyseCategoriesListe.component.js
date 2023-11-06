@@ -48,7 +48,7 @@ const AnalyseCategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategor
 
     return <Box sx={{height: window.innerHeight - 175, overflow: "hidden"}}>
         {
-            (rangSelectedCategorie !== null) ? <Box width={25} height={rangSelectedCategorie * 73}></Box> : <></>
+            (rangSelectedCategorie !== null) ? <Box width={25} height={rangSelectedCategorie * 79}></Box> : <></>
         }
         <Stack divider={<Divider orientation="horizontal"/>}
                sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
