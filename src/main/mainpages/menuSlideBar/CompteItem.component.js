@@ -41,15 +41,7 @@ const CompteItem = ({compte, selectedDate, onRefreshMenuBar, onClick}) => {
 
 
     return (
-        <Container sx={{
-                       padding: 1,
-                       '&:hover': {
-                           backgroundColor: 'primary.main',
-                           color: 'white',
-                           opacity: [0.8],
-                           cursor: 'pointer',
-                       }
-                   }}
+        <Container className={"listeItem"}
                    onClick={() => onClick(compte)}>
             <Stack direction={"row"} spacing={5}>
                 <img src={"/img/banques/" + compte.icon} width={50} height={50} alt={compte.libelle}

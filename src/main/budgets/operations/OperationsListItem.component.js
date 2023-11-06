@@ -19,15 +19,7 @@ const OperationItem = ({operation, listeComptes, onClick}) => {
 
     return (
         <Box key={"liste_" + operation.id}
-             sx={{
-                 height: 56,
-                 marginY: 1,
-                 '&:hover': {
-                     backgroundColor: '#f5f6fb',
-                     color: '#808080',
-                     cursor: 'pointer',
-                 }
-             }}
+             className={"listeItem"}
              onClick={() => onClick(operation)}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
