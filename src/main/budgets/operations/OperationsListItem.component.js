@@ -35,7 +35,7 @@ const OperationItem = ({operation, listeComptes, onClick}) => {
                              backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),
                              border: '3px solid black',
                              padding: '6px',
-                             color: '#FFFFFF'
+                             color: '#252525'
                          }}>
                         <center>{CategorieRenderer.getCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
