@@ -95,8 +95,11 @@ export default class Budget extends Component {
     render() { return (
         <Box sx={{overflow: "hidden"}} maxHeight>
             <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid2 md={0.33}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
-                                          fontSize={"large"}/></Grid2>
+                <Grid2 md={0.33}>
+                    <MenuIcon onClick={this.props.onOpenMenu}
+                              className={"editableField"}
+                              fontSize={"large"}/>
+                </Grid2>
                 <Grid2 md={3} paddingTop={"6px"}>
                     <Paper component="form"
                            sx={{

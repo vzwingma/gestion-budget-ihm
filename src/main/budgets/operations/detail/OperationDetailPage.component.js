@@ -213,8 +213,8 @@ class OperationDetailPage extends Component {
                        onClick={this.handleOperationEditionClick}
                        onKeyUp={this.handleOperationEditionClick}>
 
-                <Stack direction={"column"} spacing={5} sx={{alignItems: "center"}}>
-                    <Box width={40} height={40}
+                <Stack direction={"column"} spacing={5} sx={{alignItems: "center", marginTop: "20px"}}>
+                    <Box width={56} height={56}
                          sx={{
                              borderRadius: "50%",
                              backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),
@@ -398,7 +398,7 @@ class OperationDetailPage extends Component {
                             {(!this.state.editForm.dateOperation) ?
                                 <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
                                             className={budget?.actif ? "editableField" : ""}
-                                            sx={{color: (operation.autresInfos.dateOperation != null ? "#000000" : "#E0E0E0")}}>
+                                            sx={{color: (operation.autresInfos.dateOperation != null ? "#FFFFFF" : "#121212")}}>
                                     {operation.autresInfos.dateOperation != null ? getLabelDate(operation.autresInfos.dateOperation) : "jj/mm/aaaa"}
                                 </Typography>
                                 :

@@ -1,5 +1,5 @@
 import React from 'react'
-import {TableCell, TableRow} from "@mui/material";
+import {TableCell, TableRow, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
 /**
@@ -12,7 +12,8 @@ import PropTypes from "prop-types";
  const MicroServicesInfos = ({ name, version }) => {
       return (
             <TableRow>
-              <TableCell>{name}</TableCell><TableCell>{version}</TableCell>
+                <TableCell><Typography variant={"subtitle2"}>{name}</Typography></TableCell>
+                <TableCell><Typography variant={"body2"}>{version}</Typography></TableCell>
             </TableRow>
       )
     };

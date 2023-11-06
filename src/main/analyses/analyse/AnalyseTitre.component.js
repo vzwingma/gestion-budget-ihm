@@ -31,7 +31,7 @@ const AnalyseTitre = ({currentCompte, currentDate, totalOperations}) => {
 
             <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
-                <Typography variant={"h6"} width={120} textAlign={"right"} sx={{cursor: "help"}}>
+                <Typography variant={"h6"} width={195} textAlign={"right"} sx={{cursor: "help"}}>
                     <OperationValue valueOperation={totalOperations} showSign={true}/>
                 </Typography>
             </Tooltip>

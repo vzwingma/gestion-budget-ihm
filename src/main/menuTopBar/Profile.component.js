@@ -40,8 +40,10 @@ function Profile() {
         putTokenInStorage(auth.user?.id_token)
         return (
             <>
-                <ProfileInfos/>
-
+                <Typography variant={"caption"} component="div"
+                            sx={{flexGrow: 10, marginLeft: "20px", marginTop: "15px"}} align={"right"}>
+                    <ProfileInfos/>
+                </Typography>
                 <Typography variant={"subtitle1"} component="div" sx={{flexGrow: 10, marginLeft: "20px"}}
                             align={"right"}>
                     <Tooltip title={  auth.user?.profile.name }>
