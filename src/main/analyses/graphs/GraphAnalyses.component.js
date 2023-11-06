@@ -71,7 +71,8 @@ const GraphAnalyses = ({
                                       fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
                             ))
                         }
-                        <LabelList data={dataSsCategories} dataKey="name" stroke={"black"} strokeWidth={0.5}/>
+                        <LabelList data={dataSsCategories} dataKey="name" stroke={"white"} strokeWidth={0.1}
+                                   fill={"white"}/>
                     </Pie>
                     <Pie data={dataSsCategories} dataKey="value"
                          cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
@@ -82,7 +83,8 @@ const GraphAnalyses = ({
                             />
                             ))
                         }
-                        <LabelList data={dataSsCategories} dataKey="name" stroke={"black"} strokeWidth={0.5}/>
+                        <LabelList data={dataSsCategories} dataKey="name" stroke={"white"} strokeWidth={0.1}
+                                   fill={"white"}/>
                     </Pie>
                 </PieChart>
             </ResponsiveContainer>

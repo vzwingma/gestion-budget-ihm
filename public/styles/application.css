@@ -86,8 +86,8 @@ button.buttonsActionsOperationsP {
  * Liste d'item
  */
 .listeItem {
-    height: 56px;
-    margin-top: 1px;
+    height: 62px;
+    margin-top: 15px;
 }
 
 .listeItem:hover {
@@ -115,17 +115,17 @@ a.nav-link {
 
 a.nav-link_selected {
     color: #1976d2;
-    background-color: white;
+    background-color: #121212;
     border-radius: 20px 20px 0px 0px;
     outline: none;
     text-decoration: none;
     display: inline-block;
     width: 150px;
     margin-right: 0.625%;
-    border-top: 4px solid #1976d2;
+    border-top: 4px solid #272727;
     text-align: center;
     line-height: 3.5;
-    height: 62px;
+    height: 66px;
 }
 
 a.nav-link_selected:hover {

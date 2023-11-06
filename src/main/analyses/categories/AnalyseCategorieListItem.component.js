@@ -17,15 +17,7 @@ const AnalyseCategorieListItem = ({resumeCategorie, typeAnalyse, selectCategorie
 
     return (
         <Box key={"liste_" + resumeCategorie.categorie.id}
-             sx={{
-                 height: 56,
-                 marginY: 1,
-                 '&:hover': {
-                     backgroundColor: '#f5f6fb',
-                     color: '#808080',
-                     cursor: 'pointer',
-                 }
-             }} onMouseOver={() => selectCategorie()}>
+             className={"listeItem"} onMouseOver={() => selectCategorie()}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
                     <Box width={25} height={25}
