@@ -398,7 +398,7 @@ class OperationDetailPage extends Component {
                             {(!this.state.editForm.dateOperation) ?
                                 <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
                                             className={budget?.actif ? "editableField" : ""}
-                                            sx={{color: (operation.autresInfos.dateOperation != null ? "#000000" : "#E0E0E0")}}>
+                                            sx={{color: (operation.autresInfos.dateOperation != null ? "#FFFFFF" : "#121212")}}>
                                     {operation.autresInfos.dateOperation != null ? getLabelDate(operation.autresInfos.dateOperation) : "jj/mm/aaaa"}
                                 </Typography>
                                 :
