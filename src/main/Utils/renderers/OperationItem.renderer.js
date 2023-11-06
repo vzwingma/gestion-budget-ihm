@@ -1,6 +1,6 @@
 import {WatchLaterRounded} from "@mui/icons-material";
 import {OPERATION_ETATS_ENUM} from "../AppBusinessEnums.constants";
-import {Tooltip} from "@mui/material";
+import {Box, Tooltip} from "@mui/material";
 import React from "react";
 
 /**
@@ -88,13 +88,17 @@ function getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue) 
     const compte = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))
     if (compte[0]?.libelle) {
         return <Tooltip title={"Transfert intercompte " + direction + " " + compte[0].libelle}>
-            {operationLibelleParts[1].startsWith("[En Retard]") ?
-                <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
-            <img src={"/img/banques/" + compte[0].icon}
-                 width={maxVue ? 30 : 20} height={maxVue ? 30 : 20}
-                 alt={compte[0].libelle}
-                 style={{marginRight: "5px"}}/>
-            <span>{operationLibelleParts[4]}</span>
+            <Box>
+                {operationLibelleParts[1].startsWith("[En Retard]") ?
+                    <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
+
+                <img src={"/img/banques/" + compte[0].icon}
+                     width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
+                     alt={compte[0].libelle}
+                     style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
+                {operationLibelleParts[4]}
+
+            </Box>
         </Tooltip>
     } else {
         return operationLibelle
