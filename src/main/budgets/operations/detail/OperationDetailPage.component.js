@@ -214,7 +214,7 @@ class OperationDetailPage extends Component {
                        onKeyUp={this.handleOperationEditionClick}>
 
                 <Stack direction={"column"} spacing={5} sx={{alignItems: "center"}}>
-                    <Box width={40} height={40}
+                    <Box width={56} height={56}
                          sx={{
                              borderRadius: "50%",
                              backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),

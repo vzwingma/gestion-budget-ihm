@@ -86,8 +86,10 @@ button.buttonsActionsOperationsP {
  * Liste d'item
  */
 .listeItem {
-    height: 62px;
-    margin-top: 15px;
+    height: 68px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
 }
 
 .listeItem:hover {
@@ -96,6 +98,11 @@ button.buttonsActionsOperationsP {
     cursor: pointer;
 }
 
+.listeItemSeparator {
+    background-color: #252525 !important;
+    padding: 10px;
+    color: #31687f;
+}
 
 /**
 Style Top Menu

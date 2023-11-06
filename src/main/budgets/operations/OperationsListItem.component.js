@@ -23,7 +23,7 @@ const OperationItem = ({operation, listeComptes, onClick}) => {
              onClick={() => onClick(operation)}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
-                    <Box width={25} height={25}
+                    <Box width={46} height={46}
                          sx={{
                              borderRadius: "50%",
                              backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),
