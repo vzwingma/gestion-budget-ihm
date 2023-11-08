@@ -63,3 +63,19 @@ export function saveOperationIntercompte(operation, budget, compteCible) {
             toast.error("Erreur lors de l'enregistrement de l'opération intercomptes")
         })
 }
+
+/**
+ * Recherche des libellés des opérations sur le compte
+ * @param idCompte identifiant du compte
+ */
+export function getLibellesOperation(idCompte) {
+    console.debug("Appel WS pour récupérer les libellés d'une opération sur le compte [" + idCompte + "]");
+
+    ClientHTTP.call('GET',
+        AppConstants.BACKEND_ENUM.URL_OPERATIONS_COMPTE, AppConstants.SERVICES_URL.OPERATIONS.LIBELLES,
+        [idCompte])
+        .then(listeLibelles => {
+            listeLibelles.sort();
+            this.setState({listeLibellesOperation: listeLibelles});
+        })
+}

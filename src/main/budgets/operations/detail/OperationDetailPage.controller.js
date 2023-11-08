@@ -1,7 +1,24 @@
 import * as DataUtils from "../../../Utils/DataUtils.utils";
+import {sortLibellesCategories} from "../../../Utils/DataUtils.utils";
 import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import {BUSINESS_GUID, TYPES_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
 
+
+/**
+ * Liste de toutes les catégories
+ * @returns {*}
+ */
+
+export function getListeAllCategories() {
+    return this.props.listeCategories
+        .flatMap(cat => {
+            for (let ssCat in cat.listeSSCategories) {
+                cat.listeSSCategories[ssCat].categorieParente = cat
+            }
+            return cat.listeSSCategories
+        })
+        .sort(sortLibellesCategories);
+}
 
 /**
  * Click sur un élément à éditer de la page de détail
@@ -15,7 +32,7 @@ export function handleOperationEditionClick(event) {
         const enterKeyPress = event.type === 'keyup' && (event.code === 'Enter' || event.code === 'NumpadEnter');
 
         // Validation du formulaire
-        if (enterKeyPress) {
+        if (enterKeyPress && this.state.editOperation.formValidationEnabled) {
             this.handleValidateOperationForm();
         } else if (!idElement.endsWith(OPERATION_EDITION_FORM_IDS.INPUT)) {
             let editForm = this.state.editForm;
