@@ -313,9 +313,9 @@ class OperationDetailPage extends Component {
                                             defaultValue={operation.ssCategorie != null ? operation.ssCategorie : EMPTY_CATEGORIE}
                                             options={this.getListeAllCategories()}
                                             groupBy={(option) => option.categorieParente.libelle}
-                                            getOptionLabel={option => option.libelle}
+                                            getOptionLabel={option => option.libelle != null ? option.libelle : ""}
                                             isOptionEqualToValue={(option, value) => {
-                                                return option.id === (value != null ? value.id : null)
+                                                return option.id != null ? (option.id === (value != null ? value.id : null)) : null
                                             }}
                                             onChange={(e) => this.fillCategorieForm(e)}
                                             onFocus={e => this.activateValidationForm(false)}
