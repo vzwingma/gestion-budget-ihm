@@ -178,9 +178,7 @@ function calculateValeur(formValue) {
  */
 function validateValue(valeur) {
     const valeurATester = ("" + valeur).replaceAll(",", ".");
-    const test = /(^\d*(.\d{1,2})?$)/.test(valeurATester);
-    console.debug("Valeur à tester : [" + valeurATester + "]", test);
-    return test;
+    return /(^\d*(.\d{1,2})?$)/.test(valeurATester);
 }
 
 /**

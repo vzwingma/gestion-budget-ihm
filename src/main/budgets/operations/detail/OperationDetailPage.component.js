@@ -147,7 +147,6 @@ class OperationDetailPage extends Component {
     fillLibelleForm(e) {
         let editOperation = this.state.editOperation
         editOperation.libelle = e.target.value
-        console.log("fillLibelleForm", editOperation.libelle)
         this.setState({editOperation: editOperation})
     }
 
@@ -183,24 +182,26 @@ class OperationDetailPage extends Component {
             .filter(ssCat => {
                 return ssCat.libelle === e.target.textContent || ssCat.libelle === e.target.value
             })[0]
-        let editOperation = this.state.editOperation
-        editOperation.categorie.id = ssCat.categorieParente.id
-        editOperation.categorie.libelle = ssCat.categorieParente.libelle
-        editOperation.ssCategorie.id = ssCat.id
-        editOperation.ssCategorie.libelle = ssCat.libelle
-        this.setState({editOperation: editOperation})
+        if (ssCat !== null && ssCat !== undefined) {
+            let editOperation = this.state.editOperation
+            editOperation.categorie.id = ssCat.categorieParente.id
+            editOperation.categorie.libelle = ssCat.categorieParente.libelle
+            editOperation.ssCategorie.id = ssCat.id
+            editOperation.ssCategorie.libelle = ssCat.libelle
+            this.setState({editOperation: editOperation})
 
-        /** Si type Virement **/
-        editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+            /** Si type Virement **/
+            editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
 
-        /** Adaptation sur la sélection de catégorie **/
+            /** Adaptation sur la sélection de catégorie **/
 
-        let currentOperation = this.props.operation
-        currentOperation.categorie.id = ssCat.categorieParente.id
-        currentOperation.categorie.libelle = ssCat.categorieParente.libelle
-        currentOperation.ssCategorie.id = ssCat.id
-        currentOperation.ssCategorie.libelle = ssCat.libelle
-        currentOperation.typeOperation = editOperation.typeOperation
+            let currentOperation = this.props.operation
+            currentOperation.categorie.id = ssCat.categorieParente.id
+            currentOperation.categorie.libelle = ssCat.categorieParente.libelle
+            currentOperation.ssCategorie.id = ssCat.id
+            currentOperation.ssCategorie.libelle = ssCat.libelle
+            currentOperation.typeOperation = editOperation.typeOperation
+        }
     }
 
 
