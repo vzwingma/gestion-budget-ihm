@@ -24,9 +24,7 @@ export const BACKEND_ENUM = {
     URL_COMPTES: process.env.REACT_APP_CONFIG_URL_COMPTES + "/comptes/v2",
     URL_PARAMS: process.env.REACT_APP_CONFIG_URL_PARAMS + "/parametres/v2",
     URL_UTILISATEURS: process.env.REACT_APP_CONFIG_URL_UTILISATEURS + "/utilisateurs/v2",
-    URL_OPERATIONS: process.env.REACT_APP_CONFIG_URL_OPERATIONS + "/budgets/v2",
-    URL_OPERATIONS_COMPTE: process.env.REACT_APP_CONFIG_URL_OPERATIONS + "/comptes/v2"
-
+    URL_OPERATIONS: process.env.REACT_APP_CONFIG_URL_OPERATIONS + "/budgets/v2"
 }
 
 
@@ -53,7 +51,7 @@ export const SERVICES_URL = {
         UPDATE: "/{{}}/operations/{{}}",
         DERNIERE: "/{{}}/operations/{{}}/derniereOperation",
         INTERCOMPTE: "/{{}}/operations/versCompte/{{}}",
-        LIBELLES: "/{{}}/operations/libelles"
+        LIBELLES: "/compte/{{}}/operations/libelles"
     },
     PARAMETRES: {
         CATEGORIES: "/categories"

@@ -72,7 +72,7 @@ export function getLibellesOperation(idCompte) {
     console.debug("Appel WS pour récupérer les libellés d'une opération sur le compte [" + idCompte + "]");
 
     ClientHTTP.call('GET',
-        AppConstants.BACKEND_ENUM.URL_OPERATIONS_COMPTE, AppConstants.SERVICES_URL.OPERATIONS.LIBELLES,
+        AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.LIBELLES,
         [idCompte])
         .then(listeLibelles => {
             listeLibelles.sort();

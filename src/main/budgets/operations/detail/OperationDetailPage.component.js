@@ -270,9 +270,10 @@ class OperationDetailPage extends Component {
                                               required label={"Libellé"}
                                               defaultValue={operation.libelle}
                                               freeSolo={true}
-                                              options={this.state.listeLibellesOperation}
-                                              renderInput={(params) => <TextField {...params} label="Description"
-                                                                                  variant="standard" size={"small"}/>}
+                                              options={this.state.listeLibellesOperation != null ? this.state.listeLibellesOperation : []}
+                                              renderInput={(params) =>
+                                                  <TextField {...params} label="Description" variant="standard"
+                                                             size={"small"}/>}
                                               sx={{width: "850px"}}
                                               onChange={(e) => this.fillLibelleForm(e)}
                                               onFocus={e => this.activateValidationForm(false)}
