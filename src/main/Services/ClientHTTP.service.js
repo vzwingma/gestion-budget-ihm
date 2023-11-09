@@ -98,7 +98,7 @@ export function call(httpMethod, uri, path, params, body ) {
                 console.log("Session expirée")
                 logOut();
             } else {
-                console.log(res)
+                console.log(res);
                 throw new Error(res.statusText);
             }
         })
