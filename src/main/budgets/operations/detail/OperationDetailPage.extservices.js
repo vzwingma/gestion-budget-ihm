@@ -31,7 +31,7 @@ export function saveOperation(operation, budget) {
 
             })
             .catch((e) => {
-                console.log("Erreur lors de la mise à jour de l'opération " + operation.id + " >> " + e);
+                console.log("Erreur lors de la mise à jour de l'opération " + operation.id, e);
                 toast.error("Erreur lors de la mise à jour de l'opération")
             })
     } else {
@@ -59,7 +59,7 @@ export function saveOperationIntercompte(operation, budget, compteCible) {
             toast.success("Création de l'opération inter-comptes correctement effectuée")
         })
         .catch(e => {
-            console.log("Erreur lors de l'enregistrement de l'opération intercomptes" + e)
+            console.log("Erreur lors de l'enregistrement de l'opération intercomptes", e)
             toast.error("Erreur lors de l'enregistrement de l'opération intercomptes")
         })
 }
@@ -77,5 +77,8 @@ export function getLibellesOperation(idCompte) {
         .then(listeLibelles => {
             listeLibelles.sort();
             this.setState({listeLibellesOperation: listeLibelles});
+        })
+        .catch(e => {
+            console.log("Erreur lors de la recherche des libellés d'opérations ", e);
         })
 }

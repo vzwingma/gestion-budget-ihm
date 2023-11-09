@@ -103,7 +103,7 @@ export function call(httpMethod, uri, path, params, body ) {
             }
         })
         .catch(e => {
-            console.log("Erreur lors de l'appel HTTP [" + fullURL + "] :: " + e)
+            console.log("Erreur lors de l'appel HTTP [" + fullURL + "]", e)
             throw new Error(e);
         })
 }

@@ -18,7 +18,7 @@ import * as AppConstants from "../Utils/AppTechEnums.constants";
                 })
             })
             .catch((e) => {
-                console.log("Erreur lors de la recherche de la dernière connexion >> "+ e);
+                console.log("Erreur lors de la recherche de la dernière connexion", e);
             })
 
     }
