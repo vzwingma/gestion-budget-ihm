@@ -193,7 +193,9 @@ export function handleValidateOperationForm() {
             console.log("Erreurs présentes dans le formulaire", errors)
             this.setState({errors: errors})
         } else {
-
+            if (this.props.operation.autresInfos.dateOperation === "") {
+                this.props.operation.autresInfos.dateOperation = null
+            }
             if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.isInCreateMode()) {
                 // Create Update Opération Intercomptes
                 this.saveOperationIntercompte(this.props.operation, this.props.budget, this.state.intercompte);
