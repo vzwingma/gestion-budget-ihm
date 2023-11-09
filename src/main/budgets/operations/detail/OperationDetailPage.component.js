@@ -19,10 +19,10 @@ import * as CategorieRenderer from "../../../Utils/renderers/CategorieItem.rende
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "../actions/OperationDetailActions.component";
 import * as Controller from "./OperationDetailPage.controller";
-import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
+import {EMPTY_CATEGORIE, OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
 import * as Service from "./OperationDetailPage.extservices";
-import {AddRounded, EditRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
-import {addEndingZeros, getLabelDate, sortLibellesCategories} from '../../../Utils/DataUtils.utils'
+import {AddRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
+import {addEndingZeros, getLabelDate} from '../../../Utils/DataUtils.utils'
 import {
     BUSINESS_GUID,
     OPERATION_ETATS_ENUM,
@@ -30,6 +30,7 @@ import {
     TYPES_OPERATION_ENUM
 } from "../../../Utils/AppBusinessEnums.constants";
 import PropTypes from "prop-types";
+
 
 /**
  * Page de détail d'une opération
@@ -55,8 +56,10 @@ class OperationDetailPage extends Component {
                     libelle: editMode,
                     dateOperation: editMode,
                     mensualite: editMode,
-                    categories: editMode
+                    categories: editMode,
+                    formValidationEnabled: true,
                 },
+                openLibelleAutoComplete: false,
                 intercompte: null,
                 errors: {
                     valeur: null,
@@ -64,7 +67,7 @@ class OperationDetailPage extends Component {
                     categorie: null,
                     compte: null
                 },
-                listeAllCategories: null,
+                listeLibellesOperation: null,
                 editOperation: null
             }
         )
@@ -72,6 +75,8 @@ class OperationDetailPage extends Component {
         this.handleOperationEditionClick = Controller.handleOperationEditionClick.bind(this);
         this.isInEditMode = Controller.isInEditMode.bind(this);
         this.isInCreateMode = Controller.isInCreateMode.bind(this);
+        this.getLibellesOperation = Service.getLibellesOperation.bind(this);
+        this.getListeAllCategories = Controller.getListeAllCategories.bind(this);
 
         this.handleValidateOperationForm = Controller.handleValidateOperationForm.bind(this);
         this.handleDateOperationFromAction = Controller.handleDateOperationFromAction.bind(this);
@@ -94,21 +99,10 @@ class OperationDetailPage extends Component {
      */
     componentDidMount() {
 
-        if (this.state.listeAllCategories == null) {
-            /**
-             * Chargement des catégories
-             */
-            const mapSsCategories = this.props.listeCategories
-                .flatMap(cat => {
-                    for (let ssCat in cat.listeSSCategories) {
-                        cat.listeSSCategories[ssCat].categorieParente = cat
-                    }
-                    return cat.listeSSCategories
-                })
-                .sort(sortLibellesCategories)
-
-            this.setState({listeAllCategories: mapSsCategories})
+        if (this.state.listeLibellesOperation == null) {
+            this.getLibellesOperation(this.props.budget.idCompteBancaire);
         }
+
         this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
     }
 
@@ -120,17 +114,30 @@ class OperationDetailPage extends Component {
 
         if (this.props.operation.id !== prevProps.operation.id) {
             this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
-
+            // Mode Création
             if (this.props.operation.id === -1) {
                 this.setState({
                     editForm: {
                         libelle: true, value: true, dateOperation: true, mensualite: true, categories: true
                     }
                 })
+                this.getLibellesOperation(this.props.budget.idCompteBancaire);
+
             } else {
                 this.handleCloseOperationForm();
             }
         }
+    }
+
+
+    /**
+     * Activation/Désactivation du formulaire d'édition lors des autocompletes
+     * @param activation activation
+     */
+    activateValidationForm(activation) {
+        let editOperation = this.state.editOperation
+        editOperation.formValidationEnabled = activation
+        this.setState({editOperation: editOperation})
     }
 
     /**
@@ -140,6 +147,7 @@ class OperationDetailPage extends Component {
     fillLibelleForm(e) {
         let editOperation = this.state.editOperation
         editOperation.libelle = e.target.value
+        console.log("fillLibelleForm", editOperation.libelle)
         this.setState({editOperation: editOperation})
     }
 
@@ -171,11 +179,10 @@ class OperationDetailPage extends Component {
     }
 
     fillCategorieForm(e) {
-        const ssCat = this.state.listeAllCategories
+        const ssCat = this.getListeAllCategories()
             .filter(ssCat => {
-                return ssCat.libelle === e.target.textContent
+                return ssCat.libelle === e.target.textContent || ssCat.libelle === e.target.value
             })[0]
-
         let editOperation = this.state.editOperation
         editOperation.categorie.id = ssCat.categorieParente.id
         editOperation.categorie.libelle = ssCat.categorieParente.libelle
@@ -250,28 +257,33 @@ class OperationDetailPage extends Component {
                     </Typography>
 
                     { /** LIBELLE **/}
-                    <Typography variant={"button"} sx={{fontSize: "large"}}
-                                className={budget?.actif ? "editableField" : ""}
-                                id={OPERATION_EDITION_FORM_IDS.LIBELLE}>
                         {(!this.state.editForm.libelle) ?
-                            <span
-                                id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}</span>
+                            <Typography variant={"button"} sx={{fontSize: "large"}}
+                                        className={budget?.actif ? "editableField" : ""}
+                                        id={OPERATION_EDITION_FORM_IDS.LIBELLE}>
+                                <span
+                                    id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}</span>
+                            </Typography>
                             :
-                            <TextField id={OPERATION_EDITION_FORM_IDS.LIBELLE + OPERATION_EDITION_FORM_IDS.INPUT}
-                                       required label="Libellé"
-                                       InputProps={{
-                                           startAdornment: (
-                                               <InputAdornment position="start"><EditRounded/></InputAdornment>
-                                           )
-                                       }}
-                                       defaultValue={operation.libelle}
-                                       variant="standard" sx={{width: "850px"}}
-                                       error={this.state.errors.libelle != null} helperText={this.state.errors.libelle}
-                                       onChange={(e) => this.fillLibelleForm(e)}/>
+                            <FormControl fullWidth required error={this.state.errors.libelle != null}>
+                                <Autocomplete id={OPERATION_EDITION_FORM_IDS.LIBELLE + OPERATION_EDITION_FORM_IDS.INPUT}
+                                              required label={"Libellé"}
+                                              defaultValue={operation.libelle}
+                                              freeSolo={true}
+                                              options={this.state.listeLibellesOperation}
+                                              renderInput={(params) => <TextField {...params} label="Description"
+                                                                                  variant="standard" size={"small"}/>}
+                                              sx={{width: "850px"}}
+                                              onChange={(e) => this.fillLibelleForm(e)}
+                                              onFocus={e => this.activateValidationForm(false)}
+                                              onBlur={e => {
+                                                  this.activateValidationForm(true);
+                                                  this.fillLibelleForm(e);
+                                              }}
+                                />
+                                <FormHelperText>{this.state.errors.libelle}</FormHelperText>
+                            </FormControl>
                         }
-
-                    </Typography>
-
 
                     <Grid2 container width={"100%"}>
                         <Grid2 md={5}>
@@ -298,14 +310,19 @@ class OperationDetailPage extends Component {
                                             id={OPERATION_EDITION_FORM_IDS.CATEGORIE + OPERATION_EDITION_FORM_IDS.INPUT}
                                             renderInput={(params) => <TextField {...params} variant={"standard"}/>}
                                             sx={{width: "90%"}}
-                                            options={this.state.listeAllCategories}
+                                            defaultValue={operation.ssCategorie != null ? operation.ssCategorie : EMPTY_CATEGORIE}
+                                            options={this.getListeAllCategories()}
                                             groupBy={(option) => option.categorieParente.libelle}
-                                            autoComplete={true}
-                                            getOptionLabel={option => option.libelle}
+                                            getOptionLabel={option => option.libelle != null ? option.libelle : ""}
                                             isOptionEqualToValue={(option, value) => {
-                                                return option.id === (value != null ? value.id : null)
+                                                return option.id != null ? (option.id === (value != null ? value.id : null)) : null
                                             }}
                                             onChange={(e) => this.fillCategorieForm(e)}
+                                            onFocus={e => this.activateValidationForm(false)}
+                                            onBlur={e => {
+                                                this.activateValidationForm(true);
+                                                this.fillCategorieForm(e);
+                                            }}
                                         />
                                         <FormHelperText>{this.state.errors.categorie}</FormHelperText>
                                     </FormControl>

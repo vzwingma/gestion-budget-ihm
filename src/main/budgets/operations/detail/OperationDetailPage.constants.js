@@ -14,5 +14,6 @@ export const OPERATION_EDITION_FORM_IDS = {
     INPUT: "_INPUT",
 }
 
+export const EMPTY_CATEGORIE = {id: null, libelle: "NULL-2"}
 
 
