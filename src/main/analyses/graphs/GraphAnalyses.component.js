@@ -63,7 +63,8 @@ const GraphAnalyses = ({
      */
     function renderLabelCategorie(props) {
         const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
-        return renderLabelAnalyse(props, selectedId);
+        const color = Renderer.getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie : null)
+        return renderLabelAnalyse(props, selectedId, color);
     }
 
     /**
@@ -73,7 +74,8 @@ const GraphAnalyses = ({
      */
     function renderLabelSsCategorie(props) {
         const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
-        return renderLabelAnalyse(props, selectedId);
+        const color = Renderer.getCategorieColor(resumeSelectedSsCategorie !== null ? resumeSelectedSsCategorie.categorie : null)
+        return renderLabelAnalyse(props, selectedId, color);
     }
 
     /**
@@ -82,7 +84,7 @@ const GraphAnalyses = ({
      * @param selectedId : boolean si la catégorie est sélectionnée
      * @returns {JSX.Element}
      */
-    function renderLabelAnalyse(props, selectedId) {
+    function renderLabelAnalyse(props, selectedId, color) {
         const {cx, cy, viewBox, value} = props;
         const midRadius = (viewBox.outerRadius + viewBox.innerRadius) / 2;
         // Calcul de l'angle du texte au milieu de la circonference
@@ -95,7 +97,7 @@ const GraphAnalyses = ({
             <>
                 <defs>
                     <filter x="0" y="0" width="1" height="1" id="solid">
-                        <feFlood floodColor="#121212" result="bg"/>
+                        <feFlood floodColor={color} result="bg"/>
                         <feMerge>
                             <feMergeNode in="bg"/>
                             <feMergeNode in="SourceGraphic"/>
