@@ -18,7 +18,7 @@ export function loadBudget(selectedCompte, selectedDate) {
             .then(data => this.calculateResumes(data))
             .catch(e => {
                 let libErreur = "Erreur lors du chargement du budget " + selectedCompte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
-                console.log(libErreur + " >> " + e)
+                console.log(libErreur, e)
                 toast.error(libErreur, {autoClose: false, closeOnClick: true})
             })
     }

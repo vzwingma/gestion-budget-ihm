@@ -12,7 +12,7 @@ export function loadComptes(selectedDate) {
             this.comptesLoaded(data, selectedDate)
         })
         .catch(e => {
-            console.log("Erreur lors du chargement des comptes " + e)
+            console.log("Erreur lors du chargement des comptes ", e)
             toast.error("Erreur lors du chargement des comptes")
         })
 }

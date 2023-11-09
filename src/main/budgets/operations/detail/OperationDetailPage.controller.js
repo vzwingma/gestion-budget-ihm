@@ -163,7 +163,7 @@ function calculateValeur(formValue) {
         // eslint-disable-next-line no-eval
         return eval(formValue);
     } catch (e) {
-        console.error("Erreur dans la valeur saisie " + formValue + " : " + e)
+        console.error("Erreur dans la valeur saisie " + formValue, e)
         errors.valeur = "Le champ Montant est incorrect";
         hasErrors = true;
         return null;

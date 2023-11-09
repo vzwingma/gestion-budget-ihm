@@ -15,7 +15,7 @@ export function callReinitBudget(idBudget){
                 this.props.onActionBudgetChange(data)
             })
             .catch((e) => {
-                console.log("Erreur lors de la réinitialisation du budget >> "+ e)
+                console.log("Erreur lors de la réinitialisation du budget", e)
                 toast.error("Erreur lors de la réinitialisation du budget " + idBudget)
             })
     }
@@ -35,7 +35,7 @@ export function callReopenCloseBudget(idBudget, newEtatBudget) {
                 this.props.onActionBudgetChange(data)
             })
             .catch((e) => {
-                console.log("Erreur lors de la Réouverture/Clôture du budget >> "+ e)
+                console.log("Erreur lors de la Réouverture/Clôture du budget", e)
                 toast.error("Erreur lors de la " + (newEtatBudget ? "réouverture" : "clôture") + "du budget " + idBudget)
             })
     }

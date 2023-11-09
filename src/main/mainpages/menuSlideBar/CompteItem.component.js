@@ -29,7 +29,7 @@ const CompteItem = ({compte, selectedDate, onRefreshMenuBar, onClick}) => {
                 .then(data => setSoldes((prevState) => data.soldeAtMaintenant))
                 .catch(e => {
                     let libErreur = "Erreur lors du chargement du budget " + compte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
-                    console.log(libErreur + " >> " + e)
+                    console.log(libErreur, e)
                 });
         }
     }
