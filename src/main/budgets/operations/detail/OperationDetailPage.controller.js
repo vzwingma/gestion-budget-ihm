@@ -178,9 +178,7 @@ function calculateValeur(formValue) {
  */
 function validateValue(valeur) {
     const valeurATester = ("" + valeur).replaceAll(",", ".");
-    const test = /(^\d*(.\d{1,2})?$)/.test(valeurATester);
-    console.debug("Valeur à tester : [" + valeurATester + "]", test);
-    return test;
+    return /(^\d*(.\d{1,2})?$)/.test(valeurATester);
 }
 
 /**
@@ -195,7 +193,9 @@ export function handleValidateOperationForm() {
             console.log("Erreurs présentes dans le formulaire", errors)
             this.setState({errors: errors})
         } else {
-
+            if (this.props.operation.autresInfos.dateOperation === "") {
+                this.props.operation.autresInfos.dateOperation = null
+            }
             if (this.state.editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && this.isInCreateMode()) {
                 // Create Update Opération Intercomptes
                 this.saveOperationIntercompte(this.props.operation, this.props.budget, this.state.intercompte);

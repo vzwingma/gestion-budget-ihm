@@ -56,13 +56,73 @@ const GraphAnalyses = ({
             })
     }
 
+    /**
+     * Render du label pour une catégorie
+     * @param props properties
+     * @returns {*}
+     */
+    function renderLabelCategorie(props) {
+        const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
+        const color = Renderer.getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie : null)
+        return renderLabelAnalyse(props, selectedId, color);
+    }
+
+    /**
+     * Render du label pour une sous catégorie
+     * @param props
+     * @returns {*}
+     */
+    function renderLabelSsCategorie(props) {
+        const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
+        const color = Renderer.getCategorieColor(resumeSelectedSsCategorie !== null ? resumeSelectedSsCategorie.categorie : null)
+        return renderLabelAnalyse(props, selectedId, color);
+    }
+
+    /**
+     * Render du label pour une analyse
+     * @param props properties
+     * @param selectedId : boolean si la catégorie est sélectionnée
+     * @returns {JSX.Element}
+     */
+    function renderLabelAnalyse(props, selectedId, color) {
+        const {cx, cy, viewBox, value} = props;
+        const midRadius = (viewBox.outerRadius + viewBox.innerRadius) / 2;
+        // Calcul de l'angle du texte au milieu de la circonference
+        // Conversion en radian, dans le sens horaire
+        const midAngle = -(viewBox.startAngle + viewBox.endAngle) / 2 * Math.PI / 180;
+        const x = cx + Math.cos(midAngle) * midRadius;
+        const y = cy + Math.sin(midAngle) * midRadius;
+
+        return (
+            <>
+                <defs>
+                    <filter x="0" y="0" width="1" height="1" id="solid">
+                        <feFlood floodColor={color} result="bg"/>
+                        <feMerge>
+                            <feMergeNode in="bg"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+                <text x={x} y={y} dy={10}
+                      stroke={"white"} strokeWidth={selectedId ? 0.5 : 0.1}
+                      fill={"white"}
+                      filter={selectedId ? "url(#solid)" : ""}
+                      fontSize={selectedId ? 17 : 10} textAnchor="middle">
+                    {value}
+                </text>
+            </>
+
+        );
+    }
+
     /** Init du tableau pour l'affichage du graphique **/
     populateGraphCategorie(analysesGroupedByCategories, dataCategories);
 
     return (
             <ResponsiveContainer width="100%" height="100%">
                 <PieChart width="90%" height="90%">
-
+                    { /** Affichage du graphique CATEGORIE **/}
                     <Pie data={dataCategories} dataKey="value"
                          cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
                          isAnimationActive={false}>
@@ -71,9 +131,10 @@ const GraphAnalyses = ({
                                       fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
                             ))
                         }
-                        <LabelList data={dataSsCategories} dataKey="name" stroke={"white"} strokeWidth={0.1}
-                                   fill={"white"}/>
+                        <LabelList data={dataSsCategories} dataKey="name"
+                                   content={renderLabelCategorie}/>
                     </Pie>
+                    { /** Affichage du graphique SOUS CATEGORIE **/}
                     <Pie data={dataSsCategories} dataKey="value"
                          cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
                          isAnimationActive={false}>
@@ -83,8 +144,8 @@ const GraphAnalyses = ({
                             />
                             ))
                         }
-                        <LabelList data={dataSsCategories} dataKey="name" stroke={"white"} strokeWidth={0.1}
-                                   fill={"white"}/>
+                        <LabelList data={dataSsCategories} dataKey="name"
+                                   content={renderLabelSsCategorie}/>
                     </Pie>
                 </PieChart>
             </ResponsiveContainer>
