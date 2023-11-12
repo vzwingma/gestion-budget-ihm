@@ -84,6 +84,9 @@ button.buttonsActionsOperationsP {
     cursor: pointer;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
 /**
  * Liste d'item
  */

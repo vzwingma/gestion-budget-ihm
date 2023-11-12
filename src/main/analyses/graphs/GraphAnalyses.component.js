@@ -82,6 +82,7 @@ const GraphAnalyses = ({
      * Render du label pour une analyse
      * @param props properties
      * @param selectedId : boolean si la catégorie est sélectionnée
+     * @param color couleur
      * @returns {JSX.Element}
      */
     function renderLabelAnalyse(props, selectedId, color) {
