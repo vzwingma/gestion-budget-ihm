@@ -425,7 +425,6 @@ class OperationDetailPage extends Component {
                                     id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION + OPERATION_EDITION_FORM_IDS.INPUT}
                                     defaultValue={operation.autresInfos.dateOperation}
                                     variant={"standard"} type={"date"} fullWidth
-                                    color={"#FFFFFF"}
                                     error={this.state.errors.dateOperation != null}
                                     helperText={this.state.errors.dateOperation}
                                     onChange={(e) => this.fillDateOperationForm(e)}/>
