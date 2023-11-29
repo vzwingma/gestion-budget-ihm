@@ -85,6 +85,7 @@ export function call(httpMethod, uri, path, params, body ) {
             mode: "cors",
             headers: new Headers({
                 'Content-Type': 'application/json',
+                'Content-Encoding': 'gzip',
                 'X-Api-Key': AppConstants.API_GW_ENUM.API_KEY,
                 'Authorization' : 'Bearer ' + getOAuthToken()
             }),
