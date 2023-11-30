@@ -38,7 +38,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
 
 
     /** Constructeur **/
-    constructor(props){
+    constructor(props) {
         super(props);
         this.handleButtonsBudgetClick = Controller.handleButtonsBudgetClick.bind(this);
 
@@ -90,19 +90,19 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                         </IconButton>
                     </Tooltip>
                 }
-                    <Dialog open={this.state.showModale}>
-                        <DialogTitle>{this.state.title}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>{this.state.question}</DialogContentText>
-                        </DialogContent>
+                <Dialog open={this.state.showModale}>
+                    <DialogTitle>{this.state.title}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>{this.state.question}</DialogContentText>
+                    </DialogContent>
 
-                        <DialogActions>
-                            <ButtonGroup>
-                                <Button id="ANNULER" color="error">Annuler</Button>
-                                <Button id="CONFIRMER" color="success">Confirmer</Button>
-                            </ButtonGroup>
-                        </DialogActions>
-                    </Dialog>
+                    <DialogActions>
+                        <ButtonGroup>
+                            <Button id="ANNULER" color="error">Annuler</Button>
+                            <Button id="CONFIRMER" color="success">Confirmer</Button>
+                        </ButtonGroup>
+                    </DialogActions>
+                </Dialog>
 
             </Stack>
         )

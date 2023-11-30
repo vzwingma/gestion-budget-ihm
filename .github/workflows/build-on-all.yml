@@ -1,5 +1,5 @@
 name: CI on all branches
-  # Controls when the action will run.
+# Controls when the action will run.
 # Triggers the workflow on push or pull request events on all but the master branch
 on:
   push:
@@ -11,60 +11,46 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
-    -
-      uses: actions/checkout@v3
-    -
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.OS }}-npm-cache-
-    -
-      name: Use Node.js 18
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    -
-      name: Update config in .env
-      run: |
-        sed -e 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' -e 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.dev;
-    -
-      run: mv external-ressources/conf/.env.dev .env
-      name: Set env DEV
-    -
-      run: npm install
-      name: Install
-    -
-      run: npm ci
-      name: CI Install
-    -
-      run: npm run test
-      name: Unit tests
-    -
-      run: npm run build --if-present
-      name: Build
-
-# LINT
-  lint:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    steps:
-      -
-        uses: actions/checkout@v3
-      -
-        uses: actions/cache@v3
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-npm-cache-
-      -
-        name: Use Node.js 18
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      -
-        run: npm install eslint --save
-      -
-        run: npm run lint
+      - name: Update config in .env
+        run: |
+          sed -e 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' -e 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.dev;
+      - run: mv external-ressources/conf/.env.dev .env
+        name: Set env DEV
+      - run: npm install
+        name: Install
+      - run: npm ci
+        name: CI Install
+      - run: npm run test
+        name: Unit tests
+      - run: npm run build --if-present
+        name: Build
+
+  # LINT
+  lint:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-npm-cache-
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install eslint --save
+      - run: npm run lint

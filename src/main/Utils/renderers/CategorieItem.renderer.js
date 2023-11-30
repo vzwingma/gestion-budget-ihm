@@ -140,18 +140,18 @@ function getCategorieIconVirement(idCategorie) {
  */
 function getCategorieIconDivers(idCategorie) {
     switch (idCategorie) {
-            // DIVERS
-            case '94669a73-2563-4a31-8d67-35a8d96d8686': // DIVERS
-                return <SportsEsportsRounded/>
+        // DIVERS
+        case '94669a73-2563-4a31-8d67-35a8d96d8686': // DIVERS
+            return <SportsEsportsRounded/>
 
-            case '76c99cbf-babb-40e6-ac13-0ac08661c9a7': // Dépense
-                return <AddShoppingCartRounded/>
-            case '430a455b-e5ba-4b13-b031-bcf0e63f102e': // Retrait
-                return <AtmRounded/>
-            case '4269692d-7eec-4569-9443-5f77dc2e4cbc': // Loisir
-                return <TravelExploreRounded/>
-            case '603072b2-2bfc-43ad-b2de-028c9f28ba0a': // Travaux
-                return <ConstructionRounded/>
+        case '76c99cbf-babb-40e6-ac13-0ac08661c9a7': // Dépense
+            return <AddShoppingCartRounded/>
+        case '430a455b-e5ba-4b13-b031-bcf0e63f102e': // Retrait
+            return <AtmRounded/>
+        case '4269692d-7eec-4569-9443-5f77dc2e4cbc': // Loisir
+            return <TravelExploreRounded/>
+        case '603072b2-2bfc-43ad-b2de-028c9f28ba0a': // Travaux
+            return <ConstructionRounded/>
         default:
             return null
     }
@@ -198,12 +198,12 @@ function getCategorieIconPrelevement(idCategorie) {
 function getCategorieIconFraisRemboursable(idCategorie) {
     switch (idCategorie) {
         case 'b20a46a5-92ab-47a8-a70d-ecb64ddf02ce': // FRAIS REMBOURSABLES
-                return <MedicationLiquidRounded/>
+            return <MedicationLiquidRounded/>
 
-            case '6e96b0c3-ecc5-4be8-8087-0087b5e46baf': // Santé
-                return <HealthAndSafetyRounded/>
-            case 'bd28c498-a774-4a67-b6ec-a135d39fca46': // Pro
-                return <ContactPhoneRounded/>
+        case '6e96b0c3-ecc5-4be8-8087-0087b5e46baf': // Santé
+            return <HealthAndSafetyRounded/>
+        case 'bd28c498-a774-4a67-b6ec-a135d39fca46': // Pro
+            return <ContactPhoneRounded/>
         default:
             return null
     }
@@ -216,26 +216,26 @@ function getCategorieIconFraisRemboursable(idCategorie) {
  */
 function getCategorieIconTransport(idCategorie) {
     switch (idCategorie) {
-            // TRANSPORT
-            case 'c35fde2a-55ec-4a27-9519-5ef5daf46799': // TRANSPORTS
-                return <EmojiTransportationRounded/>
+        // TRANSPORT
+        case 'c35fde2a-55ec-4a27-9519-5ef5daf46799': // TRANSPORTS
+            return <EmojiTransportationRounded/>
 
-            case 'e9dadc12-73d2-4956-8936-044115de7723': // Taxi
-                return <LocalTaxiRounded/>
-            case 'cdd8dbcf-1475-4bd7-b69c-20467f844d91': // Parking
-                return <LocalParkingRounded/>
-            case 'a692bb6c-d7d4-4e67-b7a9-96551dea03c0': // Péages
-                return <TollRounded/>
-            case 'f6dd5c41-6ba6-4297-9455-66567ab4556d': // Location
-                return <CarRentalRounded/>
-            case '7e8b606e-02d4-4555-9852-307ce9927ce4': // Carburant
-                return <LocalGasStationRounded/>
-            case '2dbd8add-4a8d-4d05-a325-08b7e85d6ac9': // Recharge
-                return <ElectricCarRounded/>
-            case 'bbc1f327-35cb-4db6-8134-61af30d3246c': // Assurance
-                return <NoCrashRounded/>
-            case '80698e57-4f34-42f8-b3ee-0487df01f0a1': // Transport en commun
-                return <DirectionsBusRounded/>
+        case 'e9dadc12-73d2-4956-8936-044115de7723': // Taxi
+            return <LocalTaxiRounded/>
+        case 'cdd8dbcf-1475-4bd7-b69c-20467f844d91': // Parking
+            return <LocalParkingRounded/>
+        case 'a692bb6c-d7d4-4e67-b7a9-96551dea03c0': // Péages
+            return <TollRounded/>
+        case 'f6dd5c41-6ba6-4297-9455-66567ab4556d': // Location
+            return <CarRentalRounded/>
+        case '7e8b606e-02d4-4555-9852-307ce9927ce4': // Carburant
+            return <LocalGasStationRounded/>
+        case '2dbd8add-4a8d-4d05-a325-08b7e85d6ac9': // Recharge
+            return <ElectricCarRounded/>
+        case 'bbc1f327-35cb-4db6-8134-61af30d3246c': // Assurance
+            return <NoCrashRounded/>
+        case '80698e57-4f34-42f8-b3ee-0487df01f0a1': // Transport en commun
+            return <DirectionsBusRounded/>
         default:
             return null
     }
@@ -248,14 +248,14 @@ function getCategorieIconTransport(idCategorie) {
  */
 function getCategorieIconFrais(idCategorie) {
     switch (idCategorie) {
-            // FRAIS
-            case '270f314a-b3e5-4e05-bc96-4e2fadc4a9d3': // FRAIS
-                return <DescriptionRounded/>
+        // FRAIS
+        case '270f314a-b3e5-4e05-bc96-4e2fadc4a9d3': // FRAIS
+            return <DescriptionRounded/>
 
-            case 'eeb2f9a5-49b4-4c44-86bf-3bd626412d8e': // Santé
-                return <LocalHospitalRounded/>
-            case 'f9cbdc91-73d2-4956-8936-044115de7723': // Banque
-                return <AccountBalanceWalletRounded/>
+        case 'eeb2f9a5-49b4-4c44-86bf-3bd626412d8e': // Santé
+            return <LocalHospitalRounded/>
+        case 'f9cbdc91-73d2-4956-8936-044115de7723': // Banque
+            return <AccountBalanceWalletRounded/>
         default:
             return null
     }
@@ -268,16 +268,16 @@ function getCategorieIconFrais(idCategorie) {
  */
 function getCategorieIconAlimentation(idCategorie) {
     switch (idCategorie) {
-            // ALIMENTATION
-            case '8f1614c9-503c-4e7d-8cb5-0c9a9218b84a': // ALIMENTATION
-                return <RestaurantMenuRounded/>
+        // ALIMENTATION
+        case '8f1614c9-503c-4e7d-8cb5-0c9a9218b84a': // ALIMENTATION
+            return <RestaurantMenuRounded/>
 
-            case '62607c4a-b32d-4abf-85c7-ac0c10cdb65c': // Cantine
-                return <LocalCafeRounded/>
-            case '84022f20-f31a-4369-a4bb-de62ab778fd0': // Restaurant
-                return <BrunchDiningRounded/>
-            case '467496e4-9059-4b9b-8773-21f230c8c5c6': // Courses
-                return <ShoppingCartCheckoutRounded/>
+        case '62607c4a-b32d-4abf-85c7-ac0c10cdb65c': // Cantine
+            return <LocalCafeRounded/>
+        case '84022f20-f31a-4369-a4bb-de62ab778fd0': // Restaurant
+            return <BrunchDiningRounded/>
+        case '467496e4-9059-4b9b-8773-21f230c8c5c6': // Courses
+            return <ShoppingCartCheckoutRounded/>
         default:
             return null
     }

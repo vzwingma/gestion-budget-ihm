@@ -1,8 +1,8 @@
 name: CI/CD - Snapshot IHM
-  # Controls when the action will run.
+# Controls when the action will run.
 # Triggers the workflow on push or pull request events on all but the master branch
 on:
-    # Sequence of patterns matched against refs/heads
+  # Sequence of patterns matched against refs/heads
   push:
     branches: [ master ]
   pull_request:
@@ -13,68 +13,55 @@ jobs:
     runs-on: ubuntu-latest
     environment: QUA
     steps:
-    -
-      uses: actions/checkout@v3
-    -
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    -
-      name: Use Node.js 18
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    -
-      run: npm ci
-      name: CI Install
-    - name: Update config in .env.staging
-      run: |
-        sed -i 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' external-ressources/conf/.env.staging; 
-        sed -i 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.staging;
-        sed -i 's/__CONFIG_URL_BACKENDS__/${{ vars.CONFIG_URL_BACKENDS }}/g' external-ressources/conf/.env.staging;
-        sed -i 's/__API_GW_API_KEY__/${{ secrets.API_GW_API_KEY }}/g' external-ressources/conf/.env.staging;
-    -
-      run: mv external-ressources/conf/.env.staging .env
-      name: Set env STAGING
-    -
-      run: npm run test
-      name: Unit tests
-    -
-      run: npm run build --if-present
-      name: Build Staging
-    -
-      run: zip -r app_build.zip build/*
-    - uses: actions/upload-artifact@v3
-      name: Upload IHM app
-      with:
-        path: app_build.zip
-        name: app_build.zip
-# LINT
-  lint:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    steps:
-      -
-        uses: actions/checkout@v3
-      -
-        uses: actions/cache@v3
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      -
-        name: Use Node.js 18
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      -
-        run: npm install eslint --save
-      -
-        run: npm run lint
+      - run: npm ci
+        name: CI Install
+      - name: Update config in .env.staging
+        run: |
+          sed -i 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' external-ressources/conf/.env.staging; 
+          sed -i 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.staging;
+          sed -i 's/__CONFIG_URL_BACKENDS__/${{ vars.CONFIG_URL_BACKENDS }}/g' external-ressources/conf/.env.staging;
+          sed -i 's/__API_GW_API_KEY__/${{ secrets.API_GW_API_KEY }}/g' external-ressources/conf/.env.staging;
+      - run: mv external-ressources/conf/.env.staging .env
+        name: Set env STAGING
+      - run: npm run test
+        name: Unit tests
+      - run: npm run build --if-present
+        name: Build Staging
+      - run: zip -r app_build.zip build/*
+      - uses: actions/upload-artifact@v3
+        name: Upload IHM app
+        with:
+          path: app_build.zip
+          name: app_build.zip
+  # LINT
+  lint:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install eslint --save
+      - run: npm run lint
   sonarcloud:
     runs-on: ubuntu-latest
     needs: lint
@@ -103,14 +90,12 @@ jobs:
     name: deploy to S3 QUA
     needs: build
     steps:
-      -
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         name: Download IHM app
         with:
           name: app_build.zip
-      -
-        name: Unzip app archive
+      - name: Unzip app archive
         run: unzip app_build.zip
       - name: Deploy
         uses: reggionick/s3-deploy@v4

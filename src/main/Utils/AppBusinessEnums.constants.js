@@ -1,14 +1,13 @@
-
 /**
  * Droits de l'utilisateur
  * @type {{DROITS: {CLOTURE_BUDGET: string, RAZ_BUDGET: string}, PREFERENCES: {STATUT_NLLE_DEPENSE: string}}}
  */
 export const UTILISATEUR_DROITS = {
-    DROITS : {
-        CLOTURE_BUDGET : "DROIT_RAZ_BUDGET",
-        RAZ_BUDGET : "DROIT_RAZ_BUDGET"
+    DROITS: {
+        CLOTURE_BUDGET: "DROIT_RAZ_BUDGET",
+        RAZ_BUDGET: "DROIT_RAZ_BUDGET"
     },
-    PREFERENCES : {
+    PREFERENCES: {
         STATUT_NLLE_DEPENSE: "PREFS_STATUT_NLLE_DEPENSE",
     }
 }
@@ -19,9 +18,9 @@ export const UTILISATEUR_DROITS = {
  * @type {{CAT_VIREMENT: string, SOUS_CAT_INTER_COMPTES: string, CAT_PRELEVEMENT_MENSUEL: string}}
  */
 export const BUSINESS_GUID = {
-    CAT_VIREMENT : "ea6dcc12-3349-4047-a1e5-cd1d7254f16e",
-    CAT_PRELEVEMENT_MENSUEL : "504beea7-ed52-438a-aced-15e9603b82ab",
-    SOUS_CAT_INTER_COMPTES : "ed3f6100-5dbd-4b68-860e-0c97ae1bbc63"
+    CAT_VIREMENT: "ea6dcc12-3349-4047-a1e5-cd1d7254f16e",
+    CAT_PRELEVEMENT_MENSUEL: "504beea7-ed52-438a-aced-15e9603b82ab",
+    SOUS_CAT_INTER_COMPTES: "ed3f6100-5dbd-4b68-860e-0c97ae1bbc63"
 }
 
 

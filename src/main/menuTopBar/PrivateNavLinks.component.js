@@ -8,7 +8,7 @@ import {Stack} from "@mui/material";
  **/
 function PrivateNavLinks() {
 
-    if(useAuth().isAuthenticated) {
+    if (useAuth().isAuthenticated) {
         return <Stack direction="row" spacing={1}>
             <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'} to="/infos">Infos</NavLink>
             <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
@@ -20,4 +20,5 @@ function PrivateNavLinks() {
         return <Stack direction="row" spacing={1}><NavLink className="nav-link" to="/infos">Infos</NavLink></Stack>
     }
 }
+
 export default PrivateNavLinks;

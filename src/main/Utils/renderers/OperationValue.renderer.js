@@ -10,18 +10,16 @@ import PropTypes from "prop-types";
  * @param valueOperation valeur de l'opération
  * @returns {string} : class name du style
  */
-export function getStyleOperation(operation, valueOperation){
+export function getStyleOperation(operation, valueOperation) {
 
     let style = "";
-    if(operation?.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)){
+    if (operation?.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)) {
         style += "text-ANNULEE ";
     } else if (valueOperation === 0) {
         style += "";
-    }
-    else if(valueOperation > 0){
+    } else if (valueOperation > 0) {
         style += "text-CREDIT";
-    }
-    else{
+    } else {
         style += "text-DEPENSE";
     }
     return style;

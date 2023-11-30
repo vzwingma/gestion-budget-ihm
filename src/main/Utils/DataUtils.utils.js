@@ -18,12 +18,11 @@ export function addEndingZeros(num) {
 
     let n = num.toLocaleString('us-US');
     n = n.replaceAll(".", ",")
-    if(n.indexOf(',') > 0){
-        let r = n.substring(n.indexOf(',')+1)
+    if (n.indexOf(',') > 0) {
+        let r = n.substring(n.indexOf(',') + 1)
         let e = n.substring(0, n.indexOf(','))
         return e + "," + r.padEnd(2, '0')
-    }
-    else{
+    } else {
         return n + "," + addLeadingZeros(0)
     }
 }
@@ -52,8 +51,6 @@ export function getEventTargetId(eventTarget) {
 export function getLabelDate(dateOperation) {
     return new Date(Date.parse(dateOperation)).toLocaleDateString("fr");
 }
-
-
 
 
 /**

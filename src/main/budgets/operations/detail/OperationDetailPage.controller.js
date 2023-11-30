@@ -65,8 +65,8 @@ export function handleDateOperationFromAction(valeurDate) {
 }
 
 
-    let errors = {};
-    let hasErrors = false;
+let errors = {};
+let hasErrors = false;
 
 /**
  * validation du formulaire - Description
@@ -244,7 +244,6 @@ export function handleCloseOperationForm() {
     this.setState({editForm: editForm, errors: []})
 
 }
-
 
 
 /**

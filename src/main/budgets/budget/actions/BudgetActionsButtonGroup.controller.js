@@ -32,12 +32,12 @@ export function handleButtonsBudgetClick(event) {
                 this.callReinitBudget(this.props.budget.id);
             }
         }
-            this.setState({
-                title: titrePopup,
-                question: questionPopup,
-                showModale: affichagePopup,
-                action: action
-            })
+        this.setState({
+            title: titrePopup,
+            question: questionPopup,
+            showModale: affichagePopup,
+            action: action
+        })
     } else {
         this.setState({showModale: false})
     }

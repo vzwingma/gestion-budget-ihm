@@ -22,10 +22,10 @@ export default class ProfileInfos extends Component {
 
     render() {
         return (
-                <Stack>
-                    <div>Dernière connexion :</div>
-                    <div>{ this.state.lastConnectedDate }</div>
-                </Stack>
+            <Stack>
+                <div>Dernière connexion :</div>
+                <div>{this.state.lastConnectedDate}</div>
+            </Stack>
         );
     }
 

@@ -9,8 +9,8 @@ import {sortOperations} from "../../Utils/DataUtils.utils";
  *  Notification lorsque le budget est mis à jour
  * @param budgetData budget
  */
-    export function handleBudgetUpdate(budgetData){
-        console.log("(Re)Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length +  " opérations")
+export function handleBudgetUpdate(budgetData) {
+    console.log("(Re)Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
 
     let operationsGroupedByDateOperation = budgetData.listeOperations
         .filter(operation => operation.etat !== "PLANIFIEE")
@@ -23,7 +23,7 @@ import {sortOperations} from "../../Utils/DataUtils.utils";
 
     this.setState({currentBudget: budgetData, operationsGroupedByDateOperation: operationsGroupedByDateOperation});
     console.log("Chargement du budget correctement effectué");
-    }
+}
 
 
 /**
@@ -33,6 +33,7 @@ import {sortOperations} from "../../Utils/DataUtils.utils";
 export function handleOperationFilter(event) {
     this.setState({filterOperations: event.target.value});
 }
+
 /**
  * Sélection d'une opération
  * @param operation opération
