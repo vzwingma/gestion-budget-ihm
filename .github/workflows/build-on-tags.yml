@@ -16,17 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: PROD
     steps:
-      -
-        uses: actions/checkout@v3
-      -
-        uses: actions/cache@v3
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      -
-        name: Use Node.js 18
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -36,11 +33,9 @@ jobs:
         run: echo VERSION=$(echo $GITHUB_REF | cut -d / -f 3 | cut -b 2- )  >> $GITHUB_OUTPUT
       - name: Apply version
         run: npm version ${{ steps.get_version.outputs.VERSION }} --git-tag-version=false
-      -
-        run: npm ci
+      - run: npm ci
         name: CI Install
-      -
-        run: npm run test
+      - run: npm run test
         name: Unit tests
       - name: Update config in .env.production
         run: |
@@ -49,17 +44,13 @@ jobs:
           sed -i 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.production;
           sed -i 's/__CONFIG_URL_BACKENDS__/${{ vars.CONFIG_URL_BACKENDS }}/g' external-ressources/conf/.env.production;
           sed -i 's/__API_GW_API_KEY__/${{ secrets.API_GW_API_KEY }}/g' external-ressources/conf/.env.production;
-      -
-        run: mv external-ressources/conf/.env.production .env
+      - run: mv external-ressources/conf/.env.production .env
         name: Set env PRODUCTION
-      -
-        run: npm run build --if-present
+      - run: npm run build --if-present
         name: Build
-      -
-        run: zip -r app_build.zip build/*
-  # Upload RELEASE
-      -
-        uses: actions/upload-artifact@v3
+      - run: zip -r app_build.zip build/*
+      # Upload RELEASE
+      - uses: actions/upload-artifact@v3
         name: Upload IHM app
         with:
           path: app_build.zip
@@ -74,14 +65,12 @@ jobs:
     name: deploy to S3 PROD
     needs: build-ihm
     steps:
-      -
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         name: Download IHM app
         with:
           name: app_build.zip
-      -
-        name: Unzip app archive
+      - name: Unzip app archive
         run: unzip app_build.zip
       - name: Deploy
         uses: reggionick/s3-deploy@v4

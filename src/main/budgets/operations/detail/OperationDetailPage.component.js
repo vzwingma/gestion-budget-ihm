@@ -205,8 +205,6 @@ class OperationDetailPage extends Component {
     }
 
 
-
-
     /**
      * RENDER
      * @returns {JSX.Element}
@@ -258,34 +256,34 @@ class OperationDetailPage extends Component {
                     </Typography>
 
                     { /** LIBELLE **/}
-                        {(!this.state.editForm.libelle) ?
-                            <Typography variant={"button"} sx={{fontSize: "large"}}
-                                        className={budget?.actif ? "editableField" : ""}
-                                        id={OPERATION_EDITION_FORM_IDS.LIBELLE}>
+                    {(!this.state.editForm.libelle) ?
+                        <Typography variant={"button"} sx={{fontSize: "large"}}
+                                    className={budget?.actif ? "editableField" : ""}
+                                    id={OPERATION_EDITION_FORM_IDS.LIBELLE}>
                                 <span
                                     id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}</span>
-                            </Typography>
-                            :
-                            <FormControl fullWidth required error={this.state.errors.libelle != null}>
-                                <Autocomplete id={OPERATION_EDITION_FORM_IDS.LIBELLE + OPERATION_EDITION_FORM_IDS.INPUT}
-                                              required label={"Libellé"}
-                                              defaultValue={operation.libelle}
-                                              freeSolo={true}
-                                              options={this.state.listeLibellesOperation != null ? this.state.listeLibellesOperation : []}
-                                              renderInput={(params) =>
-                                                  <TextField {...params} label="Description" variant="standard"
-                                                             size={"small"}/>}
-                                              sx={{width: "850px"}}
-                                              onChange={(e) => this.fillLibelleForm(e)}
-                                              onFocus={e => this.activateValidationForm(false)}
-                                              onBlur={e => {
-                                                  this.activateValidationForm(true);
-                                                  this.fillLibelleForm(e);
-                                              }}
-                                />
-                                <FormHelperText>{this.state.errors.libelle}</FormHelperText>
-                            </FormControl>
-                        }
+                        </Typography>
+                        :
+                        <FormControl fullWidth required error={this.state.errors.libelle != null}>
+                            <Autocomplete id={OPERATION_EDITION_FORM_IDS.LIBELLE + OPERATION_EDITION_FORM_IDS.INPUT}
+                                          required label={"Libellé"}
+                                          defaultValue={operation.libelle}
+                                          freeSolo={true}
+                                          options={this.state.listeLibellesOperation != null ? this.state.listeLibellesOperation : []}
+                                          renderInput={(params) =>
+                                              <TextField {...params} label="Description" variant="standard"
+                                                         size={"small"}/>}
+                                          sx={{width: "850px"}}
+                                          onChange={(e) => this.fillLibelleForm(e)}
+                                          onFocus={e => this.activateValidationForm(false)}
+                                          onBlur={e => {
+                                              this.activateValidationForm(true);
+                                              this.fillLibelleForm(e);
+                                          }}
+                            />
+                            <FormHelperText>{this.state.errors.libelle}</FormHelperText>
+                        </FormControl>
+                    }
 
                     <Grid2 container width={"100%"}>
                         <Grid2 md={5}>
@@ -399,7 +397,7 @@ class OperationDetailPage extends Component {
                                                          style={{marginRight: "5px"}}/>
                                                     {compte.libelle}
                                                 </MenuItem>
-                                        ))}
+                                            ))}
                                     </TextField> : <></>}
                         </Grid2>
                         <Grid2 md={4}>

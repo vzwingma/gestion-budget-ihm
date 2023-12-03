@@ -7,7 +7,6 @@ import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
  */
 
 
-
 /**
  * Création d'un résumé de catégorie
  * @returns ResumeCategorie résumé de catégorie
@@ -119,6 +118,7 @@ function initGroup(group, idCategorie, idxOperation) {
     }
     return group
 }
+
 /**
  * Sélection d'une catégorie
  * @param rang : int Rang de la catégorie dans la liste

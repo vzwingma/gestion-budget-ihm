@@ -7,7 +7,6 @@ import * as Services from "./Infos.extservices";
 export default class Infos extends Component {
 
 
-
     constructor(props) {
         super(props);
         /** Etats pour la page Infos **/
@@ -29,7 +28,7 @@ export default class Infos extends Component {
     /** Phase de Render à partir de la liste de statuts  **/
     render() {
         return (
-        <center>
+            <center>
                 <TableHead>
                     <TableRow>
                         <TableCell>
@@ -46,21 +45,21 @@ export default class Infos extends Component {
                     </TableRow>
                     <TableRow>
                         <TableCell>
-                        <Table size={"small"}>
-                            <TableBody v>
-                                <ModuleInfos
-                                    key='ihm'
-                                    name='IHM'
-                                    version={process.env.REACT_APP_BUDGET_VERSION}
-                                    description="IHM REACT" />
-
-                                {this.state.infos.map((msInfos) => (
+                            <Table size={"small"}>
+                                <TableBody v>
                                     <ModuleInfos
-                                        key={msInfos.nom} name={msInfos.nom}
-                                        version={msInfos.version} description={msInfos.description} />
-                                ))}
-                            </TableBody>
-                        </Table>
+                                        key='ihm'
+                                        name='IHM'
+                                        version={process.env.REACT_APP_BUDGET_VERSION}
+                                        description="IHM REACT"/>
+
+                                    {this.state.infos.map((msInfos) => (
+                                        <ModuleInfos
+                                            key={msInfos.nom} name={msInfos.nom}
+                                            version={msInfos.version} description={msInfos.description}/>
+                                    ))}
+                                </TableBody>
+                            </Table>
                         </TableCell>
                     </TableRow>
                 </TableBody>
@@ -69,7 +68,7 @@ export default class Infos extends Component {
                         <TableCell align={"right"} style={{color: "#114b65"}}>by Zed.corp</TableCell>
                     </TableRow>
                 </TableFooter>
-        </center>
+            </center>
         )
-  }
+    }
 }

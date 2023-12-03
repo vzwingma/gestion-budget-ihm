@@ -1,4 +1,3 @@
-
 /**
  * Constantes des ID pour le formulaire
  * @type {{INTERCOMPTES: string, INPUT: string, FORM: string, DATE_OPERATION: string, LIBELLE: string, MENSUALITE: string, VALUE: string, CATEGORIE: string}}

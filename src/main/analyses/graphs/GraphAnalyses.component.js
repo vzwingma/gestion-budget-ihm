@@ -121,35 +121,35 @@ const GraphAnalyses = ({
     populateGraphCategorie(analysesGroupedByCategories, dataCategories);
 
     return (
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart width="90%" height="90%">
-                    { /** Affichage du graphique CATEGORIE **/}
-                    <Pie data={dataCategories} dataKey="value"
-                         cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
-                         isAnimationActive={false}>
-                        {dataCategories.map((entry) => (
-                            <Cell key={`cell-${entry.categorie}`}
-                                      fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
-                            ))
-                        }
-                        <LabelList data={dataSsCategories} dataKey="name"
-                                   content={renderLabelCategorie}/>
-                    </Pie>
-                    { /** Affichage du graphique SOUS CATEGORIE **/}
-                    <Pie data={dataSsCategories} dataKey="value"
-                         cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
-                         isAnimationActive={false}>
-                        {dataSsCategories.map((entry) => (
-                            <Cell key={`cell-${entry.categorie.id}`}
-                                  fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
-                            />
-                            ))
-                        }
-                        <LabelList data={dataSsCategories} dataKey="name"
-                                   content={renderLabelSsCategorie}/>
-                    </Pie>
-                </PieChart>
-            </ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
+            <PieChart width="90%" height="90%">
+                { /** Affichage du graphique CATEGORIE **/}
+                <Pie data={dataCategories} dataKey="value"
+                     cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
+                     isAnimationActive={false}>
+                    {dataCategories.map((entry) => (
+                        <Cell key={`cell-${entry.categorie}`}
+                              fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
+                    ))
+                    }
+                    <LabelList data={dataSsCategories} dataKey="name"
+                               content={renderLabelCategorie}/>
+                </Pie>
+                { /** Affichage du graphique SOUS CATEGORIE **/}
+                <Pie data={dataSsCategories} dataKey="value"
+                     cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
+                     isAnimationActive={false}>
+                    {dataSsCategories.map((entry) => (
+                        <Cell key={`cell-${entry.categorie.id}`}
+                              fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
+                        />
+                    ))
+                    }
+                    <LabelList data={dataSsCategories} dataKey="name"
+                               content={renderLabelSsCategorie}/>
+                </Pie>
+            </PieChart>
+        </ResponsiveContainer>
     );
 }
 // Properties Types

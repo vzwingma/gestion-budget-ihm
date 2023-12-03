@@ -57,7 +57,7 @@ const BudgetsSoldes = ({currentCompte, currentDate, currentBudget}) => {
                             <Typography variant={"caption"} textAlign={"center"}>
                                 <OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant}
                                                 showSign={true}/>
-                        </Typography>
+                            </Typography>
                         </Box>
                     </Tooltip>
                     : <></>

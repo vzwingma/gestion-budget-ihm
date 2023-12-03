@@ -39,48 +39,55 @@ export default class DateRange extends Component {
      * @param nextContext next Context
      * @returns {boolean} s'il faut refresh ou pas
      */
-    shouldComponentUpdate(nextProps, nextStates, nextContext){
+    shouldComponentUpdate(nextProps, nextStates, nextContext) {
         if (this.state.dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()) {
             return true;
-        }
-        else if(this.state.showModale !== nextStates.showModale){
+        } else if (this.state.showModale !== nextStates.showModale) {
             return true
         }
         return false;
     }
 
 
-
-/**
- *  RENDER
- */
-
-
-    render() { return (
-        <center>
-        <ButtonGroup onClick={this.handleSelect}>
-            <Button id="previous" size={"small"}>{ this.state.datePreviousBudget.toLocaleString('default', { month: 'long' })} { this.state.datePreviousBudget.getFullYear()}  </Button>
-            <Button id="current" variant={"contained"}>{ this.state.dateCurrentBudget.toLocaleString('default', { month: 'long' })} { this.state.dateCurrentBudget.getFullYear() }</Button>
-            <Button id="next"  size={"small"}>{ this.state.dateNextBudget.toLocaleString('default', { month: 'long' }) } { this.state.dateNextBudget.getFullYear() }</Button>
-        </ButtonGroup>
+    /**
+     *  RENDER
+     */
 
 
-            { /* Fenêtre modale de suppression */ }
-            <Dialog open={this.state.showModale} >
-                <DialogTitle>Confirmation d'ouverture</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description"><p>L'ouverture d'un nouveau mois, va clôturer le mois courant, et reporter toutes les opérations non réalisées</p><p>Voulez vous continuer ? </p></DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <ButtonGroup>
-                        <Button id="ANNULER" onClick={this.handleModalClick} color="error" type="submit">Annuler</Button>
-                        <Button id="CONFIRMER" color="success" onClick={this.handleModalClick} type="submit">Confirmer</Button>
-                    </ButtonGroup>
-                </DialogActions>
-            </Dialog>
+    render() {
+        return (
+            <center>
+                <ButtonGroup onClick={this.handleSelect}>
+                    <Button id="previous"
+                            size={"small"}>{this.state.datePreviousBudget.toLocaleString('default', {month: 'long'})} {this.state.datePreviousBudget.getFullYear()}  </Button>
+                    <Button id="current"
+                            variant={"contained"}>{this.state.dateCurrentBudget.toLocaleString('default', {month: 'long'})} {this.state.dateCurrentBudget.getFullYear()}</Button>
+                    <Button id="next"
+                            size={"small"}>{this.state.dateNextBudget.toLocaleString('default', {month: 'long'})} {this.state.dateNextBudget.getFullYear()}</Button>
+                </ButtonGroup>
 
-        </center>
-    ); }
+
+                { /* Fenêtre modale de suppression */}
+                <Dialog open={this.state.showModale}>
+                    <DialogTitle>Confirmation d'ouverture</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description"><p>L'ouverture d'un nouveau mois, va clôturer
+                            le mois courant, et reporter toutes les opérations non réalisées</p><p>Voulez vous continuer
+                            ? </p></DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <ButtonGroup>
+                            <Button id="ANNULER" onClick={this.handleModalClick} color="error"
+                                    type="submit">Annuler</Button>
+                            <Button id="CONFIRMER" color="success" onClick={this.handleModalClick}
+                                    type="submit">Confirmer</Button>
+                        </ButtonGroup>
+                    </DialogActions>
+                </Dialog>
+
+            </center>
+        );
+    }
 }
 DateRange.propTypes = {
     selectedDate: PropTypes.object.isRequired,

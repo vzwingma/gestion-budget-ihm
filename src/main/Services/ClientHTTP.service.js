@@ -69,12 +69,12 @@ function logAuth() {
  * @param body body de la requête (optionnel)
  * @returns {Promise<Response>} réponse
  */
-export function call(httpMethod, uri, path, params, body ) {
+export function call(httpMethod, uri, path, params, body) {
 
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
 
-    console.log("[WS] > [" + httpMethod + " -> "+ fullURL + "]")
+    console.log("[WS] > [" + httpMethod + " -> " + fullURL + "]")
     const jsonBody = evaluateBody(body);
 
     logAuth();
@@ -86,13 +86,13 @@ export function call(httpMethod, uri, path, params, body ) {
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'X-Api-Key': AppConstants.API_GW_ENUM.API_KEY,
-                'Authorization' : 'Bearer ' + getOAuthToken()
+                'Authorization': 'Bearer ' + getOAuthToken()
             }),
             body: jsonBody
         })
         .then(res => {
             console.log("[WS] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
-            if(res.status >= 200 && res.status < 300){
+            if (res.status >= 200 && res.status < 300) {
                 return res.json();
             } else if (res.status === 403) {
                 console.log("Session expirée")

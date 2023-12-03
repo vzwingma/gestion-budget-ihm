@@ -11,7 +11,7 @@ function Profile() {
     const auth = useAuth();
 
     // LogOut et redirect pour nettoyer l'URL
-    function logOut(){
+    function logOut() {
         auth.removeUser();
         removeTokenFromStorage();
         window.location = "/";
@@ -36,7 +36,7 @@ function Profile() {
 
 
     // Si l'utilisateur est connecté
-    if(auth.isAuthenticated) {
+    if (auth.isAuthenticated) {
         putTokenInStorage(auth.user?.id_token)
         return (
             <>
@@ -46,7 +46,7 @@ function Profile() {
                 </Typography>
                 <Typography variant={"subtitle1"} component="div" sx={{flexGrow: 10, marginLeft: "20px"}}
                             align={"right"}>
-                    <Tooltip title={  auth.user?.profile.name }>
+                    <Tooltip title={auth.user?.profile.name}>
                         <Avatar onClick={logOut} src={auth.user?.profile.picture}
                                 style={{margin: "2px", width: "62px", height: "62px"}} alt="User loggé"
                                 referrerPolicy="no-referrer"/>
@@ -65,5 +65,6 @@ function Profile() {
         );
     }
 }
+
 export default Profile;
 

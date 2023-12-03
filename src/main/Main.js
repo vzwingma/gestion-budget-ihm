@@ -23,57 +23,56 @@ export default class Main extends Component {
         scope: 'openid profile email',
         acr_values: "Level3",
         ui_locales: "nb",
-        redirect_uri: AppConstants.OIDC_ENUM.URL+ 'login/response',
-        post_logout_redirect_uri:AppConstants.OIDC_ENUM.URL+ 'logout/response'
+        redirect_uri: AppConstants.OIDC_ENUM.URL + 'login/response',
+        post_logout_redirect_uri: AppConstants.OIDC_ENUM.URL + 'logout/response'
     };
 
 
+    render() {
+        removeTokenFromStorage();
 
-  render() {
-    removeTokenFromStorage();
+        const darkTheme = createTheme({
+            palette: {
+                mode: 'dark',
+            },
+        });
 
-      const darkTheme = createTheme({
-          palette: {
-              mode: 'dark',
-          },
-      });
-
-    return (
-        <HashRouter>
-            <AuthProvider {...this.oidcConfig}>
-                <ThemeProvider theme={darkTheme}>
-                    <CssBaseline/>
-                    <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1, height: "66px"}}>
-                    <Stack direction="row" alignItems="flex-start" spacing={1}>
-                        <img src="/img/favicon64.png" width="60" height="60" style={{margin: "2px"}}
-                             alt="Gestion de budgets"/>
-                        <Typography variant="h6" component="div" noWrap
-                                    sx={{flexGrow: 1, fontWeight: 700, fontSize: "1.2rem"}}>
-                                <PrivateNavLinks/>
-                        </Typography>
-                        <Typography variant="h6" noWrap component="div"
-                                    sx={{
-                                        mr: 2, display: {xs: 'none', md: 'flex'},
-                                        fontWeight: 300,
-                                        fontSize: "1rem",
-                                        color: 'inherit',
-                                        textDecoration: 'none',
-                                    }}>
-                            <Profile/>
-                        </Typography>
-                    </Stack>
-                </AppBar>
-                <div className="App">
-                    <Routes>
-                        <Route path="/"         element={<Infos/>}/>
-                        <Route path="/budgets" element={<MainPage fonction="BUDGET"/>}/>
-                        <Route path="/analyses" element={<MainPage fonction="ANALYSE"/>}/>
-                        <Route path="/infos"    element={<Infos/>}/>
-                    </Routes>
-                </div>
-                </ThemeProvider>
-            </AuthProvider>
-        </HashRouter>
-    )
-  }
+        return (
+            <HashRouter>
+                <AuthProvider {...this.oidcConfig}>
+                    <ThemeProvider theme={darkTheme}>
+                        <CssBaseline/>
+                        <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1, height: "66px"}}>
+                            <Stack direction="row" alignItems="flex-start" spacing={1}>
+                                <img src="/img/favicon64.png" width="60" height="60" style={{margin: "2px"}}
+                                     alt="Gestion de budgets"/>
+                                <Typography variant="h6" component="div" noWrap
+                                            sx={{flexGrow: 1, fontWeight: 700, fontSize: "1.2rem"}}>
+                                    <PrivateNavLinks/>
+                                </Typography>
+                                <Typography variant="h6" noWrap component="div"
+                                            sx={{
+                                                mr: 2, display: {xs: 'none', md: 'flex'},
+                                                fontWeight: 300,
+                                                fontSize: "1rem",
+                                                color: 'inherit',
+                                                textDecoration: 'none',
+                                            }}>
+                                    <Profile/>
+                                </Typography>
+                            </Stack>
+                        </AppBar>
+                        <div className="App">
+                            <Routes>
+                                <Route path="/" element={<Infos/>}/>
+                                <Route path="/budgets" element={<MainPage fonction="BUDGET"/>}/>
+                                <Route path="/analyses" element={<MainPage fonction="ANALYSE"/>}/>
+                                <Route path="/infos" element={<Infos/>}/>
+                            </Routes>
+                        </div>
+                    </ThemeProvider>
+                </AuthProvider>
+            </HashRouter>
+        )
+    }
 }

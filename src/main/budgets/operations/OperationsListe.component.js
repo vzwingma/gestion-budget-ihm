@@ -39,7 +39,7 @@ const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes
             if (dateOperationKey !== null && dateOperationKey !== "null" && operationsFilteredForDate.length > 0) {
                 renderList.push(
                     <Container key={"liste_" + dateOperationKey}
-                                           className={"listeItemSeparator"}>
+                               className={"listeItemSeparator"}>
                         <center>{getLabelDate(dateOperationKey)}</center>
                     </Container>)
             }
