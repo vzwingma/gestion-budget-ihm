@@ -17,6 +17,7 @@ import {
     ElectricBoltRounded,
     ElectricCarRounded,
     EmojiTransportationRounded,
+    EngineeringRounded,
     EuroSymbolRounded,
     GasMeterRounded,
     HealthAndSafetyRounded,
@@ -230,6 +231,8 @@ function getCategorieIconTransport(idCategorie) {
             return <CarRentalRounded/>
         case '7e8b606e-02d4-4555-9852-307ce9927ce4': // Carburant
             return <LocalGasStationRounded/>
+        case 'ad8e07f0-cb0a-4bf2-9a8b-ccd7d69d17cd': // Entretien
+            return <EngineeringRounded/>
         case '2dbd8add-4a8d-4d05-a325-08b7e85d6ac9': // Recharge
             return <ElectricCarRounded/>
         case 'bbc1f327-35cb-4db6-8134-61af30d3246c': // Assurance
