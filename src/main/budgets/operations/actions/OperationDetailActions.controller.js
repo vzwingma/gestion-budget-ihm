@@ -49,7 +49,7 @@ export function updateOperation(operation, action, budget) {
             operation.etat = action;
             if (action === OPERATION_ETATS_ENUM.REALISEE) {
                 const existingDate = this.props.currentOperation.autresInfos.dateOperation;
-                operation.autresInfos.dateOperation = existingDate ? existingDate : new Date().toLocaleDateString('en-CA');
+                operation.autresInfos.dateOperation = existingDate || new Date().toLocaleDateString('en-CA');
 
             } else if (action === OPERATION_ETATS_ENUM.PREVUE) {
                 operation.autresInfos.dateOperation = null;
