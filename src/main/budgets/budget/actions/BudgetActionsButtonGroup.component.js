@@ -71,7 +71,7 @@ export default class BudgetActionsButtonGroupComponent extends Component {
                     </Tooltip>
                 }
 
-                {this.props.budget.actif && this.props.droits != null && this.props.droits[UTILISATEUR_DROITS.DROITS.RAZ_BUDGET] &&
+                {this.props.budget.actif && this.props?.droits[UTILISATEUR_DROITS.DROITS.RAZ_BUDGET] &&
                     <Tooltip title="Réinitialiser le budget">
                         <IconButton
                             className={"buttonsActionsBudget"} sx={{backgroundColor: '#EDC109'}}
