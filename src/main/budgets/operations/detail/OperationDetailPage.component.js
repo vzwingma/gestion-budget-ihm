@@ -315,7 +315,11 @@ class OperationDetailPage extends Component {
                                             groupBy={(option) => option.categorieParente.libelle}
                                             getOptionLabel={option => option.libelle != null ? option.libelle : ""}
                                             isOptionEqualToValue={(option, value) => {
-                                                return option.id != null ? (option.id === (value != null ? value.id : null)) : null
+                                                if (option.id != null) {
+                                                    return (option.id === (value != null ? value.id : null))
+                                                } else {
+                                                    return null
+                                                }
                                             }}
                                             onChange={(e) => this.fillCategorieForm(e)}
                                             onFocus={e => this.activateValidationForm(false)}
