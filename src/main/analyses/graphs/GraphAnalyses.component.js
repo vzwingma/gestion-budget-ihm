@@ -67,6 +67,9 @@ const GraphAnalyses = ({
         return renderLabelAnalyse(props, selectedId, color);
     }
 
+    renderLabelCategorie.propTypes = {
+        id: PropTypes.string.isRequired
+    }
     /**
      * Render du label pour une sous catégorie
      * @param props
@@ -78,6 +81,9 @@ const GraphAnalyses = ({
         return renderLabelAnalyse(props, selectedId, color);
     }
 
+    renderLabelSsCategorie.propTypes = {
+        id: PropTypes.string.isRequired
+    }
     /**
      * Render du label pour une analyse
      * @param props properties
@@ -117,6 +123,18 @@ const GraphAnalyses = ({
         );
     }
 
+    renderLabelAnalyse.propTypes = {
+        cx: PropTypes.number.isRequired,    // centre du graphique (X)
+        cy: PropTypes.number.isRequired, // centre du graphique (Y)
+        viewBox: PropTypes.object.isRequired, // vue box
+        value: PropTypes.number.isRequired, // valeur de l'analyse
+        outerRadius: PropTypes.number.isRequired, // rayon extérieur
+        innerRadius: PropTypes.number.isRequired, // rayon intérieur
+        startAngle: PropTypes.number.isRequired, // angle de départ
+        endAngle: PropTypes.number.isRequired, // angle de fin
+    }
+
+
     /** Init du tableau pour l'affichage du graphique **/
     populateGraphCategorie(analysesGroupedByCategories, dataCategories);
 
@@ -154,6 +172,7 @@ const GraphAnalyses = ({
 }
 // Properties Types
 GraphAnalyses.propTypes = {
+    id: PropTypes.string.isRequired,
     typeAnalyse: PropTypes.string.isRequired,
     analysesGroupedByCategories: PropTypes.object.isRequired,
     resumeSelectedCategorie: PropTypes.object,
