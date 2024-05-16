@@ -24,6 +24,7 @@ export function handleOperationAction(event) {
             this.props.currentOperation.autresInfos.dateOperation = valeurDate;
             this.props.handleDateOperationFromAction(valeurDate);
         } else {
+
             this.updateOperation(this.props.currentOperation, action, this.props.currentBudget);
         }
         // Après l'action d'update SUPPRIMEE, on clot la popup
@@ -47,7 +48,9 @@ export function updateOperation(operation, action, budget) {
             console.log("[" + budget.id + "] Modification de l'opération " + operation.id + " : " + operation.etat + " -> " + action);
             operation.etat = action;
             if (action === OPERATION_ETATS_ENUM.REALISEE) {
-                operation.autresInfos.dateOperation = new Date();
+                const existingDate = this.props.currentOperation.autresInfos.dateOperation;
+                operation.autresInfos.dateOperation = existingDate || new Date().toLocaleDateString('en-CA');
+
             } else if (action === OPERATION_ETATS_ENUM.PREVUE) {
                 operation.autresInfos.dateOperation = null;
             }
