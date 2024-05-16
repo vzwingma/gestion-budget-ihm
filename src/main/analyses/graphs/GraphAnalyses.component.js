@@ -124,6 +124,7 @@ const GraphAnalyses = ({
     }
 
     renderLabelAnalyse.propTypes = {
+        props: PropTypes.object.isRequired, // Propriétés
         cx: PropTypes.number.isRequired,    // centre du graphique (X)
         cy: PropTypes.number.isRequired, // centre du graphique (Y)
         viewBox: PropTypes.object.isRequired, // vue box
