@@ -153,6 +153,30 @@ export function validateForm() {
 
 
 /**
+ * Calcul de l'équation mathématique (sans eval) depuis une chaine de caractères
+ * @param valueToCalculate : string : chaine de caractères à calculer à saisie
+ * @returns {string} résultat
+ *
+ */
+function processEquation(valueToCalculate) {
+    if (valueToCalculate.length <= 1000) {
+        let match = valueToCalculate.match(/[*/+\-^]/gmsi) || [];
+        while (match.length > 0) {
+            valueToCalculate = valueToCalculate.replace(/\((.*?)\)/gmsi, (_, s) => {
+                return processEquation(s)
+            }).replace(/([0-9.-]+)\^([0-9.-]+)/gmsi, (_, n1, n2) => {
+                return Math.pow(n1, n2)
+            }).replace(/([0-9.-]+)([*/])([0-9.-]+)/gmsi, (_, n1, o, n2) => {
+                return o === '*' ? Number(n1) * Number(n2) : Number(n1) / Number(n2)
+            }).replace(/([0-9.-]+)([-+])([0-9.-]+)/gmsi, (_, n1, o, n2) => {
+                return o === '+' ? Number(n1) + Number(n2) : Number(n1) - Number(n2)
+            });
+            match = valueToCalculate.match(/[*/+-]/gmsi) || [];
+        }
+    }
+    return valueToCalculate
+}
+/**
  * Calcul de la valeur d'une opération (en prenant en compte les opérations
  * @param formValue : string valeur saisie du formulaire
  * @returns {number} total
@@ -161,9 +185,11 @@ function calculateValeur(formValue) {
 
     try {
         // eslint-disable-next-line no-eval
-        return eval(formValue);
+        const calculee = Number(processEquation(formValue)).toFixed(2);
+        console.log("Calcul de la valeur saisie [", formValue, " ] = [", calculee, " ]");
+        return calculee
     } catch (e) {
-        console.error("Erreur dans la valeur saisie " + formValue, e)
+        console.error("Erreur dans la valeur saisie ", formValue, e)
         errors.valeur = "Le champ Montant est incorrect";
         hasErrors = true;
         return null;
