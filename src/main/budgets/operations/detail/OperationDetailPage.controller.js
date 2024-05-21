@@ -151,7 +151,22 @@ export function validateForm() {
     }
 }
 
-
+function processEquation(string) {
+    var match = string.match(/[*/+\-^]/gmsi) || [];
+    while (match.length > 0) {
+        string = string.replace(/\((.*?)\)/gmsi, (_, s) => {
+            return processEquation(s)
+        }).replace(/([0-9\.\-]+)\^([0-9\.\-]+)/gmsi, (_, n1, n2) => {
+            return Math.pow(n1, n2)
+        }).replace(/([0-9\.\-]+)(\*|\/)([0-9\.\-]+)/gmsi, (_, n1, o, n2) => {
+            return o === '*' ? Number(n1) * Number(n2) : Number(n1) / Number(n2)
+        }).replace(/([0-9\.\-]+)(\-|\+)([0-9\.\-]+)/gmsi, (_, n1, o, n2) => {
+            return o === '+' ? Number(n1) + Number(n2) : Number(n1) - Number(n2)
+        });
+        match = string.match(/[*/+-]/gmsi) || [];
+    }
+    return string
+}
 /**
  * Calcul de la valeur d'une opération (en prenant en compte les opérations
  * @param formValue : string valeur saisie du formulaire
@@ -161,7 +176,7 @@ function calculateValeur(formValue) {
 
     try {
         // eslint-disable-next-line no-eval
-        const calculee = Number(eval(formValue).toFixed(2));
+        const calculee = Number(processEquation(formValue)).toFixed(2);
         console.log("Calcul de la valeur saisie [", formValue, " ] = [", calculee, " ]");
         return calculee
     } catch (e) {
