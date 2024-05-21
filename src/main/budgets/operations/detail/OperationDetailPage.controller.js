@@ -151,6 +151,13 @@ export function validateForm() {
     }
 }
 
+
+/**
+ * Calcul de l'équation mathématique (sans eval) depuis une chaine de caractères
+ * @param string : string : chaine de caractères à calculer à saisie
+ * @returns {string} résultat
+ *
+ */
 function processEquation(string) {
     var match = string.match(/[*/+\-^]/gmsi) || [];
     while (match.length > 0) {
