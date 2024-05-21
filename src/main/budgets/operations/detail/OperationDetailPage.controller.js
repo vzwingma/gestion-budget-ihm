@@ -154,25 +154,27 @@ export function validateForm() {
 
 /**
  * Calcul de l'équation mathématique (sans eval) depuis une chaine de caractères
- * @param string : string : chaine de caractères à calculer à saisie
+ * @param valueToCalculate : string : chaine de caractères à calculer à saisie
  * @returns {string} résultat
  *
  */
-function processEquation(string) {
-    var match = string.match(/[*/+\-^]/gmsi) || [];
-    while (match.length > 0) {
-        string = string.replace(/\((.*?)\)/gmsi, (_, s) => {
-            return processEquation(s)
-        }).replace(/([0-9\.\-]+)\^([0-9\.\-]+)/gmsi, (_, n1, n2) => {
-            return Math.pow(n1, n2)
-        }).replace(/([0-9\.\-]+)(\*|\/)([0-9\.\-]+)/gmsi, (_, n1, o, n2) => {
-            return o === '*' ? Number(n1) * Number(n2) : Number(n1) / Number(n2)
-        }).replace(/([0-9\.\-]+)(\-|\+)([0-9\.\-]+)/gmsi, (_, n1, o, n2) => {
-            return o === '+' ? Number(n1) + Number(n2) : Number(n1) - Number(n2)
-        });
-        match = string.match(/[*/+-]/gmsi) || [];
+function processEquation(valueToCalculate) {
+    if (valueToCalculate.length <= 1000) {
+        let match = valueToCalculate.match(/[*/+\-^]/gmsi) || [];
+        while (match.length > 0) {
+            valueToCalculate = valueToCalculate.replace(/\((.*?)\)/gmsi, (_, s) => {
+                return processEquation(s)
+            }).replace(/([0-9.-]+)\^([0-9.-]+)/gmsi, (_, n1, n2) => {
+                return Math.pow(n1, n2)
+            }).replace(/([0-9.-]+)([*/])([0-9.-]+)/gmsi, (_, n1, o, n2) => {
+                return o === '*' ? Number(n1) * Number(n2) : Number(n1) / Number(n2)
+            }).replace(/([0-9.-]+)([-+])([0-9.-]+)/gmsi, (_, n1, o, n2) => {
+                return o === '+' ? Number(n1) + Number(n2) : Number(n1) - Number(n2)
+            });
+            match = valueToCalculate.match(/[*/+-]/gmsi) || [];
+        }
     }
-    return string
+    return valueToCalculate
 }
 /**
  * Calcul de la valeur d'une opération (en prenant en compte les opérations
