@@ -29,7 +29,7 @@ export function callReinitBudget(idBudget) {
 export function callReopenCloseBudget(idBudget, newEtatBudget) {
     console.log((newEtatBudget ? "Réouverture" : "Clôture") + " du budget " + idBudget)
 
-    ClientHTTP.call('POST', AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.ETAT, [idBudget, newEtatBudget])
+    ClientHTTP.call(AppConstants.METHODE_HTTP.POST, AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.ETAT, [idBudget, newEtatBudget])
         .then(data => {
             toast.success((newEtatBudget ? "Réouverture" : "Clôture") + "du budget " + idBudget + " effectuée")
             this.props.onActionBudgetChange(data)

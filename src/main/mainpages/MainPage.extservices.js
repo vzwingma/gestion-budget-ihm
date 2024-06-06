@@ -7,7 +7,7 @@ import {toast} from "react-toastify";
  */
 export function loadComptes(selectedDate) {
     ClientHTTP
-        .call('GET', AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
+        .call(AppConstants.METHODE_HTTP.GET, AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL)
         .then((data) => {
             this.comptesLoaded(data, selectedDate)
         })

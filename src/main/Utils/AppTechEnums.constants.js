@@ -29,6 +29,16 @@ export const BACKEND_ENUM = {
 
 
 /**
+ * Enum des méthodes HTTP
+ * @type {{DELETE: string, POST: string, GET: string}}
+ */
+export const METHODE_HTTP = {
+    GET: "GET",
+    DELETE: "DELETE",
+    POST: "POST"
+}
+
+/**
  * Services
  * @type {{COMPTES: {GET_ALL: string}, OPERATIONS: {INTERCOMPTE: string, CREATE: string, DERNIERE: string, UPDATE: string}, PARAMETRES: {CATEGORIES: string}, BUDGETS: {ETAT: string, GET: string, INTERVALLE: string, REINIT: string}, INFOS: {GET_INFO: string}, UTILISATEURS: {USERS_PREFS: string, ACCESS_DATE: string}}}
  */
@@ -42,7 +52,8 @@ export const SERVICES_URL = {
     BUDGETS: {
         REINIT: "/{{}}",
         INTERVALLE: "/{{}}/intervalles",
-        GET: "/query?idCompte={{}}&annee={{}}&mois={{}}",
+        GET_BY_COMPTE_DATES: "/query?idCompte={{}}&annee={{}}&mois={{}}",
+        GET_BY_COMPTE: "/query?idCompte={{}}",
         SOLDES: "/soldes?idCompte={{}}&annee={{}}&mois={{}}",
         ETAT: "/{{}}/etat?actif={{}}"
     },

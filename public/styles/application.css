@@ -117,7 +117,7 @@ a.nav-link {
     outline: none;
     text-decoration: none;
     display: inline-block;
-    width: 150px;
+    width: 250px;
     margin-right: 0.625%;
     margin-top: 10px;
     text-align: center;
@@ -132,7 +132,7 @@ a.nav-link_selected {
     outline: none;
     text-decoration: none;
     display: inline-block;
-    width: 150px;
+    width: 250px;
     margin-right: 0.625%;
     border-top: 4px solid #272727;
     text-align: center;

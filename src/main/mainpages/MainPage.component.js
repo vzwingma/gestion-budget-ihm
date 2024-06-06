@@ -6,8 +6,9 @@ import * as Services from "./MainPage.extservices";
 import Budget from "../budgets/budget/Budget.component";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
-import Analyse from "../analyses/analyse/Analyse.component";
+import AnalyseCategories from "../analyses/categories/AnalyseCategories.component";
 import PropTypes from "prop-types";
+import AnalyseTemporelle from "../analyses/temporelles/AnalyseTemporelle.component";
 
 /**
  * Page principale de gestion des budgets
@@ -52,9 +53,12 @@ export default class MainPage extends Component {
                            listeComptes={this.state.comptes}
                            onOpenMenu={this.handleOpenMenuBar}/>
         } else if (fonction === "ANALYSE") {
-            return <Analyse selectedCompte={this.state.selectedCompte}
-                            selectedDate={this.state.selectedDate}
-                            onOpenMenu={this.handleOpenMenuBar}/>
+            return <AnalyseCategories selectedCompte={this.state.selectedCompte}
+                                      selectedDate={this.state.selectedDate}
+                                      onOpenMenu={this.handleOpenMenuBar}/>
+        } else if (fonction === "ANALYSETEMP") {
+            return <AnalyseTemporelle selectedCompte={this.state.selectedCompte}
+                                      onOpenMenu={this.handleOpenMenuBar}/>
         } else {
             return <></>
         }

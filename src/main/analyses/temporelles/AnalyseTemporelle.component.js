@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 
-import * as Controller from './Analyse.controller'
-import * as Services from './Analyse.extservices'
+import * as Controller from './AnalyseTemporelle.controller'
+import * as Services from './AnalyseTemporelle.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {Box, Chip, CircularProgress, Divider, Stack, Switch} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import AnalyseCategoriesListe from "../categories/AnalyseCategoriesListe.component";
+import AnalyseCategoriesListe from "./../categories/listeCategories/AnalyseCategoriesListe.component";
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
-import AnalyseTitre from "./AnalyseTitre.component";
+import AnalyseTitre from "./../categories/AnalyseCategoriesTitre.component";
 import PropTypes from "prop-types";
 import * as Renderer from "../../Utils/renderers/OperationItem.renderer";
 import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
@@ -15,7 +15,7 @@ import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
 /**
  * Page principale d'une analyse
  */
-export default class Analyse extends Component {
+export default class AnalyseTemporelle extends Component {
 
 
     /** Etats pour la page Budget **/
@@ -35,8 +35,8 @@ export default class Analyse extends Component {
     /** Constructeur **/
     constructor(props) {
         super(props);
-        this.loadBudget = Services.loadBudget.bind(this);
-        this.calculateResumes = Controller.calculateResumes.bind(this);
+        this.loadBudgets = Services.loadBudgets.bind(this);
+        this.calculateTimelines = Controller.calculateTimelines.bind(this);
 
         this.handleCategorieSelect = Controller.handleCategorieSelect.bind(this);
         this.handleSsCategorieSelect = Controller.handleSsCategorieSelect.bind(this);
@@ -48,7 +48,7 @@ export default class Analyse extends Component {
 
     /** Chargement des catégories **/
     componentDidMount() {
-        this.loadBudget(this.props.selectedCompte.id, this.props.selectedDate);
+        this.loadBudgets(this.props.selectedCompte.id);
     }
 
 
@@ -145,7 +145,7 @@ export default class Analyse extends Component {
                                 typeAnalyse={this.state.selectedTypeAnalyse}
                                 analysesGroupedByCategories={this.state.analysesGroupedByCategories}
                                 resumeSelectedCategorie={this.state.resumeSelectedCategorie}
-                                resumeSelectedSsCategorie={this.state.resumeSelectedSsCategorie}/>
+                                resumeSelectedSsCategorie={this.state.resumeSelectedSsCategorie} id={"grapheAnalyse"}/>
                             :
                             <CircularProgress/>
                         }
@@ -156,8 +156,7 @@ export default class Analyse extends Component {
     }
 }
 // Properties Types
-Analyse.propTypes = {
+AnalyseTemporelle.propTypes = {
     selectedCompte: PropTypes.object.isRequired,
-    selectedDate: PropTypes.object.isRequired,
     onOpenMenu: PropTypes.func.isRequired,
 }

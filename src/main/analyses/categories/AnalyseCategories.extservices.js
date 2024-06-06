@@ -12,10 +12,10 @@ import {toast} from "react-toastify";
 export function loadBudget(selectedCompte, selectedDate) {
     if (selectedCompte != null && selectedDate != null) {
 
-        ClientHTTP.call('GET',
-            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
+        ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
+            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
             [selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
-            .then(data => this.calculateResumes(data))
+            .then(data => this.calculateResumes(data[0]))
             .catch(e => {
                 let libErreur = "Erreur lors du chargement du budget " + selectedCompte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
                 console.log(libErreur, e)

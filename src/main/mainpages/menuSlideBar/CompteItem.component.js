@@ -23,7 +23,7 @@ const CompteItem = ({compte, selectedDate, onRefreshMenuBar, onClick}) => {
      **/
     function getSoldesBudget(compte, selectedDate) {
         if (compte != null && selectedDate != null) {
-            ClientHTTP.call('GET',
+            ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
                 AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.SOLDES,
                 [compte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
                 .then(data => setSoldes((prevState) => data.soldeAtMaintenant))
