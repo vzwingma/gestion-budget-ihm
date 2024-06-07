@@ -4,17 +4,19 @@ import OperationValue from "../../Utils/renderers/OperationValue.renderer";
 import * as ClientHTTP from "../../Services/ClientHTTP.service";
 import * as AppConstants from "../../Utils/AppTechEnums.constants";
 import PropTypes from "prop-types";
+import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
 
 /**
  * Tuile affichant un compte
  * @param compte : object compte
  * @param selectedDate : date date sélectionnée
+ * @param selectedFunction : string fonction sélectionnée
  * @param onRefreshMenuBar : function action sur refresh menu bar
  * @param onClick : function action sur click
  * @returns {JSX.Element}
  * @constructor
  */
-const CompteItem = ({compte, selectedDate, onRefreshMenuBar, onClick}) => {
+const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, onClick}) => {
 
     const [soldes, setSoldes] = useState(null);
 
@@ -36,10 +38,21 @@ const CompteItem = ({compte, selectedDate, onRefreshMenuBar, onClick}) => {
 
 
     useEffect(() => {
-        getSoldesBudget(compte.id, selectedDate)
-    }, [compte, selectedDate, onRefreshMenuBar]);
+        if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
+            getSoldesBudget(compte.id, selectedDate)
+        }
+    }, [compte, selectedDate, selectedFunction, onRefreshMenuBar]);
 
 
+    function renderValueCompte() {
+        if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
+            return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
+                <OperationValue valueOperation={soldes} showSign={true}/>
+            </Typography>
+        } else {
+            return <></>
+        }
+    }
     return (
         <Container className={"listeItem"}
                    onClick={() => onClick(compte)}>
@@ -50,9 +63,7 @@ const CompteItem = ({compte, selectedDate, onRefreshMenuBar, onClick}) => {
                     <Typography variant={"h6"} key={"lib_" + compte.id}>
                         {compte.libelle}
                     </Typography>
-                    <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
-                        <OperationValue valueOperation={soldes} showSign={true}/>
-                    </Typography>
+                    {renderValueCompte()}
                 </Stack>
             </Stack>
         </Container>
@@ -62,6 +73,7 @@ const CompteItem = ({compte, selectedDate, onRefreshMenuBar, onClick}) => {
 CompteItem.propTypes = {
     compte: PropTypes.object.isRequired,
     selectedDate: PropTypes.object.isRequired,
+    selectedFunction: PropTypes.string.isRequired,
     onRefreshMenuBar: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired
 }
