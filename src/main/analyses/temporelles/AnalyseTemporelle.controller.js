@@ -81,7 +81,6 @@ function populateCategorie(group, operation, categorie, couleurCategorie) {
  */
 export function onAnneeChange(currentAnnee) {
 
-    console.log("Analyse pour ", currentAnnee)
     this.setState({
         anneeAnalyses: currentAnnee
     })

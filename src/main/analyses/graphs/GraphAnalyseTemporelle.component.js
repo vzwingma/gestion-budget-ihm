@@ -40,7 +40,6 @@ const GraphAnalyseTemporelle = ({
         for (let budgetId in analysesGroupedByCategories) {
             let dataCategorie = {};
             let budgetIdParts = budgetId.split("_");
-            console.log(budgetIdParts[1], anneeAnalyses, budgetIdParts[1] === "" + anneeAnalyses)
             if (budgetIdParts[1] === "" + anneeAnalyses) {
                 dataCategorie["name"] = budgetIdParts[2] + "/" + budgetIdParts[1];
                 for (let categorieId in listeCategories) {

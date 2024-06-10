@@ -72,6 +72,7 @@ export default class AnalyseTemporelle extends Component {
                     <Grid2 md={7}>
                         {this.state.currentBudgets !== null && this.state.analysesGroupedByCategories !== null ?
                             <AnalyseTemporelleTitre currentCompte={this.props.selectedCompte}
+                                                    currentAnnee={this.state.anneeAnalyses}
                                                     onAnneeChange={this.onAnneeChange}/> :
                             <CircularProgress/>
                         }
