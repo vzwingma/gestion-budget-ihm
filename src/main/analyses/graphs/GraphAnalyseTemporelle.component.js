@@ -1,7 +1,6 @@
-import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis} from "recharts";
+import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React from "react";
 import PropTypes from "prop-types";
-import {Tooltip} from "@mui/material";
 
 /**
  * Composant de graphique pour l'analyse temporelle.
@@ -41,7 +40,10 @@ const GraphAnalyseTemporelle = ({
             let dataCategorie = {};
             let budgetIdParts = budgetId.split("_");
             if (budgetIdParts[1] === "" + anneeAnalyses) {
-                dataCategorie["name"] = budgetIdParts[2] + "/" + budgetIdParts[1];
+
+                let label = new Date();
+                label.setMonth(budgetIdParts[2] - 1);
+                dataCategorie["name"] = label.toLocaleString('default', {month: 'long'});
                 for (let categorieId in listeCategories) {
                     dataCategorie[listeCategories[categorieId].libelle] =
                         analysesGroupedByCategories[budgetId][categorieId] !== undefined ? Math.abs(analysesGroupedByCategories[budgetId][categorieId].total) : 0;
@@ -79,10 +81,12 @@ const GraphAnalyseTemporelle = ({
                     bottom: 5,
                 }}
             >
-                <CartesianGrid strokeDasharray="3 3"/>
+                <CartesianGrid strokeDasharray="1 10" fillOpacity={0.6}/>
                 <XAxis dataKey="name"/>
                 <YAxis/>
-                <Tooltip/>
+                <Tooltip active={true}
+                         contentStyle={{color: "white", backgroundColor: "black"}}
+                         formatter={(value, name) => [value + " €", name]}/>
                 <Legend/>
                 {
                     renderLines()

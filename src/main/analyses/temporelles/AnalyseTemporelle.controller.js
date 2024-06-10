@@ -72,7 +72,7 @@ function populateCategorie(group, operation, categorie, couleurCategorie) {
     group[categorie.id].nbTransactions = group[categorie.id].nbTransactions ?? 0;
     group[categorie.id].nbTransactions = group[categorie.id].nbTransactions + 1;
     group[categorie.id].total = group[categorie.id].total ?? 0;
-    group[categorie.id].total = group[categorie.id].total + operation.valeur;
+    group[categorie.id].total = Math.ceil(group[categorie.id].total + operation.valeur);
 }
 
 /**
