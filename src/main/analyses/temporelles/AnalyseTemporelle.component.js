@@ -3,14 +3,11 @@ import React, {Component} from "react";
 import * as Controller from './AnalyseTemporelle.controller'
 import * as Services from './AnalyseTemporelle.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {Box, Chip, CircularProgress, Divider, Stack, Switch} from "@mui/material";
+import {Box, CircularProgress, Divider} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import AnalyseCategoriesListe from "./../categories/listeCategories/AnalyseCategoriesListe.component";
-import GraphAnalyses from "../graphs/GraphAnalyses.component";
-import AnalyseTitre from "./../categories/AnalyseCategoriesTitre.component";
 import PropTypes from "prop-types";
-import * as Renderer from "../../Utils/renderers/OperationItem.renderer";
-import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
+import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
+import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
 
 /**
  * Page principale d'une analyse
@@ -20,15 +17,8 @@ export default class AnalyseTemporelle extends Component {
 
     /** Etats pour la page Budget **/
     state = {
-        currentBudget: null,
-        resumeSelectedCategorie: null,
-        resumeSelectedSsCategorie: null,
-
+        anneeAnalyses: new Date().getFullYear(),
         analysesGroupedByCategories: null,
-
-        selectedCompte: this.props.selectedCompte,
-        selectedDate: this.props.selectedDate,
-        selectedTypeAnalyse: "REALISEE_DEPENSE"
     }
 
 
@@ -37,12 +27,8 @@ export default class AnalyseTemporelle extends Component {
         super(props);
         this.loadBudgets = Services.loadBudgets.bind(this);
         this.calculateTimelines = Controller.calculateTimelines.bind(this);
-
-        this.handleCategorieSelect = Controller.handleCategorieSelect.bind(this);
-        this.handleSsCategorieSelect = Controller.handleSsCategorieSelect.bind(this);
-
-        this.selectEtatOperation = Controller.selectEtatOperation.bind(this);
-        this.selectTypeOperation = Controller.selectTypeOperation.bind(this);
+        this.calculateTimeline = Controller.calculateTimeline.bind(this);
+        this.onAnneeChange = Controller.onAnneeChange.bind(this);
     }
 
 
@@ -62,20 +48,14 @@ export default class AnalyseTemporelle extends Component {
     shouldComponentUpdate(nextProps, nextStates, nextContext) {
 
         let componentUpdate = false;
-        if (this.state.currentBudget !== nextStates.currentBudget) {
-            console.log("[TRIGGER] Context budget=" + nextStates.currentBudget.id)
-            componentUpdate = true;
-        } else if (this.state.resumeSelectedCategorie !== nextStates.resumeSelectedCategorie) {
-            componentUpdate = true;
-        } else if (this.state.resumeSelectedSsCategorie !== nextStates.resumeSelectedSsCategorie) {
-            componentUpdate = true;
-        } else if (this.state.selectedTypeAnalyse !== nextStates.selectedTypeAnalyse) {
-            if (nextStates.selectedTypeAnalyse !== null) {
-                console.log("[TRIGGER] Context TypeAnalyse=" + nextStates.selectedTypeAnalyse)
-            }
+        if (this.state.currentBudgets !== nextStates.currentBudgets) {
+            console.log("[TRIGGER] Context = " + nextProps.selectedCompte.id, nextStates.currentBudgets.length + " budgets")
             componentUpdate = true;
         }
-
+        if (this.state.anneeAnalyses !== nextStates.anneeAnalyses) {
+            console.log("[TRIGGER] Context = " + nextProps.anneeAnalyses)
+            componentUpdate = true;
+        }
         return componentUpdate;
     }
 
@@ -90,67 +70,24 @@ export default class AnalyseTemporelle extends Component {
                     <Grid2 md={2}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
                                             fontSize={"large"}/></Grid2>
                     <Grid2 md={7}>
-                        {this.state.currentBudget !== null && this.state.totauxGroupedByEtat !== null ?
-                            <AnalyseTitre currentCompte={this.props.selectedCompte}
-                                          currentDate={this.props.selectedDate}
-                                          totalOperations={this.state.totauxGroupedByEtat[this.state.selectedTypeAnalyse]}/> :
+                        {this.state.currentBudgets !== null && this.state.analysesGroupedByCategories !== null ?
+                            <AnalyseTemporelleTitre currentCompte={this.props.selectedCompte}
+                                                    onAnneeChange={this.onAnneeChange}/> :
                             <CircularProgress/>
                         }
                     </Grid2>
-                    <Grid2 md={3}>
-                        <Stack direction={"row-reverse"} alignItems={"end"}>
-                            <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"}/>
-                            <Switch onClick={this.selectTypeOperation}/>
-                            <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"}/>
-
-                            <Chip label={"Réalisée"} variant="outlined"
-                                  sx={{color: Renderer.getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE)}}/>
-                            <Switch defaultChecked onClick={this.selectEtatOperation}/>
-                            <Chip label={"Prévue"} variant="outlined"
-                                  sx={{color: Renderer.getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE)}}/>
-                        </Stack>
-                    </Grid2>
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
-                <Grid2 container sx={{overflow: "hidden"}}>
-                    <Grid2 md={3} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
-                        { /** Liste des résumés par catégories **/
-                            (this.state.currentBudget != null ?
-                                    <AnalyseCategoriesListe
-                                        rangSelectedCategorie={null}
-                                        typeAnalyse={this.state.selectedTypeAnalyse}
-                                        analysesGroupedByCategories={this.state.analysesGroupedByCategories}
-                                        selectCategorie={this.handleCategorieSelect}/>
-                                    :
-                                    <CircularProgress/>
-                            )
-                        }
-                    </Grid2>
-                    <Grid2 md={3} direction={"column"} sx={{overflow: "hidden"}} maxHeight>
-                        { /** Liste des sous-catégories **/
-                            (this.state.currentBudget !== null && this.state.resumeSelectedCategorie !== null ?
-                                    <AnalyseCategoriesListe
-                                        rangSelectedCategorie={this.state.rangSelectedCategorie}
-                                        typeAnalyse={this.state.selectedTypeAnalyse}
-                                        analysesGroupedByCategories={this.state.resumeSelectedCategorie.resumesSsCategories}
-                                        selectCategorie={this.handleSsCategorieSelect}/>
-                                    :
-                                    <></>
-                            )
-                        }
-                    </Grid2>
                     <Grid2 md={6} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
-                        {this.state.currentBudget != null ?
-                            <GraphAnalyses
-                                typeAnalyse={this.state.selectedTypeAnalyse}
+                        {this.state.currentBudgets != null ?
+                            <GraphAnalyseTemporelle
+                                anneeAnalyses={this.state.anneeAnalyses}
                                 analysesGroupedByCategories={this.state.analysesGroupedByCategories}
-                                resumeSelectedCategorie={this.state.resumeSelectedCategorie}
-                                resumeSelectedSsCategorie={this.state.resumeSelectedSsCategorie} id={"grapheAnalyse"}/>
+                                id={"graphAnalyseTemporelle"}/>
                             :
                             <CircularProgress/>
                         }
                     </Grid2>
-                </Grid2>
             </Box>
         )
     }
