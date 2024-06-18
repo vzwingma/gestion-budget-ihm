@@ -11,11 +11,11 @@ import PropTypes from "prop-types";
  */
 const GraphAnalyseTemporelle = ({
                                     anneeAnalyses,
-                                    analysesGroupedByCategories
+                                    analysesGroupedByCategories,
+                                    listeCategories
                                 }) => {
 
     let dataCategories = [];
-    const listeCategories = [];
 
     /**
      * Remplit le graphique avec les données d'une catégorie.
@@ -26,15 +26,6 @@ const GraphAnalyseTemporelle = ({
     function populateGraphCategorie(anneeAnalyses, analysesGroupedByCategories, dataCategories) {
 
         console.log("Affichage de l'analyse temporelle pour ", anneeAnalyses)
-        // transform en array
-        for (let budgetId in analysesGroupedByCategories) {
-            // Identification de toutes les catégories présentes
-            for (const categoryKey in analysesGroupedByCategories[budgetId]) {
-                if (!listeCategories.includes(categoryKey) && categoryKey !== null && categoryKey.id !== null) {
-                    listeCategories[categoryKey] = analysesGroupedByCategories[budgetId][categoryKey].categorie;
-                }
-            }
-        }
 
         for (let budgetId in analysesGroupedByCategories) {
             let dataCategorie = {};
@@ -44,10 +35,13 @@ const GraphAnalyseTemporelle = ({
                 let label = new Date();
                 label.setMonth(budgetIdParts[2] - 1);
                 dataCategorie["name"] = label.toLocaleString('default', {month: 'long'});
-                for (let categorieId in listeCategories) {
-                    dataCategorie[listeCategories[categorieId].libelle] =
-                        analysesGroupedByCategories[budgetId][categorieId] !== undefined ? Math.abs(analysesGroupedByCategories[budgetId][categorieId].total) : 0;
-                }
+
+                listeCategories
+                    .filter(categorie => categorie.filterActive)
+                    .forEach(categorie => {
+                        dataCategorie[categorie.libelle] =
+                            analysesGroupedByCategories[budgetId][categorie.id] !== undefined ? Math.abs(analysesGroupedByCategories[budgetId][categorie.id].total) : 0;
+                    })
                 dataCategories.push(dataCategorie);
             }
         }
@@ -62,10 +56,13 @@ const GraphAnalyseTemporelle = ({
      */
     const renderLines = () => {
         let lines = [];
-        for (let categorieId in listeCategories) {
-            lines.push(<Line type="monotone" dataKey={listeCategories[categorieId].libelle}
-                             stroke={listeCategories[categorieId].couleurCategorie}/>)
-        }
+        listeCategories
+            .filter(categorie => categorie.filterActive)
+            .forEach(categorie => {
+                lines.push(<Line type="monotone"
+                                 dataKey={categorie.libelle}
+                                 stroke={categorie.couleurCategorie}/>)
+            });
         return lines;
     };
 

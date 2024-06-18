@@ -3,11 +3,12 @@ import React, {Component} from "react";
 import * as Controller from './AnalyseTemporelle.controller'
 import * as Services from './AnalyseTemporelle.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {Box, CircularProgress, Divider} from "@mui/material";
+import {Box, CircularProgress, Divider,} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import PropTypes from "prop-types";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
+import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
 
 /**
  * Page principale d'une analyse
@@ -18,6 +19,7 @@ export default class AnalyseTemporelle extends Component {
     /** Etats pour la page Budget **/
     state = {
         anneeAnalyses: new Date().getFullYear(),
+        listeCategories: null,
         analysesGroupedByCategories: null,
     }
 
@@ -29,6 +31,7 @@ export default class AnalyseTemporelle extends Component {
         this.calculateTimelines = Controller.calculateTimelines.bind(this);
         this.calculateTimeline = Controller.calculateTimeline.bind(this);
         this.onAnneeChange = Controller.onAnneeChange.bind(this);
+        this.onFilterChange = Controller.onFilterChange.bind(this);
     }
 
 
@@ -56,6 +59,12 @@ export default class AnalyseTemporelle extends Component {
             console.log("[TRIGGER] Context = " + nextProps.anneeAnalyses)
             componentUpdate = true;
         }
+
+        if (this.state.filterChange !== nextStates.filterChange) {
+            console.log("[TRIGGER] Context = ", nextProps.filterChange)
+            componentUpdate = true;
+        }
+        console.log("filterChange", nextStates.filterChange, this.state.filterChange, componentUpdate)
         return componentUpdate;
     }
 
@@ -77,6 +86,13 @@ export default class AnalyseTemporelle extends Component {
                             <CircularProgress/>
                         }
                     </Grid2>
+                    <Grid2 md={3} direction={"row-reverse"}>
+                        {
+                            this.state.listeCategories != null ?
+                                <AnalyseTemporelleFiltre listeCategories={this.state.listeCategories}
+                                                         onFilterChange={this.onFilterChange}/> : <CircularProgress/>
+                        }
+                    </Grid2>
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
                     <Grid2 md={6} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
@@ -84,6 +100,7 @@ export default class AnalyseTemporelle extends Component {
                             <GraphAnalyseTemporelle
                                 anneeAnalyses={this.state.anneeAnalyses}
                                 analysesGroupedByCategories={this.state.analysesGroupedByCategories}
+                                listeCategories={this.state.listeCategories}
                                 id={"graphAnalyseTemporelle"}/>
                             :
                             <CircularProgress/>
