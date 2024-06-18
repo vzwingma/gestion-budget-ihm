@@ -59,12 +59,9 @@ export default class AnalyseTemporelle extends Component {
             console.log("[TRIGGER] Context = " + nextProps.anneeAnalyses)
             componentUpdate = true;
         }
-
         if (this.state.filterChange !== nextStates.filterChange) {
-            console.log("[TRIGGER] Context = ", nextProps.filterChange)
             componentUpdate = true;
         }
-        console.log("filterChange", nextStates.filterChange, this.state.filterChange, componentUpdate)
         return componentUpdate;
     }
 
@@ -78,7 +75,7 @@ export default class AnalyseTemporelle extends Component {
                 <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
                     <Grid2 md={2}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
                                             fontSize={"large"}/></Grid2>
-                    <Grid2 md={7}>
+                    <Grid2 md={8}>
                         {this.state.currentBudgets !== null && this.state.analysesGroupedByCategories !== null ?
                             <AnalyseTemporelleTitre currentCompte={this.props.selectedCompte}
                                                     currentAnnee={this.state.anneeAnalyses}
@@ -86,7 +83,7 @@ export default class AnalyseTemporelle extends Component {
                             <CircularProgress/>
                         }
                     </Grid2>
-                    <Grid2 md={3} direction={"row-reverse"}>
+                    <Grid2 md={2} direction={"row-reverse"}>
                         {
                             this.state.listeCategories != null ?
                                 <AnalyseTemporelleFiltre listeCategories={this.state.listeCategories}
@@ -95,7 +92,7 @@ export default class AnalyseTemporelle extends Component {
                     </Grid2>
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
-                    <Grid2 md={6} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
+                <Grid2 md={5} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
                         {this.state.currentBudgets != null ?
                             <GraphAnalyseTemporelle
                                 anneeAnalyses={this.state.anneeAnalyses}
@@ -105,7 +102,7 @@ export default class AnalyseTemporelle extends Component {
                             :
                             <CircularProgress/>
                         }
-                    </Grid2>
+                </Grid2>
             </Box>
         )
     }

@@ -34,7 +34,7 @@ const GraphAnalyseTemporelle = ({
 
                 let label = new Date();
                 label.setMonth(budgetIdParts[2] - 1);
-                dataCategorie["name"] = label.toLocaleString('default', {month: 'long'});
+                dataCategorie["name"] = label.toLocaleString('default', {month: 'long', year: 'numeric'});
 
                 listeCategories
                     .filter(categorie => categorie.filterActive)
@@ -83,7 +83,7 @@ const GraphAnalyseTemporelle = ({
                 <YAxis/>
                 <Tooltip active={true}
                          contentStyle={{color: "white", backgroundColor: "black"}}
-                         formatter={(value, name) => [value + " €", name]}/>
+                         formatter={(value, name) => [value + " €", " - " + name]}/>
                 <Legend/>
                 {
                     renderLines()

@@ -40,7 +40,7 @@ export function calculateTimelines(budgetsData) {
             }
         }
     }
-
+    listeCategories.sort((categorie1, categorie2) => categorie1.libelle.localeCompare(categorie2.libelle));
     this.setState({
         currentBudgets: budgetsData,
         listeCategories: listeCategories,
