@@ -27,7 +27,7 @@ function createNewResumeCategorie() {
 export function calculateTimelines(budgetsData) {
     console.log("Calcul de l'analyse des  [" + budgetsData.length + "] budgets");
     let listeCategories = [];
-    var analysesGroupedByCategories = new Array(budgetsData.length);
+    let analysesGroupedByCategories = new Array(budgetsData.length);
     for (let i = 0; i < budgetsData.length; i++) {
         analysesGroupedByCategories[budgetsData[i].id] = calculateTimeline(budgetsData[i]);
 
