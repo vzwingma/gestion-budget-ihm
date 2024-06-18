@@ -27,13 +27,13 @@ function createNewResumeCategorie() {
 export function calculateTimelines(budgetsData) {
     console.log("Calcul de l'analyse des  [" + budgetsData.length + "] budgets");
     let listeCategories = [];
-    var analysesGroupedByCategories = new Array(budgetsData.length);
-    for (let i = 0; i < budgetsData.length; i++) {
-        analysesGroupedByCategories[budgetsData[i].id] = calculateTimeline(budgetsData[i]);
+    let analysesGroupedByCategories = new Array(budgetsData.length);
+    for (let budgetData of budgetsData) {
+        analysesGroupedByCategories[budgetData.id] = calculateTimeline(budgetData);
 
         // Identification de toutes les catégories présentes
-        for (const categoryKey in analysesGroupedByCategories[budgetsData[i].id]) {
-            let category = analysesGroupedByCategories[budgetsData[i].id][categoryKey].categorie;
+        for (const categoryKey in analysesGroupedByCategories[budgetData.id]) {
+            let category = analysesGroupedByCategories[budgetData.id][categoryKey].categorie;
             category.filterActive = true;
             if (!listeCategories.some((categorie) => categorie.id === category.id) && category.id !== null) {
                 listeCategories.push(category);

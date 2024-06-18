@@ -95,8 +95,8 @@ const GraphAnalyseTemporelle = ({
 
 // Types des propriétés
 GraphAnalyseTemporelle.propTypes = {
-    id: PropTypes.string.isRequired,
     anneeAnalyses: PropTypes.number.isRequired,
+    listeCategories: PropTypes.array.isRequired,
     analysesGroupedByCategories: PropTypes.array.isRequired
 }
 
