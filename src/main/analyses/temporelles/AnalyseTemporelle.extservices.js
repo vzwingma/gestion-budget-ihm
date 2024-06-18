@@ -8,7 +8,7 @@ import {toast} from "react-toastify";
 
 /**
  * Charge les budgets du compte depuis le back-end.
- * @param {Object} selectedCompte - Le compte sélectionné.
+ * @param {string} selectedCompte - Le compte sélectionné.
  */
 export function loadBudgets(selectedCompte) {
     if (selectedCompte != null) {
