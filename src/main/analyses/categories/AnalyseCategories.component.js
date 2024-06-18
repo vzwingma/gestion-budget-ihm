@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 
-import * as Controller from './Analyse.controller'
-import * as Services from './Analyse.extservices'
+import * as Controller from './AnalyseCategories.controller'
+import * as Services from './AnalyseCategories.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {Box, Chip, CircularProgress, Divider, Stack, Switch} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import AnalyseCategoriesListe from "../categories/AnalyseCategoriesListe.component";
+import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component";
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
-import AnalyseTitre from "./AnalyseTitre.component";
+import AnalyseTitre from "./AnalyseCategoriesTitre.component";
 import PropTypes from "prop-types";
 import * as Renderer from "../../Utils/renderers/OperationItem.renderer";
 import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
@@ -15,7 +15,7 @@ import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
 /**
  * Page principale d'une analyse
  */
-export default class Analyse extends Component {
+export default class AnalyseCategories extends Component {
 
 
     /** Etats pour la page Budget **/
@@ -145,7 +145,7 @@ export default class Analyse extends Component {
                                 typeAnalyse={this.state.selectedTypeAnalyse}
                                 analysesGroupedByCategories={this.state.analysesGroupedByCategories}
                                 resumeSelectedCategorie={this.state.resumeSelectedCategorie}
-                                resumeSelectedSsCategorie={this.state.resumeSelectedSsCategorie}/>
+                                resumeSelectedSsCategorie={this.state.resumeSelectedSsCategorie} id={"grapheAnalyse"}/>
                             :
                             <CircularProgress/>
                         }
@@ -156,7 +156,7 @@ export default class Analyse extends Component {
     }
 }
 // Properties Types
-Analyse.propTypes = {
+AnalyseCategories.propTypes = {
     selectedCompte: PropTypes.object.isRequired,
     selectedDate: PropTypes.object.isRequired,
     onOpenMenu: PropTypes.func.isRequired,

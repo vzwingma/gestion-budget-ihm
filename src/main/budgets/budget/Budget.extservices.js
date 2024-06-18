@@ -9,7 +9,7 @@ import {toast} from "react-toastify";
 /** Chargement des catégories **/
 export function loadCategories() {
     console.log("Chargement des catégories");
-    ClientHTTP.call('GET', AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
+    ClientHTTP.call(AppConstants.METHODE_HTTP.GET, AppConstants.BACKEND_ENUM.URL_PARAMS, AppConstants.SERVICES_URL.PARAMETRES.CATEGORIES)
         .then(data => {
             this.categoriesLoaded(data)
         })
@@ -31,10 +31,10 @@ export function categoriesLoaded(data) {
  **/
 export function reloadBudget(selectedCompte, selectedDate) {
     if (selectedCompte != null && selectedDate != null) {
-        ClientHTTP.call('GET',
-            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET,
+        ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
+            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
             [selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
-            .then(data => this.handleBudgetUpdate(data))
+            .then(data => this.handleBudgetUpdate(data[0]))
             .catch(e => {
                 let libErreur = "Erreur lors du chargement du budget " + selectedCompte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
                 console.log(libErreur, e)
@@ -48,7 +48,7 @@ export function reloadBudget(selectedCompte, selectedDate) {
  * Get préférences
  */
 export function getPreferenceUtilisateur() {
-    ClientHTTP.call("GET", AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.USERS_PREFS, null)
+    ClientHTTP.call(AppConstants.METHODE_HTTP.GET, AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.USERS_PREFS, null)
         .then((data) => {
             this.setState({user_droits: data.droits, user_preferences: data.preferences})
         })

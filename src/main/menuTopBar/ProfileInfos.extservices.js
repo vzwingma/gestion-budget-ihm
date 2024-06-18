@@ -10,7 +10,7 @@ import * as AppConstants from "../Utils/AppTechEnums.constants";
  * Modification de l'opération sur action des boutons
  */
 export function getLastAccessDateUtilisateur() {
-    ClientHTTP.call("GET", AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.ACCESS_DATE, null)
+    ClientHTTP.call(AppConstants.METHODE_HTTP.GET, AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.ACCESS_DATE, null)
         .then((data) => {
             const date = new Date(data.lastAccessTime * 1000);
             this.setState({

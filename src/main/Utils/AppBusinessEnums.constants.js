@@ -1,3 +1,9 @@
+export const BUSINESS_ONGLETS = {
+    BUDGET: "BUDGET",
+    ANALYSE: "ANALYSE",
+    ANALYSE_TEMP: "ANALYSETEMP"
+}
+
 /**
  * Droits de l'utilisateur
  * @type {{DROITS: {CLOTURE_BUDGET: string, RAZ_BUDGET: string}, PREFERENCES: {STATUT_NLLE_DEPENSE: string}}}

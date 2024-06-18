@@ -14,7 +14,9 @@ function PrivateNavLinks() {
             <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
                      to="/budgets">Budgets</NavLink>
             <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                     to="/analyses">Analyses</NavLink>
+                     to="/analyses">Analyses Catégories</NavLink>
+            <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                     to="/analysesTemporelles">Analyses Temporelles</NavLink>
         </Stack>
     } else {
         return <Stack direction="row" spacing={1}><NavLink className="nav-link" to="/infos">Infos</NavLink></Stack>

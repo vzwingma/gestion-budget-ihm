@@ -1,3 +1,4 @@
+import * as AppConstants from "../Utils/AppTechEnums.constants"
 import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppTechEnums.constants"
 import {call} from "../Services/ClientHTTP.service";
 
@@ -19,7 +20,7 @@ export async function getInfosFromMicroServices() {
 
     let infosUpdated = []
     for await (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
-        call('GET', backEnd.url, SERVICES_URL.INFOS.GET_INFO)
+        call(AppConstants.METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
             .then((data) => {
                 infosUpdated.push(data)
                 this.setState({infos: infosUpdated})

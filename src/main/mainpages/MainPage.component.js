@@ -6,8 +6,10 @@ import * as Services from "./MainPage.extservices";
 import Budget from "../budgets/budget/Budget.component";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
-import Analyse from "../analyses/analyse/Analyse.component";
+import AnalyseCategories from "../analyses/categories/AnalyseCategories.component";
 import PropTypes from "prop-types";
+import AnalyseTemporelle from "../analyses/temporelles/AnalyseTemporelle.component";
+import {BUSINESS_ONGLETS} from "../Utils/AppBusinessEnums.constants";
 
 /**
  * Page principale de gestion des budgets
@@ -46,19 +48,31 @@ export default class MainPage extends Component {
      */
     renderSubMainPage() {
         const fonction = this.props.fonction;
-        if (fonction === "BUDGET") {
+        if (fonction === BUSINESS_ONGLETS.BUDGET) {
             return <Budget selectedCompte={this.state.selectedCompte}
                            selectedDate={this.state.selectedDate}
                            listeComptes={this.state.comptes}
                            onOpenMenu={this.handleOpenMenuBar}/>
-        } else if (fonction === "ANALYSE") {
-            return <Analyse selectedCompte={this.state.selectedCompte}
-                            selectedDate={this.state.selectedDate}
-                            onOpenMenu={this.handleOpenMenuBar}/>
+        } else if (fonction === BUSINESS_ONGLETS.ANALYSE) {
+            return <AnalyseCategories selectedCompte={this.state.selectedCompte}
+                                      selectedDate={this.state.selectedDate}
+                                      onOpenMenu={this.handleOpenMenuBar}/>
+        } else if (fonction === BUSINESS_ONGLETS.ANALYSE_TEMP) {
+            return <AnalyseTemporelle selectedCompte={this.state.selectedCompte}
+                                      onOpenMenu={this.handleOpenMenuBar}/>
         } else {
             return <></>
         }
     }
+
+    renderLeftTabCompte() {
+        if (this.props.fonction === BUSINESS_ONGLETS.BUDGET) {
+            return <DateRange onDateChange={this.handleDateChange} selectedDate={this.state.selectedDate}/>
+        } else {
+            return <></>
+        }
+    }
+
 
     render() {
         return (
@@ -70,7 +84,7 @@ export default class MainPage extends Component {
                     <Stack spacing={2}>
                         <Box sx={{height: 80}}/>
 
-                        <DateRange onDateChange={this.handleDateChange} selectedDate={this.state.selectedDate}/>
+                        {this.renderLeftTabCompte()}
 
                         <Stack divider={<Divider orientation="horizontal" flexItem/>}>
                             {this.state.comptes
@@ -78,6 +92,7 @@ export default class MainPage extends Component {
                                 .map((compte) => (
                                     <CompteItem key={compte.id}
                                                 compte={compte}
+                                                selectedFunction={this.props.fonction}
                                                 selectedDate={this.state.selectedDate}
                                                 onRefreshMenuBar={this.state.budgetMenuOpen}
                                                 onClick={this.handleCompteChange}/>

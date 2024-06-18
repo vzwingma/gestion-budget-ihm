@@ -67,6 +67,7 @@ export default class Main extends Component {
                                 <Route path="/" element={<Infos/>}/>
                                 <Route path="/budgets" element={<MainPage fonction="BUDGET"/>}/>
                                 <Route path="/analyses" element={<MainPage fonction="ANALYSE"/>}/>
+                                <Route path="/analysesTemporelles" element={<MainPage fonction="ANALYSETEMP"/>}/>
                                 <Route path="/infos" element={<Infos/>}/>
                             </Routes>
                         </div>

@@ -50,7 +50,7 @@ export function saveOperation(operation, budget) {
 export function saveOperationIntercompte(operation, budget, compteCible) {
     console.log("Création d'une opération intercompte sur le budget [" + budget.id + "] vers le compte [" + compteCible + "]")
     ClientHTTP
-        .call('POST',
+        .call(AppConstants.METHODE_HTTP.POST,
             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.INTERCOMPTE,
             [budget.id, compteCible],
             operation)
@@ -70,7 +70,7 @@ export function saveOperationIntercompte(operation, budget, compteCible) {
  */
 export function getLibellesOperation(idCompte) {
 
-    ClientHTTP.call('GET',
+    ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
         AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.LIBELLES,
         [idCompte])
         .then(listeLibelles => {

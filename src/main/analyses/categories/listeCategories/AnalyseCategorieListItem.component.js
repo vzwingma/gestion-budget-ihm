@@ -1,8 +1,8 @@
 import React from 'react'
 import {Box, Stack, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import OperationValue from "../../Utils/renderers/OperationValue.renderer";
-import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
+import * as Renderer from "../../../Utils/renderers/CategorieItem.renderer";
 import PropTypes from "prop-types";
 
 /**
