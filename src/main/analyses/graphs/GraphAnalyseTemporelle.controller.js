@@ -32,7 +32,6 @@ export function populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedBy
                 })
 
             // Ajout des soldes
-            console.log(filterSoldesActive)
             if (filterSoldesActive) {
                 datasTemporellesMois["Soldes"] = timelinesSoldes[budgetId] !== undefined ? timelinesSoldes[budgetId].totaux : [0, 0];
             }

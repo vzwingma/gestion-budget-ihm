@@ -93,7 +93,8 @@ export default class AnalyseTemporelle extends Component {
                         }
 
                         <FormControlLabel id="Soldes" key="Soldes"
-                                          control={<Checkbox id="Soldes" defaultChecked icon={<RadioButtonUnchecked/>}
+                                          control={<Checkbox id="Soldes" defaultChecked={false}
+                                                             icon={<RadioButtonUnchecked/>}
                                                              checkedIcon={<CheckCircle/>}/>}
                                           label="Soldes"
                                           style={{color: "#FFFFFF"}}
