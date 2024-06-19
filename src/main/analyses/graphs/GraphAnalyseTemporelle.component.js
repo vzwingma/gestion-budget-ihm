@@ -9,6 +9,7 @@ import * as Controller from './GraphAnalyseTemporelle.controller'
  * @param {string} props.anneeAnalyses - L'année des analyses.
  * @param {Array} props.analysesGroupedByCategories - Les analyses groupées par catégories.
  * @param {Array} props.timelinesSoldes - Les analyses groupées du soldes.
+ * @param {Boolean} props.filterSoldesActive - Le filtre des soldes.
  * @param {Array} props.listeCategories - Le tableau des catégories.
  * @returns {JSX.Element} Le composant de graphique.
  */
@@ -16,6 +17,7 @@ const GraphAnalyseTemporelle = ({
                                     anneeAnalyses,
                                     analysesGroupedByCategories,
                                     timelinesSoldes,
+                                    filterSoldesActive,
                                     listeCategories
                                 }) => {
 
@@ -23,7 +25,7 @@ const GraphAnalyseTemporelle = ({
 
 
     /** Init du tableau pour l'affichage du graphique **/
-    Controller.populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedByCategories, timelinesSoldes, listeCategories, dataCategories);
+    Controller.populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedByCategories, timelinesSoldes, listeCategories, filterSoldesActive, dataCategories);
 
     /**
      * Rend les lignes du graphique.
@@ -34,7 +36,8 @@ const GraphAnalyseTemporelle = ({
         listeCategories
             .filter(categorie => categorie.filterActive)
             .forEach(categorie => {
-                lines.push(<Line type="monotone"
+                lines.push(<Line key={categorie.id}
+                                 type="monotone"
                                  dataKey={categorie.libelle}
                                  stroke={categorie.couleurCategorie}/>)
             });
@@ -43,17 +46,16 @@ const GraphAnalyseTemporelle = ({
 
 
     /**
-     * Rend les lignes du graphique.
-     * @returns {Array} Un tableau de composants Area.
+     * Formatte le tooltip
+     * @param value
+     * @param name
+     * @returns {[string,string]}
      */
-    const renderCharts = () => {
-        let areas = [];
-        areas.push(
-            <Bar type="monotone" dataKey="soldes" fill="#FFFFFF" stroke="green"/>
-        )
-        return areas;
-    };
-
+    const tooltipFormatter = (value, name) => {
+        return [
+            Array.isArray(value) ? value[0] + " € / " + value[1] + " €" : value + " €"
+            , " - " + name];
+    }
 
 
     return (
@@ -66,23 +68,25 @@ const GraphAnalyseTemporelle = ({
                     right: 30,
                     left: 20,
                     bottom: 5,
-                }}
-            >
+                }}>
+
+                <defs>
+                    <linearGradient id="colorUv" x1="0" y1="1" x2="0" y2="0">
+                        <stop offset="30%" stopColor="#6584FF" stopOpacity={0.1}/>
+                        <stop offset="95%" stopColor="#6584FF" stopOpacity={0.6}/>
+                    </linearGradient>
+                </defs>
+
+
                 <CartesianGrid strokeDasharray="1 10" fillOpacity={0.6}/>
                 <XAxis dataKey="name"/>
                 <YAxis/>
                 <Tooltip active={true}
                          contentStyle={{color: "white", backgroundColor: "black"}}
-                         formatter={(value, name) => [
-                             Array.isArray(value) ?
-                                 value[0] + " € / " + value[1] + " €"
-                                 :
-                                 value + " €"
-                             ,
-                             " - " + name]}/>
+                         formatter={tooltipFormatter}/>
                 <Legend/>
                 {renderLines()}
-                {renderCharts()}
+                <Bar type="monotone" dataKey="Soldes" fill="url(#colorUv)" stroke="url(#colorUv)" barSize={50}/>
             </ComposedChart>
         </ResponsiveContainer>
     );
@@ -92,6 +96,7 @@ const GraphAnalyseTemporelle = ({
 GraphAnalyseTemporelle.propTypes = {
     anneeAnalyses: PropTypes.number.isRequired,
     listeCategories: PropTypes.array.isRequired,
+    filterSoldesActive: PropTypes.bool.isRequired,
     analysesGroupedByCategories: PropTypes.array.isRequired,
     timelinesSoldes: PropTypes.array.isRequired
 }

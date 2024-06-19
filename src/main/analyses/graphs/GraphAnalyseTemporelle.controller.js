@@ -8,9 +8,10 @@
  * @param {Array} analysesGroupedByCategories - Les analyses groupées par catégories.
  * @param {Array} timelinesSoldes - Les soldes
  * @param {Array} listeCategories - Le tableau des catégories.
+ * @param {Boolean} filterSoldesActive - Le filtre des soldes.
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedByCategories, timelinesSoldes, listeCategories, datasTemporellesAnnee) {
+export function populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedByCategories, timelinesSoldes, listeCategories, filterSoldesActive, datasTemporellesAnnee) {
 
     console.log("Affichage de l'analyse temporelle pour", anneeAnalyses)
 
@@ -31,7 +32,10 @@ export function populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedBy
                 })
 
             // Ajout des soldes
-            datasTemporellesMois["soldes"] = timelinesSoldes[budgetId] !== undefined ? timelinesSoldes[budgetId].totaux : [0, 0];
+            console.log(filterSoldesActive)
+            if (filterSoldesActive) {
+                datasTemporellesMois["Soldes"] = timelinesSoldes[budgetId] !== undefined ? timelinesSoldes[budgetId].totaux : [0, 0];
+            }
 
             // Publication des données temporelles
             datasTemporellesAnnee.push(datasTemporellesMois);

@@ -30,7 +30,9 @@ const AnalyseTemporelleFiltre = ({listeCategories, onFilterChange}) => {
                         onChange={onFilterChange}/>
                 )
             }
-        ))
+        )
+    )
+
 };
 
 export default AnalyseTemporelleFiltre

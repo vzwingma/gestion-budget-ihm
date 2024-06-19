@@ -3,12 +3,13 @@ import React, {Component} from "react";
 import * as Controller from './AnalyseTemporelle.controller'
 import * as Services from './AnalyseTemporelle.extservices'
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {Box, CircularProgress, Divider,} from "@mui/material";
+import {Box, Checkbox, CircularProgress, Divider, FormControlLabel,} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import PropTypes from "prop-types";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
+import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
 
 /**
  * Page principale d'une analyse
@@ -21,6 +22,7 @@ export default class AnalyseTemporelle extends Component {
         anneeAnalyses: new Date().getFullYear(),
         listeCategories: null,
         analysesGroupedByCategories: null,
+        filterSoldesActive: false,
     }
 
 
@@ -29,9 +31,9 @@ export default class AnalyseTemporelle extends Component {
         super(props);
         this.loadBudgets = Services.loadBudgets.bind(this);
         this.calculateTimelines = Controller.calculateTimelines.bind(this);
-        this.calculateTimeline = Controller.calculateTimelineCategories.bind(this);
         this.onAnneeChange = Controller.onAnneeChange.bind(this);
         this.onFilterChange = Controller.onFilterChange.bind(this);
+        this.onFilterSoldesChange = Controller.onFilterSoldesChange.bind(this);
     }
 
 
@@ -89,6 +91,13 @@ export default class AnalyseTemporelle extends Component {
                                 <AnalyseTemporelleFiltre listeCategories={this.state.listeCategories}
                                                          onFilterChange={this.onFilterChange}/> : <CircularProgress/>
                         }
+
+                        <FormControlLabel id="Soldes" key="Soldes"
+                                          control={<Checkbox id="Soldes" defaultChecked icon={<RadioButtonUnchecked/>}
+                                                             checkedIcon={<CheckCircle/>}/>}
+                                          label="Soldes"
+                                          style={{color: "#FFFFFF"}}
+                                          onChange={this.onFilterSoldesChange}/>
                     </Grid2>
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
@@ -98,6 +107,7 @@ export default class AnalyseTemporelle extends Component {
                                 anneeAnalyses={this.state.anneeAnalyses}
                                 analysesGroupedByCategories={this.state.analysesGroupedByCategories}
                                 timelinesSoldes={this.state.timelinesSoldes}
+                                filterSoldesActive={this.state.filterSoldesActive}
                                 listeCategories={this.state.listeCategories}
                                 id={"graphAnalyseTemporelle"}/>
                             :

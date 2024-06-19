@@ -23,8 +23,15 @@ interface CategorieTimelineItem {
     total: number
 }
 
+/**
+ * Interface pour SoldesTimelineItem.
+ * Cette interface représente un résumé des soldes dans l'application. Elle comprend les totaux des soldes.
+ * @typedef {Object} SoldesTimelineItem
+ * @property {number[]} totaux - Les totaux des soldes.
+ *
+ */
 interface SoldesTimelineItem {
-    totaux: array
+    totaux: number[]
 }
 
 /**
@@ -80,7 +87,7 @@ export function calculateTimelines(budgetsData) {
  * @param {Object} budgetData - Les données du budget à analyser
  * @returns {Object} Un objet contenant les résultats de l'analyse
  */
-export function calculateTimelineCategories(budgetData) {
+function calculateTimelineCategories(budgetData) {
     // console.log(" - Analyse du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
     return budgetData.listeOperations
         .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE && operation.categorie !== null)
@@ -155,6 +162,19 @@ export function onFilterChange(event) {
     this.setState({
         filterChange: new Date().getTime(),
         listeCategories: listeCategoriesUpdated
+    })
+
+}
+
+/**
+ * Gère le changement de filtre pour les soldes.
+ * @param {Object} event - L'objet d'événement du changement de filtre pour les soldes.
+ */
+export function onFilterSoldesChange(event) {
+
+    this.setState({
+        filterChange: new Date().getTime(),
+        filterSoldesActive: event.target.checked
     })
 
 }
