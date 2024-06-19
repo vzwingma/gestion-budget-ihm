@@ -66,6 +66,7 @@ const OperationItem = ({key, operation, listeComptes, onClick}) => {
     )
 };
 OperationItem.propTypes = {
+    key: PropTypes.string.isRequired,
     operation: PropTypes.object.isRequired,
     listeComptes: PropTypes.array.isRequired,
     onClick: PropTypes.func.isRequired
