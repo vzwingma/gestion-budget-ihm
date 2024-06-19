@@ -3,29 +3,34 @@ import {Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import PropTypes from "prop-types";
 
+
 /**
- * Page principale d'affichage du solde
- * @param currentCompte : compte courant
- * @param currentDate : date courante
- * @param totauxGroupedByEtat : array totaux
- * @returns {JSX.Element} element JSX
+ * Page principale pour l'affichage du solde
+ * @param {Object} currentCompte - Le compte courant
+ * @param {Date} currentDate - La date courante
+ * @param {Array} totalOperations - Le total des opérations
+ * @returns {JSX.Element} - L'élément JSX à afficher
  * @constructor
  */
 const AnalyseTitre = ({currentCompte, currentDate, totalOperations}) => {
 
+    // Définition des types de propriétés pour le composant AnalyseTitre
     AnalyseTitre.propTypes = {
-        currentCompte: PropTypes.object.isRequired,
-        currentDate: PropTypes.any.isRequired,
-        totalOperations: PropTypes.array
+        currentCompte: PropTypes.object.isRequired, // Le compte courant est requis
+        currentDate: PropTypes.any.isRequired, // La date courante est requise
+        totalOperations: PropTypes.array // Le total des opérations est un tableau
     }
 
-
+    /**
+     * Obtient le tooltip pour la date d'aujourd'hui
+     * @returns {string} - La date d'aujourd'hui formatée
+     */
     function getTooltipAuj() {
         const dateCourante = new Date(Date.now());
         return "Au " + dateCourante.getDate() + " " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear()
     }
 
-
+    // Rendu du composant
     return (
         <Stack direction={"row"} spacing={1} justifyContent="left" alignItems="center" marginTop={"3pt"}>
 

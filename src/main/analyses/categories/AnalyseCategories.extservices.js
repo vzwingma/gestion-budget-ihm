@@ -2,12 +2,16 @@ import * as AppConstants from "../../Utils/AppTechEnums.constants"
 import * as ClientHTTP from '../../Services/ClientHTTP.service'
 import {toast} from "react-toastify";
 
-/*
- * Services back-end des analyses
+/**
+ * Services back-end pour les analyses
  */
 
 /**
- Chargement du budget depuis le back-end
+ * Charge le budget depuis le back-end
+ * @param {String} selectedCompte - Le compte sélectionné.
+ * @param {Date} selectedDate - La date sélectionnée.
+ * @returns {Promise} Une promesse qui se résout avec les données du budget chargées.
+ * @throws Lancera une erreur si le chargement du budget échoue.
  **/
 export function loadBudget(selectedCompte, selectedDate) {
     if (selectedCompte != null && selectedDate != null) {

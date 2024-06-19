@@ -18,7 +18,9 @@ import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
 export default class AnalyseCategories extends Component {
 
 
-    /** Etats pour la page Budget **/
+    /**
+     * États pour la page Analyse
+     */
     state = {
         currentBudget: null,
         resumeSelectedCategorie: null,
@@ -54,9 +56,9 @@ export default class AnalyseCategories extends Component {
 
     /**
      * Mise à jour du contexte de budget
-     * @param nextProps next Props
-     * @param nextStates nexte States
-     * @param {any} nextContext  next Context
+     * @param nextProps prochaines Props
+     * @param nextStates prochains States
+     * @param {any} nextContext  prochain Context
      * @returns {boolean} s'il faut mettre à jour
      */
     shouldComponentUpdate(nextProps, nextStates, nextContext) {

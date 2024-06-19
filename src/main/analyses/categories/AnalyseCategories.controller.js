@@ -3,13 +3,12 @@ import {OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM} from "../../Utils/AppBusines
 import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
 
 /**
- * Controleur des analyses
+ * Contrôleur des analyses
  */
 
-
 /**
- * Création d'un résumé de catégorie
- * @returns ResumeCategorie résumé de catégorie
+ * Crée un nouveau résumé de catégorie
+ * @returns {ResumeCategorie} Le résumé de la catégorie
  */
 function createNewResumeCategorie() {
 
@@ -27,8 +26,8 @@ function createNewResumeCategorie() {
 
 
 /**
- *  Notification lorsque le budget est mis à jour
- * @param budgetData budget
+ * Notification lors de la mise à jour du budget
+ * @param {Object} budgetData - Les données du budget
  */
 export function calculateResumes(budgetData) {
     console.log("Calcul de l'analyse du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
@@ -68,12 +67,12 @@ export function calculateResumes(budgetData) {
 }
 
 /**
- * Peuplement d'une catégorie
- * @param group groupe de catégorie (ou sous catégorie)
- * @param operation opération à traiter
- * @param categorie catégorie
- * @param totauxParEtats totauxParEtats
- * @param couleurCategorie couleur de la catégorie (et ses ssous catégories
+ * Remplit une catégorie
+ * @param {Object} group - Le groupe de catégories (ou sous-catégories)
+ * @param {Object} operation - L'opération à traiter
+ * @param {Object} categorie - La catégorie
+ * @param {Object} totauxParEtats - Les totaux par états
+ * @param {string} couleurCategorie - La couleur de la catégorie
  */
 function populateCategorie(group, operation, categorie, totauxParEtats, couleurCategorie) {
 
@@ -100,11 +99,11 @@ function populateCategorie(group, operation, categorie, totauxParEtats, couleurC
 }
 
 /**
- * init des données du groupe
- * @param group : array groupe
- * @param idCategorie : string id Catégorie
- * @param idxOperation : string index
- * @returns {*}
+ * Initialise les données du groupe
+ * @param {Object} group - Le groupe
+ * @param {string} idCategorie - L'ID de la catégorie
+ * @param {string} idxOperation - L'index de l'opération
+ * @returns {Object} Le groupe initialisé
  */
 function initGroup(group, idCategorie, idxOperation) {
     if (group[idCategorie].nbTransactions[idxOperation] === undefined) {
@@ -120,9 +119,9 @@ function initGroup(group, idCategorie, idxOperation) {
 }
 
 /**
- * Sélection d'une catégorie
- * @param rang : int Rang de la catégorie dans la liste
- * @param resumeSelectedCategorie résumé d'une catégorie
+ * Gère la sélection d'une catégorie
+ * @param {number} rang - Le rang de la catégorie dans la liste
+ * @param {Object} resumeSelectedCategorie - Le résumé de la catégorie sélectionnée
  */
 export function handleCategorieSelect(rang, resumeSelectedCategorie) {
     this.setState({
@@ -133,17 +132,17 @@ export function handleCategorieSelect(rang, resumeSelectedCategorie) {
 }
 
 /**
- * Sélection d'une sous catégorie
- * @param rang : int Rang de la catégorie dans la liste
- * @param resumeSelectedSsCategorie résumé d'une sous catégorie
+ * Gère la sélection d'une sous-catégorie
+ * @param {number} rang - Le rang de la sous-catégorie dans la liste
+ * @param {Object} resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
  */
 export function handleSsCategorieSelect(rang, resumeSelectedSsCategorie) {
     this.setState({resumeSelectedSsCategorie: resumeSelectedSsCategorie})
 }
 
 /**
- * Changement d'état d'analyse
- * @param e
+ * Change l'état de l'analyse
+ * @param {Event} e - L'événement
  */
 export function selectEtatOperation(e) {
     const newEtat = e.target.checked ? OPERATION_ETATS_ENUM.REALISEE : OPERATION_ETATS_ENUM.PREVUE
@@ -152,8 +151,8 @@ export function selectEtatOperation(e) {
 }
 
 /**
- * Changement de tupe d'opération
- * @param e
+ * Change le type d'opération
+ * @param {Event} e - L'événement
  */
 export function selectTypeOperation(e) {
     const newEtat = e.target.checked ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE

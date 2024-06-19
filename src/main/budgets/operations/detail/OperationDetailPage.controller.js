@@ -85,23 +85,24 @@ export function validateDescription() {
  * validation du formulaire - Montant
  */
 export function validateFormMontant() {
-    if (this.state.editForm.value) {
-        if (this.state.editOperation.valeur === null || this.state.editOperation.valeur === "") {
-            errors.valeur = "Le champ Valeur est obligatoire";
-            hasErrors = true;
-        } else {
-            const formValeur = "" + this.state.editOperation.valeur;
-            const valeurCalculee = calculateValeur(formValeur.replaceAll(",", "."));
-            if (valeurCalculee != null) {
-                if (!validateValue(valeurCalculee)) {
-                    errors.valeur = "Le format est incorrect : 0000.00 €";
-                    hasErrors = true;
-                } else {
-                    this.props.operation.valeur = (this.state.editOperation.typeOperation === "DEPENSE" ? -1 : 1) * valeurCalculee;
-                }
-            }
-        }
+    if (!this.state.editForm.value) return;
+
+    const {valeur, typeOperation} = this.state.editOperation;
+    if (!valeur) {
+        errors.valeur = "Le champ Valeur est obligatoire";
+        hasErrors = true;
+        return;
     }
+
+    const formValeur = "" + valeur;
+    const valeurCalculee = calculateValeur(formValeur.replaceAll(",", "."));
+    if (!valeurCalculee || !validateValue(valeurCalculee)) {
+        errors.valeur = "Le format est incorrect : 0000.00 €";
+        hasErrors = true;
+        return;
+    }
+
+    this.props.operation.valeur = (typeOperation === "DEPENSE" ? -1 : 1) * valeurCalculee;
 }
 
 /**
@@ -186,7 +187,7 @@ function calculateValeur(formValue) {
     try {
         // eslint-disable-next-line no-eval
         const calculee = Number(processEquation(formValue)).toFixed(2);
-        console.log("Calcul de la valeur saisie [", formValue, " ] = [", calculee, " ]");
+        console.log("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
         return calculee
     } catch (e) {
         console.error("Erreur dans la valeur saisie ", formValue, e)
