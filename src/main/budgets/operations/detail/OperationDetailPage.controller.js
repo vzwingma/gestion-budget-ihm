@@ -187,7 +187,7 @@ function calculateValeur(formValue) {
     try {
         // eslint-disable-next-line no-eval
         const calculee = Number(processEquation(formValue)).toFixed(2);
-        console.log("Calcul de la valeur saisie [", formValue, " ] = [", calculee, " ]");
+        console.log("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
         return calculee
     } catch (e) {
         console.error("Erreur dans la valeur saisie ", formValue, e)

@@ -8,7 +8,7 @@ import {toast} from "react-toastify";
 
 /**
  * Charge le budget depuis le back-end
- * @param {Object} selectedCompte - Le compte sélectionné.
+ * @param {String} selectedCompte - Le compte sélectionné.
  * @param {Date} selectedDate - La date sélectionnée.
  * @returns {Promise} Une promesse qui se résout avec les données du budget chargées.
  * @throws Lancera une erreur si le chargement du budget échoue.
