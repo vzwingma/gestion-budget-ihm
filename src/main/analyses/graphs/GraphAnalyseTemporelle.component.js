@@ -1,54 +1,29 @@
-import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React from "react";
 import PropTypes from "prop-types";
+import * as Controller from './GraphAnalyseTemporelle.controller'
 
 /**
  * Composant de graphique pour l'analyse temporelle.
  * @param {Object} props - Les propriétés passées au composant.
  * @param {string} props.anneeAnalyses - L'année des analyses.
  * @param {Array} props.analysesGroupedByCategories - Les analyses groupées par catégories.
+ * @param {Array} props.timelinesSoldes - Les analyses groupées du soldes.
+ * @param {Array} props.listeCategories - Le tableau des catégories.
  * @returns {JSX.Element} Le composant de graphique.
  */
 const GraphAnalyseTemporelle = ({
                                     anneeAnalyses,
                                     analysesGroupedByCategories,
+                                    timelinesSoldes,
                                     listeCategories
                                 }) => {
 
     let dataCategories = [];
 
-    /**
-     * Remplit le graphique avec les données d'une catégorie.
-     * @param {string} anneeAnalyses - L'année des analyses.
-     * @param {Array} analysesGroupedByCategories - Les analyses groupées par catégories.
-     * @param {Array} dataCategories - Le tableau pour alimenter le graphique.
-     */
-    function populateGraphCategorie(anneeAnalyses, analysesGroupedByCategories, dataCategories) {
-
-        console.log("Affichage de l'analyse temporelle pour ", anneeAnalyses)
-
-        for (let budgetId in analysesGroupedByCategories) {
-            let dataCategorie = {};
-            let budgetIdParts = budgetId.split("_");
-            if (budgetIdParts[1] === "" + anneeAnalyses) {
-
-                let label = new Date();
-                label.setMonth(budgetIdParts[2] - 1);
-                dataCategorie["name"] = label.toLocaleString('default', {month: 'long', year: 'numeric'});
-
-                listeCategories
-                    .filter(categorie => categorie.filterActive)
-                    .forEach(categorie => {
-                        dataCategorie[categorie.libelle] =
-                            analysesGroupedByCategories[budgetId][categorie.id] !== undefined ? Math.abs(analysesGroupedByCategories[budgetId][categorie.id].total) : 0;
-                    })
-                dataCategories.push(dataCategorie);
-            }
-        }
-    }
 
     /** Init du tableau pour l'affichage du graphique **/
-    populateGraphCategorie(anneeAnalyses, analysesGroupedByCategories, dataCategories);
+    Controller.populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedByCategories, timelinesSoldes, listeCategories, dataCategories);
 
     /**
      * Rend les lignes du graphique.
@@ -66,9 +41,24 @@ const GraphAnalyseTemporelle = ({
         return lines;
     };
 
+
+    /**
+     * Rend les lignes du graphique.
+     * @returns {Array} Un tableau de composants Area.
+     */
+    const renderCharts = () => {
+        let areas = [];
+        areas.push(
+            <Bar type="monotone" dataKey="soldes" fill="#FFFFFF" stroke="green"/>
+        )
+        return areas;
+    };
+
+
+
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <LineChart
+            <ComposedChart
                 wwidth="90%" height="90%"
                 data={dataCategories}
                 margin={{
@@ -83,12 +73,17 @@ const GraphAnalyseTemporelle = ({
                 <YAxis/>
                 <Tooltip active={true}
                          contentStyle={{color: "white", backgroundColor: "black"}}
-                         formatter={(value, name) => [value + " €", " - " + name]}/>
+                         formatter={(value, name) => [
+                             Array.isArray(value) ?
+                                 value[0] + " € / " + value[1] + " €"
+                                 :
+                                 value + " €"
+                             ,
+                             " - " + name]}/>
                 <Legend/>
-                {
-                    renderLines()
-                }
-            </LineChart>
+                {renderLines()}
+                {renderCharts()}
+            </ComposedChart>
         </ResponsiveContainer>
     );
 }
@@ -97,7 +92,8 @@ const GraphAnalyseTemporelle = ({
 GraphAnalyseTemporelle.propTypes = {
     anneeAnalyses: PropTypes.number.isRequired,
     listeCategories: PropTypes.array.isRequired,
-    analysesGroupedByCategories: PropTypes.array.isRequired
+    analysesGroupedByCategories: PropTypes.array.isRequired,
+    timelinesSoldes: PropTypes.array.isRequired
 }
 
 export default GraphAnalyseTemporelle

@@ -8,17 +8,18 @@ import PropTypes from "prop-types";
 
 /**
  * Tuile d'une opération dans la liste des opérations
+ * @param {string} key : clé de l'opération
  * @param operation : object opération affichée
  * @param listeComptes : array liste des comptes
  * @param onClick : function action lors du click
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const OperationItem = ({operation, listeComptes, onClick}) => {
+const OperationItem = ({key, operation, listeComptes, onClick}) => {
 
 
     return (
-        <Box key={"liste_" + operation.id}
+        <Box key={"liste_" + key}
              className={"listeItem"}
              onClick={() => onClick(operation)}>
             <Grid2 container spacing={6}>

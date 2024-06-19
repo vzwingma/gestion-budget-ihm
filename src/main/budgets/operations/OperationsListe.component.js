@@ -46,7 +46,7 @@ const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes
 
             operationsFilteredForDate
                 .forEach((operation) => renderList.push(
-                    <OperationItem operation={operation} listeComptes={listeComptes}
+                    <OperationItem key={operation.id} operation={operation} listeComptes={listeComptes}
                                    onClick={() => onClick(operation)}/>)
                 )
         }

@@ -29,7 +29,7 @@ export default class AnalyseTemporelle extends Component {
         super(props);
         this.loadBudgets = Services.loadBudgets.bind(this);
         this.calculateTimelines = Controller.calculateTimelines.bind(this);
-        this.calculateTimeline = Controller.calculateTimeline.bind(this);
+        this.calculateTimeline = Controller.calculateTimelineCategories.bind(this);
         this.onAnneeChange = Controller.onAnneeChange.bind(this);
         this.onFilterChange = Controller.onFilterChange.bind(this);
     }
@@ -44,7 +44,7 @@ export default class AnalyseTemporelle extends Component {
     /**
      * Mise à jour du contexte de budget
      * @param nextProps next Props
-     * @param nextStates nexte States
+     * @param nextStates next States
      * @param {any} nextContext  next Context
      * @returns {boolean} s'il faut mettre à jour
      */
@@ -97,6 +97,7 @@ export default class AnalyseTemporelle extends Component {
                             <GraphAnalyseTemporelle
                                 anneeAnalyses={this.state.anneeAnalyses}
                                 analysesGroupedByCategories={this.state.analysesGroupedByCategories}
+                                timelinesSoldes={this.state.timelinesSoldes}
                                 listeCategories={this.state.listeCategories}
                                 id={"graphAnalyseTemporelle"}/>
                             :
