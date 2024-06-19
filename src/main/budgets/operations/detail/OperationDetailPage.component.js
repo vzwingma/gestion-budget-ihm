@@ -109,6 +109,17 @@ class OperationDetailPage extends Component {
 
     /**
      * Réinit de l'opération du formulaire à la sélection d'une nouvelle opération
+     * componentDidUpdate is a lifecycle method in React that is invoked immediately after updating occurs.
+     * This method is not called for the initial render.
+     *
+     * In this case, it's used to check if the operation's id has changed. If it has, it sets the state of the
+     * editOperation to a clone of the current operation. If the operation's id is -1, it's considered to be in
+     * creation mode and the editForm state is set to true for all fields and getLibellesOperation method is called.
+     * If the operation's id is not -1, it's considered to be in edit mode and handleCloseOperationForm method is called.
+     *
+     * @param {Object} prevProps - The previous props
+     * @param {Object} prevState - The previous state
+     * @param {Object} snapshot - The snapshot of the DOM at the time of the update
      */
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
 
@@ -128,11 +139,9 @@ class OperationDetailPage extends Component {
             }
         }
     }
-
-
     /**
-     * Activation/Désactivation du formulaire d'édition lors des autocompletes
-     * @param activation activation
+     * Active ou désactive le formulaire d'édition lors des autocomplétions
+     * @param {boolean} activation - Indique si le formulaire doit être activé ou désactivé
      */
     activateValidationForm(activation) {
         let editOperation = this.state.editOperation
@@ -141,8 +150,8 @@ class OperationDetailPage extends Component {
     }
 
     /**
-     * Fonctions pour remplir l'état à partir de la saisie
-     * @param e click
+     * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
+     * @param {Event} e - L'événement de saisie
      */
     fillLibelleForm(e) {
         let editOperation = this.state.editOperation
@@ -150,6 +159,10 @@ class OperationDetailPage extends Component {
         this.setState({editOperation: editOperation})
     }
 
+    /**
+     * Remplit le champ "dateOperation" de l'état à partir de la saisie de l'utilisateur
+     * @param {Event} e - L'événement de saisie
+     */
     fillDateOperationForm(e) {
         let value = e.target.value;
         if (value === "") {
@@ -160,23 +173,38 @@ class OperationDetailPage extends Component {
         this.setState({editOperation: editOperation})
     }
 
-
+    /**
+     * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur
+     * @param {Event} e - L'événement de saisie
+     */
     fillValeurForm(e) {
         let editOperation = this.state.editOperation
         editOperation.valeur = addEndingZeros(e.target.value)
         this.setState({editOperation: editOperation})
     }
 
+    /**
+     * Remplit le champ "periode" de l'état à partir de la saisie de l'utilisateur
+     * @param {Event} e - L'événement de saisie
+     */
     fillPeriodeForm(e) {
         let editOperation = this.state.editOperation
         editOperation.mensualite.periode = e.target.value
         this.setState({editOperation: editOperation})
     }
 
+    /**
+     * Remplit le champ "intercompte" de l'état à partir de la saisie de l'utilisateur
+     * @param {Event} e - L'événement de saisie
+     */
     fillIntercompteForm(e) {
         this.setState({intercompte: e.target.value})
     }
 
+    /**
+     * Remplit le champ "categorie" de l'état à partir de la saisie de l'utilisateur
+     * @param {Event} e - L'événement de saisie
+     */
     fillCategorieForm(e) {
         const ssCat = this.getListeAllCategories()
             .filter(ssCat => {
@@ -203,7 +231,6 @@ class OperationDetailPage extends Component {
             currentOperation.typeOperation = editOperation.typeOperation
         }
     }
-
 
     /**
      * RENDER
