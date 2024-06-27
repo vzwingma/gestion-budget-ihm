@@ -60,6 +60,9 @@ export function calculateTimelines(budgetsData) {
 
     for (let budgetData of budgetsData) {
         analysesGroupedByCategories[budgetData.id] = calculateTimelineCategories(budgetData);
+        // console.log(" - Analyse du budget [" + budgetData.id + "]" , Object.keys(analysesGroupedByCategories[budgetData.id]).length + " catégories", analysesGroupedByCategories[budgetData.id]);
+        // Génération du budget à terminaison pour le budget courant
+        analysesGroupedByCategories = generateGhostNextBudget(analysesGroupedByCategories, budgetData);
 
         timelinesSoldes[budgetData.id] = calculateTimelineSoldes(budgetData);
 
@@ -72,6 +75,7 @@ export function calculateTimelines(budgetsData) {
             }
         }
     }
+
     listeCategories.sort((categorie1, categorie2) => categorie1.libelle.localeCompare(categorie2.libelle));
     this.setState({
         currentBudgets: budgetsData,
@@ -81,6 +85,26 @@ export function calculateTimelines(budgetsData) {
     })
     toast.success("Analyse des budgets correctement effectuée ")
 }
+
+/**
+ * Génère le budget à terminaison pour le budget courant
+ * @param {array} analysesGroupedByCategories - Les analyses groupées par catégories
+ * @param {Object} budgetData - Les données du budget à analyser
+ * @returns {null|string} Le budget à terminaison ou null si le budget n'est pas le budget courant
+ */
+function generateGhostNextBudget(analysesGroupedByCategories, budgetData) {
+    let maintenant = new Date();
+    if (budgetData.mois === maintenant.toLocaleString('en-us', {month: 'long'}).toUpperCase()
+        && budgetData.annee === maintenant.getFullYear()) {
+
+        let newMonth = (maintenant.getMonth() + 2).toString().padStart(2, '0');
+        let ghostNextBudget = budgetData.idCompteBancaire + "_" + budgetData.annee + "_" + newMonth;
+        analysesGroupedByCategories[ghostNextBudget] = calculateTimelineCategoriesATerminaison(budgetData);
+    }
+    return analysesGroupedByCategories;
+
+}
+
 
 /**
  * Calcule l'analyse de temps pour un budget donné
@@ -98,6 +122,23 @@ function calculateTimelineCategories(budgetData) {
         }, {});
 }
 
+/**
+ * Calcule l'analyse de temps pour un budget donné
+ * @param {Object} budgetData - Les données du budget à analyser
+ * @returns {Object} Un objet contenant les résultats de l'analyse
+ */
+function calculateTimelineCategoriesATerminaison(budgetData) {
+    // console.log(" - Analyse du budget A TERMINAISON [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
+    return budgetData.listeOperations
+        .filter(operation => (operation.etat === OPERATION_ETATS_ENUM.REALISEE
+                || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
+            && operation.categorie !== null)
+        .reduce((group, operation) => {
+            let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
+            populateCategorie(group, operation, operation.categorie, couleurCategorie);
+            return group;
+        }, {});
+}
 
 /**
  * Peuple une catégorie avec les données d'une opération
