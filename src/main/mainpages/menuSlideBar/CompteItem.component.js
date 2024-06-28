@@ -28,7 +28,7 @@ const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, o
             ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
                 AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.SOLDES,
                 [compte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
-                .then(data => setSoldes((prevState) => data.soldeAtMaintenant))
+                .then(data => setSoldes((prevState) => data[0].soldes.soldeAtMaintenant))
                 .catch(e => {
                     let libErreur = "Erreur lors du chargement du budget " + compte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
                     console.log(libErreur, e)

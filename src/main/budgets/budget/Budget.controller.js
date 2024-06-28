@@ -10,7 +10,7 @@ import {sortOperations} from "../../Utils/DataUtils.utils";
  * @param budgetData budget
  */
 export function handleBudgetUpdate(budgetData) {
-    console.log("(Re)Chargement du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
+    console.log("(Re)Chargement du budget", budgetData.id, budgetData.listeOperations.length + " opérations")
 
     let operationsGroupedByDateOperation = budgetData.listeOperations
         .filter(operation => operation.etat !== "PLANIFIEE")

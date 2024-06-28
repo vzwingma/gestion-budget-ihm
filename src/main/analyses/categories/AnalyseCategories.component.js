@@ -92,7 +92,8 @@ export default class AnalyseCategories extends Component {
                     <Grid2 md={2}><MenuIcon onClick={this.props.onOpenMenu} className={"editableField"}
                                             fontSize={"large"}/></Grid2>
                     <Grid2 md={7}>
-                        {this.state.currentBudget !== null && this.state.totauxGroupedByEtat !== null ?
+                        {
+                            this.state.currentBudget !== null && this.state.totauxGroupedByEtat !== null ?
                             <AnalyseTitre currentCompte={this.props.selectedCompte}
                                           currentDate={this.props.selectedDate}
                                           totalOperations={this.state.totauxGroupedByEtat[this.state.selectedTypeAnalyse]}/> :
