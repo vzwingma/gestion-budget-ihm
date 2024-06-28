@@ -36,14 +36,43 @@ const GraphAnalyseTemporelle = ({
         listeCategories
             .filter(categorie => categorie.filterActive)
             .forEach(categorie => {
+                let idStroke = "url(#lineStroke" + categorie.id + ")";
                 lines.push(<Line key={categorie.id}
                                  type="monotone"
                                  dataKey={categorie.libelle}
-                                 stroke={categorie.couleurCategorie}/>)
+                                 stroke={idStroke}/>)
             });
         return lines;
     };
 
+    /**
+     * rend le dégradé des lignes du graphique
+     * @returns {[]}
+     */
+    const renderLinesStrokes = () => {
+        let lines = [];
+
+        listeCategories
+            .filter(categorie => categorie.filterActive)
+            .forEach(categorie => {
+                let idStroke = "lineStroke" + categorie.id;
+                let stepNextBudget;
+                if (dataCategories.length === 12) {
+                    stepNextBudget = 100;
+                } else {
+                    stepNextBudget = Math.floor(((dataCategories.length - 2) / (dataCategories.length - 1)) * 100);
+                }
+                stepNextBudget += "%"
+                lines.push(<linearGradient id={idStroke} x1="0" y1="0" x2="100%" y2="0">
+                        <stop offset="0%" stopColor={categorie.couleurCategorie}/>
+                        <stop offset={stepNextBudget} stopColor={categorie.couleurCategorie}/>
+                        <stop offset={stepNextBudget} stopColor="grey"/>
+                        <stop offset="100%" stopColor="grey"/>
+                    </linearGradient>
+                )
+            });
+        return lines;
+    };
 
     /**
      * Formatte le tooltip
@@ -71,10 +100,11 @@ const GraphAnalyseTemporelle = ({
                 }}>
 
                 <defs>
-                    <linearGradient id="colorUv" x1="0" y1="1" x2="0" y2="0">
+                    <linearGradient id="colorSoldes" x1="0" y1="1" x2="0" y2="0">
                         <stop offset="30%" stopColor="#6584FF" stopOpacity={0.1}/>
                         <stop offset="95%" stopColor="#6584FF" stopOpacity={0.6}/>
                     </linearGradient>
+                    {renderLinesStrokes()}
                 </defs>
 
 
@@ -86,7 +116,7 @@ const GraphAnalyseTemporelle = ({
                          formatter={tooltipFormatter}/>
                 <Legend/>
                 {renderLines()}
-                <Bar type="monotone" dataKey="Soldes" fill="url(#colorUv)" stroke="url(#colorUv)" barSize={50}/>
+                <Bar type="monotone" dataKey="Soldes" fill="url(#colorSoldes)" stroke="url(#colorSoldes)" barSize={50}/>
             </ComposedChart>
         </ResponsiveContainer>
     );

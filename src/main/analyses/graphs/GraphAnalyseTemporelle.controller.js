@@ -13,31 +13,33 @@
  */
 export function populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedByCategories, timelinesSoldes, listeCategories, filterSoldesActive, datasTemporellesAnnee) {
 
-    console.log("Affichage de l'analyse temporelle pour", anneeAnalyses)
+    console.log("Affichage de l'analyse temporelle pour", anneeAnalyses);
+    Object.keys(analysesGroupedByCategories)
+        .sort((a, b) => a.localeCompare(b))
+        .forEach(budgetId => {
+            let datasTemporellesMois = {};
+            let budgetIdParts = budgetId.split("_");
 
-    for (let budgetId in analysesGroupedByCategories) {
-        let datasTemporellesMois = {};
-        let budgetIdParts = budgetId.split("_");
-        if (budgetIdParts[1] === "" + anneeAnalyses) {
+            if (budgetIdParts[1] === "" + anneeAnalyses) {
 
-            let label = new Date();
-            label.setMonth(budgetIdParts[2] - 1);
-            datasTemporellesMois["name"] = label.toLocaleString('default', {month: 'long', year: 'numeric'});
+                let label = new Date();
+                label.setMonth(budgetIdParts[2] - 1);
+                datasTemporellesMois["name"] = label.toLocaleString('default', {month: 'long', year: 'numeric'});
 
-            listeCategories
-                .filter(categorie => categorie.filterActive)
-                .forEach(categorie => {
-                    datasTemporellesMois[categorie.libelle] =
-                        analysesGroupedByCategories[budgetId][categorie.id] !== undefined ? Math.abs(analysesGroupedByCategories[budgetId][categorie.id].total) : 0;
-                })
+                listeCategories
+                    .filter(categorie => categorie.filterActive)
+                    .forEach(categorie => {
+                        datasTemporellesMois[categorie.libelle] =
+                            analysesGroupedByCategories[budgetId][categorie.id] !== undefined ? Math.abs(analysesGroupedByCategories[budgetId][categorie.id].total) : 0;
+                    })
 
-            // Ajout des soldes
-            if (filterSoldesActive) {
-                datasTemporellesMois["Soldes"] = timelinesSoldes[budgetId] !== undefined ? timelinesSoldes[budgetId].totaux : [0, 0];
+                // Ajout des soldes
+                if (filterSoldesActive) {
+                    datasTemporellesMois["Soldes"] = timelinesSoldes[budgetId] !== undefined ? timelinesSoldes[budgetId].totaux : [0, 0];
+                }
+
+                // Publication des données temporelles
+                datasTemporellesAnnee.push(datasTemporellesMois);
             }
-
-            // Publication des données temporelles
-            datasTemporellesAnnee.push(datasTemporellesMois);
-        }
-    }
+        });
 }
