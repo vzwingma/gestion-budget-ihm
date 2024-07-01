@@ -1,6 +1,6 @@
 import {toast} from "react-toastify";
-import {OPERATION_ETATS_ENUM} from "../../Utils/AppBusinessEnums.constants";
 import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
+import {getMonthFromString} from "../../Utils/DataUtils.utils";
 
 /**
  * Controleur des analyses temporelles
@@ -42,121 +42,68 @@ function createNewCategorieTimelineItem() {
     let newResumeCategorie: CategorieTimelineItem;
     newResumeCategorie = {
         categorie: {},
-        nbTransactions: 0,
-        total: 0
+        total: 110
     };
     return newResumeCategorie;
 }
 
 /**
  * Calcule les analyses de temps pour les budgets donnés
- * @param {Array} budgetsData - Les données des budgets à analyser
+ * @param {Array} soldesBudgetsData - Les données des budgets à analyser
  */
-export function calculateTimelines(budgetsData) {
-    console.log("Calcul de l'analyse des  [" + budgetsData.length + "] budgets");
+export function calculateTimelines(soldesBudgetsData) {
+
+    soldesBudgetsData = Object.values(soldesBudgetsData)
+        .sort((a, b) => {
+            return getMonthFromString(a.mois) - getMonthFromString(b.mois);
+        })
     let listeCategories = [];
-    let analysesGroupedByCategories = new Array(budgetsData.length);
-    let timelinesSoldes = new Array(budgetsData.length);
+    let timelinesGroupedByCategories = new Array(soldesBudgetsData.length);
+    let timelinesSoldes = new Array(soldesBudgetsData.length);
 
-    for (let budgetData of budgetsData) {
-        analysesGroupedByCategories[budgetData.id] = calculateTimelineCategories(budgetData);
-        // console.log(" - Analyse du budget [" + budgetData.id + "]" , Object.keys(analysesGroupedByCategories[budgetData.id]).length + " catégories", analysesGroupedByCategories[budgetData.id]);
-        // Génération du budget à terminaison pour le budget courant
-        analysesGroupedByCategories = generateGhostNextBudget(analysesGroupedByCategories, budgetData);
-
-        timelinesSoldes[budgetData.id] = calculateTimelineSoldes(budgetData);
-
-        // Identification de toutes les catégories présentes
-        for (const categoryKey in analysesGroupedByCategories[budgetData.id]) {
-            let category = analysesGroupedByCategories[budgetData.id][categoryKey].categorie;
-            category.filterActive = true;
-            if (!listeCategories.some((categorie) => categorie.id === category.id) && category.id !== null) {
-                listeCategories.push(category);
-            }
-        }
+    Object.keys(soldesBudgetsData)
+        .forEach(mois => {
+            timelinesGroupedByCategories[mois] = calculateTimelineCategories(soldesBudgetsData[mois], false);
+            timelinesSoldes[mois] = calculateTimelineSoldes(soldesBudgetsData[mois]);
+            getListeCategories(soldesBudgetsData[mois], listeCategories);
+        });
+    // Génération du budget à terminaison pour le budget courant
+    if (soldesBudgetsData.length < 12) {
+        timelinesGroupedByCategories[soldesBudgetsData.length] = calculateTimelineCategories(soldesBudgetsData[soldesBudgetsData.length - 1], true);
     }
 
-    listeCategories.sort((categorie1, categorie2) => categorie1.libelle.localeCompare(categorie2.libelle));
+
     this.setState({
-        currentBudgets: budgetsData,
+        currentBudgets: soldesBudgetsData,
         listeCategories: listeCategories,
-        analysesGroupedByCategories: analysesGroupedByCategories,
+        timelinesGroupedByCategories: timelinesGroupedByCategories,
         timelinesSoldes: timelinesSoldes
     })
     toast.success("Analyse des budgets correctement effectuée ")
 }
 
-/**
- * Génère le budget à terminaison pour le budget courant
- * @param {array} analysesGroupedByCategories - Les analyses groupées par catégories
- * @param {Object} budgetData - Les données du budget à analyser
- * @returns {null|string} Le budget à terminaison ou null si le budget n'est pas le budget courant
- */
-function generateGhostNextBudget(analysesGroupedByCategories, budgetData) {
-    let maintenant = new Date();
-    if (budgetData.mois === maintenant.toLocaleString('en-us', {month: 'long'}).toUpperCase()
-        && budgetData.annee === maintenant.getFullYear()) {
 
-        let newMonth = (maintenant.getMonth() + 2).toString().padStart(2, '0');
-        let ghostNextBudget = budgetData.idCompteBancaire + "_" + budgetData.annee + "_" + newMonth;
-        analysesGroupedByCategories[ghostNextBudget] = calculateTimelineCategoriesATerminaison(budgetData);
+
+/**
+ * Calcule l'analyse de temps pour un budget donné
+ * @param {Object} budgetData - Les données du budget à analyser
+ * @param {Boolean} aTerminaison - Les données du budget à terminaison
+ * @returns {Object} Un objet contenant les résultats de l'analyse
+ */
+function calculateTimelineCategories(budgetData, aTerminaison) {
+
+    let group = {};
+    for (let idCategorie in budgetData.totauxParCategories) {
+        let categorie = budgetData.totauxParCategories[idCategorie];
+        group[idCategorie] = group[idCategorie] ?? createNewCategorieTimelineItem();
+        categorie.id = idCategorie;
+        categorie.couleur = Renderer.getCategorieColor(categorie);
+        group[idCategorie].categorie = categorie;
+        group[idCategorie].total = Math.ceil(
+            aTerminaison ? categorie.totalAtFinMoisCourant : categorie.totalAtMaintenant
+        );
     }
-    return analysesGroupedByCategories;
-
-}
-
-
-/**
- * Calcule l'analyse de temps pour un budget donné
- * @param {Object} budgetData - Les données du budget à analyser
- * @returns {Object} Un objet contenant les résultats de l'analyse
- */
-function calculateTimelineCategories(budgetData) {
-    // console.log(" - Analyse du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
-    return budgetData.listeOperations
-        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE && operation.categorie !== null)
-        .reduce((group, operation) => {
-            let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
-            populateCategorie(group, operation, operation.categorie, couleurCategorie);
-            return group;
-        }, {});
-}
-
-/**
- * Calcule l'analyse de temps pour un budget donné
- * @param {Object} budgetData - Les données du budget à analyser
- * @returns {Object} Un objet contenant les résultats de l'analyse
- */
-function calculateTimelineCategoriesATerminaison(budgetData) {
-    // console.log(" - Analyse du budget A TERMINAISON [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
-    return budgetData.listeOperations
-        .filter(operation => (operation.etat === OPERATION_ETATS_ENUM.REALISEE
-                || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
-            && operation.categorie !== null)
-        .reduce((group, operation) => {
-            let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
-            populateCategorie(group, operation, operation.categorie, couleurCategorie);
-            return group;
-        }, {});
-}
-
-/**
- * Peuple une catégorie avec les données d'une opération
- * @param {Object} group - Le groupe de catégories à peupler
- * @param {Object} operation - L'opération à traiter
- * @param {Object} categorie - La catégorie à peupler
- * @param {String} couleurCategorie - La couleur de la catégorie
- */
-function populateCategorie(group, operation, categorie, couleurCategorie) {
-
-    group[categorie.id] = group[categorie.id] ?? createNewCategorieTimelineItem();
-    categorie.couleurCategorie = couleurCategorie;
-    group[categorie.id].categorie = categorie;
-    // init des tableaux
-    group[categorie.id].nbTransactions = group[categorie.id].nbTransactions ?? 0;
-    group[categorie.id].nbTransactions = group[categorie.id].nbTransactions + 1;
-    group[categorie.id].total = group[categorie.id].total ?? 0;
-    group[categorie.id].total = Math.ceil(group[categorie.id].total + operation.valeur);
+    return group;
 }
 
 
@@ -165,7 +112,7 @@ function populateCategorie(group, operation, categorie, couleurCategorie) {
  * @param budgetData - Les données du budget à analyser
  * @returns {SoldesTimelineItem} Un objet contenant les résultats de l'analyse
  */
-export function calculateTimelineSoldes(budgetData) {
+function calculateTimelineSoldes(budgetData) {
     let newTimelineSoldes: SoldesTimelineItem;
     newTimelineSoldes = {
         totaux: []
@@ -177,11 +124,40 @@ export function calculateTimelineSoldes(budgetData) {
 
 
 /**
+ * Calcule la liste des catégories présentes
+ * @param {Object} budgetData - Les données du budget à analyser
+ * @param {Array} listeCategories - La liste des catégories
+ * @returns {Object} Un objet contenant les résultats de l'analyse
+ */
+function getListeCategories(budgetData, listeCategories) {
+
+    for (let idCategorie in budgetData.totauxParCategories) {
+        let categorie = budgetData.totauxParCategories[idCategorie];
+        categorie.id = idCategorie;
+        categorie.couleur = Renderer.getCategorieColor(categorie);
+        categorie.filterActive = true;
+        categorie.libelle = categorie.libelleCategorie;
+        delete categorie.libelleCategorie;
+        //     delete categorie.totalAtMaintenant;
+        //     delete categorie.totalAtFinMoisCourant;
+
+        if (!listeCategories.some((categorieInList) => categorieInList.id === categorie.id) && categorie.id !== null) {
+            listeCategories.push(categorie);
+        }
+    }
+    listeCategories.sort((categorie1, categorie2) => categorie1.libelle.localeCompare(categorie2.libelle));
+}
+
+
+
+
+/**
  * Gère le changement de l'année courante
  * @param {Number} currentAnnee - L'année courante
  */
 export function onAnneeChange(currentAnnee) {
 
+    this.loadSoldesBudgets(this.props.selectedCompte.id, currentAnnee);
     this.setState({
         anneeAnalyses: currentAnnee
     })

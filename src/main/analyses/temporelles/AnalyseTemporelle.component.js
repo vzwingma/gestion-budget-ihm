@@ -21,7 +21,7 @@ export default class AnalyseTemporelle extends Component {
     state = {
         anneeAnalyses: new Date().getFullYear(),
         listeCategories: null,
-        analysesGroupedByCategories: null,
+        timelinesGroupedByCategories: null,
         filterSoldesActive: false,
     }
 
@@ -29,7 +29,7 @@ export default class AnalyseTemporelle extends Component {
     /** Constructeur **/
     constructor(props) {
         super(props);
-        this.loadBudgets = Services.loadBudgets.bind(this);
+        this.loadSoldesBudgets = Services.loadSoldesBudgets.bind(this);
         this.calculateTimelines = Controller.calculateTimelines.bind(this);
         this.onAnneeChange = Controller.onAnneeChange.bind(this);
         this.onFilterChange = Controller.onFilterChange.bind(this);
@@ -39,7 +39,7 @@ export default class AnalyseTemporelle extends Component {
 
     /** Chargement des catégories **/
     componentDidMount() {
-        this.loadBudgets(this.props.selectedCompte.id);
+        this.loadSoldesBudgets(this.props.selectedCompte.id, this.state.anneeAnalyses);
     }
 
 
@@ -58,7 +58,7 @@ export default class AnalyseTemporelle extends Component {
             componentUpdate = true;
         }
         if (this.state.anneeAnalyses !== nextStates.anneeAnalyses) {
-            console.log("[TRIGGER] Context = " + nextProps.anneeAnalyses)
+            console.log("[TRIGGER] Context = " + nextStates.anneeAnalyses)
             componentUpdate = true;
         }
         if (this.state.filterChange !== nextStates.filterChange) {
@@ -106,7 +106,7 @@ export default class AnalyseTemporelle extends Component {
                         {this.state.currentBudgets != null ?
                             <GraphAnalyseTemporelle
                                 anneeAnalyses={this.state.anneeAnalyses}
-                                analysesGroupedByCategories={this.state.analysesGroupedByCategories}
+                                timelinesGroupedByCategories={this.state.timelinesGroupedByCategories}
                                 timelinesSoldes={this.state.timelinesSoldes}
                                 filterSoldesActive={this.state.filterSoldesActive}
                                 listeCategories={this.state.listeCategories}

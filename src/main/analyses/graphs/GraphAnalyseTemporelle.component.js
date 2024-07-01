@@ -7,7 +7,7 @@ import * as Controller from './GraphAnalyseTemporelle.controller'
  * Composant de graphique pour l'analyse temporelle.
  * @param {Object} props - Les propriétés passées au composant.
  * @param {string} props.anneeAnalyses - L'année des analyses.
- * @param {Array} props.analysesGroupedByCategories - Les analyses groupées par catégories.
+ * @param {Array} props.timelinesGroupedByCategories - Les analyses groupées par catégories.
  * @param {Array} props.timelinesSoldes - Les analyses groupées du soldes.
  * @param {Boolean} props.filterSoldesActive - Le filtre des soldes.
  * @param {Array} props.listeCategories - Le tableau des catégories.
@@ -15,7 +15,7 @@ import * as Controller from './GraphAnalyseTemporelle.controller'
  */
 const GraphAnalyseTemporelle = ({
                                     anneeAnalyses,
-                                    analysesGroupedByCategories,
+                                    timelinesGroupedByCategories,
                                     timelinesSoldes,
                                     filterSoldesActive,
                                     listeCategories
@@ -25,7 +25,7 @@ const GraphAnalyseTemporelle = ({
 
 
     /** Init du tableau pour l'affichage du graphique **/
-    Controller.populateGraphCategoriesEtSoldes(anneeAnalyses, analysesGroupedByCategories, timelinesSoldes, listeCategories, filterSoldesActive, dataCategories);
+    Controller.populateGraphCategoriesEtSoldes(anneeAnalyses, timelinesGroupedByCategories, timelinesSoldes, listeCategories, filterSoldesActive, dataCategories);
 
     /**
      * Rend les lignes du graphique.
@@ -64,8 +64,8 @@ const GraphAnalyseTemporelle = ({
                 }
                 stepNextBudget += "%"
                 lines.push(<linearGradient id={idStroke} x1="0" y1="0" x2="100%" y2="0">
-                        <stop offset="0%" stopColor={categorie.couleurCategorie}/>
-                        <stop offset={stepNextBudget} stopColor={categorie.couleurCategorie}/>
+                    <stop offset="0%" stopColor={categorie.couleur}/>
+                    <stop offset={stepNextBudget} stopColor={categorie.couleur}/>
                         <stop offset={stepNextBudget} stopColor="grey"/>
                         <stop offset="100%" stopColor="grey"/>
                     </linearGradient>
@@ -127,7 +127,7 @@ GraphAnalyseTemporelle.propTypes = {
     anneeAnalyses: PropTypes.number.isRequired,
     listeCategories: PropTypes.array.isRequired,
     filterSoldesActive: PropTypes.bool.isRequired,
-    analysesGroupedByCategories: PropTypes.array.isRequired,
+    timelinesGroupedByCategories: PropTypes.array.isRequired,
     timelinesSoldes: PropTypes.array.isRequired
 }
 

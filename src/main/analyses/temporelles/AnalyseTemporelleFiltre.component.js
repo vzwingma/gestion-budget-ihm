@@ -26,7 +26,7 @@ const AnalyseTemporelleFiltre = ({listeCategories, onFilterChange}) => {
                         control={<Checkbox id={categorie.id} defaultChecked icon={<RadioButtonUnchecked/>}
                                            checkedIcon={<CheckCircle/>}/>}
                         label={categorie.libelle}
-                        style={{color: categorie.couleurCategorie}}
+                        style={{color: categorie.couleur}}
                         onChange={onFilterChange}/>
                 )
             }

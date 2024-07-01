@@ -9,13 +9,14 @@ import {toast} from "react-toastify";
 /**
  * Charge les budgets du compte depuis le back-end.
  * @param {string} selectedCompte - Le compte sélectionné.
+ * @param {string} selectedAnnee - L'année sélectionnée.
  */
-export function loadBudgets(selectedCompte) {
+export function loadSoldesBudgets(selectedCompte, selectedAnnee) {
     if (selectedCompte != null) {
         // Appelle le service back-end pour obtenir les budgets du compte sélectionné.
         ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
-            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET_BY_COMPTE,
-            [selectedCompte])
+            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.SOLDES_ANNEE,
+            [selectedCompte, selectedAnnee])
             .then(data => this.calculateTimelines(data)) // En cas de succès, calcule les analyses temporelles.
             .catch(e => {
                 // En cas d'erreur, affiche un message d'erreur.
