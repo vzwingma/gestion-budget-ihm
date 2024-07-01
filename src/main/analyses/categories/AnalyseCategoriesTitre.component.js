@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
  * Page principale pour l'affichage du solde
  * @param {Object} currentCompte - Le compte courant
  * @param {Date} currentDate - La date courante
- * @param {Array} totalOperations - Le total des opérations
+ * @param {Number} totalOperations - Le total des opérations
  * @returns {JSX.Element} - L'élément JSX à afficher
  * @constructor
  */
@@ -18,7 +18,7 @@ const AnalyseTitre = ({currentCompte, currentDate, totalOperations}) => {
     AnalyseTitre.propTypes = {
         currentCompte: PropTypes.object.isRequired, // Le compte courant est requis
         currentDate: PropTypes.any.isRequired, // La date courante est requise
-        totalOperations: PropTypes.array // Le total des opérations est un tableau
+        totalOperations: PropTypes.number // Le total des opérations est un tableau
     }
 
     /**

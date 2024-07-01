@@ -138,3 +138,13 @@ function getRangEtatOperation(etatOperation) {
         rang++;
     }
 }
+
+/**
+ * Convertit un nom de mois en numéro de mois.
+ *
+ * @param {string} mon - Le nom du mois.
+ * @returns {number} - Le numéro du mois (1 pour janvier, 2 pour février, etc.).
+ */
+export function getMonthFromString(mon) {
+    return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1
+}

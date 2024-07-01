@@ -77,8 +77,7 @@ const GraphAnalyses = ({
      */
     function renderLabelSsCategorie(props) {
         const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
-        const color = Renderer.getCategorieColor(resumeSelectedSsCategorie !== null ? resumeSelectedSsCategorie.categorie : null)
-        return renderLabelAnalyse(props, selectedId, color);
+        return renderLabelAnalyse(props, selectedId, "#808080");
     }
 
     renderLabelSsCategorie.propTypes = {

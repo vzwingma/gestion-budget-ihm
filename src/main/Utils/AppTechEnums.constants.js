@@ -54,6 +54,7 @@ export const SERVICES_URL = {
         INTERVALLE: "/{{}}/intervalles",
         GET_BY_COMPTE_DATES: "/query?idCompte={{}}&annee={{}}&mois={{}}",
         GET_BY_COMPTE: "/query?idCompte={{}}",
+        SOLDES_ANNEE: "/soldes?idCompte={{}}&annee={{}}",
         SOLDES: "/soldes?idCompte={{}}&annee={{}}&mois={{}}",
         ETAT: "/{{}}/etat?actif={{}}"
     },

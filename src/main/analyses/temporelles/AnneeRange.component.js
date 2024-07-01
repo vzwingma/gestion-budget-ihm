@@ -59,6 +59,6 @@ export default class AnneeRange extends Component {
     }
 }
 AnneeRange.propTypes = {
-    selectedAnnee: PropTypes.object.isRequired,
+    selectedAnnee: PropTypes.number.isRequired,
     onAnneeChange: PropTypes.func.isRequired
 }
