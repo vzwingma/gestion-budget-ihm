@@ -17,10 +17,7 @@ export function populateGraphCategoriesEtSoldes(anneeAnalyses, timelinesGroupedB
     Object.keys(timelinesGroupedByCategories)
         .forEach(mois => {
             let datasTemporellesMois = {};
-            let label = new Date();
-            label.setMonth(mois);
-            label.setFullYear(anneeAnalyses);
-            datasTemporellesMois["name"] = label.toLocaleString('default', {month: 'long', year: 'numeric'});
+            datasTemporellesMois["name"] = createLabelTimeline(mois, anneeAnalyses);
 
             listeCategories
                 .filter(categorie => categorie.filterActive)
@@ -37,4 +34,35 @@ export function populateGraphCategoriesEtSoldes(anneeAnalyses, timelinesGroupedB
                 // Publication des données temporelles
                 datasTemporellesAnnee.push(datasTemporellesMois);
         });
+}
+
+
+/**
+ * Crée un label pour une chronologie basée sur le mois et l'année donnés.
+ *
+ * Cette fonction crée un label pour une chronologie en créant un nouvel objet Date et en définissant le mois et l'année sur les valeurs fournies.
+ * Elle compare ensuite cette date à la date actuelle :
+ * - Si l'année de l'étiquette et l'année actuelle sont les mêmes :
+ *   - Si le mois de l'étiquette et le mois actuel sont les mêmes, elle renvoie une chaîne au format "courant [mois] [année]".
+ *   - Si le mois de l'étiquette est supérieur au mois actuel, elle renvoie une chaîne au format "fin [mois actuel] [année actuelle]".
+ * - Si l'année de l'étiquette n'est pas la même que l'année actuelle, elle renvoie une chaîne au format "[mois] [année]".
+ *
+ * @param {number} mois - Le mois pour l'étiquette de la chronologie (0 pour janvier, 1 pour février, etc.).
+ * @param {number} annee - L'année pour l'étiquette de la chronologie.
+ * @returns {string} - L'étiquette pour la chronologie.
+ */
+export function createLabelTimeline(mois, annee) {
+    let label = new Date();
+    label.setMonth(mois);
+    label.setFullYear(annee);
+
+    let aujourdhui = new Date();
+    if (label.getFullYear() === aujourdhui.getFullYear()) {
+        if (label.getMonth() === aujourdhui.getMonth()) {
+            return "courant " + label.toLocaleString('default', {month: 'long', year: 'numeric'});
+        } else if (label.getMonth() > aujourdhui.getMonth()) {
+            return "fin " + aujourdhui.toLocaleString('default', {month: 'long', year: 'numeric'});
+        }
+    }
+    return label.toLocaleString('default', {month: 'long', year: 'numeric'});
 }

@@ -54,9 +54,7 @@ function createNewCategorieTimelineItem() {
 export function calculateTimelines(soldesBudgetsData) {
 
     soldesBudgetsData = Object.values(soldesBudgetsData)
-        .sort((a, b) => {
-            return getMonthFromString(a.mois) - getMonthFromString(b.mois);
-        })
+        .sort((budget1, budget2) => getMonthFromString(budget1.mois) - getMonthFromString(budget2.mois))
     let listeCategories = [];
     let timelinesGroupedByCategories = new Array(soldesBudgetsData.length);
     let timelinesSoldes = new Array(soldesBudgetsData.length);

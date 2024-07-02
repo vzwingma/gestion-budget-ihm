@@ -23,7 +23,8 @@ const AnalyseTemporelleFiltre = ({listeCategories, onFilterChange}) => {
                 return (<FormControlLabel
                         id={categorie.id}
                         key={categorie.id}
-                        control={<Checkbox id={categorie.id} defaultChecked icon={<RadioButtonUnchecked/>}
+                        control={<Checkbox id={categorie.id}
+                                           defaultChecked icon={<RadioButtonUnchecked/>}
                                            checkedIcon={<CheckCircle/>}/>}
                         label={categorie.libelle}
                         style={{color: categorie.couleur}}
