@@ -1,7 +1,8 @@
-import {Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React from "react";
 import PropTypes from "prop-types";
 import * as Controller from './GraphAnalyseTemporelle.controller'
+import {getStyleOperation} from "../../Utils/renderers/OperationValue.renderer";
 
 /**
  * Composant de graphique pour l'analyse temporelle.
@@ -9,6 +10,8 @@ import * as Controller from './GraphAnalyseTemporelle.controller'
  * @param {string} props.anneeAnalyses - L'année des analyses.
  * @param {Array} props.timelinesGroupedByCategories - Les analyses groupées par catégories.
  * @param {Array} props.timelinesSoldes - Les analyses groupées du soldes.
+ * @param {Array} props.timelinesPrevisionnellesGroupedByCategories - Les analyses à terminaison groupées par catégories.
+ * @param {Array} props.timelinesPrevisionnellesSoldes - Les analyses à terminaison groupées du soldes.
  * @param {Boolean} props.filterSoldesActive - Le filtre des soldes.
  * @param {Array} props.listeCategories - Le tableau des catégories.
  * @returns {JSX.Element} Le composant de graphique.
@@ -17,15 +20,20 @@ const GraphAnalyseTemporelle = ({
                                     anneeAnalyses,
                                     timelinesGroupedByCategories,
                                     timelinesSoldes,
+                                    timelinesPrevisionnellesGroupedByCategories,
+                                    timelinesPrevisionnellesSoldes,
                                     filterSoldesActive,
                                     listeCategories
                                 }) => {
 
     let dataCategories = [];
 
-
     /** Init du tableau pour l'affichage du graphique **/
-    Controller.populateGraphCategoriesEtSoldes(anneeAnalyses, timelinesGroupedByCategories, timelinesSoldes, listeCategories, filterSoldesActive, dataCategories);
+    console.log("Construction de l'affichage de l'analyse temporelle pour", anneeAnalyses);
+    Controller.populateGraphCategories(anneeAnalyses, listeCategories, timelinesGroupedByCategories, false, dataCategories);
+    Controller.populateGraphCategories(anneeAnalyses, listeCategories, timelinesPrevisionnellesGroupedByCategories, true, dataCategories);
+    Controller.populateGraphSoldes(anneeAnalyses, timelinesSoldes, filterSoldesActive, false, dataCategories);
+    Controller.populateGraphSoldes(anneeAnalyses, timelinesPrevisionnellesSoldes, filterSoldesActive, true, dataCategories);
 
     /**
      * Rend les lignes du graphique.
@@ -36,87 +44,115 @@ const GraphAnalyseTemporelle = ({
         listeCategories
             .filter(categorie => categorie.filterActive)
             .forEach(categorie => {
-                let idStroke = "url(#lineStroke" + categorie.id + ")";
                 lines.push(<Line key={categorie.id}
                                  type="monotone"
                                  dataKey={categorie.libelle}
-                                 stroke={idStroke}/>)
+                                 strokeWidth="3"
+                                 stroke={categorie.couleur}/>)
+
+                lines.push(<Line key={"prev_" + categorie.id}
+                                 type="monotone"
+                                 dataKey={"prev_" + categorie.libelle}
+                                 strokeWidth="1"
+                                 strokeDasharray="5 5"
+                                 stroke={categorie.couleur}/>)
             });
         return lines;
     };
 
-    /**
-     * rend le dégradé des lignes du graphique
-     * @returns {[]}
-     */
-    const renderLinesStrokes = () => {
-        let lines = [];
 
-        listeCategories
-            .filter(categorie => categorie.filterActive)
-            .forEach(categorie => {
-                let idStroke = "lineStroke" + categorie.id;
-                let stepNextBudget;
-                if (dataCategories.length === 12) {
-                    stepNextBudget = 100;
-                } else {
-                    stepNextBudget = Math.floor(((dataCategories.length - 2) / (dataCategories.length - 1)) * 100);
+    const renderSoldes = () => {
+        let soldes = [];
+        soldes.push(<Bar key="SoldesD" dataKey="SoldesD"
+                         type="monotone"
+                         fill="url('#colorSoldesD')" stroke="url('#colorSoldesD')"
+                         barSize={40}/>)
+
+        soldes.push(<Bar key="SoldesF" dataKey="SoldesF"
+                         type="monotone"
+                         fill="url('#colorSoldesF')" stroke="url('#colorSoldesF')"
+                         barSize={40}/>)
+
+        soldes.push(<Bar key="prev_SoldesD"
+                         dataKey="prev_SoldesD"
+                         type="monotone"
+                         fill="url('#colorSoldesD')" stroke="url('#colorSoldesD')"
+                         barSize={40} strokeDasharray="5 5"/>)
+
+        soldes.push(<Bar key="prev_SoldesF"
+                         dataKey="prev_SoldesF"
+                         type="monotone"
+                         fill="url('#colorSoldesF')" stroke="url('#colorSoldesF')"
+                         barSize={40} strokeDasharray="5 5"/>)
+        return soldes;
+    }
+
+
+
+    /**
+     * formatte le tooltip
+     * @param active
+     * @param payload
+     * @param label
+     * @returns {JSX.Element}
+     * @constructor
+     */
+    const CustomTooltip = ({active, payload, label}) => {
+        let tooltip = [];
+        if (active && payload && payload.length) {
+
+            payload.map((item, index) => {
+                if (!(item.dataKey.startsWith("prev_") && payload.find(p => p.dataKey === item.dataKey.replace("prev_", "")) !== undefined)) {
+                    let name = (item.dataKey.startsWith("prev_") ? "Prévisionnel " : "") + item.name.replace("prev_", "");
+
+                    if (item.name.includes("Soldes")) {
+                        let nameSoldes = item.name.includes("SoldesD") ? "Solde Début" : "Solde Fin";
+                        tooltip.push(
+                            <p key={index}>{nameSoldes} :
+                                <span className={getStyleOperation(null, item.value)}> {item.value} €</span>
+                            </p>)
+                    } else {
+                        tooltip.push(<p key={index} style={{color: item.color}}>{name} : {item.value} €</p>)
+                    }
                 }
-                stepNextBudget += "%"
-                lines.push(<linearGradient id={idStroke} x1="0" y1="0" x2="100%" y2="0">
-                    <stop offset="0%" stopColor={categorie.couleur}/>
-                    <stop offset={stepNextBudget} stopColor={categorie.couleur}/>
-                        <stop offset={stepNextBudget} stopColor="grey"/>
-                        <stop offset="100%" stopColor="grey"/>
-                    </linearGradient>
-                )
             });
-        return lines;
-    };
-
-    /**
-     * Formatte le tooltip
-     * @param value
-     * @param name
-     * @returns {[string,string]}
-     */
-    const tooltipFormatter = (value, name) => {
-        return [
-            Array.isArray(value) ? value[0] + " € / " + value[1] + " €" : value + " €"
-            , " - " + name];
+        }
+        return (
+            <div className="custom-tooltip" style={{color: "white", backgroundColor: "#121212AA"}}>
+                <h2 className="label">{label}</h2>
+                {tooltip}
+            </div>
+        );
     }
 
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <ComposedChart
-                wwidth="90%" height="90%"
-                data={dataCategories}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                }}>
+                width="100%" height="100%"
+                data={dataCategories}>
 
                 <defs>
-                    <linearGradient id="colorSoldes" x1="0" y1="1" x2="0" y2="0">
-                        <stop offset="30%" stopColor="#6584FF" stopOpacity={0.1}/>
-                        <stop offset="95%" stopColor="#6584FF" stopOpacity={0.6}/>
+                    <linearGradient id="colorSoldesD" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stopColor="#19547b" stopOpacity={0.4}/>
+                        <stop offset="100%" stopColor="#8d968b" stopOpacity={0.7}/>
                     </linearGradient>
-                    {renderLinesStrokes()}
+                    <linearGradient id="colorSoldesF" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="50%" stopColor="#8d968b" stopOpacity={0.7}/>
+                        <stop offset="100%" stopColor="#ffd89b" stopOpacity={0.9}/>
+                    </linearGradient>
                 </defs>
 
 
-                <CartesianGrid strokeDasharray="1 10" fillOpacity={0.6}/>
+                <CartesianGrid strokeDasharray="1 10"/>
                 <XAxis dataKey="name"/>
                 <YAxis/>
-                <Tooltip active={true}
-                         contentStyle={{color: "white", backgroundColor: "black"}}
-                         formatter={tooltipFormatter}/>
-                <Legend/>
+                <Tooltip content={<CustomTooltip/>}/>
+
                 {renderLines()}
-                <Bar type="monotone" dataKey="Soldes" fill="url(#colorSoldes)" stroke="url(#colorSoldes)" barSize={50}/>
+
+                {renderSoldes()}
+
             </ComposedChart>
         </ResponsiveContainer>
     );

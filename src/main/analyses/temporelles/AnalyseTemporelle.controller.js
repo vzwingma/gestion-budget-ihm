@@ -56,26 +56,38 @@ export function calculateTimelines(soldesBudgetsData) {
     soldesBudgetsData = Object.values(soldesBudgetsData)
         .sort((budget1, budget2) => getMonthFromString(budget1.mois) - getMonthFromString(budget2.mois))
     let listeCategories = [];
-    let timelinesGroupedByCategories = new Array(soldesBudgetsData.length);
-    let timelinesSoldes = new Array(soldesBudgetsData.length);
+    let timelinesGroupedByCategories = new Array(soldesBudgetsData.length - 1);
+    let timelinesPrevisionnellesGroupedByCategories = new Array(soldesBudgetsData.length);
+    let timelinesSoldes = new Array(soldesBudgetsData.length - 1);
+    let timelinesPrevisionnellesSoldes = new Array(soldesBudgetsData.length);
 
     Object.keys(soldesBudgetsData)
         .forEach(mois => {
             timelinesGroupedByCategories[mois] = calculateTimelineCategories(soldesBudgetsData[mois], false);
-            timelinesSoldes[mois] = calculateTimelineSoldes(soldesBudgetsData[mois]);
+            // Si année en cours, recopie les données pour le budget à terminaison
+            if (soldesBudgetsData.length < 12) {
+                timelinesPrevisionnellesGroupedByCategories[mois] = calculateTimelineCategories(soldesBudgetsData[mois], false);
+            }
+            timelinesSoldes[mois] = calculateTimelineSoldes(soldesBudgetsData[mois], false);
             getListeCategories(soldesBudgetsData[mois], listeCategories);
         });
     // Génération du budget à terminaison pour le budget courant
     if (soldesBudgetsData.length < 12) {
-        timelinesGroupedByCategories[soldesBudgetsData.length] = calculateTimelineCategories(soldesBudgetsData[soldesBudgetsData.length - 1], true);
+        timelinesPrevisionnellesGroupedByCategories[soldesBudgetsData.length - 1] = calculateTimelineCategories(soldesBudgetsData[soldesBudgetsData.length - 1], false);
+        timelinesPrevisionnellesGroupedByCategories[soldesBudgetsData.length] = calculateTimelineCategories(soldesBudgetsData[soldesBudgetsData.length - 1], true);
+        timelinesPrevisionnellesSoldes[soldesBudgetsData.length] = calculateTimelineSoldes(soldesBudgetsData[soldesBudgetsData.length - 1], true);
     }
 
 
     this.setState({
         currentBudgets: soldesBudgetsData,
         listeCategories: listeCategories,
+
         timelinesGroupedByCategories: timelinesGroupedByCategories,
-        timelinesSoldes: timelinesSoldes
+        timelinesPrevisionnellesGroupedByCategories: timelinesPrevisionnellesGroupedByCategories,
+
+        timelinesSoldes: timelinesSoldes,
+        timelinesPrevisionnellesSoldes: timelinesPrevisionnellesSoldes
     })
     toast.success("Analyse des budgets correctement effectuée ")
 }
@@ -108,15 +120,16 @@ function calculateTimelineCategories(budgetData, aTerminaison) {
 /**
  * Calcule l'analyse de temps pour les soldes d'un budget donné
  * @param budgetData - Les données du budget à analyser
+ * @param aTerminaison - Les données du budget à terminaison
  * @returns {SoldesTimelineItem} Un objet contenant les résultats de l'analyse
  */
-function calculateTimelineSoldes(budgetData) {
+function calculateTimelineSoldes(budgetData, aTerminaison) {
     let newTimelineSoldes: SoldesTimelineItem;
     newTimelineSoldes = {
         totaux: []
     };
     newTimelineSoldes.totaux.push(Math.ceil(budgetData.soldes.soldeAtFinMoisPrecedent));
-    newTimelineSoldes.totaux.push(Math.ceil(budgetData.soldes.soldeAtFinMoisCourant));
+    newTimelineSoldes.totaux.push(Math.ceil(aTerminaison ? budgetData.soldes.soldeAtFinMoisCourant : budgetData.soldes.soldeAtMaintenant));
     return newTimelineSoldes;
 }
 
@@ -136,8 +149,6 @@ function getListeCategories(budgetData, listeCategories) {
         categorie.filterActive = true;
         categorie.libelle = categorie.libelleCategorie;
         delete categorie.libelleCategorie;
-        //     delete categorie.totalAtMaintenant;
-        //     delete categorie.totalAtFinMoisCourant;
 
         if (!listeCategories.some((categorieInList) => categorieInList.id === categorie.id) && categorie.id !== null) {
             listeCategories.push(categorie);

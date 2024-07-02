@@ -4,38 +4,74 @@
 
 /**
  * Remplit le graphique avec les données d'une catégorie.
- * @param {string} anneeAnalyses - L'année des analyses.
- * @param {Array} timelinesGroupedByCategories - Les analyses groupées par catégories.
- * @param {Array} timelinesSoldes - Les soldes
+ * @param {number} anneeAnalyses - L'année des analyses.
  * @param {Array} listeCategories - Le tableau des catégories.
- * @param {Boolean} filterSoldesActive - Le filtre des soldes.
+ * @param {Array} timelinesGroupedByCategories - Les analyses groupées par catégories.
+ * @param {Boolean} isAtTerminaison - Les soldes
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphCategoriesEtSoldes(anneeAnalyses, timelinesGroupedByCategories, timelinesSoldes, listeCategories, filterSoldesActive, datasTemporellesAnnee) {
+export function populateGraphCategories(anneeAnalyses, listeCategories, timelinesGroupedByCategories, isAtTerminaison, datasTemporellesAnnee) {
 
-    console.log("Affichage de l'analyse temporelle pour", anneeAnalyses);
     Object.keys(timelinesGroupedByCategories)
         .forEach(mois => {
             let datasTemporellesMois = {};
-            datasTemporellesMois["name"] = createLabelTimeline(mois, anneeAnalyses);
-
+            let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
+            if (indxTemporellesMois === -1) {
+                datasTemporellesMois = {
+                    name: createLabelTimeline(mois, anneeAnalyses)
+                };
+            } else {
+                datasTemporellesMois = datasTemporellesAnnee[indxTemporellesMois];
+            }
+            // Ajout des données pour chaque catégorie
             listeCategories
                 .filter(categorie => categorie.filterActive)
                 .forEach(categorie => {
-                    datasTemporellesMois[categorie.libelle] =
+                    datasTemporellesMois[(isAtTerminaison ? "prev_" : "") + categorie.libelle] =
                         timelinesGroupedByCategories[mois][categorie.id] !== undefined ? Math.abs(timelinesGroupedByCategories[mois][categorie.id].total) : 0;
                     })
-
-                // Ajout des soldes
-                if (filterSoldesActive) {
-                    datasTemporellesMois["Soldes"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].totaux : [0, 0];
-                }
-
                 // Publication des données temporelles
+            if (indxTemporellesMois === -1) {
                 datasTemporellesAnnee.push(datasTemporellesMois);
+            } else {
+                datasTemporellesAnnee[indxTemporellesMois] = datasTemporellesMois;
+            }
         });
 }
 
+/**
+ * Remplit le graphique avec les données des soldes.
+ * @param {number} anneeAnalyses - L'année des analyses.
+ * @param {Array} timelinesSoldes - Les analyses groupées du soldes.
+ * @param {Boolean} filterSoldesActive - Le filtre des soldes.
+ * @param {Boolean} isAtTerminaison - Est-ce que c'est à la terminaison.
+ * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
+ */
+export function populateGraphSoldes(anneeAnalyses, timelinesSoldes, filterSoldesActive, isAtTerminaison, datasTemporellesAnnee) {
+    Object.keys(timelinesSoldes)
+        .forEach(mois => {
+            let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
+            let datasTemporellesMois = datasTemporellesAnnee[indxTemporellesMois];
+
+            // Ajout des soldes
+            if (filterSoldesActive) {
+                datasTemporellesMois[(isAtTerminaison ? "prev_" : "") + "SoldesD"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].totaux[0] : 0;
+                datasTemporellesMois[(isAtTerminaison ? "prev_" : "") + "SoldesF"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].totaux[1] : 0;
+            }
+            datasTemporellesAnnee[indxTemporellesMois] = datasTemporellesMois;
+        });
+}
+
+/**
+ * Remplit les données pour le graphique temporel annuel avec les données des mois.
+ * @param {Array} dataTemporelleAnnee
+ * @param {number} mois
+ * @param {number} anneeAnalyses
+ */
+function getDataTemporelleMois(dataTemporelleAnnee, mois, anneeAnalyses) {
+    let label = createLabelTimeline(mois, anneeAnalyses);
+    return dataTemporelleAnnee.findIndex(dataTemporelleMois => dataTemporelleMois.name === label);
+}
 
 /**
  * Crée un label pour une chronologie basée sur le mois et l'année donnés.

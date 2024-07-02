@@ -108,6 +108,8 @@ export default class AnalyseTemporelle extends Component {
                                 anneeAnalyses={this.state.anneeAnalyses}
                                 timelinesGroupedByCategories={this.state.timelinesGroupedByCategories}
                                 timelinesSoldes={this.state.timelinesSoldes}
+                                timelinesPrevisionnellesGroupedByCategories={this.state.timelinesPrevisionnellesGroupedByCategories}
+                                timelinesPrevisionnellesSoldes={this.state.timelinesPrevisionnellesSoldes}
                                 filterSoldesActive={this.state.filterSoldesActive}
                                 listeCategories={this.state.listeCategories}
                                 id={"graphAnalyseTemporelle"}/>
