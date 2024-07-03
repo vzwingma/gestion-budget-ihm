@@ -88,17 +88,19 @@ export default class AnalyseTemporelle extends Component {
                     <Grid2 md={2} direction={"row-reverse"}>
                         {
                             this.state.listeCategories != null ?
-                                <AnalyseTemporelleFiltre listeCategories={this.state.listeCategories}
-                                                         onFilterChange={this.onFilterChange}/> : <CircularProgress/>
+                                <>
+                                    <AnalyseTemporelleFiltre listeCategories={this.state.listeCategories}
+                                                             onFilterChange={this.onFilterChange}/>
+                                    <FormControlLabel id="Soldes" key="Soldes" label="Soldes"
+                                                      control={<Checkbox id="Soldes" defaultChecked={false}
+                                                                         icon={<RadioButtonUnchecked/>}
+                                                                         checkedIcon={<CheckCircle/>}/>}
+                                                      style={{color: "#FFFFFF"}}
+                                                      onChange={this.onFilterSoldesChange}/>
+                                </>
+                                :
+                                <CircularProgress/>
                         }
-
-                        <FormControlLabel id="Soldes" key="Soldes"
-                                          control={<Checkbox id="Soldes" defaultChecked={false}
-                                                             icon={<RadioButtonUnchecked/>}
-                                                             checkedIcon={<CheckCircle/>}/>}
-                                          label="Soldes"
-                                          style={{color: "#FFFFFF"}}
-                                          onChange={this.onFilterSoldesChange}/>
                     </Grid2>
                 </Grid2>
                 <Divider variant="middle" sx={{margin: 1}}/>
@@ -108,6 +110,8 @@ export default class AnalyseTemporelle extends Component {
                                 anneeAnalyses={this.state.anneeAnalyses}
                                 timelinesGroupedByCategories={this.state.timelinesGroupedByCategories}
                                 timelinesSoldes={this.state.timelinesSoldes}
+                                timelinesPrevisionnellesGroupedByCategories={this.state.timelinesPrevisionnellesGroupedByCategories}
+                                timelinesPrevisionnellesSoldes={this.state.timelinesPrevisionnellesSoldes}
                                 filterSoldesActive={this.state.filterSoldesActive}
                                 listeCategories={this.state.listeCategories}
                                 id={"graphAnalyseTemporelle"}/>
