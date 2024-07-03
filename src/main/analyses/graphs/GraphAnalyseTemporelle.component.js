@@ -2,7 +2,7 @@ import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, X
 import React from "react";
 import PropTypes from "prop-types";
 import * as Controller from './GraphAnalyseTemporelle.controller'
-import {getStyleOperation} from "../../Utils/renderers/OperationValue.renderer";
+import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
 
 /**
  * Composant de graphique pour l'analyse temporelle.
@@ -87,45 +87,6 @@ const GraphAnalyseTemporelle = ({
         return soldes;
     }
 
-
-
-    /**
-     * formatte le tooltip
-     * @param active
-     * @param payload
-     * @param label
-     * @returns {JSX.Element}
-     * @constructor
-     */
-    const CustomTooltip = ({active, payload, label}) => {
-        let tooltip = [];
-        if (active && payload && payload.length) {
-
-            payload.map((item, index) => {
-                if (!(item.dataKey.startsWith("prev_") && payload.find(p => p.dataKey === item.dataKey.replace("prev_", "")) !== undefined)) {
-                    let name = (item.dataKey.startsWith("prev_") ? "Prévisionnel " : "") + item.name.replace("prev_", "");
-
-                    if (item.name.includes("Soldes")) {
-                        let nameSoldes = item.name.includes("SoldesD") ? "Solde Début" : "Solde Fin";
-                        tooltip.push(
-                            <p key={index}>{nameSoldes} :
-                                <span className={getStyleOperation(null, item.value)}> {item.value} €</span>
-                            </p>)
-                    } else {
-                        tooltip.push(<p key={index} style={{color: item.color}}>{name} : {item.value} €</p>)
-                    }
-                }
-            });
-        }
-        return (
-            <div className="custom-tooltip" style={{color: "white", backgroundColor: "#121212AA"}}>
-                <h2 className="label">{label}</h2>
-                {tooltip}
-            </div>
-        );
-    }
-
-
     return (
         <ResponsiveContainer width="100%" height="100%">
             <ComposedChart
@@ -147,7 +108,7 @@ const GraphAnalyseTemporelle = ({
                 <CartesianGrid strokeDasharray="1 10"/>
                 <XAxis dataKey="name"/>
                 <YAxis/>
-                <Tooltip content={<CustomTooltip/>}/>
+                <Tooltip content={<TooltipAnalyseTemporelle/>}/>
 
                 {renderLines()}
 
@@ -164,7 +125,9 @@ GraphAnalyseTemporelle.propTypes = {
     listeCategories: PropTypes.array.isRequired,
     filterSoldesActive: PropTypes.bool.isRequired,
     timelinesGroupedByCategories: PropTypes.array.isRequired,
-    timelinesSoldes: PropTypes.array.isRequired
+    timelinesSoldes: PropTypes.array.isRequired,
+    timelinesPrevisionnellesGroupedByCategories: PropTypes.array.isRequired,
+    timelinesPrevisionnellesSoldes: PropTypes.array.isRequired
 }
 
 export default GraphAnalyseTemporelle

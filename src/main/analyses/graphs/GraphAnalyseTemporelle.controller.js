@@ -18,6 +18,7 @@ export function populateGraphCategories(anneeAnalyses, listeCategories, timeline
             let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
             if (indxTemporellesMois === -1) {
                 datasTemporellesMois = {
+                    id: "id_" + mois + "_" + anneeAnalyses + "_" + (isAtTerminaison ? "prev_" : ""),
                     name: createLabelTimeline(mois, anneeAnalyses)
                 };
             } else {

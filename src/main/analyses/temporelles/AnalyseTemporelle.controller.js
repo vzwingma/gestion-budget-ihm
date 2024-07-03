@@ -62,7 +62,7 @@ export function calculateTimelines(soldesBudgetsData) {
     let timelinesPrevisionnellesSoldes = new Array(soldesBudgetsData.length);
 
     Object.keys(soldesBudgetsData)
-        .forEach(mois => {
+        .forEach((mois: number) => {
             timelinesGroupedByCategories[mois] = calculateTimelineCategories(soldesBudgetsData[mois], false);
             // Si année en cours, recopie les données pour le budget à terminaison
             if (soldesBudgetsData.length < 12) {
