@@ -28,7 +28,7 @@ describe('createLabelTimeline', () => {
     it('should handle edge case of December correctly', () => {
         const december = 11;
         const currentYear = new Date().getFullYear();
-        const result = createLabelTimeline(december, currentYear);
+        createLabelTimeline(december, currentYear);
         //   expect(result).toEqual("new Date(currentYear, december).toLocaleString('default', {month: 'long', year: 'numeric'})");
     });
 });

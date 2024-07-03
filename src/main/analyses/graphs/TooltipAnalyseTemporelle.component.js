@@ -12,7 +12,7 @@ import React from "react";
  */
 const TooltipAnalyseTemporelle = ({active, payload, label}) => {
     let tooltip = [];
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
 
         payload.forEach(item => {
             if (!(item.dataKey.startsWith("prev_") && payload.find(p => p.dataKey === item.dataKey.replace("prev_", "")) !== undefined)) {
