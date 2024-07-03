@@ -13,7 +13,7 @@
 export function populateGraphCategories(anneeAnalyses, listeCategories, timelinesGroupedByCategories, isAtTerminaison, datasTemporellesAnnee) {
 
     Object.keys(timelinesGroupedByCategories)
-        .forEach(mois => {
+        .forEach((mois: number) => {
             let datasTemporellesMois = {};
             let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
             if (indxTemporellesMois === -1) {
@@ -50,7 +50,7 @@ export function populateGraphCategories(anneeAnalyses, listeCategories, timeline
  */
 export function populateGraphSoldes(anneeAnalyses, timelinesSoldes, filterSoldesActive, isAtTerminaison, datasTemporellesAnnee) {
     Object.keys(timelinesSoldes)
-        .forEach(mois => {
+        .forEach((mois: number) => {
             let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
             let datasTemporellesMois = datasTemporellesAnnee[indxTemporellesMois];
 
