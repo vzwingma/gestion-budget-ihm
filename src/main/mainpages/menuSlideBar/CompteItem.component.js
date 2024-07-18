@@ -50,9 +50,15 @@ const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, o
 
     function renderValueCompte() {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
-            return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
-                <OperationValue valueOperation={soldes} showSign={true}/>
-            </Typography>
+            if (soldes != null) {
+                return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
+                    <OperationValue valueOperation={soldes} showSign={true}/>
+                </Typography>
+            } else {
+                return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
+                    <span className="text-NOT_INIT">Budget non initialisé</span>
+                </Typography>
+            }
         } else {
             return <></>
         }

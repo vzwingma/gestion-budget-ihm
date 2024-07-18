@@ -12,9 +12,9 @@ import {EventOutlined} from "@mui/icons-material";
  * @returns {JSX.Element} element JSX
  * @constructor
  */
-const BudgetsSoldes = ({currentCompte, currentDate, currentBudget}) => {
+const BudgetsTitre = ({currentCompte, currentDate, currentBudget}) => {
 
-    BudgetsSoldes.propTypes = {
+    BudgetsTitre.propTypes = {
         currentCompte: PropTypes.object.isRequired,
         currentDate: PropTypes.any.isRequired,
         currentBudget: PropTypes.object.isRequired
@@ -68,4 +68,4 @@ const BudgetsSoldes = ({currentCompte, currentDate, currentBudget}) => {
     )
 };
 
-export default BudgetsSoldes
+export default BudgetsTitre

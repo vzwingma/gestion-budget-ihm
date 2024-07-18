@@ -47,6 +47,11 @@ button.buttonsActionsOperationsP {
     color: #e74c3c !important;
 }
 
+.text-NOT_INIT {
+    font-style: italic;
+    background-color: #ebebeb !important;
+    color: #121212 !important;
+}
 .text-ANNULEE {
     font-style: italic;
     text-decoration-line: line-through;
