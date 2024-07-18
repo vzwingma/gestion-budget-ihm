@@ -1,6 +1,7 @@
 /** Client HTTP **/
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
 import * as AppConstants from "../Utils/AppTechEnums.constants";
+import {v4 as uuidGen} from 'uuid';
 
 let alreadyTraced = false;
 
@@ -41,7 +42,7 @@ function evaluateBody(body) {
     if (body !== undefined) {
         jsonBody = JSON.stringify(body)
         if (process.env.REACT_APP_CONFIG_DEBUG) {
-            console.log("[WS] > Body: " + jsonBody);
+            console.log("[WS] > [Body] ", jsonBody);
         }
     }
     return jsonBody;
@@ -50,14 +51,45 @@ function evaluateBody(body) {
 /**
  * Log de l'authentification
  */
-function logAuth() {
+function logAuth(traceId, parentId) {
     if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
-        console.log("[WS] > [X-Api-Key] : " + AppConstants.API_GW_ENUM.API_KEY);
-        console.log("[WS] > [Bearer] : " + getOAuthToken());
+        traceLog(traceId, parentId, "> [X-Api-Key] : " + AppConstants.API_GW_ENUM.API_KEY);
+        traceLog(traceId, parentId, "> [Bearer] : " + getOAuthToken());
         if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
             alreadyTraced = true;
         }
     }
+}
+
+/**
+ * Trace du contenu WS avec traceId
+ * @param traceId id de la trace
+ * @param parentId id du parent de la trace
+ * @param logContent contenu du log
+ */
+function traceLog(traceId: string, parentId: string, logContent: string[]) {
+    console.log("[WS]", "[traceId:" + traceId + ", parentId:" + parentId + "]", logContent);
+}
+
+/**
+ * Début du watch de la réponse
+ * @param traceId id de la trace
+ */
+function startWatch(traceId: string) {
+    localStorage.setItem(traceId, new Date().getTime());
+}
+
+/**
+ * Fin du watch de la réponse
+ * @param traceId id de la trace
+ * @param parentId id du parent de la trace
+ * @param res réponse
+ * @returns {number} temps de réponse en ms
+ */
+function stopWatch(traceId: string, parentId: string, res) {
+    let responseTime = new Date().getTime() - localStorage.getItem(traceId);
+    localStorage.removeItem(traceId);
+    traceLog(traceId, parentId, "< [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "][t:" + responseTime + "ms]");
 }
 
 /**
@@ -73,11 +105,14 @@ export function call(httpMethod, uri, path, params, body) {
 
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
+    let traceId = uuidGen().replaceAll("-", "");
+    let parentId = uuidGen().replaceAll("-", "").substring(0, 16);
 
-    console.log("[WS] > [" + httpMethod + " -> " + fullURL + "]")
-    const jsonBody = evaluateBody(body);
+    traceLog(traceId, parentId, "> [" + httpMethod + "/" + fullURL + "]");
+    logAuth(traceId);
 
-    logAuth();
+    // Début du watch
+    startWatch(traceId);
 
     return fetch(fullURL,
         {
@@ -86,24 +121,28 @@ export function call(httpMethod, uri, path, params, body) {
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'X-Api-Key': AppConstants.API_GW_ENUM.API_KEY,
-                'Authorization': 'Bearer ' + getOAuthToken()
+                'Authorization': 'Bearer ' + getOAuthToken(),
+                'traceparent': "00-" + traceId + "-" + parentId + "-01",
             }),
-            body: jsonBody
+            body: evaluateBody(body)
         })
         .then(res => {
-            console.log("[WS] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
+
+            // Fin du watch
+            stopWatch(traceId, parentId, res);
+
             if (res.status >= 200 && res.status < 300) {
                 return res.json();
             } else if (res.status === 403) {
-                console.log("Session expirée")
+                traceLog(traceId, parentId, "Session expirée")
                 logOut();
             } else {
-                console.log(res);
+                traceLog(traceId, parentId, res);
                 throw new Error(res.statusText);
             }
         })
         .catch(e => {
-            console.log("Erreur lors de l'appel HTTP [" + fullURL + "]", e)
+            traceLog(traceId, parentId, "Erreur lors de l'appel HTTP [" + fullURL + "]", e)
             throw new Error(e);
         })
 }

@@ -5,7 +5,7 @@ import * as AppConstants from "./AppBusinessEnums.constants";
  * @param num nombre à compléter
  * @returns {string} chaine sur 2 caractères avec des 0
  */
-export function addLeadingZeros(num) {
+function addLeadingZeros(num) {
     return String(num).padStart(2, '0');
 }
 
