@@ -66,7 +66,7 @@ jobs:
     needs: build-ihm
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v4.1.7
+      - uses: actions/download-artifact@v4
         name: Download IHM app
         with:
           name: app_build.zip
@@ -83,4 +83,4 @@ jobs:
           delete-removed: true
           no-cache: true
           private: true
-          filesToInclude: ".*/*,*/*,**"
+          files-to-include: ".*/*,*/*,**"
