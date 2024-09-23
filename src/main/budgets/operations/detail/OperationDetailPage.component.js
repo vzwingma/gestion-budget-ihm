@@ -287,8 +287,7 @@ class OperationDetailPage extends Component {
                         <Typography variant={"button"} sx={{fontSize: "large"}}
                                     className={budget?.actif ? "editableField" : ""}
                                     id={OPERATION_EDITION_FORM_IDS.LIBELLE}>
-                                <span
-                                    id={OPERATION_EDITION_FORM_IDS.LIBELLE}>{Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}</span>
+                            {Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}
                         </Typography>
                         :
                         <FormControl fullWidth required error={this.state.errors.libelle != null}>

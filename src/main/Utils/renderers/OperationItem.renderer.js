@@ -58,9 +58,9 @@ export function getPeriodeRenderer(periodeKey) {
  * @param operationLibelle libellé de l'opération
  * @param listeComptes liste des comptes
  * @param maxVue vue élargie pour max
- * @returns {null}
+ * @returns JSX.Element
  */
-export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
+export function getOperationLibelle(operationLibelle, listeComptes, maxVue): JSX.Element {
 
     if (operationLibelle != null) {
         if ((operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)")) != null) {
@@ -68,12 +68,33 @@ export function getOperationLibelle(operationLibelle, listeComptes, maxVue) {
         } else if (operationLibelle.startsWith("[En Retard]")) {
             return getOperationEnRetardLibelle(operationLibelle)
         } else {
-            return operationLibelle;
+            let libelleParts = operationLibelle.split('-');
+            if (libelleParts.length > 1) {
+                return getOperationLibelleWithComment(libelleParts);
+            } else {
+                return <>{operationLibelle}</>;
+            }
         }
 
     }
-    return null;
+    return <></>;
 }
+
+/**
+ * Libellé d'une opération avec des commentaires (-)
+ * @param operationLibelleParts parties du libellé des opérations
+ * @returns {JSX.Element} élément graphique
+ */
+function getOperationLibelleWithComment(operationLibelleParts: string[]): Element {
+    let libelle = "-";
+    for (let i = 1; i < operationLibelleParts.length; i++) {
+        libelle += operationLibelleParts[i] + " ";
+    }
+    return <><span>{operationLibelleParts[0]}</span><span
+        style={{color: "grey", fontSize: "medium", fontStyle: "italic"}}>{libelle}</span></>
+
+}
+
 
 /**
  * Libellé d'une opération intercompte
