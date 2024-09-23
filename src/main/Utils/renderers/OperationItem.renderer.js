@@ -68,12 +68,7 @@ export function getOperationLibelle(operationLibelle, listeComptes, maxVue): JSX
         } else if (operationLibelle.startsWith("[En Retard]")) {
             return getOperationEnRetardLibelle(operationLibelle)
         } else {
-            let libelleParts = operationLibelle.split('-');
-            if (libelleParts.length > 1) {
-                return getOperationLibelleWithComment(libelleParts);
-            } else {
-                return <>{operationLibelle}</>;
-            }
+            return getOperationLibelleWithComment(operationLibelle);
         }
 
     }
@@ -82,16 +77,23 @@ export function getOperationLibelle(operationLibelle, listeComptes, maxVue): JSX
 
 /**
  * Libellé d'une opération avec des commentaires (-)
- * @param operationLibelleParts parties du libellé des opérations
+ * @param operationLibelle libellé des opérations
  * @returns {JSX.Element} élément graphique
  */
-function getOperationLibelleWithComment(operationLibelleParts: string[]): Element {
-    let libelle = "-";
-    for (let i = 1; i < operationLibelleParts.length; i++) {
-        libelle += operationLibelleParts[i] + " ";
+function getOperationLibelleWithComment(operationLibelle: string): Element {
+
+    let operationLibelleParts = operationLibelle.split('-');
+    if (operationLibelleParts.length > 1) {
+        let libelle = "-";
+        for (let i = 1; i < operationLibelleParts.length; i++) {
+            libelle += operationLibelleParts[i] + " ";
+        }
+        return <><span>{operationLibelleParts[0]}</span><span
+            style={{color: "grey", fontSize: "medium", fontStyle: "italic"}}>{libelle}</span></>
+    } else {
+        return <>{operationLibelle}</>;
     }
-    return <><span>{operationLibelleParts[0]}</span><span
-        style={{color: "grey", fontSize: "medium", fontStyle: "italic"}}>{libelle}</span></>
+
 
 }
 
@@ -117,7 +119,7 @@ function getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue) 
                      width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                      alt={compte[0].libelle}
                      style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
-                {operationLibelleParts[4]}
+                {getOperationLibelleWithComment(operationLibelleParts[4])}
 
             </Box>
         </Tooltip>
@@ -132,5 +134,6 @@ function getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue) 
  * @returns {JSX.Element}
  */
 function getOperationEnRetardLibelle(operationLibelle) {
-    return <><WatchLaterRounded sx={{color: "#A0A0A0"}}/>{operationLibelle.replaceAll("[En Retard]", "")}</>
+    return <><WatchLaterRounded
+        sx={{color: "#A0A0A0"}}/>{getOperationLibelleWithComment(operationLibelle.replaceAll("[En Retard]", ""))}</>
 }
