@@ -13,7 +13,6 @@ export const Infos: React.FC = () => {
 
     const [infos, setInfos] = useState<MsInfo[]>([]);
 
-
     /** Appels WS vers /actuator/info pour tous les µS **/
     useEffect(() => {
         getInfosFromMicroServices(setInfos);

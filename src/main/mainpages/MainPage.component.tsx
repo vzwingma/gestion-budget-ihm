@@ -1,106 +1,140 @@
-import React, {Component} from "react";
-import {Box, CircularProgress, Divider, Drawer, Stack} from "@mui/material";
-import {ToastContainer} from "react-toastify";
-import {BUSINESS_ONGLETS} from "../Utils/AppBusinessEnums.constants";
+import React, { useEffect, useState } from "react";
+import { Box, CircularProgress, Divider, Drawer, Stack } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import { BUSINESS_ONGLETS } from "../Utils/AppBusinessEnums.constants";
 import { loadComptes } from "./MainPage.extservices";
+import CompteBancaire from "../Models/CompteBancaire.model";
+import CompteItem from "./menuSlideBar/CompteItem.component";
+import DateRange from "./menuSlideBar/DateRange.component";
 
 
 interface MainPageProps {
-    fonction: string;
+    fonction: BUSINESS_ONGLETS;
 }
 /**
  * Page principale de gestion des budgets
  */
-class MainPage extends Component<MainPageProps> {
-
+export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    state = {
-        comptes: [],
-        selectedCompte: null,
-        selectedDate: new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0),
-        budgetMenuOpen: true
-    }
-
+    const [comptes, setComptes] = useState<CompteBancaire[]>([]);
+    const [selectedCompte, setSelectedCompte] = useState<CompteBancaire | null>(null);
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0));
+    const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
 
     /** Appels WS vers pour charger la liste des comptes **/
-    componentDidMount() {
-        loadComptes(this.setState);
+    useEffect(() => {
+        loadComptes(setComptes);
+    }, [selectedDate])
+
+
+    /**
+     * Notification lorsque le compte change
+     * @param selectedCompteFromComponent : compte sélectionnée
+     */
+    function handleCompteChange(selectedCompteFromComponent: CompteBancaire) {
+        console.log("[TRIGGER-MENU] NewContext compte=" + selectedCompteFromComponent.id)
+        setSelectedCompte(selectedCompteFromComponent);
+        setBudgetMenuOpen(false);
     }
+
+
+    /**
+     * Affichage de la menubar des comptes
+     */
+    function handleOpenMenuBar() {
+        setSelectedCompte(null);
+        setBudgetMenuOpen(true);
+    }
+
+    /**
+     *   Notification lorsque la date change
+     * @param selectedDateFromComponent : date sélectionnée
+     */
+    function handleDateChange(selectedDateFromComponent : Date) {
+        console.log("[TRIGGER-MENU] NewContext date=" + selectedDateFromComponent)
+        setSelectedDate(selectedDateFromComponent);
+    }
+
 
 
     /**
      * Render de la page principale, suivant la fonction sélectionnée
      * @returns {JSX.Element}
      */
-    renderSubMainPage() {
-        const fonction = this.props.fonction;
-        if (fonction === BUSINESS_ONGLETS.BUDGET) {
-            return <Budget selectedCompte={this.state.selectedCompte}
-                           selectedDate={this.state.selectedDate}
-                           listeComptes={this.state.comptes}
-                           onOpenMenu={this.handleOpenMenuBar}/>
-        } else if (fonction === BUSINESS_ONGLETS.ANALYSE) {
-            return <AnalyseCategories selectedCompte={this.state.selectedCompte}
-                                      selectedDate={this.state.selectedDate}
-                                      onOpenMenu={this.handleOpenMenuBar}/>
-        } else if (fonction === BUSINESS_ONGLETS.ANALYSE_TEMP) {
-            return <AnalyseTemporelle selectedCompte={this.state.selectedCompte}
-                                      onOpenMenu={this.handleOpenMenuBar}/>
-        } else {
-            return <></>
+    function renderSubMainPage() {
+        switch (fonction) {
+            case BUSINESS_ONGLETS.BUDGET:
+                return <Budget  selectedCompte={selectedCompte}
+                                selectedDate={selectedDate}
+                                listeComptes={comptes}
+                                onOpenMenu={handleOpenMenuBar} />
+                                /*
+            case BUSINESS_ONGLETS.ANALYSE:
+                return <AnalyseCategories   selectedCompte={selectedCompte}
+                                            selectedDate={selectedDate}
+                                            onOpenMenu={handleOpenMenuBar} />
+            case BUSINESS_ONGLETS.ANALYSE_TEMP:
+                return <AnalyseTemporelle selectedCompte={selectedCompte}
+                                          onOpenMenu={handleOpenMenuBar} /> */
+            default:
+                return <></>
         }
     }
 
-    renderLeftTabCompte() {
-        if (this.props.fonction === BUSINESS_ONGLETS.BUDGET) {
-            return <DateRange onDateChange={this.handleDateChange} selectedDate={this.state.selectedDate}/>
-        } else {
-            return <></>
+    /**
+     * Render de la partie gauche de la menubar
+     * @returns {JSX.Element
+     * @constructor
+     */
+    function renderLeftTabCompte() {
+        switch (fonction) {
+            case BUSINESS_ONGLETS.BUDGET:
+                return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
+            default:
+                return <></>
         }
     }
 
 
-    render() {
-        return (
-            <>
-                <Drawer variant={"temporary"} anchor="left" open={this.state.budgetMenuOpen}
-                        ModalProps={{
-                            keepMounted: true,
-                        }}>
-                    <Stack spacing={2}>
-                        <Box sx={{height: 80}}/>
+    return (
+        <>
+            <Drawer variant={"temporary"} anchor="left" open={budgetMenuOpen}
+                ModalProps={{
+                    keepMounted: true,
+                }}>
+                <Stack spacing={2}>
+                    <Box sx={{ height: 80 }} />
 
-                        {this.renderLeftTabCompte()}
+                    {renderLeftTabCompte()}
 
-                        <Stack divider={<Divider orientation="horizontal" flexItem/>}>
-                            {this.state.comptes
-                                .filter((compte) => !compte.isDisabled)
-                                .map((compte) => (
-                                    <CompteItem key={compte.id}
-                                                compte={compte}
-                                                selectedFunction={this.props.fonction}
-                                                selectedDate={this.state.selectedDate}
-                                                onRefreshMenuBar={this.state.budgetMenuOpen}
-                                                onClick={this.handleCompteChange}/>
-                                ))}
-                        </Stack>
-
+                    <Stack divider={<Divider orientation="horizontal" flexItem />}>
+                        {comptes
+                            .filter((compte) => !compte.isDisabled)
+                            .map((compte) => (
+                                <CompteItem key={compte.id}
+                                    compte={compte}
+                                    selectedFunction={fonction}
+                                    selectedDate={selectedDate}
+                                    onRefreshMenuBar={budgetMenuOpen}
+                                    onClick={handleCompteChange} />
+                            ))}
                     </Stack>
-                </Drawer>
 
-                {this.state.selectedCompte !== null && this.state.selectedDate !== null ?
-                    this.renderSubMainPage()
-                    :
-                    <CircularProgress/>}
+                </Stack>
+            </Drawer>
 
-                <ToastContainer
-                    position="bottom-left"
-                    autoClose={1000}
-                    hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false}
-                    pauseOnFocusLoss draggable pauseOnHover
-                />
-            </>
-        );
-    }
+            {selectedCompte !== null && selectedDate !== null ?
+                renderSubMainPage()
+                :
+                <CircularProgress />}
+
+            <ToastContainer
+                position="bottom-left"
+                autoClose={1000}
+                hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false}
+                pauseOnFocusLoss draggable pauseOnHover
+            />
+        </>
+    );
 }
 export default MainPage;

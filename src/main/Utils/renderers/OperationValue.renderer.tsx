@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {addEndingZeros} from '../DataUtils.utils'
-import PropTypes from "prop-types";
+import Operation from '../../Models/Operation.model';
 
 /**
  * Affichage du style de l'opération suivant sa valeur
@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
  * @param valueOperation valeur de l'opération
  * @returns {string} : class name du style
  */
-export function getStyleOperation(operation : any, valueOperation : number): string {
+export function getStyleOperation(valueOperation : number, operation? : Operation): string {
 
     let style = "";
     if (operation?.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)) {
@@ -26,32 +26,31 @@ export function getStyleOperation(operation : any, valueOperation : number): str
     return style;
 }
 
+
+interface OperationValueProps {
+    valueOperation: number;
+    showSign: boolean;
+    operation?: Operation;
+}
+
 /**
  * Affichage d'une opération
- * @param operation : Object opération
+ * @param {Operation} operation : opération
  * @param valueOperation : number valeur de l'opération
  * @param showSign : boolean affichage du signe
  * @returns {JSX.Element} JSX
  * @constructor
  */
-const OperationValue = (operation : Object, valueOperation : number, showSign : boolean) : JSX.Element => {
-
+const OperationValue: React.FC<OperationValueProps> = ({ valueOperation, showSign, operation }) : JSX.Element => {
     if (valueOperation === undefined || valueOperation === null) {
         return  <></>
     } else {
         // définition du libellé
         return (
-            <span className={getStyleOperation(operation, valueOperation)}>
+            <span className={getStyleOperation(valueOperation, operation)}>
                 {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €
             </span>
         )
     }
 };
-
-OperationValue.propTypes = {
-    operation: PropTypes.object,
-    valueOperation: PropTypes.number.isRequired,
-    showSign: PropTypes.bool,
-}
-
 export default OperationValue

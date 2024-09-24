@@ -1,11 +1,10 @@
 /**
  * Constantes des onglets de l'application
- * @type {{BUDGET: string, ANALYSE: string, ANALYSE_TEMP: string}}
  */
-export const BUSINESS_ONGLETS: { BUDGET: string; ANALYSE: string; ANALYSE_TEMP: string; } = {
-    BUDGET: "BUDGET",
-    ANALYSE: "ANALYSE",
-    ANALYSE_TEMP: "ANALYSETEMP"
+export enum BUSINESS_ONGLETS {
+    BUDGET,
+    ANALYSE,
+    ANALYSE_TEMP
 }
 
 /**

@@ -21,7 +21,7 @@ export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.S
 
     let infosUpdated = [] as MsInfo[];
     for await (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
-        call(AppConstants.METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO, null, null)
+        call(AppConstants.METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
             .then((data : any[]) => {
                 for (const info of data) {
                     const msInfo : MsInfo = {

@@ -1,11 +1,19 @@
 import React, {useEffect, useState} from 'react'
 import {Container, Stack, Typography} from "@mui/material";
 import OperationValue from "../../Utils/renderers/OperationValue.renderer";
-import * as ClientHTTP from "../../Services/ClientHTTP.service";
-import * as AppConstants from "../../Utils/AppTechEnums.constants";
-import PropTypes from "prop-types";
 import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
+import CompteBancaire from '../../Models/CompteBancaire.model';
+import { getSoldesBudget } from './CompteItem.controller';
 
+
+
+interface CompteItemProps {
+    compte: CompteBancaire;
+    selectedDate: Date;
+    selectedFunction: BUSINESS_ONGLETS;
+    onRefreshMenuBar: boolean;
+    onClick: Function;
+}
 /**
  * Tuile affichant un compte
  * @param compte : object compte
@@ -16,29 +24,9 @@ import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
  * @returns {JSX.Element}
  * @constructor
  */
-const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, onClick}) => {
+const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, onClick : handleCompteChange} : CompteItemProps): JSX.Element => {
 
-    const [soldes, setSoldes] = useState(null);
-
-    /**
-     Get SOLDES du budget depuis le back-end
-     **/
-    function getSoldesBudget(compte, selectedDate) {
-        if (compte != null && selectedDate != null) {
-            ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
-                AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.SOLDES,
-                [compte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
-                .then(data => {
-                    if (data.length > 0) {
-                        setSoldes(() => data[0].soldes.soldeAtMaintenant);
-                    }
-                })
-                .catch(e => {
-                    let libErreur = "Erreur lors du chargement du budget " + compte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
-                    console.log(libErreur, e)
-                });
-        }
-    }
+    const [soldes, setSoldes] = useState(0 as number);
 
     /**
      * Chargement des soldes du budget
@@ -46,7 +34,7 @@ const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, o
      */
     useEffect(() => {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
-            getSoldesBudget(compte.id, selectedDate)
+            getSoldesBudget(compte, selectedDate, setSoldes)
         }
     }, [compte, selectedDate, selectedFunction, onRefreshMenuBar]);
 
@@ -72,7 +60,7 @@ const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, o
      */
     return (
         <Container className={"listeItem"}
-                   onClick={() => onClick(compte)}>
+                   onClick={() => handleCompteChange(compte)}>
             <Stack direction={"row"} spacing={5}>
                 <img src={"/img/banques/" + compte.icon} width={50} height={50} alt={compte.libelle}
                      key={"img_" + compte.id}/>
@@ -87,11 +75,5 @@ const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, o
 
     )
 };
-CompteItem.propTypes = {
-    compte: PropTypes.object.isRequired,
-    selectedDate: PropTypes.object.isRequired,
-    selectedFunction: PropTypes.string.isRequired,
-    onRefreshMenuBar: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired
-}
+
 export default CompteItem

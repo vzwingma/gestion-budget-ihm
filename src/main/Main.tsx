@@ -4,11 +4,12 @@ import {AuthProvider} from 'react-oidc-context';
 import {removeTokenFromStorage} from "./Services/Auth.service";
 
 import {AppBar, createTheme, CssBaseline, Stack, ThemeProvider, Typography} from "@mui/material";
-import Infos from "@/src/main/infos/Infos.component";
+import {Infos} from "@/src/main/infos/Infos.component";
 import MainPage from "@/src/main/mainpages/MainPage.component";
 import PrivateNavLinks from "@/src/main/menuTopBar/PrivateNavLinks.component";
 import Profile from "@/src/main/menuTopBar/Profile.component";
 import { OIDC_ENUM } from "./Utils/AppTechEnums.constants";
+import { BUSINESS_ONGLETS } from "./Utils/AppBusinessEnums.constants";
 
 
 /** Page principale avec le routeur **/
@@ -65,9 +66,9 @@ export default class Main extends Component {
                         <div className="App">
                             <Routes>
                                 <Route path="/" element={<Infos/>}/>
-                                <Route path="/budgets" element={<MainPage fonction="BUDGET"/>}/>
-                                <Route path="/analyses" element={<MainPage fonction="ANALYSE"/>}/>
-                                <Route path="/analysesTemporelles" element={<MainPage fonction="ANALYSETEMP"/>}/>
+                                <Route path="/budgets" element={<MainPage fonction={BUSINESS_ONGLETS.BUDGET}/>}/>
+                                <Route path="/analyses" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSE}/>}/>
+                                <Route path="/analysesTemporelles" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSE_TEMP}/>}/>
                                 <Route path="/infos" element={<Infos/>}/>
                             </Routes>
                         </div>
