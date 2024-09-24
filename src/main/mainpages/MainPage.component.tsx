@@ -63,19 +63,20 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      */
     function renderSubMainPage() {
         switch (fonction) {
+            /*
             case BUSINESS_ONGLETS.BUDGET:
                 return <Budget  selectedCompte={selectedCompte}
                                 selectedDate={selectedDate}
                                 listeComptes={comptes}
                                 onOpenMenu={handleOpenMenuBar} />
-                                /*
             case BUSINESS_ONGLETS.ANALYSE:
                 return <AnalyseCategories   selectedCompte={selectedCompte}
                                             selectedDate={selectedDate}
                                             onOpenMenu={handleOpenMenuBar} />
             case BUSINESS_ONGLETS.ANALYSE_TEMP:
                 return <AnalyseTemporelle selectedCompte={selectedCompte}
-                                          onOpenMenu={handleOpenMenuBar} /> */
+                                          onOpenMenu={handleOpenMenuBar} /> 
+                                          */
             default:
                 return <></>
         }

@@ -1,26 +1,23 @@
-import React, {Component} from "react";
-import {Stack} from "@mui/material";
-import {getLastAccessDateUtilisateur} from "@/src/main/menuTopBar/ProfileInfos.extservices";
+import React, { useEffect, useState } from "react";
+import { Stack } from "@mui/material";
+import { getLastAccessDateUtilisateur } from "./ProfileInfos.extservices";
 /**
  *   Page de Gestion du profile
  **/
-export default class ProfileInfos extends Component {
+const ProfileInfos: React.FC = (): JSX.Element => {
+
     /** Etats pour la page Infos **/
-    state = {
-        lastConnectedDate: "" as string
-    }
+    const [lastConnectedDate, setLastConnectedDate] = useState<string>("-");
 
-    componentDidMount() {
-        getLastAccessDateUtilisateur(this.setState);
-    }
+    useEffect(() => {
+        getLastAccessDateUtilisateur(setLastConnectedDate);
+    }, []);
 
-    render() {
-        return (
-            <Stack>
-                <div>Dernière connexion :</div>
-                <div>{this.state.lastConnectedDate}</div>
-            </Stack>
-        );
-    }
-
+    return (
+        <Stack>
+            <div>Dernière connexion :</div>
+            <div>{lastConnectedDate}</div>
+        </Stack>
+    );
 }
+export default ProfileInfos;

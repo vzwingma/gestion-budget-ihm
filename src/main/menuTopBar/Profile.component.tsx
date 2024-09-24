@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {useAuth} from "react-oidc-context";
 import {Avatar, CircularProgress, Tooltip, Typography} from "@mui/material";
 import {putTokenInStorage, removeTokenFromStorage} from '../Services/Auth.service'
-import ProfileInfos from "@/src/main/menuTopBar/ProfileInfos.component";
+import ProfileInfos from "./ProfileInfos.component";
 
 /**
  *   Page de Gestion du profile
  **/
-function Profile() {
+const Profile: React.FC = (): JSX.Element => {    
+
     const auth = useAuth();
 
     // LogOut et redirect pour nettoyer l'URL
@@ -17,7 +18,7 @@ function Profile() {
         window.location.href = "/";
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         // the `return` is important - addAccessTokenExpiring() returns a cleanup function
         return auth.events.addAccessTokenExpiring(() => {
             auth.signinSilent().then(r => { console.log("Renouvellement du token") });
@@ -35,7 +36,7 @@ function Profile() {
     }
 
 
-    // Si l'utilisateur est connecté 
+    // Si l'utilisateur est connecté
     // referrerPolicy="no-referrer"
     if (auth.isAuthenticated) {
         putTokenInStorage(auth.user?.id_token)

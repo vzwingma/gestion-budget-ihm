@@ -20,20 +20,19 @@ export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.S
 
 
     let infosUpdated = [] as MsInfo[];
-    for await (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
+    for (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
         call(AppConstants.METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
-            .then((data : any[]) => {
-                for (const info of data) {
+            .then((data : any) => {
                     const msInfo : MsInfo = {
-                        nom: info.nom,
-                        version: info.version,
-                    };
-                    infosUpdated.push(msInfo)
+                        nom: data.nom,
+                        version: data.version
+                    }
+                    infosUpdated.push(msInfo);
+                    setInfo(infosUpdated);
                 }
-                setInfo(infosUpdated)
-            })
-            .catch(() => {
-                console.log("Erreur pour " + backEnd.idMS)
+            )
+            .catch((e) => {
+                console.log("Erreur pour " + backEnd.idMS, e)
                 const errData : MsInfo = {
                     nom: backEnd.idMS,
                     version: 'N/A'
@@ -42,5 +41,6 @@ export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.S
                 setInfo(infosUpdated)
             })
     }
+    
 }
 

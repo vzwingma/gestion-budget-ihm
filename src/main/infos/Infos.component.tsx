@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography } from "@mui/material";
-import { AlignHorizontalCenter } from "@mui/icons-material";
 import { getInfosFromMicroServices } from "./Infos.extservices";
 import MicroServicesInfos from "./MicroServicesInfos.component";
 import MsInfo from "../Models/MsInfo.model";
@@ -20,19 +19,23 @@ export const Infos: React.FC = () => {
 
     /** Phase de Render à partir de la liste de statuts  **/
     return (
-        <AlignHorizontalCenter>
+        <div>
             <TableHead>
                 <TableRow>
                     <TableCell>
-                        <AlignHorizontalCenter><Typography variant={"h3"}> Gestion de budgets</Typography></AlignHorizontalCenter>
+                        <div>
+                            <Typography variant={"h3"}> Gestion de budgets</Typography>
+                        </div>
                     </TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 <TableRow>
                     <TableCell>
-                        <AlignHorizontalCenter><img src="/img/icon.png" width="300" height="362"
-                            className="d-inline-block align-middle" alt="Gestion de budgets" /></AlignHorizontalCenter>
+                        <div>
+                            <img src="/img/icon.png" width="300" height="362"
+                            className="d-inline-block align-middle" alt="Gestion de budgets" />
+                        </div>
                     </TableCell>
                 </TableRow>
                 <TableRow>
@@ -60,6 +63,6 @@ export const Infos: React.FC = () => {
                     <TableCell align={"right"} style={{ color: "#114b65" }}>by Zed.corp</TableCell>
                 </TableRow>
             </TableFooter>
-        </AlignHorizontalCenter>
+        </div>
     )
 }
