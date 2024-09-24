@@ -12,11 +12,10 @@ export default class ProfileInfos extends Component {
 
     constructor(props : any) {
         super(props);
-        this.getLastAccessDateUtilisateur = getLastAccessDateUtilisateur.bind(this);
     }
 
     componentDidMount() {
-        this.getLastAccessDateUtilisateur();
+        getLastAccessDateUtilisateur(this.setState);
     }
 
     render() {

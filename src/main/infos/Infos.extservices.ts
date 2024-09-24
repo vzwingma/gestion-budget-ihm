@@ -1,13 +1,13 @@
 import * as AppConstants from "../Utils/AppTechEnums.constants"
 import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppTechEnums.constants"
 import {call} from "../Services/ClientHTTP.service";
+import React from "react";
 
 
 /**
  * Chargement des infos des µS
- * @returns {Promise<void>}
  */
-export async function getInfosFromMicroServices(): Promise<void> {
+export async function getInfosFromMicroServices(setState : React.Dispatch<React.SetStateAction<any>>) {
 
     /** Config Backend **/
     const backEnds = [
@@ -22,8 +22,8 @@ export async function getInfosFromMicroServices(): Promise<void> {
     for await (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
         call(AppConstants.METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO, null, null)
             .then((data) => {
-                infosUpdated.push(data)
-                this.setState({infos: infosUpdated})
+                infosUpdated.push(data);
+                setState({infos: infosUpdated})
             })
             .catch(() => {
                 console.log("Erreur pour " + backEnd.idMS)
@@ -33,7 +33,7 @@ export async function getInfosFromMicroServices(): Promise<void> {
                     description: 'Module pour les ' + backEnd.idMS
                 };
                 infosUpdated.push(errData)
-                this.setState({infos: infosUpdated})
+                setState({infos: infosUpdated})
             })
     }
 }

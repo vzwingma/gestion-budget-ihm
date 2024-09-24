@@ -1,28 +1,23 @@
 import React, {Component} from "react";
 import {Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography} from "@mui/material";
-import * as Services from "./Infos.extservices";
-import {AlignHorizontalCenter} from "@mui/icons-material";
+import {AlignHorizontalCenter, Mic} from "@mui/icons-material";
+import { getInfosFromMicroServices } from "./Infos.extservices";
 
 
-export default class Infos extends Component {
+interface infosState {
+    infos : string[];
+}
 
+export default class Infos extends Component<any, infosState> {
 
-    constructor(props : any) {
-        super(props);
-        /** Etats pour la page Infos **/
-
-        this.state = {
-            infos: []
-        };
-        this.getInfosFromMicroServices = Services.getInfosFromMicroServices.bind(this);
-    }
+    state = {
+        infos: []
+    };
 
 
     /** Appels WS vers /actuator/info pour tous les µS **/
     componentDidMount() {
-
-        this.getInfosFromMicroServices();
-
+        getInfosFromMicroServices(this.setState);
     }
 
     /** Phase de Render à partir de la liste de statuts  **/
@@ -47,14 +42,14 @@ export default class Infos extends Component {
                         <TableCell>
                             <Table size={"small"}>
                                 <TableBody>
-                                    <ModuleInfos
+                                    <MicroServicesInfos
                                         key='ihm'
                                         name='IHM'
                                         version={process.env.REACT_APP_BUDGET_VERSION}
                                         description="IHM REACT"/>
 
                                     {this.state.infos.map((msInfos) => (
-                                        <ModuleInfos
+                                        <MicroServicesInfos
                                             key={msInfos.nom} name={msInfos.nom}
                                             version={msInfos.version} description={msInfos.description}/>
                                     ))}

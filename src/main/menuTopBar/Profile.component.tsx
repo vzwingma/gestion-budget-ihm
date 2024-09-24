@@ -35,7 +35,8 @@ function Profile() {
     }
 
 
-    // Si l'utilisateur est connecté
+    // Si l'utilisateur est connecté 
+    // referrerPolicy="no-referrer"
     if (auth.isAuthenticated) {
         putTokenInStorage(auth.user?.id_token)
         return (
@@ -49,7 +50,7 @@ function Profile() {
                     <Tooltip title={auth.user?.profile.name}>
                         <Avatar onClick={logOut} src={auth.user?.profile.picture}
                                 style={{margin: "2px", width: "62px", height: "62px"}} alt="User loggé"
-                                referrerPolicy="no-referrer"/>
+                                />
                     </Tooltip>
                 </Typography>
             </>
