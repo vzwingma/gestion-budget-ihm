@@ -1,17 +1,30 @@
 import * as ClientHTTP from "../Services/ClientHTTP.service";
-import * as AppConstants from "../Utils/AppTechEnums.constants";
 import {toast} from "react-toastify";
 import CompteBancaire from "@/src/main/Models/CompteBancaire.model";
 import CompteBancaireDTO from "@/src/main/Models/CompteBancaireDTO.datamodel";
+import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../Utils/AppTechEnums.constants";
 
 /**
  * Appels WS vers pour charger la liste des comptes
  */
-export function loadComptes(selectedDate) {
+export function loadComptes(setState: React.Dispatch<React.SetStateAction<{ comptes: CompteBancaire[] }>>) {
     ClientHTTP
-        .call(AppConstants.METHODE_HTTP.GET, AppConstants.BACKEND_ENUM.URL_COMPTES, AppConstants.SERVICES_URL.COMPTES.GET_ALL, null, null)
-        .then((data) => {
-            this.comptesLoaded(data, selectedDate)
+        .call(METHODE_HTTP.GET, BACKEND_ENUM.URL_COMPTES, SERVICES_URL.COMPTES.GET_ALL, null, null)
+        .then((data : any[]) => {
+            // Création des comptes pour l'affichage (avec icones)
+            let listeComptes : CompteBancaire[] = []
+            data.forEach((compte : CompteBancaireDTO) => {
+                let compteB : CompteBancaire;
+                compteB = {
+                    id : compte.id,
+                    libelle : compte.libelle,
+                    icon : compte.itemIcon,
+                    isDisabled : !compte.actif,
+                    ordre : compte.ordre
+                };
+                listeComptes.push(compteB);
+            })
+            comptesLoaded(listeComptes, setState)
         })
         .catch(e => {
             console.log("Erreur lors du chargement des comptes ", e)
@@ -23,23 +36,11 @@ export function loadComptes(selectedDate) {
  * Chargement des comptes et tri suivant l'ordre
  * @param data comptes chargés
  */
-export function comptesLoaded(data : CompteBancaireDTO[]) {
-    console.log("Chargement de " + data.length + " comptes");
+export function comptesLoaded(comptesLabelIcons : CompteBancaire[], setState: React.Dispatch<React.SetStateAction<{ comptes: CompteBancaire[] }>>) {
+    console.log("Chargement de " + comptesLabelIcons.length + " comptes");
 
-    data.sort((c1 : CompteBancaireDTO, c2 : CompteBancaireDTO) => (c1.ordre > c2.ordre) ? 1 : -1);
-    // Création des comptes pour l'affichage (avec icones)
-    let comptesLabelIcons = data
-        .map((compte : CompteBancaireDTO) => {
-            let compteB : CompteBancaire;
-            compteB = {
-                id : compte.id,
-                libelle : compte.libelle,
-                icon : compte.itemIcon,
-                isDisabled : !compte.actif
-            };
-            return compteB;
-        })
-    this.setState({
+    comptesLabelIcons.sort((c1 : CompteBancaire, c2 : CompteBancaire) => (c1.ordre > c2.ordre) ? 1 : -1);
+    setState({
         comptes: comptesLabelIcons,
     });
 

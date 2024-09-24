@@ -2,16 +2,18 @@ import React, {Component} from "react";
 import {Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography} from "@mui/material";
 import {AlignHorizontalCenter, Mic} from "@mui/icons-material";
 import { getInfosFromMicroServices } from "./Infos.extservices";
+import MicroServicesInfos from "./MicroServicesInfos.component";
+import MsInfo from "../Models/MsInfo.model";
 
 
 interface infosState {
-    infos : string[];
+    infos : MsInfo[];
 }
 
 export default class Infos extends Component<any, infosState> {
 
-    state = {
-        infos: []
+    state: infosState = {
+        infos: [] as MsInfo[]
     };
 
 
@@ -45,13 +47,12 @@ export default class Infos extends Component<any, infosState> {
                                     <MicroServicesInfos
                                         key='ihm'
                                         name='IHM'
-                                        version={process.env.REACT_APP_BUDGET_VERSION}
-                                        description="IHM REACT"/>
+                                        version={process.env.REACT_APP_BUDGET_VERSION}/>
 
                                     {this.state.infos.map((msInfos) => (
                                         <MicroServicesInfos
                                             key={msInfos.nom} name={msInfos.nom}
-                                            version={msInfos.version} description={msInfos.description}/>
+                                            version={msInfos.version} />
                                     ))}
                                 </TableBody>
                             </Table>

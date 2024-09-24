@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Box, CircularProgress, Divider, Drawer, Stack} from "@mui/material";
 import {ToastContainer} from "react-toastify";
 import {BUSINESS_ONGLETS} from "../Utils/AppBusinessEnums.constants";
+import { loadComptes } from "./MainPage.extservices";
 
 
 interface MainPageProps {
@@ -21,19 +22,9 @@ class MainPage extends Component<MainPageProps> {
     }
 
 
-    /** Constructeur **/
-    constructor(props : any) {
-        super(props);
-        this.handleCompteChange = handleCompteChange.bind(this);
-        this.handleDateChange = handleDateChange.bind(this);
-        this.loadComptes = loadComptes.bind(this);
-        this.comptesLoaded = comptesLoaded.bind(this);
-        this.handleOpenMenuBar = handleOpenMenuBar.bind(this);
-    }
-
     /** Appels WS vers pour charger la liste des comptes **/
     componentDidMount() {
-        this.loadComptes();
+        loadComptes(this.setState);
     }
 
 

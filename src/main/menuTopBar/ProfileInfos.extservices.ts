@@ -5,7 +5,6 @@ import * as AppConstants from "../Utils/AppTechEnums.constants";
  * External services du profil
  */
 
-
 /**
  * Modification de l'opération sur action des boutons
  */

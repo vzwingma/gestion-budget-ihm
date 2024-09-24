@@ -7,11 +7,7 @@ import {getLastAccessDateUtilisateur} from "@/src/main/menuTopBar/ProfileInfos.e
 export default class ProfileInfos extends Component {
     /** Etats pour la page Infos **/
     state = {
-        lastConnectedDate: []
-    }
-
-    constructor(props : any) {
-        super(props);
+        lastConnectedDate: "" as string
     }
 
     componentDidMount() {

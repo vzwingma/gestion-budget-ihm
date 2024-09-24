@@ -67,9 +67,9 @@ function logAuth(): void {
  * @param path chemin de la ressource
  * @param params paramètres (optionnels)
  * @param body body de la requête (optionnel)
- * @returns {Promise<Response>} réponse
+ * @returns {Promise<any>} réponse
  */
-export async function call(httpMethod: string, uri: string, path: string, params: string[]|null, body: string|null): Promise<Response> {
+export async function call(httpMethod: string, uri: string, path: string, params: string[]|null, body: string|null): Promise<any> {
 
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
