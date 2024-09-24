@@ -11,8 +11,9 @@ export const getOAuthToken = () => {
  * Stockage du token
  * @param value : string valeur du token
  */
-export const putTokenInStorage = (value: string) => {
-    localStorage.setItem(OAUTH2_KEY, value);
+export const putTokenInStorage = (value: string | undefined) => {
+    if(value)
+        localStorage.setItem(OAUTH2_KEY, value);
 }
 
 /**

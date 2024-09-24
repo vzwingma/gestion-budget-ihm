@@ -21,7 +21,7 @@ function logOut() {
  * @param params paramètres (optionnels)
  * @returns {string} URL complétée
  */
-function evaluateURL(uri: string, path: string, params: string[]): string {
+function evaluateURL(uri: string, path: string, params: string[]|null): string {
     let fullURL = uri + path;
     if (params != null) {
         params.forEach(param => {
@@ -36,9 +36,9 @@ function evaluateURL(uri: string, path: string, params: string[]): string {
  * @param body : string body
  * @returns {string:null} body en JSON si body n'est pas null ou undefined
  */
-function evaluateBody(body: string): string {
+function evaluateBody(body: string|null): string|null {
     let jsonBody = null
-    if (body !== undefined) {
+    if (body !== undefined && body !== null) {
         jsonBody = JSON.stringify(body)
         if (process.env.REACT_APP_CONFIG_DEBUG) {
             console.log("[WS] > Body: ", jsonBody);
@@ -69,7 +69,7 @@ function logAuth(): void {
  * @param body body de la requête (optionnel)
  * @returns {Promise<Response>} réponse
  */
-export async function call(httpMethod: string, uri: string, path: string, params: string[], body: string): Promise<Response> {
+export async function call(httpMethod: string, uri: string, path: string, params: string[]|null, body: string|null): Promise<Response> {
 
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
