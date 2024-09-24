@@ -74,7 +74,12 @@ export function getLibellesOperation(idCompte) {
         AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.OPERATIONS.LIBELLES,
         [idCompte])
         .then(listeLibelles => {
-            listeLibelles = listeLibelles.map(libelle => libelle.split('-')[0].trim()).sort();
+            listeLibelles = listeLibelles
+                .map(libelle => libelle.split('-')[0].trim())
+                .filter(
+                    (value, index, current_value) => current_value.indexOf(value) === index
+                )
+                .sort();
             this.setState({listeLibellesOperation: listeLibelles});
         })
         .catch(e => {
