@@ -2,7 +2,7 @@
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
 import * as AppConstants from "../Utils/AppTechEnums.constants";
 
-let alreadyTraced = false;
+let alreadyTraced: boolean = false;
 
 
 /**
@@ -11,7 +11,7 @@ let alreadyTraced = false;
 function logOut() {
 
     removeTokenFromStorage();
-    window.location = "/";
+    window.location.href = "/";
 }
 
 /**
@@ -19,9 +19,9 @@ function logOut() {
  * @param uri URI de base
  * @param path chemin de la ressource
  * @param params paramètres (optionnels)
- * @returns {*}
+ * @returns {string} URL complétée
  */
-function evaluateURL(uri, path, params) {
+function evaluateURL(uri: string, path: string, params: string[]): string {
     let fullURL = uri + path;
     if (params != null) {
         params.forEach(param => {
@@ -34,14 +34,14 @@ function evaluateURL(uri, path, params) {
 /**
  * Completion du body
  * @param body : string body
- * @returns {json:null} body en JSON si body n'est pas null ou undefined
+ * @returns {string:null} body en JSON si body n'est pas null ou undefined
  */
-function evaluateBody(body) {
+function evaluateBody(body: string): string {
     let jsonBody = null
     if (body !== undefined) {
         jsonBody = JSON.stringify(body)
         if (process.env.REACT_APP_CONFIG_DEBUG) {
-            console.log("[WS] > Body: " + jsonBody);
+            console.log("[WS] > Body: ", jsonBody);
         }
     }
     return jsonBody;
@@ -50,7 +50,7 @@ function evaluateBody(body) {
 /**
  * Log de l'authentification
  */
-function logAuth() {
+function logAuth(): void {
     if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
         console.log("[WS] > [X-Api-Key] : " + AppConstants.API_GW_ENUM.API_KEY);
         console.log("[WS] > [Bearer] : " + getOAuthToken());
@@ -69,7 +69,7 @@ function logAuth() {
  * @param body body de la requête (optionnel)
  * @returns {Promise<Response>} réponse
  */
-export function call(httpMethod, uri, path, params, body) {
+export async function call(httpMethod: string, uri: string, path: string, params: string[], body: string): Promise<Response> {
 
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
@@ -79,7 +79,7 @@ export function call(httpMethod, uri, path, params, body) {
 
     logAuth();
 
-    return fetch(fullURL,
+    return await fetch(fullURL,
         {
             method: httpMethod,
             mode: "cors",
