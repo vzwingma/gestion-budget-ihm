@@ -1,13 +1,13 @@
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../Utils/AppTechEnums.constants"
 import {call} from "../Services/ClientHTTP.service";
 import React from "react";
-import MsInfo from "../Models/MsInfo.model";
+import MsInfoModel from "../Models/MsInfo.model";
 
 
 /**
  * Chargement des infos des µS
  */
-export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.SetStateAction<MsInfo[]>>) {
+export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.SetStateAction<MsInfoModel[]>>) {
 
     /** Config Backend **/
     const backEnds = [
@@ -18,11 +18,11 @@ export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.S
     ]
 
 
-    let infosUpdated = [] as MsInfo[];
+    let infosUpdated = [] as MsInfoModel[];
     for (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
         call(METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
             .then((data : any) => {
-                    const msInfo : MsInfo = {
+                    const msInfo : MsInfoModel = {
                         nom: data.nom,
                         version: data.version
                     }
@@ -32,7 +32,7 @@ export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.S
             )
             .catch((e) => {
                 console.log("Erreur pour " + backEnd.idMS, e)
-                const errData : MsInfo = {
+                const errData : MsInfoModel = {
                     nom: backEnd.idMS,
                     version: 'N/A'
                 };

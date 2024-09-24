@@ -1,23 +1,22 @@
 /**
  * Catégorie Opérations model
  */
-class CategorieOperation {
+class CategorieOperationModel {
 
     id: string;
     libelle: string;
-    categorieParente: CategorieOperation;
+    categorieParente?: CategorieOperationModel;
 
     /**
      * Constructor
      * @param id id du compte
      * @param libelle libellé du compte
-     * @param icon icone du compte
-     * @param isDisabled compte désactivé ou pas
+     * @param categorieParente catégorie parente
      */
-    constructor(id: string, libelle: string, categorieParente: CategorieOperation) {
+    constructor(id: string, libelle: string, categorieParente?: CategorieOperationModel) {
         this.id = id;
         this.libelle = libelle;
         this.categorieParente = categorieParente;
     }
 }
-export default CategorieOperation;  // export default is used to export a single class, function or primitive from a script file.
+export default CategorieOperationModel;  // export default is used to export a single class, function or primitive from a script file.

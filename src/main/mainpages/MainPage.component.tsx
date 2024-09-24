@@ -3,9 +3,10 @@ import { Box, CircularProgress, Divider, Drawer, Stack } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { BUSINESS_ONGLETS } from "../Utils/AppBusinessEnums.constants";
 import { loadComptes } from "./MainPage.extservices";
-import CompteBancaire from "../Models/CompteBancaire.model";
+import CompteBancaireModel from "../Models/CompteBancaire.model";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import DateRange from "./menuSlideBar/DateRange.component";
+import BudgetPage from "../budgets/budget/Budget.component";
 
 
 interface MainPageProps {
@@ -16,8 +17,8 @@ interface MainPageProps {
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    const [comptes, setComptes] = useState<CompteBancaire[]>([]);
-    const [selectedCompte, setSelectedCompte] = useState<CompteBancaire | null>(null);
+    const [comptes, setComptes] = useState<CompteBancaireModel[]>([]);
+    const [selectedCompte, setSelectedCompte] = useState<CompteBancaireModel | null>(null);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0));
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
 
@@ -31,7 +32,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * Notification lorsque le compte change
      * @param selectedCompteFromComponent : compte sélectionnée
      */
-    function handleCompteChange(selectedCompteFromComponent: CompteBancaire) {
+    function handleCompteChange(selectedCompteFromComponent: CompteBancaireModel) {
         console.log("[TRIGGER-MENU] NewContext compte=" + selectedCompteFromComponent.id)
         setSelectedCompte(selectedCompteFromComponent);
         setBudgetMenuOpen(false);
@@ -61,21 +62,22 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * Render de la page principale, suivant la fonction sélectionnée
      * @returns {JSX.Element}
      */
-    function renderSubMainPage() {
+    function renderSubMainPage(): JSX.Element {
         switch (fonction) {
-            /*
+
             case BUSINESS_ONGLETS.BUDGET:
-                return <Budget  selectedCompte={selectedCompte}
-                                selectedDate={selectedDate}
-                                listeComptes={comptes}
-                                onOpenMenu={handleOpenMenuBar} />
+                return <BudgetPage selectedCompte={selectedCompte}
+                                    selectedDate={selectedDate}
+                                    listeComptes={comptes}
+                                    onOpenMenu={handleOpenMenuBar} />
+            /*
             case BUSINESS_ONGLETS.ANALYSE:
                 return <AnalyseCategories   selectedCompte={selectedCompte}
                                             selectedDate={selectedDate}
                                             onOpenMenu={handleOpenMenuBar} />
             case BUSINESS_ONGLETS.ANALYSE_TEMP:
                 return <AnalyseTemporelle selectedCompte={selectedCompte}
-                                          onOpenMenu={handleOpenMenuBar} /> 
+                                          onOpenMenu={handleOpenMenuBar} />
                                           */
             default:
                 return <></>
@@ -87,7 +89,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @returns {JSX.Element
      * @constructor
      */
-    function renderLeftTabCompte() {
+    function renderLeftTabCompte(): JSX.Element {
         switch (fonction) {
             case BUSINESS_ONGLETS.BUDGET:
                 return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />

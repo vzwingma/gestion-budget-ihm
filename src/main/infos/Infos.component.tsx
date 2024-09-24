@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography } from "@mui/material";
 import { getInfosFromMicroServices } from "./Infos.extservices";
 import MicroServicesInfos from "./MicroServicesInfos.component";
-import MsInfo from "../Models/MsInfo.model";
+import MsInfoModel from "../Models/MsInfo.model";
 
 
 /**
@@ -10,7 +10,7 @@ import MsInfo from "../Models/MsInfo.model";
  */
 export const Infos: React.FC = () => {
 
-    const [infos, setInfos] = useState<MsInfo[]>([]);
+    const [infos, setInfos] = useState<MsInfoModel[]>([]);
 
     /** Appels WS vers /actuator/info pour tous les µS **/
     useEffect(() => {

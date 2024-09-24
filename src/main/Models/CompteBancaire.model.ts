@@ -1,7 +1,7 @@
 /**
  * CompteBancaire model
  */
-class CompteBancaire {
+class CompteBancaireModel {
 
     id: string;
     libelle: string;
@@ -25,4 +25,4 @@ class CompteBancaire {
         this.ordre = ordre;
     }
 }
-export default CompteBancaire;  // export default is used to export a single class, function or primitive from a script file.
+export default CompteBancaireModel;  // export default is used to export a single class, function or primitive from a script file.

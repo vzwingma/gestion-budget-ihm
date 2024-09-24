@@ -1,5 +1,5 @@
-import CategorieOperation from "../Models/CategorieOperation.model";
-import Operation from "../Models/Operation.model";
+import CategorieOperationModel from "../Models/CategorieOperation.model";
+import OperationModel from "../Models/Operation.model";
 import * as AppConstants from "./AppBusinessEnums.constants";
 
 /**
@@ -57,11 +57,11 @@ export function getLabelDate(dateOperation: string): string {
 
 /**
  * Tri par libellé
- * @param {CategorieOperation} categorie1 :  1ère catégorie
- * @param {CategorieOperation} categorie2 : 2ème catégorie
+ * @param {CategorieOperationModel} categorie1 :  1ère catégorie
+ * @param {CategorieOperationModel} categorie2 : 2ème catégorie
  * @returns {number} comparaison
  */
-export function sortLibellesCategories(categorie1 : CategorieOperation, categorie2 : CategorieOperation): number {
+export function sortLibellesCategories(categorie1 : CategorieOperationModel, categorie2 : CategorieOperationModel): number {
 
     if (categorie1.categorieParente !== null && categorie1.categorieParente !== undefined && categorie2.categorieParente !== null && categorie2.categorieParente !== undefined) {
         if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
@@ -81,24 +81,26 @@ export function sortLibellesCategories(categorie1 : CategorieOperation, categori
 
 /**
  * Tri des opérations, par date sinon par statut
- * @param {Operation} ope1 :  1ère opération
- * @param {Operation} ope2 2ème opération
+ * @param {OperationModel} ope1 :  1ère opération
+ * @param {OperationModel} ope2 2ème opération
  * @returns {number} comparaison
  */
-export function sortOperations(ope1 : Operation, ope2 : Operation): number {
-
+export function sortOperations(ope1 : OperationModel, ope2 : OperationModel): number {
+    let date1 = ope1.autresInfos.dateOperation
+    let date2 = ope2.autresInfos.dateOperation
     // Premier TRI : Par date d'opération
-    if (ope1.autresInfos.dateOperation === null && ope2.autresInfos.dateOperation !== null) {
+    if ((date1 === null || date1 === undefined) && date2 !== null) {
         return -1;
-    } else if (ope2.autresInfos.dateOperation === null && ope1.autresInfos.dateOperation !== null) {
+    } else if ((date2 === null || date2 === undefined) && date1 !== null) {
         return 1;
     } else {
-        let date1 = ope1.autresInfos.dateOperation
-        let date2 = ope2.autresInfos.dateOperation
-        if (date1 > date2) {
-            return -1;
-        } else if (date1 < date2) {
-            return 1;
+
+        if (date1 !== undefined && date2 !== undefined) {
+            if (date1 > date2) {
+                return -1;
+            } else if (date1 < date2) {
+                return 1;
+            }
         }
     }
 
@@ -115,10 +117,12 @@ export function sortOperations(ope1 : Operation, ope2 : Operation): number {
     // 3ème TRI : par date mise à jour
     let dateM1 = ope1.autresInfos.dateMaj
     let dateM2 = ope2.autresInfos.dateMaj
-    if (dateM1 > dateM2) {
-        return -1;
-    } else if (dateM1 < dateM2) {
-        return 1;
+    if (dateM1 !== undefined && dateM2 !== undefined) {
+        if (dateM1 > dateM2) {
+            return -1;
+        } else if (dateM1 < dateM2) {
+            return 1;
+        }
     }
     // Normalement n'arrive jamais
     return 0;

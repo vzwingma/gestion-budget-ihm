@@ -7,12 +7,12 @@ import {toast} from "react-toastify";
  * Réinit du budget
  * @param {String} idBudget id du budget
  */
-export function callReinitBudget(idBudget) {
+export function callReinitBudget(idBudget : string, onActionBudgetChange : Function) {
     console.log("Reinitialisation du budget [" + idBudget + "]");
     ClientHTTP.call('DELETE', AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.REINIT, [idBudget])
         .then(data => {
             console.log(data)
-            this.props.onActionBudgetChange(data)
+            onActionBudgetChange(data)
         })
         .catch((e) => {
             console.log("Erreur lors de la réinitialisation du budget", e)
@@ -26,13 +26,13 @@ export function callReinitBudget(idBudget) {
  * @param {String} idBudget id du budget
  * @param {boolean} newEtatBudget nouvel état du budget : ouverture/cloture
  */
-export function callReopenCloseBudget(idBudget, newEtatBudget) {
+export function callReopenCloseBudget(idBudget : string, newEtatBudget : boolean, onActionBudgetChange : Function) {
     console.log((newEtatBudget ? "Réouverture" : "Clôture") + " du budget " + idBudget)
 
-    ClientHTTP.call(AppConstants.METHODE_HTTP.POST, AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.ETAT, [idBudget, newEtatBudget])
+    ClientHTTP.call(AppConstants.METHODE_HTTP.POST, AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.ETAT, [idBudget, newEtatBudget.toString()])
         .then(data => {
             toast.success((newEtatBudget ? "Réouverture" : "Clôture") + "du budget " + idBudget + " effectuée")
-            this.props.onActionBudgetChange(data)
+            onActionBudgetChange(data)
         })
         .catch((e) => {
             console.log("Erreur lors de la Réouverture/Clôture du budget", e)

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {addEndingZeros} from '../DataUtils.utils'
-import Operation from '../../Models/Operation.model';
+import OperationModel from '../../Models/Operation.model';
 
 /**
  * Affichage du style de l'opération suivant sa valeur
@@ -11,7 +11,7 @@ import Operation from '../../Models/Operation.model';
  * @param valueOperation valeur de l'opération
  * @returns {string} : class name du style
  */
-export function getStyleOperation(valueOperation : number, operation? : Operation): string {
+export function getStyleOperation(valueOperation : number, operation? : OperationModel): string {
 
     let style = "";
     if (operation?.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)) {
@@ -30,12 +30,12 @@ export function getStyleOperation(valueOperation : number, operation? : Operatio
 interface OperationValueProps {
     valueOperation: number | null;
     showSign: boolean;
-    operation?: Operation;
+    operation?: OperationModel;
 }
 
 /**
  * Affichage d'une opération
- * @param {Operation} operation : opération
+ * @param {OperationModel} operation : opération
  * @param valueOperation : number valeur de l'opération
  * @param showSign : boolean affichage du signe
  * @returns {JSX.Element} JSX

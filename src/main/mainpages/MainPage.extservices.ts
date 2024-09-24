@@ -1,20 +1,20 @@
 import * as ClientHTTP from "../Services/ClientHTTP.service";
 import {toast} from "react-toastify";
-import CompteBancaire from "@/src/main/Models/CompteBancaire.model";
+import CompteBancaireModel from "@/src/main/Models/CompteBancaire.model";
 import CompteBancaireDTO from "@/src/main/Models/CompteBancaireDTO.datamodel";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../Utils/AppTechEnums.constants";
 
 /**
  * Appels WS vers pour charger la liste des comptes
  */
-export function loadComptes(setComptes: React.Dispatch<React.SetStateAction<CompteBancaire[]>>) {
+export function loadComptes(setComptes: React.Dispatch<React.SetStateAction<CompteBancaireModel[]>>) {
     ClientHTTP
         .call(METHODE_HTTP.GET, BACKEND_ENUM.URL_COMPTES, SERVICES_URL.COMPTES.GET_ALL)
         .then((data : any[]) => {
             // Création des comptes pour l'affichage (avec icones)
-            let listeComptes : CompteBancaire[] = []
+            let listeComptes : CompteBancaireModel[] = []
             data.forEach((compte : CompteBancaireDTO) => {
-                let compteB : CompteBancaire;
+                let compteB : CompteBancaireModel;
                 compteB = {
                     id : compte.id,
                     libelle : compte.libelle,
@@ -36,9 +36,9 @@ export function loadComptes(setComptes: React.Dispatch<React.SetStateAction<Comp
  * Chargement des comptes et tri suivant l'ordre
  * @param data comptes chargés
  */
-export function comptesLoaded(comptesLabelIcons : CompteBancaire[], setComptes: React.Dispatch<React.SetStateAction<CompteBancaire[]>>) {
+export function comptesLoaded(comptesLabelIcons : CompteBancaireModel[], setComptes: React.Dispatch<React.SetStateAction<CompteBancaireModel[]>>) {
     console.log("Chargement de " + comptesLabelIcons.length + " comptes");
 
-    comptesLabelIcons.sort((c1 : CompteBancaire, c2 : CompteBancaire) => (c1.ordre > c2.ordre) ? 1 : -1);
+    comptesLabelIcons.sort((c1 : CompteBancaireModel, c2 : CompteBancaireModel) => (c1.ordre > c2.ordre) ? 1 : -1);
     setComptes(comptesLabelIcons);
 }

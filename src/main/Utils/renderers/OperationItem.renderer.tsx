@@ -2,7 +2,7 @@ import {WatchLaterRounded} from "@mui/icons-material";
 import {OPERATION_ETATS_ENUM} from "../AppBusinessEnums.constants";
 import {Box, Tooltip} from "@mui/material";
 import React from "react";
-import CompteBancaire from "../../Models/CompteBancaire.model";
+import CompteBancaireModel from "../../Models/CompteBancaire.model";
 
 /**
  * Couleur d'une opération selon son état
@@ -57,11 +57,11 @@ export function getPeriodeRenderer(periodeKey : string) {
 /**
  * Render du libellé de l'opération
  * @param {string} operationLibelle : string libellé
- * @param {CompteBancaire[]} listeComptes : array : liste des comptes
+ * @param {CompteBancaireModel[]} listeComptes : array : liste des comptes
  * @param {boolean} maxVue : boolean hauteur max de la vue
  * @returns JSX.Element
  */
-export function getOperationLibelle(operationLibelle : string, listeComptes : CompteBancaire[], maxVue : boolean): JSX.Element {
+export function getOperationLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean): JSX.Element {
 
     if (operationLibelle != null) {
         if ((operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)")) != null) {
@@ -102,11 +102,11 @@ function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
 /**
  * Libellé d'une opération intercompte
  * @param {string} operationLibelle : string libellé
- * @param {CompteBancaire[]} listeComptes : array : liste des comptes
+ * @param {CompteBancaireModel[]} listeComptes : array : liste des comptes
  * @param {boolean} maxVue  hauteur max de la vue
  * @returns {*|JSX.Element}
  */
-function getOperationIntercompteLibelle(operationLibelle : string, listeComptes : CompteBancaire[], maxVue : boolean) {
+function getOperationIntercompteLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean) {
     const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
     if(operationLibelleParts == null) {
         return <>{operationLibelle}</>

@@ -1,6 +1,6 @@
 import React from 'react'
 import {TableCell, TableRow, Typography} from "@mui/material";
-import MsInfo from '../Models/MsInfo.model';
+import MsInfoModel from '../Models/MsInfo.model';
 
 /**
  * Affichage d'une tuile sur un des backend
@@ -9,7 +9,7 @@ import MsInfo from '../Models/MsInfo.model';
  * @returns {JSX.Element}
  * @constructor
  */
-const MicroServicesInfos: React.FC<MsInfo> = ({nom, version}): JSX.Element => {
+const MicroServicesInfos: React.FC<MsInfoModel> = ({nom, version}): JSX.Element => {
     return (
         <TableRow>
             <TableCell><Typography variant={"subtitle2"}>{nom}</Typography></TableCell>

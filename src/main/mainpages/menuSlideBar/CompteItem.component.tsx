@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react'
 import {Container, Stack, Typography} from "@mui/material";
 import OperationValue from "../../Utils/renderers/OperationValue.renderer";
 import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
-import CompteBancaire from '../../Models/CompteBancaire.model';
+import CompteBancaireModel from '../../Models/CompteBancaire.model';
 import { getSoldesBudget } from './CompteItem.controller';
 
 
 
 interface CompteItemProps {
-    compte: CompteBancaire;
+    compte: CompteBancaireModel;
     selectedDate: Date;
     selectedFunction: BUSINESS_ONGLETS;
     onRefreshMenuBar: boolean;

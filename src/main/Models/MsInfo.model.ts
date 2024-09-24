@@ -1,7 +1,7 @@
 /**
  * Catégorie Opérations model
  */
-class MsInfo {
+class MsInfoModel {
 
     nom: string;
     version: string | undefined;
@@ -16,4 +16,4 @@ class MsInfo {
         this.version = version;
     }
 }
-export default MsInfo;  // export default is used to export a single class, function or primitive from a script file.
+export default MsInfoModel;  // export default is used to export a single class, function or primitive from a script file.
