@@ -105,7 +105,5 @@ jobs:
           bucket-region: eu-west-3
           invalidation: /
           dist-id: E1PBK2ENEPNHGV
-          delete-removed: true
           no-cache: true
           private: true
-          files-to-include: ".*/*,*/*,**"
