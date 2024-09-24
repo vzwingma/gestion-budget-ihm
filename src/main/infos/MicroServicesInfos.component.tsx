@@ -9,7 +9,12 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element}
  * @constructor
  */
-const MicroServicesInfos = ({name, version}) => {
+interface MicroServicesInfosProps {
+    name: string;
+    version: string;
+}
+
+const MicroServicesInfos: React.FC<MicroServicesInfosProps> = ({name, version}) => {
     return (
         <TableRow>
             <TableCell><Typography variant={"subtitle2"}>{name}</Typography></TableCell>

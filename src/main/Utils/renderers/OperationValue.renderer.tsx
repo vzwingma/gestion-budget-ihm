@@ -1,6 +1,7 @@
 /**
  * Affichage d'une valeur dans la liste des opérations
  */
+import React from 'react';
 import {addEndingZeros} from '../DataUtils.utils'
 import PropTypes from "prop-types";
 
@@ -10,7 +11,7 @@ import PropTypes from "prop-types";
  * @param valueOperation valeur de l'opération
  * @returns {string} : class name du style
  */
-export function getStyleOperation(operation, valueOperation) {
+export function getStyleOperation(operation : any, valueOperation : number): string {
 
     let style = "";
     if (operation?.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)) {
@@ -33,10 +34,10 @@ export function getStyleOperation(operation, valueOperation) {
  * @returns {JSX.Element} JSX
  * @constructor
  */
-const OperationValue = ({operation, valueOperation, showSign}) => {
+const OperationValue = (operation : Object, valueOperation : number, showSign : boolean) : JSX.Element => {
 
     if (valueOperation === undefined || valueOperation === null) {
-        return <></>
+        return  <></>
     } else {
         // définition du libellé
         return (

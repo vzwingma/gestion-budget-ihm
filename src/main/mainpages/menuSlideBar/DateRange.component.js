@@ -22,8 +22,8 @@ export default class DateRange extends Component {
             // Fenêtre modale
             showModale: false,
             datePreviousBudget: new Date(selectedDate.getFullYear(), selectedDate.getMonth() - 1, 1, 0, 0, 0),
-            dateCurrentBudget: new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1, 0, 0, 0),
-            dateNextBudget: new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 1, 0, 0, 0),
+            dateCurrentBudget:  new Date(selectedDate.getFullYear(), selectedDate.getMonth(),  1, 0, 0, 0, 0),
+            dateNextBudget:     new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 1, 0, 0, 0),
         }
         this.handleSelect = Controller.handleSelect.bind(this);
         this.confirmInitNextMonth = Controller.confirmInitNextMonth.bind(this);

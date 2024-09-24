@@ -1,25 +1,28 @@
 /**
  * CompteBancaire model
  */
-class CompteBancaire {
+class CompteBancaireDTO {
 
     id: string;
     libelle: string;
-    icon: string;
-    isDisabled: boolean
+    itemIcon: string;
+    ordre: number;
+    actif: boolean
 
     /**
      * Constructor
      * @param id id du compte
      * @param libelle libellé du compte
      * @param icon icone du compte
-     * @param isDisabled compte désactivé ou pas
+     * @param ordre ordre d'affichage
+     * @param actif compte désactivé ou pas
      */
-    constructor(id: string, libelle: string, icon: string, isDisabled: boolean) {
+    constructor(id: string, libelle: string, icon: string, ordre : number, actif: boolean) {
         this.id = id;
         this.libelle = libelle;
-        this.icon = icon;
-        this.isDisabled = isDisabled;
+        this.ordre = ordre;
+        this.itemIcon = icon;
+        this.actif = actif;
     }
 }
-export default CompteBancaire;  // export default is used to export a single class, function or primitive from a script file.
+export default CompteBancaireDTO;  // export default is used to export a single class, function or primitive from a script file.

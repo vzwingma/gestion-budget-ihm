@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Stack} from "@mui/material";
-import * as Service from "./ProfileInfos.extservices"
-
+import {getLastAccessDateUtilisateur} from "@/src/main/menuTopBar/ProfileInfos.extservices";
 /**
  *   Page de Gestion du profile
  **/
@@ -11,9 +10,9 @@ export default class ProfileInfos extends Component {
         lastConnectedDate: []
     }
 
-    constructor(props) {
+    constructor(props : any) {
         super(props);
-        this.getLastAccessDateUtilisateur = Service.getLastAccessDateUtilisateur.bind(this);
+        this.getLastAccessDateUtilisateur = getLastAccessDateUtilisateur.bind(this);
     }
 
     componentDidMount() {

@@ -1,21 +1,16 @@
 import React, {Component} from "react";
 import {Box, CircularProgress, Divider, Drawer, Stack} from "@mui/material";
-import DateRange from "./menuSlideBar/DateRange.component";
-import * as Controller from "./MainPage.controller";
-import * as Services from "./MainPage.extservices";
-import Budget from "../budgets/budget/Budget.component";
-import CompteItem from "./menuSlideBar/CompteItem.component";
 import {ToastContainer} from "react-toastify";
-import AnalyseCategories from "../analyses/categories/AnalyseCategories.component";
-import PropTypes from "prop-types";
-import AnalyseTemporelle from "../analyses/temporelles/AnalyseTemporelle.component";
 import {BUSINESS_ONGLETS} from "../Utils/AppBusinessEnums.constants";
 
+
+interface MainPageProps {
+    fonction: string;
+}
 /**
  * Page principale de gestion des budgets
- * @param fonction : string fonction à afficher
  */
-export default class MainPage extends Component {
+class MainPage extends Component<MainPageProps> {
 
     /** Etats pour la page Budget/Analyse **/
     state = {
@@ -27,13 +22,13 @@ export default class MainPage extends Component {
 
 
     /** Constructeur **/
-    constructor(props) {
+    constructor(props : any) {
         super(props);
-        this.handleCompteChange = Controller.handleCompteChange.bind(this);
-        this.handleDateChange = Controller.handleDateChange.bind(this);
-        this.loadComptes = Services.loadComptes.bind(this);
-        this.comptesLoaded = Services.comptesLoaded.bind(this);
-        this.handleOpenMenuBar = Controller.handleOpenMenuBar.bind(this);
+        this.handleCompteChange = handleCompteChange.bind(this);
+        this.handleDateChange = handleDateChange.bind(this);
+        this.loadComptes = loadComptes.bind(this);
+        this.comptesLoaded = comptesLoaded.bind(this);
+        this.handleOpenMenuBar = handleOpenMenuBar.bind(this);
     }
 
     /** Appels WS vers pour charger la liste des comptes **/
@@ -117,6 +112,4 @@ export default class MainPage extends Component {
         );
     }
 }
-MainPage.propTypes = {
-    fonction: PropTypes.string.isRequired
-}
+export default MainPage;

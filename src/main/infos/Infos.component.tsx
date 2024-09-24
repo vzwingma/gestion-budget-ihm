@@ -1,13 +1,13 @@
 import React, {Component} from "react";
-import ModuleInfos from "./MicroServicesInfos.component";
 import {Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography} from "@mui/material";
 import * as Services from "./Infos.extservices";
+import {AlignHorizontalCenter} from "@mui/icons-material";
 
 
 export default class Infos extends Component {
 
 
-    constructor(props) {
+    constructor(props : any) {
         super(props);
         /** Etats pour la page Infos **/
 
@@ -28,25 +28,25 @@ export default class Infos extends Component {
     /** Phase de Render à partir de la liste de statuts  **/
     render() {
         return (
-            <center>
+            <AlignHorizontalCenter>
                 <TableHead>
                     <TableRow>
                         <TableCell>
-                            <center><Typography variant={"h3"}> Gestion de budgets</Typography></center>
+                            <AlignHorizontalCenter><Typography variant={"h3"}> Gestion de budgets</Typography></AlignHorizontalCenter>
                         </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     <TableRow>
                         <TableCell>
-                            <center><img src="/img/icon.png" width="300" height="362"
-                                         className="d-inline-block align-middle" alt="Gestion de budgets"/></center>
+                            <AlignHorizontalCenter><img src="/img/icon.png" width="300" height="362"
+                                         className="d-inline-block align-middle" alt="Gestion de budgets"/></AlignHorizontalCenter>
                         </TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>
                             <Table size={"small"}>
-                                <TableBody v>
+                                <TableBody>
                                     <ModuleInfos
                                         key='ihm'
                                         name='IHM'
@@ -68,7 +68,7 @@ export default class Infos extends Component {
                         <TableCell align={"right"} style={{color: "#114b65"}}>by Zed.corp</TableCell>
                     </TableRow>
                 </TableFooter>
-            </center>
+            </AlignHorizontalCenter>
         )
     }
 }

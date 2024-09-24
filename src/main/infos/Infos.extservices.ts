@@ -7,7 +7,7 @@ import {call} from "../Services/ClientHTTP.service";
  * Chargement des infos des µS
  * @returns {Promise<void>}
  */
-export async function getInfosFromMicroServices() {
+export async function getInfosFromMicroServices(): Promise<void> {
 
     /** Config Backend **/
     const backEnds = [
@@ -20,7 +20,7 @@ export async function getInfosFromMicroServices() {
 
     let infosUpdated = []
     for await (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
-        call(AppConstants.METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
+        call(AppConstants.METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO, null, null)
             .then((data) => {
                 infosUpdated.push(data)
                 this.setState({infos: infosUpdated})

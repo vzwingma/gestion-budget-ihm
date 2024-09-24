@@ -1,3 +1,5 @@
+import CategorieOperation from "../Models/CategorieOperation.model";
+import Operation from "../Models/Operation.model";
 import * as AppConstants from "./AppBusinessEnums.constants";
 
 /**
@@ -33,7 +35,7 @@ export function addEndingZeros(num: number): string {
  * @param eventTarget event Target
  * @returns {*} ID du DOM
  */
-export function getEventTargetId(eventTarget) {
+export function getEventTargetId(eventTarget : any): any {
     if (eventTarget != null) {
         if (eventTarget.id !== null && eventTarget.id !== "") {
             return eventTarget.id;
@@ -55,11 +57,11 @@ export function getLabelDate(dateOperation: string): string {
 
 /**
  * Tri par libellé
- * @param categorie1 premier libellé
- * @param categorie2 2ème libellé
+ * @param {CategorieOperation} categorie1 :  1ère catégorie
+ * @param {CategorieOperation} categorie2 : 2ème catégorie
  * @returns {number} comparaison
  */
-export function sortLibellesCategories(categorie1, categorie2): number {
+export function sortLibellesCategories(categorie1 : CategorieOperation, categorie2 : CategorieOperation): number {
 
     if (categorie1.categorieParente !== null && categorie1.categorieParente !== undefined && categorie2.categorieParente !== null && categorie2.categorieParente !== undefined) {
         if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
@@ -83,7 +85,7 @@ export function sortLibellesCategories(categorie1, categorie2): number {
  * @param {Operation} ope2 2ème opération
  * @returns {number} comparaison
  */
-export function sortOperations(ope1, ope2): number {
+export function sortOperations(ope1 : Operation, ope2 : Operation): number {
 
     // Premier TRI : Par date d'opération
     if (ope1.autresInfos.dateOperation === null && ope2.autresInfos.dateOperation !== null) {
@@ -137,6 +139,7 @@ function getRangEtatOperation(etatOperation: string): number {
         }
         rang++;
     }
+    return rang;
 }
 
 /**

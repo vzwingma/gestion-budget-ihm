@@ -39,13 +39,14 @@ import {
     VolunteerActivismOutlined
 } from "@mui/icons-material";
 import React from "react";
+import Operation from "../../Models/Operation.model";
 
 /**
  * Couleur de la catégorie
- * @param operationCategorie catégorie de l'opération
+ * @param {Operation} operationCategorie catégorie de l'opération
  * @returns {string} color catégorie
  */
-export function getCategorieColor(operationCategorie: any): string {
+export function getCategorieColor(operationCategorie: Operation): string {
 
     if (operationCategorie?.id != null) {
         switch (operationCategorie.id) {
@@ -75,10 +76,10 @@ export function getCategorieColor(operationCategorie: any): string {
 
 /**
  * Icone par catégories et sous catégorie
- * @param operationCategorie : object catégprie
+ * @param {Operation} operationCategorie : catégorie d'opération
  * @returns {JSX.Element} icone MaterialUI
  */
-export function getCategorieIcon(operationCategorie: any): JSX.Element {
+export function getCategorieIcon(operationCategorie: Operation): JSX.Element {
     if (operationCategorie != null) {
 
         let icon = getCategorieIconVirement(operationCategorie.id)

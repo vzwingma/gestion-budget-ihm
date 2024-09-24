@@ -2,7 +2,7 @@ import React from "react";
 import {useAuth} from "react-oidc-context";
 import {Avatar, CircularProgress, Tooltip, Typography} from "@mui/material";
 import {putTokenInStorage, removeTokenFromStorage} from '../Services/Auth.service'
-import ProfileInfos from "./ProfileInfos.component";
+import ProfileInfos from "@/src/main/menuTopBar/ProfileInfos.component";
 
 /**
  *   Page de Gestion du profile
@@ -12,15 +12,15 @@ function Profile() {
 
     // LogOut et redirect pour nettoyer l'URL
     function logOut() {
-        auth.removeUser();
+        auth.removeUser().then(() => {console.log("Déconnexion de l'utilisateur")});
         removeTokenFromStorage();
-        window.location = "/";
+        window.location.href = "/";
     }
 
     React.useEffect(() => {
         // the `return` is important - addAccessTokenExpiring() returns a cleanup function
         return auth.events.addAccessTokenExpiring(() => {
-            auth.signinSilent();
+            auth.signinSilent().then(r => { console.log("Renouvellement du token") });
         })
     }, [auth, auth.events, auth.signinSilent]);
 

@@ -1,30 +1,30 @@
 import React, {Component} from "react";
 import {HashRouter, Route, Routes} from "react-router-dom";
 import {AuthProvider} from 'react-oidc-context';
-import * as AppConstants from "./Utils/AppTechEnums.constants"
-import Infos from "./infos/Infos.component";
 import {removeTokenFromStorage} from "./Services/Auth.service";
 
 import {AppBar, createTheme, CssBaseline, Stack, ThemeProvider, Typography} from "@mui/material";
-import Profile from "./menuTopBar/Profile.component";
-import PrivateNavLinks from "./menuTopBar/PrivateNavLinks.component";
-import MainPage from "./mainpages/MainPage.component";
+import Infos from "@/src/main/infos/Infos.component";
+import MainPage from "@/src/main/mainpages/MainPage.component";
+import PrivateNavLinks from "@/src/main/menuTopBar/PrivateNavLinks.component";
+import Profile from "@/src/main/menuTopBar/Profile.component";
+import { OIDC_ENUM } from "./Utils/AppTechEnums.constants";
 
 
 /** Page principale avec le routeur **/
 export default class Main extends Component {
 
     oidcConfig = {
-        authority: AppConstants.OIDC_ENUM.AUTHORITY,
-        client_id: AppConstants.OIDC_ENUM.CLIENT_ID,
-        client_secret: AppConstants.OIDC_ENUM.CLIENT_SECRET,
+        authority: OIDC_ENUM.AUTHORITY,
+        client_id: OIDC_ENUM.CLIENT_ID,
+        client_secret: OIDC_ENUM.CLIENT_SECRET,
         response_type: 'code',
         automaticSilentRenew: true,
         scope: 'openid profile email',
         acr_values: "Level3",
         ui_locales: "nb",
-        redirect_uri: AppConstants.OIDC_ENUM.URL + 'login/response',
-        post_logout_redirect_uri: AppConstants.OIDC_ENUM.URL + 'logout/response'
+        redirect_uri: OIDC_ENUM.URL + 'login/response',
+        post_logout_redirect_uri: OIDC_ENUM.URL + 'logout/response'
     };
 
 
