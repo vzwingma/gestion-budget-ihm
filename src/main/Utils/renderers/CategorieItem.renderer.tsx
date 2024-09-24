@@ -45,7 +45,7 @@ import React from "react";
  * @param operationCategorie catégorie de l'opération
  * @returns {string} color catégorie
  */
-export function getCategorieColor(operationCategorie) {
+export function getCategorieColor(operationCategorie: any): string {
 
     if (operationCategorie?.id != null) {
         switch (operationCategorie.id) {
@@ -78,7 +78,7 @@ export function getCategorieColor(operationCategorie) {
  * @param operationCategorie : object catégprie
  * @returns {JSX.Element} icone MaterialUI
  */
-export function getCategorieIcon(operationCategorie) {
+export function getCategorieIcon(operationCategorie: any): JSX.Element {
     if (operationCategorie != null) {
 
         let icon = getCategorieIconVirement(operationCategorie.id)
@@ -118,7 +118,7 @@ export function getCategorieIcon(operationCategorie) {
  * @param idCategorie : string idCatégorie
  * @returns {JSX.Element|null}
  */
-function getCategorieIconVirement(idCategorie) {
+function getCategorieIconVirement(idCategorie: string): JSX.Element | null {
     switch (idCategorie) {
         case 'ea6dcc12-3349-4047-a1e5-cd1d7254f16e': // VIREMENTS
             return <AccountBalanceRounded/>
@@ -139,7 +139,7 @@ function getCategorieIconVirement(idCategorie) {
  * @param idCategorie : string idCatégorie
  * @returns {JSX.Element|null}
  */
-function getCategorieIconDivers(idCategorie) {
+function getCategorieIconDivers(idCategorie: string): JSX.Element | null {
     switch (idCategorie) {
         // DIVERS
         case '94669a73-2563-4a31-8d67-35a8d96d8686': // DIVERS
@@ -163,7 +163,7 @@ function getCategorieIconDivers(idCategorie) {
  * @param idCategorie : string idCatégorie
  * @returns {JSX.Element|null}
  */
-function getCategorieIconPrelevement(idCategorie) {
+function getCategorieIconPrelevement(idCategorie: string): JSX.Element | null {
     switch (idCategorie) {
         case '504beea7-ed52-438a-aced-15e9603b82ab': // PRELEVEMENTS
             return <CreditScoreRounded/>
@@ -196,7 +196,7 @@ function getCategorieIconPrelevement(idCategorie) {
  * @param idCategorie : string idCatégorie
  * @returns {JSX.Element|null}
  */
-function getCategorieIconFraisRemboursable(idCategorie) {
+function getCategorieIconFraisRemboursable(idCategorie: string): JSX.Element | null {
     switch (idCategorie) {
         case 'b20a46a5-92ab-47a8-a70d-ecb64ddf02ce': // FRAIS REMBOURSABLES
             return <MedicationLiquidRounded/>
@@ -215,7 +215,7 @@ function getCategorieIconFraisRemboursable(idCategorie) {
  * @param idCategorie : string idCatégorie
  * @returns {JSX.Element|null}
  */
-function getCategorieIconTransport(idCategorie) {
+function getCategorieIconTransport(idCategorie: string): JSX.Element | null {
     switch (idCategorie) {
         // TRANSPORT
         case 'c35fde2a-55ec-4a27-9519-5ef5daf46799': // TRANSPORTS
@@ -249,7 +249,7 @@ function getCategorieIconTransport(idCategorie) {
  * @param idCategorie : string idCatégorie
  * @returns {JSX.Element|null}
  */
-function getCategorieIconFrais(idCategorie) {
+function getCategorieIconFrais(idCategorie: string): JSX.Element | null {
     switch (idCategorie) {
         // FRAIS
         case '270f314a-b3e5-4e05-bc96-4e2fadc4a9d3': // FRAIS
@@ -269,7 +269,7 @@ function getCategorieIconFrais(idCategorie) {
  * @param idCategorie : string idCatégorie
  * @returns {JSX.Element|null}
  */
-function getCategorieIconAlimentation(idCategorie) {
+function getCategorieIconAlimentation(idCategorie: string): JSX.Element | null {
     switch (idCategorie) {
         // ALIMENTATION
         case '8f1614c9-503c-4e7d-8cb5-0c9a9218b84a': // ALIMENTATION

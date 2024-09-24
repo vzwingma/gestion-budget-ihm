@@ -1,3 +1,4 @@
+// @ts-ignore
 import React from "react";
 import Main from "./main/Main";
 import 'react-toastify/dist/ReactToastify.css';

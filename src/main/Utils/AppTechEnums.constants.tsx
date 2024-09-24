@@ -12,7 +12,7 @@ export const OIDC_ENUM = {
  * Enum des valeur API KEY
  * @type {{API_KEY: *}}
  */
-export const API_GW_ENUM = {
+export const API_GW_ENUM: { API_KEY: any } = {
     API_KEY: process.env.REACT_APP_CONFIG_API_KEY
 }
 
@@ -20,7 +20,12 @@ export const API_GW_ENUM = {
  * Enum des Backends
  * @type {{URL_PARAMS: string, URL_COMPTES: string, URL_UTILISATEURS: string, URL_OPERATIONS: string}}
  */
-export const BACKEND_ENUM = {
+export const BACKEND_ENUM: {
+    URL_PARAMS: string;
+    URL_COMPTES: string;
+    URL_UTILISATEURS: string;
+    URL_OPERATIONS: string
+} = {
     URL_COMPTES: process.env.REACT_APP_CONFIG_URL_COMPTES + "/comptes/v2",
     URL_PARAMS: process.env.REACT_APP_CONFIG_URL_PARAMS + "/parametres/v2",
     URL_UTILISATEURS: process.env.REACT_APP_CONFIG_URL_UTILISATEURS + "/utilisateurs/v2",
@@ -32,7 +37,7 @@ export const BACKEND_ENUM = {
  * Enum des méthodes HTTP
  * @type {{DELETE: string, POST: string, GET: string}}
  */
-export const METHODE_HTTP = {
+export const METHODE_HTTP: { DELETE: string; POST: string; GET: string; } = {
     GET: "GET",
     DELETE: "DELETE",
     POST: "POST"
@@ -40,9 +45,24 @@ export const METHODE_HTTP = {
 
 /**
  * Services
- * @type {{COMPTES: {GET_ALL: string}, OPERATIONS: {INTERCOMPTE: string, CREATE: string, DERNIERE: string, UPDATE: string}, PARAMETRES: {CATEGORIES: string}, BUDGETS: {ETAT: string, GET: string, INTERVALLE: string, REINIT: string}, INFOS: {GET_INFO: string}, UTILISATEURS: {USERS_PREFS: string, ACCESS_DATE: string}}}
+ * @type {{INFOS: {GET_INFO: string}, COMPTES: {GET_ALL: string}, BUDGETS: {ETAT: string, GET_BY_COMPTE: string, GET_BY_COMPTE_DATES: string, INTERVALLE: string, REINIT: string, SOLDES: string, SOLDES_ANNEE: string}, OPERATIONS: {CREATE: string, UPDATE: string, DERNIERE: string, INTERCOMPTE: string, LIBELLES: string}, PARAMETRES: {CATEGORIES: string}, UTILISATEURS: {ACCESS_DATE: string, USERS_PREFS: string}}}
  */
-export const SERVICES_URL = {
+export const SERVICES_URL: {
+    INFOS: { GET_INFO: string; };
+    COMPTES: { GET_ALL: string; };
+    BUDGETS: {
+        ETAT: string;
+        GET_BY_COMPTE: string;
+        GET_BY_COMPTE_DATES: string;
+        INTERVALLE: string;
+        REINIT: string;
+        SOLDES: string;
+        SOLDES_ANNEE: string;
+    };
+    OPERATIONS: { CREATE: string; UPDATE: string; DERNIERE: string; INTERCOMPTE: string; LIBELLES: string; };
+    PARAMETRES: { CATEGORIES: string; };
+    UTILISATEURS: { ACCESS_DATE: string; USERS_PREFS: string; };
+} = {
     INFOS: {
         GET_INFO: "/_info"
     },
@@ -50,13 +70,13 @@ export const SERVICES_URL = {
         GET_ALL: "/tous"
     },
     BUDGETS: {
-        REINIT: "/{{}}",
-        INTERVALLE: "/{{}}/intervalles",
-        GET_BY_COMPTE_DATES: "/query?idCompte={{}}&annee={{}}&mois={{}}",
+        ETAT: "/{{}}/etat?actif={{}}",
         GET_BY_COMPTE: "/query?idCompte={{}}",
-        SOLDES_ANNEE: "/soldes?idCompte={{}}&annee={{}}",
+        GET_BY_COMPTE_DATES: "/query?idCompte={{}}&annee={{}}&mois={{}}",
+        INTERVALLE: "/{{}}/intervalles",
+        REINIT: "/{{}}",
         SOLDES: "/soldes?idCompte={{}}&annee={{}}&mois={{}}",
-        ETAT: "/{{}}/etat?actif={{}}"
+        SOLDES_ANNEE: "/soldes?idCompte={{}}&annee={{}}"
     },
     OPERATIONS: {
         CREATE: "/{{}}/operations",

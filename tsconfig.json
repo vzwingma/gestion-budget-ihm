@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "jsx": "react"
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}

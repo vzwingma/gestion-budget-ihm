@@ -2,9 +2,9 @@ import * as DataUtils from "../../../Utils/DataUtils.utils";
 
 /**
  * Action sur le bouton ou sur la modale
- * @param event
+ * @param event : Event sur le bouton
  */
-export function handleButtonsBudgetClick(event) {
+export function handleButtonsBudgetClick(event: Event) {
 
     if (event.target.className !== "btn-close") {
         let action = DataUtils.getEventTargetId(event.target);

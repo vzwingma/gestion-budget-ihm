@@ -5,7 +5,7 @@ import * as AppConstants from "./AppBusinessEnums.constants";
  * @param num nombre à compléter
  * @returns {string} chaine sur 2 caractères avec des 0
  */
-export function addLeadingZeros(num) {
+export function addLeadingZeros(num: number): string {
     return String(num).padStart(2, '0');
 }
 
@@ -14,10 +14,10 @@ export function addLeadingZeros(num) {
  * @param num nombre à compléter
  * @returns {string} chaine sur 2 caractères avec des 0
  */
-export function addEndingZeros(num) {
+export function addEndingZeros(num: number): string {
 
-    let n = num.toLocaleString('us-US');
-    n = n.replaceAll(".", ",")
+    let n: string = num.toLocaleString('us-US');
+    n = n.replace(".", ",")
     if (n.indexOf(',') > 0) {
         let r = n.substring(n.indexOf(',') + 1)
         let e = n.substring(0, n.indexOf(','))
@@ -48,7 +48,7 @@ export function getEventTargetId(eventTarget) {
  * @param dateOperation date à afficher
  * @returns {string} label FR de la date
  */
-export function getLabelDate(dateOperation) {
+export function getLabelDate(dateOperation: string): string {
     return new Date(Date.parse(dateOperation)).toLocaleDateString("fr");
 }
 
@@ -59,7 +59,7 @@ export function getLabelDate(dateOperation) {
  * @param categorie2 2ème libellé
  * @returns {number} comparaison
  */
-export function sortLibellesCategories(categorie1, categorie2) {
+export function sortLibellesCategories(categorie1, categorie2): number {
 
     if (categorie1.categorieParente !== null && categorie1.categorieParente !== undefined && categorie2.categorieParente !== null && categorie2.categorieParente !== undefined) {
         if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
@@ -83,7 +83,7 @@ export function sortLibellesCategories(categorie1, categorie2) {
  * @param {Operation} ope2 2ème opération
  * @returns {number} comparaison
  */
-export function sortOperations(ope1, ope2) {
+export function sortOperations(ope1, ope2): number {
 
     // Premier TRI : Par date d'opération
     if (ope1.autresInfos.dateOperation === null && ope2.autresInfos.dateOperation !== null) {
@@ -129,7 +129,7 @@ export function sortOperations(ope1, ope2) {
  * @param etatOperation
  * @returns {number}
  */
-function getRangEtatOperation(etatOperation) {
+function getRangEtatOperation(etatOperation: string): number {
     let rang = 0;
     for (let etat in AppConstants.OPERATION_ETATS_ENUM) {
         if (etat === etatOperation) {
@@ -145,6 +145,6 @@ function getRangEtatOperation(etatOperation) {
  * @param {string} mon - Le nom du mois.
  * @returns {number} - Le numéro du mois (1 pour janvier, 2 pour février, etc.).
  */
-export function getMonthFromString(mon) {
+export function getMonthFromString(mon: string): number {
     return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1
 }
