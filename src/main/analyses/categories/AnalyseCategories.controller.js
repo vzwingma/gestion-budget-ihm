@@ -1,6 +1,6 @@
 import {toast} from "react-toastify";
 import {OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM} from "../../Utils/AppBusinessEnums.constants";
-import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
+import {getCategorieColor} from "../../Utils/renderers/CategorieItem.renderer";
 
 /**
  * Contrôleur des analyses
@@ -52,7 +52,7 @@ export function calculateResumes(budgetData) {
     let analysesGroupedByCategories = budgetData.listeOperations
         .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
         .reduce((group, operation) => {
-            let couleurCategorie = Renderer.getCategorieColor(operation.categorie);
+            let couleurCategorie = getCategorieColor(operation.categorie);
             populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
             populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
             return group;

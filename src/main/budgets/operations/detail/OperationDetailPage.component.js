@@ -13,14 +13,9 @@ import {
     Typography
 } from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
-import * as Renderer from "../../../Utils/renderers/OperationItem.renderer";
-import * as CategorieRenderer from "../../../Utils/renderers/CategorieItem.renderer";
-
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationDetailActions from "../actions/OperationDetailActions.component";
-import * as Controller from "./OperationDetailPage.controller";
 import {EMPTY_CATEGORIE, OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
-import * as Service from "./OperationDetailPage.extservices";
 import {AddRounded, EuroRounded, RemoveRounded} from "@mui/icons-material";
 import {addEndingZeros, getLabelDate} from '../../../Utils/DataUtils.utils'
 import {
@@ -30,6 +25,28 @@ import {
     TYPES_OPERATION_ENUM
 } from "../../../Utils/AppBusinessEnums.constants";
 import PropTypes from "prop-types";
+import {getCategorieColor, getCategorieIcon} from "../../../Utils/renderers/CategorieItem.renderer";
+import {
+    getOperationLibelle,
+    getOperationStateColor,
+    getPeriodeRenderer
+} from "../../../Utils/renderers/OperationItem.renderer";
+import {
+    cloneOperation,
+    getListeAllCategories,
+    handleCloseOperationForm,
+    handleDateOperationFromAction,
+    handleOperationEditionClick,
+    handleValidateOperationForm,
+    isInCreateMode,
+    isInEditMode,
+    validateDescription,
+    validateForm,
+    validateFormCategories,
+    validateFormMontant,
+    validateFormTransfertIntercompte
+} from "./OperationDetailPage.controller";
+import {getLibellesOperation, saveOperation, saveOperationIntercompte} from "./OperationDetailPage.extservices";
 
 
 /**
@@ -72,25 +89,25 @@ class OperationDetailPage extends Component {
             }
         )
 
-        this.handleOperationEditionClick = Controller.handleOperationEditionClick.bind(this);
-        this.isInEditMode = Controller.isInEditMode.bind(this);
-        this.isInCreateMode = Controller.isInCreateMode.bind(this);
-        this.getLibellesOperation = Service.getLibellesOperation.bind(this);
-        this.getListeAllCategories = Controller.getListeAllCategories.bind(this);
+        this.handleOperationEditionClick = handleOperationEditionClick.bind(this);
+        this.isInEditMode = isInEditMode.bind(this);
+        this.isInCreateMode = isInCreateMode.bind(this);
+        this.getLibellesOperation = getLibellesOperation.bind(this);
+        this.getListeAllCategories = getListeAllCategories.bind(this);
 
-        this.handleValidateOperationForm = Controller.handleValidateOperationForm.bind(this);
-        this.handleDateOperationFromAction = Controller.handleDateOperationFromAction.bind(this);
+        this.handleValidateOperationForm = handleValidateOperationForm.bind(this);
+        this.handleDateOperationFromAction = handleDateOperationFromAction.bind(this);
 
-        this.validateForm = Controller.validateForm.bind(this);
-        this.validateDescription = Controller.validateDescription.bind(this);
-        this.validateFormMontant = Controller.validateFormMontant.bind(this);
-        this.validateFormCategories = Controller.validateFormCategories.bind(this);
-        this.validateFormTransfertIntercompte = Controller.validateFormTransfertIntercompte.bind(this);
+        this.validateForm = validateForm.bind(this);
+        this.validateDescription = validateDescription.bind(this);
+        this.validateFormMontant = validateFormMontant.bind(this);
+        this.validateFormCategories = validateFormCategories.bind(this);
+        this.validateFormTransfertIntercompte = validateFormTransfertIntercompte.bind(this);
 
-        this.handleCloseOperationForm = Controller.handleCloseOperationForm.bind(this);
+        this.handleCloseOperationForm = handleCloseOperationForm.bind(this);
 
-        this.saveOperation = Service.saveOperation.bind(this);
-        this.saveOperationIntercompte = Service.saveOperationIntercompte.bind(this);
+        this.saveOperation = saveOperation.bind(this);
+        this.saveOperationIntercompte = saveOperationIntercompte.bind(this);
     }
 
 
@@ -103,7 +120,7 @@ class OperationDetailPage extends Component {
             this.getLibellesOperation(this.props.budget.idCompteBancaire);
         }
 
-        this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
+        this.setState({editOperation: cloneOperation(this.props.operation)});
     }
 
 
@@ -124,7 +141,7 @@ class OperationDetailPage extends Component {
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
 
         if (this.props.operation.id !== prevProps.operation.id) {
-            this.setState({editOperation: Controller.cloneOperation(this.props.operation)});
+            this.setState({editOperation: cloneOperation(this.props.operation)});
             // Mode Création
             if (this.props.operation.id === -1) {
                 this.setState({
@@ -250,11 +267,11 @@ class OperationDetailPage extends Component {
                     <Box width={56} height={56}
                          sx={{
                              borderRadius: "50%",
-                             backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),
+                             backgroundColor: getCategorieColor(operation.categorie),
                              color: '#FFFFFF',
                              padding: '16px 8px 0px 8px'
                          }}>
-                        <center>{CategorieRenderer.getCategorieIcon(operation.ssCategorie)}</center>
+                        <center>{getCategorieIcon(operation.ssCategorie)}</center>
                     </Box>
 
                     { /** VALEUR **/}
@@ -287,7 +304,7 @@ class OperationDetailPage extends Component {
                         <Typography variant={"button"} sx={{fontSize: "large"}}
                                     className={budget?.actif ? "editableField" : ""}
                                     id={OPERATION_EDITION_FORM_IDS.LIBELLE}>
-                            {Renderer.getOperationLibelle(operation.libelle, this.props.listeComptes, true)}
+                            {getOperationLibelle(operation.libelle, this.props.listeComptes, true)}
                         </Typography>
                         :
                         <FormControl fullWidth required error={this.state.errors.libelle != null}>
@@ -301,7 +318,7 @@ class OperationDetailPage extends Component {
                                                          size={"small"}/>}
                                           sx={{width: "850px"}}
                                           onChange={(e) => this.fillLibelleForm(e)}
-                                          onFocus={e => this.activateValidationForm(false)}
+                                          onFocus={() => this.activateValidationForm(false)}
                                           onBlur={e => {
                                               this.activateValidationForm(true);
                                               this.fillLibelleForm(e);
@@ -348,7 +365,7 @@ class OperationDetailPage extends Component {
                                                 }
                                             }}
                                             onChange={(e) => this.fillCategorieForm(e)}
-                                            onFocus={e => this.activateValidationForm(false)}
+                                            onFocus={() => this.activateValidationForm(false)}
                                             onBlur={e => {
                                                 this.activateValidationForm(true);
                                                 this.fillCategorieForm(e);
@@ -359,7 +376,7 @@ class OperationDetailPage extends Component {
                             }
                         </Grid2>
                         <Grid2 md={4}>
-                            <Typography variant={"overline"} color={Renderer.getOperationStateColor(operation.etat)}>
+                            <Typography variant={"overline"} color={getOperationStateColor(operation.etat)}>
                                 {operation.etat}
                             </Typography>
                         </Grid2>
@@ -368,8 +385,8 @@ class OperationDetailPage extends Component {
                                 (!this.state.editForm.mensualite) ?
                                     <Typography id={OPERATION_EDITION_FORM_IDS.MENSUALITE} variant={"overline"}
                                                 className={budget?.actif ? "editableField" : ""}
-                                                color={Renderer.getPeriodeRenderer(operation.mensualite.periode).color}>
-                                        {Renderer.getPeriodeRenderer(operation.mensualite.periode).text}
+                                                color={getPeriodeRenderer(operation.mensualite.periode).color}>
+                                        {getPeriodeRenderer(operation.mensualite.periode).text}
                                     </Typography>
                                     :
                                     <TextField
@@ -381,8 +398,8 @@ class OperationDetailPage extends Component {
                                         variant="standard">
                                         {PERIODES_MENSUALITE_ENUM.map((option) => (
                                             <MenuItem key={option} value={option}
-                                                      color={Renderer.getPeriodeRenderer(option).color}>
-                                                {Renderer.getPeriodeRenderer(option).text}
+                                                      color={getPeriodeRenderer(option).color}>
+                                                {getPeriodeRenderer(option).text}
                                             </MenuItem>
                                         ))}
                                     </TextField>

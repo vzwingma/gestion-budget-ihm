@@ -1,8 +1,8 @@
 import {Cell, LabelList, Pie, PieChart, ResponsiveContainer} from "recharts";
-import * as Renderer from "../../Utils/renderers/CategorieItem.renderer";
 import React from "react";
 import PropTypes from "prop-types";
 import {sortLibellesCategories} from "../../Utils/DataUtils.utils";
+import {getCategorieColor} from "../../Utils/renderers/CategorieItem.renderer";
 
 /**
  * Graphique Analyses
@@ -63,7 +63,7 @@ const GraphAnalyses = ({
      */
     function renderLabelCategorie(props) {
         const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
-        const color = Renderer.getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie : null)
+        const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie : null)
         return renderLabelAnalyse(props, selectedId, color);
     }
 
@@ -147,7 +147,7 @@ const GraphAnalyses = ({
                      isAnimationActive={false}>
                     {dataCategories.map((entry) => (
                         <Cell key={`cell-${entry.categorie}`}
-                              fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
+                              fill={getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
                     ))
                     }
                     <LabelList data={dataSsCategories} dataKey="name"
@@ -159,7 +159,7 @@ const GraphAnalyses = ({
                      isAnimationActive={false}>
                     {dataSsCategories.map((entry) => (
                         <Cell key={`cell-${entry.categorie.id}`}
-                              fill={Renderer.getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
+                              fill={getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
                         />
                     ))
                     }

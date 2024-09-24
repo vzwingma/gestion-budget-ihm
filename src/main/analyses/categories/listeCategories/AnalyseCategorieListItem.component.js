@@ -2,8 +2,8 @@ import React from 'react'
 import {Box, Stack, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
-import * as Renderer from "../../../Utils/renderers/CategorieItem.renderer";
 import PropTypes from "prop-types";
+import {getCategorieIcon} from "../../../Utils/renderers/CategorieItem.renderer";
 
 /**
  * Tuile d'un résumé de catégories
@@ -27,7 +27,7 @@ const AnalyseCategorieListItem = ({resumeCategorie, typeAnalyse, selectCategorie
                              padding: '6px',
                              color: '#FFFFFF'
                          }}>
-                        <center>{Renderer.getCategorieIcon(resumeCategorie.categorie)}</center>
+                        <center>{getCategorieIcon(resumeCategorie.categorie)}</center>
                     </Box>
                 </Grid2>
                 <Grid2 md={7}>
