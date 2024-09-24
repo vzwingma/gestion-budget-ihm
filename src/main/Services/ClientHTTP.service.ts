@@ -1,6 +1,6 @@
 /** Client HTTP **/
+import { API_GW_ENUM } from '../Utils/AppTechEnums.constants';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
-import * as AppConstants from "../Utils/AppTechEnums.constants";
 
 let alreadyTraced: boolean = false;
 
@@ -52,7 +52,7 @@ function evaluateBody(body?: string): string|null {
  */
 function logAuth(): void {
     if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
-        console.log("[WS] > [X-Api-Key] : " + AppConstants.API_GW_ENUM.API_KEY);
+        console.log("[WS] > [X-Api-Key] : " + API_GW_ENUM.API_KEY);
         console.log("[WS] > [Bearer] : " + getOAuthToken());
         if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
             alreadyTraced = true;
@@ -81,11 +81,11 @@ export async function call(httpMethod: string, uri: string, path: string, params
 
     return await fetch(fullURL,
         {
-            method: httpMethod,
+            method: httpMethod.toString(),
             mode: "cors",
             headers: new Headers({
                 'Content-Type': 'application/json',
-                'X-Api-Key': AppConstants.API_GW_ENUM.API_KEY,
+                'X-Api-Key': API_GW_ENUM.API_KEY,
                 'Authorization': 'Bearer ' + getOAuthToken()
             }),
             body: jsonBody

@@ -26,7 +26,7 @@ interface CompteItemProps {
  */
 const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, onClick : handleCompteChange} : CompteItemProps): JSX.Element => {
 
-    const [soldes, setSoldes] = useState(0 as number);
+    const [soldes, setSoldes] = useState(null as number | null);
 
     /**
      * Chargement des soldes du budget

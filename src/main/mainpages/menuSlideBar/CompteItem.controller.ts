@@ -7,7 +7,7 @@ import CompteBancaire from '../../Models/CompteBancaire.model';
 /**
  Get SOLDES du budget depuis le back-end
  **/
-export function getSoldesBudget(compte: CompteBancaire, selectedDate: Date, setSoldes: React.Dispatch<React.SetStateAction<number>>) {
+export function getSoldesBudget(compte: CompteBancaire, selectedDate: Date, setSoldes: React.Dispatch<React.SetStateAction<number | null>>) {
     if (compte != null && selectedDate != null) {
         ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.SOLDES,

@@ -1,5 +1,4 @@
-import * as AppConstants from "../Utils/AppTechEnums.constants"
-import {BACKEND_ENUM, SERVICES_URL} from "../Utils/AppTechEnums.constants"
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../Utils/AppTechEnums.constants"
 import {call} from "../Services/ClientHTTP.service";
 import React from "react";
 import MsInfo from "../Models/MsInfo.model";
@@ -21,7 +20,7 @@ export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.S
 
     let infosUpdated = [] as MsInfo[];
     for (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
-        call(AppConstants.METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
+        call(METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
             .then((data : any) => {
                     const msInfo : MsInfo = {
                         nom: data.nom,
