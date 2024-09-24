@@ -40,7 +40,10 @@ const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, o
         }
     }
 
-
+    /**
+     * Chargement des soldes du budget
+     * Rechargement à chaque changement de compte ou de date
+     */
     useEffect(() => {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
             getSoldesBudget(compte.id, selectedDate)
@@ -48,6 +51,11 @@ const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, o
     }, [compte, selectedDate, selectedFunction, onRefreshMenuBar]);
 
 
+    /**
+     * Rendu du solde du compte
+     * @returns {JSX.Element}
+     * @constructor
+     */
     function renderValueCompte() {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
             return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
@@ -57,6 +65,11 @@ const CompteItem = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, o
             return <></>
         }
     }
+    /**
+     * Rendu de la tuile
+     * @returns {JSX.Element}
+     * @constructor
+     */
     return (
         <Container className={"listeItem"}
                    onClick={() => onClick(compte)}>

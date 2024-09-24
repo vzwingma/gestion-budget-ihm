@@ -8,7 +8,7 @@ import MsInfo from "../Models/MsInfo.model";
 /**
  * Chargement des infos des µS
  */
-export async function getInfosFromMicroServices(setState: React.Dispatch<React.SetStateAction<{ infos: MsInfo[] }>>) {
+export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.SetStateAction<MsInfo[]>>) {
 
     /** Config Backend **/
     const backEnds = [
@@ -30,7 +30,7 @@ export async function getInfosFromMicroServices(setState: React.Dispatch<React.S
                     };
                     infosUpdated.push(msInfo)
                 }
-                setState({infos: infosUpdated})
+                setInfo(infosUpdated)
             })
             .catch(() => {
                 console.log("Erreur pour " + backEnd.idMS)
@@ -39,7 +39,7 @@ export async function getInfosFromMicroServices(setState: React.Dispatch<React.S
                     version: 'N/A'
                 };
                 infosUpdated.push(errData)
-                setState({infos: infosUpdated})
+                setInfo(infosUpdated)
             })
     }
 }

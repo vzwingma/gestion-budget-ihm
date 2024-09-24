@@ -4,7 +4,7 @@
 class MsInfo {
 
     nom: string;
-    version: string;
+    version: string | undefined;
 
     /**
      * Constructor

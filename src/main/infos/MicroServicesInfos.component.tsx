@@ -1,6 +1,5 @@
 import React from 'react'
 import {TableCell, TableRow, Typography} from "@mui/material";
-import PropTypes from "prop-types";
 import MsInfo from '../Models/MsInfo.model';
 
 /**
