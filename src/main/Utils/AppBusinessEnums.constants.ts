@@ -94,3 +94,18 @@ export const TYPES_OPERATION_ENUM: { CREDIT: string; DEPENSE: string; } = {
     CREDIT: "CREDIT",
     DEPENSE: "DEPENSE"
 }
+
+
+export const ACTIONS_BUDGET_ENUM: {
+    CREATE: string;
+    CLOSE_A_CONFIRMER: string;
+    REINIT_A_CONFIRMER: string;
+    ANNULER: string;
+    CONFIRMER: string;
+} = {
+    CREATE: "CREATE",
+    CLOSE_A_CONFIRMER: "CLOSE_A_CONFIRMER",
+    REINIT_A_CONFIRMER: "REINIT_A_CONFIRMER",
+    ANNULER: "ANNULER",
+    CONFIRMER: "CONFIRMER"
+}

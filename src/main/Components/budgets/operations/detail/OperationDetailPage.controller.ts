@@ -4,7 +4,6 @@ import CategorieOperationModel from "../../../../Models/CategorieOperation.model
 import OperationModel from "../../../../Models/Operation.model";
 import { BUSINESS_GUID } from "../../../../Utils/AppBusinessEnums.constants";
 import { getEventTargetId, sortLibellesCategories } from "../../../../Utils/OperationData.utils";
-import { FunctionHandleBudgetUpdateProps } from "../../budget/Budget.controller";
 import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
 import { OPERATION_EDITION_FORM_IDS } from "./OperationDetailPage.constants";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
@@ -67,6 +66,13 @@ export function handleOperationEditionClick(event: any, operation: OperationMode
     }
 }
 
+/**
+ * Met à jour la date de l'opération dans le modèle d'opération et déclenche la mise à jour de l'état.
+ *
+ * @param valeurDate - La nouvelle date de l'opération.
+ * @param editOperation - Le modèle d'opération à mettre à jour.
+ * @param setEditOperation - La fonction de mise à jour de l'état pour le modèle d'opération.
+ */
 export function handleDateOperationFromAction(valeurDate: Date, editOperation: OperationModel, setEditOperation: React.Dispatch<React.SetStateAction<OperationModel>>) {
     editOperation.autresInfos.dateOperation = valeurDate;
     setEditOperation(editOperation);
@@ -75,6 +81,13 @@ export function handleDateOperationFromAction(valeurDate: Date, editOperation: O
 
 /**
  * validation du formulaire - Description
+ */
+/**
+ * Valide la description d'une opération et met à jour les erreurs si nécessaire.
+ *
+ * @param {OperationModel} editOperation - L'opération en cours d'édition.
+ * @param {OperationModel} operation - L'opération à mettre à jour.
+ * @param {ErrorsFormProps} errors - Les erreurs de formulaire à mettre à jour.
  */
 function validateDescription(editOperation: OperationModel, operation: OperationModel, errors: ErrorsFormProps) {
     // Description
@@ -85,9 +98,9 @@ function validateDescription(editOperation: OperationModel, operation: Operation
     }
 }
 
-/**
- * validation du formulaire - Montant
- */
+
+
+
 function validateFormMontant(editOperation: OperationModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     if (!editForm.value) return;
 
@@ -257,7 +270,7 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
 
 /**
  * Test si en mode édition d'au moins un champ
- * @returns {*|boolean}
+ * @returns {boolean}
  */
 export function isInEditMode(editForm: EditFormProps): boolean {
     return editForm.value || editForm.libelle || editForm.dateOperation || editForm.mensualite;
@@ -265,7 +278,7 @@ export function isInEditMode(editForm: EditFormProps): boolean {
 
 /**
  * Test si en mode édition d'au moins un champ
- * @returns {*|boolean}
+ * @returns {boolean}
  */
 export function isInCreateMode(editForm: EditFormProps): boolean {
     return editForm.value && editForm.libelle && editForm.dateOperation && editForm.mensualite;

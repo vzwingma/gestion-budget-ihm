@@ -16,7 +16,7 @@ import { AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded } from
 import CenterComponent from '../../../CenterComponent';
 import { getEventTargetId } from '../../../../Utils/OperationData.utils';
 import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices';
-import { UTILISATEUR_DROITS } from "./../../../../Utils/AppBusinessEnums.constants";
+import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "./../../../../Utils/AppBusinessEnums.constants";
 import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
 import { userHasPermission } from '../../../../Utils/UserData.utils';
 
@@ -41,9 +41,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
 
     const [showModale, setShowModale] = useState<boolean>(false);
     const [modaleContent, setModaleContent] = useState<{ title: string, question: string }>();
-    const [action, setAction] = useState<string>();
-
-
+    const [actionEnCours, setActionEnCours] = useState<string>();
     /**
      * Action sur le bouton ou sur la modale
      * @param event : Event sur le bouton
@@ -55,30 +53,30 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
             let titrePopup = "";
             let questionPopup = "";
             let affichagePopup = false;
-            if (action === "CREATE") {
+            if (action === ACTIONS_BUDGET_ENUM.CREATE) {
                 onActionOperationCreate()
                 return
-            } else if (action === "CLOSE_A_CONFIRMER") {
+            } else if (action === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
                 titrePopup = "Activité du budget";
                 questionPopup = "Voulez vous vraiment " + (budget.actif ? "clôturer" : "réouvrir") + " le budget ?";
                 affichagePopup = true;
-            } else if (action === "REINIT_A_CONFIRMER") {
+            } else if (action === ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER) {
                 titrePopup = "Action sur le budget";
                 questionPopup = "Voulez vous vraiment réinitialiser le budget ? \n Le budget précédent sera clôturé, et les opérations en cours seront reportées";
                 affichagePopup = true;
-            } else if (action === "ANNULER") {
+            } else if (action === ACTIONS_BUDGET_ENUM.ANNULER) {
                 affichagePopup = false;
-            } else if (action === "CONFIRMER") {
+            } else if (action === ACTIONS_BUDGET_ENUM.CONFIRMER) {
                 affichagePopup = false;
-                if (action === "CLOSE_A_CONFIRMER") {
+                if (actionEnCours === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
                     callReopenCloseBudget(budget.id, !budget.actif, onActionBudgetChange)
-                } else if (action === "REINIT_A_CONFIRMER") {
+                } else if (actionEnCours === ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER) {
                     callReinitBudget(budget, onActionBudgetChange);
                 }
             }
-            setModaleContent({ title: titrePopup, question: questionPopup })
-            setShowModale(affichagePopup)
-            setAction(action)
+            setModaleContent({ title: titrePopup, question: questionPopup });
+            setShowModale(affichagePopup);
+            setActionEnCours(action);
         } else {
             setShowModale(false);
         }
@@ -99,13 +97,13 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
                     {(budget.actif ?
                         <IconButton
                             className={"buttonsActionsBudget"} sx={{ backgroundColor: '#2e7d32' }}
-                            id={"CLOSE_A_CONFIRMER"}>
-                            <CenterComponent><LockOpenRounded id={"CLOSE_A_CONFIRMER"} /></CenterComponent>
+                            id={ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER}>
+                            <CenterComponent><LockOpenRounded id={ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER} /></CenterComponent>
                         </IconButton> :
                         <IconButton
                             className={"buttonsActionsBudget"} sx={{ backgroundColor: '#C70039' }}
-                            id={"CLOSE_A_CONFIRMER"}>
-                            <CenterComponent><LockRounded id={"CLOSE_A_CONFIRMER"} /></CenterComponent>
+                            id={ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER}>
+                            <CenterComponent><LockRounded id={ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER} /></CenterComponent>
                         </IconButton>)}
                 </Tooltip>
             }
@@ -114,8 +112,8 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
                 <Tooltip title="Réinitialiser le budget">
                     <IconButton
                         className={"buttonsActionsBudget"} sx={{ backgroundColor: '#EDC109' }}
-                        id={"REINIT_A_CONFIRMER"}>
-                        <CenterComponent><RestartAltRounded id={"REINIT_A_CONFIRMER"} /></CenterComponent>
+                        id={ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER}>
+                        <CenterComponent><RestartAltRounded id={ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER} /></CenterComponent>
                     </IconButton>
                 </Tooltip>
             }
@@ -124,8 +122,8 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
                 <Tooltip title="Créer une nouvelle opération">
                     <IconButton
                         className={"buttonsActionsBudget"} sx={{ backgroundColor: '#209ED8', marginX: '10px' }}
-                        id={"CREATE"}>
-                        <CenterComponent><AddchartRounded id={"CREATE"} /></CenterComponent>
+                        id={ACTIONS_BUDGET_ENUM.CREATE}>
+                        <CenterComponent><AddchartRounded id={ACTIONS_BUDGET_ENUM.CREATE} /></CenterComponent>
                     </IconButton>
                 </Tooltip>
             }
@@ -137,8 +135,8 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
 
                 <DialogActions>
                     <ButtonGroup>
-                        <Button id="ANNULER" color="error">Annuler</Button>
-                        <Button id="CONFIRMER" color="success">Confirmer</Button>
+                        <Button id={ACTIONS_BUDGET_ENUM.ANNULER} color="error">Annuler</Button>
+                        <Button id={ACTIONS_BUDGET_ENUM.CONFIRMER} color="success">Confirmer</Button>
                     </ButtonGroup>
                 </DialogActions>
             </Dialog>

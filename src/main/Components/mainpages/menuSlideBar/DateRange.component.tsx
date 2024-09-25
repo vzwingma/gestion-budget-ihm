@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { handleModalClick, handleSelect } from "./DateRange.controller";
+import CenterComponent from "../../CenterComponent";
 
 
 /**
@@ -26,22 +27,7 @@ const DateRange: React.FC<DateRangeProps> = ({ selectedDate, onDateChange: handl
     const [dateCurrentBudget, setDateCurrentBudget] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1, 0, 0, 0, 0));
     const [dateNextBudget, setDateNextBudget] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 1, 0, 0, 0));
 
-    /**
-     *  Mise à jour du contexte de budget
-     * @param nextProps next properties
-     * @param nextStates next states
-     * @param nextContext next Context
-     * @returns {boolean} s'il faut refresh ou pas
 
-    shouldComponentUpdate(nextProps, nextStates, nextContext) {
-        if (dateCurrentBudget.getTime() !== nextStates.dateCurrentBudget.getTime()) {
-            return true;
-        } else if (showModale !== nextStates.showModale) {
-            return true
-        }
-        return false;
-    }
-     */
     /**
      * Mise à jour des dates
      * @param newDatePreviousBudget date précédente
@@ -62,7 +48,7 @@ const DateRange: React.FC<DateRangeProps> = ({ selectedDate, onDateChange: handl
      */
 
     return (
-        <div style={{ textAlign: 'center' }}>
+        <CenterComponent>
             <ButtonGroup onClick={e => handleSelect(e, datePreviousBudget, dateCurrentBudget, dateNextBudget, setShowModale, updateMonths)}>
                 <Button id="previous"
                     size={"small"}>{datePreviousBudget.toLocaleString('default', { month: 'long' })} {datePreviousBudget.getFullYear()}  </Button>
@@ -90,15 +76,13 @@ const DateRange: React.FC<DateRangeProps> = ({ selectedDate, onDateChange: handl
                             color="error" type="submit">Annuler</Button>
 
                         <Button id="CONFIRMER" color="success" onClick={e => {
-                            handleModalClick(e, dateCurrentBudget, dateNextBudget, updateMonths);
-                            setShowModale(false);
-                        }}
-                            type="submit">Confirmer</Button>
+                                                                    handleModalClick(e, dateCurrentBudget, dateNextBudget, updateMonths);
+                                                                    setShowModale(false);  }}
+                                type="submit">Confirmer</Button>
                     </ButtonGroup>
                 </DialogActions>
             </Dialog>
-
-        </div>
+        </CenterComponent>
     );
 }
 

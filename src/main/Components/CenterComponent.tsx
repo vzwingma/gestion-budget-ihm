@@ -6,7 +6,7 @@ export interface CenterComponentProps extends InternalStandardProps<React.HTMLAt
   /**
    * Tooltip reference element.
    */
-  children: React.ReactElement<any, any>;
+  children: React.ReactElement<any, any>[] | React.ReactElement<any, any>;
 }
    
 
