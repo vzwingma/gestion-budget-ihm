@@ -15,21 +15,20 @@ import { call } from "../../../../Services/ClientHTTP.service";
 export function saveOperation(operation: OperationModel, budget: BudgetMensuelModel, onOperationChange: (budget: BudgetMensuelModel) => void) {
 
     if (budget.actif) {
-        let creation = operation.id === "-1"
-        console.log((operation.id === "-1" ? "Création" : "Mise à jour") + " d'une opération sur le budget : " + budget.id)
-        if (operation.id === "-1") {
+        const isCreation : boolean = operation.id === "-1"
+        console.log((isCreation ? "Création" : "Mise à jour") + " d'une opération sur le budget : " + budget.id)
+        if (isCreation) {
             operation.id = uuid();
         }
 
         call(operation.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ? METHODE_HTTP.DELETE : METHODE_HTTP.POST,
-            BACKEND_ENUM.URL_OPERATIONS, !creation ? SERVICES_URL.OPERATIONS.UPDATE : SERVICES_URL.OPERATIONS.CREATE,
-            [budget.id, !creation ? operation.id : ""],
-            JSON.stringify(operation))
+            BACKEND_ENUM.URL_OPERATIONS, !isCreation ? SERVICES_URL.OPERATIONS.UPDATE : SERVICES_URL.OPERATIONS.CREATE,
+            [budget.id, !isCreation ? operation.id : ""], operation)
         .then((data : BudgetMensuelModel) => {
 
                 // Update du budget global (parent)
                 onOperationChange(data);
-                toast.success((operation.id === "-1" ? "Création" : "Mise à jour") + " de l'opération correctement effectuée")
+                toast.success((isCreation ? "Création" : "Mise à jour") + " de l'opération correctement effectuée")
 
         })
         .catch((e) => {

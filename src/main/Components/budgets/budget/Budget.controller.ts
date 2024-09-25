@@ -1,3 +1,4 @@
+import { getLabelFromDate } from "../../../Utils/Date.utils";
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
 import OperationModel from "../../../Models/Operation.model";
 import {sortOperations} from "../../../Utils/OperationData.utils";
@@ -23,10 +24,12 @@ export function getOperationsGroupedByDateOperation(listeOperations: OperationMo
     return listeOperations
                         .filter((operation: OperationModel) => operation.etat !== "PLANIFIEE")
                         .sort((ope1: OperationModel, ope2: OperationModel) => sortOperations(ope1, ope2))
-                        .reduce((group: { [key: string]: OperationModel[] }, operation: OperationModel) => {
-                            const dateOperation: string = operation.autresInfos.dateOperation?.toDateString() ?? "null";
-                            group[dateOperation] = group[dateOperation] ?? [];
-                            group[dateOperation].push(operation);
-                            return group;
-                        }, {});
+                        .reduce((group: { [key: string]: OperationModel[] }, operation: OperationModel) => 
+                            {
+                                const opDateOperation : Date | null = operation.autresInfos.dateOperation;
+                                const dateOperation: string = opDateOperation != null && opDateOperation != undefined ? getLabelFromDate(new Date(opDateOperation)) : "null" ?? "null";
+                                group[dateOperation] = group[dateOperation] ?? [];
+                                group[dateOperation].push(operation);
+                                return group;
+                            }, {});
 }

@@ -7,6 +7,11 @@ export function getLabelDate(dateOperation: string): string {
     return new Date(Date.parse(dateOperation)).toLocaleDateString("fr");
 }
 
+/**
+ * Retourne le label Fr d'une date
+ * @param dateOperation date à afficher
+ * @returns {string} label FR de la date    
+ */
 export function getLabelFromDate(dateOperation: Date): string {
     return dateOperation.toLocaleDateString("fr");
 }

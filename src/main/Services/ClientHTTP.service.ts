@@ -36,7 +36,7 @@ function evaluateURL(uri: string, path: string, params?: string[]): string {
  * @param body : string body
  * @returns {string:null} body en JSON si body n'est pas null ou undefined
  */
-function evaluateBody(body?: string): string|null {
+function evaluateBody(body?: any): string|null {
     let jsonBody = null
     if (body !== undefined && body !== null) {
         jsonBody = JSON.stringify(body)
@@ -69,7 +69,7 @@ function logAuth(): void {
  * @param body body de la requête (optionnel)
  * @returns {Promise<any>} réponse
  */
-export async function call(httpMethod: string, uri: string, path: string, params?: string[], body?: string): Promise<any> {
+export async function call(httpMethod: string, uri: string, path: string, params?: string[], body?: any): Promise<any> {
 
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);

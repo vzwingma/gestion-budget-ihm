@@ -40,7 +40,7 @@ export function reloadBudget(handleBudgetUpdate: (budget: BudgetMensuelModel) =>
                     [selectedCompte.id, selectedDate.getFullYear().toString(), (selectedDate.getMonth() + 1).toString()])
             .then((data: BudgetMensuelModel) => handleBudgetUpdate(data))
             .catch(e => {
-                let libErreur = "Erreur lors du chargement du budget " + selectedCompte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
+                let libErreur = "Erreur lors du chargement du budget " + selectedCompte?.id + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
                 console.log(libErreur, e)
                 toast.error(libErreur, { autoClose: false, closeOnClick: true })
             })
