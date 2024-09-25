@@ -3,8 +3,7 @@ import {Container, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants";
 import CompteBancaireModel from '../../../Models/CompteBancaire.model';
-import { getSoldesBudget } from './CompteItem.controller';
-
+import {getSoldesBudget} from './CompteItem.controller';
 
 
 interface CompteItemProps {
@@ -26,7 +25,7 @@ interface CompteItemProps {
  */
 const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, onClick : handleCompteChange} : CompteItemProps): JSX.Element => {
 
-    const [soldes, setSoldes] = useState(null as number | null);
+    const [soldes, setSoldes] = useState<number | null | undefined>();
 
     /**
      * Chargement des soldes du budget
@@ -47,7 +46,7 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
     function renderValueCompte() {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
             return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
-                <OperationValue valueOperation={soldes} showSign={true}/>
+                <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id}/>
             </Typography>
         } else {
             return <></>
@@ -62,7 +61,7 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
         <Container className={"listeItem"}
                    onClick={() => handleCompteChange(compte)}>
             <Stack direction={"row"} spacing={5}>
-                <img src={"/img/banques/" + compte.icon} width={50} height={50} alt={compte.libelle}
+                <img src={"/img/banques/" + compte.itemIcon} width={50} height={50} alt={compte.libelle}
                      key={"img_" + compte.id}/>
                 <Stack direction={"column"}>
                     <Typography variant={"h6"} key={"lib_" + compte.id}>

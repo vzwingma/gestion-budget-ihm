@@ -29,7 +29,7 @@ export function getStyleOperation(valueOperation : number, operation? : Operatio
 
 interface OperationValueProps {
     id: string,
-    valueOperation: number | null;
+    valueOperation: number | null | undefined;
     showSign: boolean;
     operation?: OperationModel;
 }
@@ -42,9 +42,16 @@ interface OperationValueProps {
  * @returns {JSX.Element} JSX
  * @constructor
  */
-const OperationValue: React.FC<OperationValueProps> = ({id, valueOperation, showSign, operation}): JSX.Element => {
-    if (valueOperation === undefined || valueOperation === null) {
+const OperationValue: React.FC<OperationValueProps> = ({
+                                                           id,
+                                                           valueOperation,
+                                                           showSign,
+                                                           operation
+                                                       }: OperationValueProps): JSX.Element => {
+    if (valueOperation === undefined) {
         return  <>Non initialisé</>
+    } else if (valueOperation === null) {
+        return <>Non renseigné</>
     } else {
         // définition du libellé
         return (

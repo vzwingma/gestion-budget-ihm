@@ -5,7 +5,7 @@ class CompteBancaireModel {
 
     id: string;
     libelle: string;
-    icon: string;
+    itemIcon: string;
     isDisabled: boolean;
     ordre : number;
 
@@ -17,10 +17,10 @@ class CompteBancaireModel {
      * @param isDisabled compte désactivé
      * @param ordre ordre d'affichage
      */
-    constructor(id: string, libelle: string, icon: string, isDisabled: boolean, ordre: number) {
+    constructor(id: string, libelle: string, itemIcon: string, isDisabled: boolean, ordre: number) {
         this.id = id;
         this.libelle = libelle;
-        this.icon = icon;
+        this.itemIcon = itemIcon;
         this.isDisabled = isDisabled;
         this.ordre = ordre;
     }

@@ -481,7 +481,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                         .filter((compte: CompteBancaireModel) => budget.idCompteBancaire !== compte.id)
                                         .map((compte) => (
                                             <MenuItem key={compte.id} value={compte.id}>
-                                                <img src={"/img/banques/" + compte.icon}
+                                                <img src={"/img/banques/" + compte.itemIcon}
                                                      width={20} height={20}
                                                      alt={compte.libelle}
                                                      style={{marginRight: "5px"}}/>

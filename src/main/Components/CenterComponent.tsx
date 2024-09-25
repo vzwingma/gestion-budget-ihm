@@ -1,4 +1,4 @@
-import { InternalStandardProps } from "@mui/material";
+import {InternalStandardProps} from "@mui/material";
 import React from "react";
 
 
@@ -8,12 +8,15 @@ export interface CenterComponentProps extends InternalStandardProps<React.HTMLAt
    */
   children: React.ReactElement<any, any>[] | React.ReactElement<any, any>;
 }
-   
+
 
   export default function CenterComponent(props: CenterComponentProps): JSX.Element {
     return (
-      <div>
-        {props.children}
-      </div>
+        <div className="container">
+            <div className="child">
+                {props.children}
+            </div>
+        </div>
     );
   }
+

@@ -3,6 +3,7 @@ import {Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typograph
 import {getInfosFromMicroServices} from "./Infos.extservices";
 import MicroServicesInfos from "./MicroServicesInfos.component";
 import MsInfoModel from "../../Models/MsInfo.model";
+import CenterComponent from "../../Components/CenterComponent";
 
 
 /**
@@ -18,23 +19,23 @@ export const Infos: React.FC = () => {
 
     /** Phase de Render à partir de la liste de statuts  **/
     return (
-        <div>
+        <CenterComponent>
             <TableHead>
                 <TableRow>
                     <TableCell>
-                        <div>
+                        <CenterComponent>
                             <Typography variant={"h3"}> Gestion de budgets</Typography>
-                        </div>
+                        </CenterComponent>
                     </TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 <TableRow>
                     <TableCell>
-                        <div>
+                        <CenterComponent>
                             <img src="/img/icon.png" width="300" height="362"
                             className="d-inline-block align-middle" alt="Gestion de budgets" />
-                        </div>
+                        </CenterComponent>
                     </TableCell>
                 </TableRow>
                 <TableRow>
@@ -62,6 +63,6 @@ export const Infos: React.FC = () => {
                     <TableCell align={"right"} style={{ color: "#114b65" }}>by Zed.corp</TableCell>
                 </TableRow>
             </TableFooter>
-        </div>
+        </CenterComponent>
     )
 }
