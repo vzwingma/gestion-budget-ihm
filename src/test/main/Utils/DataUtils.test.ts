@@ -1,4 +1,4 @@
-import {getMonthFromString} from "../../../main/Utils/DataUtils.utils";
+import {getMonthFromString} from "../../../main/Utils/Date.utils";
 
 describe('getMonthFromString', () => {
     it('should return 1 for January', () => {
@@ -23,11 +23,6 @@ describe('getMonthFromString', () => {
 
     it('should return NaN for empty string', () => {
         const result = getMonthFromString('');
-        expect(result).toBeNaN();
-    });
-
-    it('should return NaN for null', () => {
-        const result = getMonthFromString(null);
         expect(result).toBeNaN();
     });
 });

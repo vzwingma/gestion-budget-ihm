@@ -25,12 +25,12 @@
       "node_modules/@types"
     ],
     "types": [
-      "uuid", "node"
+      "uuid", "node", "jest"
     ],
     "jsx": "react"
   },
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ]
+]
 }

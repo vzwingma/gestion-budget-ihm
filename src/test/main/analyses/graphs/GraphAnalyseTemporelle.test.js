@@ -1,4 +1,4 @@
-import {createLabelTimeline} from '../../../../main/analyses/graphs/GraphAnalyseTemporelle.controller';
+import {createLabelTimeline} from '../../../../main/Components/analyses/graphs/GraphAnalyseTemporelle.controller';
 
 describe('createLabelTimeline', () => {
     it('should return current month and year when input matches current date', () => {
