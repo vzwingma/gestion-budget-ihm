@@ -1,6 +1,6 @@
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
 import OperationModel from "../../../Models/Operation.model";
-import {sortOperations} from "../../../Utils/DataUtils.utils";
+import {sortOperations} from "../../../Utils/OperationData.utils";
 
 /**
  * Controleur des budgets

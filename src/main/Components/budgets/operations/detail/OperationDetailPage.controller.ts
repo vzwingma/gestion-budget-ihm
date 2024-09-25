@@ -3,7 +3,7 @@ import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
 import CategorieOperationModel from "../../../../Models/CategorieOperation.model";
 import OperationModel from "../../../../Models/Operation.model";
 import { BUSINESS_GUID } from "../../../../Utils/AppBusinessEnums.constants";
-import { getEventTargetId, sortLibellesCategories } from "../../../../Utils/DataUtils.utils";
+import { getEventTargetId, sortLibellesCategories } from "../../../../Utils/OperationData.utils";
 import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
 import { OPERATION_EDITION_FORM_IDS } from "./OperationDetailPage.constants";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";

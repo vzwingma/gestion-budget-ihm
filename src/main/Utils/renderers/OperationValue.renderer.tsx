@@ -2,7 +2,7 @@
  * Affichage d'une valeur dans la liste des opérations
  */
 import React from 'react';
-import {addEndingZeros} from '../DataUtils.utils'
+import {addEndingZeros} from '../OperationData.utils'
 import OperationModel from '../../Models/Operation.model';
 
 /**

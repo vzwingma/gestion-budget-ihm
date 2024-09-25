@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import {Box, CircularProgress, Divider, InputBase, Paper} from "@mui/material";
+import { Box, CircularProgress, Divider, InputBase, Paper } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import BudgetTitre from "./BudgetTitre.component";
 import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
-import OperationModel, {createNewOperation} from "../../../Models/Operation.model";
-import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices";
-import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
-import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component";
+import OperationModel, { createNewOperation } from "../../../Models/Operation.model";
+import { getPreferenceUtilisateur, loadCategories, reloadBudget } from "./Budget.extservices";
+import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants";
+import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButtonGroup.component";
 import OperationsListe from "../operations/OperationsListe.component";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
-import CategorieOperationModel from "@/src/main/Models/CategorieOperation.model";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {CancelRounded} from "@mui/icons-material";
+import { CancelRounded } from "@mui/icons-material";
+import CategorieOperationModel from "../../../Models/CategorieOperation.model";
 
 interface BudgetPageProps {
     selectedCompte: CompteBancaireModel | null
@@ -28,7 +28,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
 
     const [currentBudget, setCurrentBudget] = useState<BudgetMensuelModel>();
     const [currentOperation, setCurrentOperation] = useState<OperationModel>();
-    const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{[key: string]: OperationModel[]}>({});
+    const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
     const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
@@ -41,8 +41,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     useEffect(() => {
         loadCategories(handleCategoriesLoaded);
         getPreferenceUtilisateur(setUserDroits, setUserPreferences);
-    }
-        , []);
+    } , []);
 
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
@@ -97,7 +96,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
      */
     function handleBudgetUpdate(budget: BudgetMensuelModel) {
         setCurrentBudget(budget);
-     // TODO    setOperationsGroupedByDateOperation(operationsGroupedByDateOperation);
+        // TODO    setOperationsGroupedByDateOperation(operationsGroupedByDateOperation);
     }
 
 

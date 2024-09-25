@@ -46,16 +46,6 @@ export function getEventTargetId(eventTarget : any): any {
 }
 
 /**
- * Retourne le label Fr d'une date
- * @param dateOperation date à afficher
- * @returns {string} label FR de la date
- */
-export function getLabelDate(dateOperation: string): string {
-    return new Date(Date.parse(dateOperation)).toLocaleDateString("fr");
-}
-
-
-/**
  * Tri par libellé
  * @param {CategorieOperationModel} categorie1 :  1ère catégorie
  * @param {CategorieOperationModel} categorie2 : 2ème catégorie
@@ -95,7 +85,7 @@ export function sortOperations(ope1 : OperationModel, ope2 : OperationModel): nu
         return 1;
     } else {
 
-        if (date1 !== undefined && date2 !== undefined) {
+        if (date1 !== null && date2 !== null) {
             if (date1 > date2) {
                 return -1;
             } else if (date1 < date2) {
@@ -144,14 +134,4 @@ function getRangEtatOperation(etatOperation: string): number {
         rang++;
     }
     return rang;
-}
-
-/**
- * Convertit un nom de mois en numéro de mois.
- *
- * @param {string} mon - Le nom du mois.
- * @returns {number} - Le numéro du mois (1 pour janvier, 2 pour février, etc.).
- */
-export function getMonthFromString(mon: string): number {
-    return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1
 }

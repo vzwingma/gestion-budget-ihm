@@ -3,7 +3,7 @@ import * as ClientHTTP from '../../../Services/ClientHTTP.service'
 import {toast} from "react-toastify";
 import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import { budgetUpdateloaded } from "./Budget.controller";
-import { UTILISATEUR_DROITS } from "@/src/main/Utils/AppBusinessEnums.constants";
+import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants";
 
 /*
  * Services back-end des budgets
@@ -59,7 +59,13 @@ export function reloadBudget(handleBudgetUpdate : Function, selectedCompte : Com
 export function getPreferenceUtilisateur(setUserDroits : React.Dispatch<React.SetStateAction<UTILISATEUR_DROITS[]>>, setUserPreferences:  React.Dispatch<React.SetStateAction<string[]>>) {
     ClientHTTP.call(AppConstants.METHODE_HTTP.GET, AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.USERS_PREFS)
         .then((data) => {
-            setUserDroits(data.droits);
+            let userDroits: UTILISATEUR_DROITS[] = [];
+            for(let droit in data.droits) {
+                if (data.droits[droit]) {
+                    userDroits.push(droit as unknown as UTILISATEUR_DROITS);
+                }
+            }
+            setUserDroits(userDroits);
             setUserPreferences(data.preferences);
         })
         .catch((e) => {

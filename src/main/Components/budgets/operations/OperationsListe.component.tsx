@@ -4,7 +4,8 @@ import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';
 import OperationModel from '../../../Models/Operation.model';
 import CompteBancaireModel from '../../../Models/CompteBancaire.model';
-import { getLabelDate } from '../../../Utils/DataUtils.utils';
+import {getLabelDate} from "../../../Utils/Date.utils";
+
 
 interface OperationsListeProps {
     operationGroupedByDate: {[key: string]: OperationModel[]}
