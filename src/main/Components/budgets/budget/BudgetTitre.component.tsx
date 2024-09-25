@@ -47,7 +47,7 @@ const BudgetsTitre : React.FC<BudgetsSoldesPropTypes> = ({currentCompte, current
             <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
                 <Typography variant={"h6"} width={120} textAlign={"center"} sx={{cursor: "help"}}>
-                    <OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true}/>
+                    <OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true} id={'soldeAtMaintenant'}/>
                 </Typography>
             </Tooltip>
             {
@@ -57,7 +57,7 @@ const BudgetsTitre : React.FC<BudgetsSoldesPropTypes> = ({currentCompte, current
                             <EventOutlined sx={{paddingTop: "8px", color: "#808080"}}/>
                             <Typography variant={"caption"} textAlign={"center"}>
                                 <OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant}
-                                                showSign={true}/>
+                                showSign={true} id={'soldeAtFinMoisCourant'}/>
                             </Typography>
                         </Box>
                     </Tooltip>

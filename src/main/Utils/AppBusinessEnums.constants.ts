@@ -20,8 +20,8 @@ export enum BUSINESS_ONGLETS {
  * @property {number} RAZ_BUDGET - Droit de réinitialiser un budget.
  */
 export enum UTILISATEUR_DROITS {
-    CLOTURE_BUDGET,
-    RAZ_BUDGET
+    DROIT_CLOTURE_BUDGET,
+    DROIT_RAZ_BUDGET
 }
 
 

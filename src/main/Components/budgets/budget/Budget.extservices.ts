@@ -60,9 +60,14 @@ export function getPreferenceUtilisateur(setUserDroits : React.Dispatch<React.Se
     ClientHTTP.call(AppConstants.METHODE_HTTP.GET, AppConstants.BACKEND_ENUM.URL_UTILISATEURS, AppConstants.SERVICES_URL.UTILISATEURS.USERS_PREFS)
         .then((data) => {
             let userDroits: UTILISATEUR_DROITS[] = [];
+            // Mapping des droits de l'utilisateur en enum
             for(let droit in data.droits) {
                 if (data.droits[droit]) {
-                    userDroits.push(droit as unknown as UTILISATEUR_DROITS);
+                    Object.values(UTILISATEUR_DROITS).forEach((key, index) => {
+                        if (key === droit) {
+                            userDroits.push(index);
+                        }
+                    })
                 }
             }
             setUserDroits(userDroits);
