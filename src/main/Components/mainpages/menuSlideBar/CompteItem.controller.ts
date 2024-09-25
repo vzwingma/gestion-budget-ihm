@@ -1,6 +1,6 @@
-import * as ClientHTTP from "../../Services/ClientHTTP.service";
-import * as AppConstants from "../../Utils/AppTechEnums.constants";
-import CompteBancaireModel from '../../Models/CompteBancaire.model';
+import * as ClientHTTP from "../../../Services/ClientHTTP.service";
+import * as AppConstants from "../../../Utils/AppTechEnums.constants";
+import CompteBancaireModel from '../../../Models/CompteBancaire.model';
 
 
 

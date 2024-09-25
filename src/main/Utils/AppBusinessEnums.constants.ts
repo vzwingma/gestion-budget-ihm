@@ -7,22 +7,34 @@ export enum BUSINESS_ONGLETS {
     ANALYSE_TEMP
 }
 
+
+
 /**
- * Droits de l'utilisateur
- * @type {{DROITS: {CLOTURE_BUDGET: string, RAZ_BUDGET: string}, PREFERENCES: {STATUT_NLLE_DEPENSE: string}}}
+ * Enumération des droits utilisateur.
+ * 
+ * Cette énumération définit les différents droits que peut avoir un utilisateur
+ * dans l'application de gestion de budget.
+ * 
+ * @enum {number}
+ * @property {number} CLOTURE_BUDGET - Droit de clôturer un budget.
+ * @property {number} RAZ_BUDGET - Droit de réinitialiser un budget.
  */
-export const UTILISATEUR_DROITS: {
-    DROITS: { CLOTURE_BUDGET: string; RAZ_BUDGET: string };
-    PREFERENCES: { STATUT_NLLE_DEPENSE: string }
-} = {
-    DROITS: {
-        CLOTURE_BUDGET: "DROIT_RAZ_BUDGET",
-        RAZ_BUDGET: "DROIT_RAZ_BUDGET"
-    },
-    PREFERENCES: {
-        STATUT_NLLE_DEPENSE: "PREFS_STATUT_NLLE_DEPENSE",
-    }
+export enum UTILISATEUR_DROITS {
+    CLOTURE_BUDGET,
+    RAZ_BUDGET
 }
+
+
+/**
+ * Enumération représentant les préférences utilisateur.
+ * 
+ * @enum {number}
+ * @readonly
+ */
+export enum UTILISATEUR_PREFERENCES {
+    STATUT_NLLE_DEPENSE
+}
+
 
 
 /**

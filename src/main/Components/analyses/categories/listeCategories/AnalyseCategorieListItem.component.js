@@ -1,9 +1,9 @@
 import React from 'react'
 import {Box, Stack, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
+import OperationValue from "../../../../Utils/renderers/OperationValue.renderer";
 import PropTypes from "prop-types";
-import {getCategorieIcon} from "../../../Utils/renderers/CategorieItem.renderer";
+import {getCategorieIcon} from "../../../../Utils/renderers/CategorieItem.renderer";
 
 /**
  * Tuile d'un résumé de catégories

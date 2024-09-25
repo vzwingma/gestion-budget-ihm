@@ -1,10 +1,22 @@
 import React from 'react'
 import {Box, Stack, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import OperationValue from "../../Utils/renderers/OperationValue.renderer";
-import * as Renderer from "../../Utils/renderers/OperationItem.renderer";
-import * as CategorieRenderer from "../../Utils/renderers/CategorieItem.renderer";
-import PropTypes from "prop-types";
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
+import * as Renderer from "../../../Utils/renderers/OperationItem.renderer";
+import * as CategorieRenderer from "../../../Utils/renderers/CategorieItem.renderer";
+import OperationModel from '@/src/main/Models/Operation.model';
+import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model';
+import CenterComponent from '../../CenterComponent';
+
+
+
+interface OperationItemProps {
+    key: number
+    operation: OperationModel
+    listeComptes: CompteBancaireModel[]
+    onClick: (operation : OperationModel) => void
+}
+
 
 /**
  * Tuile d'une opération dans la liste des opérations
@@ -15,13 +27,13 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const OperationItem = ({key, operation, listeComptes, onClick}) => {
+const OperationItem: React.FC<OperationItemProps> = ({key, operation, listeComptes, onClick : handleOperationSelect}) : JSX.Element => {
 
 
     return (
         <Box key={"liste_" + key}
              className={"listeItem"}
-             onClick={() => onClick(operation)}>
+             onClick={() => handleOperationSelect(operation)}>
             <Grid2 container spacing={6}>
                 <Grid2 md={1}>
                     <Box width={50} height={50}
@@ -38,7 +50,7 @@ const OperationItem = ({key, operation, listeComptes, onClick}) => {
                                  padding: '6px',
                                  color: '#252525'
                              }}>
-                            <center>{CategorieRenderer.getCategorieIcon(operation.ssCategorie)}</center>
+                            <CenterComponent>{CategorieRenderer.getCategorieIcon(operation.ssCategorie)}</CenterComponent>
                         </Box>
                     </Box>
                 </Grid2>
@@ -65,10 +77,4 @@ const OperationItem = ({key, operation, listeComptes, onClick}) => {
 
     )
 };
-OperationItem.propTypes = {
-    key: PropTypes.string.isRequired,
-    operation: PropTypes.object.isRequired,
-    listeComptes: PropTypes.array.isRequired,
-    onClick: PropTypes.func.isRequired
-}
 export default OperationItem

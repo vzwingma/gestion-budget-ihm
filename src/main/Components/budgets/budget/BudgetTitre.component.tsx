@@ -1,9 +1,9 @@
-import OperationValue from '../../Utils/renderers/OperationValue.renderer'
+import OperationValue from '../../../Utils/renderers/OperationValue.renderer'
 import {Box, Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import {EventOutlined} from "@mui/icons-material";
-import CompteBancaireModel from '../../Models/CompteBancaire.model';
-import BudgetMensuelModel from '../../Models/BudgetMensuel.model';
+import CompteBancaireModel from '../../../Models/CompteBancaire.model';
+import BudgetMensuelModel from '../../../Models/BudgetMensuel.model';
 
 
 interface BudgetsSoldesPropTypes  {

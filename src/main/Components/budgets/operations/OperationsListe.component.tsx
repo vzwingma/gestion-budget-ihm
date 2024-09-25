@@ -1,8 +1,17 @@
 import React from 'react'
 import {Container, Divider, Stack} from "@mui/material";
-import OperationItem from "./OperationsListItem.component";
-import {getLabelDate} from "../../Utils/DataUtils.utils";
-import PropTypes from "prop-types";
+import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model';
+import OperationModel from '@/src/main/Models/Operation.model';
+import CenterComponent from '../../CenterComponent';
+import { getLabelDate } from '@/src/main/Utils/DataUtils.utils';
+import OperationItem from './OperationsListItem.component';
+
+interface OperationsListeProps {
+    operationGroupedByDate: {[key: string]: OperationModel[]}
+    filterOperations: string | null
+    listeComptes: CompteBancaireModel[]
+    onClick: (operation : OperationModel) => void
+}
 
 
 /**
@@ -14,9 +23,8 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
- * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
- */
-const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes, onClick}) => {
+  */
+const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, listeComptes, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
 
 
     /**
@@ -24,13 +32,13 @@ const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes
      * @param operationGroupedByDate
      * @returns {JSX.Element}
      */
-    function iterate(operationGroupedByDate) {
+    function iterate(operationGroupedByDate : {[key: string]: OperationModel[]}): JSX.Element[] {
 
-        let renderList = []
+        let renderList = [] as JSX.Element[];
         for (let dateOperationKey in operationGroupedByDate) {
 
             const operationsFilteredForDate = operationGroupedByDate[dateOperationKey]
-                .filter((operation) => filterOperations === null
+                .filter((operation : OperationModel) => filterOperations === null
                     || filterOperations === ""
                     || operation.libelle.toLowerCase().includes(filterOperations.toLowerCase())
                     || operation.categorie.libelle.toLowerCase().includes(filterOperations.toLowerCase())
@@ -40,7 +48,7 @@ const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes
                 renderList.push(
                     <Container key={"liste_" + dateOperationKey}
                                className={"listeItemSeparator"}>
-                        <center>{getLabelDate(dateOperationKey)}</center>
+                        <CenterComponent><>{getLabelDate(dateOperationKey)}</></CenterComponent>
                     </Container>)
             }
 
@@ -49,7 +57,7 @@ const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes
                     < OperationItem key={operation.id}
                                     operation={operation}
                                     listeComptes={listeComptes}
-                                    onClick={() => onClick(operation)}/>)
+                                    onClick={handleOperationSelect}/>)
                 )
         }
         return renderList;
@@ -63,10 +71,5 @@ const OperationsListe = ({operationGroupedByDate, filterOperations, listeComptes
         }
     </Stack>
 };
-OperationsListe.propTypes = {
-    operationGroupedByDate: PropTypes.object.isRequired,
-    filterOperations: PropTypes.string.isRequired,
-    listeComptes: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired
-}
+
 export default OperationsListe

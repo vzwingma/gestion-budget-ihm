@@ -9,7 +9,7 @@ import { BUSINESS_ONGLETS } from "./Utils/AppBusinessEnums.constants";
 import PrivateNavLinks from "./menuTopBar/PrivateNavLinks.component";
 import Profile from "./menuTopBar/Profile.component";
 import {Infos} from "./infos/Infos.component";
-import MainPage from "./mainpages/MainPage.component";
+import MainPage from "./Components/mainpages/MainPage.component";
 
 
 /** Page principale avec le routeur **/

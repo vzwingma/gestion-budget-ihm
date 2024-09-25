@@ -2,7 +2,7 @@ import React from 'react'
 import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
 import PropTypes from "prop-types";
-import {sortLibellesCategories} from "../../../Utils/DataUtils.utils";
+import {sortLibellesCategories} from "../../../../Utils/DataUtils.utils";
 
 
 /**

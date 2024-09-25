@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {Container, Stack, Typography} from "@mui/material";
-import OperationValue from "../../Utils/renderers/OperationValue.renderer";
-import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
-import CompteBancaireModel from '../../Models/CompteBancaire.model';
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
+import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants";
+import CompteBancaireModel from '../../../Models/CompteBancaire.model';
 import { getSoldesBudget } from './CompteItem.controller';
 
 

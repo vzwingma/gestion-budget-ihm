@@ -1,4 +1,4 @@
-import {getStyleOperation} from "../../Utils/renderers/OperationValue.renderer";
+import {getStyleOperation} from "../../../Utils/renderers/OperationValue.renderer";
 import PropTypes from "prop-types";
 import React from "react";
 
