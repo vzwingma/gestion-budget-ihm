@@ -1,8 +1,7 @@
 import * as ClientHTTP from "../../Services/ClientHTTP.service";
 import {toast} from "react-toastify";
 import CompteBancaireModel from "@/src/main/Models/CompteBancaire.model";
-import CompteBancaireDTO from "@/src/main/Models/CompteBancaireDTO.datamodel";
-import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../Utils/AppTechEnums.constants";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants";
 
 /**
  * Appels WS vers pour charger la liste des comptes
@@ -13,16 +12,8 @@ export function loadComptes(setComptes: React.Dispatch<React.SetStateAction<Comp
         .then((data : any[]) => {
             // Création des comptes pour l'affichage (avec icones)
             let listeComptes : CompteBancaireModel[] = []
-            data.forEach((compte : CompteBancaireDTO) => {
-                let compteB : CompteBancaireModel;
-                compteB = {
-                    id : compte.id,
-                    libelle : compte.libelle,
-                    icon : compte.itemIcon,
-                    isDisabled : !compte.actif,
-                    ordre : compte.ordre
-                };
-                listeComptes.push(compteB);
+            data.forEach((compte: CompteBancaireModel) => {
+                listeComptes.push(compte);
             })
             comptesLoaded(listeComptes, setComptes)
         })
@@ -34,7 +25,8 @@ export function loadComptes(setComptes: React.Dispatch<React.SetStateAction<Comp
 
 /**
  * Chargement des comptes et tri suivant l'ordre
- * @param data comptes chargés
+ * @param comptesLabelIcons liste des comptes
+ * @param setComptes setter de la liste des comptes
  */
 export function comptesLoaded(comptesLabelIcons : CompteBancaireModel[], setComptes: React.Dispatch<React.SetStateAction<CompteBancaireModel[]>>) {
     console.log("Chargement de " + comptesLabelIcons.length + " comptes");
