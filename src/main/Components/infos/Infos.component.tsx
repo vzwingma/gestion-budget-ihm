@@ -43,14 +43,12 @@ export const Infos: React.FC = () => {
                         <Table size={"small"}>
                             <TableBody>
                                 <MicroServicesInfos
-                                    key='ihm'
-                                    nom='IHM'
+                                    key='ihm' nom='IHM'
                                     version={process.env.REACT_APP_BUDGET_VERSION} />
 
                                 {infos.map((msInfos) => (
                                     <MicroServicesInfos
-                                        key={msInfos.nom}
-                                        nom={msInfos.nom}
+                                        key={msInfos.nom} nom={msInfos.nom}
                                         version={msInfos.version} />
                                 ))}
                             </TableBody>
