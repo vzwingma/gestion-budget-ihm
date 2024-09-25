@@ -18,9 +18,8 @@
     "moduleResolution": "nodenext",
     "module": "nodenext",
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./",
     "paths": {
-      "@/*": ["src/main/*"]
+      "@/*": ["./*", "./src/main/*"],
     },
     "typeRoots": [
       "node_modules/@types"

@@ -7,6 +7,10 @@ export function getLabelDate(dateOperation: string): string {
     return new Date(Date.parse(dateOperation)).toLocaleDateString("fr");
 }
 
+export function getLabelFromDate(dateOperation: Date): string {
+    return dateOperation.toLocaleDateString("fr");
+}
+
 
 /**
  * Convertit un nom de mois en numéro de mois.

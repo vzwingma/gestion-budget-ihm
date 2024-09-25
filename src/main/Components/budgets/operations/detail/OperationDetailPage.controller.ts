@@ -4,6 +4,7 @@ import CategorieOperationModel from "../../../../Models/CategorieOperation.model
 import OperationModel from "../../../../Models/Operation.model";
 import { BUSINESS_GUID } from "../../../../Utils/AppBusinessEnums.constants";
 import { getEventTargetId, sortLibellesCategories } from "../../../../Utils/OperationData.utils";
+import { FunctionHandleBudgetUpdateProps } from "../../budget/Budget.controller";
 import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
 import { OPERATION_EDITION_FORM_IDS } from "./OperationDetailPage.constants";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
@@ -31,7 +32,10 @@ export function getListeAllCategories(listeCategories: CategorieOperationModel[]
  * Click sur un élément à éditer de la page de détail
  * @param event click
  */
-export function handleOperationEditionClick(event: any, operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationModel, editForm: EditFormProps, setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, onOperationChange: (budget: BudgetMensuelModel) => void) {
+export function handleOperationEditionClick(event: any, operation: OperationModel, budget: BudgetMensuelModel, 
+    editOperation: OperationModel, editForm: EditFormProps, setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, 
+    errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, 
+    onOperationChange: (budget: BudgetMensuelModel) => void) {
 
 
     if (event.target !== null && event.target !== undefined && budget?.actif) {

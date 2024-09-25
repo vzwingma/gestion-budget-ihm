@@ -13,7 +13,9 @@ import OperationsListe from "../operations/OperationsListe.component";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { CancelRounded } from "@mui/icons-material";
-import CategorieOperationModel from "../../../Models/CategorieOperation.model";
+import CategorieOperationModel from "@/Models/CategorieOperation.model";
+import { getLabelFromDate } from "../../../Utils/Date.utils";
+import { getOperationsGroupedByDateOperation } from "./Budget.controller";
 
 interface BudgetPageProps {
     selectedCompte: CompteBancaireModel | null
@@ -45,9 +47,23 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
 
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte=", selectedCompte, " selectedDate=", selectedDate)
+        console.log("[TRIGGER] Context selectedCompte=", selectedCompte?.id, " selectedDate=", getLabelFromDate(selectedDate))
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
     }, [selectedCompte, selectedDate])
+
+
+    /**
+     *  Fonction appelée lorsque le budget est mis à jour.
+     *
+     * @param {BudgetMensuelModel} budget - Le modèle de budget mensuel à jour
+     */
+    function handleBudgetUpdate(budget: BudgetMensuelModel) {
+        console.log("(Re)Chargement du budget", budget.id, budget.listeOperations.length + " opérations");
+        setCurrentBudget(budget);
+        setOperationsGroupedByDateOperation(getOperationsGroupedByDateOperation(budget.listeOperations));
+        console.log("Chargement du budget correctement effectué");
+    }
+
 
     /**
      * Gère le chargement des catégories.
@@ -89,15 +105,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     }
 
 
-    /**
-     * Mise à jour du budget
-     * @param budget - Le modèle de budget à définir comme budget actuel.
-     * @param operationsGroupedByDateOperation - Un objet où les clés sont des dates et les valeurs sont des tableaux d'opérations qui ont eu lieu à ces dates.
-     */
-    function handleBudgetUpdate(budget: BudgetMensuelModel) {
-        setCurrentBudget(budget);
-        // TODO    setOperationsGroupedByDateOperation(operationsGroupedByDateOperation);
-    }
 
 
 

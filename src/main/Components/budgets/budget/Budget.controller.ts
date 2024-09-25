@@ -5,25 +5,28 @@ import {sortOperations} from "../../../Utils/OperationData.utils";
 /**
  * Controleur des budgets
  */
+export interface FunctionHandleBudgetUpdateProps {
+    budget: BudgetMensuelModel
+    operationsGroupedByDateOperation :{ [key: string]: OperationModel[] } ;
+}
+
+
 
 /**
- * Fonction appelée lorsque le budget est mis à jour.
- * @param budgetData - Les données du budget mensuel.
- * @param handleBudgetUpdate - Fonction de gestion de la mise à jour du budget.
+ * Fonction de tri des opérations
+ * @param ope1 opération 1
+ * @param ope2 opération 2
+ * @returns {number} -1 si ope1 avant ope2, 1 si ope2 avant ope1, 0 si égalité
+ * @private
  */
-export function budgetUpdateloaded(budgetData : BudgetMensuelModel, handleBudgetUpdate : Function) {
-    console.log("(Re)Chargement du budget", budgetData.id, budgetData.listeOperations.length + " opérations")
-
-    let operationsGroupedByDateOperation: { [key: string]: OperationModel[] } = budgetData.listeOperations
-        .filter((operation : OperationModel) => operation.etat !== "PLANIFIEE")
-        .sort((ope1 : OperationModel, ope2 : OperationModel) => sortOperations(ope1, ope2))
-        .reduce((group : { [key: string]: OperationModel[] } , operation : OperationModel) => {
-            const dateOperation : string = operation.autresInfos.dateOperation?.toDateString() ?? "null";
-            group[dateOperation] = group[dateOperation] ?? [];
-            group[dateOperation].push(operation);
-            return group;
-        }, {});
-
-    handleBudgetUpdate(budgetData, operationsGroupedByDateOperation);
-    console.log("Chargement du budget correctement effectué");
+export function getOperationsGroupedByDateOperation(listeOperations: OperationModel[]): { [key: string]: OperationModel[] } {
+    return listeOperations
+                        .filter((operation: OperationModel) => operation.etat !== "PLANIFIEE")
+                        .sort((ope1: OperationModel, ope2: OperationModel) => sortOperations(ope1, ope2))
+                        .reduce((group: { [key: string]: OperationModel[] }, operation: OperationModel) => {
+                            const dateOperation: string = operation.autresInfos.dateOperation?.toDateString() ?? "null";
+                            group[dateOperation] = group[dateOperation] ?? [];
+                            group[dateOperation].push(operation);
+                            return group;
+                        }, {});
 }
