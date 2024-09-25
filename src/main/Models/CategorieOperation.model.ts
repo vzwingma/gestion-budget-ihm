@@ -3,10 +3,10 @@
  */
 class CategorieOperationModel {
 
-    id: string;
+    id: string | null;
     libelle: string;
     categorieParente?: CategorieOperationModel;
-
+    listeSSCategories?: CategorieOperationModel[] = [];
     /**
      * Constructor
      * @param id id du compte

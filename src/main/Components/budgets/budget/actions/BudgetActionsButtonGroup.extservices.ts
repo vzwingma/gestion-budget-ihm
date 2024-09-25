@@ -1,6 +1,6 @@
 import BudgetMensuelModel from "@/src/main/Models/BudgetMensuel.model";
-import { call } from "@/src/main/Services/ClientHTTP.service";
-import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "@/src/main/Utils/AppTechEnums.constants";
+import { call } from "./../../../../Services/ClientHTTP.service";
+import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "./../../../../Utils/AppTechEnums.constants";
 import {toast} from "react-toastify";
 
 
@@ -19,7 +19,7 @@ import {toast} from "react-toastify";
  *
  * @throws {Error} Si une erreur se produit lors de la réinitialisation du budget.
  */
-export function callReinitBudget(budget : BudgetMensuelModel, onActionBudgetChange : Function) {
+export function callReinitBudget(budget : BudgetMensuelModel, onActionBudgetChange : Function): void {
     const idBudget = budget.id;
     console.log("Reinitialisation du budget [" + idBudget + "]");
     call(METHODE_HTTP.DELETE, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.REINIT, [idBudget])

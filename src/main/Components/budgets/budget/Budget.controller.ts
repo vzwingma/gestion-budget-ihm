@@ -27,35 +27,3 @@ export function budgetUpdateloaded(budgetData : BudgetMensuelModel, handleBudget
     handleBudgetUpdate(budgetData, operationsGroupedByDateOperation);
     console.log("Chargement du budget correctement effectué");
 }
-
-
-
-/**
- * Fonction de création d'une nouvelle opération.
- * @returns {OperationModel} - Un nouvel objet OperationModel initialisé.
- */
-export function createNewOperation() {
-
-    let newOperation: OperationModel = {
-        id: -1,
-        libelle: "null",
-        categorie: {
-            id: "null",
-            libelle: "null"
-        },
-        ssCategorie: {
-            id: "null",
-            libelle: "null"
-        },
-        typeOperation: "null",
-        etat: "PREVUE",
-        valeur: 0,
-        mensualite: {
-            periode: "PONCTUELLE"
-        },
-        autresInfos: {
-            dateOperation: new Date()
-        }
-    }
-    return newOperation;
-}

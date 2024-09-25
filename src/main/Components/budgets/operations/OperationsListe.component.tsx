@@ -3,8 +3,8 @@ import {Container, Divider, Stack} from "@mui/material";
 import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model';
 import OperationModel from '@/src/main/Models/Operation.model';
 import CenterComponent from '../../CenterComponent';
-import { getLabelDate } from '@/src/main/Utils/DataUtils.utils';
 import OperationItem from './OperationsListItem.component';
+import {getLabelDate} from '@/src/main/Utils/DataUtils.utils';
 
 interface OperationsListeProps {
     operationGroupedByDate: {[key: string]: OperationModel[]}
@@ -54,7 +54,7 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
 
             operationsFilteredForDate
                 .forEach((operation) => renderList.push(
-                    < OperationItem key={operation.id}
+                    <OperationItem key={operation.id}
                                     operation={operation}
                                     listeComptes={listeComptes}
                                     onClick={handleOperationSelect}/>)

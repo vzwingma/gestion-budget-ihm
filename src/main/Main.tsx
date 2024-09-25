@@ -1,15 +1,16 @@
 import React, {Component} from "react";
-import {HashRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from 'react-router-dom';
 import {AuthProvider} from 'react-oidc-context';
 import {removeTokenFromStorage} from "./Services/Auth.service";
 
 import {AppBar, createTheme, CssBaseline, Stack, ThemeProvider, Typography} from "@mui/material";
-import { OIDC_ENUM } from "./Utils/AppTechEnums.constants";
-import { BUSINESS_ONGLETS } from "./Utils/AppBusinessEnums.constants";
-import PrivateNavLinks from "./menuTopBar/PrivateNavLinks.component";
-import Profile from "./menuTopBar/Profile.component";
-import {Infos} from "./infos/Infos.component";
+import {OIDC_ENUM} from "./Utils/AppTechEnums.constants";
+import {BUSINESS_ONGLETS} from "./Utils/AppBusinessEnums.constants";
 import MainPage from "./Components/mainpages/MainPage.component";
+import PrivateNavLinks from "./Components/menuTopBar/PrivateNavLinks.component";
+import Profile from "./Components/menuTopBar/Profile.component";
+import {Infos} from "@/Components/infos/Infos.component";
+
 
 
 /** Page principale avec le routeur **/

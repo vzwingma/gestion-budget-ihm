@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import Grid2 from "@mui/material/Unstable_Grid2";
-import BudgetTitre from "./BudgetTitre.component";
-import { Box, CircularProgress, Divider, InputBase, Paper } from "@mui/material";
+import {Box, CircularProgress, Divider, InputBase, Paper} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import { CancelRounded } from "@mui/icons-material";
+import BudgetTitre from "./BudgetTitre.component";
 import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
-import OperationModel from "../../../Models/Operation.model";
-import { getPreferenceUtilisateur, loadCategories, reloadBudget } from "./Budget.extservices";
-import { createNewOperation } from "./Budget.controller";
-import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants";
-import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButtonGroup.component";
+import OperationModel, {createNewOperation} from "../../../Models/Operation.model";
+import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices";
+import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
+import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component";
 import OperationsListe from "../operations/OperationsListe.component";
+import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
+import CategorieOperationModel from "@/src/main/Models/CategorieOperation.model";
+import Grid2 from "@mui/material/Unstable_Grid2";
+import {CancelRounded} from "@mui/icons-material";
 
 interface BudgetPageProps {
     selectedCompte: CompteBancaireModel | null
@@ -21,32 +22,6 @@ interface BudgetPageProps {
     onOpenMenu: () => void
 }
 
-/**
- * Composant de la page Budget.
- * 
- * @param {BudgetPageProps} props - Les propriétés du composant.
- * @param {CompteModel} props.selectedCompte - Le compte sélectionné.
- * @param {Date} props.selectedDate - La date sélectionnée.
- * @param {CompteModel[]} props.listeComptes - La liste des comptes disponibles.
- * @param {Function} props.onOpenMenu - Fonction pour ouvrir le menu.
- * 
- * @returns {JSX.Element} - Le rendu de la page Budget.
- * 
- * @description
- * Ce composant gère l'affichage et les interactions de la page Budget. Il charge les catégories et les préférences
- * utilisateur au démarrage, et met à jour le budget lorsque le compte ou la date sélectionnée change. Il permet
- * également de filtrer et de sélectionner des opérations, ainsi que de créer de nouvelles opérations.
- * 
- * @example
- * ```tsx
- * <BudgetPage 
- *   selectedCompte={selectedCompte}
- *   selectedDate={selectedDate}
- *   listeComptes={listeComptes}
- *   onOpenMenu={handleOpenMenu}
- * />
- * ```
- */
 export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selectedDate, listeComptes, onOpenMenu }: BudgetPageProps): JSX.Element => {
 
     /** Etats pour la page Budget **/
@@ -55,7 +30,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     const [currentOperation, setCurrentOperation] = useState<OperationModel>();
     const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{[key: string]: OperationModel[]}>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
-    const [categories, setCategories] = useState<string[]>();
+    const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
     const [userPreferences, setUserPreferences] = useState<string[]>([]);
 
@@ -75,8 +50,12 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
     }, [selectedCompte, selectedDate])
 
-    /** Chargement des catégories **/
-    function handleCategoriesLoaded(categories: string[]) {
+    /**
+     * Gère le chargement des catégories.
+     *
+     * @param {CategorieOperationModel[]} categories - La liste des catégories chargées.
+     */
+    function handleCategoriesLoaded(categories: CategorieOperationModel[]) {
         console.log("Chargement de " + categories.length + " catégories");
         setCategories(categories);
     }
@@ -116,9 +95,9 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
      * @param budget - Le modèle de budget à définir comme budget actuel.
      * @param operationsGroupedByDateOperation - Un objet où les clés sont des dates et les valeurs sont des tableaux d'opérations qui ont eu lieu à ces dates.
      */
-    function handleBudgetUpdate(budget: BudgetMensuelModel, operationsGroupedByDateOperation: { [key: string]: OperationModel[] }) {
+    function handleBudgetUpdate(budget: BudgetMensuelModel) {
         setCurrentBudget(budget);
-        setOperationsGroupedByDateOperation(operationsGroupedByDateOperation);
+     // TODO    setOperationsGroupedByDateOperation(operationsGroupedByDateOperation);
     }
 
 
@@ -167,7 +146,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                 <Grid2 md={1}>
                     {/** Actions sur le budget (close / reinit) **/
                         (currentBudget != null && userDroits != null) ?
-                            <BudgetActionsButtonGroupComponent 
+                            <BudgetActionsButtonGroupComponent
                                 budget={currentBudget}
                                 droits={userDroits}
                                 onActionBudgetChange={handleBudgetUpdate}

@@ -8,6 +8,7 @@ class BudgetMensuelModel {
     id: string;
     libelle: string;
     actif: boolean = true;
+    idCompteBancaire!: string;
     soldes: Soldes = new Soldes();
     listeOperations: Array<OperationModel> = new Array<OperationModel>();
     /**

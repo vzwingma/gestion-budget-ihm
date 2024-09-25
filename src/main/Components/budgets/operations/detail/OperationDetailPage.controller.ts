@@ -1,12 +1,11 @@
 import CategorieOperationModel from "@/src/main/Models/CategorieOperation.model";
 import OperationModel from "@/src/main/Models/Operation.model";
-import { OPERATION_EDITION_FORM_IDS } from "./OperationDetailPage.constants";
-import { BUSINESS_GUID, TYPES_OPERATION_ENUM } from "@/src/main/Utils/AppBusinessEnums.constants";
-import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
+import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
+import {BUSINESS_GUID} from "@/src/main/Utils/AppBusinessEnums.constants";
+import {saveOperation, saveOperationIntercompte} from "./OperationDetailPage.extservices";
 import BudgetMensuelModel from "@/src/main/Models/BudgetMensuel.model";
-import CompteBancaireModel from "@/src/main/Models/CompteBancaire.model";
-import { getEventTargetId, sortLibellesCategories } from "@/src/main/Utils/DataUtils.utils";
-import { EditFormProps, ErrorsFormProps } from "./OperationDetailPage.component";
+import {getEventTargetId, sortLibellesCategories} from "@/src/main/Utils/DataUtils.utils";
+import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
 
 
 /**
@@ -30,7 +29,7 @@ export function getListeAllCategories(listeCategories: CategorieOperationModel[]
  * Click sur un élément à éditer de la page de détail
  * @param event click
  */
-export function handleOperationEditionClick(event: any, operation : OperationModel, budget: BudgetMensuelModel, editOperation: OperationModel, editForm: EditFormProps, setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>) {
+export function handleOperationEditionClick(event: any, operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationModel, editForm: EditFormProps, setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, onOperationChange: (budget: BudgetMensuelModel) => void) {
 
 
     if (event.target !== null && event.target !== undefined && budget?.actif) {
@@ -39,7 +38,7 @@ export function handleOperationEditionClick(event: any, operation : OperationMod
 
         // Validation du formulaire
         if (enterKeyPress && editForm.formValidationEnabled) {
-            handleValidateOperationForm(operation, budget, editOperation, null, editForm, setEditForm);
+            handleValidateOperationForm(operation, budget, editOperation, editForm, setEditForm, errors, setErrors, onOperationChange);
         } else if (!idElement.endsWith(OPERATION_EDITION_FORM_IDS.INPUT)) {
             switch (idElement) {
                 case OPERATION_EDITION_FORM_IDS.VALUE:
@@ -68,7 +67,6 @@ export function handleDateOperationFromAction(valeurDate: Date, editOperation: O
 }
 
 
-
 /**
  * validation du formulaire - Description
  */
@@ -84,7 +82,7 @@ function validateDescription(editOperation: OperationModel, operation: Operation
 /**
  * validation du formulaire - Montant
  */
-function validateFormMontant(editOperation: OperationModel, operation : OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
+function validateFormMontant(editOperation: OperationModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     if (!editForm.value) return;
 
     if (!editOperation.valeur) {
@@ -93,8 +91,8 @@ function validateFormMontant(editOperation: OperationModel, operation : Operatio
     }
 
     const formValeur = "" + editOperation.valeur;
-    const { valeurCalculee, error }  = calculateValeur(formValeur.replace(",", "."));
-    if(error) {
+    const {valeurCalculee, error} = calculateValeur(formValeur.replace(",", "."));
+    if (error) {
         errors.valeur = error;
         return;
     }
@@ -132,8 +130,7 @@ export function validateFormTransfertIntercompte(editOperation: OperationModel, 
 /**
  * validation du formulaire
  */
-export function validateForm(editOperation: OperationModel, operation: OperationModel, editForm : EditFormProps, errors: ErrorsFormProps) {
-    let hasErrors = false;
+export function validateForm(editOperation: OperationModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     // Description
     validateDescription(editOperation, operation, errors);
 
@@ -175,21 +172,22 @@ function processEquation(valueToCalculate: string): string {
     }
     return valueToCalculate
 }
+
 /**
  * Calcul de la valeur d'une opération (en prenant en compte les opérations
  * @param formValue : string valeur saisie du formulaire
  * @returns {number} total
  */
-function calculateValeur(formValue: string): { valeurCalculee : string | null, error : string | null } {
+function calculateValeur(formValue: string): { valeurCalculee: string | null, error: string | null } {
 
     try {
         // eslint-disable-next-line no-eval
         const calculee = Number(processEquation(formValue)).toFixed(2);
         console.log("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
-        return { valeurCalculee : calculee, error: null };
+        return {valeurCalculee: calculee, error: null};
     } catch (e) {
         console.error("Erreur dans la valeur saisie ", formValue, e)
-        return { valeurCalculee : null, error: "Le champ Montant est incorrect" };
+        return {valeurCalculee: null, error: "Le champ Montant est incorrect"};
     }
 }
 
@@ -217,7 +215,10 @@ function validateValue(valeur: string): boolean {
  * @param {ErrorsFormProps} errors - Les erreurs du formulaire.
  * @param {React.Dispatch<React.SetStateAction<ErrorsFormProps>>} setErrors - Fonction pour mettre à jour l'état des erreurs du formulaire.
  */
-export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationModel, intercompte: CompteBancaireModel, editForm: EditFormProps, setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, errors : ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>) {
+export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationModel,
+                                            editForm: EditFormProps, setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, 
+                                            errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, 
+                                            onOperationChange: (budget: BudgetMensuelModel) => void) {
 
     if (isInEditMode(editForm)) {
         validateForm(editOperation, operation, editForm, errors);
@@ -235,10 +236,10 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
         } else {
             if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && isInCreateMode(editForm)) {
                 // Create Update Opération Intercomptes
-                saveOperationIntercompte(operation, budget, intercompte);
+                saveOperationIntercompte(operation, budget, editOperation.intercompte, onOperationChange);
             } else {
                 // Create Update Opération
-                saveOperation(operation, budget);
+                saveOperation(operation, budget, onOperationChange);
             }
 
             handleCloseOperationForm(setEditForm, setErrors);
@@ -270,7 +271,7 @@ export function isInCreateMode(editForm: EditFormProps): boolean {
  */
 export function handleCloseOperationForm(setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>) {
 
-    const editForm : EditFormProps = {
+    const editForm: EditFormProps = {
         value: false,
         libelle: false,
         dateOperation: false,
@@ -279,7 +280,7 @@ export function handleCloseOperationForm(setEditForm: React.Dispatch<React.SetSt
         formValidationEnabled: false
     };
     setEditForm(editForm);
-    const errors : ErrorsFormProps = {
+    const errors: ErrorsFormProps = {
         libelle: null,
         valeur: null,
         categorie: null,

@@ -9,9 +9,8 @@ import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model';
 import CenterComponent from '../../CenterComponent';
 
 
-
 interface OperationItemProps {
-    key: number
+    key: string
     operation: OperationModel
     listeComptes: CompteBancaireModel[]
     onClick: (operation : OperationModel) => void
@@ -69,7 +68,7 @@ const OperationItem: React.FC<OperationItemProps> = ({key, operation, listeCompt
                 </Grid2>
                 <Grid2 md={3}>
                     <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
-                        <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}/>
+                        <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true}/>
                     </Typography>
                 </Grid2>
             </Grid2>
