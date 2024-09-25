@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import { Box, CircularProgress, Divider, InputBase, Paper } from "@mui/material";
+import {Box, CircularProgress, Divider, Grid2, InputBase, Paper} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import BudgetTitre from "./BudgetTitre.component";
 import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
-import OperationModel, { createNewOperation } from "../../../Models/Operation.model";
-import { getPreferenceUtilisateur, loadCategories, reloadBudget } from "./Budget.extservices";
-import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants";
-import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButtonGroup.component";
+import OperationModel, {createNewOperation} from "../../../Models/Operation.model";
+import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices";
+import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
+import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component";
 import OperationsListe from "../operations/OperationsListe.component";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
-import Grid2 from "@mui/material/Unstable_Grid2";
-import { CancelRounded } from "@mui/icons-material";
+import {CancelRounded} from "@mui/icons-material";
 import CategorieOperationModel from "@/Models/CategorieOperation.model";
-import { getLabelFromDate } from "../../../Utils/Date.utils";
-import { getOperationsGroupedByDateOperation } from "./Budget.controller";
+import {getLabelFromDate} from "../../../Utils/Date.utils";
+import {getOperationsGroupedByDateOperation} from "./Budget.controller";
 
 interface BudgetPageProps {
     selectedCompte: CompteBancaireModel | null
@@ -34,7 +33,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
     const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
-    const [userPreferences, setUserPreferences] = useState<string[]>([]);
+    const [, setUserPreferences] = useState<string[]>([]);
 
 
 
@@ -115,12 +114,12 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={'true'}>
             <Grid2 container marginTop={1} sx={{ overflow: "hidden" }}>
-                <Grid2 md={0.33}>
+                <Grid2 m={0.33}>
                     <MenuIcon onClick={onOpenMenu}
                         className={"editableField"}
                         fontSize={"large"} />
                 </Grid2>
-                <Grid2 md={3} paddingTop={"6px"}>
+                <Grid2 m={3} paddingTop={"6px"}>
                     <Paper component="form"
                         sx={{
                             p: '2px 4px',
@@ -140,8 +139,8 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
 
                     </Paper>
                 </Grid2>
-                <Grid2 md={1.5} />
-                <Grid2 md={6.1}>
+                <Grid2 m={1.5}/>
+                <Grid2 m={6.1}>
                     { /** Titre **/}
                     {currentBudget != null && selectedCompte != null ?
                         <BudgetTitre currentCompte={selectedCompte}
@@ -149,7 +148,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                             currentBudget={currentBudget} /> : <CircularProgress />
                     }
                 </Grid2>
-                <Grid2 md={1}>
+                <Grid2 m={1}>
                     {/** Actions sur le budget (close / reinit) **/
                         (currentBudget != null && userDroits != null) ?
                             <BudgetActionsButtonGroupComponent
@@ -163,7 +162,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
             </Grid2>
             <Divider variant="middle" sx={{ margin: 1 }} />
             <Grid2 container sx={{ overflow: "hidden" }}>
-                <Grid2 md={4} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
+                <Grid2 m={4} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
                     { /** Liste des opérations **/
                         (currentBudget != null ?
                             <OperationsListe
@@ -176,7 +175,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                         )
                     }
                 </Grid2>
-                <Grid2 md={8} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
+                <Grid2 m={8} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationDetailPage operation={currentOperation}

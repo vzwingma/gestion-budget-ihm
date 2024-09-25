@@ -1,13 +1,13 @@
 import React from "react";
 import MsInfoModel from "../../Models/MsInfo.model";
-import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../Utils/AppTechEnums.constants";
-import { call } from "../../Services/ClientHTTP.service";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants";
+import {call} from "../../Services/ClientHTTP.service";
 
 
 /**
  * Chargement des infos des µS
  */
-export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.SetStateAction<MsInfoModel[]>>) {
+export function getInfosFromMicroServices(setInfo: React.Dispatch<React.SetStateAction<MsInfoModel[]>>) {
 
     /** Config Backend **/
     const backEnds = [
@@ -40,6 +40,6 @@ export async function getInfosFromMicroServices(setInfo : React.Dispatch<React.S
                 setInfo(infosUpdated)
             })
     }
-    
+    return infosUpdated;
 }
 

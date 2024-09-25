@@ -1,6 +1,5 @@
 import React from 'react'
-import {Box, Stack, Typography} from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import {Box, Grid2, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import * as Renderer from "../../../Utils/renderers/OperationItem.renderer";
 import * as CategorieRenderer from "../../../Utils/renderers/CategorieItem.renderer";
@@ -34,7 +33,7 @@ const OperationItem: React.FC<OperationItemProps> = ({key, operation, listeCompt
              className={"listeItem"}
              onClick={() => handleOperationSelect(operation)}>
             <Grid2 container spacing={6}>
-                <Grid2 md={1}>
+                <Grid2 m={1}>
                     <Box width={50} height={50}
                          sx={{
                              borderRadius: '50%',
@@ -53,7 +52,7 @@ const OperationItem: React.FC<OperationItemProps> = ({key, operation, listeCompt
                         </Box>
                     </Box>
                 </Grid2>
-                <Grid2 md={7}>
+                <Grid2 m={7}>
                     <Stack direction={"column"}>
                         <Typography variant={"subtitle1"} component="div" align={"left"}
                                     sx={{spacing: 2, paddingLeft: 2}}>
@@ -66,7 +65,7 @@ const OperationItem: React.FC<OperationItemProps> = ({key, operation, listeCompt
                     </Stack>
 
                 </Grid2>
-                <Grid2 md={3}>
+                <Grid2 m={3}>
                     <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
                         <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true}/>
                     </Typography>

@@ -6,6 +6,7 @@ import {
     Container,
     FormControl,
     FormHelperText,
+    Grid2,
     InputAdornment,
     MenuItem,
     Stack,
@@ -14,7 +15,6 @@ import {
 } from "@mui/material";
 
 
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {getLibellesOperation} from './OperationDetailPage.extservices';
 import {
     getListeAllCategories,
@@ -27,15 +27,24 @@ import {
 import CenterComponent from '../../../CenterComponent';
 import {EMPTY_CATEGORIE, OPERATION_EDITION_FORM_IDS} from './OperationDetailPage.constants';
 import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material';
-import { OperationDetailActions } from '../actions/OperationDetailActions.component';
-import OperationModel, { cloneOperation, createNewOperation } from '../../../../Models/Operation.model';
+import {OperationDetailActions} from '../actions/OperationDetailActions.component';
+import OperationModel, {cloneOperation, createNewOperation} from '../../../../Models/Operation.model';
 import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
 import CategorieOperationModel from '../../../../Models/CategorieOperation.model';
 import CompteBancaireModel from '../../../../Models/CompteBancaire.model';
-import { BUSINESS_GUID, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM } from '../../../../Utils/AppBusinessEnums.constants';
+import {
+    BUSINESS_GUID,
+    OPERATION_ETATS_ENUM,
+    PERIODES_MENSUALITE_ENUM,
+    TYPES_OPERATION_ENUM
+} from '../../../../Utils/AppBusinessEnums.constants';
 import OperationValue from '../../../../Utils/renderers/OperationValue.renderer';
-import { getCategorieColor, getCategorieIcon } from '../../../../Utils/renderers/CategorieItem.renderer';
-import { getOperationLibelle, getOperationStateColor, getPeriodeRenderer } from '../../../../Utils/renderers/OperationItem.renderer';
+import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer';
+import {
+    getOperationLibelle,
+    getOperationStateColor,
+    getPeriodeRenderer
+} from '../../../../Utils/renderers/OperationItem.renderer';
 
 
 /**
@@ -149,7 +158,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             getLibellesOperation(budget.idCompteBancaire, setListeLibellesOperation);
         }
         setEditOperation(cloneOperation(operation));
-    }, [])
+    }, [budget.idCompteBancaire, operation, listeLibellesOperation]);
 
 
     /**
@@ -363,18 +372,18 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 }
 
                 <Grid2 container width={"100%"}>
-                    <Grid2 md={5}>
+                    <Grid2 m={5}>
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Catégorie</Typography>
                     </Grid2>
-                    <Grid2 md={4}>
+                    <Grid2 m={4}>
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Etat</Typography>
                     </Grid2>
-                    <Grid2 md={3}>
+                    <Grid2 m={3}>
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Période</Typography>
                     </Grid2>
 
 
-                    <Grid2 md={5}>
+                    <Grid2 m={5}>
                         {
                             /** CATEGORIES **/
                             !editForm.categories ?
@@ -409,12 +418,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 </FormControl>
                         }
                     </Grid2>
-                    <Grid2 md={4}>
+                    <Grid2 m={4}>
                         <Typography variant={"overline"} color={getOperationStateColor(operation.etat)}>
                             {operation.etat}
                         </Typography>
                     </Grid2>
-                    <Grid2 md={3}>
+                    <Grid2 m={3}>
                         { /** PERIODE **/
                             (!editForm.mensualite) ?
                                 <Typography id={OPERATION_EDITION_FORM_IDS.MENSUALITE} variant={"overline"}
@@ -441,22 +450,22 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     </Grid2>
 
 
-                    <Grid2 md={5} paddingTop={3}>
+                    <Grid2 m={5} paddingTop={3}>
                         {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id) ?
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Compte de
                                 transfert</Typography> : <></>}
                     </Grid2>
-                    <Grid2 md={4} paddingTop={3}>
+                    <Grid2 m={4} paddingTop={3}>
                         {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                         }
                     </Grid2>
-                    <Grid2 md={3} paddingTop={3}>
+                    <Grid2 m={3} paddingTop={3}>
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Date d'opération</Typography>
                     </Grid2>
 
 
-                    <Grid2 md={5}>
+                    <Grid2 m={5}>
                         { /** COMPTE DE TRANSFERT  **/
                             isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id) ?
                                 <TextField
@@ -481,7 +490,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                         ))}
                                 </TextField> : <></>}
                     </Grid2>
-                    <Grid2 md={4}>
+                    <Grid2 m={4}>
                         { /** ACTIONS SUR OPERATION **/}
                         {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions operation={operation}
@@ -491,7 +500,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                                     onOperationChange={onOperationChange}/> : <></>
                         }
                     </Grid2>
-                    <Grid2 md={3}>
+                    <Grid2 m={3}>
                         { /** DATE OPERATION **/}
                         {(!editForm.dateOperation) ?
                             <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}

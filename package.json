@@ -5,9 +5,9 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^5.15.21",
-    "@mui/material": "^5.15.21",
-    "@testing-library/jest-dom": "^6.4.6",
+    "@mui/icons-material": "^6.1.1",
+    "@mui/material": "^6.1.1",
+    "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
     "gestion-budget-ihm": "file:",
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+    "@types/react": "^18.3.9",
     "@types/uuid": "^10.0.0",
     "eslint-config-react-app": "^7.0.1"
   },
