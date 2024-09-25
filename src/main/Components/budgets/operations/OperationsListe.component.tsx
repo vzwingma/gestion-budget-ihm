@@ -1,10 +1,10 @@
 import React from 'react'
 import {Container, Divider, Stack} from "@mui/material";
-import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model';
-import OperationModel from '@/src/main/Models/Operation.model';
 import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';
-import {getLabelDate} from '@/src/main/Utils/DataUtils.utils';
+import OperationModel from '../../../Models/Operation.model';
+import CompteBancaireModel from '../../../Models/CompteBancaire.model';
+import { getLabelDate } from '../../../Utils/DataUtils.utils';
 
 interface OperationsListeProps {
     operationGroupedByDate: {[key: string]: OperationModel[]}

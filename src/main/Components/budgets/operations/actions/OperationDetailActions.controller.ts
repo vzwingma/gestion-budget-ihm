@@ -1,9 +1,9 @@
 import {toast} from "react-toastify";
-import OperationModel from "@/src/main/Models/Operation.model";
-import BudgetMensuelModel from "@/src/main/Models/BudgetMensuel.model";
-import { getEventTargetId } from "@/src/main/Utils/DataUtils.utils";
-import { OPERATION_ETATS_ENUM } from "@/src/main/Utils/AppBusinessEnums.constants";
 import { saveOperation } from "../detail/OperationDetailPage.extservices";
+import { getEventTargetId } from "../../../../Utils/DataUtils.utils";
+import OperationModel from "../../../../Models/Operation.model";
+import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
+import { OPERATION_ETATS_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
 
 
 /**

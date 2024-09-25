@@ -9,7 +9,7 @@ import {BUSINESS_ONGLETS} from "./Utils/AppBusinessEnums.constants";
 import MainPage from "./Components/mainpages/MainPage.component";
 import PrivateNavLinks from "./Components/menuTopBar/PrivateNavLinks.component";
 import Profile from "./Components/menuTopBar/Profile.component";
-import {Infos} from "@/Components/infos/Infos.component";
+import {Infos} from "./Components/infos/Infos.component";
 
 
 

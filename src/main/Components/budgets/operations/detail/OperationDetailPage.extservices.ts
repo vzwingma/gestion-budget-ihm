@@ -1,10 +1,10 @@
-import BudgetMensuelModel from "@/src/main/Models/BudgetMensuel.model";
-import OperationModel from "@/src/main/Models/Operation.model";
-import {call} from "@/src/main/Services/ClientHTTP.service";
-import {OPERATION_ETATS_ENUM} from "@/src/main/Utils/AppBusinessEnums.constants";
-import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "@/src/main/Utils/AppTechEnums.constants";
 import {toast} from "react-toastify";
 import {v4 as uuid} from "uuid";
+import OperationModel from "../../../../Models/Operation.model";
+import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
+import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../../Utils/AppTechEnums.constants";
+import { OPERATION_ETATS_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
+import { call } from "../../../../Services/ClientHTTP.service";
 
 
 /**

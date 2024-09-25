@@ -13,10 +13,7 @@ import {
     Typography
 } from "@mui/material";
 
-import BudgetMensuelModel from '@/src/main/Models/BudgetMensuel.model';
-import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model';
-import CategorieOperationModel from '@/src/main/Models/CategorieOperation.model';
-import OperationModel, { cloneOperation, createNewOperation } from '@/src/main/Models/Operation.model';
+
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {getLibellesOperation} from './OperationDetailPage.extservices';
 import {
@@ -27,23 +24,18 @@ import {
     isInCreateMode,
     isInEditMode
 } from './OperationDetailPage.controller';
-import {
-    BUSINESS_GUID,
-    OPERATION_ETATS_ENUM,
-    PERIODES_MENSUALITE_ENUM,
-    TYPES_OPERATION_ENUM
-} from '@/src/main/Utils/AppBusinessEnums.constants';
-import {getCategorieColor, getCategorieIcon} from '@/src/main/Utils/renderers/CategorieItem.renderer';
 import CenterComponent from '../../../CenterComponent';
 import {EMPTY_CATEGORIE, OPERATION_EDITION_FORM_IDS} from './OperationDetailPage.constants';
-import OperationValue from '@/src/main/Utils/renderers/OperationValue.renderer';
 import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material';
-import {
-    getOperationLibelle,
-    getOperationStateColor,
-    getPeriodeRenderer
-} from '@/src/main/Utils/renderers/OperationItem.renderer';
 import { OperationDetailActions } from '../actions/OperationDetailActions.component';
+import OperationModel, { cloneOperation, createNewOperation } from '../../../../Models/Operation.model';
+import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
+import CategorieOperationModel from '../../../../Models/CategorieOperation.model';
+import CompteBancaireModel from '../../../../Models/CompteBancaire.model';
+import { BUSINESS_GUID, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM } from '../../../../Utils/AppBusinessEnums.constants';
+import OperationValue from '../../../../Utils/renderers/OperationValue.renderer';
+import { getCategorieColor, getCategorieIcon } from '../../../../Utils/renderers/CategorieItem.renderer';
+import { getOperationLibelle, getOperationStateColor, getPeriodeRenderer } from '../../../../Utils/renderers/OperationItem.renderer';
 
 
 /**

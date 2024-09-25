@@ -18,10 +18,10 @@ import {
     DeleteForeverRounded,
     HistoryRounded
 } from "@mui/icons-material";
-import OperationModel from "@/src/main/Models/Operation.model";
-import { OPERATION_ETATS_ENUM } from "@/src/main/Utils/AppBusinessEnums.constants";
+import OperationModel from "@/../Models/Operation.model";
+import { OPERATION_ETATS_ENUM } from "./../../../../Utils/AppBusinessEnums.constants";
 import CenterComponent from "../../../CenterComponent";
-import BudgetMensuelModel from "@/src/main/Models/BudgetMensuel.model";
+import BudgetMensuelModel from "./../../../../Models/BudgetMensuel.model";
 import { handleOperationAction } from "./OperationDetailActions.controller";
 
 

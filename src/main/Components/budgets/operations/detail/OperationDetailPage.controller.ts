@@ -1,11 +1,12 @@
-import CategorieOperationModel from "@/src/main/Models/CategorieOperation.model";
-import OperationModel from "@/src/main/Models/Operation.model";
-import {OPERATION_EDITION_FORM_IDS} from "./OperationDetailPage.constants";
-import {BUSINESS_GUID} from "@/src/main/Utils/AppBusinessEnums.constants";
-import {saveOperation, saveOperationIntercompte} from "./OperationDetailPage.extservices";
-import BudgetMensuelModel from "@/src/main/Models/BudgetMensuel.model";
-import {getEventTargetId, sortLibellesCategories} from "@/src/main/Utils/DataUtils.utils";
+
+import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
+import CategorieOperationModel from "../../../../Models/CategorieOperation.model";
+import OperationModel from "../../../../Models/Operation.model";
+import { BUSINESS_GUID } from "../../../../Utils/AppBusinessEnums.constants";
+import { getEventTargetId, sortLibellesCategories } from "../../../../Utils/DataUtils.utils";
 import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
+import { OPERATION_EDITION_FORM_IDS } from "./OperationDetailPage.constants";
+import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
 
 
 /**
@@ -16,6 +17,7 @@ import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
 export function getListeAllCategories(listeCategories: CategorieOperationModel[]): any {
     return listeCategories
         /*
+        TODO : à revoir
             .flatMap((cat : CategorieOperationModel) => {
                 for (let (ssCat : CategorieOperationModel) in cat.listeSSCategories) {
                     cat.listeSSCategories[ssCat].categorieParente = cat

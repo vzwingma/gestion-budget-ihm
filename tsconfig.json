@@ -15,11 +15,12 @@
     ],
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
     "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./src/main/*",
     "paths": {
-      "@/*": ["./*","./src/*","./src/main/*" ],
+      "@/*": ["*"]
     },
     "typeRoots": [
       "node_modules/@types"
