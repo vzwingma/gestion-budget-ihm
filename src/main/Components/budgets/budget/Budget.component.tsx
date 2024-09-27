@@ -28,7 +28,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     /** Etats pour la page Budget **/
 
     const [currentBudget, setCurrentBudget] = useState<BudgetMensuelModel>();
-    const [currentOperation, setCurrentOperation] = useState<OperationModel>();
+    const [currentOperation, setCurrentOperation] = useState<OperationModel | null>(null);
     const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
     const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
@@ -179,10 +179,10 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationDetailPage operation={currentOperation}
-                            budget={currentBudget}
-                            listeCategories={categories}
-                            listeComptes={listeComptes}
-                            onOperationChange={handleBudgetUpdate} />
+                                            budget={currentBudget}
+                                            listeCategories={categories}
+                                            listeComptes={listeComptes}
+                                            onOperationChange={handleBudgetUpdate} />
                         : <></>
                     }
                 </Grid2>

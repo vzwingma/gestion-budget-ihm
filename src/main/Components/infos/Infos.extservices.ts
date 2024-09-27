@@ -21,11 +21,7 @@ export function getInfosFromMicroServices(setInfo: React.Dispatch<React.SetState
     let infosUpdated = [] as MsInfoModel[];
     for (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
         call(METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
-            .then((data : any) => {
-                    const msInfo : MsInfoModel = {
-                        nom: data.nom,
-                        version: data.version
-                    }
+            .then((msInfo : MsInfoModel) => {
                     infosUpdated.push(msInfo);
                     setInfo(infosUpdated);
                 }
