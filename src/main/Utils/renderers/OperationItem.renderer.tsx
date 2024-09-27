@@ -120,7 +120,7 @@ function getOperationIntercompteLibelle(operationLibelle : string, listeComptes 
                     {operationLibelleParts[1].startsWith("[En Retard]") ?
                         <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
     
-                    <img src={"/img/banques/" + compte[0].icon}
+                    <img src={"/img/banques/" + compte[0].itemIcon}
                          width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                          alt={compte[0].libelle}
                          style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
