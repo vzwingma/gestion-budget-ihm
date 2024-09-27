@@ -114,12 +114,12 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={'true'}>
             <Grid2 container marginTop={1} sx={{ overflow: "hidden" }}>
-                <Grid2 m={0.33}>
+                <Grid2 size={{md: 0.33}}>
                     <MenuIcon onClick={onOpenMenu}
                         className={"editableField"}
                         fontSize={"large"} />
                 </Grid2>
-                <Grid2 m={3} paddingTop={"6px"}>
+                <Grid2 size={{md: 3}} paddingTop={"6px"}>
                     <Paper component="form"
                         sx={{
                             p: '2px 4px',
@@ -139,8 +139,8 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
 
                     </Paper>
                 </Grid2>
-                <Grid2 m={1.5}/>
-                <Grid2 m={6.1}>
+                <Grid2 size={{md: 1.5}}/>
+                <Grid2 size={{md: 6.1}}>
                     { /** Titre **/}
                     {currentBudget != null && selectedCompte != null ?
                         <BudgetTitre currentCompte={selectedCompte}
@@ -148,7 +148,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                             currentBudget={currentBudget} /> : <CircularProgress />
                     }
                 </Grid2>
-                <Grid2 m={1}>
+                <Grid2 size={{md: 1}}>
                     {/** Actions sur le budget (close / reinit) **/
                         (currentBudget != null && userDroits != null) ?
                             <BudgetActionsButtonGroupComponent
@@ -162,7 +162,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
             </Grid2>
             <Divider variant="middle" sx={{ margin: 1 }} />
             <Grid2 container sx={{ overflow: "hidden" }}>
-                <Grid2 m={4} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
+                <Grid2 size={{md: 4}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
                     { /** Liste des opérations **/
                         (currentBudget != null ?
                             <OperationsListe
@@ -175,7 +175,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                         )
                     }
                 </Grid2>
-                <Grid2 m={8} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
+                <Grid2 size={{md: 8}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationDetailPage operation={currentOperation}

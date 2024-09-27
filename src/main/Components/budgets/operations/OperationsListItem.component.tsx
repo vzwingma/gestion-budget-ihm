@@ -31,7 +31,7 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, listeComptes, o
              className={"listeItem"}
              onClick={() => handleOperationSelect(operation)}>
             <Grid2 container spacing={6}>
-                <Grid2 m={1}>
+                <Grid2 size={{md: 1}}>
                     <Box width={50} height={50}
                          sx={{
                              borderRadius: '50%',
@@ -50,7 +50,7 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, listeComptes, o
                         </Box>
                     </Box>
                 </Grid2>
-                <Grid2 m={7}>
+                <Grid2 size={{md: 7}}>
                     <Stack direction={"column"}>
                         <Typography variant={"subtitle1"} component="div" align={"left"}
                                     sx={{spacing: 2, paddingLeft: 2}}>
@@ -63,7 +63,7 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, listeComptes, o
                     </Stack>
 
                 </Grid2>
-                <Grid2 m={3}>
+                <Grid2 size={{md: 3}}>
                     <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
                         <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true}/>
                     </Typography>

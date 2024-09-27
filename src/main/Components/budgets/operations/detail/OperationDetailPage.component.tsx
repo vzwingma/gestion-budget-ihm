@@ -371,18 +371,18 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
                 }
 
                 <Grid2 container width={"100%"}>
-                    <Grid2 m={5}>
+                    <Grid2 size={{md: 5}}>
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Catégorie</Typography>
                     </Grid2>
-                    <Grid2 m={4}>
+                    <Grid2 size={{md: 4}}>
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Etat</Typography>
                     </Grid2>
-                    <Grid2 m={3}>
+                    <Grid2 size={{md: 3}}>
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Période</Typography>
                     </Grid2>
 
 
-                    <Grid2 m={5}>
+                    <Grid2 size={{md: 5}}>
                         {
                             /** CATEGORIES **/
                             !editForm.categories ?
@@ -417,12 +417,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
                                 </FormControl>
                         }
                     </Grid2>
-                    <Grid2 m={4}>
+                    <Grid2 size={{md: 4}}>
                         <Typography variant={"overline"} color={getOperationStateColor(operation.etat)}>
                             {operation.etat}
                         </Typography>
                     </Grid2>
-                    <Grid2 m={3}>
+                    <Grid2 size={{md: 3}}>
                         { /** PERIODE **/
                             (!editForm.mensualite) ?
                                 <Typography id={OPERATION_EDITION_FORM_IDS.MENSUALITE} variant={"overline"}
@@ -449,22 +449,22 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
                     </Grid2>
 
 
-                    <Grid2 m={5} paddingTop={3}>
+                    <Grid2 size={{md: 5}} paddingTop={3}>
                         {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id) ?
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Compte de
                                 transfert</Typography> : <></>}
                     </Grid2>
-                    <Grid2 m={4} paddingTop={3}>
+                    <Grid2 size={{md: 4}} paddingTop={3}>
                         {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
                         }
                     </Grid2>
-                    <Grid2 m={3} paddingTop={3}>
+                    <Grid2 size={{md: 3}} paddingTop={3}>
                         <Typography variant={"caption"} sx={{color: "#808080"}}>Date d'opération</Typography>
                     </Grid2>
 
 
-                    <Grid2 m={5}>
+                    <Grid2 size={{md: 5}}>
                         { /** COMPTE DE TRANSFERT  **/
                             isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id) ?
                                 <TextField
@@ -489,7 +489,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
                                         ))}
                                 </TextField> : <></>}
                     </Grid2>
-                    <Grid2 m={4}>
+                    <Grid2 size={{md: 4}}>
                         { /** ACTIONS SUR OPERATION **/}
                         {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions operation={operation}
@@ -499,7 +499,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
                                                     onOperationChange={onOperationChange}/> : <></>
                         }
                     </Grid2>
-                    <Grid2 m={3}>
+                    <Grid2 size={{md: 3}}>
                         { /** DATE OPERATION **/}
                         {(!editForm.dateOperation) ?
                             <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
