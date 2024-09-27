@@ -9,7 +9,6 @@ import CenterComponent from '../../CenterComponent';
 
 
 interface OperationItemProps {
-    key: string
     operation: OperationModel
     listeComptes: CompteBancaireModel[]
     onClick: (operation : OperationModel) => void
@@ -18,18 +17,17 @@ interface OperationItemProps {
 
 /**
  * Tuile d'une opération dans la liste des opérations
- * @param {string} key : clé de l'opération
  * @param operation : object opération affichée
  * @param listeComptes : array liste des comptes
  * @param onClick : function action lors du click
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const OperationItem: React.FC<OperationItemProps> = ({key, operation, listeComptes, onClick : handleOperationSelect}) : JSX.Element => {
+const OperationItem: React.FC<OperationItemProps> = ({operation, listeComptes, onClick : handleOperationSelect} : OperationItemProps) : JSX.Element => {
 
 
     return (
-        <Box key={"liste_" + key}
+        <Box key={"liste_" + operation.id}
              className={"listeItem"}
              onClick={() => handleOperationSelect(operation)}>
             <Grid2 container spacing={6}>

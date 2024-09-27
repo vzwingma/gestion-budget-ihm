@@ -120,8 +120,7 @@ export interface ErrorsFormProps {
  *
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
-export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
-                                                                            operation,
+export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   operation,
                                                                             budget,
                                                                             listeCategories,
                                                                             listeComptes,
