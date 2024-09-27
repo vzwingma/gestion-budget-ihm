@@ -34,7 +34,7 @@ const BudgetsTitre : React.FC<BudgetsSoldesPropTypes> = ({currentCompte, current
 
     return (
         <Stack direction={"row"} spacing={1} justifyContent="left" alignItems="center" marginTop={"3pt"}>
-            <img src={"/img/banques/" + currentCompte.icon} width={50} height={50} alt={currentCompte.libelle}/>
+            <img src={"/img/banques/" + currentCompte.itemIcon} width={50} height={50} alt={currentCompte.libelle}/>
             <Stack direction={"column"}>
                 <Typography variant={"h6"} component="div" width={300} textAlign={"center"}>
                     {currentCompte.libelle}

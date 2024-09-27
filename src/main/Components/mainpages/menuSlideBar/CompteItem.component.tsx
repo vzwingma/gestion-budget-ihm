@@ -43,7 +43,7 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
      * @returns {JSX.Element}
      * @constructor
      */
-    function renderValueCompte() {
+    function renderValueCompte(): JSX.Element {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
             return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
                 <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id}/>

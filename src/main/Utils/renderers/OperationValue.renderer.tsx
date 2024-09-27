@@ -49,9 +49,9 @@ const OperationValue: React.FC<OperationValueProps> = ({
                                                            operation
                                                        }: OperationValueProps): JSX.Element => {
     if (valueOperation === undefined) {
-        return  <>Non initialisé</>
-    } else if (valueOperation === null) {
         return <>Non renseigné</>
+    } else if (valueOperation === null) {
+        return <>Non initialisé</>
     } else {
         // définition du libellé
         return (
