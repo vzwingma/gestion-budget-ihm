@@ -15,6 +15,7 @@ import {CancelRounded} from "@mui/icons-material";
 import CategorieOperationModel from "@/Models/CategorieOperation.model";
 import {getLabelFromDate} from "../../../Utils/Date.utils";
 import {getOperationsGroupedByDateOperation} from "./Budget.controller";
+import CenterComponent from "../../CenterComponent";
 
 interface BudgetPageProps {
     selectedCompte: CompteBancaireModel | null
@@ -145,18 +146,18 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                     {currentBudget != null && selectedCompte != null ?
                         <BudgetTitre currentCompte={selectedCompte}
                             currentDate={selectedDate}
-                            currentBudget={currentBudget} /> : <CircularProgress />
+                            currentBudget={currentBudget} /> : <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid2>
                 <Grid2 size={{md: 1}}>
                     {/** Actions sur le budget (close / reinit) **/
-                        (currentBudget != null && userDroits != null) ?
+                        (currentBudget != null) ?
                             <BudgetActionsButtonGroupComponent
                                 budget={currentBudget}
                                 droits={userDroits}
                                 onActionBudgetChange={handleBudgetUpdate}
                                 onActionOperationCreate={handleButtonCreateClick} /> :
-                            <CircularProgress />
+                            <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid2>
             </Grid2>
@@ -171,7 +172,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                                 listeComptes={listeComptes}
                                 onClick={handleOperationSelect} />
                             :
-                            <CircularProgress />
+                            <CenterComponent><CircularProgress /></CenterComponent>
                         )
                     }
                 </Grid2>

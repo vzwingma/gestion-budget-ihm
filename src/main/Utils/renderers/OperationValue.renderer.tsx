@@ -49,11 +49,9 @@ const OperationValue: React.FC<OperationValueProps> = ({   id,
                                                            operation
                                                        }: OperationValueProps): JSX.Element => {
     if (valueOperation === undefined) {
-        return <CircularProgress />
+        return <CircularProgress size={20}/>
     } else if (valueOperation === null) {
-        return <span style={{color: "#808080"}}>
-                Non initialisé
-               </span>
+        return <span style={{color: "#808080"}}>Non initialisé</span>
     } else {
         // définition du libellé
         return (

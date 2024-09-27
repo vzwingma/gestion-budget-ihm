@@ -92,7 +92,7 @@ function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
         return <><span>{operationLibelleParts[0]}</span><span
             style={{color: "grey", fontSize: "medium", fontStyle: "italic"}}>{libelle}</span></>
     } else {
-        return <>{operationLibelle}</>;
+        return <span>{operationLibelle}</span>;
     }
 
 

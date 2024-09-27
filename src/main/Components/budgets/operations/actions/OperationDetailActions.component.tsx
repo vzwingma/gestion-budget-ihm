@@ -45,21 +45,18 @@ interface OperationDetailActionsProps {
 
 export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ operation, budget, isInCreateMode, onClickRealiseInCreateMode : handleDateOperationFromCreateAction, onOperationChange }: OperationDetailActionsProps): JSX.Element => {
 
-    
-
     const [showModale, setShowModale] = useState<boolean>(false);
- // TODO :  sur le button group
 
     return (
-        <ButtonGroup onClick={(e : any) => handleOperationAction(e, operation, budget, isInCreateMode, handleDateOperationFromCreateAction, onOperationChange, setShowModale)} >
+        <ButtonGroup onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, handleDateOperationFromCreateAction, onOperationChange, setShowModale)} >
             {operation.etat !== OPERATION_ETATS_ENUM.REALISEE &&
                 <Tooltip title="Valider l'opération">
                     <IconButton
                         className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.REALISEE}
                         id={OPERATION_ETATS_ENUM.REALISEE}>
-                        <center>
+                        <CenterComponent>
                             <CheckCircleOutlined id={OPERATION_ETATS_ENUM.REALISEE} />
-                        </center>
+                        </CenterComponent>
                     </IconButton>
                 </Tooltip>
             }
@@ -68,9 +65,9 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                     <IconButton
                         className={"buttonsActionsOperationsP color_" + OPERATION_ETATS_ENUM.PREVUE}
                         id={OPERATION_ETATS_ENUM.PREVUE}>
-                        <center>
+                        <CenterComponent>
                             <HistoryRounded id={OPERATION_ETATS_ENUM.PREVUE} />
-                        </center>
+                        </CenterComponent>
                     </IconButton>
                 </Tooltip>
             }
@@ -79,9 +76,9 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                     <IconButton
                         className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.REPORTEE}
                         id={OPERATION_ETATS_ENUM.REPORTEE}>
-                        <center>
+                        <CenterComponent>
                             <ArrowForwardRounded id={OPERATION_ETATS_ENUM.REPORTEE} />
-                        </center>
+                        </CenterComponent>
                     </IconButton>
                 </Tooltip>
             }
@@ -102,13 +99,10 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                         className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.SUPPRIMEE}
                         id={"SUPPRIMEE_A_CONFIRMER"}>
                         <CenterComponent>
-                            <DeleteForeverRounded id={"SUPPRIMEE_A_CONFIRMER"}
-                                 />
+                            <DeleteForeverRounded id={"SUPPRIMEE_A_CONFIRMER"} />
                         </CenterComponent>
                     </IconButton>
                 </Tooltip>
-
-                // TODO : onClick={handleOperationAction} sur supprimer
             }
 
 
