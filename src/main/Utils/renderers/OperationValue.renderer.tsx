@@ -4,6 +4,7 @@
 import React from 'react';
 import {addEndingZeros} from '../OperationData.utils'
 import OperationModel from '../../Models/Operation.model';
+import { CircularProgress } from '@mui/material';
 
 /**
  * Affichage du style de l'opération suivant sa valeur
@@ -42,16 +43,15 @@ interface OperationValueProps {
  * @returns {JSX.Element} JSX
  * @constructor
  */
-const OperationValue: React.FC<OperationValueProps> = ({
-                                                           id,
+const OperationValue: React.FC<OperationValueProps> = ({   id,
                                                            valueOperation,
                                                            showSign,
                                                            operation
                                                        }: OperationValueProps): JSX.Element => {
     if (valueOperation === undefined) {
-        return <>Non renseigné</>
+        return <CircularProgress />
     } else if (valueOperation === null) {
-        return <>Non initialisé</>
+        return <span style={{color: "#808080"}}>Non initialisé</span>
     } else {
         // définition du libellé
         return (
