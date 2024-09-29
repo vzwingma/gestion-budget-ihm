@@ -52,7 +52,7 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
                         </Typography>
             }
             else{
-                return <CenterComponent><CircularProgress size={20}/></CenterComponent>
+                return <CircularProgress size={20}/>
             }
         } else {
             return <></>

@@ -38,6 +38,7 @@ export function handleOperationEditionClick(event: any, operation: OperationMode
 
 
     if (event.target !== null && event.target !== undefined && budget?.actif) {
+
         const idElement = getEventTargetId(event.target);
         const enterKeyPress = event.type === 'keyup' && (event.code === 'Enter' || event.code === 'NumpadEnter');
 
@@ -61,7 +62,7 @@ export function handleOperationEditionClick(event: any, operation: OperationMode
                 default:
                     break;
             }
-            setEditForm(editForm)
+            setEditForm(editForm);
         }
     }
 }

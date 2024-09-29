@@ -77,6 +77,7 @@ export function saveOperationIntercompte(operation: OperationModel, budget: Budg
  */
 export function getLibellesOperation(idCompte: string, setListeLibellesOperation: React.Dispatch<React.SetStateAction<string[]>>) {
 
+    console.log("Recherche des libellés d'opérations sur le compte : " , idCompte)
     call(METHODE_HTTP.GET,
         BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.LIBELLES,
         [idCompte])

@@ -62,6 +62,7 @@ export interface OperationDetailPageProps {
     budget: BudgetMensuelModel
     listeCategories: CategorieOperationModel[]
     listeComptes: CompteBancaireModel[]
+    listeLibellesOperations: string[]
     onOperationChange: (budget: BudgetMensuelModel) => void
 }
 
@@ -124,28 +125,30 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
                                                                             budget,
                                                                             listeCategories,
                                                                             listeComptes,
+                                                                            listeLibellesOperations,
                                                                             onOperationChange
                                                                         }: OperationDetailPageProps): JSX.Element => {
 
+    const operationInCreation = operation.id === "-1";
+
     const [editForm, setEditForm] = useState<EditFormProps>({
-        value: operation.id === "-1",
-        libelle: operation.id === "-1",
-        dateOperation: operation.id === "-1",
-        mensualite: operation.id === "-1",
-        categories: operation.id === "-1",
+        value:          operationInCreation,
+        libelle:        operationInCreation,
+        dateOperation:  operationInCreation,
+        mensualite:     operationInCreation,
+        categories:     operationInCreation,
         formValidationEnabled: true,
     });
     const [openLibelleAutoComplete, setOpenLibelleAutoComplete] = useState<boolean>(false);
     const [intercompte, setIntercompte] = useState<string | null>(null);
     const [errors, setErrors] = useState<ErrorsFormProps>({
-        valeur: null,
-        dateOperation: null,
-        libelle: null,
-        categorie: null,
-        compte: null,
+        valeur:         null,
+        dateOperation:  null,
+        libelle:        null,
+        categorie:      null,
+        compte:         null,
         intercompte
     });
-    const [listeLibellesOperation, setListeLibellesOperation] = useState<string[]>([]);
     const [editOperation, setEditOperation] = useState<OperationModel>(createNewOperation());
 
 
@@ -153,46 +156,17 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     useEffect(() => {
-        if (listeLibellesOperation == null) {
-            getLibellesOperation(budget.idCompteBancaire, setListeLibellesOperation);
-        }
+        console.log("Initialisation de l'opération d'édition", operation.id)
         setEditOperation(cloneOperation(operation));
-    }, [budget.idCompteBancaire, operation, listeLibellesOperation]);
-
-
-    /**
-     * Réinit de l'opération du formulaire à la sélection d'une nouvelle opération
-     * componentDidUpdate is a lifecycle method in React that is invoked immediately after updating occurs.
-     * This method is not called for the initial render.
-     *
-     * In this case, it's used to check if the operation's id has changed. If it has, it sets the state of the
-     * editOperation to a clone of the current operation. If the operation's id is -1, it's considered to be in
-     * creation mode and the editForm state is set to true for all fields and getLibellesOperation method is called.
-     * If the operation's id is not -1, it's considered to be in edit mode and handleCloseOperationForm method is called.
-     *
-     * @param {Object} prevProps - The previous props
-     * @param {Object} prevState - The previous state
-     * @param {Object} snapshot - The snapshot of the DOM at the time of the update
-
-     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-
-     if (props.operation.id !== prevProps.operation.id) {
-     setState({editOperation: cloneOperation(props.operation)});
-     // Mode Création
-     if (props.operation.id === -1) {
-     setState({
-     editForm: {
-     libelle: true, value: true, dateOperation: true, mensualite: true, categories: true
-     }
-     })
-     getLibellesOperation(props.budget.idCompteBancaire);
-
-     } else {
-     handleCloseOperationForm();
-     }
-     }
-     }
-     */
+        setEditForm({
+            value:          false,
+            libelle:        false,
+            dateOperation:  false,
+            mensualite:     false,
+            categories:     false,
+            formValidationEnabled: true,
+        });
+    }, [operation]);
 
 
     /**
@@ -292,7 +266,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
             operation.typeOperation = editedOperation.typeOperation
         }
     }
-
     /**
      * RENDER
      * @returns {JSX.Element}
@@ -314,7 +287,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
                      }}>
                     <CenterComponent>{getCategorieIcon(operation.ssCategorie)}</CenterComponent>
                 </Box>
-
+                <Stack direction={"row"} spacing={2} sx={{alignItems: "center"}}>
+                    {   JSON.stringify(editForm) }
+                    </Stack>
                 { /** VALEUR **/}
                 <Typography variant={"h4"} className={budget?.actif ? "editableField" : ""}
                             id={OPERATION_EDITION_FORM_IDS.VALUE}>
@@ -354,10 +329,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
                             // label={"Libellé"}
                                       defaultValue={operation.libelle}
                                       freeSolo={true}
-                                      options={listeLibellesOperation}
+                                      options={listeLibellesOperations}
                                       renderInput={(params) =>
-                                          <TextField {...params} label="Description" variant="standard"
-                                                     size={"small"}/>}
+                                          <TextField {...params} label="Description" variant="standard" size={"small"}/>}
                                       sx={{width: "850px"}}
                                       onChange={fillLibelleForm}
                                       onFocus={() => activateValidationForm(false)}

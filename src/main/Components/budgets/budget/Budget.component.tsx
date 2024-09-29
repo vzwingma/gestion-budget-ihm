@@ -16,6 +16,7 @@ import CategorieOperationModel from "@/Models/CategorieOperation.model";
 import {getLabelFromDate} from "../../../Utils/Date.utils";
 import {getOperationsGroupedByDateOperation} from "./Budget.controller";
 import CenterComponent from "../../CenterComponent";
+import { getLibellesOperation } from "../operations/detail/OperationDetailPage.extservices";
 
 interface BudgetPageProps {
     selectedCompte: CompteBancaireModel | null
@@ -35,10 +36,9 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
     const [, setUserPreferences] = useState<string[]>([]);
+    const [listeLibellesOperations, setListeLibellesOperation] = useState<string[]>([]);
 
-
-
-
+        
     /** Chargement des catégories et des préférences utilisateurs au 1er démarrage **/
     useEffect(() => {
         loadCategories(handleCategoriesLoaded);
@@ -47,8 +47,11 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
 
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte=", selectedCompte?.id, " selectedDate=", getLabelFromDate(selectedDate))
+        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFromDate(selectedDate))
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
+        if(selectedCompte != null){
+            getLibellesOperation(selectedCompte.id, setListeLibellesOperation);
+        }
     }, [selectedCompte, selectedDate])
 
 
@@ -103,11 +106,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     function handleButtonCreateClick() {
         setCurrentOperation(createNewOperation()); // Création d'une nouvelle opération}
     }
-
-
-
-
-
 
     /**
      * Render du budget
@@ -183,6 +181,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                                             budget={currentBudget}
                                             listeCategories={categories}
                                             listeComptes={listeComptes}
+                                            listeLibellesOperations={listeLibellesOperations}
                                             onOperationChange={handleBudgetUpdate} />
                         : <></>
                     }
