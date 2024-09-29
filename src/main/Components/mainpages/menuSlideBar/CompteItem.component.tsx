@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {Container, Stack, Typography} from "@mui/material";
+import {CircularProgress, Container, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants";
 import CompteBancaireModel from '../../../Models/CompteBancaire.model';
 import {getSoldesBudget} from './CompteItem.controller';
+import CenterComponent from '../../CenterComponent';
 
 
 interface CompteItemProps {
@@ -45,9 +46,14 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
      */
     function renderValueCompte(): JSX.Element {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
-            return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
-                <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id}/>
-            </Typography>
+            if(soldes !== undefined){
+                return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
+                            <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id}/>
+                        </Typography>
+            }
+            else{
+                return <CenterComponent><CircularProgress size={20}/></CenterComponent>
+            }
         } else {
             return <></>
         }

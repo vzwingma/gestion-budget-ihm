@@ -51,6 +51,7 @@ const Profile: React.FC = (): JSX.Element => {
                     <Tooltip title={auth.user?.profile.name}>
                         <Avatar onClick={logOut} src={auth.user?.profile.picture}
                                 style={{margin: "2px", width: "62px", height: "62px"}} alt="User loggé"
+                                imgProps={{referrerPolicy: "no-referrer"}}
                                 />
                     </Tooltip>
                 </Typography>
