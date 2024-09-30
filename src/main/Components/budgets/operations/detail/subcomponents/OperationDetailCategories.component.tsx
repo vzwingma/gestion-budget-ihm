@@ -1,10 +1,9 @@
 import React from 'react'
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography } from "@mui/material"
 import { EMPTY_CATEGORIE, OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationModel, { createNewOperation } from '@/src/main/Models/Operation.model'
-import { sortLibellesCategories } from '@/src/main/Utils/OperationData.utils'
-import CategorieOperationModel from '@/src/main/Models/CategorieOperation.model'
-import { BUSINESS_GUID } from '@/src/main/Utils/AppBusinessEnums.constants'
+import OperationModel from './../../../../../Models/Operation.model'
+import { sortLibellesCategories } from './../../../../../Utils/OperationData.utils'
+import CategorieOperationModel from './../../../../../Models/CategorieOperation.model'
 
 /**
  * Propriétés pour le composant OperationDetailMensualiteProps.

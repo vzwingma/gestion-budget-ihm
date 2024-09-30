@@ -1,10 +1,10 @@
 import React from 'react'
 import { MenuItem, TextField, Typography } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationModel from '@/src/main/Models/Operation.model'
-import { addEndingZeros } from '@/src/main/Utils/OperationData.utils'
-import { getPeriodeRenderer } from '@/src/main/Utils/renderers/OperationItem.renderer'
-import { PERIODES_MENSUALITE_ENUM } from '@/src/main/Utils/AppBusinessEnums.constants'
+import OperationModel from './../../../../../Models/Operation.model'
+import { addEndingZeros } from './../../../../../Utils/OperationData.utils'
+import { getPeriodeRenderer } from './../../../../../Utils/renderers/OperationItem.renderer'
+import { PERIODES_MENSUALITE_ENUM } from './../../../../../Utils/AppBusinessEnums.constants'
 
 /**
  * Propriétés pour le composant OperationDetailMensualiteProps.

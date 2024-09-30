@@ -1,11 +1,10 @@
 import React from 'react'
 import { InputAdornment, TextField, Typography } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationValue from "@/src/main/Utils/renderers/OperationValue.renderer"
-import OperationModel from '@/src/main/Models/Operation.model'
-import { EditFormProps } from '../OperationDetailPage.component'
+import OperationValue from "./../../../../../Utils/renderers/OperationValue.renderer"
+import OperationModel from './../../../../../Models/Operation.model'
 import { AddRounded, EuroRounded, RemoveRounded } from '@mui/icons-material'
-import { addEndingZeros } from '@/src/main/Utils/OperationData.utils'
+import { addEndingZeros } from './../../../../../Utils/OperationData.utils'
 
 
 

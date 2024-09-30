@@ -1,9 +1,9 @@
 import React from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationModel from '@/src/main/Models/Operation.model'
+import OperationModel from './../../../../../Models/Operation.model'
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography } from '@mui/material'
-import { getOperationLibelle } from '@/src/main/Utils/renderers/OperationItem.renderer'
-import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model'
+import { getOperationLibelle } from './../../../../../Utils/renderers/OperationItem.renderer'
+import CompteBancaireModel from './../../../../../Models/CompteBancaire.model'
 
 
 

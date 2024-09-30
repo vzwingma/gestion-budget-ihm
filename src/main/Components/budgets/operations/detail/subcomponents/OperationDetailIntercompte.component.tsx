@@ -1,7 +1,7 @@
 import React from 'react'
 import { MenuItem, TextField } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model'
+import CompteBancaireModel from './../../../../../Models/CompteBancaire.model'
 
 /**
  * Propriétés pour le composant OperationDetailIntercompte.

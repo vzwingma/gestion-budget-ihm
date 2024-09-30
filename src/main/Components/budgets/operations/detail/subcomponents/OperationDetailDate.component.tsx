@@ -1,6 +1,6 @@
 import React from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationModel from '@/src/main/Models/Operation.model'
+import OperationModel from './../../../../../Models/Operation.model'
 import { TextField, Typography } from '@mui/material'
 
 
