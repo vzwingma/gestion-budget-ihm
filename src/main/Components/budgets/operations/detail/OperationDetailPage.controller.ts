@@ -1,38 +1,29 @@
 
 import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
-import CategorieOperationModel from "../../../../Models/CategorieOperation.model";
 import OperationModel from "../../../../Models/Operation.model";
 import { BUSINESS_GUID } from "../../../../Utils/AppBusinessEnums.constants";
-import { getEventTargetId, sortLibellesCategories } from "../../../../Utils/OperationData.utils";
+import { getEventTargetId } from "../../../../Utils/OperationData.utils";
 import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
-import { OPERATION_EDITION_FORM_IDS } from "./OperationDetailPage.constants";
+import { OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
 
 
-/**
- * Liste de toutes les catégories
- * @returns {*}
- */
 
-export function getListeAllCategories(listeCategories: CategorieOperationModel[]): any {
-    return listeCategories
-        /*
-        TODO : à revoir
-            .flatMap((cat : CategorieOperationModel) => {
-                for (let (ssCat : CategorieOperationModel) in cat.listeSSCategories) {
-                    cat.listeSSCategories[ssCat].categorieParente = cat
-                }
-                return cat.listeSSCategories
-            }) */
-        .sort(sortLibellesCategories);
-}
 
 /**
- * Click sur un élément à éditer de la page de détail
- * @param event click
+ * 
+ * @param event événement sur le clic d'une opération
+ * @param operation  opération en cours
+ * @param budget budget associé
+ * @param editOperation opération en cours d'édition
+ * @param editForm formulaire d'édition
+ * @param openEditForm fonction pour ouvrir le formulaire d'édition
+ * @param errors erreurs du formulaire
+ * @param setErrors fonction pour mettre à jour les erreurs du formulaire
+ * @param onOperationChange fonction pour mettre à jour l'opération
  */
 export function handleOperationEditionClick(event: any, operation: OperationModel, budget: BudgetMensuelModel, 
-    editOperation: OperationModel, editForm: EditFormProps, setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, 
+    editOperation: OperationModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void, 
     errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, 
     onOperationChange: (budget: BudgetMensuelModel) => void) {
 
@@ -44,25 +35,25 @@ export function handleOperationEditionClick(event: any, operation: OperationMode
 
         // Validation du formulaire
         if (enterKeyPress && editForm.formValidationEnabled) {
-            handleValidateOperationForm(operation, budget, editOperation, editForm, setEditForm, errors, setErrors, onOperationChange);
-        } else if (!idElement.endsWith(OPERATION_EDITION_FORM_IDS.INPUT)) {
+            handleValidateOperationForm(operation, budget, editOperation, editForm, openEditForm, errors, setErrors, onOperationChange);
+        } else if (!idElement.endsWith(OPERATION_EDITION_FORM.INPUT)) {
             switch (idElement) {
-                case OPERATION_EDITION_FORM_IDS.VALUE:
+                case OPERATION_EDITION_FORM.VALUE:
                     editForm.value = true;
                     break;
-                case OPERATION_EDITION_FORM_IDS.LIBELLE:
+                case OPERATION_EDITION_FORM.LIBELLE:
                     editForm.libelle = true;
                     break;
-                case OPERATION_EDITION_FORM_IDS.DATE_OPERATION:
+                case OPERATION_EDITION_FORM.DATE_OPERATION:
                     editForm.dateOperation = true;
                     break;
-                case OPERATION_EDITION_FORM_IDS.MENSUALITE:
+                case OPERATION_EDITION_FORM.MENSUALITE:
                     editForm.mensualite = true;
                     break;
                 default:
                     break;
             }
-            setEditForm(editForm);
+            openEditForm(editForm);
         }
     }
 }
@@ -101,7 +92,14 @@ function validateDescription(editOperation: OperationModel, operation: Operation
 
 
 
-
+/**
+ * 
+ * @param editOperation valeur de l'opération en cours d'édition
+ * @param operation opération à mettre à jour
+ * @param editForm champs en édition
+ * @param errors erreurs du formulaire
+ * @returns opération mise à jour ou erreurs
+ */
 function validateFormMontant(editOperation: OperationModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     if (!editForm.value) return;
 
@@ -236,7 +234,7 @@ function validateValue(valeur: string): boolean {
  * @param {React.Dispatch<React.SetStateAction<ErrorsFormProps>>} setErrors - Fonction pour mettre à jour l'état des erreurs du formulaire.
  */
 export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationModel,
-                                            editForm: EditFormProps, setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, 
+                                            editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void, 
                                             errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, 
                                             onOperationChange: (budget: BudgetMensuelModel) => void) {
 
@@ -262,7 +260,7 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
                 saveOperation(operation, budget, onOperationChange);
             }
 
-            handleCloseOperationForm(setEditForm, setErrors);
+            handleCloseOperationForm(openEditForm, setErrors);
         }
 
     }
@@ -289,7 +287,7 @@ export function isInCreateMode(editForm: EditFormProps): boolean {
 /**
  * Fermeture des items en édition de la page
  */
-export function handleCloseOperationForm(setEditForm: React.Dispatch<React.SetStateAction<EditFormProps>>, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>) {
+export function handleCloseOperationForm(openEditForm: (editForm: EditFormProps) => void, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>) {
 
     const editForm: EditFormProps = {
         value: false,
@@ -299,7 +297,7 @@ export function handleCloseOperationForm(setEditForm: React.Dispatch<React.SetSt
         categories: false,
         formValidationEnabled: false
     };
-    setEditForm(editForm);
+    openEditForm(editForm);
     const errors: ErrorsFormProps = {
         libelle: null,
         valeur: null,

@@ -1,23 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-    Autocomplete,
     Box,
     Button,
     Container,
-    FormControl,
-    FormHelperText,
     Grid2,
-    InputAdornment,
-    MenuItem,
     Stack,
-    TextField,
     Typography
 } from "@mui/material";
 
-
-import {getLibellesOperation} from './OperationDetailPage.extservices';
 import {
-    getListeAllCategories,
     handleDateOperationFromAction,
     handleOperationEditionClick,
     handleValidateOperationForm,
@@ -25,26 +16,26 @@ import {
     isInEditMode
 } from './OperationDetailPage.controller';
 import CenterComponent from '../../../CenterComponent';
-import {EMPTY_CATEGORIE, OPERATION_EDITION_FORM_IDS} from './OperationDetailPage.constants';
-import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material';
-import {OperationDetailActions} from '../actions/OperationDetailActions.component';
-import OperationModel, {cloneOperation, createNewOperation} from '../../../../Models/Operation.model';
+import { OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
+import { OperationDetailActions } from './actions/OperationDetailActions.component';
+import OperationModel, { cloneOperation, createNewOperation } from '../../../../Models/Operation.model';
 import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
 import CategorieOperationModel from '../../../../Models/CategorieOperation.model';
 import CompteBancaireModel from '../../../../Models/CompteBancaire.model';
 import {
     BUSINESS_GUID,
-    OPERATION_ETATS_ENUM,
-    PERIODES_MENSUALITE_ENUM,
-    TYPES_OPERATION_ENUM
+    OPERATION_ETATS_ENUM
 } from '../../../../Utils/AppBusinessEnums.constants';
-import OperationValue from '../../../../Utils/renderers/OperationValue.renderer';
-import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer';
+import { getCategorieColor, getCategorieIcon } from '../../../../Utils/renderers/CategorieItem.renderer';
 import {
-    getOperationLibelle,
     getOperationStateColor,
-    getPeriodeRenderer
 } from '../../../../Utils/renderers/OperationItem.renderer';
+import { OperationDetailValeur } from './subcomponents/OperationDetailValeur.component';
+import { OperationDetailLibelle } from './subcomponents/OperationDetailLibelle.component';
+import { OperationDetailDate } from './subcomponents/OperationDetailDate.component';
+import { OperationDetailIntercompte } from './subcomponents/OperationDetailIntercompte.component';
+import { OperationDetailMensualite } from './subcomponents/OperationDetailMensualite.component';
+import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component';
 
 
 /**
@@ -113,43 +104,38 @@ export interface ErrorsFormProps {
  * Il gère également les états du formulaire d'édition et les interactions utilisateur.
  *
  * @param {OperationDetailPageProps} props - Les propriétés du composant.
- * @param {OperationModel} props.operation - L'opération à afficher et à éditer.
- * @param {BudgetModel} props.budget - Le budget associé à l'opération.
- * @param {CategorieOperationModel[]} props.listeCategories - La liste des catégories disponibles.
- * @param {CompteBancaireModel[]} props.listeComptes - La liste des comptes bancaires disponibles.
- * @param {Function} props.onOperationChange - La fonction à appeler lorsque l'opération est modifiée.
- *
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
-export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   operation,
-                                                                            budget,
-                                                                            listeCategories,
-                                                                            listeComptes,
-                                                                            listeLibellesOperations,
-                                                                            onOperationChange
-                                                                        }: OperationDetailPageProps): JSX.Element => {
-
-    const operationInCreation = operation.id === "-1";
+export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operation,
+    budget,
+    listeCategories,
+    listeComptes,
+    listeLibellesOperations,
+    onOperationChange
+}: OperationDetailPageProps): JSX.Element => {
 
     const [editForm, setEditForm] = useState<EditFormProps>({
-        value:          operationInCreation,
-        libelle:        operationInCreation,
-        dateOperation:  operationInCreation,
-        mensualite:     operationInCreation,
-        categories:     operationInCreation,
-        formValidationEnabled: true,
+        value: false,
+        libelle: false,
+        dateOperation: false,
+        mensualite: false,
+        categories: false,
+        formValidationEnabled: false
     });
+    const [refresh, setRefresh] = useState<boolean>(false);
     const [openLibelleAutoComplete, setOpenLibelleAutoComplete] = useState<boolean>(false);
     const [intercompte, setIntercompte] = useState<string | null>(null);
     const [errors, setErrors] = useState<ErrorsFormProps>({
-        valeur:         null,
-        dateOperation:  null,
-        libelle:        null,
-        categorie:      null,
-        compte:         null,
+        valeur: null,
+        dateOperation: null,
+        libelle: null,
+        categorie: null,
+        compte: null,
         intercompte
     });
     const [editOperation, setEditOperation] = useState<OperationModel>(createNewOperation());
+
+
 
 
     /**
@@ -158,345 +144,176 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({   oper
     useEffect(() => {
         console.log("Initialisation de l'opération d'édition", operation.id)
         setEditOperation(cloneOperation(operation));
+        /*
+        const operationInCreation = operation.id === "-1";
         setEditForm({
-            value:          false,
-            libelle:        false,
-            dateOperation:  false,
-            mensualite:     false,
-            categories:     false,
-            formValidationEnabled: true,
-        });
+            value: operationInCreation,
+            libelle: operationInCreation,
+            dateOperation: operationInCreation,
+            mensualite: operationInCreation,
+            categories: operationInCreation,
+            formValidationEnabled: false
+        }); */
+
     }, [operation]);
 
 
-    /**
-     * Active ou désactive le formulaire d'édition lors des autocomplétions
-     * @param {boolean} activation - Indique si le formulaire doit être activé ou désactivé
-     */
-    function activateValidationForm(activation: boolean) {
-        editForm.formValidationEnabled = activation
+    function openEditForm(editForm: EditFormProps) {
+        console.log("OpenEditForm", editForm)
         setEditForm(editForm)
+        setRefresh(!refresh)
     }
 
-    /**
-     * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
-     * @param {Event} e - L'événement de saisie
-     */
-    function fillLibelleForm(e: any) {
+
+
+    function fillOperationForm(field: OPERATION_EDITION_FORM, value: string) {
         let editedOperation = editOperation != null ? editOperation : createNewOperation();
-        editedOperation.libelle = e.target.value
-        setEditOperation(editedOperation);
-    }
 
-    /**
-     * Remplit le champ "dateOperation" de l'état à partir de la saisie de l'utilisateur
-     * @param {Event} e - L'événement de saisie
-     */
-    function fillDateOperationForm(e: any) {
-        let value = e.target.value;
-        if (value === "") {
-            value = null;
+        switch (field) {
+            case OPERATION_EDITION_FORM.LIBELLE:
+                editedOperation.libelle = value
+                break;
+            case OPERATION_EDITION_FORM.DATE_OPERATION:
+                editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
+                break;
+            case OPERATION_EDITION_FORM.VALUE:
+                editOperation.valeur = parseFloat(value);
+                break;
+            case OPERATION_EDITION_FORM.MENSUALITE:
+                editedOperation.mensualite.periode = value
+                break;
+            case OPERATION_EDITION_FORM.CATEGORIE:
+                //   fillCategorieForm(value)
+                break;
+            case OPERATION_EDITION_FORM.INTERCOMPTES:
+                editOperation.intercompte = value
+                break;
+            case OPERATION_EDITION_FORM.FORM_VALIDATION:
+                editForm.formValidationEnabled = (value === "true")
+                break;
         }
-        let editedOperation = editOperation != null ? editOperation : createNewOperation();
-        editedOperation.autresInfos.dateOperation = value;
         setEditOperation(editedOperation);
     }
 
-    /**
-     * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur
-     * @param {Event} e - L'événement de saisie
-     */
-    function fillValeurForm(e: any) {
-        let editedOperation = editOperation != null ? editOperation : createNewOperation();
-        editedOperation.valeur = e.target.value;  // @TODO : addEndingZeros addEndingZeros(e.target.value)
-        setEditOperation(editedOperation);
-    }
-
-    /**
-     * Remplit le champ "periode" de l'état à partir de la saisie de l'utilisateur
-     * @param {Event} e - L'événement de saisie
-     */
-    function fillPeriodeForm(e: any) {
-        let editedOperation = editOperation != null ? editOperation : createNewOperation();
-        editedOperation.mensualite.periode = e.target.value
-        setEditOperation(editedOperation);
-    }
-
-    /**
-     * Remplit le champ "intercompte" de l'état à partir de la saisie de l'utilisateur
-     * @param {Event} e - L'événement de saisie
-     */
-    function fillIntercompteForm(e: any) {
-        setIntercompte(e.target.value)
-    }
-
-    /**
-     * Remplit le champ "categorie" de l'état à partir de la saisie de l'utilisateur
-     * @param {Event} e - L'événement de saisie
-     */
-    function fillCategorieForm(e: any) {
-        const ssCat = getListeAllCategories(listeCategories)
-            .filter((ssCat: CategorieOperationModel) => {
-                return ssCat.libelle === e.target.textContent || ssCat.libelle === e.target.value
-            })[0]
-        if (ssCat !== null && ssCat !== undefined) {
-            let editedOperation = editOperation;
-            if (editedOperation === null) {
-                editedOperation = createNewOperation();
-            }
-            if (ssCat.categorieParente) {
-                editedOperation.categorie.id = ssCat.categorieParente.id;
-                editedOperation.categorie.libelle = ssCat.categorieParente.libelle;
-            }
-            editedOperation.ssCategorie.id = ssCat.id
-            editedOperation.ssCategorie.libelle = ssCat.libelle
-            setEditOperation(editedOperation);
-
-            /** Si type Virement **/
-            editedOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editedOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editedOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
-
-            /** Adaptation sur la sélection de catégorie **/
-            if (ssCat.categorieParente) {
-                operation.categorie.id = ssCat.categorieParente.id
-                operation.categorie.libelle = ssCat.categorieParente.libelle
-            }
-
-            operation.ssCategorie.id = ssCat.id
-            operation.ssCategorie.libelle = ssCat.libelle
-            operation.typeOperation = editedOperation.typeOperation
-        }
-    }
     /**
      * RENDER
      * @returns {JSX.Element}
      */
     return (
-        <Container id={OPERATION_EDITION_FORM_IDS.FORM}
-                   component="div"
-                   fixed maxWidth={"md"}
-                   onClick={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, setEditForm, errors, setErrors, onOperationChange)}
-                   onKeyUp={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, setEditForm, errors, setErrors, onOperationChange)}>
+        <Container id={OPERATION_EDITION_FORM.FORM}
+            component="div"
+            fixed maxWidth={"md"}
+            onClick={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, errors, setErrors, onOperationChange)}
+            onKeyUp={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, errors, setErrors, onOperationChange)}>
 
-            <Stack direction={"column"} spacing={5} sx={{alignItems: "center", marginTop: "20px"}}>
+            <Stack direction={"column"} spacing={5} sx={{ alignItems: "center", marginTop: "20px" }}>
                 <Box width={56} height={56}
-                     sx={{
-                         borderRadius: "50%",
-                         backgroundColor: getCategorieColor(operation.categorie),
-                         color: '#FFFFFF',
-                         padding: '16px 8px 0px 8px'
-                     }}>
+                    sx={{
+                        borderRadius: "50%",
+                        backgroundColor: getCategorieColor(operation.categorie),
+                        color: '#FFFFFF',
+                        padding: '16px 8px 0px 8px'
+                    }}>
                     <CenterComponent>{getCategorieIcon(operation.ssCategorie)}</CenterComponent>
                 </Box>
-                <Stack direction={"row"} spacing={2} sx={{alignItems: "center"}}>
-                    {   JSON.stringify(editForm) }
-                    </Stack>
+                <Stack direction={"row"} spacing={2} sx={{ alignItems: "center" }}>
+                    {JSON.stringify(editForm)}
+                </Stack>
                 { /** VALEUR **/}
-                <Typography variant={"h4"} className={budget?.actif ? "editableField" : ""}
-                            id={OPERATION_EDITION_FORM_IDS.VALUE}>
-                    {(!editForm.value) ?
-                        <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}
-                                        id={OPERATION_EDITION_FORM_IDS.VALUE}/>
-                        :
-                        <TextField id={OPERATION_EDITION_FORM_IDS.VALUE + OPERATION_EDITION_FORM_IDS.INPUT}
-                                   required label="Montant"
-                                   InputProps={{
-                                       startAdornment: (
-                                           <InputAdornment position="start"> {operation.typeOperation === "CREDIT" ?
-                                               <AddRounded/> : <RemoveRounded/>}</InputAdornment>
-                                       ),
-                                       endAdornment: (
-                                           <InputAdornment position="end"><EuroRounded/></InputAdornment>
-                                       )
-                                   }}
-                                   defaultValue={Math.abs(operation.valeur)}
-                                   variant="standard" sx={{width: "850px"}}
-                                   error={errors.valeur != null} helperText={errors.valeur}
-                                   onChange={fillValeurForm}/>
-                    }
-                </Typography>
+                <OperationDetailValeur operation={operation} formValueInEdition={editForm.value}
+                    errorValeur={errors.valeur} budgetActif={budget?.actif}
+                    fillOperationForm={fillOperationForm} />
 
                 { /** LIBELLE **/}
-                {(!editForm.libelle) ?
-                    <Typography variant={"button"} sx={{fontSize: "large"}}
-                                className={budget?.actif ? "editableField" : ""}
-                                id={OPERATION_EDITION_FORM_IDS.LIBELLE}>
-                        {getOperationLibelle(operation.libelle, listeComptes, true)}
-                    </Typography>
-                    :
-                    <FormControl fullWidth required error={errors.libelle != null}>
-                        <Autocomplete id={OPERATION_EDITION_FORM_IDS.LIBELLE + OPERATION_EDITION_FORM_IDS.INPUT}
-                            // required
-                            // label={"Libellé"}
-                                      defaultValue={operation.libelle}
-                                      freeSolo={true}
-                                      options={listeLibellesOperations}
-                                      renderInput={(params) =>
-                                          <TextField {...params} label="Description" variant="standard" size={"small"}/>}
-                                      sx={{width: "850px"}}
-                                      onChange={fillLibelleForm}
-                                      onFocus={() => activateValidationForm(false)}
-                                      onBlur={e => {
-                                          activateValidationForm(true);
-                                          fillLibelleForm(e);
-                                      }}
-                        />
-                        <FormHelperText>{errors.libelle}</FormHelperText>
-                    </FormControl>
-                }
+                <OperationDetailLibelle operation={operation} budgetActif={budget?.actif} listeComptes={listeComptes}
+                    listeLibellesOperations={listeLibellesOperations}
+                    formLibelleInEdition={editForm.libelle}
+                    errorLibelle={errors.libelle}
+                    fillOperationForm={fillOperationForm} />
 
                 <Grid2 container width={"100%"}>
-                    <Grid2 size={{md: 5}}>
-                        <Typography variant={"caption"} sx={{color: "#808080"}}>Catégorie</Typography>
+                    <Grid2 size={{ md: 5 }}>
+                        <Typography variant={"caption"} sx={{ color: "#808080" }}>Catégorie</Typography>
                     </Grid2>
-                    <Grid2 size={{md: 4}}>
-                        <Typography variant={"caption"} sx={{color: "#808080"}}>Etat</Typography>
+                    <Grid2 size={{ md: 4 }}>
+                        <Typography variant={"caption"} sx={{ color: "#808080" }}>Etat</Typography>
                     </Grid2>
-                    <Grid2 size={{md: 3}}>
-                        <Typography variant={"caption"} sx={{color: "#808080"}}>Période</Typography>
+                    <Grid2 size={{ md: 3 }}>
+                        <Typography variant={"caption"} sx={{ color: "#808080" }}>Période</Typography>
                     </Grid2>
 
 
-                    <Grid2 size={{md: 5}}>
-                        {
-                            /** CATEGORIES **/
-                            !editForm.categories ?
-                                <Typography variant={"overline"}>
-                                    {operation.categorie.libelle} / {operation.ssCategorie.libelle}
-                                </Typography>
-                                :
-                                <FormControl fullWidth required error={errors.categorie != null}>
-                                    <Autocomplete
-                                        id={OPERATION_EDITION_FORM_IDS.CATEGORIE + OPERATION_EDITION_FORM_IDS.INPUT}
-                                        renderInput={(params) => <TextField {...params} variant={"standard"}/>}
-                                        sx={{width: "90%"}}
-                                        defaultValue={operation.ssCategorie != null ? operation.ssCategorie : EMPTY_CATEGORIE}
-                                        options={getListeAllCategories(listeCategories)}
-                                        groupBy={(option: CategorieOperationModel) => option.categorieParente ? option.categorieParente.libelle : ""}
-                                        getOptionLabel={(option: CategorieOperationModel) => option.libelle != null ? option.libelle : ""}
-                                        isOptionEqualToValue={(option, value) => {
-                                            if (option.id != null) {
-                                                return (option.id === (value != null ? value.id : null))
-                                            } else {
-                                                return false;
-                                            }
-                                        }}
-                                        onChange={fillCategorieForm}
-                                        onFocus={() => activateValidationForm(false)}
-                                        onBlur={e => {
-                                            activateValidationForm(true);
-                                            fillCategorieForm(e);
-                                        }}
-                                    />
-                                    <FormHelperText>{errors.categorie}</FormHelperText>
-                                </FormControl>
-                        }
+                    <Grid2 size={{ md: 5 }}>
+                        {  /** CATEGORIES **/}
+                        <OperationDetailCategories operation={operation}
+                            listeCategories={listeCategories}
+                            formCatgoriesInEdition={editForm.categories}
+                            errorsCategories={errors.categorie}
+                            fillOperationForm={fillOperationForm} />
                     </Grid2>
-                    <Grid2 size={{md: 4}}>
+                    <Grid2 size={{ md: 4 }}>
                         <Typography variant={"overline"} color={getOperationStateColor(operation.etat)}>
                             {operation.etat}
                         </Typography>
                     </Grid2>
-                    <Grid2 size={{md: 3}}>
-                        { /** PERIODE **/
-                            (!editForm.mensualite) ?
-                                <Typography id={OPERATION_EDITION_FORM_IDS.MENSUALITE} variant={"overline"}
-                                            className={budget?.actif ? "editableField" : ""}
-                                            color={getPeriodeRenderer(operation.mensualite.periode).color}>
-                                    {getPeriodeRenderer(operation.mensualite.periode).text}
-                                </Typography>
-                                :
-                                <TextField
-                                    id={OPERATION_EDITION_FORM_IDS.MENSUALITE + OPERATION_EDITION_FORM_IDS.INPUT}
-                                    required select fullWidth
-                                    value={operation.mensualite.periode}
-                                    placeholder={"Sélectionnez une période"}
-                                    onChange={fillPeriodeForm}
-                                    variant="standard">
-                                    {PERIODES_MENSUALITE_ENUM.map((option) => (
-                                        <MenuItem key={option} value={option}
-                                                  color={getPeriodeRenderer(option).color}>
-                                            {getPeriodeRenderer(option).text}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                        }
+                    <Grid2 size={{ md: 3 }}>
+                        { /** PERIODE **/}
+                        <OperationDetailMensualite operation={operation} budgetActif={budget?.actif}
+                            formMensualiteInEdition={editForm.mensualite}
+                            fillOperationForm={fillOperationForm} />
                     </Grid2>
 
 
-                    <Grid2 size={{md: 5}} paddingTop={3}>
+                    <Grid2 size={{ md: 5 }} paddingTop={3}>
                         {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id) ?
-                            <Typography variant={"caption"} sx={{color: "#808080"}}>Compte de
-                                transfert</Typography> : <></>}
+                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
                     </Grid2>
-                    <Grid2 size={{md: 4}} paddingTop={3}>
+                    <Grid2 size={{ md: 4 }} paddingTop={3}>
                         {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
-                            <Typography variant={"caption"} sx={{color: "#808080"}}>Actions</Typography> : <></>
+                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Actions</Typography> : <></>
                         }
                     </Grid2>
-                    <Grid2 size={{md: 3}} paddingTop={3}>
-                        <Typography variant={"caption"} sx={{color: "#808080"}}>Date d'opération</Typography>
+                    <Grid2 size={{ md: 3 }} paddingTop={3}>
+                        <Typography variant={"caption"} sx={{ color: "#808080" }}>Date d'opération</Typography>
                     </Grid2>
 
 
-                    <Grid2 size={{md: 5}}>
-                        { /** COMPTE DE TRANSFERT  **/
-                            isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id) ?
-                                <TextField
-                                    id={OPERATION_EDITION_FORM_IDS.INTERCOMPTES + OPERATION_EDITION_FORM_IDS.INPUT}
-                                    required select sx={{width: "90%"}}
-                                    value={intercompte}
-                                    placeholder={"Sélectionnez un compte"}
-                                    error={errors.intercompte != null}
-                                    helperText={errors.intercompte}
-                                    onChange={fillIntercompteForm}
-                                    variant="standard">
-                                    {listeComptes
-                                        .filter((compte: CompteBancaireModel) => budget.idCompteBancaire !== compte.id)
-                                        .map((compte) => (
-                                            <MenuItem key={compte.id} value={compte.id}>
-                                                <img src={"/img/banques/" + compte.itemIcon}
-                                                     width={20} height={20}
-                                                     alt={compte.libelle}
-                                                     style={{marginRight: "5px"}}/>
-                                                {compte.libelle}
-                                            </MenuItem>
-                                        ))}
-                                </TextField> : <></>}
+                    <Grid2 size={{ md: 5 }}>
+                        { /** COMPTE DE TRANSFERT  **/}
+                        <OperationDetailIntercompte intercompte={intercompte}
+                            formIntercompteInEdition={
+                                isInCreateMode(editForm)
+                                && editOperation !== null
+                                && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id)
+                            }
+                            listeAutresComptes={
+                                listeComptes
+                                    .filter((compte: CompteBancaireModel) => budget.idCompteBancaire !== compte.id)}
+                            errorIntercompte={errors.intercompte}
+                            fillOperationForm={fillOperationForm} />
                     </Grid2>
-                    <Grid2 size={{md: 4}}>
+                    <Grid2 size={{ md: 4 }}>
                         { /** ACTIONS SUR OPERATION **/}
                         {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions operation={operation}
-                                                    budget={budget}
-                                                    isInCreateMode={isInCreateMode(editForm)}
-                                                    onClickRealiseInCreateMode={handleDateOperationFromAction}
-                                                    onOperationChange={onOperationChange}/> : <></>
+                                budget={budget}
+                                isInCreateMode={isInCreateMode(editForm)}
+                                onClickRealiseInCreateMode={handleDateOperationFromAction}
+                                onOperationChange={onOperationChange} />
+                            : <></>
                         }
                     </Grid2>
-                    <Grid2 size={{md: 3}}>
+                    <Grid2 size={{ md: 3 }}>
                         { /** DATE OPERATION **/}
-                        {(!editForm.dateOperation) ?
-                            <Typography id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION} variant={"subtitle1"}
-                                        className={budget?.actif ? "editableField" : ""}
-                                        sx={{color: (operation.autresInfos.dateOperation != null ? "#FFFFFF" : "#121212")}}>
-                                {operation.autresInfos.dateOperation != null ? operation.autresInfos.dateOperation.toLocaleDateString("fr") : "jj/mm/aaaa"}
-                            </Typography>
-                            :
-                            <TextField
-                                id={OPERATION_EDITION_FORM_IDS.DATE_OPERATION + OPERATION_EDITION_FORM_IDS.INPUT}
-                                defaultValue={operation.autresInfos.dateOperation}
-                                variant={"standard"} type={"date"} fullWidth
-                                error={errors.dateOperation != null}
-                                helperText={errors.dateOperation}
-                                onChange={fillDateOperationForm}/>
-                        }
+                        <OperationDetailDate operation={operation} budgetActif={budget?.actif}
+                            formDateInEdition={editForm.dateOperation}
+                            errorDateOperation={errors.dateOperation}
+                            fillOperationForm={fillOperationForm} />
                     </Grid2>
                 </Grid2>
 
                 {budget?.actif && isInEditMode(editForm) &&
-                    <Button
-                        fullWidth
-                        variant="outlined" color="success"
+                    <Button fullWidth variant="outlined" color="success"
                         onClick={() => handleValidateOperationForm(operation, budget, editOperation, editForm, setEditForm, errors, setErrors, onOperationChange)}>Valider</Button>
                 }
 
