@@ -1,6 +1,8 @@
-import * as AppConstants from "../../Utils/AppTechEnums.constants"
-import * as ClientHTTP from '../../Services/ClientHTTP.service'
 import {toast} from "react-toastify";
+import CompteBancaireModel from "../../../Models/CompteBancaire.model";
+import { call } from "../../../Services/ClientHTTP.service";
+import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../Utils/AppTechEnums.constants";
+import { calculateResumes } from "./AnalyseCategories.controller";
 
 /**
  * Services back-end pour les analyses
@@ -13,13 +15,13 @@ import {toast} from "react-toastify";
  * @returns {Promise} Une promesse qui se résout avec les données du budget chargées.
  * @throws Lancera une erreur si le chargement du budget échoue.
  **/
-export function loadBudget(selectedCompte, selectedDate) {
+export function loadBudget(selectedCompte : CompteBancaireModel, selectedDate : Date) {
     if (selectedCompte != null && selectedDate != null) {
 
-        ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
-            AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
-            [selectedCompte, selectedDate.getFullYear(), selectedDate.getMonth() + 1])
-            .then(data => this.calculateResumes(data))
+        call(METHODE_HTTP.GET,
+            BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
+            [selectedCompte.id, String(selectedDate.getFullYear()), String(selectedDate.getMonth() + 1)])
+            .then(data => calculateResumes(data))
             .catch(e => {
                 let libErreur = "Erreur lors du chargement du budget " + selectedCompte + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
                 console.log(libErreur, e)

@@ -26,8 +26,6 @@ interface AnalyseTemporelleProps {
 }
 
 
-
-
 /**
  * Tuile  d'une liste d'opérations
  * @param operationGroupedByDate opérations groupées par date d'opérations

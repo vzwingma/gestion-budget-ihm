@@ -22,8 +22,7 @@ interface GraphAnalysesProps {
  * @returns {JSX.Element} graphiques
  * @constructor
  */
-const GraphAnalyses = ({
-                           typeAnalyse,
+const GraphAnalyses : React.FC<GraphAnalysesProps> = ({   typeAnalyse,
                            analysesGroupedByCategories,
                            resumeSelectedCategorie,
                            resumeSelectedSsCategorie

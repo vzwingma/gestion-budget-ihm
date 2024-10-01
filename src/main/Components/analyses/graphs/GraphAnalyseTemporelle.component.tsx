@@ -5,7 +5,9 @@ import { CategorieTimelineItem, SoldesTimelineItem } from "../temporelles/Analys
 import { DataTemporelleAnnee, populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
 import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
 
-
+/**
+ * Propriétés du composant de graphique pour l'analyse temporelle.
+ */
 interface GraphAnalyseTemporelleProps {
     anneeAnalyses: number,
     filterSoldesActive: boolean,
@@ -18,14 +20,7 @@ interface GraphAnalyseTemporelleProps {
 
 /**
  * Composant de graphique pour l'analyse temporelle.
- * @param {Object} props - Les propriétés passées au composant.
- * @param {string} props.anneeAnalyses - L'année des analyses.
- * @param {Array} props.timelinesGroupedByCategories - Les analyses groupées par catégories.
- * @param {Array} props.timelinesSoldes - Les analyses groupées du soldes.
- * @param {Array} props.timelinesPrevisionnellesGroupedByCategories - Les analyses à terminaison groupées par catégories.
- * @param {Array} props.timelinesPrevisionnellesSoldes - Les analyses à terminaison groupées du soldes.
- * @param {Boolean} props.filterSoldesActive - Le filtre des soldes.
- * @param {Array} props.listeCategories - Le tableau des catégories.
+ * @param {GraphAnalyseTemporelleProps} props - Les propriétés passées au composant.
  * @returns {JSX.Element} Le composant de graphique.
  */
 const GraphAnalyseTemporelle = ({ anneeAnalyses,

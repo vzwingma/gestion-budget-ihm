@@ -1,8 +1,15 @@
-import OperationValue from '../../Utils/renderers/OperationValue.renderer'
 import {Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
-import PropTypes from "prop-types";
+import CompteBancaireModel from '../../../Models/CompteBancaire.model';
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 
+
+// Définition des types de propriétés pour le composant AnalyseTitre
+interface AnalyseTitreProps {
+    currentCompte: CompteBancaireModel,
+    currentDate: Date,
+    totalOperations: number
+}
 
 /**
  * Page principale pour l'affichage du solde
@@ -12,15 +19,9 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element} - L'élément JSX à afficher
  * @constructor
  */
-const AnalyseTitre = ({currentCompte, currentDate, totalOperations}) => {
+const AnalyseTitre : React.FC<AnalyseTitreProps> = ({currentCompte, currentDate, totalOperations} : AnalyseTitreProps) => {
 
-    // Définition des types de propriétés pour le composant AnalyseTitre
-    AnalyseTitre.propTypes = {
-        currentCompte: PropTypes.object.isRequired, // Le compte courant est requis
-        currentDate: PropTypes.any.isRequired, // La date courante est requise
-        totalOperations: PropTypes.number // Le total des opérations est un tableau
-    }
-
+ 
     /**
      * Obtient le tooltip pour la date d'aujourd'hui
      * @returns {string} - La date d'aujourd'hui formatée
@@ -37,12 +38,12 @@ const AnalyseTitre = ({currentCompte, currentDate, totalOperations}) => {
             <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
                 <Typography variant={"h6"} width={195} textAlign={"right"} sx={{cursor: "help"}}>
-                    <OperationValue valueOperation={totalOperations} showSign={true}/>
+                    <OperationValue id={"graphCategories"} valueOperation={totalOperations} showSign={true}/>
                 </Typography>
             </Tooltip>
             <Divider orientation="vertical" flexItem/>
             <Stack direction={"row"} paddingLeft={45}>
-                <img src={"/img/banques/" + currentCompte.icon} width={50} height={50} alt={currentCompte.libelle}/>
+                <img src={"/img/banques/" + currentCompte.itemIcon} width={50} height={50} alt={currentCompte.libelle}/>
                 <Stack direction={"column"}>
                     <Typography variant={"h6"} component="div" width={300} textAlign={"center"}>
                         {currentCompte.libelle}

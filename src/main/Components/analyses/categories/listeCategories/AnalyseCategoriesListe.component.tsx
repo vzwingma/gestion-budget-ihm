@@ -1,9 +1,15 @@
 import React from 'react'
 import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
-import PropTypes from "prop-types";
-import {sortLibellesCategories} from "../../../../Utils/DataUtils.utils";
+import { sortLibellesCategories } from '../../../../Utils/OperationData.utils';
 
+
+interface AnalyseCategoriesListeProps {
+    rangSelectedCategorie: number,
+    analysesGroupedByCategories: any,
+    typeAnalyse: string,
+    selectCategorie: any
+}
 
 /**
  * Tuile d'une liste de catégories
@@ -16,20 +22,20 @@ import {sortLibellesCategories} from "../../../../Utils/DataUtils.utils";
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const AnalyseCategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategories, typeAnalyse, selectCategorie}) => {
+const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSelectedCategorie, analysesGroupedByCategories, typeAnalyse, selectCategorie} : AnalyseCategoriesListeProps) => {
     /**
      * Iterate groupe
      * @param analysesGroupedByCategories liste des opérations par catégories
      * @returns {JSX.Element}
      */
-    function iterate(analysesGroupedByCategories) {
+    function iterate(analysesGroupedByCategories : any) : JSX.Element[] {
 
         const arrayAnalysesGroupedByCategories = []
         for (let categorieId in analysesGroupedByCategories) {
             arrayAnalysesGroupedByCategories.push(analysesGroupedByCategories[categorieId])
         }
 
-        let renderList = []
+        let renderList : JSX.Element[]= []
         arrayAnalysesGroupedByCategories
             .filter(analysesOfCategorie => analysesOfCategorie.nbTransactions[typeAnalyse] > 0)
             .sort((resume1, resume2) => sortLibellesCategories(resume1.categorie, resume2.categorie))
@@ -60,11 +66,4 @@ const AnalyseCategoriesListe = ({rangSelectedCategorie, analysesGroupedByCategor
         </Stack>
     </Box>
 };
-// Properties Types
-AnalyseCategoriesListe.propTypes = {
-    rangSelectedCategorie: PropTypes.number,
-    analysesGroupedByCategories: PropTypes.object.isRequired,
-    typeAnalyse: PropTypes.string.isRequired,
-    selectCategorie: PropTypes.func.isRequired
-}
 export default AnalyseCategoriesListe
