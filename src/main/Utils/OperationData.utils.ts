@@ -35,7 +35,7 @@ export function addEndingZeros(num: number): string {
  * @param eventTarget event Target
  * @returns {*} ID du DOM
  */
-export function getEventTargetId(eventTarget : any): any {
+export function getEventTargetId(eventTarget: any): any {
     if (eventTarget != null) {
         if (eventTarget.id !== null && eventTarget.id !== "") {
             return eventTarget.id;
@@ -51,19 +51,20 @@ export function getEventTargetId(eventTarget : any): any {
  * @param {CategorieOperationModel} categorie2 : 2ème catégorie
  * @returns {number} comparaison
  */
-export function sortLibellesCategories(categorie1 : CategorieOperationModel, categorie2 : CategorieOperationModel): number {
-
-    if (categorie1.categorieParente !== null && categorie1.categorieParente !== undefined && categorie2.categorieParente !== null && categorie2.categorieParente !== undefined) {
-        if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
+export function sortLibellesCategories(categorie1: CategorieOperationModel | undefined, categorie2: CategorieOperationModel | undefined): number {
+    if (categorie1 !== null && categorie1 !== undefined && categorie2 !== null && categorie2 !== undefined) {
+        if (categorie1.categorieParente !== null && categorie1.categorieParente !== undefined && categorie2.categorieParente !== null && categorie2.categorieParente !== undefined) {
+            if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
+                return 1;
+            } else if (categorie1.categorieParente.libelle < categorie2.categorieParente.libelle) {
+                return -1;
+            }
+        }
+        if (categorie1.libelle > categorie2.libelle) {
             return 1;
-        } else if (categorie1.categorieParente.libelle < categorie2.categorieParente.libelle) {
+        } else if (categorie1.libelle < categorie2.libelle) {
             return -1;
         }
-    }
-    if (categorie1.libelle > categorie2.libelle) {
-        return 1;
-    } else if (categorie1.libelle < categorie2.libelle) {
-        return -1;
     }
     return 0;
 }
@@ -75,7 +76,7 @@ export function sortLibellesCategories(categorie1 : CategorieOperationModel, cat
  * @param {OperationModel} ope2 2ème opération
  * @returns {number} comparaison
  */
-export function sortOperations(ope1 : OperationModel, ope2 : OperationModel): number {
+export function sortOperations(ope1: OperationModel, ope2: OperationModel): number {
     let date1 = ope1.autresInfos.dateOperation
     let date2 = ope2.autresInfos.dateOperation
     // Premier TRI : Par date d'opération

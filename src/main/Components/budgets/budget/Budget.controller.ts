@@ -1,7 +1,8 @@
 import { getLabelFromDate } from "../../../Utils/Date.utils";
 import OperationModel from "../../../Models/Operation.model";
-import { sortOperations } from "../../../Utils/OperationData.utils";
+import { sortLibellesCategories, sortOperations } from "../../../Utils/OperationData.utils";
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
+import CategorieOperationModel from "../../../Models/CategorieOperation.model";
 
 /**
  * Controleur des budgets
@@ -22,4 +23,22 @@ export function getOperationsGroupedByDateOperation(listeOperations: OperationMo
             group[dateOperation].push(operation);
             return group;
         }, {});
+}
+
+/**
+ * Liste de toutes les catégories
+ * @returns {*}
+ */
+
+export function populateAllCategories(listeCategories: CategorieOperationModel[]): CategorieOperationModel[] {
+    listeCategories
+        .forEach((cat: CategorieOperationModel) => {
+            if (cat.listeSSCategories != null) {
+                for (let i = 0; i < cat.listeSSCategories.length; i++) {
+                    cat.listeSSCategories[i].categorieParente = cat;
+                }
+            }
+            return cat.listeSSCategories
+        });
+    return listeCategories;
 }

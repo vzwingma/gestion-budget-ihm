@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import OperationModel from './../../../../../Models/Operation.model'
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography } from '@mui/material'
@@ -46,8 +46,10 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
      * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
      * @param {Event} e - L'événement de saisie
      */
-    function fillLibelleForm(e: any) {
-        fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, e.target.value);
+    function fillLibelleForm(event: any, newValue: string | null) {
+        if(newValue != null){
+            fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, newValue);
+        }
     }
 
 
@@ -69,16 +71,17 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             :
             <FormControl fullWidth required error={errorLibelle != null}>
                 <Autocomplete id={OPERATION_EDITION_FORM.LIBELLE + OPERATION_EDITION_FORM.INPUT}
-                    defaultValue={operation.libelle}
+                    value={operation.libelle}
                     freeSolo={true}
                     autoComplete={true}
                     options={listeLibellesOperations}
                     renderInput={(params) =>
                         <TextField {...params} label="Description" variant="standard" size={"small"} />}
                     sx={{ width: "850px" }}
+                    blurOnSelect={true}
                     onChange={fillLibelleForm}
                     onFocus={() => activateValidationForm(false)}
-                    onBlur={fillLibelleForm}
+                    onBlur={() => activateValidationForm(true)}
                 />
                 <FormHelperText>{errorLibelle}</FormHelperText>
             </FormControl>

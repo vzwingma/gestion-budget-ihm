@@ -1,10 +1,11 @@
 import { toast } from "react-toastify";
 import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants";
-import BudgetMensuelModel from "@/Models/BudgetMensuel.model";
 import { call } from "../../../Services/ClientHTTP.service";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../Utils/AppTechEnums.constants";
-import CategorieOperationModel from "@/Models/CategorieOperation.model";
+import CategorieOperationModel from "../../../Models/CategorieOperation.model";
+import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
+import { populateAllCategories } from "./Budget.controller";
 
 /*
  * Services back-end des budgets
@@ -19,7 +20,10 @@ import CategorieOperationModel from "@/Models/CategorieOperation.model";
 export function loadCategories(handleCategoriesLoaded: Function) {
     console.log("Chargement des catégories");
     call(METHODE_HTTP.GET, BACKEND_ENUM.URL_PARAMS, SERVICES_URL.PARAMETRES.CATEGORIES)
-        .then((data : CategorieOperationModel[])=> handleCategoriesLoaded(data))
+        .then((data : CategorieOperationModel[])=> {
+            const categories = populateAllCategories(data);
+            handleCategoriesLoaded(categories)
+        } )
         .catch((e) => {
             console.log("Erreur lors du chargement des catégories", e)
             toast.error("Erreur lors du chargement des catégories")

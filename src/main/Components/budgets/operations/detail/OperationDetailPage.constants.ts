@@ -14,10 +14,6 @@ export enum OPERATION_EDITION_FORM {
     FORM_VALIDATION = "FORM_VALIDATION"
 }
 
-export const EMPTY_CATEGORIE = {id: null, libelle: "NULL-2"}
-
-
-
 
 /**
  * @interface EditFormProps
@@ -41,13 +37,14 @@ export interface EditFormProps {
 
 export function createEmptyEditForm(operationInCreation: boolean): EditFormProps {
     return {
-    value: operationInCreation,
-    libelle: operationInCreation,
-    dateOperation: operationInCreation,
-    mensualite: operationInCreation,
-    categories: operationInCreation,
-    formValidationEnabled: false
-}}
+        value: operationInCreation,
+        libelle: operationInCreation,
+        dateOperation: operationInCreation,
+        mensualite: operationInCreation,
+        categories: operationInCreation,
+        formValidationEnabled: false
+    }
+}
 
 /**
  * Interface représentant les erreurs possibles pour les détails d'une opération.
@@ -66,11 +63,13 @@ export interface ErrorsFormProps {
     intercompte: string | null
 }
 
-export const EMPTY_ERRORS_FORM: ErrorsFormProps = {
-    valeur: null,
-    dateOperation: null,
-    libelle: null,
-    categorie: null,
-    compte: null,
-    intercompte: null
-} as const
+export function createEmptyErrors(): ErrorsFormProps {
+    return {
+        valeur: null,
+        dateOperation: null,
+        libelle: null,
+        categorie: null,
+        compte: null,
+        intercompte: null
+    }
+}

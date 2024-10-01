@@ -4,8 +4,9 @@ import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
 import OperationModel from "../../../../Models/Operation.model";
 import { BUSINESS_GUID, TYPES_OPERATION_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
 import { getEventTargetId } from "../../../../Utils/OperationData.utils";
-import { EditFormProps, EMPTY_ERRORS_FORM, ErrorsFormProps, OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
+import { createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
+import { create } from "@mui/material/styles/createTransitions";
 
 
 
@@ -246,7 +247,7 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
     onOperationUpdate: (budget: BudgetMensuelModel) => void) {
 
     if (isInEditMode(editForm)) {
-        let errors : ErrorsFormProps = EMPTY_ERRORS_FORM;
+        let errors = createEmptyErrors();
         validateForm(editOperation, operation, editForm, errors);
 
         let hasErrors = false;

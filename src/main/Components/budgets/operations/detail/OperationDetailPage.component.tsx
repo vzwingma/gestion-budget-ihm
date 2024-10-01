@@ -16,7 +16,7 @@ import {
     isInEditMode
 } from './OperationDetailPage.controller';
 import CenterComponent from '../../../CenterComponent';
-import { createEmptyEditForm, EditFormProps, EMPTY_ERRORS_FORM, ErrorsFormProps, OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
+import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
 import { OperationDetailActions } from './actions/OperationDetailActions.component';
 import OperationModel from '../../../../Models/Operation.model';
 import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
@@ -25,7 +25,8 @@ import CompteBancaireModel from '../../../../Models/CompteBancaire.model';
 import {
     BUSINESS_GUID,
     OPERATION_ETATS_ENUM,
-    PERIODES_MENSUALITE_ENUM
+    PERIODES_MENSUALITE_ENUM,
+    TYPES_OPERATION_ENUM
 } from '../../../../Utils/AppBusinessEnums.constants';
 import { getCategorieColor, getCategorieIcon } from '../../../../Utils/renderers/CategorieItem.renderer';
 import {
@@ -80,7 +81,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
     const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm(false));
     const [refresh, setRefresh] = useState<boolean>(false);
     const [intercompte, setIntercompte] = useState<string | null>(null);
-    const [errors, setErrors] = useState<ErrorsFormProps>(EMPTY_ERRORS_FORM);
+    const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
 
 
@@ -92,6 +93,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
     useEffect(() => {
         setEditOperation(cloneOperation(operation));
         setEditForm(createEmptyEditForm(operation.id === "-1"));
+        setErrors(createEmptyErrors());
     }, [operation]);
 
 
@@ -122,7 +124,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
         switch (field) {
             case OPERATION_EDITION_FORM.LIBELLE:
                 editOperation.libelle = value;
-                editForm.formValidationEnabled = true;
                 break;
             case OPERATION_EDITION_FORM.DATE_OPERATION:
                 editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
@@ -134,7 +135,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                 editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).filter((periode: PERIODES_MENSUALITE_ENUM) => periode === value)[0];
                 break;
             case OPERATION_EDITION_FORM.CATEGORIE:
-                //   fillCategorieForm(value)
+                fillCategorieForm(value)
                 break;
             case OPERATION_EDITION_FORM.INTERCOMPTES:
                 editOperation.intercompte = value
@@ -145,6 +146,37 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
         }
         setEditOperation(editOperation);
     }
+
+    /**
+     * Validation d'une catégorie dans le formulaire
+     * @param ssCatId  id de la sous catégorie
+     */
+    function fillCategorieForm(ssCatId: string) {
+        const ssCat = listeCategories
+            .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories !== null && cat.listeSSCategories != undefined ? cat.listeSSCategories : [])
+            .filter((ssCat: CategorieOperationModel) => ssCat != null && ssCat.id === ssCatId)[0]
+
+            if (ssCat.categorieParente) {
+                editOperation.categorie.id = ssCat.categorieParente.id;
+                editOperation.categorie.libelle = ssCat.categorieParente.libelle;
+            }
+            editOperation.ssCategorie.id = ssCat.id
+            editOperation.ssCategorie.libelle = ssCat.libelle
+            setEditOperation(editOperation);
+
+            /** Si type Virement **/
+            editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+
+            /** Adaptation sur la sélection de catégorie **/
+            if (ssCat.categorieParente) {
+                operation.categorie.id = ssCat.categorieParente.id
+                operation.categorie.libelle = ssCat.categorieParente.libelle
+            }
+
+            operation.ssCategorie.id = ssCat.id
+            operation.ssCategorie.libelle = ssCat.libelle
+            operation.typeOperation = editOperation.typeOperation 
+        }
 
     /**
      * RENDER

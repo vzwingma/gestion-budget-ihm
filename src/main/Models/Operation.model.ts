@@ -67,11 +67,11 @@ export function createNewOperation(): OperationModel {
             id: null,
             libelle: ""
         },
-        typeOperation: TYPES_OPERATION_ENUM.CREDIT,
+        typeOperation: TYPES_OPERATION_ENUM.DEPENSE,
         etat: OPERATION_ETATS_ENUM.PREVUE,
         valeur: 0,
         mensualite: {
-            periode: PERIODES_MENSUALITE_ENUM.MENSUELLE
+            periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE
         },
         intercompte: null,
         autresInfos: {
