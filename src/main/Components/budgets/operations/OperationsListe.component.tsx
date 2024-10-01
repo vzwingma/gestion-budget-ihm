@@ -4,7 +4,6 @@ import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';
 import OperationModel from '../../../Models/Operation.model';
 import CompteBancaireModel from '../../../Models/CompteBancaire.model';
-import {getLabelDate} from "../../../Utils/Date.utils";
 
 
 interface OperationsListeProps {
@@ -49,7 +48,7 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
                 renderList.push(
                     <Container key={"liste_" + dateOperationKey}
                                className={"listeItemSeparator"}>
-                        <CenterComponent><>{getLabelDate(dateOperationKey)}</></CenterComponent>
+                        <CenterComponent><>{dateOperationKey}</></CenterComponent>
                     </Container>)
             }
 

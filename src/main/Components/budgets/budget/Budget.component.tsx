@@ -61,7 +61,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
      * @param {BudgetMensuelModel} budget - Le modèle de budget mensuel à jour
      */
     function handleBudgetUpdate(budget: BudgetMensuelModel) {
-        console.log("(Re)Chargement du budget", budget.id, budget.listeOperations.length + " opérations");
+        console.log("(Re)Chargement du budget", budget.id, ":", budget.listeOperations.length + " opérations");
         setCurrentBudget(budget);
         setOperationsGroupedByDateOperation(getOperationsGroupedByDateOperation(budget.listeOperations));
         console.log("Chargement du budget correctement effectué");
