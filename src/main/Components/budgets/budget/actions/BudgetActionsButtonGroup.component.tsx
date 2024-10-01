@@ -24,8 +24,8 @@ import { userHasPermission } from '../../../../Utils/UserData.utils';
 interface BudgetActionsButtonGroupProps {
     budget: BudgetMensuelModel
     droits: UTILISATEUR_DROITS[]
-    onActionBudgetChange: Function
-    onActionOperationCreate: Function
+    onActionBudgetChange: (budget: BudgetMensuelModel) => void
+    onActionOperationCreate: () => void
 }
 
 /**
