@@ -2,7 +2,6 @@ import React from 'react'
 import { MenuItem, TextField, Typography } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import OperationModel from './../../../../../Models/Operation.model'
-import { addEndingZeros } from './../../../../../Utils/OperationData.utils'
 import { getPeriodeRenderer } from './../../../../../Utils/renderers/OperationItem.renderer'
 import { PERIODES_MENSUALITE_ENUM } from './../../../../../Utils/AppBusinessEnums.constants'
 
@@ -20,7 +19,7 @@ export interface OperationDetailMensualiteProps {
     operation: OperationModel
     budgetActif: boolean
     formMensualiteInEdition: boolean
-    fillOperationForm: (field: OPERATION_EDITION_FORM.VALUE, value: string) => void
+    fillOperationForm: (field: OPERATION_EDITION_FORM.MENSUALITE, value: string) => void
 }
 
 
@@ -42,8 +41,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
  * @param {Event} e - L'événement de saisie
  */
     function fillPeriodeForm(e: any) {
-        const value: string = addEndingZeros(e.target.value)
-        fillOperationForm(OPERATION_EDITION_FORM.VALUE, value);
+        fillOperationForm(OPERATION_EDITION_FORM.MENSUALITE, e.target.value);
     }
 
 

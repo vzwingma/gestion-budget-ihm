@@ -145,7 +145,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                 editForm.formValidationEnabled = (value === "true")
                 break;
         }
-        console.log("Mise à jour de l'opération en édition", editedOperation)
         setEditOperation(editedOperation);
     }
 

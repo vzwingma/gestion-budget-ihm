@@ -57,7 +57,7 @@ class AutresInfos {
  */
 export function createNewOperation(): OperationEditionModel {
 
-    let newOperation: OperationEditionModel = {
+    const newOperation: OperationEditionModel = {
         id: "-1",
         libelle: "null",
         categorie: {
