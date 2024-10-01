@@ -2,6 +2,8 @@ import React from 'react'
 import { MenuItem, TextField } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import CompteBancaireModel from './../../../../../Models/CompteBancaire.model'
+import { operationIsIntercompteFromLibelle } from '../../../../../Utils/OperationData.utils'
+import { getOperationIntercompteCatLibelle } from '../../../../../Utils/renderers/OperationItem.renderer'
 
 /**
  * Propriétés pour le composant OperationDetailIntercompte.
@@ -45,6 +47,17 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
     }
 
 
+    function getLibelleIntercompte() : JSX.Element {
+        if(intercompte != null && operationIsIntercompteFromLibelle(intercompte)) {
+
+        return getOperationIntercompteCatLibelle(intercompte, listeAutresComptes, false)
+        }
+        else {
+            return <></>
+        }
+
+    }
+
 
     return (
         formIntercompteInEdition ?
@@ -67,6 +80,8 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
                             {compte.libelle}
                         </MenuItem>
                     ))}
-            </TextField> : <></>
+            </TextField> 
+        : 
+        getLibelleIntercompte()
     )
 }

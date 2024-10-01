@@ -3,6 +3,7 @@ import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnum
 import {Box, Tooltip} from "@mui/material";
 import React from "react";
 import CompteBancaireModel from "../../Models/CompteBancaire.model";
+import { INTERCOMPTE_LIBELLE_REGEX, operationIsIntercompteFromLibelle } from "../OperationData.utils";
 
 /**
  * Couleur d'une opération selon son état
@@ -64,7 +65,7 @@ export function getPeriodeRenderer(periodeKey : PERIODES_MENSUALITE_ENUM) {
 export function getOperationLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean): JSX.Element {
 
     if (operationLibelle != null) {
-        if ((operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)")) != null) {
+        if (operationIsIntercompteFromLibelle(operationLibelle)) {
             return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue)
         } else if (operationLibelle.startsWith("[En Retard]")) {
             return getOperationEnRetardLibelle(operationLibelle)
@@ -106,23 +107,23 @@ function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
  * @param {boolean} maxVue  hauteur max de la vue
  * @returns {*|JSX.Element}
  */
-function getOperationIntercompteLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean) {
-    const operationLibelleParts = (operationLibelle.match("(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)"));
+export function getOperationIntercompteLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean) {
+    const operationLibelleParts = (operationLibelle.match(INTERCOMPTE_LIBELLE_REGEX));
     if(operationLibelleParts == null) {
         return <>{operationLibelle}</>
     }
     else{
         const direction = operationLibelleParts[1] === "[vers " ? "vers" : "depuis"
-        const compte = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))
-        if (compte[0]?.libelle) {
-            return <Tooltip title={"Transfert intercompte " + direction + " " + compte[0].libelle}>
+        const compte = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))[0]
+        if (compte?.libelle) {
+            return <Tooltip title={"Transfert intercompte " + direction + " " + compte.libelle}>
                 <Box>
                     {operationLibelleParts[1].startsWith("[En Retard]") ?
                         <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
     
-                    <img src={"/img/banques/" + compte[0].itemIcon}
+                    <img src={"/img/banques/" + compte.itemIcon}
                          width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
-                         alt={compte[0].libelle}
+                         alt={compte.libelle}
                          style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
                     {getOperationLibelleWithComment(operationLibelleParts[4])}
     
@@ -132,8 +133,43 @@ function getOperationIntercompteLibelle(operationLibelle : string, listeComptes 
             return <>{operationLibelle}</>
         }
     }
+}
+
+
+
+/**
+ * Libellé d'une opération intercompte
+ * @param {string} operationLibelle : string libellé
+ * @param {CompteBancaireModel[]} listeComptes : array : liste des comptes
+ * @param {boolean} maxVue  hauteur max de la vue
+ * @returns {*|JSX.Element}
+ */
+export function getOperationIntercompteCatLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean) {
+    const operationLibelleParts = (operationLibelle.match(INTERCOMPTE_LIBELLE_REGEX));
+    if(operationLibelleParts == null) {
+        return <>{operationLibelle}</>
+    }
+    else{
+        const direction = operationLibelleParts[1] === "[vers " ? "vers" : "depuis"
+        const compte = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))[0]
+        if (compte?.libelle) {
+            const label =  direction + " " + compte.libelle;
+            return <Tooltip title={"Transfert intercompte " + label}>
+                <Box>
+                    <img src={"/img/banques/" + compte.itemIcon}
+                         width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
+                         alt={compte.libelle}
+                         style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
+                    {label}
+                </Box>
+            </Tooltip>
+        } else {
+            return <>{operationLibelle}</>
+        }
+    }
 
 }
+
 
 /**
  * Ajout de l'icone quand en retard

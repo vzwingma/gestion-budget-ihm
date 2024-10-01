@@ -262,7 +262,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
                     <Grid2 size={{ md: 5 }}>
                         { /** COMPTE DE TRANSFERT  **/}
-                        <OperationDetailIntercompte intercompte={editOperation.intercompte}
+                        <OperationDetailIntercompte intercompte={editOperation.libelle}
                             formIntercompteInEdition={
                                 isInCreateMode(editForm)
                                 && editOperation !== null
