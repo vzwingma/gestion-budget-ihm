@@ -4,6 +4,7 @@
 import React from 'react';
 import {addEndingZeros} from '../OperationData.utils'
 import OperationModel from '../../Models/Operation.model';
+import { OPERATION_ETATS_ENUM } from '../AppBusinessEnums.constants';
 
 /**
  * Affichage du style de l'opération suivant sa valeur
@@ -14,7 +15,7 @@ import OperationModel from '../../Models/Operation.model';
 export function getStyleOperation(valueOperation : number, operation? : OperationModel): string {
 
     let style = "";
-    if (operation?.etat != null && ("ANNULEE" === operation.etat || "SUPPRIMEE" === operation.etat)) {
+    if (operation?.etat != null && (OPERATION_ETATS_ENUM.ANNULEE === operation.etat || OPERATION_ETATS_ENUM.SUPPRIMEE === operation.etat)) {
         style += "text-ANNULEE ";
     } else if (valueOperation === 0) {
         style += "";

@@ -81,8 +81,8 @@ export enum PERIODES_MENSUALITE_ENUM {
  * Constantes des type d'opération
  */
 export enum TYPES_OPERATION_ENUM {
-    CREDIT,
-    DEPENSE
+    CREDIT = "CREDIT",
+    DEPENSE = "DEPENSE"
 }
 
 /*
