@@ -22,8 +22,9 @@ class BudgetMensuelModel {
     }
 }
 
-class Soldes {
+export class Soldes {
     soldeAtMaintenant: number = 0;
     soldeAtFinMoisCourant: number = 0;
+    soldeAtFinMoisPrecedent: number = 0;
 }
 export default BudgetMensuelModel;  // export default is used to export a single class, function or primitive from a script file.

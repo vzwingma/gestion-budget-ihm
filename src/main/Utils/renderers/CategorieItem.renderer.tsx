@@ -43,13 +43,13 @@ import CategorieOperationModel from "../../Models/CategorieOperation.model";
 
 /**
  * Couleur de la catégorie
- * @param {CategorieOperationModel} categorieOperation catégorie de l'opération
  * @returns {string} color catégorie
+ * @param idCategorieOperation
  */
-export function getCategorieColor(categorieOperation: CategorieOperationModel): string {
+export function getCategorieColor(idCategorieOperation: string | null): string {
 
-    if (categorieOperation?.id != null) {
-        switch (categorieOperation.id) {
+    if (idCategorieOperation != null) {
+        switch (idCategorieOperation) {
             case 'ea6dcc12-3349-4047-a1e5-cd1d7254f16e': // Virement
                 return "#18c95d"
             case '504beea7-ed52-438a-aced-15e9603b82ab': // Prélèvement
@@ -67,7 +67,7 @@ export function getCategorieColor(categorieOperation: CategorieOperationModel): 
             case '94669a73-2563-4a31-8d67-35a8d96d8686': // Divers
                 return "#9fc3d3"
             default:
-                console.warn("L'Opération " + categorieOperation.id + " n'a pas de couleur de fond définie")
+                console.warn("L'Opération " + idCategorieOperation + " n'a pas de couleur de fond définie")
         }
     }
     return "#808080"

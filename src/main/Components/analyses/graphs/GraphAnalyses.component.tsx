@@ -1,8 +1,17 @@
 import {Cell, LabelList, Pie, PieChart, ResponsiveContainer} from "recharts";
 import React from "react";
 import PropTypes from "prop-types";
-import {sortLibellesCategories} from "../../Utils/DataUtils.utils";
-import {getCategorieColor} from "../../Utils/renderers/CategorieItem.renderer";
+import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.renderer";
+import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
+
+
+
+interface GraphAnalysesProps {
+    typeAnalyse: string,
+    analysesGroupedByCategories: any,
+    resumeSelectedCategorie: any,
+    resumeSelectedSsCategorie: any
+}
 
 /**
  * Graphique Analyses
@@ -18,18 +27,18 @@ const GraphAnalyses = ({
                            analysesGroupedByCategories,
                            resumeSelectedCategorie,
                            resumeSelectedSsCategorie
-                       }) => {
+                       } : GraphAnalysesProps) : JSX.Element => {
 
 
-    let dataCategories = [];
-    let dataSsCategories = [];
+    let dataCategories : any[] = [];
+    let dataSsCategories : any[]= [];
 
     /**
      * Populate des data pour les graphs d'une catégorie
      * @param analysesGroupedByCategories : object analyses groupées des catégories
      * @param dataCategories : array tableau pour alimenter le graphique
      * @param parentCategorie : object catégorie parente
-     */
+
     function populateGraphCategorie(analysesGroupedByCategories, dataCategories, parentCategorie) {
         const arrayAnalysesGroupedByCategories = []
         // transform en array
@@ -55,41 +64,35 @@ const GraphAnalyses = ({
                 }
             })
     }
-
+     */
     /**
      * Render du label pour une catégorie
      * @param props properties
      * @returns {*}
      */
-    function renderLabelCategorie(props) {
+    function renderLabelCategorie(props : string) {
         const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
         const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie : null)
         return renderLabelAnalyse(props, selectedId, color);
     }
 
-    renderLabelCategorie.propTypes = {
-        id: PropTypes.string.isRequired
-    }
     /**
      * Render du label pour une sous catégorie
      * @param props
      * @returns {*}
      */
-    function renderLabelSsCategorie(props) {
+    function renderLabelSsCategorie(props : string) {
         const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
         return renderLabelAnalyse(props, selectedId, "#808080");
     }
 
-    renderLabelSsCategorie.propTypes = {
-        id: PropTypes.string.isRequired
-    }
     /**
      * Render du label pour une analyse
      * @param props properties
      * @param selectedId : boolean si la catégorie est sélectionnée
      * @param color couleur
      * @returns {JSX.Element}
-     */
+     
     function renderLabelAnalyse(props, selectedId, color) {
         const {cx, cy, viewBox, value} = props;
         const midRadius = (viewBox.outerRadius + viewBox.innerRadius) / 2;
@@ -121,22 +124,9 @@ const GraphAnalyses = ({
 
         );
     }
-
-    renderLabelAnalyse.propTypes = {
-        props: PropTypes.object.isRequired, // Propriétés
-        cx: PropTypes.number.isRequired,    // centre du graphique (X)
-        cy: PropTypes.number.isRequired, // centre du graphique (Y)
-        viewBox: PropTypes.object.isRequired, // vue box
-        value: PropTypes.number.isRequired, // valeur de l'analyse
-        outerRadius: PropTypes.number.isRequired, // rayon extérieur
-        innerRadius: PropTypes.number.isRequired, // rayon intérieur
-        startAngle: PropTypes.number.isRequired, // angle de départ
-        endAngle: PropTypes.number.isRequired, // angle de fin
-    }
-
-
+*/
     /** Init du tableau pour l'affichage du graphique **/
-    populateGraphCategorie(analysesGroupedByCategories, dataCategories);
+  //  populateGraphCategorie(analysesGroupedByCategories, dataCategories);
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -169,13 +159,5 @@ const GraphAnalyses = ({
             </PieChart>
         </ResponsiveContainer>
     );
-}
-// Properties Types
-GraphAnalyses.propTypes = {
-    id: PropTypes.string.isRequired,
-    typeAnalyse: PropTypes.string.isRequired,
-    analysesGroupedByCategories: PropTypes.object.isRequired,
-    resumeSelectedCategorie: PropTypes.object,
-    resumeSelectedSsCategorie: PropTypes.object,
 }
 export default GraphAnalyses

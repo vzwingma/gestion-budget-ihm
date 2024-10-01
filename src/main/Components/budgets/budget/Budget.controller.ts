@@ -1,6 +1,6 @@
 import { getLabelFromDate } from "../../../Utils/Date.utils";
 import OperationModel from "../../../Models/Operation.model";
-import { sortLibellesCategories, sortOperations } from "../../../Utils/OperationData.utils";
+import { sortOperations } from "../../../Utils/OperationData.utils";
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
 import CategorieOperationModel from "../../../Models/CategorieOperation.model";
 

@@ -2,6 +2,10 @@
  * Controleur de graphique pour l'analyse temporelle.
  */
 
+import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
+import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
+import { CategorieTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
+
 /**
  * Remplit le graphique avec les données d'une catégorie.
  * @param {number} anneeAnalyses - L'année des analyses.
@@ -10,11 +14,13 @@
  * @param {Boolean} isAtTerminaison - Les soldes
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphCategories(anneeAnalyses, listeCategories, timelinesGroupedByCategories, isAtTerminaison, datasTemporellesAnnee) {
+export function populateGraphCategories(anneeAnalyses : number, listeCategories : SoldeCategorieModel[], timelinesGroupedByCategories : CategorieTimelineItem[][], isAtTerminaison : boolean, datasTemporellesAnnee : any[]) {
 
     Object.keys(timelinesGroupedByCategories)
-        .forEach((mois: number) => {
-            let datasTemporellesMois = {};
+        .forEach((month: string) => {
+            const mois = parseInt(month);
+            /*
+            let datasTemporellesMois : any[] = [];
             let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
             if (indxTemporellesMois === -1) {
                 datasTemporellesMois = {
@@ -36,7 +42,7 @@ export function populateGraphCategories(anneeAnalyses, listeCategories, timeline
                 datasTemporellesAnnee.push(datasTemporellesMois);
             } else {
                 datasTemporellesAnnee[indxTemporellesMois] = datasTemporellesMois;
-            }
+            } */
         });
 }
 
@@ -48,18 +54,23 @@ export function populateGraphCategories(anneeAnalyses, listeCategories, timeline
  * @param {Boolean} isAtTerminaison - Est-ce que c'est à la terminaison.
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphSoldes(anneeAnalyses, timelinesSoldes, filterSoldesActive, isAtTerminaison, datasTemporellesAnnee) {
+export function populateGraphSoldes(anneeAnalyses : number, timelinesSoldes : SoldeMensuelModel[], filterSoldesActive : boolean, isAtTerminaison : boolean, datasTemporellesAnnee : SoldeMensuelModel[]) {
     Object.keys(timelinesSoldes)
-        .forEach((mois: number) => {
+        .forEach((month: string) => {
+            const mois = parseInt(month);
+            /*
             let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
             let datasTemporellesMois = datasTemporellesAnnee[indxTemporellesMois];
 
             // Ajout des soldes
+            
             if (filterSoldesActive) {
                 datasTemporellesMois[(isAtTerminaison ? "prev_" : "") + "SoldesD"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].totaux[0] : 0;
                 datasTemporellesMois[(isAtTerminaison ? "prev_" : "") + "SoldesF"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].totaux[1] : 0;
             }
+   
             datasTemporellesAnnee[indxTemporellesMois] = datasTemporellesMois;
+                         */
         });
 }
 
@@ -68,12 +79,12 @@ export function populateGraphSoldes(anneeAnalyses, timelinesSoldes, filterSoldes
  * @param {Array} dataTemporelleAnnee
  * @param {number} mois
  * @param {number} anneeAnalyses
- */
-function getDataTemporelleMois(dataTemporelleAnnee, mois, anneeAnalyses) {
+
+function getDataTemporelleMois(dataTemporelleAnnee, mois : number, anneeAnalyses : number) {
     let label = createLabelTimeline(mois, anneeAnalyses);
     return dataTemporelleAnnee.findIndex(dataTemporelleMois => dataTemporelleMois.name === label);
 }
-
+ */
 /**
  * Crée un label pour une chronologie basée sur le mois et l'année donnés.
  *
@@ -88,7 +99,7 @@ function getDataTemporelleMois(dataTemporelleAnnee, mois, anneeAnalyses) {
  * @param {number} annee - L'année pour l'étiquette de la chronologie.
  * @returns {string} - L'étiquette pour la chronologie.
  */
-export function createLabelTimeline(mois, annee) {
+export function createLabelTimeline(mois : number, annee : number) {
     let label = new Date();
     label.setMonth(mois);
     label.setFullYear(annee);

@@ -3,9 +3,9 @@ import {Box, Grid2, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import * as Renderer from "../../../Utils/renderers/OperationItem.renderer";
 import * as CategorieRenderer from "../../../Utils/renderers/CategorieItem.renderer";
-import OperationModel from '@/src/main/Models/Operation.model';
-import CompteBancaireModel from '@/src/main/Models/CompteBancaire.model';
 import CenterComponent from '../../CenterComponent';
+import OperationModel from "../../../Models/Operation.model";
+import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 
 
 interface OperationItemProps {
@@ -41,7 +41,7 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, listeComptes, o
                         <Box width={44} height={44}
                              sx={{
                                  borderRadius: '50%',
-                                 backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie),
+                                 backgroundColor: CategorieRenderer.getCategorieColor(operation.categorie.id),
                                  border: '3px solid black',
                                  padding: '6px',
                                  color: '#252525'

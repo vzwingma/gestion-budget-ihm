@@ -4,7 +4,7 @@ import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants";
 import CompteBancaireModel from '../../../Models/CompteBancaire.model';
 import {getSoldesBudget} from './CompteItem.controller';
-import CenterComponent from '../../CenterComponent';
+import OperationModel from "../../../Models/Operation.model";
 
 
 interface CompteItemProps {
@@ -12,7 +12,7 @@ interface CompteItemProps {
     selectedDate: Date;
     selectedFunction: BUSINESS_ONGLETS;
     onRefreshMenuBar: boolean;
-    onClick: Function;
+    onClick: (compte : CompteBancaireModel) => void
 }
 /**
  * Tuile affichant un compte

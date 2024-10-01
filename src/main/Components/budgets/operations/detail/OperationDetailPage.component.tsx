@@ -175,7 +175,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
             operation.ssCategorie.id = ssCat.id
             operation.ssCategorie.libelle = ssCat.libelle
-            operation.typeOperation = editOperation.typeOperation 
+            operation.typeOperation = editOperation.typeOperation
         }
 
     /**
@@ -194,7 +194,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                     <Box width={56} height={56}
                         sx={{
                             borderRadius: "50%",
-                            backgroundColor: getCategorieColor(operation.categorie),
+                            backgroundColor: getCategorieColor(operation.categorie.id),
                             color: '#FFFFFF',
                             padding: '15px 0px 0px 15px'
                         }}>

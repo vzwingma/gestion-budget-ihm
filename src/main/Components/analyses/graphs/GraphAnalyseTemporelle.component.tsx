@@ -1,8 +1,20 @@
 import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React from "react";
-import PropTypes from "prop-types";
-import * as Controller from './GraphAnalyseTemporelle.controller'
-import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
+import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
+import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
+import { CategorieTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
+import { populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
+
+
+interface GraphAnalyseTemporelleProps {
+    anneeAnalyses: number,
+    filterSoldesActive: boolean,
+    categoriesData: SoldeCategorieModel[],
+    timelinesGroupedByCategoriesData: CategorieTimelineItem[][],
+    timelinesPrevisionnellesGroupedByCategoriesData: CategorieTimelineItem[][],
+    timelinesSoldesData: SoldeMensuelModel[],
+    timelinesPrevisionnellesSoldesData: SoldeMensuelModel[]
+}
 
 /**
  * Composant de graphique pour l'analyse temporelle.
@@ -18,41 +30,41 @@ import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
  */
 const GraphAnalyseTemporelle = ({
                                     anneeAnalyses,
-                                    timelinesGroupedByCategories,
-                                    timelinesSoldes,
-                                    timelinesPrevisionnellesGroupedByCategories,
-                                    timelinesPrevisionnellesSoldes,
+                                    timelinesGroupedByCategoriesData,
+                                    timelinesSoldesData,
+                                    timelinesPrevisionnellesGroupedByCategoriesData,
+                                    timelinesPrevisionnellesSoldesData,
                                     filterSoldesActive,
-                                    listeCategories
-                                }) => {
+                                    categoriesData
+                                } : GraphAnalyseTemporelleProps) => {
 
-    let dataCategories = [];
+    let dataCategories : any[] = [];
 
     /** Init du tableau pour l'affichage du graphique **/
     console.log("Construction de l'affichage de l'analyse temporelle pour", anneeAnalyses);
-    Controller.populateGraphCategories(anneeAnalyses, listeCategories, timelinesGroupedByCategories, false, dataCategories);
-    Controller.populateGraphCategories(anneeAnalyses, listeCategories, timelinesPrevisionnellesGroupedByCategories, true, dataCategories);
-    Controller.populateGraphSoldes(anneeAnalyses, timelinesSoldes, filterSoldesActive, false, dataCategories);
-    Controller.populateGraphSoldes(anneeAnalyses, timelinesPrevisionnellesSoldes, filterSoldesActive, true, dataCategories);
+    populateGraphCategories(anneeAnalyses, categoriesData, timelinesGroupedByCategoriesData, false, dataCategories);
+    populateGraphCategories(anneeAnalyses, categoriesData, timelinesPrevisionnellesGroupedByCategoriesData, true, dataCategories);
+    populateGraphSoldes(anneeAnalyses, timelinesSoldesData, filterSoldesActive, false, dataCategories);
+    populateGraphSoldes(anneeAnalyses, timelinesPrevisionnellesSoldesData, filterSoldesActive, true, dataCategories);
 
     /**
      * Rend les lignes du graphique.
      * @returns {Array} Un tableau de composants Line.
      */
     const renderLines = () => {
-        let lines = [];
-        listeCategories
+        let lines : JSX.Element[] = [];
+        categoriesData
             .filter(categorie => categorie.filterActive)
             .forEach(categorie => {
                 lines.push(<Line key={categorie.id}
                                  type="monotone"
-                                 dataKey={categorie.libelle}
+                                 dataKey={categorie.libelleCategorie}
                                  strokeWidth="3"
                                  stroke={categorie.couleur}/>)
 
                 lines.push(<Line key={"prev_" + categorie.id}
                                  type="monotone"
-                                 dataKey={"prev_" + categorie.libelle}
+                                 dataKey={"prev_" + categorie.libelleCategorie}
                                  strokeWidth="1"
                                  strokeDasharray="5 5"
                                  stroke={categorie.couleur}/>)
@@ -90,7 +102,6 @@ const GraphAnalyseTemporelle = ({
     return (
         <ResponsiveContainer width="100%" height="100%">
             <ComposedChart
-                width="100%" height="100%"
                 data={dataCategories}>
 
                 <defs>
@@ -117,17 +128,6 @@ const GraphAnalyseTemporelle = ({
             </ComposedChart>
         </ResponsiveContainer>
     );
-}
-
-// Types des propriétés
-GraphAnalyseTemporelle.propTypes = {
-    anneeAnalyses: PropTypes.number.isRequired,
-    listeCategories: PropTypes.array.isRequired,
-    filterSoldesActive: PropTypes.bool.isRequired,
-    timelinesGroupedByCategories: PropTypes.array.isRequired,
-    timelinesSoldes: PropTypes.array.isRequired,
-    timelinesPrevisionnellesGroupedByCategories: PropTypes.array.isRequired,
-    timelinesPrevisionnellesSoldes: PropTypes.array.isRequired
 }
 
 export default GraphAnalyseTemporelle

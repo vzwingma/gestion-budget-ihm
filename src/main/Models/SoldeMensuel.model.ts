@@ -1,30 +1,33 @@
-import OperationModel from "./Operation.model";
+import {Soldes} from "./BudgetMensuel.model";
 
 /**
- * Catégorie Opérations model
+ * SoldeMensuelModel
  */
-class BudgetMensuelModel {
+class SoldeMensuelModel {
 
-    id: string;
-    libelle: string;
-    actif: boolean = true;
-    idCompteBancaire!: string;
+    actif: boolean;
+    idCompteBancaire: string;
+    dateMiseAJour: Date = new Date();
+    mois: string ;
+    annee: number;
     soldes: Soldes = new Soldes();
-    listeOperations: Array<OperationModel> = new Array<OperationModel>();
+    totauxParCategories : any[] = [];
+
+
     /**
      * Constructor
-     * @param id id du compte
-     * @param libelle libellé du compte
+     * @param actif
+     * @param idCompteBancaire
+     * @param dateMiseAJour
+     * @param mois
+     * @param annee
      */
-    constructor(id: string, libelle: string) {
-        this.id = id;
-        this.libelle = libelle;
+    constructor(actif: boolean, idCompteBancaire: string, dateMiseAJour: Date, mois: string, annee: number) {
+        this.actif = actif;
+        this.idCompteBancaire = idCompteBancaire;
+        this.dateMiseAJour = dateMiseAJour;
+        this.mois = mois;
+        this.annee = annee;
     }
 }
-
-class Soldes {
-    soldeAtMaintenant: number = 0;
-    soldeAtFinMoisCourant: number = 0;
-    soldeAtFinMoisPrecedent: number = 0;
-}
-export default BudgetMensuelModel;  // export default is used to export a single class, function or primitive from a script file.
+export default SoldeMensuelModel;  // export default is used to export a single class, function or primitive from a script file.

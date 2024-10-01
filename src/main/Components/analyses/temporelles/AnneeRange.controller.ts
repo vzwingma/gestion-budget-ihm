@@ -1,31 +1,18 @@
 /**
  *  Sélection d'une année à partir du composant
  * @param event select
+ * @param dateCurrent date courante
+ * @param onAnneeChange fonction de changement d'année
  */
-export function handleSelect(event) {
-    let newDatePrevious;
-    let newDateCurrent;
-    let newDateNext;
-    let dateChanged = false;
-    if (event.target.id === "previous") {
-        newDateCurrent = this.state.datePrevious;
-        newDatePrevious = this.state.datePrevious - 1;
-        newDateNext = this.state.dateCurrent;
-        dateChanged = true;
-    } else if (event.target.id === "next") {
-        newDateCurrent = this.state.dateNext;
-        newDatePrevious = this.state.dateCurrent;
-        newDateNext = this.state.dateNext + 1;
-        dateChanged = true;
-    }
-    if (dateChanged) {
-        this.setState({
-            datePrevious: newDatePrevious,
-            dateCurrent: newDateCurrent,
-            dateNext: newDateNext
-        })
-        // Date sélectionnée, remonté au composant amont
-        this.props.onAnneeChange(newDateCurrent);
-    }
+export function handleSelect(event : any, dateCurrent : number, onAnneeChange : (annee: number) => void) {
 
+    let newDateCurrent = dateCurrent;
+    if (event.target.id === "previous") {
+        newDateCurrent = dateCurrent - 1;
+    } else if (event.target.id === "next") {
+        newDateCurrent = dateCurrent + 1;
+    }
+    // Date sélectionnée, remonté au composant amont
+
+    onAnneeChange(newDateCurrent);
 }

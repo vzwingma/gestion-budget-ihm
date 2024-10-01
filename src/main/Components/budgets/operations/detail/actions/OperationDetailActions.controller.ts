@@ -50,7 +50,7 @@ export function handleOperationAction(event : any, currentOperation : OperationM
  * @param action action réalisée
  * @param budget associé
  */
-function updateOperation(operation : OperationModel, action : string, budget : BudgetMensuelModel, onOperationChange: (budget: BudgetMensuelModel) => void) {
+function updateOperation(operation : OperationModel, action : OPERATION_ETATS_ENUM, budget : BudgetMensuelModel, onOperationChange: (budget: BudgetMensuelModel) => void) {
 
     if (budget.actif) {
         if (operation.etat !== action) {
