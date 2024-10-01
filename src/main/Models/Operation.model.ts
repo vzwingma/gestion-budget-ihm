@@ -58,14 +58,14 @@ export function createNewOperation(): OperationModel {
 
     let newOperation: OperationModel = {
         id: "-1",
-        libelle: "null",
+        libelle: "",
         categorie: {
             id: null,
-            libelle: "null"
+            libelle: ""
         },
         ssCategorie: {
             id: null,
-            libelle: "null"
+            libelle: ""
         },
         typeOperation: TYPES_OPERATION_ENUM.CREDIT,
         etat: OPERATION_ETATS_ENUM.PREVUE,

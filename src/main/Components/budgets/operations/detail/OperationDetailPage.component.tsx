@@ -37,7 +37,7 @@ import { OperationDetailDate } from './subcomponents/OperationDetailDate.compone
 import { OperationDetailIntercompte } from './subcomponents/OperationDetailIntercompte.component';
 import { OperationDetailMensualite } from './subcomponents/OperationDetailMensualite.component';
 import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component';
-import OperationEditionModel, { cloneOperation, createNewOperation } from '../../../../Models/OperationEdition.model';
+import OperationEditionModel, { cloneOperation, createNewOperationEdition } from '../../../../Models/OperationEdition.model';
 
 
 /**
@@ -81,7 +81,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
     const [refresh, setRefresh] = useState<boolean>(false);
     const [intercompte, setIntercompte] = useState<string | null>(null);
     const [errors, setErrors] = useState<ErrorsFormProps>(EMPTY_ERRORS_FORM);
-    const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperation());
+    const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
 
 
 
@@ -119,11 +119,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
      * @param value valeur du champ
      */
     function fillOperationForm(field: OPERATION_EDITION_FORM, value: string) {
-        let editedOperation = editOperation != null ? editOperation : createNewOperation();
-        console.log("fillOperationForm", field, value)
         switch (field) {
             case OPERATION_EDITION_FORM.LIBELLE:
-                editedOperation.libelle = value;
+                editOperation.libelle = value;
                 editForm.formValidationEnabled = true;
                 break;
             case OPERATION_EDITION_FORM.DATE_OPERATION:
@@ -133,7 +131,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                 editOperation.valeur = value;
                 break;
             case OPERATION_EDITION_FORM.MENSUALITE:
-                editedOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).filter((periode: PERIODES_MENSUALITE_ENUM) => periode === value)[0];
+                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).filter((periode: PERIODES_MENSUALITE_ENUM) => periode === value)[0];
                 break;
             case OPERATION_EDITION_FORM.CATEGORIE:
                 //   fillCategorieForm(value)
@@ -145,7 +143,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                 editForm.formValidationEnabled = (value === "true")
                 break;
         }
-        setEditOperation(editedOperation);
+        setEditOperation(editOperation);
     }
 
     /**

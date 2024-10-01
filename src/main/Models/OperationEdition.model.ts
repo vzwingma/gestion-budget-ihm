@@ -1,6 +1,6 @@
 import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM} from "../Utils/AppBusinessEnums.constants";
 import CategorieOperationModel from "./CategorieOperation.model";
-import OperationModel from "./Operation.model";
+import OperationModel, { createNewOperation } from "./Operation.model";
 
 /**
  * Opérations Edition model
@@ -53,33 +53,10 @@ class AutresInfos {
 
 /**
  * Fonction de création d'une nouvelle opération.
- * @returns {OperationModel} - Un nouvel objet OperationModel initialisé.
+ * @returns {OperationEditionModel} - Un nouvel objet OperationModel initialisé.
  */
-export function createNewOperation(): OperationEditionModel {
-
-    const newOperation: OperationEditionModel = {
-        id: "-1",
-        libelle: "null",
-        categorie: {
-            id: null,
-            libelle: "null"
-        },
-        ssCategorie: {
-            id: null,
-            libelle: "null"
-        },
-        typeOperation: TYPES_OPERATION_ENUM.DEPENSE,
-        etat: OPERATION_ETATS_ENUM.PREVUE,
-        valeur: null,
-        mensualite: {
-            periode: PERIODES_MENSUALITE_ENUM.MENSUELLE
-        },
-        intercompte: null,
-        autresInfos: {
-            dateOperation: null
-        }
-    }
-    return newOperation;
+export function createNewOperationEdition(): OperationEditionModel {
+    return cloneOperation(createNewOperation());
 }
 
 
