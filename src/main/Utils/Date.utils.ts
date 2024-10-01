@@ -13,7 +13,7 @@ export function getLabelDate(dateOperation: string): string {
  * @returns {string} label FR de la date    
  */
 export function getLabelFromDate(dateOperation: Date): string {
-    return dateOperation.toLocaleDateString("fr");
+    return new Date(dateOperation).toLocaleDateString("fr");
 }
 
 

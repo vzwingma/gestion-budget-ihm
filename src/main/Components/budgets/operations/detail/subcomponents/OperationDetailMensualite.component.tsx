@@ -63,7 +63,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
                 variant="standard">
                 {Object.values(PERIODES_MENSUALITE_ENUM).map((option) => (
                     <MenuItem key={option} value={option}
-                        color={getPeriodeRenderer(option).color}>
+                              color={getPeriodeRenderer(option).color}>
                         {getPeriodeRenderer(option).text}
                     </MenuItem>
                 ))}

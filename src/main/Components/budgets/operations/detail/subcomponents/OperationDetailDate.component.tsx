@@ -2,6 +2,7 @@ import React from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import OperationModel from './../../../../../Models/Operation.model'
 import { TextField, Typography } from '@mui/material'
+import { getLabelFromDate } from '../../../../../Utils/Date.utils'
 
 
 /**
@@ -57,7 +58,7 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({ operat
             <Typography id={OPERATION_EDITION_FORM.DATE_OPERATION} variant={"subtitle1"}
                 className={budgetActif ? "editableField" : ""}
                 sx={{ color: (operation.autresInfos.dateOperation != null ? "#FFFFFF" : "#121212") }}>
-                {operation.autresInfos.dateOperation != null ? operation.autresInfos.dateOperation.toLocaleDateString("fr") : "jj/mm/aaaa"}
+                {operation.autresInfos.dateOperation != null ? getLabelFromDate(operation.autresInfos.dateOperation) : "jj/mm/aaaa"}
             </Typography>
             :
             <TextField
