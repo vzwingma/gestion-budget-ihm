@@ -1,6 +1,12 @@
 import {getStyleOperation} from "../../../Utils/renderers/OperationValue.renderer";
-import PropTypes from "prop-types";
 import React from "react";
+
+
+interface TooltipAnalyseTemporelleProps {
+    active: boolean,
+    payload: any[],
+    label: string
+}
 
 /**
  * formatte le tooltip
@@ -10,8 +16,8 @@ import React from "react";
  * @returns {JSX.Element}
  * @constructor
  */
-const TooltipAnalyseTemporelle = ({active, payload, label}) => {
-    let tooltip = [];
+const TooltipAnalyseTemporelle = ({active, payload, label} : TooltipAnalyseTemporelleProps) => {
+    let tooltip : JSX.Element[] = [];
     if (active && payload?.length) {
 
         payload.forEach(item => {
@@ -37,10 +43,5 @@ const TooltipAnalyseTemporelle = ({active, payload, label}) => {
         </div>
     );
 }
-// Types des propriétés
-TooltipAnalyseTemporelle.propTypes = {
-    active: PropTypes.bool.isRequired,
-    payload: PropTypes.array.isRequired,
-    label: PropTypes.string
-}
+
 export default TooltipAnalyseTemporelle

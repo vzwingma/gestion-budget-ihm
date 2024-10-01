@@ -69,23 +69,23 @@ const GraphAnalyses = ({
      * Render du label pour une catégorie
      * @param props properties
      * @returns {*}
-     */
+     
     function renderLabelCategorie(props : string) {
         const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
         const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie : null)
         return renderLabelAnalyse(props, selectedId, color);
     }
-
+*/
     /**
      * Render du label pour une sous catégorie
      * @param props
      * @returns {*}
-     */
+  
     function renderLabelSsCategorie(props : string) {
         const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
         return renderLabelAnalyse(props, selectedId, "#808080");
     }
-
+   */
     /**
      * Render du label pour une analyse
      * @param props properties
@@ -129,9 +129,11 @@ const GraphAnalyses = ({
   //  populateGraphCategorie(analysesGroupedByCategories, dataCategories);
 
     return (
-        <ResponsiveContainer width="100%" height="100%">
+        <></>
+        /**
+        <ResponsiveContainer width="100%" height="100%"> vnbb:
             <PieChart width="90%" height="90%">
-                { /** Affichage du graphique CATEGORIE **/}
+                { // Affichage du graphique CATEGORIE }
                 <Pie data={dataCategories} dataKey="value"
                      cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
                      isAnimationActive={false}>
@@ -143,7 +145,7 @@ const GraphAnalyses = ({
                     <LabelList data={dataSsCategories} dataKey="name"
                                content={renderLabelCategorie}/>
                 </Pie>
-                { /** Affichage du graphique SOUS CATEGORIE **/}
+                { // Affichage du graphique SOUS CATEGORIE }
                 <Pie data={dataSsCategories} dataKey="value"
                      cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
                      isAnimationActive={false}>
@@ -158,6 +160,7 @@ const GraphAnalyses = ({
                 </Pie>
             </PieChart>
         </ResponsiveContainer>
+        */
     );
 }
 export default GraphAnalyses

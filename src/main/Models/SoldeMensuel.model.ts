@@ -1,4 +1,5 @@
 import {Soldes} from "./BudgetMensuel.model";
+import SoldeCategorieModel from "./SoldeCategorie.model";
 
 /**
  * SoldeMensuelModel
@@ -11,7 +12,7 @@ class SoldeMensuelModel {
     mois: string ;
     annee: number;
     soldes: Soldes = new Soldes();
-    totauxParCategories : any[] = [];
+    totauxParCategories : { [key: string]: SoldeCategorieModel } = {};
 
 
     /**

@@ -12,12 +12,12 @@ import { OPERATION_ETATS_ENUM } from '../AppBusinessEnums.constants';
  * @param valueOperation valeur de l'opération
  * @returns {string} : class name du style
  */
-export function getStyleOperation(valueOperation : number, operation? : OperationModel): string {
+export function getStyleOperation(valueOperation : number | null, operation? : OperationModel): string {
 
     let style = "";
     if (operation?.etat != null && (OPERATION_ETATS_ENUM.ANNULEE === operation.etat || OPERATION_ETATS_ENUM.SUPPRIMEE === operation.etat)) {
         style += "text-ANNULEE ";
-    } else if (valueOperation === 0) {
+    } else if (valueOperation === 0 || valueOperation === null) {
         style += "";
     } else if (valueOperation > 0) {
         style += "text-CREDIT";

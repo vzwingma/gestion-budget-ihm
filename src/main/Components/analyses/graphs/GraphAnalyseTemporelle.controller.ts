@@ -3,8 +3,18 @@
  */
 
 import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
-import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
-import { CategorieTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
+import { CategorieTimelineItem, SoldesTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
+
+interface DataTemporelleMois {
+    id: string,
+    name: string,
+    categories: { [key: string]: number }
+}
+
+
+export interface DataTemporelleAnnee {
+    datasTemporellesMois: { [key: string]: DataTemporelleMois }
+}
 
 /**
  * Remplit le graphique avec les données d'une catégorie.
@@ -14,35 +24,39 @@ import { CategorieTimelineItem } from "../temporelles/AnalyseTemporelle.controll
  * @param {Boolean} isAtTerminaison - Les soldes
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphCategories(anneeAnalyses : number, listeCategories : SoldeCategorieModel[], timelinesGroupedByCategories : CategorieTimelineItem[][], isAtTerminaison : boolean, datasTemporellesAnnee : any[]) {
+export function populateGraphCategories(anneeAnalyses: number, listeCategories: SoldeCategorieModel[], timelinesGroupedByCategories: { [key: string]: CategorieTimelineItem }[], isAtTerminaison: boolean, datasTemporellesAnnee: DataTemporelleAnnee) {
 
     Object.keys(timelinesGroupedByCategories)
         .forEach((month: string) => {
             const mois = parseInt(month);
-            /*
-            let datasTemporellesMois : any[] = [];
-            let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
-            if (indxTemporellesMois === -1) {
+
+            let datasTemporellesMois: DataTemporelleMois;
+            datasTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
+
+            if (datasTemporellesMois === undefined) {
                 datasTemporellesMois = {
                     id: "id_" + mois + "_" + anneeAnalyses + "_" + (isAtTerminaison ? "prev_" : ""),
-                    name: createLabelTimeline(mois, anneeAnalyses)
+                    name: createLabelTimeline(mois, anneeAnalyses),
+                    categories: {}
                 };
-            } else {
-                datasTemporellesMois = datasTemporellesAnnee[indxTemporellesMois];
             }
             // Ajout des données pour chaque catégorie
+
             listeCategories
                 .filter(categorie => categorie.filterActive)
                 .forEach(categorie => {
-                    datasTemporellesMois[(isAtTerminaison ? "prev_" : "") + categorie.libelle] =
-                        timelinesGroupedByCategories[mois][categorie.id] !== undefined ? Math.abs(timelinesGroupedByCategories[mois][categorie.id].total) : 0;
-                    })
-                // Publication des données temporelles
-            if (indxTemporellesMois === -1) {
-                datasTemporellesAnnee.push(datasTemporellesMois);
-            } else {
-                datasTemporellesAnnee[indxTemporellesMois] = datasTemporellesMois;
-            } */
+                    const timelinesCategory = Object.values(timelinesGroupedByCategories[mois])
+                        .filter(timeline => timeline.categorie.id === categorie.id)[0]
+                    datasTemporellesMois.categories[(isAtTerminaison ? "prev_" : "") + categorie.libelleCategorie] =
+                        timelinesCategory !== undefined ? Math.abs(timelinesCategory.total) : 0;
+
+                })
+
+            // Publication des données temporelles
+            if (datasTemporellesAnnee.datasTemporellesMois === undefined) {
+                datasTemporellesAnnee.datasTemporellesMois = {};
+            }
+            datasTemporellesAnnee.datasTemporellesMois[datasTemporellesMois.id] = datasTemporellesMois;
         });
 }
 
@@ -54,23 +68,21 @@ export function populateGraphCategories(anneeAnalyses : number, listeCategories 
  * @param {Boolean} isAtTerminaison - Est-ce que c'est à la terminaison.
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphSoldes(anneeAnalyses : number, timelinesSoldes : SoldeMensuelModel[], filterSoldesActive : boolean, isAtTerminaison : boolean, datasTemporellesAnnee : SoldeMensuelModel[]) {
+export function populateGraphSoldes(anneeAnalyses: number, timelinesSoldes: SoldesTimelineItem[], filterSoldesActive: boolean, isAtTerminaison: boolean, datasTemporellesAnnee: DataTemporelleAnnee) {
     Object.keys(timelinesSoldes)
         .forEach((month: string) => {
             const mois = parseInt(month);
-            /*
-            let indxTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
-            let datasTemporellesMois = datasTemporellesAnnee[indxTemporellesMois];
+
+            let datasTemporellesMois: DataTemporelleMois;
+            datasTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
 
             // Ajout des soldes
-            
             if (filterSoldesActive) {
-                datasTemporellesMois[(isAtTerminaison ? "prev_" : "") + "SoldesD"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].totaux[0] : 0;
-                datasTemporellesMois[(isAtTerminaison ? "prev_" : "") + "SoldesF"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].totaux[1] : 0;
+                datasTemporellesMois.categories[(isAtTerminaison ? "prev_" : "") + "SoldesD"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].soldeAtFinMoisPrecedent : 0;
+                datasTemporellesMois.categories[(isAtTerminaison ? "prev_" : "") + "SoldesF"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].soldeAtMaintenant : 0;
             }
    
-            datasTemporellesAnnee[indxTemporellesMois] = datasTemporellesMois;
-                         */
+            datasTemporellesAnnee.datasTemporellesMois[datasTemporellesMois.id] = datasTemporellesMois;
         });
 }
 
@@ -79,12 +91,12 @@ export function populateGraphSoldes(anneeAnalyses : number, timelinesSoldes : So
  * @param {Array} dataTemporelleAnnee
  * @param {number} mois
  * @param {number} anneeAnalyses
-
-function getDataTemporelleMois(dataTemporelleAnnee, mois : number, anneeAnalyses : number) {
-    let label = createLabelTimeline(mois, anneeAnalyses);
-    return dataTemporelleAnnee.findIndex(dataTemporelleMois => dataTemporelleMois.name === label);
-}
  */
+function getDataTemporelleMois(dataTemporelleAnnee: DataTemporelleAnnee, mois: number, anneeAnalyses: number) {
+    let label = createLabelTimeline(mois, anneeAnalyses);
+    return Object.values(dataTemporelleAnnee.datasTemporellesMois)?.filter(dataTemporelleMois => dataTemporelleMois.name === label)[0];
+}
+
 /**
  * Crée un label pour une chronologie basée sur le mois et l'année donnés.
  *
@@ -99,7 +111,7 @@ function getDataTemporelleMois(dataTemporelleAnnee, mois : number, anneeAnalyses
  * @param {number} annee - L'année pour l'étiquette de la chronologie.
  * @returns {string} - L'étiquette pour la chronologie.
  */
-export function createLabelTimeline(mois : number, annee : number) {
+export function createLabelTimeline(mois: number, annee: number) {
     let label = new Date();
     label.setMonth(mois);
     label.setFullYear(annee);
@@ -107,10 +119,10 @@ export function createLabelTimeline(mois : number, annee : number) {
     let aujourdhui = new Date();
     if (label.getFullYear() === aujourdhui.getFullYear()) {
         if (label.getMonth() === aujourdhui.getMonth()) {
-            return "courant " + label.toLocaleString('default', {month: 'long', year: 'numeric'});
+            return "courant " + label.toLocaleString('default', { month: 'long', year: 'numeric' });
         } else if (label.getMonth() > aujourdhui.getMonth()) {
-            return "fin " + aujourdhui.toLocaleString('default', {month: 'long', year: 'numeric'});
+            return "fin " + aujourdhui.toLocaleString('default', { month: 'long', year: 'numeric' });
         }
     }
-    return label.toLocaleString('default', {month: 'long', year: 'numeric'});
+    return label.toLocaleString('default', { month: 'long', year: 'numeric' });
 }

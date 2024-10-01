@@ -14,18 +14,18 @@ import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
  * @interface DataCalculationResultsProps
  * @property {SoldeMensuelModel[]} soldesBudgetsData - Les données des soldes budgétaires.
  * @property {SoldeCategorieModel[]} categoriesData - Les données des catégories.
- * @property {CategorieTimelineItem[]} timelinesGroupedByCategoriesData - Les timelines groupées par catégories.
- * @property {CategorieTimelineItem[]} timelinesPrevisionnellesGroupedByCategoriesData - Les timelines prévisionnelles groupées par catégories.
+ * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesGroupedByCategoriesData - Les timelines groupées par catégories.
+ * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesPrevisionnellesGroupedByCategoriesData - Les timelines prévisionnelles groupées par catégories.
  * @property {SoldeMensuelModel[]} timelinesSoldesData - Les timelines des soldes.
  * @property {SoldeMensuelModel[]} timelinesPrevisionnellesSoldesData - Les timelines prévisionnelles des soldes.
  */
 export interface DataCalculationResultsProps {
     soldesBudgetsData: SoldeMensuelModel[],
     categoriesData: SoldeCategorieModel[],
-    timelinesGroupedByCategoriesData: CategorieTimelineItem[][],
-    timelinesPrevisionnellesGroupedByCategoriesData: CategorieTimelineItem[][],
-    timelinesSoldesData: SoldeMensuelModel[],
-    timelinesPrevisionnellesSoldesData: SoldeMensuelModel[]
+    timelinesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
+    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
+    timelinesSoldesData: SoldesTimelineItem[],
+    timelinesPrevisionnellesSoldesData: SoldesTimelineItem[]
 }
 
 /**
@@ -52,8 +52,9 @@ export interface CategorieTimelineItem {
  * @property {number[]} totaux - Les totaux des soldes.
  *
  */
-interface SoldesTimelineItem {
-    totaux: number[]
+export interface SoldesTimelineItem {
+    soldeAtFinMoisPrecedent : number,
+    soldeAtMaintenant : number
 }
 
 /**
@@ -83,15 +84,15 @@ export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], hand
                                                                                                                timelinesPrevisionnellesSoldesData} : DataCalculationResultsProps) => void) : void {
     soldesBudgetsData = Object.values(soldesBudgetsData)
         .sort((budget1: SoldeMensuelModel, budget2: SoldeMensuelModel) => getMonthFromString(budget1.mois) - getMonthFromString(budget2.mois))
+
     let categoriesData : SoldeCategorieModel[] = [];
-    let timelinesGroupedByCategoriesData : CategorieTimelineItem[][] = new Array(soldesBudgetsData.length - 1);
-    let timelinesPrevisionnellesGroupedByCategoriesData = new Array(soldesBudgetsData.length);
+    let timelinesGroupedByCategoriesData : { [key: string]: CategorieTimelineItem }[] = new Array(soldesBudgetsData.length - 1);
+    let timelinesPrevisionnellesGroupedByCategoriesData : { [key: string]: CategorieTimelineItem }[]= new Array(soldesBudgetsData.length);
     let timelinesSoldesData = new Array(soldesBudgetsData.length - 1);
     let timelinesPrevisionnellesSoldesData = new Array(soldesBudgetsData.length);
 
     Object.keys(soldesBudgetsData)
         .forEach((month: string) => {
-            console.log("Calcul des timelines pour le mois", month);
             let mois : number = Number.parseInt(month);
 
             timelinesGroupedByCategoriesData[mois] = calculateTimelineCategories(soldesBudgetsData[mois], false);
@@ -123,12 +124,13 @@ export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], hand
  * @param {Boolean} aTerminaison - Les données du budget à terminaison
  * @returns {Object} Un objet contenant les résultats de l'analyse
  */
-function calculateTimelineCategories(budgetData : SoldeMensuelModel, aTerminaison : boolean) : CategorieTimelineItem[] {
+function calculateTimelineCategories(budgetData : SoldeMensuelModel, aTerminaison : boolean) : { [key: string]: CategorieTimelineItem } {
 
-    let group : CategorieTimelineItem[] = [];
+    let group : { [key: string]: CategorieTimelineItem } = {};
 
     for (let idCategorie in budgetData.totauxParCategories) {
         let categorie : SoldeCategorieModel = budgetData.totauxParCategories[idCategorie];
+
         group[idCategorie] = group[idCategorie] ?? createNewCategorieTimelineItem();
         categorie.id = idCategorie;
         categorie.couleur = getCategorieColor(categorie.id);
@@ -150,10 +152,9 @@ function calculateTimelineCategories(budgetData : SoldeMensuelModel, aTerminaiso
 function calculateTimelineSoldes(soldeMensuelData : SoldeMensuelModel, aTerminaison : boolean) : SoldesTimelineItem {
     let newTimelineSoldes: SoldesTimelineItem;
     newTimelineSoldes = {
-        totaux: []
+        soldeAtFinMoisPrecedent : Math.ceil(soldeMensuelData.soldes.soldeAtFinMoisPrecedent),
+        soldeAtMaintenant : Math.ceil(aTerminaison ? soldeMensuelData.soldes.soldeAtFinMoisCourant : soldeMensuelData.soldes.soldeAtMaintenant)
     };
-    newTimelineSoldes.totaux.push(Math.ceil(soldeMensuelData.soldes.soldeAtFinMoisPrecedent));
-    newTimelineSoldes.totaux.push(Math.ceil(aTerminaison ? soldeMensuelData.soldes.soldeAtFinMoisCourant : soldeMensuelData.soldes.soldeAtMaintenant));
     return newTimelineSoldes;
 }
 

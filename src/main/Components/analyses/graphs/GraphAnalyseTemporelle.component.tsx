@@ -1,19 +1,18 @@
-import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, XAxis, YAxis} from "recharts";
 import React from "react";
 import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
-import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
-import { CategorieTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
-import { populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
+import { CategorieTimelineItem, SoldesTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
+import { DataTemporelleAnnee, populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
 
 
 interface GraphAnalyseTemporelleProps {
     anneeAnalyses: number,
     filterSoldesActive: boolean,
     categoriesData: SoldeCategorieModel[],
-    timelinesGroupedByCategoriesData: CategorieTimelineItem[][],
-    timelinesPrevisionnellesGroupedByCategoriesData: CategorieTimelineItem[][],
-    timelinesSoldesData: SoldeMensuelModel[],
-    timelinesPrevisionnellesSoldesData: SoldeMensuelModel[]
+    timelinesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
+    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
+    timelinesSoldesData: SoldesTimelineItem[],
+    timelinesPrevisionnellesSoldesData: SoldesTimelineItem[]
 }
 
 /**
@@ -28,17 +27,15 @@ interface GraphAnalyseTemporelleProps {
  * @param {Array} props.listeCategories - Le tableau des catégories.
  * @returns {JSX.Element} Le composant de graphique.
  */
-const GraphAnalyseTemporelle = ({
-                                    anneeAnalyses,
+const GraphAnalyseTemporelle = ({   anneeAnalyses,
                                     timelinesGroupedByCategoriesData,
                                     timelinesSoldesData,
                                     timelinesPrevisionnellesGroupedByCategoriesData,
                                     timelinesPrevisionnellesSoldesData,
                                     filterSoldesActive,
-                                    categoriesData
-                                } : GraphAnalyseTemporelleProps) => {
+                                    categoriesData } : GraphAnalyseTemporelleProps) => {
 
-    let dataCategories : any[] = [];
+    let dataCategories : DataTemporelleAnnee = {datasTemporellesMois: {}};
 
     /** Init du tableau pour l'affichage du graphique **/
     console.log("Construction de l'affichage de l'analyse temporelle pour", anneeAnalyses);
@@ -46,6 +43,16 @@ const GraphAnalyseTemporelle = ({
     populateGraphCategories(anneeAnalyses, categoriesData, timelinesPrevisionnellesGroupedByCategoriesData, true, dataCategories);
     populateGraphSoldes(anneeAnalyses, timelinesSoldesData, filterSoldesActive, false, dataCategories);
     populateGraphSoldes(anneeAnalyses, timelinesPrevisionnellesSoldesData, filterSoldesActive, true, dataCategories);
+
+    const dataByCategories : any[] = Object.values(dataCategories.datasTemporellesMois);
+    for (let i = 0; i < dataByCategories.length; i++) {
+        const dataByMonth = dataByCategories[i];
+        for (let j = 0; j < categoriesData.length; j++) {
+            const categorie = categoriesData[j];
+            dataByMonth[categorie.libelleCategorie] = dataByMonth.categories[categorie.libelleCategorie];
+            dataByMonth["prev_" + categorie.libelleCategorie] = dataByMonth.categories["prev_" + categorie.libelleCategorie];
+        }
+    }
 
     /**
      * Rend les lignes du graphique.
@@ -102,7 +109,7 @@ const GraphAnalyseTemporelle = ({
     return (
         <ResponsiveContainer width="100%" height="100%">
             <ComposedChart
-                data={dataCategories}>
+                data={dataByCategories}>
 
                 <defs>
                     <linearGradient id="colorSoldesD" x1="0" y1="0" x2="1" y2="0">
@@ -119,7 +126,7 @@ const GraphAnalyseTemporelle = ({
                 <CartesianGrid strokeDasharray="1 10"/>
                 <XAxis dataKey="name"/>
                 <YAxis/>
-                <Tooltip content={<TooltipAnalyseTemporelle/>}/>
+                { /*<Tooltip content={<TooltipAnalyseTemporelle/>}/> */ }
 
                 {renderLines()}
 

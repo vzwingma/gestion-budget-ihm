@@ -3,7 +3,6 @@
  * SoldeMensuelModel
  */
 class SoldeCategorieModel {
-
     id?: string;
     libelleCategorie : string;
     totalAtFinMoisCourant: number;

@@ -10,6 +10,7 @@ import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
 import {
     CategorieTimelineItem,
     DataCalculationResultsProps,
+    SoldesTimelineItem,
 } from "./AnalyseTemporelle.controller";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
@@ -47,10 +48,10 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
 
     const [analysesGroupedByCategories, setAnalysesGroupedByCategories] = useState<SoldeMensuelModel[] | null>(null);
 
-    const [timelinesGroupedByCategories, setTimelinesGroupedByCategories] = useState<CategorieTimelineItem[][] | null>(null);
-    const [timelinesPrevisionnellesGroupedByCategories, setTimelinesPrevisionnellesGroupedByCategories] = useState<CategorieTimelineItem[][] | null>(null);
-    const [timelinesSoldes, setTimelinesSoldes] = useState<SoldeMensuelModel[] | null>(null);
-    const [timelinesPrevisionnellesSoldes, setTimelinesPrevisionnellesSoldes] = useState<SoldeMensuelModel[] | null>(null);
+    const [timelinesGroupedByCategories, setTimelinesGroupedByCategories] = useState<{ [key: string]: CategorieTimelineItem }[] | null>(null);
+    const [timelinesPrevisionnellesGroupedByCategories, setTimelinesPrevisionnellesGroupedByCategories] = useState<{ [key: string]: CategorieTimelineItem }[] | null>(null);
+    const [timelinesSoldes, setTimelinesSoldes] = useState<SoldesTimelineItem[] | null>(null);
+    const [timelinesPrevisionnellesSoldes, setTimelinesPrevisionnellesSoldes] = useState<SoldesTimelineItem[] | null>(null);
 
     const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
 
