@@ -1,6 +1,6 @@
-import {Checkbox, FormControlLabel} from "@mui/material";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import React from "react";
-import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
+import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
 import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
 
 
@@ -17,21 +17,21 @@ interface AnalyseTemporelleFiltreProps {
  * @returns {unknown[]} Les filtres de l'analyse temporelle.
  * @constructor
  */
-const AnalyseTemporelleFiltre: React.FC<AnalyseTemporelleFiltreProps> = ({listeCategories, onFilterChange} : AnalyseTemporelleFiltreProps) : JSX.Element[] => {
+const AnalyseTemporelleFiltre: React.FC<AnalyseTemporelleFiltreProps> = ({ listeCategories, onFilterChange }: AnalyseTemporelleFiltreProps): JSX.Element[] => {
 
     return (
         listeCategories.map(categorie => {
-                return (<FormControlLabel
-                        id={categorie.id}
-                        key={categorie.id}
-                        control={<Checkbox id={categorie.id}
-                                           defaultChecked icon={<RadioButtonUnchecked/>}
-                                           checkedIcon={<CheckCircle/>}/>}
-                        label={categorie.libelleCategorie}
-                        style={{color: categorie.couleur}}
-                        onChange={onFilterChange}/>
-                )
-            }
+            return (<FormControlLabel
+                id={categorie.id}
+                key={categorie.id}
+                control={<Checkbox id={categorie.id}
+                    defaultChecked icon={<RadioButtonUnchecked />}
+                    checkedIcon={<CheckCircle />} />}
+                label={categorie.libelleCategorie}
+                style={{ color: categorie.couleur }}
+                onChange={onFilterChange} />
+            )
+        }
         )
     )
 

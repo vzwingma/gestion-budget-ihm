@@ -45,9 +45,6 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     const [anneeAnalyses, setAnneeAnalyses] = useState<number>(new Date().getFullYear());
     const [currentBudgets, setCurrentBudgets] = useState<SoldeMensuelModel[]>();
     const [listeCategories, setListeCategories] = useState<SoldeCategorieModel[] | null>(null);
-
-    const [analysesGroupedByCategories, setAnalysesGroupedByCategories] = useState<SoldeMensuelModel[] | null>(null);
-
     const [timelinesGroupedByCategories, setTimelinesGroupedByCategories] = useState<{ [key: string]: CategorieTimelineItem }[] | null>(null);
     const [timelinesPrevisionnellesGroupedByCategories, setTimelinesPrevisionnellesGroupedByCategories] = useState<{ [key: string]: CategorieTimelineItem }[] | null>(null);
     const [timelinesSoldes, setTimelinesSoldes] = useState<SoldesTimelineItem[] | null>(null);
@@ -55,10 +52,10 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
 
     const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
 
-
+    const [filterChange, setFilterChange] = useState<number>(new Date().getTime());
     /** Chargement des catégories **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses)
+        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses, "listeCategories :", listeCategories);
         loadSoldesBudgets(selectedCompte, anneeAnalyses, handleDataCalculationResult);
     }, [selectedCompte, anneeAnalyses]);
 
@@ -99,8 +96,8 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                     categorie.filterActive = event.target.checked;
                 }
                 setListeCategories(listeCategoriesUpdated);
+                setFilterChange(new Date().getTime());
             }
-//                filterChange: new Date().getTime(),
     }
 
     /**
@@ -109,11 +106,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      */
     function onFilterSoldesChange(event: any) {
         setFilterSoldesActive(event.target.checked);
-        /*
-            this.setState({
-                filterChange: new Date().getTime(),
-            })
-        */
+        setFilterChange(new Date().getTime());
     }
 
 
