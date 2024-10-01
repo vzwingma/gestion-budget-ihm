@@ -32,7 +32,6 @@ export function handleOperationEditionClick(event: any, operation: OperationMode
 
         const idElement = getEventTargetId(event.target);
         const enterKeyPress = event.type === 'keyup' && (event.code === 'Enter' || event.code === 'NumpadEnter');
-
         // Validation du formulaire
         if (enterKeyPress && editForm.formValidationEnabled) {
             handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate);

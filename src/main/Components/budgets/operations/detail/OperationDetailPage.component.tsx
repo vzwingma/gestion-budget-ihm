@@ -79,7 +79,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
     const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm(false));
     const [refresh, setRefresh] = useState<boolean>(false);
-    const [openLibelleAutoComplete, setOpenLibelleAutoComplete] = useState<boolean>(false);
     const [intercompte, setIntercompte] = useState<string | null>(null);
     const [errors, setErrors] = useState<ErrorsFormProps>(EMPTY_ERRORS_FORM);
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperation());
@@ -121,10 +120,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
      */
     function fillOperationForm(field: OPERATION_EDITION_FORM, value: string) {
         let editedOperation = editOperation != null ? editOperation : createNewOperation();
-
+        console.log("fillOperationForm", field, value)
         switch (field) {
             case OPERATION_EDITION_FORM.LIBELLE:
-                editedOperation.libelle = value
+                editedOperation.libelle = value;
+                editForm.formValidationEnabled = true;
                 break;
             case OPERATION_EDITION_FORM.DATE_OPERATION:
                 editOperation.autresInfos.dateOperation = new Date(Date.parse(value))

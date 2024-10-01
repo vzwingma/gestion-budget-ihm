@@ -69,21 +69,16 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             :
             <FormControl fullWidth required error={errorLibelle != null}>
                 <Autocomplete id={OPERATION_EDITION_FORM.LIBELLE + OPERATION_EDITION_FORM.INPUT}
-                    // required
-                    // TODO
-                    // label={"Libellé"}
                     defaultValue={operation.libelle}
                     freeSolo={true}
+                    autoComplete={true}
                     options={listeLibellesOperations}
                     renderInput={(params) =>
                         <TextField {...params} label="Description" variant="standard" size={"small"} />}
                     sx={{ width: "850px" }}
                     onChange={fillLibelleForm}
                     onFocus={() => activateValidationForm(false)}
-                    onBlur={e => {
-                        activateValidationForm(true);
-                        fillLibelleForm(e);
-                    }}
+                    onBlur={fillLibelleForm}
                 />
                 <FormHelperText>{errorLibelle}</FormHelperText>
             </FormControl>
