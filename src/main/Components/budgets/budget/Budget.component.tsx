@@ -12,11 +12,11 @@ import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGr
 import OperationsListe from "../operations/OperationsListe.component";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import {CancelRounded} from "@mui/icons-material";
-import CategorieOperationModel from "@/Models/CategorieOperation.model";
 import {getLabelFromDate} from "../../../Utils/Date.utils";
 import {getOperationsGroupedByDateOperation} from "./Budget.controller";
 import CenterComponent from "../../CenterComponent";
 import { getLibellesOperation } from "../operations/detail/OperationDetailPage.extservices";
+import CategorieOperationModel from "../../../Models/CategorieOperation.model";
 
 interface BudgetPageProps {
     selectedCompte: CompteBancaireModel | null
@@ -94,7 +94,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
      */
     function handleOperationSelect(operation: OperationModel) {
         if (operation.mensualite == null) {
-            operation.mensualite = { periode: PERIODES_MENSUALITE_ENUM[0] };
+            operation.mensualite = { periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE };
         }
         setCurrentOperation(operation);
     }

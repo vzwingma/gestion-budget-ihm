@@ -1,7 +1,8 @@
 
+import OperationEditionModel from "../../../../Models/OperationEdition.model";
 import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
 import OperationModel from "../../../../Models/Operation.model";
-import { BUSINESS_GUID } from "../../../../Utils/AppBusinessEnums.constants";
+import { BUSINESS_GUID, TYPES_OPERATION_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
 import { getEventTargetId } from "../../../../Utils/OperationData.utils";
 import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
 import { OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
@@ -23,7 +24,7 @@ import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.e
  * @param onOperationChange fonction pour mettre à jour l'opération
  */
 export function handleOperationEditionClick(event: any, operation: OperationModel, budget: BudgetMensuelModel, 
-    editOperation: OperationModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void, 
+    editOperation: OperationEditionModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void, 
     errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, 
     onOperationChange: (budget: BudgetMensuelModel) => void) {
 
@@ -81,7 +82,7 @@ export function handleDateOperationFromAction(valeurDate: Date, editOperation: O
  * @param {OperationModel} operation - L'opération à mettre à jour.
  * @param {ErrorsFormProps} errors - Les erreurs de formulaire à mettre à jour.
  */
-function validateDescription(editOperation: OperationModel, operation: OperationModel, errors: ErrorsFormProps) {
+function validateDescription(editOperation: OperationEditionModel, operation: OperationModel, errors: ErrorsFormProps) {
     // Description
     if (editOperation.libelle === null || editOperation.libelle === "") {
         errors.libelle = "Le champ Description est obligatoire";
@@ -100,7 +101,7 @@ function validateDescription(editOperation: OperationModel, operation: Operation
  * @param errors erreurs du formulaire
  * @returns opération mise à jour ou erreurs
  */
-function validateFormMontant(editOperation: OperationModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
+function validateFormMontant(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     if (!editForm.value) return;
 
     if (!editOperation.valeur) {
@@ -119,13 +120,13 @@ function validateFormMontant(editOperation: OperationModel, operation: Operation
         return;
     }
 
-    operation.valeur = (editOperation.typeOperation === "DEPENSE" ? -1 : 1) * Number(valeurCalculee);
+    operation.valeur = (editOperation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1) * Number(valeurCalculee);
 }
 
 /**
  * validation du formulaire - Catégories
  */
-export function validateFormCategories(editOperation: OperationModel, operation: OperationModel, errors: ErrorsFormProps) {
+export function validateFormCategories(editOperation: OperationEditionModel, operation: OperationModel, errors: ErrorsFormProps) {
     if (editOperation.categorie.id === null || editOperation.categorie.libelle === null || editOperation.ssCategorie.id === null || editOperation.ssCategorie.libelle === null) {
         errors.categorie = "Le champ Catégorie est obligatoire"
     } else {
@@ -137,7 +138,7 @@ export function validateFormCategories(editOperation: OperationModel, operation:
 /**
  * validation du formulaire - Transfert intercomptes
  */
-export function validateFormTransfertIntercompte(editOperation: OperationModel, intercompte: string | null, operation: OperationModel, errors: ErrorsFormProps) {
+export function validateFormTransfertIntercompte(editOperation: OperationEditionModel, intercompte: string | null, operation: OperationModel, errors: ErrorsFormProps) {
     if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && intercompte === null) {
         errors.intercompte = "Le champ Intercompte est obligatoire"
     } else {
@@ -148,7 +149,7 @@ export function validateFormTransfertIntercompte(editOperation: OperationModel, 
 /**
  * validation du formulaire
  */
-export function validateForm(editOperation: OperationModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
+export function validateForm(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     // Description
     validateDescription(editOperation, operation, errors);
 
@@ -233,7 +234,7 @@ function validateValue(valeur: string): boolean {
  * @param {ErrorsFormProps} errors - Les erreurs du formulaire.
  * @param {React.Dispatch<React.SetStateAction<ErrorsFormProps>>} setErrors - Fonction pour mettre à jour l'état des erreurs du formulaire.
  */
-export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationModel,
+export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationEditionModel,
                                             editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void, 
                                             errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, 
                                             onOperationChange: (budget: BudgetMensuelModel) => void) {

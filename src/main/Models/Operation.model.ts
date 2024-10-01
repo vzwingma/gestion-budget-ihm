@@ -1,4 +1,4 @@
-import {TYPES_OPERATION_ENUM} from "../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM} from "../Utils/AppBusinessEnums.constants";
 import CategorieOperationModel from "./CategorieOperation.model";
 
 /**
@@ -8,24 +8,23 @@ class OperationModel {
 
     id: string;
     libelle: string;
-    etat: string;
+    etat: OPERATION_ETATS_ENUM;
     autresInfos: AutresInfos;
     categorie: CategorieOperationModel;
     ssCategorie: CategorieOperationModel;
     intercompte: string | null = null;
-    typeOperation: string;
+    typeOperation: TYPES_OPERATION_ENUM;
     valeur: number;
     mensualite: {
-        periode: string;
+        periode: PERIODES_MENSUALITE_ENUM;
     };
 
     /** */
-    constructor(id: string, libelle: string, autresInfos: AutresInfos, categorie: CategorieOperationModel, ssCategorie: CategorieOperationModel, typeOperation: string, etat: string, valeur: number, mensualite: {
-        periode: string
+    constructor(id: string, libelle: string, autresInfos: AutresInfos, categorie: CategorieOperationModel, ssCategorie: CategorieOperationModel, typeOperation: TYPES_OPERATION_ENUM, etat: OPERATION_ETATS_ENUM, valeur: number, mensualite: {
+        periode: PERIODES_MENSUALITE_ENUM
     }) {
         this.id = id;
         this.libelle = libelle;
-        this.etat = etat;
         this.autresInfos = autresInfos;
         this.categorie = categorie;
         this.ssCategorie = ssCategorie;
@@ -68,11 +67,11 @@ export function createNewOperation(): OperationModel {
             id: null,
             libelle: "null"
         },
-        typeOperation: "null",
-        etat: "PREVUE",
+        typeOperation: TYPES_OPERATION_ENUM.CREDIT,
+        etat: OPERATION_ETATS_ENUM.PREVUE,
         valeur: 0,
         mensualite: {
-            periode: "PONCTUELLE"
+            periode: PERIODES_MENSUALITE_ENUM.MENSUELLE
         },
         intercompte: null,
         autresInfos: {
@@ -81,32 +80,3 @@ export function createNewOperation(): OperationModel {
     }
     return newOperation;
 }
-
-
-/**
- * Création d'un objet Operation à partir du formulaire
- * @param operation : object : Operation à copier
- */
-export function cloneOperation(operation: OperationModel): OperationModel {
-    return {
-        id: operation.id,
-        libelle: operation.libelle,
-        categorie: {
-            id: operation.categorie.id,
-            libelle: operation.categorie.libelle
-        },
-        ssCategorie: {
-            id: operation.ssCategorie.id != null ? operation.ssCategorie.id : null,
-            libelle: operation.ssCategorie.libelle != null ? operation.ssCategorie.libelle : ""
-        },
-        typeOperation: operation.typeOperation,
-        etat: operation.etat,
-        valeur: (operation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1) * operation.valeur,
-        mensualite: operation.mensualite,
-        autresInfos: {
-            dateOperation: operation.autresInfos.dateOperation
-        },
-        intercompte: operation.intercompte
-    }
-}
-

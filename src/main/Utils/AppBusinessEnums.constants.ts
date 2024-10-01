@@ -54,58 +54,44 @@ export const BUSINESS_GUID: {
 
 /**
  * Etat des opérations
- * @type {{REALISEE: string, PLANIFIEE: string, PREVUE: string, REPORTEE: string, ANNULEE: string, SUPPRIMEE: string}}
  */
-export const OPERATION_ETATS_ENUM: {
-    REALISEE: string;
-    PLANIFIEE: string;
-    PREVUE: string;
-    REPORTEE: string;
-    ANNULEE: string;
-    SUPPRIMEE: string;
-} = {
-    PREVUE: "PREVUE",
-    REALISEE: "REALISEE",
-    ANNULEE: "ANNULEE",
-    SUPPRIMEE: "SUPPRIMEE",
-    REPORTEE: "REPORTEE",
-    PLANIFIEE: "PLANIFIEE"
+export enum OPERATION_ETATS_ENUM {
+    REALISEE = "REALISEE",
+    PLANIFIEE = "PLANIFIEE",
+    PREVUE = "PREVUE",
+    REPORTEE = "REPORTEE",
+    ANNULEE = "ANNULEE",
+    SUPPRIMEE = "SUPPRIMEE"
 }
 
 
 /**
  * Constantes des périodes pour la liste des périodes
- * @type {string[]}
  */
-export const PERIODES_MENSUALITE_ENUM: string[] = [
-    "PONCTUELLE",
-    "MENSUELLE",
-    "TRIMESTRIELLE",
-    "SEMESTRIELLE",
-    "ANNUELLE"
-]
+export enum PERIODES_MENSUALITE_ENUM {
+    PONCTUELLE = "PONCTUELLE",
+    MENSUELLE = "MENSUELLE",
+    TRIMESTRIELLE = "TRIMESTRIELLE",
+    SEMESTRIELLE = "SEMESTRIELLE",
+    ANNUELLE = "ANNUELLE"
+}
 
 
 /**
  * Constantes des type d'opération
- * @type {{CREDIT: string, DEPENSE: string}}
  */
-export const TYPES_OPERATION_ENUM: { CREDIT: string; DEPENSE: string; } = {
-    CREDIT: "CREDIT",
-    DEPENSE: "DEPENSE"
+export enum TYPES_OPERATION_ENUM {
+    CREDIT,
+    DEPENSE
 }
 
-
-export const ACTIONS_BUDGET_ENUM: {
-    CREATE: string;
-    CLOSE_A_CONFIRMER: string;
-    REINIT_A_CONFIRMER: string;
-    ANNULER: string;
-    CONFIRMER: string;
-} = {
-    CREATE: "CREATE",
-    CLOSE_A_CONFIRMER: "CLOSE_A_CONFIRMER",
-    REINIT_A_CONFIRMER: "REINIT_A_CONFIRMER",
-    ANNULER: "ANNULER",
-    CONFIRMER: "CONFIRMER"
+/*
+ * Constantes des ID pour le formulaire
+ */
+export enum ACTIONS_BUDGET_ENUM {
+    CREATE = "CREATE",
+    CLOSE_A_CONFIRMER = "CLOSE_A_CONFIRMER",
+    REINIT_A_CONFIRMER = "REINIT_A_CONFIRMER",
+    ANNULER = "ANNULER",
+    CONFIRMER = "CONFIRMER",
 }

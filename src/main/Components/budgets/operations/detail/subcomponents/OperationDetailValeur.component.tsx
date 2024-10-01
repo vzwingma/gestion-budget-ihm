@@ -4,7 +4,8 @@ import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import OperationValue from "./../../../../../Utils/renderers/OperationValue.renderer"
 import OperationModel from './../../../../../Models/Operation.model'
 import { AddRounded, EuroRounded, RemoveRounded } from '@mui/icons-material'
-import { addEndingZeros } from './../../../../../Utils/OperationData.utils'
+import { addEndingZeros } from '../../../../../Utils/OperationData.utils'
+import { TYPES_OPERATION_ENUM } from '../../../../../Utils/AppBusinessEnums.constants'
 
 
 
@@ -12,7 +13,7 @@ import { addEndingZeros } from './../../../../../Utils/OperationData.utils'
  * Propriétés pour le composant OperationDetailValeur.
  *
  * @interface OperationDetailValeurProps
- * 
+ *
  * @property {OperationModel} operation - Le modèle de l'opération.
  * @property {boolean} budgetActif - Indique si le budget est actif.
  * @property {boolean} formValueEdited - Les propriétés du formulaire d'édition.
@@ -65,7 +66,7 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({ op
                     slotProps={{
                         input: {
                             startAdornment: (
-                                <InputAdornment position="start"> {operation.typeOperation === "CREDIT" ?
+                                <InputAdornment position="start"> {operation.typeOperation === TYPES_OPERATION_ENUM.CREDIT?
                                     <AddRounded /> : <RemoveRounded />}</InputAdornment>
                             ),
                             endAdornment: (

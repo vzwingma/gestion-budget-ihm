@@ -63,7 +63,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
                 placeholder={"Sélectionnez une période"}
                 onChange={fillPeriodeForm}
                 variant="standard">
-                {PERIODES_MENSUALITE_ENUM.map((option) => (
+                {Object.values(PERIODES_MENSUALITE_ENUM).map((option) => (
                     <MenuItem key={option} value={option}
                         color={getPeriodeRenderer(option).color}>
                         {getPeriodeRenderer(option).text}

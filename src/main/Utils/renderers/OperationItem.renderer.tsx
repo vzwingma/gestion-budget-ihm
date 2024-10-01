@@ -1,5 +1,5 @@
 import {WatchLaterRounded} from "@mui/icons-material";
-import {OPERATION_ETATS_ENUM} from "../AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants";
 import {Box, Tooltip} from "@mui/material";
 import React from "react";
 import CompteBancaireModel from "../../Models/CompteBancaire.model";
@@ -9,7 +9,7 @@ import CompteBancaireModel from "../../Models/CompteBancaire.model";
  * @param operationState état de l'opération
  * @returns {string} couleur
  */
-export function getOperationStateColor(operationState : string) : string {
+export function getOperationStateColor(operationState : OPERATION_ETATS_ENUM) : string {
     if (operationState != null) {
         switch (operationState) {
             case OPERATION_ETATS_ENUM.REALISEE:
@@ -35,18 +35,18 @@ export function getOperationStateColor(operationState : string) : string {
 /** Libellé & Couleur du background de l'attribut Mensualité
  * @param periodeKey : string enum période
  * */
-export function getPeriodeRenderer(periodeKey : string) {
+export function getPeriodeRenderer(periodeKey : PERIODES_MENSUALITE_ENUM) {
 
     switch (periodeKey) {
-        case "PONCTUELLE":
+        case PERIODES_MENSUALITE_ENUM.PONCTUELLE:
             return {value: periodeKey, text: "Ponctuelle", color: "#616161"}
-        case "MENSUELLE":
+        case PERIODES_MENSUALITE_ENUM.MENSUELLE:
             return {value: periodeKey, text: "Mensuelle", color: "#616161"}
-        case "TRIMESTRIELLE":
+        case PERIODES_MENSUALITE_ENUM.TRIMESTRIELLE:
             return {value: periodeKey, text: "Trimestrielle", color: "#3498db"}
-        case "SEMESTRIELLE":
+        case PERIODES_MENSUALITE_ENUM.SEMESTRIELLE:
             return {value: periodeKey, text: "Semestrielle", color: "#f1c40f"}
-        case "ANNUELLE":
+        case PERIODES_MENSUALITE_ENUM.ANNUELLE:
             return {value: periodeKey, text: "Annuelle", color: "#e74c3c"}
         default:
             return {value: periodeKey, text: "N/D", color: "#616161"}

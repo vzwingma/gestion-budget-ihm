@@ -41,7 +41,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
 
     const [showModale, setShowModale] = useState<boolean>(false);
     const [modaleContent, setModaleContent] = useState<{ title: string, question: string }>();
-    const [actionEnCours, setActionEnCours] = useState<string>();
+    const [actionEnCours, setActionEnCours] = useState<ACTIONS_BUDGET_ENUM>();
     /**
      * Action sur le bouton ou sur la modale
      * @param event : Event sur le bouton

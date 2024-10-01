@@ -18,13 +18,14 @@ import {
 import CenterComponent from '../../../CenterComponent';
 import { OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
 import { OperationDetailActions } from './actions/OperationDetailActions.component';
-import OperationModel, { cloneOperation, createNewOperation } from '../../../../Models/Operation.model';
+import OperationModel from '../../../../Models/Operation.model';
 import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
 import CategorieOperationModel from '../../../../Models/CategorieOperation.model';
 import CompteBancaireModel from '../../../../Models/CompteBancaire.model';
 import {
     BUSINESS_GUID,
-    OPERATION_ETATS_ENUM
+    OPERATION_ETATS_ENUM,
+    PERIODES_MENSUALITE_ENUM
 } from '../../../../Utils/AppBusinessEnums.constants';
 import { getCategorieColor, getCategorieIcon } from '../../../../Utils/renderers/CategorieItem.renderer';
 import {
@@ -36,6 +37,7 @@ import { OperationDetailDate } from './subcomponents/OperationDetailDate.compone
 import { OperationDetailIntercompte } from './subcomponents/OperationDetailIntercompte.component';
 import { OperationDetailMensualite } from './subcomponents/OperationDetailMensualite.component';
 import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component';
+import OperationEditionModel, { cloneOperation, createNewOperation } from '../../../../Models/OperationEdition.model';
 
 
 /**
@@ -133,7 +135,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
         compte: null,
         intercompte
     });
-    const [editOperation, setEditOperation] = useState<OperationModel>(createNewOperation());
+    const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperation());
 
 
 
@@ -144,7 +146,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
     useEffect(() => {
         console.log("Initialisation de l'opération d'édition", operation.id)
         setEditOperation(cloneOperation(operation));
-        /*
         const operationInCreation = operation.id === "-1";
         setEditForm({
             value: operationInCreation,
@@ -153,13 +154,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
             mensualite: operationInCreation,
             categories: operationInCreation,
             formValidationEnabled: false
-        }); */
+        });
 
     }, [operation]);
 
 
     function openEditForm(editForm: EditFormProps) {
-        console.log("OpenEditForm", editForm)
         setEditForm(editForm)
         setRefresh(!refresh)
     }
@@ -177,10 +177,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                 editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
                 break;
             case OPERATION_EDITION_FORM.VALUE:
-                editOperation.valeur = parseFloat(value);
+                editOperation.valeur = value;
                 break;
             case OPERATION_EDITION_FORM.MENSUALITE:
-                editedOperation.mensualite.periode = value
+                editedOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).filter((periode: PERIODES_MENSUALITE_ENUM) => periode === value)[0];
                 break;
             case OPERATION_EDITION_FORM.CATEGORIE:
                 //   fillCategorieForm(value)
@@ -192,6 +192,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                 editForm.formValidationEnabled = (value === "true")
                 break;
         }
+        console.log("Mise à jour de l'opération en édition", editedOperation)
         setEditOperation(editedOperation);
     }
 
@@ -207,18 +208,17 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
             onKeyUp={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, errors, setErrors, onOperationChange)}>
 
             <Stack direction={"column"} spacing={5} sx={{ alignItems: "center", marginTop: "20px" }}>
+                <CenterComponent>
                 <Box width={56} height={56}
                     sx={{
                         borderRadius: "50%",
                         backgroundColor: getCategorieColor(operation.categorie),
                         color: '#FFFFFF',
-                        padding: '16px 8px 0px 8px'
+                        padding: '15px 0px 0px 15px'
                     }}>
-                    <CenterComponent>{getCategorieIcon(operation.ssCategorie)}</CenterComponent>
+                    {getCategorieIcon(operation.ssCategorie)}
                 </Box>
-                <Stack direction={"row"} spacing={2} sx={{ alignItems: "center" }}>
-                    {JSON.stringify(editForm)}
-                </Stack>
+                </CenterComponent>
                 { /** VALEUR **/}
                 <OperationDetailValeur operation={operation} formValueInEdition={editForm.value}
                     errorValeur={errors.valeur} budgetActif={budget?.actif}
