@@ -75,13 +75,12 @@ export function populateGraphSoldes(anneeAnalyses: number, timelinesSoldes: Sold
 
             let datasTemporellesMois: DataTemporelleMois;
             datasTemporellesMois = getDataTemporelleMois(datasTemporellesAnnee, mois, anneeAnalyses);
-
+            
             // Ajout des soldes
             if (filterSoldesActive) {
                 datasTemporellesMois.categories[(isAtTerminaison ? "prev_" : "") + "SoldesD"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].soldeAtFinMoisPrecedent : 0;
                 datasTemporellesMois.categories[(isAtTerminaison ? "prev_" : "") + "SoldesF"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].soldeAtMaintenant : 0;
-            }
-   
+            }            
             datasTemporellesAnnee.datasTemporellesMois[datasTemporellesMois.id] = datasTemporellesMois;
         });
 }

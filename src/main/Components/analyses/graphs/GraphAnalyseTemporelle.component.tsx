@@ -1,8 +1,9 @@
-import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import React from "react";
 import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
 import { CategorieTimelineItem, SoldesTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
 import { DataTemporelleAnnee, populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
+import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
 
 
 interface GraphAnalyseTemporelleProps {
@@ -44,6 +45,7 @@ const GraphAnalyseTemporelle = ({ anneeAnalyses,
     populateGraphSoldes(anneeAnalyses, timelinesSoldesData, filterSoldesActive, false, dataCategories);
     populateGraphSoldes(anneeAnalyses, timelinesPrevisionnellesSoldesData, filterSoldesActive, true, dataCategories);
 
+    // TODO : Transformation en objet pour le graphique
     const dataByCategories: any[] = Object.values(dataCategories.datasTemporellesMois);
     for (let i = 0; i < dataByCategories.length; i++) {
         const dataByMonth = dataByCategories[i];
@@ -52,7 +54,14 @@ const GraphAnalyseTemporelle = ({ anneeAnalyses,
             dataByMonth[categorie.libelleCategorie] = dataByMonth.categories[categorie.libelleCategorie];
             dataByMonth["prev_" + categorie.libelleCategorie] = dataByMonth.categories["prev_" + categorie.libelleCategorie];
         }
+        if(filterSoldesActive) {
+            dataByMonth["SoldesD"] = dataByMonth.categories["SoldesD"];
+            dataByMonth["SoldesF"] = dataByMonth.categories["SoldesF"];
+            dataByMonth["prev_SoldesD"] = dataByMonth.categories["prev_SoldesD"];
+            dataByMonth["prev_SoldesF"] = dataByMonth.categories["prev_SoldesF"];
+        }
     }
+
 
     /**
      * Rend les lignes du graphique.
@@ -81,7 +90,7 @@ const GraphAnalyseTemporelle = ({ anneeAnalyses,
 
 
     const renderSoldes = () => {
-        let soldes = [];
+        let soldes : JSX.Element[] = [];
         soldes.push(<Bar key="SoldesD" dataKey="SoldesD"
             type="monotone"
             fill="url('#colorSoldesD')" stroke="url('#colorSoldesD')"
@@ -125,7 +134,7 @@ const GraphAnalyseTemporelle = ({ anneeAnalyses,
                 <CartesianGrid strokeDasharray="1 10" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                { /*<Tooltip content={<TooltipAnalyseTemporelle/>}/> */}
+                { <Tooltip content={<TooltipAnalyseTemporelle/>}/> }
 
                 {renderLines()}
 

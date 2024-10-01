@@ -3,9 +3,9 @@ import React from "react";
 
 
 interface TooltipAnalyseTemporelleProps {
-    active: boolean,
-    payload: any[],
-    label: string
+    active?: boolean,
+    payload?: any[],
+    label?: string
 }
 
 /**
@@ -20,7 +20,7 @@ const TooltipAnalyseTemporelle = ({active, payload, label} : TooltipAnalyseTempo
     let tooltip : JSX.Element[] = [];
     if (active && payload?.length) {
 
-        payload.forEach(item => {
+        payload.forEach((item : any) => {
             if (!(item.dataKey.startsWith("prev_") && payload.find(p => p.dataKey === item.dataKey.replace("prev_", "")) !== undefined)) {
                 let name = (item.dataKey.startsWith("prev_") ? "Prévisionnel " : "") + item.name.replace("prev_", "");
 
