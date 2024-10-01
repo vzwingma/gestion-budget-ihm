@@ -1,15 +1,15 @@
 import React from 'react'
-import { MenuItem, TextField } from "@mui/material"
-import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
+import {MenuItem, TextField} from "@mui/material"
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import CompteBancaireModel from './../../../../../Models/CompteBancaire.model'
-import { operationIsIntercompteFromLibelle } from '../../../../../Utils/OperationData.utils'
-import { getOperationIntercompteCatLibelle } from '../../../../../Utils/renderers/OperationItem.renderer'
+import {operationIsIntercompteFromLibelle} from '../../../../../Utils/OperationData.utils'
+import {getOperationIntercompteCatLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
 
 /**
  * Propriétés pour le composant OperationDetailIntercompte.
  *
  * @interface OperationDetailIntercompteProps
- * 
+ *
  * @property {string | null} intercompte - Le compte intercompte sélectionné ou null.
  * @property {CompteBancaireModel[]} listeAutresComptes - La liste des autres comptes bancaires disponibles.
  * @property {boolean} formIntercompteInEdition - Indique si le formulaire d'intercompte est en cours d'édition.
@@ -47,10 +47,12 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
     }
 
 
-    function getLibelleIntercompte() : JSX.Element {
-        if(intercompte != null && operationIsIntercompteFromLibelle(intercompte)) {
-
-        return getOperationIntercompteCatLibelle(intercompte, listeAutresComptes, false)
+    /**
+     * @returns {JSX.Element} Affichage de l'intercompte en lecture seule
+     */
+    function getAffichageIntercompteRO(): JSX.Element {
+        if (intercompte != null && operationIsIntercompteFromLibelle(intercompte)) {
+            return getOperationIntercompteCatLibelle(intercompte, listeAutresComptes, false)
         }
         else {
             return <></>
@@ -70,18 +72,17 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
                 helperText={errorIntercompte}
                 onChange={fillIntercompteForm}
                 variant="standard">
-                {listeAutresComptes
-                    .map((compte) => (
-                        <MenuItem key={compte.id} value={compte.id}>
-                            <img src={"/img/banques/" + compte.itemIcon}
-                                width={20} height={20}
-                                alt={compte.libelle}
-                                style={{ marginRight: "5px" }} />
-                            {compte.libelle}
-                        </MenuItem>
-                    ))}
-            </TextField> 
-        : 
-        getLibelleIntercompte()
+                {listeAutresComptes.map((compte) => (
+                    <MenuItem key={compte.id} value={compte.id}>
+                        <img src={"/img/banques/" + compte.itemIcon}
+                             width={20} height={20}
+                             alt={compte.libelle}
+                             style={{marginRight: "5px"}}/>
+                        {compte.libelle}
+                    </MenuItem>
+                ))}
+            </TextField>
+            :
+            getAffichageIntercompteRO()
     )
 }

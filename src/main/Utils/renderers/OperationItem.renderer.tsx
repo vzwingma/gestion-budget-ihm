@@ -3,7 +3,7 @@ import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnum
 import {Box, Tooltip} from "@mui/material";
 import React from "react";
 import CompteBancaireModel from "../../Models/CompteBancaire.model";
-import { INTERCOMPTE_LIBELLE_REGEX, operationIsIntercompteFromLibelle } from "../OperationData.utils";
+import {INTERCOMPTE_LIBELLE_REGEX, operationIsIntercompteFromLibelle} from "../OperationData.utils";
 
 /**
  * Couleur d'une opération selon son état
@@ -120,13 +120,13 @@ export function getOperationIntercompteLibelle(operationLibelle : string, listeC
                 <Box>
                     {operationLibelleParts[1].startsWith("[En Retard]") ?
                         <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
-    
+
                     <img src={"/img/banques/" + compte.itemIcon}
                          width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                          alt={compte.libelle}
                          style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
                     {getOperationLibelleWithComment(operationLibelleParts[4])}
-    
+
                 </Box>
             </Tooltip>
         } else {
@@ -177,7 +177,6 @@ export function getOperationIntercompteCatLibelle(operationLibelle : string, lis
  * @returns {JSX.Element}
  */
 function getOperationEnRetardLibelle(operationLibelle : string) {
-    return <>
-            <WatchLaterRounded sx={{color: "#A0A0A0"}}/>{getOperationLibelleWithComment(operationLibelle.replace("[En Retard]", ""))}
-        </>
+    return <><WatchLaterRounded
+        sx={{color: "#A0A0A0"}}/>{getOperationLibelleWithComment(operationLibelle.replace("[En Retard]", ""))}</>
 }
