@@ -60,7 +60,7 @@ export function saveOperationIntercompte(operation: OperationModel, budget: Budg
     call(METHODE_HTTP.POST,
         BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.INTERCOMPTE,
         [budget.id, idCompteCible],
-        JSON.stringify(operation))
+        operation)
         .then(budgetUpdated => {
             onOperationUpdate(budgetUpdated);
             toast.success("Création de l'opération inter-comptes correctement effectuée")

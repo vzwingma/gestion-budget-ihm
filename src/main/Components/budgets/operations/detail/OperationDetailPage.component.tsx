@@ -80,7 +80,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
     const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm(false));
     const [refresh, setRefresh] = useState<boolean>(false);
-    const [intercompte, setIntercompte] = useState<string | null>(null);
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
 
@@ -145,6 +144,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                 break;
         }
         setEditOperation(editOperation);
+        setRefresh(!refresh);
     }
 
     /**
@@ -262,7 +262,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
                     <Grid2 size={{ md: 5 }}>
                         { /** COMPTE DE TRANSFERT  **/}
-                        <OperationDetailIntercompte intercompte={intercompte}
+                        <OperationDetailIntercompte intercompte={editOperation.intercompte}
                             formIntercompteInEdition={
                                 isInCreateMode(editForm)
                                 && editOperation !== null

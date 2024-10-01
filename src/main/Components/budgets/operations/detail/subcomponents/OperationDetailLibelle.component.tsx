@@ -46,10 +46,8 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
      * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
      * @param {Event} e - L'événement de saisie
      */
-    function fillLibelleForm(event: any, newValue: string | null) {
-        if(newValue != null){
-            fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, newValue);
-        }
+    function fillLibelleForm(event: any) {
+        fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, event.target.value);
     }
 
 
@@ -81,7 +79,10 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
                     blurOnSelect={true}
                     onChange={fillLibelleForm}
                     onFocus={() => activateValidationForm(false)}
-                    onBlur={() => activateValidationForm(true)}
+                    onBlur={(e) => {
+                                activateValidationForm(true); 
+                                fillLibelleForm(e);
+                            }}
                 />
                 <FormHelperText>{errorLibelle}</FormHelperText>
             </FormControl>

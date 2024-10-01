@@ -49,13 +49,10 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
      * Remplit le champ "categorie" de l'état à partir de la saisie de l'utilisateur
      * @param {Event} e - L'événement de saisie
      */
-    function fillCategorieForm(e: any) {
-        const ssCat = getListeAllCategories(listeCategories)
-            .filter((ssCat: CategorieOperationModel) => {
-                return ssCat.libelle === e.target.textContent || ssCat.libelle === e.target.value
-            })[0]
+    function fillCategorieForm(e: any, newValue: CategorieOperationModel | null) {
+        const ssCat = newValue;
         if (ssCat !== null && ssCat !== undefined) {
-            fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, ssCat.id)
+            fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, ssCat.id != null ? ssCat.id : "");
         }
     }
 
@@ -71,7 +68,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                     id={OPERATION_EDITION_FORM.CATEGORIE + OPERATION_EDITION_FORM.INPUT}
                     renderInput={(params) => <TextField {...params} variant={"standard"} />}
                     sx={{ width: "90%" }}
-                    value={operation.ssCategorie != null ? operation.ssCategorie : { id: null, libelle: "" } }
+                    value={operation.ssCategorie != null ? operation.ssCategorie : { id: null, libelle: "" }}
                     options={getListeAllCategories(listeCategories)}
                     groupBy={(option: CategorieOperationModel) => option.categorieParente ? option.categorieParente.libelle : ""}
                     getOptionLabel={(option: CategorieOperationModel) => option.libelle != null ? option.libelle : ""}
@@ -82,7 +79,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                             return false;
                         }
                     }}
-                    selectOnFocus={true}
+                    blurOnSelect={true}
                     onChange={fillCategorieForm}
                     onFocus={() => activateValidationForm(false)}
                     onBlur={() => activateValidationForm(true)}
