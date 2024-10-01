@@ -17,3 +17,60 @@ export enum OPERATION_EDITION_FORM {
 export const EMPTY_CATEGORIE = {id: null, libelle: "NULL-2"}
 
 
+
+
+/**
+ * @interface EditFormProps
+ * @description Interface représentant les propriétés du formulaire d'édition.
+ *
+ * @property {boolean} value - Indique si la valeur est éditée.
+ * @property {boolean} libelle - Indique si le libellé est éditée.
+ * @property {boolean} dateOperation - Indique si la date de l'opération est éditée.
+ * @property {boolean} mensualite - Indique si la mensualité est éditée.
+ * @property {boolean} categories - Indique si les catégories sont éditée.
+ * @property {boolean} formValidationEnabled - Indique si la validation du formulaire est éditée.
+ */
+export interface EditFormProps {
+    value: boolean
+    libelle: boolean
+    dateOperation: boolean
+    mensualite: boolean
+    categories: boolean
+    formValidationEnabled: boolean
+}
+
+export function createEmptyEditForm(operationInCreation: boolean): EditFormProps {
+    return {
+    value: operationInCreation,
+    libelle: operationInCreation,
+    dateOperation: operationInCreation,
+    mensualite: operationInCreation,
+    categories: operationInCreation,
+    formValidationEnabled: false
+}}
+
+/**
+ * Interface représentant les erreurs possibles pour les détails d'une opération.
+ *
+ * @property {string | null} valeur - Erreur associée à la valeur de l'opération.
+ * @property {string | null} libelle - Erreur associée au libellé de l'opération.
+ * @property {string | null} categorie - Erreur associée à la catégorie de l'opération.
+ * @property {string | null} compte - Erreur associée au compte de l'opération.
+ */
+export interface ErrorsFormProps {
+    valeur: string | null
+    dateOperation: string | null
+    libelle: string | null
+    categorie: string | null
+    compte: string | null
+    intercompte: string | null
+}
+
+export const EMPTY_ERRORS_FORM: ErrorsFormProps = {
+    valeur: null,
+    dateOperation: null,
+    libelle: null,
+    categorie: null,
+    compte: null,
+    intercompte: null
+} as const

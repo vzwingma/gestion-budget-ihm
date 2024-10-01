@@ -16,7 +16,7 @@ import {
     isInEditMode
 } from './OperationDetailPage.controller';
 import CenterComponent from '../../../CenterComponent';
-import { OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
+import { createEmptyEditForm, EditFormProps, EMPTY_ERRORS_FORM, ErrorsFormProps, OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
 import { OperationDetailActions } from './actions/OperationDetailActions.component';
 import OperationModel from '../../../../Models/Operation.model';
 import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
@@ -61,45 +61,6 @@ export interface OperationDetailPageProps {
 
 
 /**
- * @interface EditFormProps
- * @description Interface représentant les propriétés du formulaire d'édition.
- *
- * @property {boolean} value - Indique si la valeur est éditée.
- * @property {boolean} libelle - Indique si le libellé est éditée.
- * @property {boolean} dateOperation - Indique si la date de l'opération est éditée.
- * @property {boolean} mensualite - Indique si la mensualité est éditée.
- * @property {boolean} categories - Indique si les catégories sont éditée.
- * @property {boolean} formValidationEnabled - Indique si la validation du formulaire est éditée.
- */
-export interface EditFormProps {
-    value: boolean
-    libelle: boolean
-    dateOperation: boolean
-    mensualite: boolean
-    categories: boolean
-    formValidationEnabled: boolean
-}
-
-
-/**
- * Interface représentant les erreurs possibles pour les détails d'une opération.
- *
- * @property {string | null} valeur - Erreur associée à la valeur de l'opération.
- * @property {string | null} libelle - Erreur associée au libellé de l'opération.
- * @property {string | null} categorie - Erreur associée à la catégorie de l'opération.
- * @property {string | null} compte - Erreur associée au compte de l'opération.
- */
-export interface ErrorsFormProps {
-    valeur: string | null
-    dateOperation: string | null
-    libelle: string | null
-    categorie: string | null
-    compte: string | null
-    intercompte: string | null
-}
-
-
-/**
  * Composant de page de détail d'une opération.
  *
  * Ce composant affiche les détails d'une opération et permet de modifier ses informations.
@@ -116,25 +77,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
     onOperationChange
 }: OperationDetailPageProps): JSX.Element => {
 
-    const [editForm, setEditForm] = useState<EditFormProps>({
-        value: false,
-        libelle: false,
-        dateOperation: false,
-        mensualite: false,
-        categories: false,
-        formValidationEnabled: false
-    });
+    const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm(false));
     const [refresh, setRefresh] = useState<boolean>(false);
     const [openLibelleAutoComplete, setOpenLibelleAutoComplete] = useState<boolean>(false);
     const [intercompte, setIntercompte] = useState<string | null>(null);
-    const [errors, setErrors] = useState<ErrorsFormProps>({
-        valeur: null,
-        dateOperation: null,
-        libelle: null,
-        categorie: null,
-        compte: null,
-        intercompte
-    });
+    const [errors, setErrors] = useState<ErrorsFormProps>(EMPTY_ERRORS_FORM);
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperation());
 
 
@@ -144,28 +91,34 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     useEffect(() => {
-        console.log("Initialisation de l'opération d'édition", operation.id)
         setEditOperation(cloneOperation(operation));
-        const operationInCreation = operation.id === "-1";
-        setEditForm({
-            value: operationInCreation,
-            libelle: operationInCreation,
-            dateOperation: operationInCreation,
-            mensualite: operationInCreation,
-            categories: operationInCreation,
-            formValidationEnabled: false
-        });
-
+        setEditForm(createEmptyEditForm(operation.id === "-1"));
     }, [operation]);
 
 
+    /**
+     * Ouverture du formulaire d'édition
+     * @param editForm formulaire d'édition
+     */
     function openEditForm(editForm: EditFormProps) {
         setEditForm(editForm)
         setRefresh(!refresh)
     }
 
+    /**
+     * callback de mise à jour de l'opération
+     * @param budget budget mis à jour
+     */
+    function onOperationUpdate(budget: BudgetMensuelModel) {
+        openEditForm(createEmptyEditForm(false));
+        onOperationChange(budget);
+    }
 
-
+    /**
+     * Mise à jour du formulaire d'édition
+     * @param field champ du formulaire à mettre à jour
+     * @param value valeur du champ
+     */
     function fillOperationForm(field: OPERATION_EDITION_FORM, value: string) {
         let editedOperation = editOperation != null ? editOperation : createNewOperation();
 
@@ -204,20 +157,20 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
         <Container id={OPERATION_EDITION_FORM.FORM}
             component="div"
             fixed maxWidth={"md"}
-            onClick={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, errors, setErrors, onOperationChange)}
-            onKeyUp={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, errors, setErrors, onOperationChange)}>
+            onClick={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
+            onKeyUp={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
             <Stack direction={"column"} spacing={5} sx={{ alignItems: "center", marginTop: "20px" }}>
                 <CenterComponent>
-                <Box width={56} height={56}
-                    sx={{
-                        borderRadius: "50%",
-                        backgroundColor: getCategorieColor(operation.categorie),
-                        color: '#FFFFFF',
-                        padding: '15px 0px 0px 15px'
-                    }}>
-                    {getCategorieIcon(operation.ssCategorie)}
-                </Box>
+                    <Box width={56} height={56}
+                        sx={{
+                            borderRadius: "50%",
+                            backgroundColor: getCategorieColor(operation.categorie),
+                            color: '#FFFFFF',
+                            padding: '15px 0px 0px 15px'
+                        }}>
+                        {getCategorieIcon(operation.ssCategorie)}
+                    </Box>
                 </CenterComponent>
                 { /** VALEUR **/}
                 <OperationDetailValeur operation={operation} formValueInEdition={editForm.value}
@@ -314,7 +267,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
                 {budget?.actif && isInEditMode(editForm) &&
                     <Button fullWidth variant="outlined" color="success"
-                        onClick={() => handleValidateOperationForm(operation, budget, editOperation, editForm, setEditForm, errors, setErrors, onOperationChange)}>Valider</Button>
+                        onClick={() => handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate)}>Valider</Button>
                 }
 
             </Stack>

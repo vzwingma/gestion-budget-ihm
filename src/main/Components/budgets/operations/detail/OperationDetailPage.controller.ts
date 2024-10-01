@@ -4,15 +4,14 @@ import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
 import OperationModel from "../../../../Models/Operation.model";
 import { BUSINESS_GUID, TYPES_OPERATION_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
 import { getEventTargetId } from "../../../../Utils/OperationData.utils";
-import {EditFormProps, ErrorsFormProps} from "./OperationDetailPage.component";
-import { OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
+import { EditFormProps, EMPTY_ERRORS_FORM, ErrorsFormProps, OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
 
 
 
 
 /**
- * 
+ * Event sur le clic d'une édition d'opération
  * @param event événement sur le clic d'une opération
  * @param operation  opération en cours
  * @param budget budget associé
@@ -23,10 +22,10 @@ import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.e
  * @param setErrors fonction pour mettre à jour les erreurs du formulaire
  * @param onOperationChange fonction pour mettre à jour l'opération
  */
-export function handleOperationEditionClick(event: any, operation: OperationModel, budget: BudgetMensuelModel, 
-    editOperation: OperationEditionModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void, 
-    errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, 
-    onOperationChange: (budget: BudgetMensuelModel) => void) {
+export function handleOperationEditionClick(event: any, operation: OperationModel, budget: BudgetMensuelModel,
+    editOperation: OperationEditionModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void,
+    setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>,
+    onOperationUpdate: (budget: BudgetMensuelModel) => void) {
 
 
     if (event.target !== null && event.target !== undefined && budget?.actif) {
@@ -36,7 +35,7 @@ export function handleOperationEditionClick(event: any, operation: OperationMode
 
         // Validation du formulaire
         if (enterKeyPress && editForm.formValidationEnabled) {
-            handleValidateOperationForm(operation, budget, editOperation, editForm, openEditForm, errors, setErrors, onOperationChange);
+            handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate);
         } else if (!idElement.endsWith(OPERATION_EDITION_FORM.INPUT)) {
             switch (idElement) {
                 case OPERATION_EDITION_FORM.VALUE:
@@ -88,6 +87,7 @@ function validateDescription(editOperation: OperationEditionModel, operation: Op
         errors.libelle = "Le champ Description est obligatoire";
     } else {
         operation.libelle = editOperation.libelle;
+        errors.libelle = null;
     }
 }
 
@@ -110,7 +110,7 @@ function validateFormMontant(editOperation: OperationEditionModel, operation: Op
     }
 
     const formValeur = "" + editOperation.valeur;
-    const {valeurCalculee, error} = calculateValeur(formValeur.replace(",", "."));
+    const { valeurCalculee, error } = calculateValeur(formValeur.replace(",", "."));
     if (error) {
         errors.valeur = error;
         return;
@@ -119,36 +119,44 @@ function validateFormMontant(editOperation: OperationEditionModel, operation: Op
         errors.valeur = "Le format est incorrect : 0000.00 €";
         return;
     }
-
+    errors.valeur = null;
     operation.valeur = (editOperation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1) * Number(valeurCalculee);
 }
 
 /**
  * validation du formulaire - Catégories
  */
-export function validateFormCategories(editOperation: OperationEditionModel, operation: OperationModel, errors: ErrorsFormProps) {
+function validateFormCategories(editOperation: OperationEditionModel, operation: OperationModel, errors: ErrorsFormProps) {
     if (editOperation.categorie.id === null || editOperation.categorie.libelle === null || editOperation.ssCategorie.id === null || editOperation.ssCategorie.libelle === null) {
         errors.categorie = "Le champ Catégorie est obligatoire"
     } else {
         operation.categorie = editOperation.categorie
         operation.ssCategorie = editOperation.ssCategorie
+        errors.categorie = null
     }
 }
 
 /**
  * validation du formulaire - Transfert intercomptes
  */
-export function validateFormTransfertIntercompte(editOperation: OperationEditionModel, intercompte: string | null, operation: OperationModel, errors: ErrorsFormProps) {
+function validateFormTransfertIntercompte(editOperation: OperationEditionModel, intercompte: string | null, operation: OperationModel, errors: ErrorsFormProps) {
     if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && intercompte === null) {
         errors.intercompte = "Le champ Intercompte est obligatoire"
     } else {
         operation.intercompte = intercompte
+        errors.intercompte = null
     }
 }
 
-/**
- * validation du formulaire
- */
+
+    /**
+    * Validation du formulaire d'opération.
+    *
+    * @param {OperationEditionModel} editOperation - Le modèle d'opération en cours d'édition.
+    * @param {OperationModel} operation - Le modèle de l'opération à valider.
+    * @param {EditFormProps} editForm - Les propriétés du formulaire d'édition.
+    * @param {ErrorsFormProps} errors - Les erreurs du formulaire.
+    */
 export function validateForm(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     // Description
     validateDescription(editOperation, operation, errors);
@@ -203,10 +211,10 @@ function calculateValeur(formValue: string): { valeurCalculee: string | null, er
         // eslint-disable-next-line no-eval
         const calculee = Number(processEquation(formValue)).toFixed(2);
         console.log("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
-        return {valeurCalculee: calculee, error: null};
+        return { valeurCalculee: calculee, error: null };
     } catch (e) {
         console.error("Erreur dans la valeur saisie ", formValue, e)
-        return {valeurCalculee: null, error: "Le champ Montant est incorrect"};
+        return { valeurCalculee: null, error: "Le champ Montant est incorrect" };
     }
 }
 
@@ -235,11 +243,11 @@ function validateValue(valeur: string): boolean {
  * @param {React.Dispatch<React.SetStateAction<ErrorsFormProps>>} setErrors - Fonction pour mettre à jour l'état des erreurs du formulaire.
  */
 export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationEditionModel,
-                                            editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void, 
-                                            errors: ErrorsFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>, 
-                                            onOperationChange: (budget: BudgetMensuelModel) => void) {
+    editForm: EditFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>,
+    onOperationUpdate: (budget: BudgetMensuelModel) => void) {
 
     if (isInEditMode(editForm)) {
+        let errors : ErrorsFormProps = EMPTY_ERRORS_FORM;
         validateForm(editOperation, operation, editForm, errors);
 
         let hasErrors = false;
@@ -255,15 +263,12 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
         } else {
             if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && isInCreateMode(editForm)) {
                 // Create Update Opération Intercomptes
-                saveOperationIntercompte(operation, budget, editOperation.intercompte, onOperationChange);
+                saveOperationIntercompte(operation, budget, editOperation.intercompte, onOperationUpdate);
             } else {
                 // Create Update Opération
-                saveOperation(operation, budget, onOperationChange);
+                saveOperation(operation, budget, onOperationUpdate);
             }
-
-            handleCloseOperationForm(openEditForm, setErrors);
         }
-
     }
 }
 
@@ -283,31 +288,3 @@ export function isInEditMode(editForm: EditFormProps): boolean {
 export function isInCreateMode(editForm: EditFormProps): boolean {
     return editForm.value && editForm.libelle && editForm.dateOperation && editForm.mensualite;
 }
-
-
-/**
- * Fermeture des items en édition de la page
- */
-export function handleCloseOperationForm(openEditForm: (editForm: EditFormProps) => void, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>) {
-
-    const editForm: EditFormProps = {
-        value: false,
-        libelle: false,
-        dateOperation: false,
-        mensualite: false,
-        categories: false,
-        formValidationEnabled: false
-    };
-    openEditForm(editForm);
-    const errors: ErrorsFormProps = {
-        libelle: null,
-        valeur: null,
-        categorie: null,
-        intercompte: null,
-        dateOperation: null,
-        compte: null
-    };
-    setErrors(errors);
-
-}
-
