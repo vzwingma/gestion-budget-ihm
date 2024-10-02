@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
+import { OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants";
 import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.renderer";
 import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
@@ -110,50 +110,27 @@ function initGroup(group: { [key: string]: AnalyseCategoriesModel }, idCategorie
     return group
 }
 
-/**
- * Gère la sélection d'une catégorie
- * @param {number} rang - Le rang de la catégorie dans la liste
- * @param {Object} resumeSelectedCategorie - Le résumé de la catégorie sélectionnée
- */
-export function handleCategorieSelect(rang: any, resumeSelectedCategorie: any) {
-    /*
-    this.setState({
-        rangSelectedCategorie: rang,
-        resumeSelectedCategorie: resumeSelectedCategorie,
-        resumeSelectedSsCategorie: null
-    })
-         */
-}
-
-/**
- * Gère la sélection d'une sous-catégorie
- * @param {number} rang - Le rang de la sous-catégorie dans la liste
- * @param {Object} resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
- */
-export function handleSsCategorieSelect(rang: any, resumeSelectedSsCategorie: any) {
-    // this.setState({resumeSelectedSsCategorie: resumeSelectedSsCategorie})
-}
 
 /**
  * Change l'état de l'analyse
  * @param {Event} e - L'événement
  */
-export function selectEtatOperation(e: any) {
-    /*
+export function selectEtatOperation(e: any, currentTypeAnalyse : string, setSelectedTypeAnalyse : React.Dispatch<React.SetStateAction<string>>) {
     const newEtat = e.target.checked ? OPERATION_ETATS_ENUM.REALISEE : OPERATION_ETATS_ENUM.PREVUE
-    const partTypeAnalyse = this.state.selectedTypeAnalyse.match("(.*)_(.*)");
-    this.setState({selectedTypeAnalyse: newEtat + "_" + partTypeAnalyse[2]})
-     */
+    const partTypeAnalyse = currentTypeAnalyse.match("(.*)_(.*)");
+    if (partTypeAnalyse) {
+        setSelectedTypeAnalyse(newEtat + "_" + partTypeAnalyse[2]);
+    }
 }
 
 /**
  * Change le type d'opération
  * @param {Event} e - L'événement
  */
-export function selectTypeOperation(e: any) {
-    /*
+export function selectTypeOperation(e: any, currentTypeAnalyse : string, setSelectedTypeAnalyse : React.Dispatch<React.SetStateAction<string>>) {
     const newEtat = e.target.checked ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE
-    const partTypeAnalyse = this.state.selectedTypeAnalyse.match("(.*)_(.*)");
-    this.setState({selectedTypeAnalyse: partTypeAnalyse[1] + "_" + newEtat})
- */
+    const partTypeAnalyse = currentTypeAnalyse.match("(.*)_(.*)");
+    if (partTypeAnalyse) {
+        setSelectedTypeAnalyse(partTypeAnalyse[1] + "_" + newEtat);
+    }
 }

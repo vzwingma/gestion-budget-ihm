@@ -2,13 +2,14 @@ import React from 'react'
 import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
 import { sortLibellesCategories } from '../../../../Utils/OperationData.utils';
+import AnalyseCategoriesModel from '../../../../Models/analyses/AnalyseCategories.model';
 
 
 interface AnalyseCategoriesListeProps {
     rangSelectedCategorie: number | null,
-    analysesGroupedByCategories: any,
+    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel } | null,
     typeAnalyse: string,
-    selectCategorie: any
+    selectCategorie: (analyseCategoriesModel: AnalyseCategoriesModel, rang? : number) => void
 }
 
 /**
@@ -28,9 +29,9 @@ const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSel
      * @param analysesGroupedByCategories liste des opérations par catégories
      * @returns {JSX.Element}
      */
-    function iterate(analysesGroupedByCategories : any) : JSX.Element[] {
+    function iterate(analysesGroupedByCategories :  { [key: string]: AnalyseCategoriesModel } | null) : JSX.Element[] {
 
-        const arrayAnalysesGroupedByCategories = []
+        const arrayAnalysesGroupedByCategories : AnalyseCategoriesModel[] = []
         for (let categorieId in analysesGroupedByCategories) {
             arrayAnalysesGroupedByCategories.push(analysesGroupedByCategories[categorieId])
         }
@@ -45,7 +46,7 @@ const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSel
                     <AnalyseCategorieListItem key={analysesOfCategorie.categorie.id}
                                               resumeCategorie={analysesOfCategorie}
                                               typeAnalyse={typeAnalyse}
-                                              selectCategorie={() => selectCategorie(r, analysesOfCategorie)}/>
+                                              selectCategorie={() => selectCategorie(analysesOfCategorie, r)}/>
                 );
             });
         return renderList;
@@ -58,11 +59,9 @@ const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSel
         }
         <Stack divider={<Divider orientation="horizontal"/>}
                sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
-            <></>
             {
                 iterate(analysesGroupedByCategories)
             }
-            <></>
         </Stack>
     </Box>
 };

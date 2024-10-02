@@ -9,7 +9,7 @@ import { loadBudget } from "./AnalyseCategories.extservices";
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
 import { getOperationStateColor } from "../../../Utils/renderers/OperationItem.renderer";
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
-import { handleCategorieSelect, handleSsCategorieSelect, selectEtatOperation, selectTypeOperation } from "./AnalyseCategories.controller";
+import { selectEtatOperation, selectTypeOperation } from "./AnalyseCategories.controller";
 import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component";
 import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
 import CenterComponent from "../../CenterComponent";
@@ -38,13 +38,13 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
      * États pour la page Analyse
      */
     const [currentBudget, setCurrentBudget] = useState<BudgetMensuelModel>();
-    const [resumeSelectedCategorie, setResumeSelectedCategorie] = useState<any>(null);
-    const [resumeSelectedSsCategorie, setResumeSelectedSsCategorie] = useState<any>(null);
-    const [analysesGroupedByCategories, setAnalysesGroupedByCategories] = useState<{ [key: string]: AnalyseCategoriesModel }>();
-    const [selectedTypeAnalyse, setSelectedTypeAnalyse] = useState<string>("REALISEE_DEPENSE");
-
+    const [analysesGroupedByCategories, setAnalysesGroupedByCategories] = useState<{ [key: string]: AnalyseCategoriesModel } | null>(null);
     const [totauxGroupedByEtat, setTotauxGroupedByEtat] = useState<{ [key: string]: number }>();
+
     const [rangSelectedCategorie, setRangSelectedCategorie] = useState<number | null>(null);
+    const [resumeSelectedCategorie, setResumeSelectedCategorie] = useState<AnalyseCategoriesModel | null>(null);
+    const [resumeSelectedSsCategorie, setResumeSelectedSsCategorie] = useState<AnalyseCategoriesModel | null>(null);
+    const [selectedTypeAnalyse, setSelectedTypeAnalyse] = useState<string>("REALISEE_DEPENSE");
 
     /** Chargement des catégories **/
     useEffect(() => {
@@ -59,6 +59,29 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
         setCurrentBudget(currentBudget);
         setAnalysesGroupedByCategories(analysesGroupedByCategories);
         setTotauxGroupedByEtat(totauxGroupedByEtat);
+    }
+
+
+    /**
+     * Gère la sélection d'une catégorie
+     * @param {number} rang - Le rang de la catégorie dans la liste
+     * @param {Object} resumeSelectedCategorie - Le résumé de la catégorie sélectionnée
+     */
+    function handleCategorieSelect(resumeSelectedCategorie: AnalyseCategoriesModel, rang?: number) {
+        if (rang !== undefined) {
+            setRangSelectedCategorie(rang);
+        }
+        setResumeSelectedCategorie(resumeSelectedCategorie);
+        setResumeSelectedSsCategorie(null);
+    }
+
+    /**
+     * Gère la sélection d'une sous-catégorie
+     * @param {number} rang - Le rang de la sous-catégorie dans la liste
+     * @param {Object} resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
+     */
+    function handleSsCategorieSelect(resumeSelectedSsCategorie: AnalyseCategoriesModel) {
+        setResumeSelectedSsCategorie(resumeSelectedSsCategorie);
     }
 
     /**
@@ -82,12 +105,12 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                 <Grid2 size={{ md: 3 }}>
                     <Stack direction={"row-reverse"} alignItems={"end"}>
                         <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"} />
-                        <Switch onClick={selectTypeOperation} />
+                        <Switch onClick={e => selectTypeOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
                         <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"} />
 
                         <Chip label={"Réalisée"} variant="outlined"
                             sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE) }} />
-                        <Switch defaultChecked onClick={selectEtatOperation} />
+                        <Switch defaultChecked onClick={e => selectEtatOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
                         <Chip label={"Prévue"} variant="outlined"
                             sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE) }} />
                     </Stack>
@@ -122,7 +145,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                     }
                 </Grid2>
                 <Grid2 size={{ md: 6 }} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
-                    {currentBudget != null ?
+                    {currentBudget !== null && analysesGroupedByCategories !== null?
                         <GraphAnalyses
                             typeAnalyse={selectedTypeAnalyse}
                             analysesGroupedByCategories={analysesGroupedByCategories}

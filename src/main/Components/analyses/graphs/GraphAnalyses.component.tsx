@@ -1,16 +1,16 @@
-import {Cell, LabelList, Pie, PieChart, ResponsiveContainer} from "recharts";
+import { Cell, LabelList, Pie, PieChart, ResponsiveContainer } from "recharts";
 import React from "react";
-import PropTypes from "prop-types";
 import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.renderer";
 import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
-
+import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
+import { renderLabelCategorie, renderLabelSsCategorie } from "./GraphAnalyses.controller";
 
 
 interface GraphAnalysesProps {
     typeAnalyse: string,
-    analysesGroupedByCategories: any,
-    resumeSelectedCategorie: any,
-    resumeSelectedSsCategorie: any
+    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel },
+    resumeSelectedCategorie: AnalyseCategoriesModel | null,
+    resumeSelectedSsCategorie: AnalyseCategoriesModel | null
 }
 
 /**
@@ -22,23 +22,24 @@ interface GraphAnalysesProps {
  * @returns {JSX.Element} graphiques
  * @constructor
  */
-const GraphAnalyses : React.FC<GraphAnalysesProps> = ({   typeAnalyse,
-                           analysesGroupedByCategories,
-                           resumeSelectedCategorie,
-                           resumeSelectedSsCategorie
-                       } : GraphAnalysesProps) : JSX.Element => {
+const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
+    typeAnalyse,
+    analysesGroupedByCategories,
+    resumeSelectedCategorie,
+    resumeSelectedSsCategorie
+}: GraphAnalysesProps): JSX.Element => {
 
 
-    let dataCategories : any[] = [];
-    let dataSsCategories : any[]= [];
+    let dataCategories: any[] = [];
+    let dataSsCategories: any[] = [];
 
     /**
      * Populate des data pour les graphs d'une catégorie
      * @param analysesGroupedByCategories : object analyses groupées des catégories
      * @param dataCategories : array tableau pour alimenter le graphique
      * @param parentCategorie : object catégorie parente
-
-    function populateGraphCategorie(analysesGroupedByCategories, dataCategories, parentCategorie) {
+     */
+    function populateGraphCategorie(analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }, dataCategories: any[], parentCategorie: any) {
         const arrayAnalysesGroupedByCategories = []
         // transform en array
         for (let categorieId in analysesGroupedByCategories) {
@@ -63,103 +64,41 @@ const GraphAnalyses : React.FC<GraphAnalysesProps> = ({   typeAnalyse,
                 }
             })
     }
-     */
-    /**
-     * Render du label pour une catégorie
-     * @param props properties
-     * @returns {*}
-     
-    function renderLabelCategorie(props : string) {
-        const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
-        const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie : null)
-        return renderLabelAnalyse(props, selectedId, color);
-    }
-*/
-    /**
-     * Render du label pour une sous catégorie
-     * @param props
-     * @returns {*}
-  
-    function renderLabelSsCategorie(props : string) {
-        const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
-        return renderLabelAnalyse(props, selectedId, "#808080");
-    }
-   */
-    /**
-     * Render du label pour une analyse
-     * @param props properties
-     * @param selectedId : boolean si la catégorie est sélectionnée
-     * @param color couleur
-     * @returns {JSX.Element}
-     
-    function renderLabelAnalyse(props, selectedId, color) {
-        const {cx, cy, viewBox, value} = props;
-        const midRadius = (viewBox.outerRadius + viewBox.innerRadius) / 2;
-        // Calcul de l'angle du texte au milieu de la circonference
-        // Conversion en radian, dans le sens horaire
-        const midAngle = -(viewBox.startAngle + viewBox.endAngle) / 2 * Math.PI / 180;
-        const x = cx + Math.cos(midAngle) * midRadius;
-        const y = cy + Math.sin(midAngle) * midRadius;
 
-        return (
-            <>
-                <defs>
-                    <filter x="0" y="0" width="1" height="1" id="solid">
-                        <feFlood floodColor={color} result="bg"/>
-                        <feMerge>
-                            <feMergeNode in="bg"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                </defs>
-                <text x={x} y={y} dy={10}
-                      stroke={"white"} strokeWidth={selectedId ? 0.5 : 0.1}
-                      fill={"white"}
-                      filter={selectedId ? "url(#solid)" : ""}
-                      fontSize={selectedId ? 17 : 10} textAnchor="middle">
-                    {value}
-                </text>
-            </>
 
-        );
-    }
-*/
     /** Init du tableau pour l'affichage du graphique **/
-  //  populateGraphCategorie(analysesGroupedByCategories, dataCategories);
+    populateGraphCategorie(analysesGroupedByCategories, dataCategories, null);
 
     return (
-        <></>
-        /**
-        <ResponsiveContainer width="100%" height="100%"> vnbb:
-            <PieChart width="90%" height="90%">
-                { // Affichage du graphique CATEGORIE }
+        <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+                { /** Affichage du graphique CATEGORIE  */}
                 <Pie data={dataCategories} dataKey="value"
-                     cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
-                     isAnimationActive={false}>
+                    cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
+                    isAnimationActive={false}>
                     {dataCategories.map((entry) => (
                         <Cell key={`cell-${entry.categorie}`}
-                              fill={getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")}/>
+                            fill={getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")} />
                     ))
                     }
                     <LabelList data={dataSsCategories} dataKey="name"
-                               content={renderLabelCategorie}/>
+                        content={(props) => renderLabelCategorie(props, resumeSelectedCategorie)} />
                 </Pie>
-                { // Affichage du graphique SOUS CATEGORIE }
+                { /** Affichage du graphique SOUS CATEGORIE */}
                 <Pie data={dataSsCategories} dataKey="value"
-                     cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
-                     isAnimationActive={false}>
+                    cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
+                    isAnimationActive={false}>
                     {dataSsCategories.map((entry) => (
                         <Cell key={`cell-${entry.categorie.id}`}
-                              fill={getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
+                            fill={getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
                         />
                     ))
                     }
                     <LabelList data={dataSsCategories} dataKey="name"
-                               content={renderLabelSsCategorie}/>
+                        content={(props) => renderLabelSsCategorie(props, resumeSelectedSsCategorie)} />
                 </Pie>
             </PieChart>
         </ResponsiveContainer>
-        */
     );
 }
 export default GraphAnalyses
