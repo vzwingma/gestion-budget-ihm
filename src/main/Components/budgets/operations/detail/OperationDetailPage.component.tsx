@@ -18,7 +18,6 @@ import {
 import CenterComponent from '../../../CenterComponent';
 import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
 import { OperationDetailActions } from './actions/OperationDetailActions.component';
-import OperationModel from '../../../../Models/Operation.model';
 import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
 import CategorieOperationModel from '../../../../Models/CategorieOperation.model';
 import CompteBancaireModel from '../../../../Models/CompteBancaire.model';
@@ -138,7 +137,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
      */
     function fillCategorieForm(ssCatId: string) {
         const ssCat = listeCategories
-            .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories !== null && cat.listeSSCategories != undefined ? cat.listeSSCategories : [])
+            .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories !== null && cat.listeSSCategories !== undefined ? cat.listeSSCategories : [])
             .filter((ssCat: CategorieOperationModel) => ssCat != null && ssCat.id === ssCatId)[0]
 
             if (ssCat.categorieParente) {

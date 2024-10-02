@@ -1,6 +1,5 @@
 import {Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
-import CompteBancaireModel from '../../../Models/CompteBancaire.model';
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import { AnalyseTitreProps } from "../../Components.props";
 
@@ -16,7 +15,7 @@ import { AnalyseTitreProps } from "../../Components.props";
  */
 const AnalyseTitre : React.FC<AnalyseTitreProps> = ({currentCompte, currentDate, totalOperations} : AnalyseTitreProps) => {
 
- 
+
     /**
      * Obtient le tooltip pour la date d'aujourd'hui
      * @returns {string} - La date d'aujourd'hui formatée

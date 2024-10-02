@@ -25,7 +25,7 @@ export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCa
     let totauxGroupedByEtat: { [key: string]: number } =
         currentBudget.listeOperations
             .filter((operation: OperationModel) => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
-            .reduce((group: { [key: string]: number }, operation: OperationModel) => {
+            .reduce((group: { [idOperationEtatType: string]: number }, operation: OperationModel) => {
                 const idx = operation.etat + "_" + operation.typeOperation;
                 group[idx] = group[idx] ?? 0;
                 group[idx] = group[idx] + operation.valeur
@@ -40,7 +40,7 @@ export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCa
 
     let analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel } = currentBudget.listeOperations
         .filter((operation: OperationModel) => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
-        .reduce((group: { [key: string]: AnalyseCategoriesModel }, operation: OperationModel) => {
+        .reduce((group: { [idCategorieOperation: string]: AnalyseCategoriesModel }, operation: OperationModel) => {
             let couleurCategorie = getCategorieColor(operation.categorie.id);
             if (operation.categorie !== null && operation.categorie.id !== null) {
                 populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
@@ -66,7 +66,7 @@ export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCa
  * @param totauxParEtats - Un objet contenant les totaux par états, indexés par état et type d'opération.
  * @param couleurCategorie - La couleur associée à la catégorie.
  */
-function populateCategorie(group: { [key: string]: AnalyseCategoriesModel }, operation: OperationModel, categorie: CategorieOperationModel, totauxParEtats: { [key: string]: number; }, couleurCategorie: string) {
+function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesModel }, operation: OperationModel, categorie: CategorieOperationModel, totauxParEtats: { [idCategorie: string]: number; }, couleurCategorie: string) {
     if (categorie !== null && categorie.id !== null) {
 
         group[categorie.id] = group[categorie.id] ?? new AnalyseCategoriesModel();
@@ -98,7 +98,7 @@ function populateCategorie(group: { [key: string]: AnalyseCategoriesModel }, ope
  * @param {string} idxOperation - L'index de l'opération
  * @returns {Object} Le groupe initialisé
  */
-function initGroup(group: { [key: string]: AnalyseCategoriesModel }, idCategorie: string, idxOperation: string) {
+function initGroup(group: { [idCategorie: string]: AnalyseCategoriesModel }, idCategorie: string, idxOperation: string) {
     if (group[idCategorie].nbTransactions[idxOperation] === undefined) {
         group[idCategorie].nbTransactions[idxOperation] = 0;
     }

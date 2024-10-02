@@ -45,8 +45,8 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
 
     let soldesCategoriesData : AnalyseSoldesCategorieModel[] = [];
 
-    let timelinesGroupedByCategoriesData : { [key: string]: AnalyseCategorieTimelineItem }[] = new Array(soldesMensuelsData.length - 1);
-    let timelinesPrevisionnellesGroupedByCategoriesData : { [key: string]: AnalyseCategorieTimelineItem }[]= new Array(soldesMensuelsData.length);
+    let timelinesGroupedByCategoriesData : { [idCategorie: string]: AnalyseCategorieTimelineItem }[] = new Array(soldesMensuelsData.length - 1);
+    let timelinesPrevisionnellesGroupedByCategoriesData : { [idCategorie: string]: AnalyseCategorieTimelineItem }[]= new Array(soldesMensuelsData.length);
     let timelinesSoldesData = new Array(soldesMensuelsData.length - 1);
     let timelinesPrevisionnellesSoldesData = new Array(soldesMensuelsData.length);
 
@@ -83,9 +83,9 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
  * @param {Boolean} aTerminaison - Les données du budget à terminaison
  * @returns {Object} Un objet contenant les résultats de l'analyse
  */
-function calculateTimelineCategories(soldesMensuelData : SoldesMensuelModel, aTerminaison : boolean) : { [key: string]: AnalyseCategorieTimelineItem } {
+function calculateTimelineCategories(soldesMensuelData : SoldesMensuelModel, aTerminaison : boolean) : { [idCategorie: string]: AnalyseCategorieTimelineItem } {
 
-    let group : { [key: string]: AnalyseCategorieTimelineItem } = {};
+    let group : { [idCategorie: string]: AnalyseCategorieTimelineItem } = {};
 
     for (let idCategorie in soldesMensuelData.totauxParCategories) {
         let categorie : AnalyseSoldesCategorieModel = soldesMensuelData.totauxParCategories[idCategorie];
