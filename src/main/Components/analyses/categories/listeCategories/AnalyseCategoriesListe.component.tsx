@@ -2,7 +2,7 @@ import React from 'react'
 import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
 import { sortLibellesCategories } from '../../../../Utils/OperationData.utils';
-import AnalyseCategoriesModel from '../../../../Models/analyses/AnalyseCategories.model';
+import AnalyseCategoriesModel from '../../../../Models/analyses/categories/AnalyseCategories.model';
 import { AnalyseCategoriesListeProps } from '../../../Components.props';
 
 
@@ -54,9 +54,7 @@ const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSel
         }
         <Stack divider={<Divider orientation="horizontal"/>}
                sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
-            {
-                iterate(analysesGroupedByCategories)
-            }
+            { iterate(analysesGroupedByCategories) }
         </Stack>
     </Box>
 };

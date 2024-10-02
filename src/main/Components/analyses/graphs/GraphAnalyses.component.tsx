@@ -2,9 +2,9 @@ import { Cell, LabelList, Pie, PieChart, ResponsiveContainer } from "recharts";
 import React from "react";
 import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.renderer";
 import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
-import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
+import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
 import { renderLabelCategorie, renderLabelSsCategorie } from "./GraphAnalyses.controller";
-import GraphAnalyseCategoriesModel from "../../../Models/analyses/GraphAnalyseCategories.model";
+import GraphAnalyseCategoriesModel from "../../../Models/analyses/categories/GraphAnalyseCategories.model";
 import { GraphAnalysesProps } from "../../Components.props";
 
 

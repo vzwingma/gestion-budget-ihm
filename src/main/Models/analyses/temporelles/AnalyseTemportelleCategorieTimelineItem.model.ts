@@ -1,4 +1,4 @@
-import SoldeCategorieModel from "../SoldeCategorie.model";
+import SoldeCategorieModel from "./SoldeCategorie.model";
 
 /**
  * Interface pour CategorieTimelineItem.

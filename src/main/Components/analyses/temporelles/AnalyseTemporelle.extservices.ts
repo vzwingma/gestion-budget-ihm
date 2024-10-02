@@ -4,9 +4,9 @@ import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEn
 import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import {
     calculateTimelines,
-    DataCalculationResultsProps,
 } from "./AnalyseTemporelle.controller";
-import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
+import SoldeMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
+import { DataCalculationTemporelResultsProps } from "../../Components.props";
 
 /**
  * Services back-end pour les analyses.
@@ -23,7 +23,7 @@ export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, s
                                                                                                                                    timelinesGroupedByCategoriesData,
                                                                                                                                    timelinesPrevisionnellesGroupedByCategoriesData,
                                                                                                                                    timelinesSoldesData,
-                                                                                                                                   timelinesPrevisionnellesSoldesData} : DataCalculationResultsProps) => void) : void {
+                                                                                                                                   timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
     if (selectedCompte != null) {
         // Appelle le service back-end pour obtenir les budgets du compte sélectionné.
         call(METHODE_HTTP.GET,

@@ -1,8 +1,8 @@
 import { LabelProps } from "recharts";
 import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.renderer";
 import { PolarViewBox } from "recharts/types/util/types";
-import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
 import React from "react";
+import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
 
 
 

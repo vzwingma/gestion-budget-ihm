@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
 import {getMonthFromString} from "../../../Utils/Date.utils";
 import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer";
-import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
-import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
+import SoldeMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
+import SoldeCategorieModel from "../../../Models/analyses/temporelles/SoldeCategorie.model";
 import { DataCalculationTemporelResultsProps } from "../../Components.props";
-import { CategorieTimelineItem } from "../../../Models/analyses/AnalyseTemportelleCategorieTimelineItem.model";
-import { SoldesTimelineItem } from "../../../Models/analyses/AnalyseTemporelleSoldesTimelineItem.model";
+import { CategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemportelleCategorieTimelineItem.model";
+import { SoldesTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemporelleSoldesTimelineItem.model";
 /**
  * Controleur des analyses temporelles
  */
@@ -27,9 +27,12 @@ function createNewCategorieTimelineItem() {
 }
 
 /**
- * Calcule les analyses de temps pour les budgets donnés
- * @param {Array} soldesBudgetsData - Les données des budgets à analyser
- * @param handleDataCalculationResult - La fonction de rappel pour les résultats de l'analyse
+ * Calcule les lignes de temps basées sur les données des soldes budgétaires et appelle une fonction de gestion des résultats.
+ *
+ * @param soldesBudgetsData - Un tableau de modèles de soldes mensuels représentant les données budgétaires.
+ * @param handleDataCalculationResult - Une fonction de rappel qui gère les résultats du calcul des données temporelles.
+ * 
+ * @returns void
  */
 export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], handleDataCalculationResult : ({soldesBudgetsData,
                                                                                                                categoriesData,
@@ -40,7 +43,7 @@ export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], hand
     soldesBudgetsData = Object.values(soldesBudgetsData)
         .sort((budget1: SoldeMensuelModel, budget2: SoldeMensuelModel) => getMonthFromString(budget1.mois) - getMonthFromString(budget2.mois))
 
-    let categoriesData : SoldeCategorieModel[] = [];
+    let soldesCategoriesData : SoldeCategorieModel[] = [];
     let timelinesGroupedByCategoriesData : { [key: string]: CategorieTimelineItem }[] = new Array(soldesBudgetsData.length - 1);
     let timelinesPrevisionnellesGroupedByCategoriesData : { [key: string]: CategorieTimelineItem }[]= new Array(soldesBudgetsData.length);
     let timelinesSoldesData = new Array(soldesBudgetsData.length - 1);
@@ -57,7 +60,7 @@ export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], hand
                 timelinesPrevisionnellesGroupedByCategoriesData[mois] = calculateTimelineCategories(soldesBudgetsData[mois], false);
             }
             timelinesSoldesData[mois] = calculateTimelineSoldes(soldesBudgetsData[mois], false);
-            categoriesData = getListeCategories(soldesBudgetsData[mois]);
+            soldesCategoriesData = getListeCategories(soldesBudgetsData[mois]);
         });
     // Génération du budget à terminaison pour le budget courant
 
@@ -67,7 +70,7 @@ export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], hand
         timelinesPrevisionnellesSoldesData[soldesBudgetsData.length] = calculateTimelineSoldes(soldesBudgetsData[soldesBudgetsData.length - 1], true);
     }
 
-    handleDataCalculationResult({soldesBudgetsData, categoriesData, timelinesGroupedByCategoriesData, timelinesPrevisionnellesGroupedByCategoriesData, timelinesSoldesData, timelinesPrevisionnellesSoldesData});
+    handleDataCalculationResult({soldesBudgetsData, categoriesData: soldesCategoriesData, timelinesGroupedByCategoriesData, timelinesPrevisionnellesGroupedByCategoriesData, timelinesSoldesData, timelinesPrevisionnellesSoldesData});
     toast.success("Analyse des budgets correctement effectuée ")
 }
 
@@ -113,16 +116,18 @@ function calculateTimelineSoldes(soldeMensuelData : SoldeMensuelModel, aTerminai
 }
 
 
+
 /**
- * Calcule la liste des catégories présentes
- * @param {SoldeCategorieModel[]} budgetData - Les données du budget à analyser
- * @returns {Array} La liste des catégories présentes
+ * Récupère la liste des catégories à partir d'un solde mensuel.
+ *
+ * @param {SoldeMensuelModel} soldeMensuel - Le modèle de solde mensuel contenant les totaux par catégories.
+ * @returns {SoldeCategorieModel[]} La liste des catégories triées par libellé.
  */
-function getListeCategories(budgetData : SoldeMensuelModel): SoldeCategorieModel[] {
+function getListeCategories(soldeMensuel : SoldeMensuelModel): SoldeCategorieModel[] {
     const listeCategories : SoldeCategorieModel[] = [];
-    for (let idCategorie in budgetData.totauxParCategories) {
+    for (let idCategorie in soldeMensuel.totauxParCategories) {
         let categorie : SoldeCategorieModel;
-        categorie = budgetData.totauxParCategories[idCategorie];
+        categorie = soldeMensuel.totauxParCategories[idCategorie];
         categorie.id = idCategorie;
         categorie.couleur = getCategorieColor(categorie.id);
         categorie.filterActive = true;

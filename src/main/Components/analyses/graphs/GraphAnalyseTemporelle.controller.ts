@@ -2,8 +2,10 @@
  * Controleur de graphique pour l'analyse temporelle.
  */
 
-import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
-import { CategorieTimelineItem, SoldesTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
+import { SoldesTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemporelleSoldesTimelineItem.model";
+import { CategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemportelleCategorieTimelineItem.model";
+import SoldeCategorieModel from "../../../Models/analyses/temporelles/SoldeCategorie.model";
+
 
 interface DataTemporelleMois {
     id: string,
@@ -46,7 +48,7 @@ export function populateGraphCategories(anneeAnalyses: number, listeCategories: 
                 .filter(categorie => categorie.filterActive)
                 .forEach(categorie => {
                     const timelinesCategory = Object.values(timelinesGroupedByCategories[mois])
-                        .filter(timeline => timeline.categorie.id === categorie.id)[0]
+                        .filter(timeline => timeline.categorie?.id === categorie.id)[0]
                     datasTemporellesMois.categories[(isAtTerminaison ? "prev_" : "") + categorie.libelleCategorie] =
                         timelinesCategory !== undefined ? Math.abs(timelinesCategory.total) : 0;
 

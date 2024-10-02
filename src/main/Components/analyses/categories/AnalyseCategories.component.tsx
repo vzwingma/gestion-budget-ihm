@@ -10,7 +10,7 @@ import { getOperationStateColor } from "../../../Utils/renderers/OperationItem.r
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
 import { selectEtatOperation, selectTypeOperation } from "./AnalyseCategories.controller";
 import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component";
-import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
+import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
 import CenterComponent from "../../CenterComponent";
 import { AnalyseCategoriesProps, DataCalculationResultsProps } from "../../Components.props";
 

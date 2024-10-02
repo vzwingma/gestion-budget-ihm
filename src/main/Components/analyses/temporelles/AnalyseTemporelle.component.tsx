@@ -4,16 +4,16 @@ import { Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid2, } fr
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { loadSoldesBudgets } from "./AnalyseTemporelle.extservices";
-import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
-import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
+import SoldeMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
+import SoldeCategorieModel from "../../../Models/analyses/temporelles/SoldeCategorie.model";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
 import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
 import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
 import { AnalyseTemporelleProps, DataCalculationTemporelResultsProps } from "../../Components.props";
 import CenterComponent from "../../CenterComponent";
-import { SoldesTimelineItem } from "../../../Models/analyses/AnalyseTemporelleSoldesTimelineItem.model";
-import { CategorieTimelineItem } from "../../../Models/analyses/AnalyseTemportelleCategorieTimelineItem.model";
+import { SoldesTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemporelleSoldesTimelineItem.model";
+import { CategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemportelleCategorieTimelineItem.model";
 
 
 

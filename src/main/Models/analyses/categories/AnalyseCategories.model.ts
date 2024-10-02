@@ -1,5 +1,4 @@
-import CategorieOperationModel from "../CategorieOperation.model"
-
+import CategorieOperationModel from "../../CategorieOperation.model";
 
 /**
  * Model pour les analyse des catégories
