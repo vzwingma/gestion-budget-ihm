@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016",
+      "es2017",
+      "es2018",
+      "ES2019",
+      "ES2020",
+      "ES2021",
+      "ES2022",
+      "ES2023"
+    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "uuid", "node", "jest"
+    ],
+    "jsx": "react"
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+]
+}
