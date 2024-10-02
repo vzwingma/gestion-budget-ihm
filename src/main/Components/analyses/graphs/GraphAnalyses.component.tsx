@@ -4,6 +4,7 @@ import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.render
 import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
 import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
 import { renderLabelCategorie, renderLabelSsCategorie } from "./GraphAnalyses.controller";
+import GraphAnalyseCategories from "../../../Models/analyses/GraphAnalyseCategories.model";
 
 
 interface GraphAnalysesProps {
@@ -30,8 +31,8 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
 }: GraphAnalysesProps): JSX.Element => {
 
 
-    let dataCategories: any[] = [];
-    let dataSsCategories: any[] = [];
+    let dataCategories: GraphAnalyseCategories[] = [];
+    let dataSsCategories: GraphAnalyseCategories[] = [];
 
     /**
      * Populate des data pour les graphs d'une catégorie
@@ -39,8 +40,8 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
      * @param dataCategories : array tableau pour alimenter le graphique
      * @param parentCategorie : object catégorie parente
      */
-    function populateGraphCategorie(analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }, dataCategories: any[], parentCategorie: any) {
-        const arrayAnalysesGroupedByCategories = []
+    function populateGraphCategorie(analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }, dataCategories: any[], parentCategorie?: any) {
+        const arrayAnalysesGroupedByCategories : AnalyseCategoriesModel[] = []
         // transform en array
         for (let categorieId in analysesGroupedByCategories) {
             arrayAnalysesGroupedByCategories.push(analysesGroupedByCategories[categorieId]);
@@ -67,7 +68,7 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
 
 
     /** Init du tableau pour l'affichage du graphique **/
-    populateGraphCategorie(analysesGroupedByCategories, dataCategories, null);
+    populateGraphCategorie(analysesGroupedByCategories, dataCategories);
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -78,7 +79,7 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
                     isAnimationActive={false}>
                     {dataCategories.map((entry) => (
                         <Cell key={`cell-${entry.categorie}`}
-                            fill={getCategorieColor(entry.categorie) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")} />
+                            fill={getCategorieColor(entry.categorie.id) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")} />
                     ))
                     }
                     <LabelList data={dataSsCategories} dataKey="name"
@@ -90,7 +91,7 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
                     isAnimationActive={false}>
                     {dataSsCategories.map((entry) => (
                         <Cell key={`cell-${entry.categorie.id}`}
-                            fill={getCategorieColor(entry.categorie) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
+                            fill={getCategorieColor(entry.categorie.id) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
                         />
                     ))
                     }
