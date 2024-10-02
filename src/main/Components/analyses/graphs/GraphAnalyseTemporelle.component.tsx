@@ -4,7 +4,7 @@ import { flatCategoriesData, populateGraphCategories, populateGraphSoldes } from
 import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
 import { GraphAnalyseTemporelleProps } from "../../Components.props";
 import { GraphAnalyseTimelineModel } from "../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
-import { GraphAnalyseTimelineItemModel } from "../../../Models/analyses/temporelles/GraphAnalyseMensuel.model";
+import { SOLDES_ENUM } from "./GraphAnalyseTemporelle.constant";
 
 
 /**
@@ -52,9 +52,9 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
                     strokeWidth="3"
                     stroke={categorie.couleur} />)
 
-                lines.push(<Line key={"prev_" + categorie.id}
+                lines.push(<Line key={SOLDES_ENUM.PREVISIONNEL + (categorie.id ?? 'defaultId')}
                     type="monotone"
-                    dataKey={"prev_" + categorie.libelleCategorie}
+                    dataKey={SOLDES_ENUM.PREVISIONNEL + categorie.libelleCategorie}
                     strokeWidth="1"
                     strokeDasharray="5 5"
                     stroke={categorie.couleur} />)
@@ -65,24 +65,24 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
 
     const renderSoldes = () => {
         let soldes : JSX.Element[] = [];
-        soldes.push(<Bar key="SoldesD" dataKey="SoldesD"
+        soldes.push(<Bar key={SOLDES_ENUM.SOLDE_COURANT} dataKey={SOLDES_ENUM.SOLDE_COURANT}
             type="monotone"
             fill="url('#colorSoldesD')" stroke="url('#colorSoldesD')"
             barSize={40} />)
 
-        soldes.push(<Bar key="SoldesF" dataKey="SoldesF"
+        soldes.push(<Bar key={SOLDES_ENUM.SOLDE_FIN} dataKey={SOLDES_ENUM.SOLDE_FIN}
             type="monotone"
             fill="url('#colorSoldesF')" stroke="url('#colorSoldesF')"
             barSize={40} />)
 
-        soldes.push(<Bar key="prev_SoldesD"
-            dataKey="prev_SoldesD"
+        soldes.push(<Bar key={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_COURANT}
+            dataKey={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_COURANT}
             type="monotone"
             fill="url('#colorSoldesD')" stroke="url('#colorSoldesD')"
             barSize={40} strokeDasharray="5 5" />)
 
-        soldes.push(<Bar key="prev_SoldesF"
-            dataKey="prev_SoldesF"
+        soldes.push(<Bar key={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_FIN}
+            dataKey={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_FIN}
             type="monotone"
             fill="url('#colorSoldesF')" stroke="url('#colorSoldesF')"
             barSize={40} strokeDasharray="5 5" />)

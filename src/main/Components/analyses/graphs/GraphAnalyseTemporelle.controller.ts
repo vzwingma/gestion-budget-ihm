@@ -7,6 +7,7 @@ import { AnalyseCategorieTimelineItem } from "../../../Models/analyses/temporell
 import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import { GraphAnalyseTimelineItemModel } from "../../../Models/analyses/temporelles/GraphAnalyseMensuel.model";
 import { GraphAnalyseTimelineModel } from "../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
+import { SOLDES_ENUM } from "./GraphAnalyseTemporelle.constant";
 
 
 
@@ -29,7 +30,7 @@ export function populateGraphCategories(anneeAnalyses: number, analyseSoldesCate
 
             if (datasTemporellesMois === undefined) {
                 datasTemporellesMois = {
-                    id: "id_" + mois + "_" + anneeAnalyses + "_" + (isAtTerminaison ? "prev_" : ""),
+                    id: "id_" + mois + "_" + anneeAnalyses + "_" + (isAtTerminaison ? SOLDES_ENUM.PREVISIONNEL : SOLDES_ENUM.REEL),
                     name: createLabelTimeline(mois, anneeAnalyses),
                     categories: {}
                 };
@@ -40,7 +41,7 @@ export function populateGraphCategories(anneeAnalyses: number, analyseSoldesCate
                 .forEach(categorie => {
                     const timelinesCategory = Object.values(timelinesGroupedByCategories[mois])
                         .filter(timeline => timeline.categorie?.id === categorie.id)[0]
-                    datasTemporellesMois.categories[(isAtTerminaison ? "prev_" : "") + categorie.libelleCategorie] =
+                    datasTemporellesMois.categories[(isAtTerminaison ? SOLDES_ENUM.PREVISIONNEL : SOLDES_ENUM.REEL) + categorie.libelleCategorie] =
                         timelinesCategory !== undefined ? Math.abs(timelinesCategory.total) : 0;
 
                 })
@@ -68,12 +69,12 @@ export function populateGraphSoldes(anneeAnalyses: number, timelinesSoldes: Anal
 
             let dataGraphTimelineItem: GraphAnalyseTimelineItemModel;
             dataGraphTimelineItem = getDataGraphTimelineItem(dataGraphTimeline, mois, anneeAnalyses);
-            
+
             // Ajout des soldes
             if (filterSoldesActive) {
-                dataGraphTimelineItem.categories[(isAtTerminaison ? "prev_" : "") + "SoldesD"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].soldeAtFinMoisPrecedent : 0;
-                dataGraphTimelineItem.categories[(isAtTerminaison ? "prev_" : "") + "SoldesF"] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].soldeAtMaintenant : 0;
-            }            
+                dataGraphTimelineItem.categories[(isAtTerminaison ? SOLDES_ENUM.PREVISIONNEL : SOLDES_ENUM.REEL) + SOLDES_ENUM.SOLDE_COURANT] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].soldeAtFinMoisPrecedent : 0;
+                dataGraphTimelineItem.categories[(isAtTerminaison ? SOLDES_ENUM.PREVISIONNEL : SOLDES_ENUM.REEL) + SOLDES_ENUM.SOLDE_FIN] = timelinesSoldes[mois] !== undefined ? timelinesSoldes[mois].soldeAtMaintenant : 0;
+            }
             dataGraphTimeline.dataGraphTimelineItem[dataGraphTimelineItem.id] = dataGraphTimelineItem;
         });
 }
@@ -100,21 +101,22 @@ function getDataGraphTimelineItem(dataGraphTimeline: GraphAnalyseTimelineModel, 
  */
 export function flatCategoriesData(dataGraphTimeline: GraphAnalyseTimelineModel, analyseSoldesCategoriesData: AnalyseSoldesCategorie[], filterSoldesActive: boolean) {
     const dataByCategories: GraphAnalyseTimelineItemModel[] = Object.values(dataGraphTimeline.dataGraphTimelineItem);
-        for (let i = 0; i < dataByCategories.length; i++) {
-            const dataByMonth = dataByCategories[i];
-            for (let j = 0; j < analyseSoldesCategoriesData.length; j++) {
-                const categorie = analyseSoldesCategoriesData[j];
-                dataByMonth[categorie.libelleCategorie] = dataByMonth.categories[categorie.libelleCategorie];
-                dataByMonth["prev_" + categorie.libelleCategorie] = dataByMonth.categories["prev_" + categorie.libelleCategorie];
-            }
-            if(filterSoldesActive) {
-                dataByMonth["SoldesD"] = dataByMonth.categories["SoldesD"];
-                dataByMonth["SoldesF"] = dataByMonth.categories["SoldesF"];
-                dataByMonth["prev_SoldesD"] = dataByMonth.categories["prev_SoldesD"];
-                dataByMonth["prev_SoldesF"] = dataByMonth.categories["prev_SoldesF"];
-            }
+    for (let i = 0; i < dataByCategories.length; i++) {
+        const dataByMonth = dataByCategories[i];
+        for (let j = 0; j < analyseSoldesCategoriesData.length; j++) {
+            const categorie = analyseSoldesCategoriesData[j];
+            dataByMonth[categorie.libelleCategorie] = dataByMonth.categories[categorie.libelleCategorie];
+            dataByMonth[SOLDES_ENUM.PREVISIONNEL + categorie.libelleCategorie] = dataByMonth.categories[SOLDES_ENUM.PREVISIONNEL + categorie.libelleCategorie];
         }
-        return dataByCategories;
+        if (filterSoldesActive) {
+            dataByMonth[SOLDES_ENUM.SOLDE_COURANT] = dataByMonth.categories[SOLDES_ENUM.SOLDE_COURANT];
+            dataByMonth[SOLDES_ENUM.SOLDE_FIN] = dataByMonth.categories[SOLDES_ENUM.SOLDE_FIN];
+            dataByMonth[SOLDES_ENUM.PREVISIONNEL+SOLDES_ENUM.SOLDE_COURANT] = dataByMonth.categories[SOLDES_ENUM.PREVISIONNEL+SOLDES_ENUM.SOLDE_COURANT];
+            dataByMonth[SOLDES_ENUM.PREVISIONNEL+SOLDES_ENUM.SOLDE_FIN] = dataByMonth.categories[SOLDES_ENUM.PREVISIONNEL+SOLDES_ENUM.SOLDE_FIN];
+        }
+        delete (dataByCategories[i] as {categories?: { [idCategorie: string]: number }}).categories;
+    }
+    return dataByCategories;
 }
 
 
