@@ -3,9 +3,46 @@ import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.render
 import { PolarViewBox } from "recharts/types/util/types";
 import React from "react";
 import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
+import GraphAnalyseCategoriesModel from "../../../Models/analyses/categories/GraphAnalyseCategories.model";
+import CategorieOperationModel from "../../../Models/CategorieOperation.model";
+import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
 
 
 
+    /**
+     * Populate des data pour les graphs d'une catégorie
+     * @param analysesGroupedByCategories : object analyses groupées des catégories
+     * @param dataGraphCategories : array tableau pour alimenter le graphique
+     * @param parentCategorie : object catégorie parente
+     */
+    export function populateGraphAnalyseCategories(analysesGroupedByCategories: { [idCategorie: string]: AnalyseCategoriesModel }, 
+                                                                                   typeAnalyse: string,
+                                                                                   dataGraphCategories: GraphAnalyseCategoriesModel[],
+                                                                                   dataGraphSsCategories: GraphAnalyseCategoriesModel[] | null, parentCategorie?: CategorieOperationModel) {
+        const arrayAnalysesGroupedByCategories: AnalyseCategoriesModel[] = []
+        // transform en array
+        for (let categorieId in analysesGroupedByCategories) {
+            arrayAnalysesGroupedByCategories.push(analysesGroupedByCategories[categorieId]);
+        }
+
+        // Populate datagategories
+        arrayAnalysesGroupedByCategories
+            .filter(analysesOfCategorie => analysesOfCategorie.nbTransactions[typeAnalyse] > 0)
+            .sort((analysesOfCategorie1, analysesOfCategorie2) => sortLibellesCategories(analysesOfCategorie1.categorie, analysesOfCategorie2.categorie))
+            .forEach((analysesOfCategorie) => {
+
+                dataGraphCategories.push({
+                    id: analysesOfCategorie.categorie.id!,
+                    categorie: parentCategorie != null ? parentCategorie : analysesOfCategorie.categorie,
+                    name: analysesOfCategorie.categorie.libelle + " : " + analysesOfCategorie.pourcentage[typeAnalyse] + "%",
+                    value: Math.abs(analysesOfCategorie.total[typeAnalyse])
+                })
+                // Populate pour les sous catégories
+                if (analysesOfCategorie.resumesSsCategories !== undefined && analysesOfCategorie.resumesSsCategories !== null && dataGraphSsCategories !== null) {
+                    populateGraphAnalyseCategories(analysesOfCategorie.resumesSsCategories, typeAnalyse, dataGraphSsCategories, null, analysesOfCategorie.categorie);
+                }
+            })
+    }
     
     /**
      * Rend une étiquette de catégorie avec des propriétés spécifiques.
