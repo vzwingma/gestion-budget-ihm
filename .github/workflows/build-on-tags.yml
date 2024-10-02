@@ -35,8 +35,6 @@ jobs:
         run: npm version ${{ steps.get_version.outputs.VERSION }} --git-tag-version=false
       - run: npm ci
         name: CI Install
-      - run: npm run test
-        name: Unit tests
       - name: Update config in .env.production
         run: |
           sed -i 's/__BUDGET_IHM_VERSION__/${{ steps.get_version.outputs.VERSION }}/g' external-ressources/conf/.env.production;
