@@ -1,4 +1,6 @@
 import AnalyseCategoriesModel from "../Models/analyses/AnalyseCategories.model";
+import { SoldesTimelineItem } from "../Models/analyses/AnalyseTemporelleSoldesTimelineItem.model";
+import { CategorieTimelineItem } from "../Models/analyses/AnalyseTemportelleCategorieTimelineItem.model";
 import BudgetMensuelModel from "../Models/BudgetMensuel.model";
 import CategorieOperationModel from "../Models/CategorieOperation.model";
 import CompteBancaireModel from "../Models/CompteBancaire.model";
@@ -6,7 +8,6 @@ import OperationModel from "../Models/Operation.model";
 import SoldeCategorieModel from "../Models/SoldeCategorie.model";
 import SoldeMensuelModel from "../Models/SoldeMensuel.model";
 import { BUSINESS_ONGLETS, UTILISATEUR_DROITS } from "../Utils/AppBusinessEnums.constants";
-import { CategorieTimelineItem, SoldesTimelineItem } from "./analyses/temporelles/AnalyseTemporelle.controller";
 import { OPERATION_EDITION_FORM } from "./budgets/operations/detail/OperationDetailPage.constants";
 
 /**

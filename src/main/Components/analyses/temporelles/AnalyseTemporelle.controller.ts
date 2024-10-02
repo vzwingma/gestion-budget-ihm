@@ -4,41 +4,13 @@ import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer
 import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
 import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
 import { DataCalculationTemporelResultsProps } from "../../Components.props";
+import { CategorieTimelineItem } from "../../../Models/analyses/AnalyseTemportelleCategorieTimelineItem.model";
+import { SoldesTimelineItem } from "../../../Models/analyses/AnalyseTemporelleSoldesTimelineItem.model";
 /**
  * Controleur des analyses temporelles
  */
 
 
-
-
-/**
- * Interface pour CategorieTimelineItem.
- *
- * Cette interface représente un résumé d'une catégorie dans l'application. Elle comprend la catégorie elle-même,
- * le nombre de transactions associées à la catégorie, et le montant total de ces transactions.
- *
- * @typedef {Object} CategorieTimelineItem
- * @property {any} categorie - L'objet catégorie.
- * @property {number} nbTransactions - Le nombre de transactions associées à la catégorie.
- * @property {number} total - Le montant total des transactions associées à la catégorie.
- */
-export interface CategorieTimelineItem {
-    categorie: any,
-    nbTransactions: number,
-    total: number
-}
-
-/**
- * Interface pour SoldesTimelineItem.
- * Cette interface représente un résumé des soldes dans l'application. Elle comprend les totaux des soldes.
- * @typedef {Object} SoldesTimelineItem
- * @property {number[]} totaux - Les totaux des soldes.
- *
- */
-export interface SoldesTimelineItem {
-    soldeAtFinMoisPrecedent : number,
-    soldeAtMaintenant : number
-}
 
 /**
  * Crée un nouveau résumé de catégorie
@@ -47,7 +19,7 @@ export interface SoldesTimelineItem {
 function createNewCategorieTimelineItem() {
     let newResumeCategorie: CategorieTimelineItem;
     newResumeCategorie = {
-        categorie: {},
+        categorie: null,
         total: 0,
         nbTransactions: 0
     };
@@ -133,8 +105,7 @@ function calculateTimelineCategories(budgetData : SoldeMensuelModel, aTerminaiso
  * @returns {SoldesTimelineItem} Un objet contenant les résultats de l'analyse
  */
 function calculateTimelineSoldes(soldeMensuelData : SoldeMensuelModel, aTerminaison : boolean) : SoldesTimelineItem {
-    let newTimelineSoldes: SoldesTimelineItem;
-    newTimelineSoldes = {
+    const newTimelineSoldes: SoldesTimelineItem = {
         soldeAtFinMoisPrecedent : Math.ceil(soldeMensuelData.soldes.soldeAtFinMoisPrecedent),
         soldeAtMaintenant : Math.ceil(aTerminaison ? soldeMensuelData.soldes.soldeAtFinMoisCourant : soldeMensuelData.soldes.soldeAtMaintenant)
     };
