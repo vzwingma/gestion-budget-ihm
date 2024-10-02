@@ -10,11 +10,10 @@ import BudgetPage from "../budgets/budget/Budget.component";
 import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component";
 import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
 import CenterComponent from "../CenterComponent";
+import { MainPageProps } from "../Components.props";
 
 
-interface MainPageProps {
-    fonction: BUSINESS_ONGLETS;
-}
+
 /**
  * Page principale de gestion des budgets
  */
@@ -36,7 +35,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @param selectedCompteFromComponent : compte sélectionnée
      */
     function handleCompteChange(selectedCompteFromComponent: CompteBancaireModel) {
-        console.log("[TRIGGER-MENU] NewContext compte=" + selectedCompteFromComponent.id)
+        console.log("[TRIGGER-MENU] Context compte", selectedCompteFromComponent.id)
         setSelectedCompte(selectedCompteFromComponent);
         setBudgetMenuOpen(false);
     }
@@ -55,7 +54,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @param selectedDateFromComponent : date sélectionnée
      */
     function handleDateChange(selectedDateFromComponent : Date) {
-        console.log("[TRIGGER-MENU] NewContext date=" + selectedDateFromComponent)
+        console.log("[TRIGGER-MENU] Context date" , selectedDateFromComponent)
         setSelectedDate(selectedDateFromComponent);
     }
 

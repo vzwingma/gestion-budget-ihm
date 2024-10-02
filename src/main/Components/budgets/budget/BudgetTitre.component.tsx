@@ -2,15 +2,10 @@ import OperationValue from '../../../Utils/renderers/OperationValue.renderer'
 import {Box, Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import {EventOutlined} from "@mui/icons-material";
-import CompteBancaireModel from '../../../Models/CompteBancaire.model';
-import BudgetMensuelModel from '../../../Models/BudgetMensuel.model';
+import { BudgetsTitreProps } from '../../Components.props';
 
 
-interface BudgetsSoldesPropTypes  {
-    currentCompte: CompteBancaireModel,
-    currentDate: Date,
-    currentBudget: BudgetMensuelModel
-}
+
 /**
  * Page principale d'affichage du solde
  * @param currentCompte compte courant
@@ -19,7 +14,7 @@ interface BudgetsSoldesPropTypes  {
  * @returns {JSX.Element} element JSX
  * @constructor
  */
-const BudgetsTitre : React.FC<BudgetsSoldesPropTypes> = ({currentCompte, currentDate, currentBudget}): JSX.Element => {
+const BudgetsTitre : React.FC<BudgetsTitreProps> = ({currentCompte, currentDate, currentBudget} : BudgetsTitreProps): JSX.Element => {
 
     // définition de la date courante
     const dateCourante = new Date(Date.now());

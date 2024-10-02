@@ -3,7 +3,7 @@ import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import { call } from "../../../Services/ClientHTTP.service";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../Utils/AppTechEnums.constants";
 import { calculateResumes } from "./AnalyseCategories.controller";
-import { DataCalculationResultsProps } from "./AnalyseCategories.component";
+import { DataCalculationResultsProps } from "../../Components.props";
 
 /**
  * Services back-end pour les analyses

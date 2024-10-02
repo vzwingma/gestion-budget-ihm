@@ -1,39 +1,24 @@
 import React from 'react'
 import { MenuItem, TextField, Typography } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationModel from './../../../../../Models/Operation.model'
 import { getPeriodeRenderer } from './../../../../../Utils/renderers/OperationItem.renderer'
 import { PERIODES_MENSUALITE_ENUM } from './../../../../../Utils/AppBusinessEnums.constants'
-
-/**
- * Propriétés pour le composant OperationDetailMensualiteProps.
- *
- * @interface OperationDetailMensualiteProps
- * 
- * @property {OperationModel} operation - Le modèle de l'opération.
- * @property {boolean} budgetActif - Indique si le budget est actif.
- * @property {boolean} formMensualiteInEdition - Les propriétés du formulaire d'édition.
- * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
- */
-export interface OperationDetailMensualiteProps {
-    operation: OperationModel
-    budgetActif: boolean
-    formMensualiteInEdition: boolean
-    fillOperationForm: (field: OPERATION_EDITION_FORM.MENSUALITE, value: string) => void
-}
-
+import { OperationDetailMensualiteProps } from '../../../../Components.props'
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
  *
  * @component
- * @param {OperationDetailMensualiteProps} props - Les propriétés du composant.
+ * @property {OperationModel} operation - Le modèle de l'opération.
+ * @property {boolean} budgetActif - Indique si le budget est actif.
+ * @property {boolean} formMensualiteInEdition - Les propriétés du formulaire d'édition.
+ * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps> = ({ operation, budgetActif,
-    formMensualiteInEdition,
-    fillOperationForm
-}: OperationDetailMensualiteProps): JSX.Element => {
+                                                                                        formMensualiteInEdition,
+                                                                                        fillOperationForm
+                                                                                    }: OperationDetailMensualiteProps): JSX.Element => {
 
 
     /**
@@ -43,7 +28,6 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     function fillPeriodeForm(e: any) {
         fillOperationForm(OPERATION_EDITION_FORM.MENSUALITE, e.target.value);
     }
-
 
 
     return (
@@ -63,7 +47,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
                 variant="standard">
                 {Object.values(PERIODES_MENSUALITE_ENUM).map((option) => (
                     <MenuItem key={option} value={option}
-                              color={getPeriodeRenderer(option).color}>
+                        color={getPeriodeRenderer(option).color}>
                         {getPeriodeRenderer(option).text}
                     </MenuItem>
                 ))}

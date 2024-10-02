@@ -18,20 +18,13 @@ import {
     DeleteForeverRounded,
     HistoryRounded
 } from "@mui/icons-material";
-import OperationModel from "../../../../../Models/Operation.model";
 import { OPERATION_ETATS_ENUM } from "../../../../../Utils/AppBusinessEnums.constants";
 import CenterComponent from "../../../../CenterComponent";
-import BudgetMensuelModel from "../../../../../Models/BudgetMensuel.model";
 import { handleOperationAction } from "./OperationDetailActions.controller";
+import { OperationDetailActionsProps } from "../../../../Components.props";
 
 
-interface OperationDetailActionsProps {
-    operation: OperationModel
-    budget: BudgetMensuelModel
-    isInCreateMode: boolean,
-    onClickRealiseInCreateMode : (valeurDate: Date, editOperation: OperationModel, setEditOperation: React.Dispatch<React.SetStateAction<OperationModel>>) => void
-    onOperationChange: (budget: BudgetMensuelModel) => void
-}
+
 
 /**
  * Composant affichant la liste des actions possibles sur l'opération

@@ -5,14 +5,10 @@ import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
 import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
 import { renderLabelCategorie, renderLabelSsCategorie } from "./GraphAnalyses.controller";
 import GraphAnalyseCategoriesModel from "../../../Models/analyses/GraphAnalyseCategories.model";
+import { GraphAnalysesProps } from "../../Components.props";
 
 
-interface GraphAnalysesProps {
-    typeAnalyse: string,
-    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel },
-    resumeSelectedCategorie: AnalyseCategoriesModel | null,
-    resumeSelectedSsCategorie: AnalyseCategoriesModel | null
-}
+
 
 /**
  * Graphique Analyses
@@ -23,12 +19,11 @@ interface GraphAnalysesProps {
  * @returns {JSX.Element} graphiques
  * @constructor
  */
-const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
-    typeAnalyse,
-    analysesGroupedByCategories,
-    resumeSelectedCategorie,
-    resumeSelectedSsCategorie
-}: GraphAnalysesProps): JSX.Element => {
+const GraphAnalyses: React.FC<GraphAnalysesProps> = ({ typeAnalyse,
+                                                        analysesGroupedByCategories,
+                                                        resumeSelectedCategorie,
+                                                        resumeSelectedSsCategorie
+                                                    }: GraphAnalysesProps): JSX.Element => {
 
 
     let dataCategories: GraphAnalyseCategoriesModel[] = [];
@@ -41,7 +36,7 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
      * @param parentCategorie : object catégorie parente
      */
     function populateGraphCategorie(analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }, dataCategories: any[], parentCategorie?: any) {
-        const arrayAnalysesGroupedByCategories : AnalyseCategoriesModel[] = []
+        const arrayAnalysesGroupedByCategories: AnalyseCategoriesModel[] = []
         // transform en array
         for (let categorieId in analysesGroupedByCategories) {
             arrayAnalysesGroupedByCategories.push(analysesGroupedByCategories[categorieId]);

@@ -2,16 +2,11 @@ import React from 'react'
 import { Box, Grid2, Stack, Typography } from "@mui/material";
 import OperationValue from "../../../../Utils/renderers/OperationValue.renderer";
 import { getCategorieIcon } from "../../../../Utils/renderers/CategorieItem.renderer";
-import AnalyseCategoriesModel from '../../../../Models/analyses/AnalyseCategories.model';
 import CenterComponent from '../../../CenterComponent';
+import { AnalyseCategorieListItemProps } from '../../../Components.props';
 
 
 
-interface AnalyseCategorieListItemProps {
-    resumeCategorie: AnalyseCategoriesModel,
-    typeAnalyse: string,
-    selectCategorie: () => void
-}
 
 /**
  * Tuile d'un résumé de catégories

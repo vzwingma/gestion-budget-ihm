@@ -4,7 +4,6 @@ import { Box, Chip, CircularProgress, Divider, Grid2, Stack, Switch } from "@mui
 import MenuIcon from '@mui/icons-material/Menu';
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseCategoriesTitre.component";
-import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import { loadBudget } from "./AnalyseCategories.extservices";
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
 import { getOperationStateColor } from "../../../Utils/renderers/OperationItem.renderer";
@@ -13,26 +12,16 @@ import { selectEtatOperation, selectTypeOperation } from "./AnalyseCategories.co
 import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component";
 import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
 import CenterComponent from "../../CenterComponent";
+import { AnalyseCategoriesProps, DataCalculationResultsProps } from "../../Components.props";
 
 
-interface AnalyseCategoriesProps {
-    selectedCompte: CompteBancaireModel | null,
-    selectedDate: Date,
-    onOpenMenu: () => void
-}
 
-export interface DataCalculationResultsProps {
-    currentBudget: BudgetMensuelModel,
-    totauxGroupedByEtat: { [key: string]: number },
-    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }
-}
 
 /**
  * Page principale d'une analyse
  */
 
 export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCompte, selectedDate, onOpenMenu }: AnalyseCategoriesProps): JSX.Element => {
-
 
     /**
      * États pour la page Analyse

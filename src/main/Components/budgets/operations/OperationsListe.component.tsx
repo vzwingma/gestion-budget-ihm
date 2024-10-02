@@ -3,15 +3,7 @@ import {Container, Divider, Stack} from "@mui/material";
 import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';
 import OperationModel from '../../../Models/Operation.model';
-import CompteBancaireModel from '../../../Models/CompteBancaire.model';
-
-
-interface OperationsListeProps {
-    operationGroupedByDate: {[key: string]: OperationModel[]}
-    filterOperations: string | null
-    listeComptes: CompteBancaireModel[]
-    onClick: (operation : OperationModel) => void
-}
+import { OperationsListeProps } from '../../Components.props';
 
 
 /**
@@ -25,7 +17,6 @@ interface OperationsListeProps {
  *
   */
 const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, listeComptes, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
-
 
     /**
      * Iterate groupe
@@ -66,9 +57,7 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
 
     return <Stack divider={<Divider orientation="horizontal"/>}
                   sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
-        {
-            iterate(operationGroupedByDate)
-        }
+        {  iterate(operationGroupedByDate) }
     </Stack>
 };
 

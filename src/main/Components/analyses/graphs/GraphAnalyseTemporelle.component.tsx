@@ -1,22 +1,9 @@
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import React from "react";
-import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
-import { CategorieTimelineItem, SoldesTimelineItem } from "../temporelles/AnalyseTemporelle.controller";
 import { DataTemporelleAnnee, populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
 import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
+import { GraphAnalyseTemporelleProps } from "../../Components.props";
 
-/**
- * Propriétés du composant de graphique pour l'analyse temporelle.
- */
-interface GraphAnalyseTemporelleProps {
-    anneeAnalyses: number,
-    filterSoldesActive: boolean,
-    categoriesData: SoldeCategorieModel[],
-    timelinesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
-    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
-    timelinesSoldesData: SoldesTimelineItem[],
-    timelinesPrevisionnellesSoldesData: SoldesTimelineItem[]
-}
 
 /**
  * Composant de graphique pour l'analyse temporelle.

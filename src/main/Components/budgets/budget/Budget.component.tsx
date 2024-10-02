@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import {Box, CircularProgress, Divider, Grid2, InputBase, Paper} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import BudgetTitre from "./BudgetTitre.component";
-import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
 import OperationModel, {createNewOperation} from "../../../Models/Operation.model";
 import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices";
@@ -17,13 +16,9 @@ import {getOperationsGroupedByDateOperation} from "./Budget.controller";
 import CenterComponent from "../../CenterComponent";
 import { getLibellesOperation } from "../operations/detail/OperationDetailPage.extservices";
 import CategorieOperationModel from "../../../Models/CategorieOperation.model";
+import { BudgetPageProps } from "../../Components.props";
 
-interface BudgetPageProps {
-    selectedCompte: CompteBancaireModel | null
-    selectedDate: Date
-    listeComptes: CompteBancaireModel[]
-    onOpenMenu: () => void
-}
+
 
 export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selectedDate, listeComptes, onOpenMenu }: BudgetPageProps): JSX.Element => {
 
@@ -77,8 +72,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
         console.log("Chargement de " + categories.length + " catégories");
         setCategories(categories);
     }
-
-
 
     /**
      * Callback de filtre d'opération

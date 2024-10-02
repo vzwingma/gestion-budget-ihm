@@ -1,39 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationModel from './../../../../../Models/Operation.model'
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography } from '@mui/material'
 import { getOperationLibelle } from './../../../../../Utils/renderers/OperationItem.renderer'
-import CompteBancaireModel from './../../../../../Models/CompteBancaire.model'
+import { OperationDetailLibelleProps } from '../../../../Components.props'
 
-
-
-/**
- * Propriétés pour le composant OperationDetailValeur.
- *
- * @interface OperationDetailLibelleProps
- * 
- * @property {OperationModel} operation - Le modèle de l'opération.
- * @property {boolean} budgetActif - Indique si le budget est actif.
- * @property {EditFormProps} editForm - Les propriétés du formulaire d'édition.
- * @property {string | null} errorValeur - Le message d'erreur pour la valeur, ou null s'il n'y a pas d'erreur.
- * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
- */
-export interface OperationDetailLibelleProps {
-    operation: OperationModel
-    budgetActif: boolean
-    listeComptes: CompteBancaireModel[]
-    listeLibellesOperations: string[]
-    formLibelleInEdition: boolean
-    errorLibelle: string | null
-    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
-}
 
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
  *
  * @component
- * @param {OperationDetailValeurProps} props - Les propriétés du composant.
+ * @property {OperationModel} operation - Le modèle de l'opération.
+ * @property {boolean} budgetActif - Indique si le budget est actif.
+ * @property {EditFormProps} editForm - Les propriétés du formulaire d'édition.
+ * @property {string | null} errorValeur - Le message d'erreur pour la valeur, ou null s'il n'y a pas d'erreur.
+ * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ operation, budgetActif,listeComptes,listeLibellesOperations,

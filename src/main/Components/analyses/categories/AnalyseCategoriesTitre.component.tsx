@@ -2,14 +2,9 @@ import {Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import CompteBancaireModel from '../../../Models/CompteBancaire.model';
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
+import { AnalyseTitreProps } from "../../Components.props";
 
 
-// Définition des types de propriétés pour le composant AnalyseTitre
-interface AnalyseTitreProps {
-    currentCompte: CompteBancaireModel,
-    currentDate: Date,
-    totalOperations: number
-}
 
 /**
  * Page principale pour l'affichage du solde

@@ -1,12 +1,10 @@
 import React from "react";
 import { Button, ButtonGroup } from "@mui/material";
 import {handleSelect} from "./AnneeRange.controller";
+import { AnneeRangeProps } from "../../Components.props";
 
 
-interface AnneeRangeProps {
-    selectedAnnee: number;
-    onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
-}
+
 
 /**
  * Date Range Select

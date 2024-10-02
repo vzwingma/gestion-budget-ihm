@@ -5,7 +5,7 @@ import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.m
 import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
 import OperationModel from "../../../Models/Operation.model";
 import CategorieOperationModel from "../../../Models/CategorieOperation.model";
-import { DataCalculationResultsProps } from "./AnalyseCategories.component";
+import { DataCalculationResultsProps } from "../../Components.props";
 
 /**
  * Contrôleur des analyses
@@ -58,13 +58,14 @@ export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCa
 }
 
 /**
- * Remplit une catégorie
- * @param {Object} group - Le groupe de catégories (ou sous-catégories)
- * @param {Object} operation - L'opération à traiter
- * @param {Object} categorie - La catégorie
- * @param {Object} totauxParEtats - Les totaux par états
- * @param {string} couleurCategorie - La couleur de la catégorie
-*/
+ * Remplit les informations de la catégorie dans le groupe donné en fonction de l'opération et de la catégorie d'opération.
+ *
+ * @param group - Un objet contenant les catégories d'analyse, indexées par leur identifiant.
+ * @param operation - L'opération à analyser.
+ * @param categorie - La catégorie de l'opération.
+ * @param totauxParEtats - Un objet contenant les totaux par états, indexés par état et type d'opération.
+ * @param couleurCategorie - La couleur associée à la catégorie.
+ */
 function populateCategorie(group: { [key: string]: AnalyseCategoriesModel }, operation: OperationModel, categorie: CategorieOperationModel, totauxParEtats: { [key: string]: number; }, couleurCategorie: string) {
     if (categorie !== null && categorie.id !== null) {
 

@@ -1,27 +1,10 @@
 import React from 'react'
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationModel from './../../../../../Models/Operation.model'
 import { sortLibellesCategories } from './../../../../../Utils/OperationData.utils'
 import CategorieOperationModel from './../../../../../Models/CategorieOperation.model'
+import { OperationDetailCategoriesProps } from '../../../../Components.props'
 
-/**
- * Propriétés pour le composant OperationDetailMensualiteProps.
- *
- * @interface OperationDetailMensualiteProps
- * 
- * @property {OperationModel} operation - Le modèle de l'opération.
- * @property {boolean} budgetActif - Indique si le budget est actif.
- * @property {boolean} formMensualiteInEdition - Les propriétés du formulaire d'édition.
- * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
- */
-export interface OperationDetailCategoriesProps {
-    operation: OperationModel
-    listeCategories: CategorieOperationModel[]
-    formCatgoriesInEdition: boolean
-    errorsCategories: string | null
-    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
-}
 
 
 /**
@@ -32,10 +15,10 @@ export interface OperationDetailCategoriesProps {
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({ operation, listeCategories,
-    formCatgoriesInEdition,
-    errorsCategories,
-    fillOperationForm
-}: OperationDetailCategoriesProps): JSX.Element => {
+                                                                                    formCatgoriesInEdition,
+                                                                                    errorsCategories,
+                                                                                    fillOperationForm
+                                                                                }: OperationDetailCategoriesProps): JSX.Element => {
 
 
     /**
@@ -91,9 +74,8 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
 
 /**
  * Liste de toutes les catégories
- * @returns {*}
+ * @returns tableau de catégories
  */
-
 function getListeAllCategoriesFlatten(listeCategories: CategorieOperationModel[]): (CategorieOperationModel)[]  {
     return listeCategories
         .flatMap((cat: CategorieOperationModel) => (cat.listeSSCategories !== undefined && cat.listeSSCategories !== null) ? cat.listeSSCategories : [])

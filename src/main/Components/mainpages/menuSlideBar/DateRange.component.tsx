@@ -2,15 +2,8 @@ import React, { useState } from "react";
 import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { handleModalClick, handleSelect } from "./DateRange.controller";
 import CenterComponent from "../../CenterComponent";
+import { DateRangeProps } from "../../Components.props";
 
-
-/**
- * Props du composant
- */
-interface DateRangeProps {
-    selectedDate: Date;
-    onDateChange: Function
-}
 
 /**
  * Date Range Select

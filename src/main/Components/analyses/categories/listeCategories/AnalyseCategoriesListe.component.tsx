@@ -3,14 +3,9 @@ import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
 import { sortLibellesCategories } from '../../../../Utils/OperationData.utils';
 import AnalyseCategoriesModel from '../../../../Models/analyses/AnalyseCategories.model';
+import { AnalyseCategoriesListeProps } from '../../../Components.props';
 
 
-interface AnalyseCategoriesListeProps {
-    rangSelectedCategorie: number | null,
-    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel } | null,
-    typeAnalyse: string,
-    selectCategorie: (analyseCategoriesModel: AnalyseCategoriesModel, rang? : number) => void
-}
 
 /**
  * Tuile d'une liste de catégories

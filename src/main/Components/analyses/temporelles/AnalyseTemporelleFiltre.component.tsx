@@ -1,14 +1,9 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
 import React from "react";
 import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
-import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
+import { AnalyseTemporelleFiltreProps } from "../../Components.props";
 
 
-
-interface AnalyseTemporelleFiltreProps {
-    listeCategories: SoldeCategorieModel[];
-    onFilterChange: (event: React.SyntheticEvent) => void;
-}
 
 /**
  * Composant pour l'affichage des filtres de l'analyse temporelle.

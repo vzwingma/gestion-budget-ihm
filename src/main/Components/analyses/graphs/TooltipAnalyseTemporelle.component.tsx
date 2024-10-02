@@ -1,12 +1,8 @@
 import {getStyleOperation} from "../../../Utils/renderers/OperationValue.renderer";
 import React from "react";
+import { TooltipAnalyseTemporelleProps } from "../../Components.props";
 
 
-interface TooltipAnalyseTemporelleProps {
-    active?: boolean,
-    payload?: any[],
-    label?: string
-}
 
 /**
  * formatte le tooltip

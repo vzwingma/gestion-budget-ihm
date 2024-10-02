@@ -2,18 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {CircularProgress, Container, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants";
-import CompteBancaireModel from '../../../Models/CompteBancaire.model';
 import {getSoldesBudget} from './CompteItem.controller';
-import OperationModel from "../../../Models/Operation.model";
+import { CompteItemProps } from '../../Components.props';
 
 
-interface CompteItemProps {
-    compte: CompteBancaireModel;
-    selectedDate: Date;
-    selectedFunction: BUSINESS_ONGLETS;
-    onRefreshMenuBar: boolean;
-    onClick: (compte : CompteBancaireModel) => void
-}
+
 /**
  * Tuile affichant un compte
  * @param compte : object compte

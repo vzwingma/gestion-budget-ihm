@@ -1,14 +1,10 @@
 import {Stack, Typography} from "@mui/material";
 import React from "react";
 import AnneeRange from "./AnneeRange.component";
-import CompteBancaireModel from "../../../Models/CompteBancaire.model";
+import { AnalyseTemporelleTitreProps } from "../../Components.props";
 
 
-interface AnalyseTemporelleTitreProps {
-    currentCompte: CompteBancaireModel;
-    currentAnnee: number;
-    onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
-}
+
 
 /**
  * Composant pour l'affichage du titre de l'analyse temporelle.

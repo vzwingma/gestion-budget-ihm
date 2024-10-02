@@ -1,29 +1,8 @@
 import React from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import OperationModel from './../../../../../Models/Operation.model'
 import { TextField, Typography } from '@mui/material'
 import { getLabelFromDate } from '../../../../../Utils/Date.utils'
-
-
-/**
- * Propriétés pour le composant OperationDetailValeur.
- *
- * @interface OperationDetailDateProps
- * 
- * @property {OperationModel} operation - Le modèle de l'opération.
- * @property {boolean} budgetActif - Indique si le budget est actif.
- * @property {EditFormProps} formDateInEdition - Les propriétés du formulaire d'édition.
- * @property {string | null} errorValeur - Le message d'erreur pour la valeur, ou null s'il n'y a pas d'erreur.
- * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
- */
-export interface OperationDetailDateProps {
-    operation: OperationModel
-    budgetActif: boolean
-    formDateInEdition: boolean
-    errorDateOperation: string | null
-    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
-}
-
+import { OperationDetailDateProps } from '../../../../Components.props'
 
 
 
@@ -31,14 +10,18 @@ export interface OperationDetailDateProps {
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
  *
  * @component
- * @param {OperationDetailDateProps} props - Les propriétés du composant.
- * @returns {JSX.Element} Élément JSX représentant le composant.
+ * 
+ * @property {OperationModel} operation - Le modèle de l'opération.
+ * @property {boolean} budgetActif - Indique si le budget est actif.
+ * @property {EditFormProps} formDateInEdition - Les propriétés du formulaire d'édition.
+ * @property {string | null} errorValeur - Le message d'erreur pour la valeur, ou null s'il n'y a pas d'erreur.
+ * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
  */
 export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({ operation, budgetActif,
-    formDateInEdition,
-    errorDateOperation,
-    fillOperationForm
-}: OperationDetailDateProps): JSX.Element => {
+                                                                            formDateInEdition,
+                                                                            errorDateOperation,
+                                                                            fillOperationForm
+                                                                        }: OperationDetailDateProps): JSX.Element => {
 
 
     /**

@@ -39,26 +39,7 @@ import { OperationDetailIntercompte } from './subcomponents/OperationDetailInter
 import { OperationDetailMensualite } from './subcomponents/OperationDetailMensualite.component';
 import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component';
 import OperationEditionModel, { cloneOperation, createNewOperationEdition } from '../../../../Models/OperationEdition.model';
-
-
-/**
- * Propriétés pour le composant OperationDetailPage.
- *
- * @typedef {Object} OperationDetailPageProps
- * @property {OperationModel} operation - Le modèle de l'opération en cours de détail.
- * @property {BudgetMensuelModel} budget - Le modèle du budget mensuel associé.
- * @property {CategorieOperationModel[]} listeCategories - La liste des catégories d'opérations disponibles.
- * @property {CompteBancaireModel[]} listeComptes - La liste des comptes bancaires disponibles.
- * @property {(budget: BudgetMensuelModel, operationsGroupedByDateOperation: { [key: string]: OperationModel[] }) => void} onOperationChange - Fonction appelée lors du changement d'une opération, prenant en paramètres le budget mis à jour et les opérations groupées par date.
- */
-export interface OperationDetailPageProps {
-    operation: OperationModel
-    budget: BudgetMensuelModel
-    listeCategories: CategorieOperationModel[]
-    listeComptes: CompteBancaireModel[]
-    listeLibellesOperations: string[]
-    onOperationChange: (budget: BudgetMensuelModel) => void
-}
+import { OperationDetailPageProps } from '../../../Components.props';
 
 
 /**
@@ -67,7 +48,11 @@ export interface OperationDetailPageProps {
  * Ce composant affiche les détails d'une opération et permet de modifier ses informations.
  * Il gère également les états du formulaire d'édition et les interactions utilisateur.
  *
- * @param {OperationDetailPageProps} props - Les propriétés du composant.
+ * @property {OperationModel} operation - Le modèle de l'opération en cours de détail.
+ * @property {BudgetMensuelModel} budget - Le modèle du budget mensuel associé.
+ * @property {CategorieOperationModel[]} listeCategories - La liste des catégories d'opérations disponibles.
+ * @property {CompteBancaireModel[]} listeComptes - La liste des comptes bancaires disponibles.
+ * @property {(budget: BudgetMensuelModel, operationsGroupedByDateOperation: { [key: string]: OperationModel[] }) => void} onOperationChange - Fonction appelée lors du changement d'une opération, prenant en paramètres le budget mis à jour et les opérations groupées par date.
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
 export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operation,

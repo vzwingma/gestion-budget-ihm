@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import { Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid2, } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 
 import { loadSoldesBudgets } from "./AnalyseTemporelle.extservices";
 import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
@@ -16,14 +15,8 @@ import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
 import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
 import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
+import { AnalyseTemporelleProps } from "../../Components.props";
 
-/**
- * Page principale d'une analyse
- */
-interface AnalyseTemporelleProps {
-    selectedCompte: CompteBancaireModel | null
-    onOpenMenu: () => void
-}
 
 
 /**
@@ -127,8 +120,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                     }
                 </Grid2>
                 <Grid2 size={{ md: 2 }} direction={"row-reverse"}>
-                    {
-                        listeCategories != null ?
+                    {   listeCategories != null ?
                             <>
                                 <AnalyseTemporelleFiltre listeCategories={listeCategories}
                                     onFilterChange={onFilterChange} />
@@ -140,14 +132,12 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                                     onChange={onFilterSoldesChange} />
                             </>
                             :
-                            <CircularProgress />
-                    }
+                            <CircularProgress /> }
                 </Grid2>
             </Grid2>
             <Divider variant="middle" sx={{ margin: 1 }} />
             <Grid2 size={{ md: 5 }} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
                 {currentBudgets != null ?
-
                     <GraphAnalyseTemporelle
                         anneeAnalyses={anneeAnalyses}
                         timelinesGroupedByCategoriesData={timelinesGroupedByCategories || []}

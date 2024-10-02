@@ -17,16 +17,10 @@ import CenterComponent from '../../../CenterComponent';
 import { getEventTargetId } from '../../../../Utils/OperationData.utils';
 import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices';
 import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "./../../../../Utils/AppBusinessEnums.constants";
-import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
 import { userHasPermission } from '../../../../Utils/UserData.utils';
+import { BudgetActionsButtonGroupProps } from '../../../Components.props';
 
 
-interface BudgetActionsButtonGroupProps {
-    budget: BudgetMensuelModel
-    droits: UTILISATEUR_DROITS[]
-    onActionBudgetChange: (budget: BudgetMensuelModel) => void
-    onActionOperationCreate: () => void
-}
 
 /**
  * Actions sur le budget
@@ -41,7 +35,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
 
     const [showModale, setShowModale] = useState<boolean>(false);
     const [modaleContent, setModaleContent] = useState<{ title: string, question: string }>();
-    const [actionEnCours, setActionEnCours] = useState<ACTIONS_BUDGET_ENUM>();
+    const [actionEnCours, setActionEnCours] = useState<string>();
     /**
      * Action sur le bouton ou sur la modale
      * @param event : Event sur le bouton
@@ -76,7 +70,9 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
             }
             setModaleContent({ title: titrePopup, question: questionPopup });
             setShowModale(affichagePopup);
-            setActionEnCours(action);
+            if(action !== null){
+                setActionEnCours(action);
+            }
         } else {
             setShowModale(false);
         }
