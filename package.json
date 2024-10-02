@@ -1,12 +1,12 @@
 {
   "name": "gestion-budget-ihm",
-  "version": "21.x-SNAPSHOT",
+  "version": "21.1-SNAPSHOT",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.1",
-    "@mui/material": "^6.1.1",
+    "@mui/icons-material": "^6.1.2",
+    "@mui/material": "^6.1.2",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
