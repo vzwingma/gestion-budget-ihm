@@ -1,6 +1,9 @@
 import CategorieOperationModel from "../CategorieOperation.model"
 
 
+/**
+ * Model pour les analyse des catégories
+ */
 class AnalyseCategoriesModel {
     categorie: CategorieOperationModel;
     couleurCategorie: string;

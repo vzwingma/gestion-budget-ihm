@@ -1,6 +1,10 @@
 import CategorieOperationModel from "../CategorieOperation.model";
 
-class GraphAnalyseCategories {
+
+/**
+ * Model pour la représentation graphique des analyses des catégories
+ */
+class GraphAnalyseCategoriesModel {
     id: string;
     categorie: CategorieOperationModel;
     name: string;
@@ -16,4 +20,4 @@ class GraphAnalyseCategories {
         this.value = value;
     }
 }
-export default GraphAnalyseCategories
+export default GraphAnalyseCategoriesModel

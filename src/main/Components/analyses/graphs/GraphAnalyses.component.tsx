@@ -4,7 +4,7 @@ import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.render
 import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
 import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
 import { renderLabelCategorie, renderLabelSsCategorie } from "./GraphAnalyses.controller";
-import GraphAnalyseCategories from "../../../Models/analyses/GraphAnalyseCategories.model";
+import GraphAnalyseCategoriesModel from "../../../Models/analyses/GraphAnalyseCategories.model";
 
 
 interface GraphAnalysesProps {
@@ -31,8 +31,8 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({
 }: GraphAnalysesProps): JSX.Element => {
 
 
-    let dataCategories: GraphAnalyseCategories[] = [];
-    let dataSsCategories: GraphAnalyseCategories[] = [];
+    let dataCategories: GraphAnalyseCategoriesModel[] = [];
+    let dataSsCategories: GraphAnalyseCategoriesModel[] = [];
 
     /**
      * Populate des data pour les graphs d'une catégorie

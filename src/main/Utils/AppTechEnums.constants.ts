@@ -12,8 +12,8 @@ export const OIDC_ENUM = {
  * Enum des valeur API KEY
  * @type {{API_KEY: *}}
  */
-export const API_GW_ENUM: { API_KEY: any } = {
-    API_KEY: process.env.REACT_APP_CONFIG_API_KEY
+export const API_GW_ENUM: { API_KEY: string } = {
+    API_KEY: process.env.REACT_APP_CONFIG_API_KEY || "MUST_BE_DEFINED"
 }
 
 /**

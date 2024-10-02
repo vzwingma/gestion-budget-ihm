@@ -35,14 +35,15 @@ export function addEndingZeros(num: number): string {
  * @param eventTarget event Target
  * @returns {*} ID du DOM
  */
-export function getEventTargetId(eventTarget: any): any {
+export function getEventTargetId(eventTarget: any): string | null {
     if (eventTarget != null) {
         if (eventTarget.id !== null && eventTarget.id !== "") {
-            return eventTarget.id;
+            return eventTarget.id as string;
         } else {
             return getEventTargetId(eventTarget.parentNode);
         }
     }
+    return null;
 }
 
 /**
@@ -51,7 +52,7 @@ export function getEventTargetId(eventTarget: any): any {
  * @param {CategorieOperationModel} categorie2 : 2ème catégorie
  * @returns {number} comparaison
  */
-export function sortLibellesCategories(categorie1: CategorieOperationModel | undefined, categorie2: CategorieOperationModel | undefined): number {
+export function sortLibellesCategories(categorie1: CategorieOperationModel, categorie2: CategorieOperationModel): number {
     if (categorie1 !== null && categorie1 !== undefined && categorie2 !== null && categorie2 !== undefined) {
         if (categorie1.categorieParente !== null && categorie1.categorieParente !== undefined && categorie2.categorieParente !== null && categorie2.categorieParente !== undefined) {
             if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {

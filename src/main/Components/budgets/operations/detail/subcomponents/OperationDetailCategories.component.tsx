@@ -69,7 +69,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                     renderInput={(params) => <TextField {...params} variant={"standard"} />}
                     sx={{ width: "90%" }}
                     value={operation.ssCategorie != null ? operation.ssCategorie : { id: null, libelle: "" }}
-                    options={getListeAllCategories(listeCategories)}
+                    options={getListeAllCategoriesFlatten(listeCategories)}
                     groupBy={(option: CategorieOperationModel) => option.categorieParente ? option.categorieParente.libelle : ""}
                     getOptionLabel={(option: CategorieOperationModel) => option.libelle != null ? option.libelle : ""}
                     isOptionEqualToValue={(option, value) => {
@@ -94,8 +94,8 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
  * @returns {*}
  */
 
-function getListeAllCategories(listeCategories: CategorieOperationModel[]): any {
+function getListeAllCategoriesFlatten(listeCategories: CategorieOperationModel[]): (CategorieOperationModel)[]  {
     return listeCategories
-        .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories)
+        .flatMap((cat: CategorieOperationModel) => (cat.listeSSCategories !== undefined && cat.listeSSCategories !== null) ? cat.listeSSCategories : [])
         .sort(sortLibellesCategories);
 }

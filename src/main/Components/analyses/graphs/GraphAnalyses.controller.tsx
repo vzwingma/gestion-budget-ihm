@@ -4,23 +4,30 @@ import { PolarViewBox } from "recharts/types/util/types";
 import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
 import React from "react";
 
+
+
+    
     /**
-     * Render du label pour une catégorie
-     * @param props properties
-     * @returns {*}
+     * Rend une étiquette de catégorie avec des propriétés spécifiques.
+     *
+     * @param props - Les propriétés de l'étiquette à rendre.
+     * @param resumeSelectedCategorie - Le modèle de la catégorie sélectionnée ou null si aucune catégorie n'est sélectionnée.
+     * @returns Un élément JSX représentant l'étiquette de la catégorie.
      */
-    export function renderLabelCategorie(props : LabelProps, resumeSelectedCategorie : AnalyseCategoriesModel | null) {
+    export function renderLabelCategorie(props : LabelProps, resumeSelectedCategorie : AnalyseCategoriesModel | null)  : JSX.Element {
         const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
         const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie.id : null)
         return renderLabelAnalyse(props, selectedId, color);
     }
 
     /**
-     * Render du label pour une sous catégorie
-     * @param props
-     * @returns {*}
+     * Rend une étiquette de sous-catégorie avec des propriétés spécifiques.
+     *
+     * @param props - Les propriétés de l'étiquette à rendre.
+     * @param resumeSelectedSsCategorie - Le modèle de la sous-catégorie sélectionnée ou null si aucune sous-catégorie n'est sélectionnée.
+     * @returns Un élément JSX représentant l'étiquette de la sous-catégorie.
      */
-    export function renderLabelSsCategorie(props : LabelProps, resumeSelectedSsCategorie : AnalyseCategoriesModel | null) {
+    export function renderLabelSsCategorie(props : LabelProps, resumeSelectedSsCategorie : AnalyseCategoriesModel | null) : JSX.Element {
         const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
         return renderLabelAnalyse(props, selectedId, "#808080");
     }

@@ -7,7 +7,7 @@ import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
 
 interface AnalyseTemporelleFiltreProps {
     listeCategories: SoldeCategorieModel[];
-    onFilterChange: (event: any) => void;
+    onFilterChange: (event: React.SyntheticEvent) => void;
 }
 
 /**

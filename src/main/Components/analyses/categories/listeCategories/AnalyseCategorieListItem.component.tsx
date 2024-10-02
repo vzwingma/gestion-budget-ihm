@@ -2,13 +2,15 @@ import React from 'react'
 import { Box, Grid2, Stack, Typography } from "@mui/material";
 import OperationValue from "../../../../Utils/renderers/OperationValue.renderer";
 import { getCategorieIcon } from "../../../../Utils/renderers/CategorieItem.renderer";
+import AnalyseCategoriesModel from '../../../../Models/analyses/AnalyseCategories.model';
+import CenterComponent from '../../../CenterComponent';
 
 
 
 interface AnalyseCategorieListItemProps {
-    resumeCategorie: any,
+    resumeCategorie: AnalyseCategoriesModel,
     typeAnalyse: string,
-    selectCategorie: any
+    selectCategorie: () => void
 }
 
 /**
@@ -33,7 +35,7 @@ const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({ res
                             padding: '6px',
                             color: '#FFFFFF'
                         }}>
-                        <center>{getCategorieIcon(resumeCategorie.categorie)}</center>
+                        <CenterComponent>{getCategorieIcon(resumeCategorie.categorie)}</CenterComponent>
                     </Box>
                 </Grid2>
                 <Grid2 size={{ md: 7 }}>

@@ -1,7 +1,7 @@
 import * as ClientHTTP from "../../Services/ClientHTTP.service";
 import {toast} from "react-toastify";
-import CompteBancaireModel from "@/src/main/Models/CompteBancaire.model";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants";
+import CompteBancaireModel from "../../Models/CompteBancaire.model";
 
 /**
  * Appels WS vers pour charger la liste des comptes
@@ -9,12 +9,7 @@ import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums
 export function loadComptes(setComptes: React.Dispatch<React.SetStateAction<CompteBancaireModel[]>>) {
     ClientHTTP
         .call(METHODE_HTTP.GET, BACKEND_ENUM.URL_COMPTES, SERVICES_URL.COMPTES.GET_ALL)
-        .then((data : any[]) => {
-            // Création des comptes pour l'affichage (avec icones)
-            let listeComptes : CompteBancaireModel[] = []
-            data.forEach((compte: CompteBancaireModel) => {
-                listeComptes.push(compte);
-            })
+        .then((listeComptes : CompteBancaireModel[]) => {
             comptesLoaded(listeComptes, setComptes)
         })
         .catch(e => {
