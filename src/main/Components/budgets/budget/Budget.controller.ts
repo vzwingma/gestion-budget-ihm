@@ -18,7 +18,7 @@ export function getOperationsGroupedByDateOperation(listeOperations: OperationMo
         .sort((ope1: OperationModel, ope2: OperationModel) => sortOperations(ope1, ope2))
         .reduce((group: { [key: string]: OperationModel[] }, operation: OperationModel) => {
             const opDateOperation: Date | null = operation.autresInfos.dateOperation;
-            const dateOperation: string = opDateOperation != null ? getLabelFromDate(new Date(opDateOperation)) : "null" ?? "null";
+            const dateOperation: string = (opDateOperation != null) ? getLabelFromDate(new Date(opDateOperation)) : "null";
             group[dateOperation] = group[dateOperation] ?? [];
             group[dateOperation].push(operation);
             return group;

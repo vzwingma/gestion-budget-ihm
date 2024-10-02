@@ -87,7 +87,7 @@ export function getLibellesOperation(idCompte: string, setListeLibellesOperation
                 .filter(
                     (value, index, current_value) => current_value.indexOf(value) === index
                 )
-                .sort();
+                .sort((libelle1, libelle2) => libelle1.localeCompare(libelle2));
             setListeLibellesOperation(listeLibelles);
         })
         .catch(e => {
