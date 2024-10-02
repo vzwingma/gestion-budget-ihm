@@ -18,7 +18,7 @@ import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
  * @param {string} selectedAnnee - L'année sélectionnée.
  * @param handleDataCalculationResult - La fonction de rappel pour les résultats de l'analyse.
  */
-export function loadSoldesBudgets(selectedCompte : CompteBancaireModel, selectedAnnee : number, handleDataCalculationResult : ({soldesBudgetsData,
+export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, selectedAnnee : number, handleDataCalculationResult : ({soldesBudgetsData,
                                                                                                                                    categoriesData,
                                                                                                                                    timelinesGroupedByCategoriesData,
                                                                                                                                    timelinesPrevisionnellesGroupedByCategoriesData,

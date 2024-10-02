@@ -8,6 +8,7 @@ import CompteItem from "./menuSlideBar/CompteItem.component";
 import DateRange from "./menuSlideBar/DateRange.component";
 import BudgetPage from "../budgets/budget/Budget.component";
 import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component";
+import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
 
 
 interface MainPageProps {
@@ -71,12 +72,12 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                                     selectedDate={selectedDate}
                                     listeComptes={comptes}
                                     onOpenMenu={handleOpenMenuBar} />
-            /*
+
             case BUSINESS_ONGLETS.ANALYSE:
                 return <AnalyseCategories   selectedCompte={selectedCompte}
                                             selectedDate={selectedDate}
                                             onOpenMenu={handleOpenMenuBar} />
-             */
+
             case BUSINESS_ONGLETS.ANALYSE_TEMP:
                 return <AnalyseTemporelle selectedCompte={selectedCompte}
                                           onOpenMenu={handleOpenMenuBar} />

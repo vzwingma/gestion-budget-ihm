@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import {Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid2,} from "@mui/material";
+import { Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid2, } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 
-import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices";
+import { loadSoldesBudgets } from "./AnalyseTemporelle.extservices";
 import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
 import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
 import {
@@ -14,14 +14,14 @@ import {
 } from "./AnalyseTemporelle.controller";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
-import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
+import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
 import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
 
 /**
  * Page principale d'une analyse
  */
 interface AnalyseTemporelleProps {
-    selectedCompte: CompteBancaireModel
+    selectedCompte: CompteBancaireModel | null
     onOpenMenu: () => void
 }
 
@@ -62,12 +62,12 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      * Gère les résultats du calcul des données.
      * @param {Object} param0 - Les résultats du calcul des données.
      */
-    function handleDataCalculationResult({soldesBudgetsData,
-                                         categoriesData,
-                                         timelinesGroupedByCategoriesData,
-                                         timelinesPrevisionnellesGroupedByCategoriesData,
-                                         timelinesSoldesData,
-                                         timelinesPrevisionnellesSoldesData} : DataCalculationResultsProps) {
+    function handleDataCalculationResult({ soldesBudgetsData,
+        categoriesData,
+        timelinesGroupedByCategoriesData,
+        timelinesPrevisionnellesGroupedByCategoriesData,
+        timelinesSoldesData,
+        timelinesPrevisionnellesSoldesData }: DataCalculationResultsProps) {
         setCurrentBudgets(soldesBudgetsData);
         setListeCategories(categoriesData);
         setTimelinesGroupedByCategories(timelinesGroupedByCategoriesData);
@@ -87,15 +87,15 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      * @param {Object} event - L'objet d'événement du changement de filtre. La cible de cet événement est censée avoir une propriété 'id' qui correspond à un id de catégorie et une propriété 'checked' qui représente le nouvel état du filtre.
      */
     function onFilterChange(event: any) {
-            let listeCategoriesUpdated = listeCategories;
-            if (listeCategoriesUpdated) {
-                const categorie = listeCategoriesUpdated.find((categorie : SoldeCategorieModel) => categorie.id === event.target.id);
-                if (categorie) {
-                    categorie.filterActive = event.target.checked;
-                }
-                setListeCategories(listeCategoriesUpdated);
-                setFilterChange(new Date().getTime());
+        let listeCategoriesUpdated = listeCategories;
+        if (listeCategoriesUpdated) {
+            const categorie = listeCategoriesUpdated.find((categorie: SoldeCategorieModel) => categorie.id === event.target.id);
+            if (categorie) {
+                categorie.filterActive = event.target.checked;
             }
+            setListeCategories(listeCategoriesUpdated);
+            setFilterChange(new Date().getTime());
+        }
     }
 
     /**
@@ -112,55 +112,54 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     /**
      * Render du budget
      */
-        return (
-            <Box sx={{overflow: "hidden"}} >
-                <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
-                    <Grid2 size={{md:2}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
-                                            fontSize={"large"}/></Grid2>
-                    <Grid2 size={{md:8}}>
-                        {currentBudgets !== null ?
-                            <AnalyseTemporelleTitre currentCompte={selectedCompte}
-                                                    currentAnnee={anneeAnalyses}
-                                                    onAnneeChange={setAnneeAnalyses}/>
-                            :
-                            <CircularProgress/>
-                        }
-                    </Grid2>
-                    <Grid2 size={{md:2}} direction={"row-reverse"}>
-                        {
-                            listeCategories != null ?
+    return (
+        <Box sx={{ overflow: "hidden" }} >
+            <Grid2 container marginTop={1} sx={{ overflow: "hidden" }}>
+                <Grid2 size={{ md: 2 }}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                    fontSize={"large"} /></Grid2>
+                <Grid2 size={{ md: 8 }}>
+                    {currentBudgets !== null && selectedCompte != null ?
+                        <AnalyseTemporelleTitre currentCompte={selectedCompte}
+                            currentAnnee={anneeAnalyses}
+                            onAnneeChange={setAnneeAnalyses} />
+                        :
+                        <CircularProgress />
+                    }
+                </Grid2>
+                <Grid2 size={{ md: 2 }} direction={"row-reverse"}>
+                    {
+                        listeCategories != null ?
                             <>
-
                                 <AnalyseTemporelleFiltre listeCategories={listeCategories}
-                                                         onFilterChange={onFilterChange}/>
+                                    onFilterChange={onFilterChange} />
                                 <FormControlLabel id="Soldes" key="Soldes" label="Soldes"
-                                                  control={<Checkbox id="Soldes" defaultChecked={false}
-                                                                     icon={<RadioButtonUnchecked/>}
-                                                                     checkedIcon={<CheckCircle/>}/>}
-                                                  style={{color: "#FFFFFF"}}
-                                                  onChange={onFilterSoldesChange}/>
+                                    control={<Checkbox id="Soldes" defaultChecked={false}
+                                        icon={<RadioButtonUnchecked />}
+                                        checkedIcon={<CheckCircle />} />}
+                                    style={{ color: "#FFFFFF" }}
+                                    onChange={onFilterSoldesChange} />
                             </>
                             :
-                            <CircularProgress/>
-                        }
-                    </Grid2>
+                            <CircularProgress />
+                    }
                 </Grid2>
-                <Divider variant="middle" sx={{margin: 1}}/>
-                <Grid2 size={{md:5}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
-                        {currentBudgets != null ?
-                            
-                            <GraphAnalyseTemporelle
-                                anneeAnalyses={anneeAnalyses}
-                                timelinesGroupedByCategoriesData={timelinesGroupedByCategories || []}
-                                timelinesSoldesData={timelinesSoldes || []}
-                                timelinesPrevisionnellesGroupedByCategoriesData={timelinesPrevisionnellesGroupedByCategories || []}
-                                timelinesPrevisionnellesSoldesData={timelinesPrevisionnellesSoldes || []}
-                                filterSoldesActive={filterSoldesActive}
-                                categoriesData={listeCategories || []}/>
-                            :
-                            <CircularProgress/>
-                        }
-                </Grid2>
-            </Box>
-        )
+            </Grid2>
+            <Divider variant="middle" sx={{ margin: 1 }} />
+            <Grid2 size={{ md: 5 }} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
+                {currentBudgets != null ?
+
+                    <GraphAnalyseTemporelle
+                        anneeAnalyses={anneeAnalyses}
+                        timelinesGroupedByCategoriesData={timelinesGroupedByCategories || []}
+                        timelinesSoldesData={timelinesSoldes || []}
+                        timelinesPrevisionnellesGroupedByCategoriesData={timelinesPrevisionnellesGroupedByCategories || []}
+                        timelinesPrevisionnellesSoldesData={timelinesPrevisionnellesSoldes || []}
+                        filterSoldesActive={filterSoldesActive}
+                        categoriesData={listeCategories || []} />
+                    :
+                    <CircularProgress />
+                }
+            </Grid2>
+        </Box>
+    )
 }

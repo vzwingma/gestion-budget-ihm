@@ -1,68 +1,59 @@
-import {toast} from "react-toastify";
-import { OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants";
+import { toast } from "react-toastify";
+import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
 import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.renderer";
+import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
+import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
+import OperationModel from "../../../Models/Operation.model";
+import CategorieOperationModel from "../../../Models/CategorieOperation.model";
+import { DataCalculationResultsProps } from "./AnalyseCategories.component";
 
 /**
  * Contrôleur des analyses
  */
-
-/**
- * Crée un nouveau résumé de catégorie
- * @returns {ResumeCategorie} Le résumé de la catégorie
- */
-function createNewResumeCategorie() {
-
-    let newResumeCategorie: ResumeCategorie =
-        {
-            categorie: {},
-            couleurCategorie: "#808080",
-            resumesSsCategories: {},
-            nbTransactions: [],
-            pourcentage: [],
-            total: []
-        }
-    return newResumeCategorie;
-}
 
 
 /**
  * Notification lors de la mise à jour du budget
  * @param {Object} budgetData - Les données du budget
  */
-export function calculateResumes(budgetData) {
-    console.log("Calcul de l'analyse du budget [" + budgetData.id + "] : " + budgetData.listeOperations.length + " opérations")
+export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCalculationResult: ({ currentBudget,
+    analysesGroupedByCategories,
+    totauxGroupedByEtat }: DataCalculationResultsProps) => void): void {
 
-    let totauxGroupedByEtat = budgetData.listeOperations
-        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
-        .reduce((group, operation) => {
-            const idx = operation.etat + "_" + operation.typeOperation;
+    console.log("Calcul de l'analyse du budget [" + currentBudget.id + "] : " + currentBudget.listeOperations.length + " opérations")
 
-            group[idx] = group[idx] ?? 0;
-            group[idx] = group[idx] + operation.valeur
-            // On ajoute les opérations réalisées aux prévues
-            if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
-                const idp = OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation
-                group[idp] = group[idp] ?? 0;
-                group[idp] = group[idp] + operation.valeur
+    let totauxGroupedByEtat: { [key: string]: number } =
+        currentBudget.listeOperations
+            .filter((operation: OperationModel) => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
+            .reduce((group: { [key: string]: number }, operation: OperationModel) => {
+                const idx = operation.etat + "_" + operation.typeOperation;
+                group[idx] = group[idx] ?? 0;
+                group[idx] = group[idx] + operation.valeur
+                // On ajoute les opérations réalisées aux prévues
+                if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
+                    const idp = OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation
+                    group[idp] = group[idp] ?? 0;
+                    group[idp] = group[idp] + operation.valeur
+                }
+                return group;
+            }, {});
+
+    let analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel } = currentBudget.listeOperations
+        .filter((operation: OperationModel) => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
+        .reduce((group: { [key: string]: AnalyseCategoriesModel }, operation: OperationModel) => {
+            let couleurCategorie = getCategorieColor(operation.categorie.id);
+            if (operation.categorie !== null && operation.categorie.id !== null) {
+                populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
+                populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
+            }
+            else {
+                console.warn("La catégorie de l'opération [" + operation.id + "] est vide")
             }
             return group;
         }, {});
 
+    handleDataCalculationResult({ currentBudget, analysesGroupedByCategories, totauxGroupedByEtat });
 
-    let analysesGroupedByCategories = budgetData.listeOperations
-        .filter(operation => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
-        .reduce((group, operation) => {
-            let couleurCategorie = getCategorieColor(operation.categorie);
-            populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
-            populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
-            return group;
-        }, {});
-
-    this.setState({
-        currentBudget: budgetData,
-        analysesGroupedByCategories: analysesGroupedByCategories,
-        totauxGroupedByEtat: totauxGroupedByEtat
-    })
     toast.success("Analyse du budget correctement effectué ")
 }
 
@@ -73,28 +64,29 @@ export function calculateResumes(budgetData) {
  * @param {Object} categorie - La catégorie
  * @param {Object} totauxParEtats - Les totaux par états
  * @param {string} couleurCategorie - La couleur de la catégorie
- */
-function populateCategorie(group, operation, categorie, totauxParEtats, couleurCategorie) {
+*/
+function populateCategorie(group: { [key: string]: AnalyseCategoriesModel }, operation: OperationModel, categorie: CategorieOperationModel, totauxParEtats: { [key: string]: number; }, couleurCategorie: string) {
+    if (categorie !== null && categorie.id !== null) {
 
+        group[categorie.id] = group[categorie.id] ?? new AnalyseCategoriesModel();
+        group[categorie.id].categorie = categorie;
+        group[categorie.id].couleurCategorie = couleurCategorie;
 
-    group[categorie.id] = group[categorie.id] ?? createNewResumeCategorie();
-    group[categorie.id].categorie = categorie;
-    group[categorie.id].couleurCategorie = couleurCategorie;
+        const idx = operation.etat + "_" + operation.typeOperation;
+        // init des tableaux
+        group = initGroup(group, categorie.id, idx)
+        group[categorie.id].nbTransactions[idx] = group[categorie.id].nbTransactions[idx] + 1;
+        group[categorie.id].total[idx] = group[categorie.id].total[idx] + operation.valeur;
+        group[categorie.id].pourcentage[idx] = Math.round((Math.abs(group[categorie.id].total[idx]) / Math.abs(totauxParEtats[idx])) * 100);
 
-    const idx = operation.etat + "_" + operation.typeOperation;
-    // init des tableaux
-    group = initGroup(group, categorie.id, idx)
-    group[categorie.id].nbTransactions[idx] = group[categorie.id].nbTransactions[idx] + 1;
-    group[categorie.id].total[idx] = group[categorie.id].total[idx] + operation.valeur;
-    group[categorie.id].pourcentage[idx] = Math.round((Math.abs(group[categorie.id].total[idx]) / Math.abs(totauxParEtats[idx])) * 100);
-
-    // On ajoute les opérations réalisées aux prévues
-    if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
-        const idp = OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation;
-        group = initGroup(group, categorie.id, idp)
-        group[categorie.id].nbTransactions[idp] = group[categorie.id].nbTransactions[idp] + 1;
-        group[categorie.id].total[idp] = group[categorie.id].total[idp] + operation.valeur;
-        group[categorie.id].pourcentage[idp] = Math.round((Math.abs(group[categorie.id].total[idp]) / Math.abs(totauxParEtats[idp])) * 100);
+        // On ajoute les opérations réalisées aux prévues
+        if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
+            const idp: string = OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation;
+            group = initGroup(group, categorie.id, idp)
+            group[categorie.id].nbTransactions[idp] = group[categorie.id].nbTransactions[idp] + 1;
+            group[categorie.id].total[idp] = group[categorie.id].total[idp] + operation.valeur;
+            group[categorie.id].pourcentage[idp] = Math.round((Math.abs(group[categorie.id].total[idp]) / Math.abs(totauxParEtats[idp])) * 100);
+        }
     }
 }
 
@@ -105,7 +97,7 @@ function populateCategorie(group, operation, categorie, totauxParEtats, couleurC
  * @param {string} idxOperation - L'index de l'opération
  * @returns {Object} Le groupe initialisé
  */
-function initGroup(group, idCategorie, idxOperation) {
+function initGroup(group: { [key: string]: AnalyseCategoriesModel }, idCategorie: string, idxOperation: string) {
     if (group[idCategorie].nbTransactions[idxOperation] === undefined) {
         group[idCategorie].nbTransactions[idxOperation] = 0;
     }
@@ -123,12 +115,14 @@ function initGroup(group, idCategorie, idxOperation) {
  * @param {number} rang - Le rang de la catégorie dans la liste
  * @param {Object} resumeSelectedCategorie - Le résumé de la catégorie sélectionnée
  */
-export function handleCategorieSelect(rang, resumeSelectedCategorie) {
+export function handleCategorieSelect(rang: any, resumeSelectedCategorie: any) {
+    /*
     this.setState({
         rangSelectedCategorie: rang,
         resumeSelectedCategorie: resumeSelectedCategorie,
         resumeSelectedSsCategorie: null
     })
+         */
 }
 
 /**
@@ -136,27 +130,30 @@ export function handleCategorieSelect(rang, resumeSelectedCategorie) {
  * @param {number} rang - Le rang de la sous-catégorie dans la liste
  * @param {Object} resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
  */
-export function handleSsCategorieSelect(rang, resumeSelectedSsCategorie) {
-    this.setState({resumeSelectedSsCategorie: resumeSelectedSsCategorie})
+export function handleSsCategorieSelect(rang: any, resumeSelectedSsCategorie: any) {
+    // this.setState({resumeSelectedSsCategorie: resumeSelectedSsCategorie})
 }
 
 /**
  * Change l'état de l'analyse
  * @param {Event} e - L'événement
  */
-export function selectEtatOperation(e) {
+export function selectEtatOperation(e: any) {
+    /*
     const newEtat = e.target.checked ? OPERATION_ETATS_ENUM.REALISEE : OPERATION_ETATS_ENUM.PREVUE
     const partTypeAnalyse = this.state.selectedTypeAnalyse.match("(.*)_(.*)");
     this.setState({selectedTypeAnalyse: newEtat + "_" + partTypeAnalyse[2]})
+     */
 }
 
 /**
  * Change le type d'opération
  * @param {Event} e - L'événement
  */
-export function selectTypeOperation(e) {
+export function selectTypeOperation(e: any) {
+    /*
     const newEtat = e.target.checked ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE
     const partTypeAnalyse = this.state.selectedTypeAnalyse.match("(.*)_(.*)");
     this.setState({selectedTypeAnalyse: partTypeAnalyse[1] + "_" + newEtat})
-
+ */
 }

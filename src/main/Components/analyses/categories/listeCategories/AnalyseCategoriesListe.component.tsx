@@ -5,7 +5,7 @@ import { sortLibellesCategories } from '../../../../Utils/OperationData.utils';
 
 
 interface AnalyseCategoriesListeProps {
-    rangSelectedCategorie: number,
+    rangSelectedCategorie: number | null,
     analysesGroupedByCategories: any,
     typeAnalyse: string,
     selectCategorie: any

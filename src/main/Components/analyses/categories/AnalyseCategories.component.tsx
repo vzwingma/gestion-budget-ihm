@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import {Box, Chip, CircularProgress, Divider, Grid2, Stack, Switch} from "@mui/material";
+import { Box, Chip, CircularProgress, Divider, Grid2, Stack, Switch } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseCategoriesTitre.component";
@@ -11,12 +11,20 @@ import { getOperationStateColor } from "../../../Utils/renderers/OperationItem.r
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
 import { handleCategorieSelect, handleSsCategorieSelect, selectEtatOperation, selectTypeOperation } from "./AnalyseCategories.controller";
 import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component";
+import AnalyseCategoriesModel from "../../../Models/analyses/AnalyseCategories.model";
+import CenterComponent from "../../CenterComponent";
 
 
 interface AnalyseCategoriesProps {
-    selectedCompte: CompteBancaireModel,
+    selectedCompte: CompteBancaireModel | null,
     selectedDate: Date,
     onOpenMenu: () => void
+}
+
+export interface DataCalculationResultsProps {
+    currentBudget: BudgetMensuelModel,
+    totauxGroupedByEtat: { [key: string]: number },
+    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }
 }
 
 /**
@@ -32,90 +40,99 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
     const [currentBudget, setCurrentBudget] = useState<BudgetMensuelModel>();
     const [resumeSelectedCategorie, setResumeSelectedCategorie] = useState<any>(null);
     const [resumeSelectedSsCategorie, setResumeSelectedSsCategorie] = useState<any>(null);
-    const [analysesGroupedByCategories, setAnalysesGroupedByCategories] = useState<any>(null);
+    const [analysesGroupedByCategories, setAnalysesGroupedByCategories] = useState<{ [key: string]: AnalyseCategoriesModel }>();
     const [selectedTypeAnalyse, setSelectedTypeAnalyse] = useState<string>("REALISEE_DEPENSE");
 
+    const [totauxGroupedByEtat, setTotauxGroupedByEtat] = useState<{ [key: string]: number }>();
+    const [rangSelectedCategorie, setRangSelectedCategorie] = useState<number | null>(null);
 
     /** Chargement des catégories **/
     useEffect(() => {
-        loadBudget(selectedCompte, selectedDate);
+        loadBudget(selectedCompte, selectedDate, handleDataCalculationResult);
     }, [selectedCompte, selectedDate]);
 
-
+    /**
+     * Résultats des calculs
+     * @param param0 données de calcul
+     */
+    function handleDataCalculationResult({ currentBudget, analysesGroupedByCategories, totauxGroupedByEtat }: DataCalculationResultsProps) {
+        setCurrentBudget(currentBudget);
+        setAnalysesGroupedByCategories(analysesGroupedByCategories);
+        setTotauxGroupedByEtat(totauxGroupedByEtat);
+    }
 
     /**
      * Render du budget
      */
 
-        return (
-            <Box sx={{overflow: "hidden"}} maxHeight={"true"}>
-                <Grid2 container marginTop={1} sx={{overflow: "hidden"}}>
-                    <Grid2 size={{md: 2}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
-                                            fontSize={"large"}/></Grid2>
-                    <Grid2 size={{md: 7}}>
-                        {
-                            currentBudget !== null && totauxGroupedByEtat !== null ?
+    return (
+        <Box sx={{ overflow: "hidden" }} maxHeight={"true"}>
+            <Grid2 container marginTop={1} sx={{ overflow: "hidden" }}>
+                <Grid2 size={{ md: 2 }}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                    fontSize={"large"} /></Grid2>
+                <Grid2 size={{ md: 7 }}>
+                    {
+                        currentBudget !== null && totauxGroupedByEtat !== null && selectedCompte !== null ?
                             <AnalyseTitre currentCompte={selectedCompte}
-                                          currentDate={selectedDate}
-                                          totalOperations={totauxGroupedByEtat[selectedTypeAnalyse]}/> :
-                            <CircularProgress/>
-                        }
-                    </Grid2>
-                    <Grid2 size={{md: 3}}>
-                        <Stack direction={"row-reverse"} alignItems={"end"}>
-                            <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"}/>
-                            <Switch onClick={selectTypeOperation}/>
-                            <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"}/>
-
-                            <Chip label={"Réalisée"} variant="outlined"
-                                  sx={{color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE)}}/>
-                            <Switch defaultChecked onClick={selectEtatOperation}/>
-                            <Chip label={"Prévue"} variant="outlined"
-                                  sx={{color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE)}}/>
-                        </Stack>
-                    </Grid2>
+                                currentDate={selectedDate}
+                                totalOperations={totauxGroupedByEtat?.[selectedTypeAnalyse] ?? 0} /> :
+                            <CenterComponent><CircularProgress /></CenterComponent>
+                    }
                 </Grid2>
-                <Divider variant="middle" sx={{margin: 1}}/>
-                <Grid2 container sx={{overflow: "hidden"}}>
-                    <Grid2 size={{md: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
-                        { /** Liste des résumés par catégories **/
-                            (currentBudget != null ?
-                                    <AnalyseCategoriesListe
-                                        rangSelectedCategorie={null}
-                                        typeAnalyse={selectedTypeAnalyse}
-                                        analysesGroupedByCategories={analysesGroupedByCategories}
-                                        selectCategorie={handleCategorieSelect}/>
-                                    :
-                                    <CircularProgress/>
-                            )
-                        }
-                    </Grid2>
-                    <Grid2 size={{md: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
-                        { /** Liste des sous-catégories **/
-                            (currentBudget !== null && resumeSelectedCategorie !== null ?
-                                    <AnalyseCategoriesListe
-                                        rangSelectedCategorie={rangSelectedCategorie}
-                                        typeAnalyse={selectedTypeAnalyse}
-                                        analysesGroupedByCategories={resumeSelectedCategorie.resumesSsCategories}
-                                        selectCategorie={handleSsCategorieSelect}/>
-                                    :
-                                    <></>
-                            )
-                        }
-                    </Grid2>
-                    <Grid2 size={{md: 6}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
-                        {currentBudget != null ?
-                            <GraphAnalyses
+                <Grid2 size={{ md: 3 }}>
+                    <Stack direction={"row-reverse"} alignItems={"end"}>
+                        <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"} />
+                        <Switch onClick={selectTypeOperation} />
+                        <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"} />
+
+                        <Chip label={"Réalisée"} variant="outlined"
+                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE) }} />
+                        <Switch defaultChecked onClick={selectEtatOperation} />
+                        <Chip label={"Prévue"} variant="outlined"
+                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE) }} />
+                    </Stack>
+                </Grid2>
+            </Grid2>
+            <Divider variant="middle" sx={{ margin: 1 }} />
+            <Grid2 container sx={{ overflow: "hidden" }}>
+                <Grid2 size={{ md: 3 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={"true"}>
+                    { /** Liste des résumés par catégories **/
+                        (currentBudget != null ?
+                            <AnalyseCategoriesListe
+                                rangSelectedCategorie={null}
                                 typeAnalyse={selectedTypeAnalyse}
                                 analysesGroupedByCategories={analysesGroupedByCategories}
-                                resumeSelectedCategorie={resumeSelectedCategorie}
-                                resumeSelectedSsCategorie={resumeSelectedSsCategorie}/>
+                                selectCategorie={handleCategorieSelect} />
                             :
-                            <CircularProgress/>
-                        }
-                    </Grid2>
+                            <CenterComponent><CircularProgress /></CenterComponent>
+                        )
+                    }
                 </Grid2>
-            </Box>
-        )
-
+                <Grid2 size={{ md: 3 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={"true"}>
+                    { /** Liste des sous-catégories **/
+                        (currentBudget !== null && resumeSelectedCategorie !== null ?
+                            <AnalyseCategoriesListe
+                                rangSelectedCategorie={rangSelectedCategorie}
+                                typeAnalyse={selectedTypeAnalyse}
+                                analysesGroupedByCategories={resumeSelectedCategorie.resumesSsCategories}
+                                selectCategorie={handleSsCategorieSelect} />
+                            :
+                            <></>
+                        )
+                    }
+                </Grid2>
+                <Grid2 size={{ md: 6 }} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
+                    {currentBudget != null ?
+                        <GraphAnalyses
+                            typeAnalyse={selectedTypeAnalyse}
+                            analysesGroupedByCategories={analysesGroupedByCategories}
+                            resumeSelectedCategorie={resumeSelectedCategorie}
+                            resumeSelectedSsCategorie={resumeSelectedSsCategorie} />
+                        :
+                        <CenterComponent><CircularProgress /></CenterComponent>
+                    }
+                </Grid2>
+            </Grid2>
+        </Box>
+    )
 }

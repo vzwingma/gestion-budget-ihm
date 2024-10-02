@@ -27,7 +27,8 @@ const TooltipAnalyseTemporelle = ({active, payload, label} : TooltipAnalyseTempo
                 if (item.name.includes("Soldes")) {
                     let nameSoldes = item.name.includes("SoldesD") ? "Solde Début" : "Solde Fin";
                     tooltip.push(
-                        <p key={item.id}>{nameSoldes} :
+                        <p key={item.id}>
+                            {nameSoldes} :
                             <span className={getStyleOperation(null, item.value)}> {item.value} €</span>
                         </p>)
                 } else {
