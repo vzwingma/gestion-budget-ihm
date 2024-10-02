@@ -103,16 +103,16 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                     }
                 </Grid2>
                 <Grid2 size={{ md: 3 }}>
-                    <Stack direction={"row-reverse"} alignItems={"end"}>
-                        <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"} />
+                    <Stack direction={"row-reverse"} alignItems={"end"} style={{ position: "relative",  top: "50%", transform: "translateY(-50%)"}}>
+                        <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"} style={{ height: 40}}/>
                         <Switch onClick={e => selectTypeOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
-                        <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"} />
+                        <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"} style={{ height: 40, marginLeft: 10}} />
 
                         <Chip label={"Réalisée"} variant="outlined"
-                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE) }} />
+                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE) }} style={{ height: 40}} />
                         <Switch defaultChecked onClick={e => selectEtatOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
                         <Chip label={"Prévue"} variant="outlined"
-                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE) }} />
+                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE) }} style={{ height: 40}} />
                     </Stack>
                 </Grid2>
             </Grid2>

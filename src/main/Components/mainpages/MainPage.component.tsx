@@ -9,6 +9,7 @@ import DateRange from "./menuSlideBar/DateRange.component";
 import BudgetPage from "../budgets/budget/Budget.component";
 import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component";
 import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
+import CenterComponent from "../CenterComponent";
 
 
 interface MainPageProps {
@@ -132,7 +133,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             {selectedCompte !== null && selectedDate !== null ?
                 renderSubMainPage()
                 :
-                <CircularProgress />}
+                <CenterComponent><CircularProgress /></CenterComponent>}
 
             <ToastContainer
                 position="bottom-left"
