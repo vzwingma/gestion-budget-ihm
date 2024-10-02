@@ -27,8 +27,6 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({ typeAnalyse,
     let dataGraphCategories: GraphAnalyseCategoriesModel[] = [];
     let dataGraphSsCategories: GraphAnalyseCategoriesModel[] = [];
 
-
-
     /** Init du tableau pour l'affichage du graphique **/
     populateGraphAnalyseCategories(analysesGroupedByCategories, typeAnalyse, dataGraphCategories, dataGraphSsCategories);
 
