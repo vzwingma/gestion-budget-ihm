@@ -1,8 +1,9 @@
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import React from "react";
-import { DataTemporelleAnnee, populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
+import { populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
 import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
 import { GraphAnalyseTemporelleProps } from "../../Components.props";
+import { DataTemporelleAnnee } from "../../../Models/analyses/temporelles/GraphAnalyse.model";
 
 
 /**
@@ -11,19 +12,19 @@ import { GraphAnalyseTemporelleProps } from "../../Components.props";
  * @returns {JSX.Element} Le composant de graphique.
  */
 const GraphAnalyseTemporelle = ({ anneeAnalyses,
-    timelinesGroupedByCategoriesData,
+    timelinesByCategoriesData,
     timelinesSoldesData,
-    timelinesPrevisionnellesGroupedByCategoriesData,
+    timelinesPrevisionnellesByCategoriesData,
     timelinesPrevisionnellesSoldesData,
     filterSoldesActive,
-    categoriesData }: GraphAnalyseTemporelleProps) => {
+    analyseSoldesCategoriesData }: GraphAnalyseTemporelleProps) => {
 
     let dataCategories: DataTemporelleAnnee = { datasTemporellesMois: {} };
 
     /** Init du tableau pour l'affichage du graphique **/
     console.log("Construction de l'affichage de l'analyse temporelle pour", anneeAnalyses);
-    populateGraphCategories(anneeAnalyses, categoriesData, timelinesGroupedByCategoriesData, false, dataCategories);
-    populateGraphCategories(anneeAnalyses, categoriesData, timelinesPrevisionnellesGroupedByCategoriesData, true, dataCategories);
+    populateGraphCategories(anneeAnalyses, analyseSoldesCategoriesData, timelinesByCategoriesData, false, dataCategories);
+    populateGraphCategories(anneeAnalyses, analyseSoldesCategoriesData, timelinesPrevisionnellesByCategoriesData, true, dataCategories);
     populateGraphSoldes(anneeAnalyses, timelinesSoldesData, filterSoldesActive, false, dataCategories);
     populateGraphSoldes(anneeAnalyses, timelinesPrevisionnellesSoldesData, filterSoldesActive, true, dataCategories);
 
@@ -31,8 +32,8 @@ const GraphAnalyseTemporelle = ({ anneeAnalyses,
     const dataByCategories: any[] = Object.values(dataCategories.datasTemporellesMois);
     for (let i = 0; i < dataByCategories.length; i++) {
         const dataByMonth = dataByCategories[i];
-        for (let j = 0; j < categoriesData.length; j++) {
-            const categorie = categoriesData[j];
+        for (let j = 0; j < analyseSoldesCategoriesData.length; j++) {
+            const categorie = analyseSoldesCategoriesData[j];
             dataByMonth[categorie.libelleCategorie] = dataByMonth.categories[categorie.libelleCategorie];
             dataByMonth["prev_" + categorie.libelleCategorie] = dataByMonth.categories["prev_" + categorie.libelleCategorie];
         }
@@ -51,7 +52,7 @@ const GraphAnalyseTemporelle = ({ anneeAnalyses,
      */
     const renderLines = () => {
         let lines: JSX.Element[] = [];
-        categoriesData
+        analyseSoldesCategoriesData
             .filter(categorie => categorie.filterActive)
             .forEach(categorie => {
                 lines.push(<Line key={categorie.id}

@@ -5,7 +5,7 @@ import CompteBancaireModel from "../../../Models/CompteBancaire.model";
 import {
     calculateTimelines,
 } from "./AnalyseTemporelle.controller";
-import SoldeMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
+import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
 import { DataCalculationTemporelResultsProps } from "../../Components.props";
 
 /**
@@ -29,7 +29,7 @@ export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, s
         call(METHODE_HTTP.GET,
             BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.SOLDES_ANNEE,
             [selectedCompte.id, String(selectedAnnee)])
-            .then((data : SoldeMensuelModel[]) => calculateTimelines(data, handleDataCalculationResult)) // En cas de succès, calcule les analyses temporelles.
+            .then((data : SoldesMensuelModel[]) => calculateTimelines(data, handleDataCalculationResult)) // En cas de succès, calcule les analyses temporelles.
             .catch(e => {
                 // En cas d'erreur, affiche un message d'erreur.
                 let libErreur = "Erreur lors du chargement des budgets du compte " + selectedCompte;

@@ -4,7 +4,7 @@ import AnalyseSoldesCategorie from "./AnalyseSoldesCategorie.model";
 /**
  * Modèle des soldes d'un mois
  */
-class SoldeMensuelModel {
+class SoldesMensuelModel {
 
     actif: boolean;
     idCompteBancaire: string;
@@ -31,4 +31,4 @@ class SoldeMensuelModel {
         this.annee = annee;
     }
 }
-export default SoldeMensuelModel;  // export default is used to export a single class, function or primitive from a script file.
+export default SoldesMensuelModel;  // export default is used to export a single class, function or primitive from a script file.

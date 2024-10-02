@@ -4,7 +4,7 @@ import { Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid2, } fr
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { loadSoldesBudgets } from "./AnalyseTemporelle.extservices";
-import SoldeMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
+import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
 import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
@@ -32,10 +32,12 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
 
     /** Etats pour la page Budget **/
     const [anneeAnalyses, setAnneeAnalyses] = useState<number>(new Date().getFullYear());
-    const [currentBudgets, setCurrentBudgets] = useState<SoldeMensuelModel[]>();
-    const [listeCategories, setListeCategories] = useState<AnalyseSoldesCategorie[] | null>(null);
-    const [timelinesGroupedByCategories, setTimelinesGroupedByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
-    const [timelinesPrevisionnellesGroupedByCategories, setTimelinesPrevisionnellesGroupedByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
+    const [soldesMensuels, setSoldesMensuels] = useState<SoldesMensuelModel[]>();
+    
+    const [analyseSoldesCategoriesData, setAnalyseSoldesCategoriesData] = useState<AnalyseSoldesCategorie[] | null>(null);
+    const [timelinesByCategories, setTimelinesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
+    const [timelinesPrevisionnellesByCategories, setTimelinesPrevisionnellesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
+
     const [timelinesSoldes, setTimelinesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
     const [timelinesPrevisionnellesSoldes, setTimelinesPrevisionnellesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
 
@@ -44,7 +46,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     const [filterChange, setFilterChange] = useState<number>(new Date().getTime());
     /** Chargement des catégories **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses, "listeCategories :", listeCategories);
+        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses, "listeCategories :", analyseSoldesCategoriesData);
         loadSoldesBudgets(selectedCompte, anneeAnalyses, handleDataCalculationResult);
     }, [selectedCompte, anneeAnalyses]);
 
@@ -60,10 +62,12 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                                             timelinesSoldesData,
                                             timelinesPrevisionnellesSoldesData }: DataCalculationTemporelResultsProps) 
     {
-        setCurrentBudgets(soldesMensuelsData);
-        setListeCategories(soldesCategoriesData);
-        setTimelinesGroupedByCategories(timelinesByCategoriesData);
-        setTimelinesPrevisionnellesGroupedByCategories(timelinesPrevisionnellesByCategoriesData);
+        setSoldesMensuels(soldesMensuelsData);
+        setAnalyseSoldesCategoriesData(soldesCategoriesData);
+
+        setTimelinesByCategories(timelinesByCategoriesData);
+        setTimelinesPrevisionnellesByCategories(timelinesPrevisionnellesByCategoriesData);
+        
         setTimelinesSoldes(timelinesSoldesData);
         setTimelinesPrevisionnellesSoldes(timelinesPrevisionnellesSoldesData);
     }
@@ -79,13 +83,13 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      * @param {Object} event - L'objet d'événement du changement de filtre. La cible de cet événement est censée avoir une propriété 'id' qui correspond à un id de catégorie et une propriété 'checked' qui représente le nouvel état du filtre.
      */
     function onFilterChange(event: any) {
-        let listeCategoriesUpdated = listeCategories;
+        let listeCategoriesUpdated = analyseSoldesCategoriesData;
         if (listeCategoriesUpdated) {
             const categorie = listeCategoriesUpdated.find((categorie: AnalyseSoldesCategorie) => categorie.id === event.target.id);
             if (categorie) {
                 categorie.filterActive = event.target.checked;
             }
-            setListeCategories(listeCategoriesUpdated);
+            setAnalyseSoldesCategoriesData(listeCategoriesUpdated);
             setFilterChange(new Date().getTime());
         }
     }
@@ -110,7 +114,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                 <Grid2 size={{ md: 2 }}><MenuIcon onClick={onOpenMenu} className={"editableField"}
                     fontSize={"large"} /></Grid2>
                 <Grid2 size={{ md: 8 }}>
-                    {currentBudgets !== null && selectedCompte != null ?
+                    {soldesMensuels !== null && selectedCompte != null ?
                         <AnalyseTemporelleTitre currentCompte={selectedCompte}
                             currentAnnee={anneeAnalyses}
                             onAnneeChange={setAnneeAnalyses} />
@@ -119,9 +123,9 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                     }
                 </Grid2>
                 <Grid2 size={{ md: 2 }} direction={"row-reverse"}>
-                    {   listeCategories != null ?
+                    {   analyseSoldesCategoriesData != null ?
                             <>
-                                <AnalyseTemporelleFiltre listeCategories={listeCategories}
+                                <AnalyseTemporelleFiltre listeCategories={analyseSoldesCategoriesData}
                                     onFilterChange={onFilterChange} />
                                 <FormControlLabel id="Soldes" key="Soldes" label="Soldes"
                                     control={<Checkbox id="Soldes" defaultChecked={false}
@@ -136,15 +140,15 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
             </Grid2>
             <Divider variant="middle" sx={{ margin: 1 }} />
             <Grid2 size={{ md: 5 }} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
-                {currentBudgets != null ?
+                {soldesMensuels != null ?
                     <GraphAnalyseTemporelle
                         anneeAnalyses={anneeAnalyses}
-                        timelinesGroupedByCategoriesData={timelinesGroupedByCategories || []}
+                        timelinesByCategoriesData={timelinesByCategories || []}
                         timelinesSoldesData={timelinesSoldes || []}
-                        timelinesPrevisionnellesGroupedByCategoriesData={timelinesPrevisionnellesGroupedByCategories || []}
+                        timelinesPrevisionnellesByCategoriesData={timelinesPrevisionnellesByCategories || []}
                         timelinesPrevisionnellesSoldesData={timelinesPrevisionnellesSoldes || []}
                         filterSoldesActive={filterSoldesActive}
-                        categoriesData={listeCategories || []} />
+                        analyseSoldesCategoriesData={analyseSoldesCategoriesData || []} />
                     :
                     <CenterComponent><CircularProgress /></CenterComponent>
                 }

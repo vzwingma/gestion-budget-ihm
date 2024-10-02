@@ -5,18 +5,10 @@
 import { AnalyseSoldesTimelineItemModel } from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
 import { AnalyseCategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
 import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
+import { DataTemporelleMois } from "../../../Models/analyses/temporelles/GraphAnalyseMensuel.model";
+import { DataTemporelleAnnee } from "../../../Models/analyses/temporelles/GraphAnalyse.model";
 
 
-interface DataTemporelleMois {
-    id: string,
-    name: string,
-    categories: { [key: string]: number }
-}
-
-
-export interface DataTemporelleAnnee {
-    datasTemporellesMois: { [key: string]: DataTemporelleMois }
-}
 
 /**
  * Remplit le graphique avec les données d'une catégorie.
@@ -26,7 +18,7 @@ export interface DataTemporelleAnnee {
  * @param {Boolean} isAtTerminaison - Les soldes
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphCategories(anneeAnalyses: number, listeCategories: AnalyseSoldesCategorie[], timelinesGroupedByCategories: { [key: string]: AnalyseCategorieTimelineItem }[], isAtTerminaison: boolean, datasTemporellesAnnee: DataTemporelleAnnee) {
+export function populateGraphCategories(anneeAnalyses: number, analyseSoldesCategoriesData: AnalyseSoldesCategorie[], timelinesGroupedByCategories: { [key: string]: AnalyseCategorieTimelineItem }[], isAtTerminaison: boolean, datasTemporellesAnnee: DataTemporelleAnnee) {
 
     Object.keys(timelinesGroupedByCategories)
         .forEach((month: string) => {
@@ -44,7 +36,7 @@ export function populateGraphCategories(anneeAnalyses: number, listeCategories: 
             }
             // Ajout des données pour chaque catégorie
 
-            listeCategories
+            analyseSoldesCategoriesData
                 .filter(categorie => categorie.filterActive)
                 .forEach(categorie => {
                     const timelinesCategory = Object.values(timelinesGroupedByCategories[mois])

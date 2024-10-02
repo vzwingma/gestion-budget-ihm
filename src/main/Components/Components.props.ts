@@ -2,7 +2,7 @@ import AnalyseCategoriesModel from "../Models/analyses/categories/AnalyseCategor
 import { AnalyseSoldesTimelineItemModel } from "../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
 import { AnalyseCategorieTimelineItem } from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
 import AnalyseSoldesCategorie from "../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
-import SoldeMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model";
+import SoldesMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model";
 import BudgetMensuelModel from "../Models/BudgetMensuel.model";
 import CategorieOperationModel from "../Models/CategorieOperation.model";
 import CompteBancaireModel from "../Models/CompteBancaire.model";
@@ -64,9 +64,9 @@ export interface GraphAnalysesProps {
 export interface GraphAnalyseTemporelleProps {
     anneeAnalyses: number,
     filterSoldesActive: boolean,
-    categoriesData: AnalyseSoldesCategorie[],
-    timelinesGroupedByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesPrevisionnellesGroupedByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
+    analyseSoldesCategoriesData: AnalyseSoldesCategorie[],
+    timelinesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
+    timelinesPrevisionnellesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
     timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
     timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }
@@ -92,7 +92,7 @@ export interface TooltipAnalyseTemporelleProps {
  * @property {SoldeMensuelModel[]} timelinesPrevisionnellesSoldesData - Les timelines prévisionnelles des soldes.
  */
 export interface DataCalculationTemporelResultsProps {
-    soldesMensuelsData: SoldeMensuelModel[],
+    soldesMensuelsData: SoldesMensuelModel[],
     soldesCategoriesData: AnalyseSoldesCategorie[],
     timelinesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
     timelinesPrevisionnellesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
