@@ -53,7 +53,7 @@ export interface AnalyseTitreProps {
 
 export interface GraphAnalysesProps {
     typeAnalyse: string,
-    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel },
+    analysesGroupedByCategories: { [idCategorie: string]: AnalyseCategoriesModel },
     resumeSelectedCategorie: AnalyseCategoriesModel | null,
     resumeSelectedSsCategorie: AnalyseCategoriesModel | null
 }
@@ -65,8 +65,8 @@ export interface GraphAnalyseTemporelleProps {
     anneeAnalyses: number,
     filterSoldesActive: boolean,
     categoriesData: AnalyseSoldesCategorie[],
-    timelinesGroupedByCategoriesData: { [key: string]: AnalyseCategorieTimelineItem }[],
-    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: AnalyseCategorieTimelineItem }[],
+    timelinesGroupedByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
+    timelinesPrevisionnellesGroupedByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
     timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
     timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }
@@ -94,8 +94,8 @@ export interface TooltipAnalyseTemporelleProps {
 export interface DataCalculationTemporelResultsProps {
     soldesMensuelsData: SoldeMensuelModel[],
     soldesCategoriesData: AnalyseSoldesCategorie[],
-    timelinesGroupedByCategoriesData: { [key: string]: AnalyseCategorieTimelineItem }[],
-    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: AnalyseCategorieTimelineItem }[],
+    timelinesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
+    timelinesPrevisionnellesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
     timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
     timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }

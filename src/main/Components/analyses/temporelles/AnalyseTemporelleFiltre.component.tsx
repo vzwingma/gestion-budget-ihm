@@ -26,8 +26,7 @@ const AnalyseTemporelleFiltre: React.FC<AnalyseTemporelleFiltreProps> = ({ liste
                 style={{ color: categorie.couleur }}
                 onChange={onFilterChange} />
             )
-        }
-        )
+        })
     )
 
 };

@@ -55,15 +55,15 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      */
     function handleDataCalculationResult({  soldesMensuelsData,
                                             soldesCategoriesData,
-                                            timelinesGroupedByCategoriesData,
-                                            timelinesPrevisionnellesGroupedByCategoriesData,
+                                            timelinesByCategoriesData,
+                                            timelinesPrevisionnellesByCategoriesData,
                                             timelinesSoldesData,
                                             timelinesPrevisionnellesSoldesData }: DataCalculationTemporelResultsProps) 
     {
         setCurrentBudgets(soldesMensuelsData);
         setListeCategories(soldesCategoriesData);
-        setTimelinesGroupedByCategories(timelinesGroupedByCategoriesData);
-        setTimelinesPrevisionnellesGroupedByCategories(timelinesPrevisionnellesGroupedByCategoriesData);
+        setTimelinesGroupedByCategories(timelinesByCategoriesData);
+        setTimelinesPrevisionnellesGroupedByCategories(timelinesPrevisionnellesByCategoriesData);
         setTimelinesSoldes(timelinesSoldesData);
         setTimelinesPrevisionnellesSoldes(timelinesPrevisionnellesSoldesData);
     }

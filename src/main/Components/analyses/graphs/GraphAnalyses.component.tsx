@@ -6,6 +6,7 @@ import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseC
 import { renderLabelCategorie, renderLabelSsCategorie } from "./GraphAnalyses.controller";
 import GraphAnalyseCategoriesModel from "../../../Models/analyses/categories/GraphAnalyseCategories.model";
 import { GraphAnalysesProps } from "../../Components.props";
+import CategorieOperationModel from "../../../Models/CategorieOperation.model";
 
 
 
@@ -26,16 +27,16 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({ typeAnalyse,
                                                     }: GraphAnalysesProps): JSX.Element => {
 
 
-    let dataCategories: GraphAnalyseCategoriesModel[] = [];
-    let dataSsCategories: GraphAnalyseCategoriesModel[] = [];
+    let dataGraphCategories: GraphAnalyseCategoriesModel[] = [];
+    let dataGraphSsCategories: GraphAnalyseCategoriesModel[] = [];
 
     /**
      * Populate des data pour les graphs d'une catégorie
      * @param analysesGroupedByCategories : object analyses groupées des catégories
-     * @param dataCategories : array tableau pour alimenter le graphique
+     * @param dataGraphCategories : array tableau pour alimenter le graphique
      * @param parentCategorie : object catégorie parente
      */
-    function populateGraphCategorie(analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }, dataCategories: any[], parentCategorie?: any) {
+    function populateGraphCategorie(analysesGroupedByCategories: { [idCategorie: string]: AnalyseCategoriesModel }, dataGraphCategories: GraphAnalyseCategoriesModel[], parentCategorie?: CategorieOperationModel) {
         const arrayAnalysesGroupedByCategories: AnalyseCategoriesModel[] = []
         // transform en array
         for (let categorieId in analysesGroupedByCategories) {
@@ -48,49 +49,49 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({ typeAnalyse,
             .sort((analysesOfCategorie1, analysesOfCategorie2) => sortLibellesCategories(analysesOfCategorie1.categorie, analysesOfCategorie2.categorie))
             .forEach((analysesOfCategorie) => {
 
-                dataCategories.push({
-                    id: analysesOfCategorie.categorie.id,
+                dataGraphCategories.push({
+                    id: analysesOfCategorie.categorie.id!,
                     categorie: parentCategorie != null ? parentCategorie : analysesOfCategorie.categorie,
                     name: analysesOfCategorie.categorie.libelle + " : " + analysesOfCategorie.pourcentage[typeAnalyse] + "%",
                     value: Math.abs(analysesOfCategorie.total[typeAnalyse])
                 })
                 // Populate pour les sous catégories
                 if (analysesOfCategorie.resumesSsCategories !== undefined && analysesOfCategorie.resumesSsCategories !== null) {
-                    populateGraphCategorie(analysesOfCategorie.resumesSsCategories, dataSsCategories, analysesOfCategorie.categorie);
+                    populateGraphCategorie(analysesOfCategorie.resumesSsCategories, dataGraphSsCategories, analysesOfCategorie.categorie);
                 }
             })
     }
 
 
     /** Init du tableau pour l'affichage du graphique **/
-    populateGraphCategorie(analysesGroupedByCategories, dataCategories);
+    populateGraphCategorie(analysesGroupedByCategories, dataGraphCategories);
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <PieChart>
                 { /** Affichage du graphique CATEGORIE  */}
-                <Pie data={dataCategories} dataKey="value"
+                <Pie data={dataGraphCategories} dataKey="value"
                     cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
                     isAnimationActive={false}>
-                    {dataCategories.map((entry) => (
+                    {dataGraphCategories.map((entry) => (
                         <Cell key={`cell-${entry.categorie}`}
                             fill={getCategorieColor(entry.categorie.id) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")} />
                     ))
                     }
-                    <LabelList data={dataSsCategories} dataKey="name"
+                    <LabelList data={dataGraphSsCategories} dataKey="name"
                         content={(props) => renderLabelCategorie(props, resumeSelectedCategorie)} />
                 </Pie>
                 { /** Affichage du graphique SOUS CATEGORIE */}
-                <Pie data={dataSsCategories} dataKey="value"
+                <Pie data={dataGraphSsCategories} dataKey="value"
                     cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
                     isAnimationActive={false}>
-                    {dataSsCategories.map((entry) => (
+                    {dataGraphSsCategories.map((entry) => (
                         <Cell key={`cell-${entry.categorie.id}`}
                             fill={getCategorieColor(entry.categorie.id) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}
                         />
                     ))
                     }
-                    <LabelList data={dataSsCategories} dataKey="name"
+                    <LabelList data={dataGraphSsCategories} dataKey="name"
                         content={(props) => renderLabelSsCategorie(props, resumeSelectedSsCategorie)} />
                 </Pie>
             </PieChart>

@@ -36,8 +36,8 @@ function createNewCategorieTimelineItem() {
  */
 export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], handleDataCalculationResult : ({soldesMensuelsData,
                                                                                                                soldesCategoriesData,
-                                                                                                               timelinesGroupedByCategoriesData,
-                                                                                                               timelinesPrevisionnellesGroupedByCategoriesData,
+                                                                                                               timelinesByCategoriesData,
+                                                                                                               timelinesPrevisionnellesByCategoriesData,
                                                                                                                timelinesSoldesData,
                                                                                                                timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
     soldesMensuelsData = Object.values(soldesMensuelsData)
@@ -45,8 +45,8 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
 
     let soldesCategoriesData : AnalyseSoldesCategorieModel[] = [];
 
-    let timelinesGroupedByCategoriesData : { [idCategorie: string]: AnalyseCategorieTimelineItem }[] = new Array(soldesMensuelsData.length - 1);
-    let timelinesPrevisionnellesGroupedByCategoriesData : { [idCategorie: string]: AnalyseCategorieTimelineItem }[]= new Array(soldesMensuelsData.length);
+    let timelinesByCategoriesData : { [idCategorie: string]: AnalyseCategorieTimelineItem }[] = new Array(soldesMensuelsData.length - 1);
+    let timelinesPrevisionnellesByCategoriesData : { [idCategorie: string]: AnalyseCategorieTimelineItem }[]= new Array(soldesMensuelsData.length);
     let timelinesSoldesData = new Array(soldesMensuelsData.length - 1);
     let timelinesPrevisionnellesSoldesData = new Array(soldesMensuelsData.length);
 
@@ -54,11 +54,11 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
         .forEach((month: string) => {
             let mois : number = Number.parseInt(month);
 
-            timelinesGroupedByCategoriesData[mois] = calculateTimelineCategories(soldesMensuelsData[mois], false);
+            timelinesByCategoriesData[mois] = calculateTimelineCategories(soldesMensuelsData[mois], false);
 
             // Si année en cours, recopie les données pour le budget à terminaison
             if (soldesMensuelsData.length < 12) {
-                timelinesPrevisionnellesGroupedByCategoriesData[mois] = calculateTimelineCategories(soldesMensuelsData[mois], false);
+                timelinesPrevisionnellesByCategoriesData[mois] = calculateTimelineCategories(soldesMensuelsData[mois], false);
             }
             timelinesSoldesData[mois] = calculateTimelineSoldes(soldesMensuelsData[mois], false);
             soldesCategoriesData = getSoldesByCategories(soldesMensuelsData[mois]);
@@ -66,13 +66,13 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
     // Génération du budget à terminaison pour le budget courant
 
     if (soldesMensuelsData.length < 12) {
-        timelinesPrevisionnellesGroupedByCategoriesData[soldesMensuelsData.length - 1]   = calculateTimelineCategories(soldesMensuelsData[soldesMensuelsData.length - 1], false);
-        timelinesPrevisionnellesGroupedByCategoriesData[soldesMensuelsData.length]       = calculateTimelineCategories(soldesMensuelsData[soldesMensuelsData.length - 1], true);
-        timelinesPrevisionnellesSoldesData[soldesMensuelsData.length]                    = calculateTimelineSoldes(soldesMensuelsData[soldesMensuelsData.length - 1], true);
+        timelinesPrevisionnellesByCategoriesData[soldesMensuelsData.length - 1]   = calculateTimelineCategories(soldesMensuelsData[soldesMensuelsData.length - 1], false);
+        timelinesPrevisionnellesByCategoriesData[soldesMensuelsData.length]       = calculateTimelineCategories(soldesMensuelsData[soldesMensuelsData.length - 1], true);
+        timelinesPrevisionnellesSoldesData[soldesMensuelsData.length]             = calculateTimelineSoldes(soldesMensuelsData[soldesMensuelsData.length - 1], true);
     }
 
-    handleDataCalculationResult({soldesMensuelsData, soldesCategoriesData, timelinesGroupedByCategoriesData, timelinesPrevisionnellesGroupedByCategoriesData, timelinesSoldesData, timelinesPrevisionnellesSoldesData});
-    toast.success("Analyse des budgets correctement effectuée ")
+    handleDataCalculationResult({soldesMensuelsData, soldesCategoriesData, timelinesByCategoriesData, timelinesPrevisionnellesByCategoriesData, timelinesSoldesData, timelinesPrevisionnellesSoldesData});
+    toast.success("Analyse temporelle du compte correctement effectuée ")
 }
 
 

@@ -20,8 +20,8 @@ import { DataCalculationTemporelResultsProps } from "../../Components.props";
  */
 export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, selectedAnnee : number, handleDataCalculationResult : ({soldesMensuelsData,
                                                                                                                                         soldesCategoriesData,
-                                                                                                                                        timelinesGroupedByCategoriesData,
-                                                                                                                                        timelinesPrevisionnellesGroupedByCategoriesData,
+                                                                                                                                        timelinesByCategoriesData,
+                                                                                                                                        timelinesPrevisionnellesByCategoriesData,
                                                                                                                                         timelinesSoldesData,
                                                                                                                                         timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
     if (selectedCompte != null) {
