@@ -2,9 +2,9 @@
  * Controleur de graphique pour l'analyse temporelle.
  */
 
-import { SoldesTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemporelleSoldesTimelineItem.model";
-import { CategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemportelleCategorieTimelineItem.model";
-import SoldeCategorieModel from "../../../Models/analyses/temporelles/SoldeCategorie.model";
+import { AnalyseSoldesTimelineItemModel } from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
+import { AnalyseCategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
+import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 
 
 interface DataTemporelleMois {
@@ -26,7 +26,7 @@ export interface DataTemporelleAnnee {
  * @param {Boolean} isAtTerminaison - Les soldes
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphCategories(anneeAnalyses: number, listeCategories: SoldeCategorieModel[], timelinesGroupedByCategories: { [key: string]: CategorieTimelineItem }[], isAtTerminaison: boolean, datasTemporellesAnnee: DataTemporelleAnnee) {
+export function populateGraphCategories(anneeAnalyses: number, listeCategories: AnalyseSoldesCategorie[], timelinesGroupedByCategories: { [key: string]: AnalyseCategorieTimelineItem }[], isAtTerminaison: boolean, datasTemporellesAnnee: DataTemporelleAnnee) {
 
     Object.keys(timelinesGroupedByCategories)
         .forEach((month: string) => {
@@ -70,7 +70,7 @@ export function populateGraphCategories(anneeAnalyses: number, listeCategories: 
  * @param {Boolean} isAtTerminaison - Est-ce que c'est à la terminaison.
  * @param {Array} datasTemporellesAnnee - Le tableau pour alimenter le graphique.
  */
-export function populateGraphSoldes(anneeAnalyses: number, timelinesSoldes: SoldesTimelineItem[], filterSoldesActive: boolean, isAtTerminaison: boolean, datasTemporellesAnnee: DataTemporelleAnnee) {
+export function populateGraphSoldes(anneeAnalyses: number, timelinesSoldes: AnalyseSoldesTimelineItemModel[], filterSoldesActive: boolean, isAtTerminaison: boolean, datasTemporellesAnnee: DataTemporelleAnnee) {
     Object.keys(timelinesSoldes)
         .forEach((month: string) => {
             const mois = parseInt(month);

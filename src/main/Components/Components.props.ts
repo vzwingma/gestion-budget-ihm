@@ -1,7 +1,7 @@
 import AnalyseCategoriesModel from "../Models/analyses/categories/AnalyseCategories.model";
-import { SoldesTimelineItem } from "../Models/analyses/temporelles/AnalyseTemporelleSoldesTimelineItem.model";
-import { CategorieTimelineItem } from "../Models/analyses/temporelles/AnalyseTemportelleCategorieTimelineItem.model";
-import SoldeCategorieModel from "../Models/analyses/temporelles/SoldeCategorie.model";
+import { AnalyseSoldesTimelineItemModel } from "../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
+import { AnalyseCategorieTimelineItem } from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
+import AnalyseSoldesCategorie from "../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import SoldeMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model";
 import BudgetMensuelModel from "../Models/BudgetMensuel.model";
 import CategorieOperationModel from "../Models/CategorieOperation.model";
@@ -64,11 +64,11 @@ export interface GraphAnalysesProps {
 export interface GraphAnalyseTemporelleProps {
     anneeAnalyses: number,
     filterSoldesActive: boolean,
-    categoriesData: SoldeCategorieModel[],
-    timelinesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
-    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
-    timelinesSoldesData: SoldesTimelineItem[],
-    timelinesPrevisionnellesSoldesData: SoldesTimelineItem[]
+    categoriesData: AnalyseSoldesCategorie[],
+    timelinesGroupedByCategoriesData: { [key: string]: AnalyseCategorieTimelineItem }[],
+    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: AnalyseCategorieTimelineItem }[],
+    timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
+    timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }
 
 /**
@@ -85,19 +85,19 @@ export interface TooltipAnalyseTemporelleProps {
  *
  * @interface DataCalculationTemporelResultsProps
  * @property {SoldeMensuelModel[]} soldesBudgetsData - Les données des soldes budgétaires.
- * @property {SoldeCategorieModel[]} categoriesData - Les données des catégories.
+ * @property {SoldeCategorieModel[]} soldesCategoriesData - Les données des catégories.
  * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesGroupedByCategoriesData - Les timelines groupées par catégories.
  * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesPrevisionnellesGroupedByCategoriesData - Les timelines prévisionnelles groupées par catégories.
  * @property {SoldeMensuelModel[]} timelinesSoldesData - Les timelines des soldes.
  * @property {SoldeMensuelModel[]} timelinesPrevisionnellesSoldesData - Les timelines prévisionnelles des soldes.
  */
 export interface DataCalculationTemporelResultsProps {
-    soldesBudgetsData: SoldeMensuelModel[],
-    categoriesData: SoldeCategorieModel[],
-    timelinesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
-    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
-    timelinesSoldesData: SoldesTimelineItem[],
-    timelinesPrevisionnellesSoldesData: SoldesTimelineItem[]
+    soldesMensuelsData: SoldeMensuelModel[],
+    soldesCategoriesData: AnalyseSoldesCategorie[],
+    timelinesGroupedByCategoriesData: { [key: string]: AnalyseCategorieTimelineItem }[],
+    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: AnalyseCategorieTimelineItem }[],
+    timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
+    timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }
 
 export  interface AnalyseTemporelleProps {
@@ -107,7 +107,7 @@ export  interface AnalyseTemporelleProps {
 
 
 export interface AnalyseTemporelleFiltreProps {
-    listeCategories: SoldeCategorieModel[];
+    listeCategories: AnalyseSoldesCategorie[];
     onFilterChange: (event: React.SyntheticEvent) => void;
 }
 

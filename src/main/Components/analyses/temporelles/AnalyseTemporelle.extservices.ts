@@ -18,12 +18,12 @@ import { DataCalculationTemporelResultsProps } from "../../Components.props";
  * @param {string} selectedAnnee - L'année sélectionnée.
  * @param handleDataCalculationResult - La fonction de rappel pour les résultats de l'analyse.
  */
-export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, selectedAnnee : number, handleDataCalculationResult : ({soldesBudgetsData,
-                                                                                                                                   categoriesData,
-                                                                                                                                   timelinesGroupedByCategoriesData,
-                                                                                                                                   timelinesPrevisionnellesGroupedByCategoriesData,
-                                                                                                                                   timelinesSoldesData,
-                                                                                                                                   timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
+export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, selectedAnnee : number, handleDataCalculationResult : ({soldesMensuelsData,
+                                                                                                                                        soldesCategoriesData,
+                                                                                                                                        timelinesGroupedByCategoriesData,
+                                                                                                                                        timelinesPrevisionnellesGroupedByCategoriesData,
+                                                                                                                                        timelinesSoldesData,
+                                                                                                                                        timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
     if (selectedCompte != null) {
         // Appelle le service back-end pour obtenir les budgets du compte sélectionné.
         call(METHODE_HTTP.GET,

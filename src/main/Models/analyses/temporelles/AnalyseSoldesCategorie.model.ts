@@ -2,7 +2,7 @@
 /**
  * SoldeMensuelModel
  */
-class SoldeCategorieModel {
+class AnalyseSoldesCategorie {
     id?: string;
     libelleCategorie : string;
     totalAtFinMoisCourant: number;
@@ -21,4 +21,4 @@ class SoldeCategorieModel {
         this.totalAtMaintenant = totalAtMaintenant;
     }
 }
-export default SoldeCategorieModel;  // export default is used to export a single class, function or primitive from a script file.
+export default AnalyseSoldesCategorie;  // export default is used to export a single class, function or primitive from a script file.

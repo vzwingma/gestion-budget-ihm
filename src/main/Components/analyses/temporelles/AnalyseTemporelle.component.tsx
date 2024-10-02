@@ -5,15 +5,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { loadSoldesBudgets } from "./AnalyseTemporelle.extservices";
 import SoldeMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
-import SoldeCategorieModel from "../../../Models/analyses/temporelles/SoldeCategorie.model";
+import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
 import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
 import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
 import { AnalyseTemporelleProps, DataCalculationTemporelResultsProps } from "../../Components.props";
 import CenterComponent from "../../CenterComponent";
-import { SoldesTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemporelleSoldesTimelineItem.model";
-import { CategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemportelleCategorieTimelineItem.model";
+import { AnalyseSoldesTimelineItemModel } from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
+import { AnalyseCategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
 
 
 
@@ -33,11 +33,11 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     /** Etats pour la page Budget **/
     const [anneeAnalyses, setAnneeAnalyses] = useState<number>(new Date().getFullYear());
     const [currentBudgets, setCurrentBudgets] = useState<SoldeMensuelModel[]>();
-    const [listeCategories, setListeCategories] = useState<SoldeCategorieModel[] | null>(null);
-    const [timelinesGroupedByCategories, setTimelinesGroupedByCategories] = useState<{ [key: string]: CategorieTimelineItem }[] | null>(null);
-    const [timelinesPrevisionnellesGroupedByCategories, setTimelinesPrevisionnellesGroupedByCategories] = useState<{ [key: string]: CategorieTimelineItem }[] | null>(null);
-    const [timelinesSoldes, setTimelinesSoldes] = useState<SoldesTimelineItem[] | null>(null);
-    const [timelinesPrevisionnellesSoldes, setTimelinesPrevisionnellesSoldes] = useState<SoldesTimelineItem[] | null>(null);
+    const [listeCategories, setListeCategories] = useState<AnalyseSoldesCategorie[] | null>(null);
+    const [timelinesGroupedByCategories, setTimelinesGroupedByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
+    const [timelinesPrevisionnellesGroupedByCategories, setTimelinesPrevisionnellesGroupedByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
+    const [timelinesSoldes, setTimelinesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
+    const [timelinesPrevisionnellesSoldes, setTimelinesPrevisionnellesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
 
     const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
 
@@ -53,15 +53,15 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      * Gère les résultats du calcul des données.
      * @param {Object} param0 - Les résultats du calcul des données.
      */
-    function handleDataCalculationResult({ soldesBudgetsData,
-        categoriesData,
-        timelinesGroupedByCategoriesData,
-        timelinesPrevisionnellesGroupedByCategoriesData,
-        timelinesSoldesData,
-        timelinesPrevisionnellesSoldesData }: DataCalculationTemporelResultsProps) 
+    function handleDataCalculationResult({  soldesMensuelsData,
+                                            soldesCategoriesData,
+                                            timelinesGroupedByCategoriesData,
+                                            timelinesPrevisionnellesGroupedByCategoriesData,
+                                            timelinesSoldesData,
+                                            timelinesPrevisionnellesSoldesData }: DataCalculationTemporelResultsProps) 
     {
-        setCurrentBudgets(soldesBudgetsData);
-        setListeCategories(categoriesData);
+        setCurrentBudgets(soldesMensuelsData);
+        setListeCategories(soldesCategoriesData);
         setTimelinesGroupedByCategories(timelinesGroupedByCategoriesData);
         setTimelinesPrevisionnellesGroupedByCategories(timelinesPrevisionnellesGroupedByCategoriesData);
         setTimelinesSoldes(timelinesSoldesData);
@@ -81,7 +81,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     function onFilterChange(event: any) {
         let listeCategoriesUpdated = listeCategories;
         if (listeCategoriesUpdated) {
-            const categorie = listeCategoriesUpdated.find((categorie: SoldeCategorieModel) => categorie.id === event.target.id);
+            const categorie = listeCategoriesUpdated.find((categorie: AnalyseSoldesCategorie) => categorie.id === event.target.id);
             if (categorie) {
                 categorie.filterActive = event.target.checked;
             }

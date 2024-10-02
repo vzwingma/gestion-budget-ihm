@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
 import {getMonthFromString} from "../../../Utils/Date.utils";
 import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer";
-import SoldeMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
-import SoldeCategorieModel from "../../../Models/analyses/temporelles/SoldeCategorie.model";
+import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
+import AnalyseSoldesCategorieModel from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import { DataCalculationTemporelResultsProps } from "../../Components.props";
-import { CategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemportelleCategorieTimelineItem.model";
-import { SoldesTimelineItem } from "../../../Models/analyses/temporelles/AnalyseTemporelleSoldesTimelineItem.model";
+import { AnalyseCategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
+import { AnalyseSoldesTimelineItemModel } from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
 /**
  * Controleur des analyses temporelles
  */
@@ -17,7 +17,7 @@ import { SoldesTimelineItem } from "../../../Models/analyses/temporelles/Analyse
  * @returns Un objet CategorieTimelineItem avec les propriétés initialisées
  */
 function createNewCategorieTimelineItem() {
-    let newResumeCategorie: CategorieTimelineItem;
+    let newResumeCategorie: AnalyseCategorieTimelineItem;
     newResumeCategorie = {
         categorie: null,
         total: 0,
@@ -29,48 +29,49 @@ function createNewCategorieTimelineItem() {
 /**
  * Calcule les lignes de temps basées sur les données des soldes budgétaires et appelle une fonction de gestion des résultats.
  *
- * @param soldesBudgetsData - Un tableau de modèles de soldes mensuels représentant les données budgétaires.
+ * @param soldesMensuelsData - Un tableau de modèles de soldes mensuels représentant les données budgétaires.
  * @param handleDataCalculationResult - Une fonction de rappel qui gère les résultats du calcul des données temporelles.
  * 
  * @returns void
  */
-export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], handleDataCalculationResult : ({soldesBudgetsData,
-                                                                                                               categoriesData,
+export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], handleDataCalculationResult : ({soldesMensuelsData,
+                                                                                                               soldesCategoriesData,
                                                                                                                timelinesGroupedByCategoriesData,
                                                                                                                timelinesPrevisionnellesGroupedByCategoriesData,
                                                                                                                timelinesSoldesData,
                                                                                                                timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
-    soldesBudgetsData = Object.values(soldesBudgetsData)
-        .sort((budget1: SoldeMensuelModel, budget2: SoldeMensuelModel) => getMonthFromString(budget1.mois) - getMonthFromString(budget2.mois))
+    soldesMensuelsData = Object.values(soldesMensuelsData)
+        .sort((budget1: SoldesMensuelModel, budget2: SoldesMensuelModel) => getMonthFromString(budget1.mois) - getMonthFromString(budget2.mois))
 
-    let soldesCategoriesData : SoldeCategorieModel[] = [];
-    let timelinesGroupedByCategoriesData : { [key: string]: CategorieTimelineItem }[] = new Array(soldesBudgetsData.length - 1);
-    let timelinesPrevisionnellesGroupedByCategoriesData : { [key: string]: CategorieTimelineItem }[]= new Array(soldesBudgetsData.length);
-    let timelinesSoldesData = new Array(soldesBudgetsData.length - 1);
-    let timelinesPrevisionnellesSoldesData = new Array(soldesBudgetsData.length);
+    let soldesCategoriesData : AnalyseSoldesCategorieModel[] = [];
 
-    Object.keys(soldesBudgetsData)
+    let timelinesGroupedByCategoriesData : { [key: string]: AnalyseCategorieTimelineItem }[] = new Array(soldesMensuelsData.length - 1);
+    let timelinesPrevisionnellesGroupedByCategoriesData : { [key: string]: AnalyseCategorieTimelineItem }[]= new Array(soldesMensuelsData.length);
+    let timelinesSoldesData = new Array(soldesMensuelsData.length - 1);
+    let timelinesPrevisionnellesSoldesData = new Array(soldesMensuelsData.length);
+
+    Object.keys(soldesMensuelsData)
         .forEach((month: string) => {
             let mois : number = Number.parseInt(month);
 
-            timelinesGroupedByCategoriesData[mois] = calculateTimelineCategories(soldesBudgetsData[mois], false);
+            timelinesGroupedByCategoriesData[mois] = calculateTimelineCategories(soldesMensuelsData[mois], false);
 
             // Si année en cours, recopie les données pour le budget à terminaison
-            if (soldesBudgetsData.length < 12) {
-                timelinesPrevisionnellesGroupedByCategoriesData[mois] = calculateTimelineCategories(soldesBudgetsData[mois], false);
+            if (soldesMensuelsData.length < 12) {
+                timelinesPrevisionnellesGroupedByCategoriesData[mois] = calculateTimelineCategories(soldesMensuelsData[mois], false);
             }
-            timelinesSoldesData[mois] = calculateTimelineSoldes(soldesBudgetsData[mois], false);
-            soldesCategoriesData = getListeCategories(soldesBudgetsData[mois]);
+            timelinesSoldesData[mois] = calculateTimelineSoldes(soldesMensuelsData[mois], false);
+            soldesCategoriesData = getSoldesByCategories(soldesMensuelsData[mois]);
         });
     // Génération du budget à terminaison pour le budget courant
 
-    if (soldesBudgetsData.length < 12) {
-        timelinesPrevisionnellesGroupedByCategoriesData[soldesBudgetsData.length - 1] = calculateTimelineCategories(soldesBudgetsData[soldesBudgetsData.length - 1], false);
-        timelinesPrevisionnellesGroupedByCategoriesData[soldesBudgetsData.length] = calculateTimelineCategories(soldesBudgetsData[soldesBudgetsData.length - 1], true);
-        timelinesPrevisionnellesSoldesData[soldesBudgetsData.length] = calculateTimelineSoldes(soldesBudgetsData[soldesBudgetsData.length - 1], true);
+    if (soldesMensuelsData.length < 12) {
+        timelinesPrevisionnellesGroupedByCategoriesData[soldesMensuelsData.length - 1]   = calculateTimelineCategories(soldesMensuelsData[soldesMensuelsData.length - 1], false);
+        timelinesPrevisionnellesGroupedByCategoriesData[soldesMensuelsData.length]       = calculateTimelineCategories(soldesMensuelsData[soldesMensuelsData.length - 1], true);
+        timelinesPrevisionnellesSoldesData[soldesMensuelsData.length]                    = calculateTimelineSoldes(soldesMensuelsData[soldesMensuelsData.length - 1], true);
     }
 
-    handleDataCalculationResult({soldesBudgetsData, categoriesData: soldesCategoriesData, timelinesGroupedByCategoriesData, timelinesPrevisionnellesGroupedByCategoriesData, timelinesSoldesData, timelinesPrevisionnellesSoldesData});
+    handleDataCalculationResult({soldesMensuelsData, soldesCategoriesData, timelinesGroupedByCategoriesData, timelinesPrevisionnellesGroupedByCategoriesData, timelinesSoldesData, timelinesPrevisionnellesSoldesData});
     toast.success("Analyse des budgets correctement effectuée ")
 }
 
@@ -78,16 +79,16 @@ export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], hand
 
 /**
  * Calcule l'analyse de temps pour un budget donné
- * @param {Object} budgetData - Les données du budget à analyser
+ * @param {Object} soldesMensuelData - Les soldes du mois à analyser
  * @param {Boolean} aTerminaison - Les données du budget à terminaison
  * @returns {Object} Un objet contenant les résultats de l'analyse
  */
-function calculateTimelineCategories(budgetData : SoldeMensuelModel, aTerminaison : boolean) : { [key: string]: CategorieTimelineItem } {
+function calculateTimelineCategories(soldesMensuelData : SoldesMensuelModel, aTerminaison : boolean) : { [key: string]: AnalyseCategorieTimelineItem } {
 
-    let group : { [key: string]: CategorieTimelineItem } = {};
+    let group : { [key: string]: AnalyseCategorieTimelineItem } = {};
 
-    for (let idCategorie in budgetData.totauxParCategories) {
-        let categorie : SoldeCategorieModel = budgetData.totauxParCategories[idCategorie];
+    for (let idCategorie in soldesMensuelData.totauxParCategories) {
+        let categorie : AnalyseSoldesCategorieModel = soldesMensuelData.totauxParCategories[idCategorie];
 
         group[idCategorie] = group[idCategorie] ?? createNewCategorieTimelineItem();
         categorie.id = idCategorie;
@@ -103,14 +104,14 @@ function calculateTimelineCategories(budgetData : SoldeMensuelModel, aTerminaiso
 
 /**
  * Calcule l'analyse de temps pour les soldes d'un budget donné
- * @param soldeMensuelData - Les données du budget à analyser
+ * @param soldesMensuelData - Les soldes du mois à analyser
  * @param aTerminaison - Les données du budget à terminaison
- * @returns {SoldesTimelineItem} Un objet contenant les résultats de l'analyse
+ * @returns {AnalyseSoldesTimelineItemModel} Un objet contenant les résultats de l'analyse
  */
-function calculateTimelineSoldes(soldeMensuelData : SoldeMensuelModel, aTerminaison : boolean) : SoldesTimelineItem {
-    const newTimelineSoldes: SoldesTimelineItem = {
-        soldeAtFinMoisPrecedent : Math.ceil(soldeMensuelData.soldes.soldeAtFinMoisPrecedent),
-        soldeAtMaintenant : Math.ceil(aTerminaison ? soldeMensuelData.soldes.soldeAtFinMoisCourant : soldeMensuelData.soldes.soldeAtMaintenant)
+function calculateTimelineSoldes(soldesMensuelData : SoldesMensuelModel, aTerminaison : boolean) : AnalyseSoldesTimelineItemModel {
+    const newTimelineSoldes: AnalyseSoldesTimelineItemModel = {
+        soldeAtFinMoisPrecedent : Math.ceil(soldesMensuelData.soldes.soldeAtFinMoisPrecedent),
+        soldeAtMaintenant : Math.ceil(aTerminaison ? soldesMensuelData.soldes.soldeAtFinMoisCourant : soldesMensuelData.soldes.soldeAtMaintenant)
     };
     return newTimelineSoldes;
 }
@@ -120,24 +121,24 @@ function calculateTimelineSoldes(soldeMensuelData : SoldeMensuelModel, aTerminai
 /**
  * Récupère la liste des catégories à partir d'un solde mensuel.
  *
- * @param {SoldeMensuelModel} soldeMensuel - Le modèle de solde mensuel contenant les totaux par catégories.
- * @returns {SoldeCategorieModel[]} La liste des catégories triées par libellé.
+ * @param {SoldesMensuelModel} soldeMensuel - Le modèle de solde mensuel contenant les totaux par catégories.
+ * @returns {AnalyseSoldesCategorieModel[]} La liste des catégories triées par libellé.
  */
-function getListeCategories(soldeMensuel : SoldeMensuelModel): SoldeCategorieModel[] {
-    const listeCategories : SoldeCategorieModel[] = [];
+function getSoldesByCategories(soldeMensuel : SoldesMensuelModel): AnalyseSoldesCategorieModel[] {
+    const soldesByCategories : AnalyseSoldesCategorieModel[] = [];
     for (let idCategorie in soldeMensuel.totauxParCategories) {
-        let categorie : SoldeCategorieModel;
+        let categorie : AnalyseSoldesCategorieModel;
         categorie = soldeMensuel.totauxParCategories[idCategorie];
         categorie.id = idCategorie;
         categorie.couleur = getCategorieColor(categorie.id);
         categorie.filterActive = true;
 
-        if (!listeCategories.some((categorieInList) => categorieInList.id === categorie.id) && categorie.id !== null) {
-            listeCategories.push(categorie);
+        if (!soldesByCategories.some((categorieInList) => categorieInList.id === categorie.id) && categorie.id !== null) {
+            soldesByCategories.push(categorie);
         }
     }
-    listeCategories.sort((categorie1 : SoldeCategorieModel, categorie2: SoldeCategorieModel) => categorie1.libelleCategorie.localeCompare(categorie2.libelleCategorie));
-    return listeCategories;
+    soldesByCategories.sort((categorie1 : AnalyseSoldesCategorieModel, categorie2: AnalyseSoldesCategorieModel) => categorie1.libelleCategorie.localeCompare(categorie2.libelleCategorie));
+    return soldesByCategories;
 }
 
 
