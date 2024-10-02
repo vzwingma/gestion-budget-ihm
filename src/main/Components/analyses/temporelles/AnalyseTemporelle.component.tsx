@@ -43,12 +43,12 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
 
     const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
 
-    const [filterChange, setFilterChange] = useState<number>(new Date().getTime());
+    const [_, setFilterChange] = useState<number>(new Date().getTime());
     /** Chargement des catégories **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses, "listeCategories :", analyseSoldesCategoriesData);
         loadSoldesBudgets(selectedCompte, anneeAnalyses, handleDataCalculationResult);
-    }, [selectedCompte, anneeAnalyses]);
+    }, [selectedCompte, anneeAnalyses, analyseSoldesCategoriesData]);
 
 
     /**

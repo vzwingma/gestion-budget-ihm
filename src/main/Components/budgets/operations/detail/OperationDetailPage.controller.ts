@@ -6,10 +6,6 @@ import { BUSINESS_GUID, TYPES_OPERATION_ENUM } from "../../../../Utils/AppBusine
 import { getEventTargetId } from "../../../../Utils/OperationData.utils";
 import { createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
-import { create } from "@mui/material/styles/createTransitions";
-
-
-
 
 /**
  * Event sur le clic d'une édition d'opération
@@ -36,7 +32,7 @@ export function handleOperationEditionClick(event: any, operation: OperationMode
         // Validation du formulaire
         if (enterKeyPress && editForm.formValidationEnabled) {
             handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate);
-        } else if (!idElement.endsWith(OPERATION_EDITION_FORM.INPUT)) {
+        } else if (idElement !== null && !idElement.endsWith(OPERATION_EDITION_FORM.INPUT)) {
             switch (idElement) {
                 case OPERATION_EDITION_FORM.VALUE:
                     editForm.value = true;
