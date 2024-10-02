@@ -8,14 +8,14 @@ import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
 import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
 import {
     CategorieTimelineItem,
-    DataCalculationResultsProps,
     SoldesTimelineItem,
 } from "./AnalyseTemporelle.controller";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
 import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
 import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
-import { AnalyseTemporelleProps } from "../../Components.props";
+import { AnalyseTemporelleProps, DataCalculationTemporelResultsProps } from "../../Components.props";
+import CenterComponent from "../../CenterComponent";
 
 
 
@@ -60,7 +60,8 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
         timelinesGroupedByCategoriesData,
         timelinesPrevisionnellesGroupedByCategoriesData,
         timelinesSoldesData,
-        timelinesPrevisionnellesSoldesData }: DataCalculationResultsProps) {
+        timelinesPrevisionnellesSoldesData }: DataCalculationTemporelResultsProps) 
+    {
         setCurrentBudgets(soldesBudgetsData);
         setListeCategories(categoriesData);
         setTimelinesGroupedByCategories(timelinesGroupedByCategoriesData);
@@ -116,7 +117,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                             currentAnnee={anneeAnalyses}
                             onAnneeChange={setAnneeAnalyses} />
                         :
-                        <CircularProgress />
+                        <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid2>
                 <Grid2 size={{ md: 2 }} direction={"row-reverse"}>
@@ -132,7 +133,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                                     onChange={onFilterSoldesChange} />
                             </>
                             :
-                            <CircularProgress /> }
+                            <CenterComponent><CircularProgress /></CenterComponent> }
                 </Grid2>
             </Grid2>
             <Divider variant="middle" sx={{ margin: 1 }} />
@@ -147,7 +148,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                         filterSoldesActive={filterSoldesActive}
                         categoriesData={listeCategories || []} />
                     :
-                    <CircularProgress />
+                    <CenterComponent><CircularProgress /></CenterComponent>
                 }
             </Grid2>
         </Box>

@@ -4,6 +4,7 @@ import CategorieOperationModel from "../Models/CategorieOperation.model";
 import CompteBancaireModel from "../Models/CompteBancaire.model";
 import OperationModel from "../Models/Operation.model";
 import SoldeCategorieModel from "../Models/SoldeCategorie.model";
+import SoldeMensuelModel from "../Models/SoldeMensuel.model";
 import { BUSINESS_ONGLETS, UTILISATEUR_DROITS } from "../Utils/AppBusinessEnums.constants";
 import { CategorieTimelineItem, SoldesTimelineItem } from "./analyses/temporelles/AnalyseTemporelle.controller";
 import { OPERATION_EDITION_FORM } from "./budgets/operations/detail/OperationDetailPage.constants";
@@ -77,6 +78,25 @@ export interface TooltipAnalyseTemporelleProps {
     label?: string
 }
 
+/**
+ * Interface pour les propriétés des résultats de calcul des données.
+ *
+ * @interface DataCalculationTemporelResultsProps
+ * @property {SoldeMensuelModel[]} soldesBudgetsData - Les données des soldes budgétaires.
+ * @property {SoldeCategorieModel[]} categoriesData - Les données des catégories.
+ * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesGroupedByCategoriesData - Les timelines groupées par catégories.
+ * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesPrevisionnellesGroupedByCategoriesData - Les timelines prévisionnelles groupées par catégories.
+ * @property {SoldeMensuelModel[]} timelinesSoldesData - Les timelines des soldes.
+ * @property {SoldeMensuelModel[]} timelinesPrevisionnellesSoldesData - Les timelines prévisionnelles des soldes.
+ */
+export interface DataCalculationTemporelResultsProps {
+    soldesBudgetsData: SoldeMensuelModel[],
+    categoriesData: SoldeCategorieModel[],
+    timelinesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
+    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
+    timelinesSoldesData: SoldesTimelineItem[],
+    timelinesPrevisionnellesSoldesData: SoldesTimelineItem[]
+}
 
 export  interface AnalyseTemporelleProps {
    selectedCompte: CompteBancaireModel | null

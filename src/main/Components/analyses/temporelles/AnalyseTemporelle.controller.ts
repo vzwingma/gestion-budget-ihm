@@ -3,30 +3,13 @@ import {getMonthFromString} from "../../../Utils/Date.utils";
 import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer";
 import SoldeMensuelModel from "../../../Models/SoldeMensuel.model";
 import SoldeCategorieModel from "../../../Models/SoldeCategorie.model";
+import { DataCalculationTemporelResultsProps } from "../../Components.props";
 /**
  * Controleur des analyses temporelles
  */
 
 
-/**
- * Interface pour les propriétés des résultats de calcul des données.
- *
- * @interface DataCalculationResultsProps
- * @property {SoldeMensuelModel[]} soldesBudgetsData - Les données des soldes budgétaires.
- * @property {SoldeCategorieModel[]} categoriesData - Les données des catégories.
- * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesGroupedByCategoriesData - Les timelines groupées par catégories.
- * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesPrevisionnellesGroupedByCategoriesData - Les timelines prévisionnelles groupées par catégories.
- * @property {SoldeMensuelModel[]} timelinesSoldesData - Les timelines des soldes.
- * @property {SoldeMensuelModel[]} timelinesPrevisionnellesSoldesData - Les timelines prévisionnelles des soldes.
- */
-export interface DataCalculationResultsProps {
-    soldesBudgetsData: SoldeMensuelModel[],
-    categoriesData: SoldeCategorieModel[],
-    timelinesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
-    timelinesPrevisionnellesGroupedByCategoriesData: { [key: string]: CategorieTimelineItem }[],
-    timelinesSoldesData: SoldesTimelineItem[],
-    timelinesPrevisionnellesSoldesData: SoldesTimelineItem[]
-}
+
 
 /**
  * Interface pour CategorieTimelineItem.
@@ -81,7 +64,7 @@ export function calculateTimelines(soldesBudgetsData : SoldeMensuelModel[], hand
                                                                                                                timelinesGroupedByCategoriesData,
                                                                                                                timelinesPrevisionnellesGroupedByCategoriesData,
                                                                                                                timelinesSoldesData,
-                                                                                                               timelinesPrevisionnellesSoldesData} : DataCalculationResultsProps) => void) : void {
+                                                                                                               timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
     soldesBudgetsData = Object.values(soldesBudgetsData)
         .sort((budget1: SoldeMensuelModel, budget2: SoldeMensuelModel) => getMonthFromString(budget1.mois) - getMonthFromString(budget2.mois))
 
