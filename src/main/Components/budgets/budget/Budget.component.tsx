@@ -30,14 +30,13 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
     const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
-    const [, setUserPreferences] = useState<string[]>([]);
-    const [listeLibellesOperations, setListeLibellesOperation] = useState<string[]>([]);
+    const [listeLibellesOperations, setListeLibellesOperations] = useState<string[]>([]);
 
         
     /** Chargement des catégories et des préférences utilisateurs au 1er démarrage **/
     useEffect(() => {
         loadCategories(handleCategoriesLoaded);
-        getPreferenceUtilisateur(setUserDroits, setUserPreferences);
+        getPreferenceUtilisateur(setUserDroits);
     } , []);
 
     /** Mise à jour du budget si changement de compte ou de date **/
@@ -45,7 +44,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFromDate(selectedDate))
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
         if(selectedCompte != null){
-            getLibellesOperation(selectedCompte.id, setListeLibellesOperation);
+            getLibellesOperation(selectedCompte.id, setListeLibellesOperations);
         }
     }, [selectedCompte, selectedDate])
 

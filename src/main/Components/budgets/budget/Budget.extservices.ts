@@ -58,7 +58,7 @@ export function reloadBudget(handleBudgetUpdate: (budget: BudgetMensuelModel) =>
  * @param setUserDroits - Fonction pour définir les droits de l'utilisateur.
  * @param setUserPreferences - Fonction pour définir les préférences de l'utilisateur.
  */
-export function getPreferenceUtilisateur(setUserDroits: React.Dispatch<React.SetStateAction<UTILISATEUR_DROITS[]>>, setUserPreferences: React.Dispatch<React.SetStateAction<string[]>>) {
+export function getPreferenceUtilisateur(setUserDroits: React.Dispatch<React.SetStateAction<UTILISATEUR_DROITS[]>>) {
     call(METHODE_HTTP.GET, BACKEND_ENUM.URL_UTILISATEURS, SERVICES_URL.UTILISATEURS.USERS_PREFS)
         .then((data) => {
             let userDroits: UTILISATEUR_DROITS[] = [];
@@ -73,7 +73,6 @@ export function getPreferenceUtilisateur(setUserDroits: React.Dispatch<React.Set
                 }
             }
             setUserDroits(userDroits);
-            setUserPreferences(data.preferences);
         })
         .catch((e) => {
             console.log("Erreur lors de la recherche de la dernière connexion", e);

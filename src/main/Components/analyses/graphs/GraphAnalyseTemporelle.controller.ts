@@ -101,10 +101,9 @@ function getDataGraphTimelineItem(dataGraphTimeline: GraphAnalyseTimelineModel, 
  */
 export function flatCategoriesData(dataGraphTimeline: GraphAnalyseTimelineModel, analyseSoldesCategoriesData: AnalyseSoldesCategorie[], filterSoldesActive: boolean) {
     const dataByCategories: GraphAnalyseTimelineItemModel[] = Object.values(dataGraphTimeline.dataGraphTimelineItem);
-    for (let i = 0; i < dataByCategories.length; i++) {
-        const dataByMonth = dataByCategories[i];
-        for (let j = 0; j < analyseSoldesCategoriesData.length; j++) {
-            const categorie = analyseSoldesCategoriesData[j];
+
+    for(let dataByMonth of dataByCategories) {
+        for (let categorie of analyseSoldesCategoriesData) {
             dataByMonth[categorie.libelleCategorie] = dataByMonth.categories[categorie.libelleCategorie];
             dataByMonth[SOLDES_ENUM.PREVISIONNEL + categorie.libelleCategorie] = dataByMonth.categories[SOLDES_ENUM.PREVISIONNEL + categorie.libelleCategorie];
         }
@@ -114,7 +113,7 @@ export function flatCategoriesData(dataGraphTimeline: GraphAnalyseTimelineModel,
             dataByMonth[SOLDES_ENUM.PREVISIONNEL+SOLDES_ENUM.SOLDE_COURANT] = dataByMonth.categories[SOLDES_ENUM.PREVISIONNEL+SOLDES_ENUM.SOLDE_COURANT];
             dataByMonth[SOLDES_ENUM.PREVISIONNEL+SOLDES_ENUM.SOLDE_FIN] = dataByMonth.categories[SOLDES_ENUM.PREVISIONNEL+SOLDES_ENUM.SOLDE_FIN];
         }
-        delete (dataByCategories[i] as {categories?: { [idCategorie: string]: number }}).categories;
+        delete (dataByMonth as {categories?: { [idCategorie: string]: number }}).categories;
     }
     return dataByCategories;
 }
