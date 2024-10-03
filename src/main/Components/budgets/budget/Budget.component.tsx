@@ -53,7 +53,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Etats pour la page Budget **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, setCategories } = useContext(BudgetContext)!;
+    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories } = useContext(BudgetContext)!;
 
     const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
@@ -196,6 +196,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationDetailPage 
+                            listeCategories={categories}
                             listeLibellesOperations={listeLibellesOperations}
                             onOperationChange={handleBudgetUpdate} />
                         : <></>

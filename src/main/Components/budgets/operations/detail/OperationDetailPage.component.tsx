@@ -48,10 +48,15 @@ import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextP
  * Ce composant affiche les détails d'une opération et permet de modifier ses informations.
  * Il gère également les états du formulaire d'édition et les interactions utilisateur.
  *
+ * @property {OperationModel} operation - Le modèle de l'opération en cours de détail.
+ * @property {BudgetMensuelModel} budget - Le modèle du budget mensuel associé.
+ * @property {CategorieOperationModel[]} listeCategories - La liste des catégories d'opérations disponibles.
+ * @property {CompteBancaireModel[]} listeComptes - La liste des comptes bancaires disponibles.
  * @property {(budget: BudgetMensuelModel, operationsGroupedByDateOperation: { [key: string]: OperationModel[] }) => void} onOperationChange - Fonction appelée lors du changement d'une opération, prenant en paramètres le budget mis à jour et les opérations groupées par date.
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
 export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ 
+    listeCategories,
     listeLibellesOperations,
     onOperationChange
 }: OperationDetailPageProps): JSX.Element => {
@@ -60,7 +65,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
-    const { currentBudget, currentOperation, comptes, categories } = useContext(BudgetContext)!;
+    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budget = currentBudget!;
 
@@ -133,7 +138,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param ssCatId  id de la sous catégorie
      */
     function fillCategorieForm(ssCatId: string) {
-        const ssCat = categories
+        const ssCat = listeCategories
             .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
             .filter((ssCat: CategorieOperationModel) => ssCat != null && ssCat.id === ssCatId)[0]
 
@@ -209,6 +214,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     <Grid2 size={{ md: 5 }}>
                         {  /** CATEGORIES **/}
                         <OperationDetailCategories
+                            listeCategories={listeCategories}
                             formCatgoriesInEdition={editForm.categories}
                             errorsCategories={errors.categorie}
                             fillOperationForm={fillOperationForm} />

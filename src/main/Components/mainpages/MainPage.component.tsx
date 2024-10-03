@@ -26,7 +26,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
     /** Appels WS vers pour charger la liste des comptes **/
     useEffect(() => {
         loadComptes(setComptes);
-    }, [selectedDate])
+    }, [selectedDate, setComptes])
 
 
     /**
