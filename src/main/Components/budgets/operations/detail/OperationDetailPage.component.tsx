@@ -63,7 +63,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 }: OperationDetailPageProps): JSX.Element => {
 
     const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm(false));
-    const [refresh, setRefresh] = useState<boolean>(false);
+    const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
 
@@ -80,13 +80,15 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
     }, [operation]);
 
 
+    useEffect(() => { }, [refresh]);
+
     /**
      * Ouverture du formulaire d'édition
      * @param editForm formulaire d'édition
      */
     function openEditForm(editForm: EditFormProps) {
         setEditForm(editForm)
-        setRefresh(!refresh)
+        setRefresh(new Date())
     }
 
     /**
@@ -127,8 +129,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                 editForm.formValidationEnabled = (value === "true")
                 break;
         }
+        openEditForm(editForm);
         setEditOperation(editOperation);
-        setRefresh(!refresh);
     }
 
     /**

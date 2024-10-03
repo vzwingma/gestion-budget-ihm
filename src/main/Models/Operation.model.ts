@@ -10,8 +10,8 @@ class OperationModel {
     libelle: string;
     etat: OPERATION_ETATS_ENUM;
     readonly autresInfos: AutresInfos = new AutresInfos(null);
-    readonly categorie: CategorieOperationModel = new CategorieOperationModel("", "");
-    readonly ssCategorie: CategorieOperationModel = new CategorieOperationModel("", "");
+    public categorie: CategorieOperationModel = new CategorieOperationModel("", "");
+    public ssCategorie: CategorieOperationModel = new CategorieOperationModel("", "");
     intercompte: string | null = null;
     typeOperation: TYPES_OPERATION_ENUM;
     valeur: number;
