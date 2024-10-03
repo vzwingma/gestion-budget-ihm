@@ -7,7 +7,7 @@ import {call} from "../../Services/ClientHTTP.service";
 /**
  * Chargement des infos des µS
  */
-export function getInfosFromMicroServices(setInfo: React.Dispatch<React.SetStateAction<MsInfoModel[]>>) {
+export function getInfosFromMicroServices(setInfos: React.Dispatch<React.SetStateAction<MsInfoModel[]>>) {
 
     /** Config Backend **/
     const backEnds = [
@@ -16,26 +16,23 @@ export function getInfosFromMicroServices(setInfo: React.Dispatch<React.SetState
         {idMS: 'API Comptes', url: BACKEND_ENUM.URL_COMPTES},
         {idMS: 'API Opérations', url: BACKEND_ENUM.URL_OPERATIONS}
     ]
+    let promisesGetInfos : Promise<void>[] = [];
+    let msInfos : MsInfoModel[] = [];
 
-
-    let infosUpdated = [] as MsInfoModel[];
     for (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
-        call(METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
-            .then((msInfo : MsInfoModel) => {
-                    infosUpdated.push(msInfo);
-                    setInfo(infosUpdated);
-                }
-            )
+        promisesGetInfos.push(call(METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
+            .then((msInfo : MsInfoModel) => { msInfos.push(msInfo); })
             .catch((e) => {
                 console.log("Erreur pour " + backEnd.idMS, e)
                 const errData : MsInfoModel = {
                     nom: backEnd.idMS,
                     version: 'N/A'
                 };
-                infosUpdated.push(errData)
-                setInfo(infosUpdated)
-            })
+                msInfos.push(errData);
+            }));
     }
-    return infosUpdated;
+    Promise.all(promisesGetInfos).then(() => {
+        setInfos(msInfos);
+    });
 }
 
