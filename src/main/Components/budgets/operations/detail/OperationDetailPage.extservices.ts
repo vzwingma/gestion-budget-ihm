@@ -77,7 +77,6 @@ export function saveOperationIntercompte(operation: OperationModel, budget: Budg
  */
 export function getLibellesOperation(idCompte: string, setListeLibellesOperation: React.Dispatch<React.SetStateAction<string[]>>) {
 
-    console.log("Recherche des libellés d'opérations sur le compte : ", idCompte)
     call(METHODE_HTTP.GET,
         BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.LIBELLES,
         [idCompte])
@@ -89,8 +88,9 @@ export function getLibellesOperation(idCompte: string, setListeLibellesOperation
                 )
                 .sort((libelle1, libelle2) => libelle1.localeCompare(libelle2));
             setListeLibellesOperation(listeLibelles);
+            console.log(listeLibelles.length, "libellés d'opérations sur le compte : ", idCompte)
         })
         .catch(e => {
-            console.log("Erreur lors de la recherche des libellés d'opérations ", e);
+            console.error("Erreur lors de la recherche des libellés d'opérations ", e);
         })
 }

@@ -1,4 +1,5 @@
 /** Client HTTP **/
+import { v4 } from 'uuid';
 import { API_GW_ENUM } from '../Utils/AppTechEnums.constants';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
 
@@ -73,8 +74,8 @@ export async function call(httpMethod: string, uri: string, path: string, params
 
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
-
-    console.log("[WS] > [" + httpMethod + " -> " + fullURL + "]")
+    const uuid = v4().slice(0, 8);
+    console.log("[WS-"+uuid+"] > [" + httpMethod + " -> " + fullURL + "]")
     const jsonBody = evaluateBody(body);
 
     logAuth();
@@ -91,14 +92,14 @@ export async function call(httpMethod: string, uri: string, path: string, params
             body: jsonBody
         })
         .then(res => {
-            console.log("[WS] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
+            
             if (res.status >= 200 && res.status < 300) {
                 return res.json();
             } else if (res.status === 403) {
-                console.log("Session expirée")
+                console.warn("[WS-"+uuid+"] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
                 logOut();
             } else {
-                console.log(res);
+                console.error("[WS-"+uuid+"] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
                 throw new Error(res.statusText);
             }
         })
