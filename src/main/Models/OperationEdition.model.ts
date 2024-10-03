@@ -65,7 +65,8 @@ export function createNewOperationEdition(): OperationEditionModel {
  * @param operation : object : Operation à copier
  */
 export function cloneOperation(operation: OperationModel): OperationEditionModel {
-    const valeur = operation.valeur != null ? ((operation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1) * operation.valeur).toString() : null;
+    const typeOperationSign : number = operation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1;
+    const valeur = (typeOperationSign * operation.valeur).toString() ?? null;
     return {
         id: operation.id,
         libelle: operation.libelle,

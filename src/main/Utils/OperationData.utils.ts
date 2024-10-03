@@ -71,7 +71,7 @@ export function sortLibellesCategories(categorie1: CategorieOperationModel, cate
 }
 
 
-export const INTERCOMPTE_LIBELLE_REGEX = "(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)";
+export const INTERCOMPTE_LIBELLE_REGEX : RegExp = /(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)/;
 
 /**
  * Vérifie si une opération est un intercompte
@@ -79,7 +79,7 @@ export const INTERCOMPTE_LIBELLE_REGEX = "(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)
  * @returns {boolean} true si intercompte
  */
 export function operationIsIntercompteFromLibelle(operationLibelle: string) {
-    return operationLibelle.match(INTERCOMPTE_LIBELLE_REGEX) !== null;
+    return INTERCOMPTE_LIBELLE_REGEX.exec(operationLibelle) !== null;
 }
 
 /**
