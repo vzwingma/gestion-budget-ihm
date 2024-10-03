@@ -6,10 +6,10 @@ import CategorieOperationModel from "./CategorieOperation.model";
  */
 class OperationModel {
 
-    id: string;
+    public id: string;
     libelle: string;
     etat: OPERATION_ETATS_ENUM;
-    autresInfos: AutresInfos;
+    readonly autresInfos: AutresInfos = new AutresInfos(null);
     categorie: CategorieOperationModel;
     ssCategorie: CategorieOperationModel;
     intercompte: string | null = null;
@@ -39,11 +39,11 @@ export default OperationModel;  // export default is used to export a single cla
 /**
  * Model AutresInfos dans Operation.model.ts
  */
-class AutresInfos {
+export class AutresInfos {
     dateOperation: Date | null = null;
     dateMaj?: Date;
 
-    constructor(dateOperation: Date, dateMaj: Date) {
+    constructor(dateOperation: Date | null, dateMaj?: Date) {
         this.dateOperation = dateOperation;
         this.dateMaj = dateMaj;
     }

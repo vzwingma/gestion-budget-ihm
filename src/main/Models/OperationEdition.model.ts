@@ -1,16 +1,16 @@
 import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM} from "../Utils/AppBusinessEnums.constants";
 import CategorieOperationModel from "./CategorieOperation.model";
-import OperationModel, { createNewOperation } from "./Operation.model";
+import OperationModel, { AutresInfos, createNewOperation } from "./Operation.model";
 
 /**
  * Opérations Edition model
  */
 class OperationEditionModel {
 
-    id: string | null;
+    public id: string | null;
     libelle: string;
     etat: OPERATION_ETATS_ENUM;
-    autresInfos: AutresInfos;
+    readonly autresInfos: AutresInfos = new AutresInfos(null);
     categorie: CategorieOperationModel;
     ssCategorie: CategorieOperationModel;
     intercompte: string | null = null;
@@ -36,19 +36,6 @@ class OperationEditionModel {
     }
 }
 export default OperationEditionModel;  // export default is used to export a single class, function or primitive from a script file.
-
-/**
- * Model AutresInfos dans Operation.model.ts
- */
-class AutresInfos {
-    dateOperation: Date | null = null;
-    dateMaj?: Date;
-
-    constructor(dateOperation: Date, dateMaj: Date) {
-        this.dateOperation = dateOperation;
-        this.dateMaj = dateMaj;
-    }
-}
 
 
 /**

@@ -170,8 +170,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
         <Container id={OPERATION_EDITION_FORM.FORM}
             component="div"
             fixed maxWidth={"md"}
-            onClick={(event : any) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
-            onKeyUp={(event : any) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
+            onClick={(event : any) => handleOperationEditionClick(event, {operation, budget}, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
+            onKeyUp={(event : any) => handleOperationEditionClick(event, {operation, budget}, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
             <Stack direction={"column"} spacing={5} sx={{ alignItems: "center", marginTop: "20px" }}>
                 <CenterComponent>

@@ -7,6 +7,12 @@ import { getEventTargetId } from "../../../../Utils/OperationData.utils";
 import { createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
 
+
+
+interface OperationBudgetProps {
+    operation: OperationModel;
+    budget: BudgetMensuelModel;
+}
 /**
  * Event sur le clic d'une édition d'opération
  * @param event événement sur le clic d'une opération
@@ -19,7 +25,7 @@ import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.e
  * @param setErrors fonction pour mettre à jour les erreurs du formulaire
  * @param onOperationChange fonction pour mettre à jour l'opération
  */
-export function handleOperationEditionClick(event: any, operation: OperationModel, budget: BudgetMensuelModel,
+export function handleOperationEditionClick(event: any, {operation, budget} : OperationBudgetProps,
     editOperation: OperationEditionModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void,
     setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>,
     onOperationUpdate: (budget: BudgetMensuelModel) => void) {
