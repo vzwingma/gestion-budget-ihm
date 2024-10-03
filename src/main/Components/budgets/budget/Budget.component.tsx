@@ -19,7 +19,34 @@ import CategorieOperationModel from "../../../Models/CategorieOperation.model";
 import { BudgetPageProps } from "../../Components.props";
 
 
-
+/**
+ * Composant principal de la page Budget.
+ *
+ * @param {BudgetPageProps} props - Les propriétés du composant BudgetPage.
+ * @param {Object} props.selectedCompte - Le compte sélectionné.
+ * @param {Date} props.selectedDate - La date sélectionnée.
+ * @param {Array} props.listeComptes - La liste des comptes disponibles.
+ * @param {Function} props.onOpenMenu - Fonction pour ouvrir le menu.
+ * @returns {JSX.Element} - Le composant JSX de la page Budget.
+ *
+ * @component
+ *
+ * @example
+ * <BudgetPage
+ *   selectedCompte={selectedCompte}
+ *   selectedDate={selectedDate}
+ *   listeComptes={listeComptes}
+ *   onOpenMenu={onOpenMenu}
+ * />
+ *
+ * @description
+ * Ce composant gère l'affichage et les interactions de la page Budget. Il charge les catégories et les préférences utilisateur au démarrage, 
+ * et met à jour le budget lorsque le compte ou la date sélectionnée change. Il permet également de filtrer les opérations, de sélectionner 
+ * une opération et de créer une nouvelle opération.
+ *
+ * @remarks
+ * Ce composant utilise plusieurs hooks React pour gérer l'état et les effets de bord, ainsi que des composants Material-UI pour l'interface utilisateur.
+ */
 export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selectedDate, listeComptes, onOpenMenu }: BudgetPageProps): JSX.Element => {
 
     /** Etats pour la page Budget **/

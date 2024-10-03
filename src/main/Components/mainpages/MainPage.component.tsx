@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress, Divider, Drawer, Stack } from "@mui/material";
+import { Box, Divider, Drawer, Stack } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { BUSINESS_ONGLETS } from "../../Utils/AppBusinessEnums.constants";
 import { loadComptes } from "./MainPage.extservices";
@@ -9,7 +9,6 @@ import DateRange from "./menuSlideBar/DateRange.component";
 import BudgetPage from "../budgets/budget/Budget.component";
 import { AnalyseTemporelle } from "../analyses/temporelles/AnalyseTemporelle.component";
 import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
-import CenterComponent from "../CenterComponent";
 import { MainPageProps } from "../Components.props";
 
 
