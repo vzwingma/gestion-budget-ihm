@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import { sortLibellesCategories } from './../../../../../Utils/OperationData.utils'
 import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model'
 import { OperationDetailCategoriesProps } from '../../../../Components.props'
+import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider'
 
 
 
@@ -14,12 +15,14 @@ import { OperationDetailCategoriesProps } from '../../../../Components.props'
  * @param {OperationDetailCategoriesProps} props - Les propriétés du composant.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
-export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({ operation, listeCategories,
+export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({ listeCategories,
                                                                                     formCatgoriesInEdition,
                                                                                     errorsCategories,
                                                                                     fillOperationForm
                                                                                 }: OperationDetailCategoriesProps): JSX.Element => {
 
+    const { currentOperation } = useContext(BudgetContext)!;
+    const operation = currentOperation!;
 
     /**
      * Active ou désactive le formulaire d'édition lors des autocomplétions

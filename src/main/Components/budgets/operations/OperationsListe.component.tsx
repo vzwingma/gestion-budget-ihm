@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {Container, Divider, Stack} from "@mui/material";
 import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';
 import OperationModel from '../../../Models/budgets/Operation.model';
 import { OperationsListeProps } from '../../Components.props';
+import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider';
 
 
 /**

@@ -126,7 +126,6 @@ export interface AnneeRangeProps {
  * Budget
  */
 export interface BudgetActionsButtonGroupProps {
-    budget: BudgetMensuelModel
     droits: UTILISATEUR_DROITS[]
     onActionBudgetChange: (budget: BudgetMensuelModel) => void
     onActionOperationCreate: () => void
@@ -142,7 +141,6 @@ export interface BudgetPageProps {
 export interface BudgetsTitreProps  {
     currentCompte: CompteBancaireModel,
     currentDate: Date,
-    currentBudget: BudgetMensuelModel
 }
 
 /**
@@ -150,8 +148,6 @@ export interface BudgetsTitreProps  {
  */
 
 export interface OperationDetailActionsProps {
-    operation: OperationModel
-    budget: BudgetMensuelModel
     isInCreateMode: boolean,
     onClickRealiseInCreateMode : (valeurDate: Date, editOperation: OperationModel, setEditOperation: React.Dispatch<React.SetStateAction<OperationModel>>) => void
     onOperationChange: (budget: BudgetMensuelModel) => void
@@ -159,7 +155,6 @@ export interface OperationDetailActionsProps {
 
 
 export interface OperationDetailCategoriesProps {
-    operation: OperationModel
     listeCategories: CategorieOperationModel[]
     formCatgoriesInEdition: boolean
     errorsCategories: string | null
@@ -167,8 +162,6 @@ export interface OperationDetailCategoriesProps {
 }
 
 export interface OperationDetailDateProps {
-    operation: OperationModel
-    budgetActif: boolean
     formDateInEdition: boolean
     errorDateOperation: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
@@ -183,8 +176,6 @@ export interface OperationDetailIntercompteProps {
 }
 
 export interface OperationDetailLibelleProps {
-    operation: OperationModel
-    budgetActif: boolean
     listeComptes: CompteBancaireModel[]
     listeLibellesOperations: string[]
     formLibelleInEdition: boolean
@@ -193,23 +184,17 @@ export interface OperationDetailLibelleProps {
 }
 
 export interface OperationDetailMensualiteProps {
-    operation: OperationModel
-    budgetActif: boolean
     formMensualiteInEdition: boolean
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
 }
 
 export interface OperationDetailValeurProps {
-    operation: OperationModel
-    budgetActif: boolean
     formValueInEdition: boolean
     errorValeur: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM.VALUE, value: string) => void
 }
 
 export interface OperationDetailPageProps {
-    operation: OperationModel
-    budget: BudgetMensuelModel
     listeCategories: CategorieOperationModel[]
     listeComptes: CompteBancaireModel[]
     listeLibellesOperations: string[]

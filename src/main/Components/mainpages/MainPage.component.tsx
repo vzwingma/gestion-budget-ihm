@@ -10,6 +10,7 @@ import BudgetPage from "../budgets/budget/Budget.component";
 import { AnalyseTemporelle } from "../analyses/temporelles/AnalyseTemporelle.component";
 import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
 import { MainPageProps } from "../Components.props";
+import { BudgetContextProvider } from "../../Models/contextProvider/BudgetContextProvider";
 
 
 
@@ -67,10 +68,12 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
         switch (fonction) {
 
             case BUSINESS_ONGLETS.BUDGET:
-                return <BudgetPage selectedCompte={selectedCompte}
-                    selectedDate={selectedDate}
-                    listeComptes={comptes}
-                    onOpenMenu={handleOpenMenuBar} />
+                return <BudgetContextProvider>
+                    <BudgetPage selectedCompte={selectedCompte}
+                        selectedDate={selectedDate}
+                        listeComptes={comptes}
+                        onOpenMenu={handleOpenMenuBar} />
+                </BudgetContextProvider>
 
             case BUSINESS_ONGLETS.ANALYSE:
                 return <AnalyseCategories selectedCompte={selectedCompte}
@@ -91,7 +94,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @returns {JSX.Element
      * @constructor
      */
-    function renderLeftTabCompte(fonction : BUSINESS_ONGLETS): JSX.Element {
+    function renderLeftTabCompte(fonction: BUSINESS_ONGLETS): JSX.Element {
         if (fonction === BUSINESS_ONGLETS.BUDGET) {
             return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
         }

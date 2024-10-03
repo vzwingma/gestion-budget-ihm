@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Button,
     ButtonGroup,
@@ -19,6 +19,7 @@ import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGr
 import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "./../../../../Utils/AppBusinessEnums.constants";
 import { userHasPermission } from '../../../../Utils/UserData.utils';
 import { BudgetActionsButtonGroupProps } from '../../../Components.props';
+import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider';
 
 
 
@@ -30,18 +31,24 @@ import { BudgetActionsButtonGroupProps } from '../../../Components.props';
  * @param onActionOperationCreate : function callback lors du click sur créer
  */
 
-export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGroupProps> = ({ budget, droits, onActionBudgetChange, onActionOperationCreate }: BudgetActionsButtonGroupProps): JSX.Element => {
+export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGroupProps> = ({ droits, onActionBudgetChange, onActionOperationCreate }: BudgetActionsButtonGroupProps): JSX.Element => {
 
-
+    const { currentBudget } = useContext(BudgetContext)!;
+    const budget = currentBudget!;
     const [showModale, setShowModale] = useState<boolean>(false);
     const [modaleContent, setModaleContent] = useState<{ title: string, question: string }>();
     const [actionEnCours, setActionEnCours] = useState<string>();
+
+
+
     /**
      * Action sur le bouton ou sur la modale
      * @param event : Event sur le bouton
      */
     function handleButtonsBudgetClick(event: any) {
-
+        if(currentBudget === null){
+            return;
+        }
         if (event.target.className !== "btn-close") {
             let action = getEventTargetId(event.target);
             let titrePopup = "";
@@ -65,7 +72,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
                 if (actionEnCours === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
                     callReopenCloseBudget(budget.id, !budget.actif, onActionBudgetChange)
                 } else if (actionEnCours === ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER) {
-                    callReinitBudget(budget, onActionBudgetChange);
+                    callReinitBudget(currentBudget, onActionBudgetChange);
                 }
             }
             setModaleContent({ title: titrePopup, question: questionPopup });

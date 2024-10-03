@@ -20,7 +20,6 @@ import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/Ca
  */
 const OperationItem: React.FC<OperationItemProps> = ({operation, listeComptes, onClick : handleOperationSelect} : OperationItemProps) : JSX.Element => {
 
-
     return (
         <Box key={"liste_" + operation.id}
              className={"listeItem"}

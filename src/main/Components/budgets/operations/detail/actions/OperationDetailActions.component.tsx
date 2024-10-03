@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import {
     Button,
@@ -22,6 +22,7 @@ import { OPERATION_ETATS_ENUM } from "../../../../../Utils/AppBusinessEnums.cons
 import CenterComponent from "../../../../CenterComponent";
 import { handleOperationAction } from "./OperationDetailActions.controller";
 import { OperationDetailActionsProps } from "../../../../Components.props";
+import { BudgetContext } from "../../../../../Models/contextProvider/BudgetContextProvider";
 
 
 
@@ -36,10 +37,12 @@ import { OperationDetailActionsProps } from "../../../../Components.props";
  * @constructor
  */
 
-export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ operation, budget, isInCreateMode, onClickRealiseInCreateMode : handleDateOperationFromCreateAction, onOperationChange }: OperationDetailActionsProps): JSX.Element => {
+export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ isInCreateMode, onClickRealiseInCreateMode : handleDateOperationFromCreateAction, onOperationChange }: OperationDetailActionsProps): JSX.Element => {
 
     const [showModale, setShowModale] = useState<boolean>(false);
-
+    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
+    const operation = currentOperation!;
+    const budget = currentBudget!;
     return (
         <ButtonGroup onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, handleDateOperationFromCreateAction, onOperationChange, setShowModale)} >
             {operation.etat !== OPERATION_ETATS_ENUM.REALISEE &&

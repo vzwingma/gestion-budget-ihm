@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Box,
     Button,
@@ -39,6 +39,7 @@ import { OperationDetailMensualite } from './subcomponents/OperationDetailMensua
 import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component';
 import OperationEditionModel, { cloneOperation, createNewOperationEdition } from '../../../../Models/budgets/OperationEdition.model';
 import { OperationDetailPageProps } from '../../../Components.props';
+import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider';
 
 
 /**
@@ -54,8 +55,7 @@ import { OperationDetailPageProps } from '../../../Components.props';
  * @property {(budget: BudgetMensuelModel, operationsGroupedByDateOperation: { [key: string]: OperationModel[] }) => void} onOperationChange - Fonction appelée lors du changement d'une opération, prenant en paramètres le budget mis à jour et les opérations groupées par date.
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
-export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operation,
-    budget,
+export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ 
     listeCategories,
     listeComptes,
     listeLibellesOperations,
@@ -66,8 +66,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
     const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
-
-
+    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
+    const operation = currentOperation!;
+    const budget = currentBudget!;
 
 
     /**
@@ -77,7 +78,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
         setEditOperation(cloneOperation(operation));
         setEditForm(createEmptyEditForm(operation.id === "-1"));
         setErrors(createEmptyErrors());
-    }, [operation]);
+    }, [currentOperation]);
 
 
     useEffect(() => { }, [refresh]);
@@ -188,12 +189,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                     </Box>
                 </CenterComponent>
                 { /** VALEUR **/}
-                <OperationDetailValeur operation={operation} formValueInEdition={editForm.value}
-                    errorValeur={errors.valeur} budgetActif={budget?.actif}
+                <OperationDetailValeur formValueInEdition={editForm.value}
+                    errorValeur={errors.valeur} 
                     fillOperationForm={fillOperationForm} />
 
                 { /** LIBELLE **/}
-                <OperationDetailLibelle operation={operation} budgetActif={budget?.actif} listeComptes={listeComptes}
+                <OperationDetailLibelle listeComptes={listeComptes}
                     listeLibellesOperations={listeLibellesOperations}
                     formLibelleInEdition={editForm.libelle}
                     errorLibelle={errors.libelle}
@@ -213,7 +214,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
                     <Grid2 size={{ md: 5 }}>
                         {  /** CATEGORIES **/}
-                        <OperationDetailCategories operation={operation}
+                        <OperationDetailCategories
                             listeCategories={listeCategories}
                             formCatgoriesInEdition={editForm.categories}
                             errorsCategories={errors.categorie}
@@ -226,7 +227,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                     </Grid2>
                     <Grid2 size={{ md: 3 }}>
                         { /** PERIODE **/}
-                        <OperationDetailMensualite operation={operation} budgetActif={budget?.actif}
+                        <OperationDetailMensualite
                             formMensualiteInEdition={editForm.mensualite}
                             fillOperationForm={fillOperationForm} />
                     </Grid2>
@@ -237,7 +238,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
                     </Grid2>
                     <Grid2 size={{ md: 4 }} paddingTop={3}>
-                        {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
+                        {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Actions</Typography> : <></>
                         }
                     </Grid2>
@@ -256,15 +257,14 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                             }
                             listeAutresComptes={
                                 listeComptes
-                                    .filter((compte: CompteBancaireModel) => budget.idCompteBancaire !== compte.id)}
+                                    .filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
                             errorIntercompte={errors.intercompte}
                             fillOperationForm={fillOperationForm} />
                     </Grid2>
                     <Grid2 size={{ md: 4 }}>
                         { /** ACTIONS SUR OPERATION **/}
-                        {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
-                            <OperationDetailActions operation={operation}
-                                budget={budget}
+                        {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
+                            <OperationDetailActions 
                                 isInCreateMode={isInCreateMode(editForm)}
                                 onClickRealiseInCreateMode={() => handleDateOperationFromAction(new Date(), editOperation, setEditOperation)}
                                 onOperationChange={onOperationChange} />
@@ -273,14 +273,14 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                     </Grid2>
                     <Grid2 size={{ md: 3 }}>
                         { /** DATE OPERATION **/}
-                        <OperationDetailDate operation={operation} budgetActif={budget?.actif}
+                        <OperationDetailDate
                             formDateInEdition={editForm.dateOperation}
                             errorDateOperation={errors.dateOperation}
                             fillOperationForm={fillOperationForm} />
                     </Grid2>
                 </Grid2>
 
-                {budget?.actif && isInEditMode(editForm) &&
+                {currentBudget?.actif && isInEditMode(editForm) &&
                     <Button fullWidth variant="outlined" color="success"
                         onClick={() => handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate)}>Valider</Button>
                 }
