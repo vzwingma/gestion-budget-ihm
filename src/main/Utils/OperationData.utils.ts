@@ -8,7 +8,7 @@ import * as AppConstants from "./AppBusinessEnums.constants";
  * @returns {string} chaine sur 2 caractères avec des 0
  */
 export function addLeadingZeros(num: number): string {
-    return String(num).padStart(2, '0');
+    return num.toString().padStart(2, '0');
 }
 
 /**

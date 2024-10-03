@@ -31,12 +31,10 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
     /**
      * Remplit le champ "categorie" de l'état à partir de la saisie de l'utilisateur
      * @param {Event} e - L'événement de saisie
+     * @param newValue nouvelle valeur de la catégorie
      */
     function fillCategorieForm(e: any, newValue: CategorieOperationModel | null) {
-        const ssCat = newValue;
-        if (ssCat !== null && ssCat !== undefined) {
-            fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, ssCat.id != null ? ssCat.id : "");
-        }
+        fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, newValue?.id ?? "");
     }
 
 
@@ -53,11 +51,11 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                     sx={{ width: "90%" }}
                     value={operation.ssCategorie ?? { id: null, libelle: "" }}
                     options={getListeAllCategoriesFlatten(listeCategories)}
-                    groupBy={(option: CategorieOperationModel) => option.categorieParente ? option.categorieParente.libelle : ""}
-                    getOptionLabel={(option: CategorieOperationModel) => option.libelle != null ? option.libelle : ""}
+                    groupBy={(option: CategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
+                    getOptionLabel={(option: CategorieOperationModel) => option?.libelle ?? ""}
                     isOptionEqualToValue={(option : any, value : any) => {
                         if (option.id != null) {
-                            return (option.id === value.id ?? null)
+                            return (option.id === (value.id ?? null))
                         } else {
                             return false;
                         }
