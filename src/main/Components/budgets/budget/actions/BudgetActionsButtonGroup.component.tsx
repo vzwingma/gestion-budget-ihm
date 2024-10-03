@@ -46,9 +46,6 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
      * @param event : Event sur le bouton
      */
     function handleButtonsBudgetClick(event: any) {
-        if(currentBudget === null){
-            return;
-        }
         if (event.target.className !== "btn-close") {
             let action = getEventTargetId(event.target);
             let titrePopup = "";
@@ -72,7 +69,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
                 if (actionEnCours === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
                     callReopenCloseBudget(budget.id, !budget.actif, onActionBudgetChange)
                 } else if (actionEnCours === ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER) {
-                    callReinitBudget(currentBudget, onActionBudgetChange);
+                    callReinitBudget(budget, onActionBudgetChange);
                 }
             }
             setModaleContent({ title: titrePopup, question: questionPopup });
