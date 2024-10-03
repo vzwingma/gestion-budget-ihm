@@ -42,7 +42,7 @@ export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCa
         .filter((operation: OperationModel) => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
         .reduce((group: { [idCategorieOperation: string]: AnalyseCategoriesModel }, operation: OperationModel) => {
             let couleurCategorie = getCategorieColor(operation.categorie.id);
-            if (operation.categorie !== null && operation.categorie.id !== null) {
+            if (operation.categorie?.id !== null) {
                 populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
                 populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
             }
@@ -67,7 +67,7 @@ export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCa
  * @param couleurCategorie - La couleur associée à la catégorie.
  */
 function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesModel }, operation: OperationModel, categorie: CategorieOperationModel, totauxParEtats: { [idCategorie: string]: number; }, couleurCategorie: string) {
-    if (categorie !== null && categorie.id !== null) {
+    if (categorie?.id !== null) {
 
         group[categorie.id] = group[categorie.id] ?? new AnalyseCategoriesModel();
         group[categorie.id].categorie = categorie;
@@ -111,14 +111,14 @@ function initGroup(group: { [idCategorie: string]: AnalyseCategoriesModel }, idC
     return group
 }
 
-
+const PART_TYPE_ANALYSE_REGEX : RegExp = /(.*)_(.*)/;
 /**
  * Change l'état de l'analyse
  * @param {Event} e - L'événement
  */
 export function selectEtatOperation(e: any, currentTypeAnalyse : string, setSelectedTypeAnalyse : React.Dispatch<React.SetStateAction<string>>) {
     const newEtat = e.target.checked ? OPERATION_ETATS_ENUM.REALISEE : OPERATION_ETATS_ENUM.PREVUE
-    const partTypeAnalyse = currentTypeAnalyse.match("(.*)_(.*)");
+    const partTypeAnalyse = PART_TYPE_ANALYSE_REGEX.exec(currentTypeAnalyse);
     if (partTypeAnalyse) {
         setSelectedTypeAnalyse(newEtat + "_" + partTypeAnalyse[2]);
     }
@@ -130,7 +130,7 @@ export function selectEtatOperation(e: any, currentTypeAnalyse : string, setSele
  */
 export function selectTypeOperation(e: any, currentTypeAnalyse : string, setSelectedTypeAnalyse : React.Dispatch<React.SetStateAction<string>>) {
     const newEtat = e.target.checked ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE
-    const partTypeAnalyse = currentTypeAnalyse.match("(.*)_(.*)");
+    const partTypeAnalyse = PART_TYPE_ANALYSE_REGEX.exec(currentTypeAnalyse);
     if (partTypeAnalyse) {
         setSelectedTypeAnalyse(partTypeAnalyse[1] + "_" + newEtat);
     }

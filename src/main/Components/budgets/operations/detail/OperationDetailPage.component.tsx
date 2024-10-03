@@ -137,7 +137,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
      */
     function fillCategorieForm(ssCatId: string) {
         const ssCat = listeCategories
-            .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories !== null && cat.listeSSCategories !== undefined ? cat.listeSSCategories : [])
+            .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
             .filter((ssCat: CategorieOperationModel) => ssCat != null && ssCat.id === ssCatId)[0]
 
             if (ssCat.categorieParente) {
@@ -149,7 +149,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
             setEditOperation(editOperation);
 
             /** Si type Virement **/
-            editOperation.typeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+            const editOperationTypeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
 
             /** Adaptation sur la sélection de catégorie **/
             if (ssCat.categorieParente) {
@@ -159,7 +159,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
             operation.ssCategorie.id = ssCat.id
             operation.ssCategorie.libelle = ssCat.libelle
-            operation.typeOperation = editOperation.typeOperation
+            operation.typeOperation = editOperationTypeOperation
         }
 
     /**
@@ -170,8 +170,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
         <Container id={OPERATION_EDITION_FORM.FORM}
             component="div"
             fixed maxWidth={"md"}
-            onClick={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
-            onKeyUp={(event) => handleOperationEditionClick(event, operation, budget, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
+            onClick={(event : any) => handleOperationEditionClick(event, {operation, budget}, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
+            onKeyUp={(event : any) => handleOperationEditionClick(event, {operation, budget}, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
             <Stack direction={"column"} spacing={5} sx={{ alignItems: "center", marginTop: "20px" }}>
                 <CenterComponent>

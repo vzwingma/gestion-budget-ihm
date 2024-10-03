@@ -8,7 +8,7 @@ import * as AppConstants from "./AppBusinessEnums.constants";
  * @returns {string} chaine sur 2 caractères avec des 0
  */
 export function addLeadingZeros(num: number): string {
-    return String(num).padStart(2, '0');
+    return num.toString().padStart(2, '0');
 }
 
 /**
@@ -71,15 +71,15 @@ export function sortLibellesCategories(categorie1: CategorieOperationModel, cate
 }
 
 
-export const INTERCOMPTE_LIBELLE_REGEX = "(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)";
+export const INTERCOMPTE_LIBELLE_REGEX : RegExp = /(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)/;
 
 /**
  * Vérifie si une opération est un intercompte
  * @param operationLibelle libellé de l'opération
  * @returns {boolean} true si intercompte
  */
-export function operationIsIntercompteFromLibelle(operationLibelle : string) {
-    return operationLibelle.match(INTERCOMPTE_LIBELLE_REGEX) !== null;
+export function operationIsIntercompteFromLibelle(operationLibelle: string) {
+    return INTERCOMPTE_LIBELLE_REGEX.exec(operationLibelle) !== null;
 }
 
 /**
@@ -96,14 +96,11 @@ export function sortOperations(ope1: OperationModel, ope2: OperationModel): numb
         return -1;
     } else if ((date2 === null || date2 === undefined) && date1 !== null) {
         return 1;
-    } else {
-
-        if (date1 !== null && date2 !== null) {
-            if (date1 > date2) {
-                return -1;
-            } else if (date1 < date2) {
-                return 1;
-            }
+    } else if (date1 !== null && date2 !== null) {
+        if (date1 > date2) {
+            return -1;
+        } else if (date1 < date2) {
+            return 1;
         }
     }
 

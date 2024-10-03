@@ -33,7 +33,7 @@ import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
 
                 dataGraphCategories.push({
                     id: analysesOfCategorie.categorie.id!,
-                    categorie: parentCategorie != null ? parentCategorie : analysesOfCategorie.categorie,
+                    categorie: parentCategorie ?? analysesOfCategorie.categorie,
                     name: analysesOfCategorie.categorie.libelle + " : " + analysesOfCategorie.pourcentage[typeAnalyse] + "%",
                     value: Math.abs(analysesOfCategorie.total[typeAnalyse])
                 })

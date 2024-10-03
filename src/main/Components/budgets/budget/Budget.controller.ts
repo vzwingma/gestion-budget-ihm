@@ -26,16 +26,16 @@ export function getOperationsGroupedByDateOperation(listeOperations: OperationMo
 }
 
 /**
- * Liste de toutes les catégories
- * @returns {*}
+ * 
+ * @param listeCategories liste des catégories
+ * @returns  liste des catégories avec les sous catégories
  */
-
 export function populateAllCategories(listeCategories: CategorieOperationModel[]): CategorieOperationModel[] {
     listeCategories
         .forEach((cat: CategorieOperationModel) => {
             if (cat.listeSSCategories != null) {
-                for (let i = 0; i < cat.listeSSCategories.length; i++) {
-                    cat.listeSSCategories[i].categorieParente = cat;
+                for(let ssCategorie of cat.listeSSCategories){
+                    ssCategorie.categorieParente = cat;
                 }
             }
             return cat.listeSSCategories

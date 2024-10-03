@@ -31,12 +31,10 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
     /**
      * Remplit le champ "categorie" de l'état à partir de la saisie de l'utilisateur
      * @param {Event} e - L'événement de saisie
+     * @param newValue nouvelle valeur de la catégorie
      */
     function fillCategorieForm(e: any, newValue: CategorieOperationModel | null) {
-        const ssCat = newValue;
-        if (ssCat !== null && ssCat !== undefined) {
-            fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, ssCat.id != null ? ssCat.id : "");
-        }
+        fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, newValue?.id ?? "");
     }
 
 
@@ -49,15 +47,15 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
             <FormControl fullWidth required error={errorsCategories != null}>
                 <Autocomplete
                     id={OPERATION_EDITION_FORM.CATEGORIE + OPERATION_EDITION_FORM.INPUT}
-                    renderInput={(params) => <TextField {...params} variant={"standard"} />}
+                    renderInput={(params : any) => <TextField {...params} variant={"standard"} />}
                     sx={{ width: "90%" }}
-                    value={operation.ssCategorie != null ? operation.ssCategorie : { id: null, libelle: "" }}
+                    value={operation.ssCategorie ?? { id: null, libelle: "" }}
                     options={getListeAllCategoriesFlatten(listeCategories)}
-                    groupBy={(option: CategorieOperationModel) => option.categorieParente ? option.categorieParente.libelle : ""}
-                    getOptionLabel={(option: CategorieOperationModel) => option.libelle != null ? option.libelle : ""}
-                    isOptionEqualToValue={(option, value) => {
+                    groupBy={(option: CategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
+                    getOptionLabel={(option: CategorieOperationModel) => option?.libelle ?? ""}
+                    isOptionEqualToValue={(option : any, value : any) => {
                         if (option.id != null) {
-                            return (option.id === (value != null ? value.id : null))
+                            return (option.id === (value.id ?? null))
                         } else {
                             return false;
                         }
@@ -78,6 +76,6 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
  */
 function getListeAllCategoriesFlatten(listeCategories: CategorieOperationModel[]): (CategorieOperationModel)[]  {
     return listeCategories
-        .flatMap((cat: CategorieOperationModel) => (cat.listeSSCategories !== undefined && cat.listeSSCategories !== null) ? cat.listeSSCategories : [])
+        .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
         .sort(sortLibellesCategories);
 }

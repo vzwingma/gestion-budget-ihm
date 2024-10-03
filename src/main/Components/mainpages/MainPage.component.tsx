@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress, Divider, Drawer, Stack } from "@mui/material";
+import { Box, Divider, Drawer, Stack } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { BUSINESS_ONGLETS } from "../../Utils/AppBusinessEnums.constants";
 import { loadComptes } from "./MainPage.extservices";
@@ -7,9 +7,8 @@ import CompteBancaireModel from "../../Models/CompteBancaire.model";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import DateRange from "./menuSlideBar/DateRange.component";
 import BudgetPage from "../budgets/budget/Budget.component";
-import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component";
+import { AnalyseTemporelle } from "../analyses/temporelles/AnalyseTemporelle.component";
 import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
-import CenterComponent from "../CenterComponent";
 import { MainPageProps } from "../Components.props";
 
 
@@ -53,8 +52,8 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      *   Notification lorsque la date change
      * @param selectedDateFromComponent : date sélectionnée
      */
-    function handleDateChange(selectedDateFromComponent : Date) {
-        console.log("[TRIGGER-MENU] Context date" , selectedDateFromComponent)
+    function handleDateChange(selectedDateFromComponent: Date) {
+        console.log("[TRIGGER-MENU] Context date", selectedDateFromComponent)
         setSelectedDate(selectedDateFromComponent);
     }
 
@@ -69,18 +68,18 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
 
             case BUSINESS_ONGLETS.BUDGET:
                 return <BudgetPage selectedCompte={selectedCompte}
-                                    selectedDate={selectedDate}
-                                    listeComptes={comptes}
-                                    onOpenMenu={handleOpenMenuBar} />
+                    selectedDate={selectedDate}
+                    listeComptes={comptes}
+                    onOpenMenu={handleOpenMenuBar} />
 
             case BUSINESS_ONGLETS.ANALYSE:
-                return <AnalyseCategories   selectedCompte={selectedCompte}
-                                            selectedDate={selectedDate}
-                                            onOpenMenu={handleOpenMenuBar} />
+                return <AnalyseCategories selectedCompte={selectedCompte}
+                    selectedDate={selectedDate}
+                    onOpenMenu={handleOpenMenuBar} />
 
             case BUSINESS_ONGLETS.ANALYSE_TEMP:
                 return <AnalyseTemporelle selectedCompte={selectedCompte}
-                                          onOpenMenu={handleOpenMenuBar} />
+                    onOpenMenu={handleOpenMenuBar} />
 
             default:
                 return <></>
@@ -92,12 +91,12 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @returns {JSX.Element
      * @constructor
      */
-    function renderLeftTabCompte(): JSX.Element {
-        switch (fonction) {
-            case BUSINESS_ONGLETS.BUDGET:
-                return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
-            default:
-                return <></>
+    function renderLeftTabCompte(fonction : BUSINESS_ONGLETS): JSX.Element {
+        if (fonction === BUSINESS_ONGLETS.BUDGET) {
+            return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
+        }
+        else {
+            return <></>
         }
     }
 
@@ -111,7 +110,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                 <Stack spacing={2}>
                     <Box sx={{ height: 80 }} />
 
-                    {renderLeftTabCompte()}
+                    {renderLeftTabCompte(fonction)}
 
                     <Stack divider={<Divider orientation="horizontal" flexItem />}>
                         {comptes
@@ -132,7 +131,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             {selectedCompte !== null && selectedDate !== null ?
                 renderSubMainPage()
                 :
-                <CenterComponent><CircularProgress /></CenterComponent>}
+                <></>}
 
             <ToastContainer
                 position="bottom-left"
