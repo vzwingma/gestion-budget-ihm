@@ -17,7 +17,7 @@ import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProv
  * @constructor constructeur
  *
   */
-const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, listeComptes, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
+const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
 
     /**
      * Iterate groupe
@@ -48,7 +48,6 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
                 .forEach((operation) => renderList.push(
                     <OperationItem key={operation.id}
                                     operation={operation}
-                                    listeComptes={listeComptes}
                                     onClick={handleOperationSelect}/>)
                 )
         }

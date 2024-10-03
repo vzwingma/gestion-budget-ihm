@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {Box, Grid2, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import CenterComponent from '../../CenterComponent';
 import { OperationItemProps } from '../../Components.props';
 import { getOperationLibelle, getOperationStateColor } from '../../../Utils/renderers/OperationItem.renderer';
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer';
+import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider';
 
 
 
@@ -18,8 +19,9 @@ import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/Ca
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const OperationItem: React.FC<OperationItemProps> = ({operation, listeComptes, onClick : handleOperationSelect} : OperationItemProps) : JSX.Element => {
+const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handleOperationSelect} : OperationItemProps) : JSX.Element => {
 
+    const { comptes } = useContext(BudgetContext)!;
     return (
         <Box key={"liste_" + operation.id}
              className={"listeItem"}
@@ -48,7 +50,7 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, listeComptes, o
                     <Stack direction={"column"}>
                         <Typography variant={"subtitle1"} component="div" align={"left"}
                                     sx={{spacing: 2, paddingLeft: 2}}>
-                            {getOperationLibelle(operation.libelle, listeComptes, false)}
+                            {getOperationLibelle(operation.libelle, comptes, false)}
                         </Typography>
                         <Typography variant={"caption"} component="div" align={"left"}
                                     sx={{spacing: 2, paddingLeft: 2, color: "#808080"}}>

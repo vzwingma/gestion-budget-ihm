@@ -18,14 +18,14 @@ import { BudgetContext } from '../../../../../Models/contextProvider/BudgetConte
  * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
-export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ listeComptes,listeLibellesOperations,
+export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ listeLibellesOperations,
     formLibelleInEdition,
     errorLibelle,
     fillOperationForm
 }: OperationDetailLibelleProps): JSX.Element => {
 
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
+    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budgetActif = currentBudget!.actif;
 
@@ -51,7 +51,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             <Typography variant={"button"} sx={{ fontSize: "large" }}
                 className={budgetActif ? "editableField" : ""}
                 id={OPERATION_EDITION_FORM.LIBELLE}>
-                {getOperationLibelle(operation.libelle, listeComptes, true)}
+                {getOperationLibelle(operation.libelle, comptes, true)}
             </Typography>
             :
             <FormControl fullWidth required error={errorLibelle != null}>

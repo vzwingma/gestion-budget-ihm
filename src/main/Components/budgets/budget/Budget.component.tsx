@@ -49,11 +49,11 @@ import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProv
  * @remarks
  * Ce composant utilise plusieurs hooks React pour gérer l'état et les effets de bord, ainsi que des composants Material-UI pour l'interface utilisateur.
  */
-export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selectedDate, listeComptes, onOpenMenu }: BudgetPageProps): JSX.Element => {
+export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPageProps): JSX.Element => {
 
     /** Etats pour la page Budget **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation } = useContext(BudgetContext)!;
+    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useContext(BudgetContext)!;
 
     const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
@@ -188,7 +188,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                             <OperationsListe
                                 operationGroupedByDate={operationsGroupedByDateOperation}
                                 filterOperations={filterOperations}
-                                listeComptes={listeComptes}
                                 onClick={handleOperationSelect} />
                             :
                             <CenterComponent><CircularProgress /></CenterComponent>
@@ -200,7 +199,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                         /** Affichage d'une opération **/
                         <OperationDetailPage 
                             listeCategories={categories}
-                            listeComptes={listeComptes}
                             listeLibellesOperations={listeLibellesOperations}
                             onOperationChange={handleBudgetUpdate} />
                         : <></>

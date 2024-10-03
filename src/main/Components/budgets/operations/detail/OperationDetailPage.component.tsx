@@ -57,7 +57,6 @@ import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextP
  */
 export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ 
     listeCategories,
-    listeComptes,
     listeLibellesOperations,
     onOperationChange
 }: OperationDetailPageProps): JSX.Element => {
@@ -66,7 +65,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
-    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
+    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budget = currentBudget!;
 
@@ -194,7 +193,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     fillOperationForm={fillOperationForm} />
 
                 { /** LIBELLE **/}
-                <OperationDetailLibelle listeComptes={listeComptes}
+                <OperationDetailLibelle
                     listeLibellesOperations={listeLibellesOperations}
                     formLibelleInEdition={editForm.libelle}
                     errorLibelle={errors.libelle}
@@ -256,7 +255,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id)
                             }
                             listeAutresComptes={
-                                listeComptes
+                                comptes
                                     .filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
                             errorIntercompte={errors.intercompte}
                             fillOperationForm={fillOperationForm} />

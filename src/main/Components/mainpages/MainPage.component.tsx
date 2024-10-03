@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Divider, Drawer, Stack } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { BUSINESS_ONGLETS } from "../../Utils/AppBusinessEnums.constants";
@@ -10,7 +10,7 @@ import BudgetPage from "../budgets/budget/Budget.component";
 import { AnalyseTemporelle } from "../analyses/temporelles/AnalyseTemporelle.component";
 import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
 import { MainPageProps } from "../Components.props";
-import { BudgetContextProvider } from "../../Models/contextProvider/BudgetContextProvider";
+import { BudgetContext } from "../../Models/contextProvider/BudgetContextProvider";
 
 
 
@@ -19,9 +19,8 @@ import { BudgetContextProvider } from "../../Models/contextProvider/BudgetContex
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    const [comptes, setComptes] = useState<CompteBancaireModel[]>([]);
-    const [selectedCompte, setSelectedCompte] = useState<CompteBancaireModel | null>(null);
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0));
+    const { comptes, setComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext)!;
+
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
 
     /** Appels WS vers pour charger la liste des comptes **/
@@ -68,12 +67,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
         switch (fonction) {
 
             case BUSINESS_ONGLETS.BUDGET:
-                return <BudgetContextProvider>
-                    <BudgetPage selectedCompte={selectedCompte}
-                        selectedDate={selectedDate}
-                        listeComptes={comptes}
-                        onOpenMenu={handleOpenMenuBar} />
-                </BudgetContextProvider>
+                return  <BudgetPage onOpenMenu={handleOpenMenuBar} />
 
             case BUSINESS_ONGLETS.ANALYSE:
                 return <AnalyseCategories selectedCompte={selectedCompte}

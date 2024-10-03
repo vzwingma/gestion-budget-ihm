@@ -132,9 +132,6 @@ export interface BudgetActionsButtonGroupProps {
 }
 
 export interface BudgetPageProps {
-    selectedCompte: CompteBancaireModel | null
-    selectedDate: Date
-    listeComptes: CompteBancaireModel[]
     onOpenMenu: () => void
 }
 
@@ -176,7 +173,6 @@ export interface OperationDetailIntercompteProps {
 }
 
 export interface OperationDetailLibelleProps {
-    listeComptes: CompteBancaireModel[]
     listeLibellesOperations: string[]
     formLibelleInEdition: boolean
     errorLibelle: string | null
@@ -196,7 +192,6 @@ export interface OperationDetailValeurProps {
 
 export interface OperationDetailPageProps {
     listeCategories: CategorieOperationModel[]
-    listeComptes: CompteBancaireModel[]
     listeLibellesOperations: string[]
     onOperationChange: (budget: BudgetMensuelModel) => void
 }
@@ -204,13 +199,11 @@ export interface OperationDetailPageProps {
 export interface OperationsListeProps {
     operationGroupedByDate: {[key: string]: OperationModel[]}
     filterOperations: string | null
-    listeComptes: CompteBancaireModel[]
     onClick: (operation : OperationModel) => void
 }
 
 export interface OperationItemProps {
     operation: OperationModel
-    listeComptes: CompteBancaireModel[]
     onClick: (operation : OperationModel) => void
 }
 
