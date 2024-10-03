@@ -52,7 +52,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
 
 
     useEffect(() => {
-        console.log("[TRIGGER] Filter change :", filterChange);
+        console.debug("[TRIGGER] Filter change :", filterChange);
     }, [filterChange]);
     /**
      * Gère les résultats du calcul des données.
