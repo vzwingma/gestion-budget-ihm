@@ -1,7 +1,7 @@
 import {toast} from "react-toastify";
 import {call} from "../../../Services/ClientHTTP.service";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
-import CompteBancaireModel from "../../../Models/CompteBancaire.model";
+import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model";
 import {
     calculateTimelines,
 } from "./AnalyseTemporelle.controller";

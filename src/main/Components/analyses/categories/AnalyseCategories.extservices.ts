@@ -1,5 +1,5 @@
 import {toast} from "react-toastify";
-import CompteBancaireModel from "../../../Models/CompteBancaire.model";
+import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model";
 import { call } from "../../../Services/ClientHTTP.service";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../Utils/AppTechEnums.constants";
 import { calculateResumes } from "./AnalyseCategories.controller";

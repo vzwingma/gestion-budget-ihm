@@ -1,5 +1,5 @@
 import React from "react";
-import MsInfoModel from "../../Models/MsInfo.model";
+import MsInfoModel from "../../Models/infos/MsInfo.model";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants";
 import {call} from "../../Services/ClientHTTP.service";
 

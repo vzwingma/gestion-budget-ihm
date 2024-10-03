@@ -1,10 +1,10 @@
 import { toast } from "react-toastify";
-import CompteBancaireModel from "../../../Models/CompteBancaire.model";
+import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model";
 import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants";
 import { call } from "../../../Services/ClientHTTP.service";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../Utils/AppTechEnums.constants";
-import CategorieOperationModel from "../../../Models/CategorieOperation.model";
-import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
 import { populateAllCategories } from "./Budget.controller";
 
 /*

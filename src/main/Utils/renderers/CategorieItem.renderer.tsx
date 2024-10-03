@@ -39,7 +39,7 @@ import {
     VolunteerActivismOutlined
 } from "@mui/icons-material";
 import React from "react";
-import CategorieOperationModel from "../../Models/CategorieOperation.model";
+import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model";
 
 /**
  * Couleur de la catégorie

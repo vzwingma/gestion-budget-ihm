@@ -1,5 +1,5 @@
-import CategorieOperationModel from "../Models/CategorieOperation.model";
-import OperationModel from "../Models/Operation.model";
+import CategorieOperationModel from "../Models/budgets/CategorieOperation.model";
+import OperationModel from "../Models/budgets/Operation.model";
 import * as AppConstants from "./AppBusinessEnums.constants";
 
 /**

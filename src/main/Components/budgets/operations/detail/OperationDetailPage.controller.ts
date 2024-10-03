@@ -1,7 +1,7 @@
 
-import OperationEditionModel from "../../../../Models/OperationEdition.model";
-import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
-import OperationModel from "../../../../Models/Operation.model";
+import OperationEditionModel from "../../../../Models/budgets/OperationEdition.model";
+import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model";
+import OperationModel from "../../../../Models/budgets/Operation.model";
 import { BUSINESS_GUID, TYPES_OPERATION_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
 import { getEventTargetId } from "../../../../Utils/OperationData.utils";
 import { createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";

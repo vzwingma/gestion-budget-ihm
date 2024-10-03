@@ -3,8 +3,8 @@ import React, {useEffect, useState} from "react";
 import {Box, CircularProgress, Divider, Grid2, InputBase, Paper} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import BudgetTitre from "./BudgetTitre.component";
-import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
-import OperationModel, {createNewOperation} from "../../../Models/Operation.model";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
+import OperationModel, {createNewOperation} from "../../../Models/budgets/Operation.model";
 import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices";
 import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
 import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component";
@@ -15,7 +15,7 @@ import {getLabelFromDate} from "../../../Utils/Date.utils";
 import {getOperationsGroupedByDateOperation} from "./Budget.controller";
 import CenterComponent from "../../CenterComponent";
 import { getLibellesOperation } from "../operations/detail/OperationDetailPage.extservices";
-import CategorieOperationModel from "../../../Models/CategorieOperation.model";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
 import { BudgetPageProps } from "../../Components.props";
 
 

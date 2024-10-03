@@ -4,7 +4,7 @@ import { PolarViewBox } from "recharts/types/util/types";
 import React from "react";
 import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
 import GraphAnalyseCategoriesModel from "../../../Models/analyses/categories/GraphAnalyseCategories.model";
-import CategorieOperationModel from "../../../Models/CategorieOperation.model";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
 import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
 
 

@@ -1,7 +1,7 @@
 import * as ClientHTTP from "../../Services/ClientHTTP.service";
 import {toast} from "react-toastify";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants";
-import CompteBancaireModel from "../../Models/CompteBancaire.model";
+import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
 
 /**
  * Appels WS vers pour charger la liste des comptes

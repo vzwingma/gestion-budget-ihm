@@ -3,10 +3,10 @@ import { AnalyseSoldesTimelineItemModel } from "../Models/analyses/temporelles/A
 import { AnalyseCategorieTimelineItem } from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
 import AnalyseSoldesCategorie from "../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import SoldesMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model";
-import BudgetMensuelModel from "../Models/BudgetMensuel.model";
-import CategorieOperationModel from "../Models/CategorieOperation.model";
-import CompteBancaireModel from "../Models/CompteBancaire.model";
-import OperationModel from "../Models/Operation.model";
+import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model";
+import CategorieOperationModel from "../Models/budgets/CategorieOperation.model";
+import CompteBancaireModel from "../Models/budgets/CompteBancaire.model";
+import OperationModel from "../Models/budgets/Operation.model";
 
 import { BUSINESS_ONGLETS, UTILISATEUR_DROITS } from "../Utils/AppBusinessEnums.constants";
 import { OPERATION_EDITION_FORM } from "./budgets/operations/detail/OperationDetailPage.constants";

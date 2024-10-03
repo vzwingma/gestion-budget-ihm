@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {addEndingZeros} from '../OperationData.utils'
-import OperationModel from '../../Models/Operation.model';
+import OperationModel from '../../Models/budgets/Operation.model';
 import { OPERATION_ETATS_ENUM } from '../AppBusinessEnums.constants';
 
 /**

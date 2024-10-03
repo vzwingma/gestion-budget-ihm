@@ -18,9 +18,9 @@ import {
 import CenterComponent from '../../../CenterComponent';
 import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
 import { OperationDetailActions } from './actions/OperationDetailActions.component';
-import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
-import CategorieOperationModel from '../../../../Models/CategorieOperation.model';
-import CompteBancaireModel from '../../../../Models/CompteBancaire.model';
+import BudgetMensuelModel from '../../../../Models/budgets/BudgetMensuel.model';
+import CategorieOperationModel from '../../../../Models/budgets/CategorieOperation.model';
+import CompteBancaireModel from '../../../../Models/budgets/CompteBancaire.model';
 import {
     BUSINESS_GUID,
     OPERATION_ETATS_ENUM,
@@ -37,7 +37,7 @@ import { OperationDetailDate } from './subcomponents/OperationDetailDate.compone
 import { OperationDetailIntercompte } from './subcomponents/OperationDetailIntercompte.component';
 import { OperationDetailMensualite } from './subcomponents/OperationDetailMensualite.component';
 import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component';
-import OperationEditionModel, { cloneOperation, createNewOperationEdition } from '../../../../Models/OperationEdition.model';
+import OperationEditionModel, { cloneOperation, createNewOperationEdition } from '../../../../Models/budgets/OperationEdition.model';
 import { OperationDetailPageProps } from '../../../Components.props';
 
 

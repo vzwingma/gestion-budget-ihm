@@ -1,4 +1,4 @@
-import { Soldes } from "../../BudgetMensuel.model";
+import { Soldes } from "../../budgets/BudgetMensuel.model";
 import AnalyseSoldesCategorie from "./AnalyseSoldesCategorie.model";
 
 /**

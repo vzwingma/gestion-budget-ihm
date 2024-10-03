@@ -2,7 +2,7 @@ import React from 'react'
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography } from "@mui/material"
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import { sortLibellesCategories } from './../../../../../Utils/OperationData.utils'
-import CategorieOperationModel from './../../../../../Models/CategorieOperation.model'
+import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model'
 import { OperationDetailCategoriesProps } from '../../../../Components.props'
 
 
