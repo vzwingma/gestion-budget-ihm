@@ -46,9 +46,9 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     const [, setFilterChange] = useState<number>(new Date().getTime());
     /** Chargement des catégories **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses, "listeCategories :", analyseSoldesCategoriesData);
+        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses);
         loadSoldesBudgets(selectedCompte, anneeAnalyses, handleDataCalculationResult);
-    });
+    }, [selectedCompte, anneeAnalyses]);
 
 
     /**

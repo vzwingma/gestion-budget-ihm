@@ -136,7 +136,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                     {currentBudget != null && selectedCompte != null ?
                         <BudgetTitre currentCompte={selectedCompte}
                             currentDate={selectedDate}
-                            currentBudget={currentBudget} /> : <>TTT</>
+                            currentBudget={currentBudget} /> : <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid2>
                 <Grid2 size={{md: 1}}>
@@ -147,7 +147,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                                 droits={userDroits}
                                 onActionBudgetChange={handleBudgetUpdate}
                                 onActionOperationCreate={handleButtonCreateClick} /> :
-                                <>AAA</>
+                                <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid2>
             </Grid2>
@@ -162,7 +162,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ selectedCompte, selected
                                 listeComptes={listeComptes}
                                 onClick={handleOperationSelect} />
                             :
-                            <>LLL</>
+                            <CenterComponent><CircularProgress /></CenterComponent>
                         )
                     }
                 </Grid2>

@@ -132,7 +132,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             {selectedCompte !== null && selectedDate !== null ?
                 renderSubMainPage()
                 :
-                <CenterComponent><CircularProgress /></CenterComponent>}
+                <></>}
 
             <ToastContainer
                 position="bottom-left"
