@@ -135,10 +135,6 @@ export interface BudgetPageProps {
     onOpenMenu: () => void
 }
 
-export interface BudgetsTitreProps  {
-    currentCompte: CompteBancaireModel,
-    currentDate: Date,
-}
 
 /**
  * Opertions
@@ -152,7 +148,6 @@ export interface OperationDetailActionsProps {
 
 
 export interface OperationDetailCategoriesProps {
-    listeCategories: CategorieOperationModel[]
     formCatgoriesInEdition: boolean
     errorsCategories: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
@@ -191,7 +186,6 @@ export interface OperationDetailValeurProps {
 }
 
 export interface OperationDetailPageProps {
-    listeCategories: CategorieOperationModel[]
     listeLibellesOperations: string[]
     onOperationChange: (budget: BudgetMensuelModel) => void
 }

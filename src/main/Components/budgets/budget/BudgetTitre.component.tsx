@@ -2,7 +2,6 @@ import OperationValue from '../../../Utils/renderers/OperationValue.renderer'
 import {Box, Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React, { useContext } from "react";
 import {EventOutlined} from "@mui/icons-material";
-import { BudgetsTitreProps } from '../../Components.props';
 import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider';
 
 /**
@@ -13,11 +12,12 @@ import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProv
  * @returns {JSX.Element} element JSX
  * @constructor
  */
-const BudgetsTitre : React.FC<BudgetsTitreProps> = ({currentCompte, currentDate} : BudgetsTitreProps): JSX.Element => {
+const BudgetsTitre : React.FC = (): JSX.Element => {
 
-    const {currentBudget} = useContext(BudgetContext)!;
+    const {currentBudget, selectedCompte, selectedDate} = useContext(BudgetContext)!;
     const budget = currentBudget!;
-
+    const currentCompte = selectedCompte!;
+    const currentDate = selectedDate!;
 
     // définition de la date courante
     const dateCourante = new Date(Date.now());

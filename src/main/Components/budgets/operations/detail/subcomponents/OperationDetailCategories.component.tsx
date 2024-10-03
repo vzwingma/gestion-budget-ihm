@@ -15,13 +15,12 @@ import { BudgetContext } from '../../../../../Models/contextProvider/BudgetConte
  * @param {OperationDetailCategoriesProps} props - Les propriétés du composant.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
-export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({ listeCategories,
-                                                                                    formCatgoriesInEdition,
+export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({  formCatgoriesInEdition,
                                                                                     errorsCategories,
                                                                                     fillOperationForm
                                                                                 }: OperationDetailCategoriesProps): JSX.Element => {
 
-    const { currentOperation } = useContext(BudgetContext)!;
+    const { currentOperation, categories } = useContext(BudgetContext)!;
     const operation = currentOperation!;
 
     /**
@@ -53,7 +52,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                     renderInput={(params : any) => <TextField {...params} variant={"standard"} />}
                     sx={{ width: "90%" }}
                     value={operation.ssCategorie ?? { id: null, libelle: "" }}
-                    options={getListeAllCategoriesFlatten(listeCategories)}
+                    options={getListeAllCategoriesFlatten(categories)}
                     groupBy={(option: CategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
                     getOptionLabel={(option: CategorieOperationModel) => option?.libelle ?? ""}
                     isOptionEqualToValue={(option : any, value : any) => {

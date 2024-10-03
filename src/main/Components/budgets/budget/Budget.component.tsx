@@ -53,11 +53,10 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Etats pour la page Budget **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useContext(BudgetContext)!;
+    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories } = useContext(BudgetContext)!;
 
     const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
-    const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
     const [listeLibellesOperations, setListeLibellesOperations] = useState<string[]>([]);
 
@@ -163,8 +162,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                 <Grid2 size={{ md: 6.1 }}>
                     { /** Titre **/}
                     {currentBudget != null && selectedCompte != null ?
-                        <BudgetTitre currentCompte={selectedCompte}
-                            currentDate={selectedDate} />
+                        <BudgetTitre />
                         :
                         <CenterComponent><CircularProgress /></CenterComponent>
                     }
@@ -198,7 +196,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationDetailPage 
-                            listeCategories={categories}
                             listeLibellesOperations={listeLibellesOperations}
                             onOperationChange={handleBudgetUpdate} />
                         : <></>
