@@ -137,7 +137,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
      */
     function fillCategorieForm(ssCatId: string) {
         const ssCat = listeCategories
-            .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories !== null && cat.listeSSCategories !== undefined ? cat.listeSSCategories : [])
+            .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
             .filter((ssCat: CategorieOperationModel) => ssCat != null && ssCat.id === ssCatId)[0]
 
             if (ssCat.categorieParente) {

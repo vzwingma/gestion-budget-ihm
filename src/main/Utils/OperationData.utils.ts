@@ -78,7 +78,7 @@ export const INTERCOMPTE_LIBELLE_REGEX = "(.*\\[vers |.*\\[depuis )(.*)(\\])(.*)
  * @param operationLibelle libellé de l'opération
  * @returns {boolean} true si intercompte
  */
-export function operationIsIntercompteFromLibelle(operationLibelle : string) {
+export function operationIsIntercompteFromLibelle(operationLibelle: string) {
     return operationLibelle.match(INTERCOMPTE_LIBELLE_REGEX) !== null;
 }
 
@@ -96,14 +96,11 @@ export function sortOperations(ope1: OperationModel, ope2: OperationModel): numb
         return -1;
     } else if ((date2 === null || date2 === undefined) && date1 !== null) {
         return 1;
-    } else {
-
-        if (date1 !== null && date2 !== null) {
-            if (date1 > date2) {
-                return -1;
-            } else if (date1 < date2) {
-                return 1;
-            }
+    } else if (date1 !== null && date2 !== null) {
+        if (date1 > date2) {
+            return -1;
+        } else if (date1 < date2) {
+            return 1;
         }
     }
 

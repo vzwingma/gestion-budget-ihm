@@ -74,8 +74,8 @@ export function cloneOperation(operation: OperationModel): OperationEditionModel
             libelle: operation.categorie.libelle
         },
         ssCategorie: {
-            id: operation.ssCategorie.id != null ? operation.ssCategorie.id : null,
-            libelle: operation.ssCategorie.libelle != null ? operation.ssCategorie.libelle : ""
+            id: operation.ssCategorie.id ?? null,
+            libelle: operation.ssCategorie.libelle ?? ""
         },
         typeOperation: operation.typeOperation,
         etat: operation.etat,

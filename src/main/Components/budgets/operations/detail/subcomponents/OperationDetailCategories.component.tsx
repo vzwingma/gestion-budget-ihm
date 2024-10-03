@@ -49,15 +49,15 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
             <FormControl fullWidth required error={errorsCategories != null}>
                 <Autocomplete
                     id={OPERATION_EDITION_FORM.CATEGORIE + OPERATION_EDITION_FORM.INPUT}
-                    renderInput={(params) => <TextField {...params} variant={"standard"} />}
+                    renderInput={(params : any) => <TextField {...params} variant={"standard"} />}
                     sx={{ width: "90%" }}
-                    value={operation.ssCategorie != null ? operation.ssCategorie : { id: null, libelle: "" }}
+                    value={operation.ssCategorie ?? { id: null, libelle: "" }}
                     options={getListeAllCategoriesFlatten(listeCategories)}
                     groupBy={(option: CategorieOperationModel) => option.categorieParente ? option.categorieParente.libelle : ""}
                     getOptionLabel={(option: CategorieOperationModel) => option.libelle != null ? option.libelle : ""}
-                    isOptionEqualToValue={(option, value) => {
+                    isOptionEqualToValue={(option : any, value : any) => {
                         if (option.id != null) {
-                            return (option.id === (value != null ? value.id : null))
+                            return (option.id === value.id ?? null)
                         } else {
                             return false;
                         }
@@ -78,6 +78,6 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
  */
 function getListeAllCategoriesFlatten(listeCategories: CategorieOperationModel[]): (CategorieOperationModel)[]  {
     return listeCategories
-        .flatMap((cat: CategorieOperationModel) => (cat.listeSSCategories !== undefined && cat.listeSSCategories !== null) ? cat.listeSSCategories : [])
+        .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
         .sort(sortLibellesCategories);
 }

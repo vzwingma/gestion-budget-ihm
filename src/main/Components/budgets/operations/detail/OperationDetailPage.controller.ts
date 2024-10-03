@@ -145,14 +145,14 @@ function validateFormTransfertIntercompte(editOperation: OperationEditionModel, 
 }
 
 
-    /**
-    * Validation du formulaire d'opération.
-    *
-    * @param {OperationEditionModel} editOperation - Le modèle d'opération en cours d'édition.
-    * @param {OperationModel} operation - Le modèle de l'opération à valider.
-    * @param {EditFormProps} editForm - Les propriétés du formulaire d'édition.
-    * @param {ErrorsFormProps} errors - Les erreurs du formulaire.
-    */
+/**
+* Validation du formulaire d'opération.
+*
+* @param {OperationEditionModel} editOperation - Le modèle d'opération en cours d'édition.
+* @param {OperationModel} operation - Le modèle de l'opération à valider.
+* @param {EditFormProps} editForm - Les propriétés du formulaire d'édition.
+* @param {ErrorsFormProps} errors - Les erreurs du formulaire.
+*/
 export function validateForm(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     // Description
     validateDescription(editOperation, operation, errors);
@@ -256,14 +256,12 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
         if (hasErrors) {
             console.log("Erreurs présentes dans le formulaire", errors)
             setErrors(errors);
+        } else if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && isInCreateMode(editForm)) {
+            // Create Update Opération Intercomptes
+            saveOperationIntercompte(operation, budget, editOperation.intercompte, onOperationUpdate);
         } else {
-            if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && isInCreateMode(editForm)) {
-                // Create Update Opération Intercomptes
-                saveOperationIntercompte(operation, budget, editOperation.intercompte, onOperationUpdate);
-            } else {
-                // Create Update Opération
-                saveOperation(operation, budget, onOperationUpdate);
-            }
+            // Create Update Opération
+            saveOperation(operation, budget, onOperationUpdate);
         }
     }
 }
