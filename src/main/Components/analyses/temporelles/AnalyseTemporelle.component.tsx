@@ -48,7 +48,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses, "listeCategories :", analyseSoldesCategoriesData);
         loadSoldesBudgets(selectedCompte, anneeAnalyses, handleDataCalculationResult);
-    }, [selectedCompte, anneeAnalyses]);
+    }, []);
 
 
     /**
