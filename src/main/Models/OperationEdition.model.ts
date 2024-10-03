@@ -11,8 +11,8 @@ class OperationEditionModel {
     libelle: string;
     etat: OPERATION_ETATS_ENUM;
     readonly autresInfos: AutresInfos = new AutresInfos(null);
-    categorie: CategorieOperationModel;
-    ssCategorie: CategorieOperationModel;
+    readonly categorie: CategorieOperationModel = new CategorieOperationModel("", "");
+    readonly ssCategorie: CategorieOperationModel = new CategorieOperationModel("", "");
     intercompte: string | null = null;
     typeOperation: TYPES_OPERATION_ENUM | null;
     valeur: string | null;
@@ -21,15 +21,12 @@ class OperationEditionModel {
     };
 
     /** */
-    constructor(id: string, libelle: string, autresInfos: AutresInfos, categorie: CategorieOperationModel, ssCategorie: CategorieOperationModel, typeOperation: TYPES_OPERATION_ENUM, etat: OPERATION_ETATS_ENUM, valeur: string, mensualite: {
+    constructor(id: string, libelle: string, typeOperation: TYPES_OPERATION_ENUM, etat: OPERATION_ETATS_ENUM, valeur: string, mensualite: {
         periode: PERIODES_MENSUALITE_ENUM
     }) {
         this.id = id;
         this.libelle = libelle;
         this.etat = etat;
-        this.autresInfos = autresInfos;
-        this.categorie = categorie;
-        this.ssCategorie = ssCategorie;
         this.typeOperation = typeOperation;
         this.valeur = valeur;
         this.mensualite = mensualite;

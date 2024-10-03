@@ -108,7 +108,7 @@ function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
  * @returns {*|JSX.Element}
  */
 export function getOperationIntercompteLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean) {
-    const operationLibelleParts = (operationLibelle.match(INTERCOMPTE_LIBELLE_REGEX));
+    const operationLibelleParts = INTERCOMPTE_LIBELLE_REGEX.exec(operationLibelle);
     if(operationLibelleParts == null) {
         return <>{operationLibelle}</>
     }

@@ -46,7 +46,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
             let action = getEventTargetId(event.target);
             let titrePopup = "";
             let questionPopup = "";
-            let affichagePopup = false;
+            let affichagePopup;
             if (action === ACTIONS_BUDGET_ENUM.CREATE) {
                 onActionOperationCreate()
                 return
@@ -69,7 +69,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
                 }
             }
             setModaleContent({ title: titrePopup, question: questionPopup });
-            setShowModale(affichagePopup);
+            setShowModale(affichagePopup ?? false);
             if(action !== null){
                 setActionEnCours(action);
             }
