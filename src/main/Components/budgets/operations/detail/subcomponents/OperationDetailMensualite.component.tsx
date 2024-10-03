@@ -28,7 +28,13 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     function fillPeriodeForm(e: any) {
         fillOperationForm(OPERATION_EDITION_FORM.MENSUALITE, e.target.value);
     }
-
+    /**
+     * Active ou désactive le formulaire d'édition lors des autocomplétions
+     * @param {boolean} activation - Indique si le formulaire doit être activé ou désactivé
+     */
+    function activateValidationForm(activation: boolean) {
+        fillOperationForm(OPERATION_EDITION_FORM.FORM_VALIDATION, String(activation));
+    }
 
     return (
         (!formMensualiteInEdition) ?
@@ -44,6 +50,8 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
                 value={operation.mensualite.periode}
                 placeholder={"Sélectionnez une période"}
                 onChange={fillPeriodeForm}
+                onFocus={() => activateValidationForm(false)}
+                onBlur={() => activateValidationForm(true)}
                 variant="standard">
                 {Object.values(PERIODES_MENSUALITE_ENUM).map((option) => (
                     <MenuItem key={option} value={option}

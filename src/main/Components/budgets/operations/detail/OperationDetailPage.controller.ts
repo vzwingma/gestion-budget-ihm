@@ -67,7 +67,7 @@ export function handleOperationEditionClick(event: any, {operation, budget} : Op
  * @param editOperation - Le modèle d'opération à mettre à jour.
  * @param setEditOperation - La fonction de mise à jour de l'état pour le modèle d'opération.
  */
-export function handleDateOperationFromAction(valeurDate: Date, editOperation: OperationModel, setEditOperation: React.Dispatch<React.SetStateAction<OperationModel>>) {
+export function handleDateOperationFromAction(valeurDate: Date, editOperation: OperationEditionModel, setEditOperation: React.Dispatch<React.SetStateAction<OperationEditionModel>>) {
     editOperation.autresInfos.dateOperation = valeurDate;
     setEditOperation(editOperation);
 }

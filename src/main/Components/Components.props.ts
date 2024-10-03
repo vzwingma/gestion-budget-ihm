@@ -196,7 +196,7 @@ export interface OperationDetailMensualiteProps {
     operation: OperationModel
     budgetActif: boolean
     formMensualiteInEdition: boolean
-    fillOperationForm: (field: OPERATION_EDITION_FORM.MENSUALITE, value: string) => void
+    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
 }
 
 export interface OperationDetailValeurProps {
