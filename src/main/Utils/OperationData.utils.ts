@@ -35,7 +35,7 @@ export function addEndingZeros(num: number): string {
  * @param eventTarget event Target
  * @returns {*} ID du DOM
  */
-export function getEventTargetId(eventTarget: any): any | null {
+export function getEventTargetId(eventTarget: any): any {
     if (eventTarget != null) {
         if (eventTarget.id !== null && eventTarget.id !== "") {
             return eventTarget.id;
