@@ -17,10 +17,10 @@ import { OperationDetailIntercompteProps } from '../../../../Components.props'
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProps> = ({ intercompte, listeAutresComptes,
-                                                                                        formIntercompteInEdition,
-                                                                                        errorIntercompte,
-                                                                                        fillOperationForm
-                                                                                    }: OperationDetailIntercompteProps): JSX.Element => {
+    formIntercompteInEdition,
+    errorIntercompte,
+    fillOperationForm
+}: OperationDetailIntercompteProps): JSX.Element => {
 
     /**
      * Remplit le champ "intercompte" de l'état à partir de la saisie de l'utilisateur

@@ -2,7 +2,7 @@ import React from 'react'
 import {Container, Divider, Stack} from "@mui/material";
 import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';
-import OperationModel from '../../../Models/Operation.model';
+import OperationModel from '../../../Models/budgets/Operation.model';
 import { OperationsListeProps } from '../../Components.props';
 
 
@@ -16,7 +16,7 @@ import { OperationsListeProps } from '../../Components.props';
  * @constructor constructeur
  *
   */
-const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, listeComptes, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
+const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
 
     /**
      * Iterate groupe
@@ -47,7 +47,6 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
                 .forEach((operation) => renderList.push(
                     <OperationItem key={operation.id}
                                     operation={operation}
-                                    listeComptes={listeComptes}
                                     onClick={handleOperationSelect}/>)
                 )
         }

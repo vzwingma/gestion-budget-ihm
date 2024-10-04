@@ -1,10 +1,8 @@
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer'
 import {Box, Divider, Stack, Tooltip, Typography} from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import {EventOutlined} from "@mui/icons-material";
-import { BudgetsTitreProps } from '../../Components.props';
-
-
+import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider';
 
 /**
  * Page principale d'affichage du solde
@@ -14,7 +12,12 @@ import { BudgetsTitreProps } from '../../Components.props';
  * @returns {JSX.Element} element JSX
  * @constructor
  */
-const BudgetsTitre : React.FC<BudgetsTitreProps> = ({currentCompte, currentDate, currentBudget} : BudgetsTitreProps): JSX.Element => {
+const BudgetsTitre : React.FC = (): JSX.Element => {
+
+    const {currentBudget, selectedCompte, selectedDate} = useContext(BudgetContext)!;
+    const budget = currentBudget!;
+    const currentCompte = selectedCompte!;
+    const currentDate = selectedDate!;
 
     // définition de la date courante
     const dateCourante = new Date(Date.now());
@@ -27,6 +30,7 @@ const BudgetsTitre : React.FC<BudgetsTitreProps> = ({currentCompte, currentDate,
         return "Fin " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear();
     }
 
+    
     return (
         <Stack direction={"row"} spacing={1} justifyContent="left" alignItems="center" marginTop={"3pt"}>
             <img src={"/img/banques/" + currentCompte.itemIcon} width={50} height={50} alt={currentCompte.libelle}/>
@@ -42,16 +46,16 @@ const BudgetsTitre : React.FC<BudgetsTitreProps> = ({currentCompte, currentDate,
             <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
                 <Typography variant={"h6"} width={120} textAlign={"center"} sx={{cursor: "help"}}>
-                    <OperationValue valueOperation={currentBudget.soldes.soldeAtMaintenant} showSign={true} id={'soldeAtMaintenant'}/>
+                    <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true} id={'soldeAtMaintenant'}/>
                 </Typography>
             </Tooltip>
             {
-                (currentBudget.actif) ?
+                (budget.actif) ?
                     <Tooltip title={getTooltipFin()}>
                         <Box sx={{cursor: "help", height: "40px", width: "100px"}}>
                             <EventOutlined sx={{paddingTop: "8px", color: "#808080"}}/>
                             <Typography variant={"caption"} textAlign={"center"}>
-                                <OperationValue valueOperation={currentBudget.soldes.soldeAtFinMoisCourant}
+                                <OperationValue valueOperation={budget.soldes.soldeAtFinMoisCourant}
                                 showSign={true} id={'soldeAtFinMoisCourant'}/>
                             </Typography>
                         </Box>

@@ -5,7 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import GraphAnalyses from "../graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseCategoriesTitre.component";
 import { loadBudget } from "./AnalyseCategories.extservices";
-import BudgetMensuelModel from "../../../Models/BudgetMensuel.model";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
 import { getOperationStateColor } from "../../../Utils/renderers/OperationItem.renderer";
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
 import { selectEtatOperation, selectTypeOperation } from "./AnalyseCategories.controller";

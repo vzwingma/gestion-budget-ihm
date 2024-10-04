@@ -1,12 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import {
-    Box,
-    Button,
-    Container,
-    Grid2,
-    Stack,
-    Typography
-} from "@mui/material";
+import React, {useContext, useEffect, useState} from 'react'
+import {Box, Button, Container, Grid2, Stack, Typography} from "@mui/material";
 
 import {
     handleDateOperationFromAction,
@@ -16,29 +9,37 @@ import {
     isInEditMode
 } from './OperationDetailPage.controller';
 import CenterComponent from '../../../CenterComponent';
-import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
-import { OperationDetailActions } from './actions/OperationDetailActions.component';
-import BudgetMensuelModel from '../../../../Models/BudgetMensuel.model';
-import CategorieOperationModel from '../../../../Models/CategorieOperation.model';
-import CompteBancaireModel from '../../../../Models/CompteBancaire.model';
+import {
+    createEmptyEditForm,
+    createEmptyErrors,
+    EditFormProps,
+    ErrorsFormProps,
+    OPERATION_EDITION_FORM
+} from './OperationDetailPage.constants';
+import {OperationDetailActions} from './actions/OperationDetailActions.component';
+import BudgetMensuelModel from '../../../../Models/budgets/BudgetMensuel.model';
+import CategorieOperationModel from '../../../../Models/budgets/CategorieOperation.model';
+import CompteBancaireModel from '../../../../Models/budgets/CompteBancaire.model';
 import {
     BUSINESS_GUID,
     OPERATION_ETATS_ENUM,
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
 } from '../../../../Utils/AppBusinessEnums.constants';
-import { getCategorieColor, getCategorieIcon } from '../../../../Utils/renderers/CategorieItem.renderer';
-import {
-    getOperationStateColor,
-} from '../../../../Utils/renderers/OperationItem.renderer';
-import { OperationDetailValeur } from './subcomponents/OperationDetailValeur.component';
-import { OperationDetailLibelle } from './subcomponents/OperationDetailLibelle.component';
-import { OperationDetailDate } from './subcomponents/OperationDetailDate.component';
-import { OperationDetailIntercompte } from './subcomponents/OperationDetailIntercompte.component';
-import { OperationDetailMensualite } from './subcomponents/OperationDetailMensualite.component';
-import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component';
-import OperationEditionModel, { cloneOperation, createNewOperationEdition } from '../../../../Models/OperationEdition.model';
-import { OperationDetailPageProps } from '../../../Components.props';
+import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer';
+import {getOperationStateColor,} from '../../../../Utils/renderers/OperationItem.renderer';
+import {OperationDetailValeur} from './subcomponents/OperationDetailValeur.component';
+import {OperationDetailLibelle} from './subcomponents/OperationDetailLibelle.component';
+import {OperationDetailDate} from './subcomponents/OperationDetailDate.component';
+import {OperationDetailIntercompte} from './subcomponents/OperationDetailIntercompte.component';
+import {OperationDetailMensualite} from './subcomponents/OperationDetailMensualite.component';
+import {OperationDetailCategories} from './subcomponents/OperationDetailCategories.component';
+import OperationEditionModel, {
+    cloneOperation,
+    createNewOperationEdition
+} from '../../../../Models/budgets/OperationEdition.model';
+import {OperationDetailPageProps} from '../../../Components.props';
+import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider';
 
 
 /**
@@ -46,18 +47,10 @@ import { OperationDetailPageProps } from '../../../Components.props';
  *
  * Ce composant affiche les détails d'une opération et permet de modifier ses informations.
  * Il gère également les états du formulaire d'édition et les interactions utilisateur.
- *
- * @property {OperationModel} operation - Le modèle de l'opération en cours de détail.
- * @property {BudgetMensuelModel} budget - Le modèle du budget mensuel associé.
- * @property {CategorieOperationModel[]} listeCategories - La liste des catégories d'opérations disponibles.
- * @property {CompteBancaireModel[]} listeComptes - La liste des comptes bancaires disponibles.
- * @property {(budget: BudgetMensuelModel, operationsGroupedByDateOperation: { [key: string]: OperationModel[] }) => void} onOperationChange - Fonction appelée lors du changement d'une opération, prenant en paramètres le budget mis à jour et les opérations groupées par date.
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
-export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operation,
-    budget,
+export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     listeCategories,
-    listeComptes,
     listeLibellesOperations,
     onOperationChange
 }: OperationDetailPageProps): JSX.Element => {
@@ -66,8 +59,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
     const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
-
-
+    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
+    const operation = currentOperation!;
+    const budget = currentBudget!;
 
 
     /**
@@ -188,12 +182,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                     </Box>
                 </CenterComponent>
                 { /** VALEUR **/}
-                <OperationDetailValeur operation={operation} formValueInEdition={editForm.value}
-                    errorValeur={errors.valeur} budgetActif={budget?.actif}
+                <OperationDetailValeur formValueInEdition={editForm.value}
+                                       errorValeur={errors.valeur}
                     fillOperationForm={fillOperationForm} />
 
                 { /** LIBELLE **/}
-                <OperationDetailLibelle operation={operation} budgetActif={budget?.actif} listeComptes={listeComptes}
+                <OperationDetailLibelle
                     listeLibellesOperations={listeLibellesOperations}
                     formLibelleInEdition={editForm.libelle}
                     errorLibelle={errors.libelle}
@@ -213,7 +207,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
 
                     <Grid2 size={{ md: 5 }}>
                         {  /** CATEGORIES **/}
-                        <OperationDetailCategories operation={operation}
+                        <OperationDetailCategories
                             listeCategories={listeCategories}
                             formCatgoriesInEdition={editForm.categories}
                             errorsCategories={errors.categorie}
@@ -226,7 +220,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                     </Grid2>
                     <Grid2 size={{ md: 3 }}>
                         { /** PERIODE **/}
-                        <OperationDetailMensualite operation={operation} budgetActif={budget?.actif}
+                        <OperationDetailMensualite
                             formMensualiteInEdition={editForm.mensualite}
                             fillOperationForm={fillOperationForm} />
                     </Grid2>
@@ -237,7 +231,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
                     </Grid2>
                     <Grid2 size={{ md: 4 }} paddingTop={3}>
-                        {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
+                        {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Actions</Typography> : <></>
                         }
                     </Grid2>
@@ -251,20 +245,18 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                         <OperationDetailIntercompte intercompte={editOperation.libelle}
                             formIntercompteInEdition={
                                 isInCreateMode(editForm)
-                                && editOperation !== null
                                 && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id)
                             }
                             listeAutresComptes={
-                                listeComptes
-                                    .filter((compte: CompteBancaireModel) => budget.idCompteBancaire !== compte.id)}
+                                comptes
+                                    .filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
                             errorIntercompte={errors.intercompte}
                             fillOperationForm={fillOperationForm} />
                     </Grid2>
                     <Grid2 size={{ md: 4 }}>
                         { /** ACTIONS SUR OPERATION **/}
-                        {budget?.actif && operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
-                            <OperationDetailActions operation={operation}
-                                budget={budget}
+                        {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
+                            <OperationDetailActions
                                 isInCreateMode={isInCreateMode(editForm)}
                                 onClickRealiseInCreateMode={() => handleDateOperationFromAction(new Date(), editOperation, setEditOperation)}
                                 onOperationChange={onOperationChange} />
@@ -273,14 +265,14 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ operat
                     </Grid2>
                     <Grid2 size={{ md: 3 }}>
                         { /** DATE OPERATION **/}
-                        <OperationDetailDate operation={operation} budgetActif={budget?.actif}
+                        <OperationDetailDate
                             formDateInEdition={editForm.dateOperation}
                             errorDateOperation={errors.dateOperation}
                             fillOperationForm={fillOperationForm} />
                     </Grid2>
                 </Grid2>
 
-                {budget?.actif && isInEditMode(editForm) &&
+                {currentBudget?.actif && isInEditMode(editForm) &&
                     <Button fullWidth variant="outlined" color="success"
                         onClick={() => handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate)}>Valider</Button>
                 }

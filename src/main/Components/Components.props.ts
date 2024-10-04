@@ -3,10 +3,10 @@ import { AnalyseSoldesTimelineItemModel } from "../Models/analyses/temporelles/A
 import { AnalyseCategorieTimelineItem } from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
 import AnalyseSoldesCategorie from "../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import SoldesMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model";
-import BudgetMensuelModel from "../Models/BudgetMensuel.model";
-import CategorieOperationModel from "../Models/CategorieOperation.model";
-import CompteBancaireModel from "../Models/CompteBancaire.model";
-import OperationModel from "../Models/Operation.model";
+import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model";
+import CategorieOperationModel from "../Models/budgets/CategorieOperation.model";
+import CompteBancaireModel from "../Models/budgets/CompteBancaire.model";
+import OperationModel from "../Models/budgets/Operation.model";
 
 import { BUSINESS_ONGLETS, UTILISATEUR_DROITS } from "../Utils/AppBusinessEnums.constants";
 import { OPERATION_EDITION_FORM } from "./budgets/operations/detail/OperationDetailPage.constants";
@@ -126,32 +126,21 @@ export interface AnneeRangeProps {
  * Budget
  */
 export interface BudgetActionsButtonGroupProps {
-    budget: BudgetMensuelModel
     droits: UTILISATEUR_DROITS[]
     onActionBudgetChange: (budget: BudgetMensuelModel) => void
     onActionOperationCreate: () => void
 }
 
 export interface BudgetPageProps {
-    selectedCompte: CompteBancaireModel | null
-    selectedDate: Date
-    listeComptes: CompteBancaireModel[]
     onOpenMenu: () => void
 }
 
-export interface BudgetsTitreProps  {
-    currentCompte: CompteBancaireModel,
-    currentDate: Date,
-    currentBudget: BudgetMensuelModel
-}
 
 /**
  * Opertions
  */
 
 export interface OperationDetailActionsProps {
-    operation: OperationModel
-    budget: BudgetMensuelModel
     isInCreateMode: boolean,
     onClickRealiseInCreateMode : (valeurDate: Date, editOperation: OperationModel, setEditOperation: React.Dispatch<React.SetStateAction<OperationModel>>) => void
     onOperationChange: (budget: BudgetMensuelModel) => void
@@ -159,7 +148,6 @@ export interface OperationDetailActionsProps {
 
 
 export interface OperationDetailCategoriesProps {
-    operation: OperationModel
     listeCategories: CategorieOperationModel[]
     formCatgoriesInEdition: boolean
     errorsCategories: string | null
@@ -167,8 +155,6 @@ export interface OperationDetailCategoriesProps {
 }
 
 export interface OperationDetailDateProps {
-    operation: OperationModel
-    budgetActif: boolean
     formDateInEdition: boolean
     errorDateOperation: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
@@ -183,9 +169,6 @@ export interface OperationDetailIntercompteProps {
 }
 
 export interface OperationDetailLibelleProps {
-    operation: OperationModel
-    budgetActif: boolean
-    listeComptes: CompteBancaireModel[]
     listeLibellesOperations: string[]
     formLibelleInEdition: boolean
     errorLibelle: string | null
@@ -193,25 +176,18 @@ export interface OperationDetailLibelleProps {
 }
 
 export interface OperationDetailMensualiteProps {
-    operation: OperationModel
-    budgetActif: boolean
     formMensualiteInEdition: boolean
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
 }
 
 export interface OperationDetailValeurProps {
-    operation: OperationModel
-    budgetActif: boolean
     formValueInEdition: boolean
     errorValeur: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM.VALUE, value: string) => void
 }
 
 export interface OperationDetailPageProps {
-    operation: OperationModel
-    budget: BudgetMensuelModel
     listeCategories: CategorieOperationModel[]
-    listeComptes: CompteBancaireModel[]
     listeLibellesOperations: string[]
     onOperationChange: (budget: BudgetMensuelModel) => void
 }
@@ -219,13 +195,11 @@ export interface OperationDetailPageProps {
 export interface OperationsListeProps {
     operationGroupedByDate: {[key: string]: OperationModel[]}
     filterOperations: string | null
-    listeComptes: CompteBancaireModel[]
     onClick: (operation : OperationModel) => void
 }
 
 export interface OperationItemProps {
     operation: OperationModel
-    listeComptes: CompteBancaireModel[]
     onClick: (operation : OperationModel) => void
 }
 

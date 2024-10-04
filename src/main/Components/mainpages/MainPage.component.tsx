@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Divider, Drawer, Stack } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { BUSINESS_ONGLETS } from "../../Utils/AppBusinessEnums.constants";
 import { loadComptes } from "./MainPage.extservices";
-import CompteBancaireModel from "../../Models/CompteBancaire.model";
+import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import DateRange from "./menuSlideBar/DateRange.component";
 import BudgetPage from "../budgets/budget/Budget.component";
 import { AnalyseTemporelle } from "../analyses/temporelles/AnalyseTemporelle.component";
 import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
 import { MainPageProps } from "../Components.props";
+import { BudgetContext } from "../../Models/contextProvider/BudgetContextProvider";
 
 
 
@@ -18,15 +19,14 @@ import { MainPageProps } from "../Components.props";
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    const [comptes, setComptes] = useState<CompteBancaireModel[]>([]);
-    const [selectedCompte, setSelectedCompte] = useState<CompteBancaireModel | null>(null);
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0));
+    const { comptes, setComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext)!;
+
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
 
     /** Appels WS vers pour charger la liste des comptes **/
     useEffect(() => {
         loadComptes(setComptes);
-    }, [selectedDate])
+    }, [selectedDate, setComptes])
 
 
     /**
@@ -67,10 +67,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
         switch (fonction) {
 
             case BUSINESS_ONGLETS.BUDGET:
-                return <BudgetPage selectedCompte={selectedCompte}
-                    selectedDate={selectedDate}
-                    listeComptes={comptes}
-                    onOpenMenu={handleOpenMenuBar} />
+                return  <BudgetPage onOpenMenu={handleOpenMenuBar} />
 
             case BUSINESS_ONGLETS.ANALYSE:
                 return <AnalyseCategories selectedCompte={selectedCompte}
@@ -91,7 +88,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @returns {JSX.Element
      * @constructor
      */
-    function renderLeftTabCompte(fonction : BUSINESS_ONGLETS): JSX.Element {
+    function renderLeftTabCompte(fonction: BUSINESS_ONGLETS): JSX.Element {
         if (fonction === BUSINESS_ONGLETS.BUDGET) {
             return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
         }

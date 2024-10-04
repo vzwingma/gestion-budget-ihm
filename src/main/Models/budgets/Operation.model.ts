@@ -1,4 +1,4 @@
-import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM} from "../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM} from "../../Utils/AppBusinessEnums.constants";
 import CategorieOperationModel from "./CategorieOperation.model";
 
 /**

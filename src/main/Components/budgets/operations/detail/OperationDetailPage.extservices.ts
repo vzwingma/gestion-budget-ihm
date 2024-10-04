@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { v4 as uuid } from "uuid";
-import OperationModel from "../../../../Models/Operation.model";
-import BudgetMensuelModel from "../../../../Models/BudgetMensuel.model";
+import OperationModel from "../../../../Models/budgets/Operation.model";
+import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../../Utils/AppTechEnums.constants";
 import { OPERATION_ETATS_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
 import { call } from "../../../../Services/ClientHTTP.service";

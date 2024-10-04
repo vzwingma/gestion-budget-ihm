@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import { TextField, Typography } from '@mui/material'
 import { getLabelFromDate } from '../../../../../Utils/Date.utils'
 import { OperationDetailDateProps } from '../../../../Components.props'
+import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider'
 
 
 
@@ -17,13 +18,15 @@ import { OperationDetailDateProps } from '../../../../Components.props'
  * @property {string | null} errorValeur - Le message d'erreur pour la valeur, ou null s'il n'y a pas d'erreur.
  * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
  */
-export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({ operation, budgetActif,
-                                                                            formDateInEdition,
+export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   formDateInEdition,
                                                                             errorDateOperation,
                                                                             fillOperationForm
                                                                         }: OperationDetailDateProps): JSX.Element => {
 
-
+    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
+    const operation = currentOperation!;
+    const budgetActif = currentBudget!.actif;
+    
     /**
  * Remplit le champ "dateOperation" de l'état à partir de la saisie de l'utilisateur
  * @param {Event} e - L'événement de saisie

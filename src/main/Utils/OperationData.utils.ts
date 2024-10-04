@@ -1,5 +1,5 @@
-import CategorieOperationModel from "../Models/CategorieOperation.model";
-import OperationModel from "../Models/Operation.model";
+import CategorieOperationModel from "../Models/budgets/CategorieOperation.model";
+import OperationModel from "../Models/budgets/Operation.model";
 import * as AppConstants from "./AppBusinessEnums.constants";
 
 /**
@@ -35,7 +35,7 @@ export function addEndingZeros(num: number): string {
  * @param eventTarget event Target
  * @returns {*} ID du DOM
  */
-export function getEventTargetId(eventTarget: any): any | null {
+export function getEventTargetId(eventTarget: any): any {
     if (eventTarget != null) {
         if (eventTarget.id !== null && eventTarget.id !== "") {
             return eventTarget.id;

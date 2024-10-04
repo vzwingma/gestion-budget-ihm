@@ -1,8 +1,8 @@
 import { getLabelFromDate } from "../../../Utils/Date.utils";
-import OperationModel from "../../../Models/Operation.model";
+import OperationModel from "../../../Models/budgets/Operation.model";
 import { sortOperations } from "../../../Utils/OperationData.utils";
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
-import CategorieOperationModel from "../../../Models/CategorieOperation.model";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
 
 /**
  * Controleur des budgets
