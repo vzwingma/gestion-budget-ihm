@@ -57,7 +57,6 @@ export function reloadBudget(handleBudgetUpdate: (budget: BudgetMensuelModel) =>
  * Récupère les préférences de l'utilisateur.
  *
  * @param setUserDroits - Fonction pour définir les droits de l'utilisateur.
- * @param setUserPreferences - Fonction pour définir les préférences de l'utilisateur.
  */
 export function getPreferenceUtilisateur(setUserDroits: React.Dispatch<React.SetStateAction<UTILISATEUR_DROITS[]>>) {
     call(METHODE_HTTP.GET, BACKEND_ENUM.URL_UTILISATEURS, SERVICES_URL.UTILISATEURS.USERS_PREFS)

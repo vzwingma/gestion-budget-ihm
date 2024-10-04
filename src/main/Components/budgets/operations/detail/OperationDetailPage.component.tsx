@@ -47,12 +47,6 @@ import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextPro
  *
  * Ce composant affiche les détails d'une opération et permet de modifier ses informations.
  * Il gère également les états du formulaire d'édition et les interactions utilisateur.
- *
- * @property {OperationModel} operation - Le modèle de l'opération en cours de détail.
- * @property {BudgetMensuelModel} budget - Le modèle du budget mensuel associé.
- * @property {CategorieOperationModel[]} listeCategories - La liste des catégories d'opérations disponibles.
- * @property {CompteBancaireModel[]} listeComptes - La liste des comptes bancaires disponibles.
- * @property {(budget: BudgetMensuelModel, operationsGroupedByDateOperation: { [key: string]: OperationModel[] }) => void} onOperationChange - Fonction appelée lors du changement d'une opération, prenant en paramètres le budget mis à jour et les opérations groupées par date.
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
 export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
@@ -251,7 +245,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         <OperationDetailIntercompte intercompte={editOperation.libelle}
                             formIntercompteInEdition={
                                 isInCreateMode(editForm)
-                                && editOperation !== null
                                 && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id)
                             }
                             listeAutresComptes={
