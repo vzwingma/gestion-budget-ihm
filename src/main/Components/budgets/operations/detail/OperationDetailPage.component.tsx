@@ -1,12 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import {
-    Box,
-    Button,
-    Container,
-    Grid2,
-    Stack,
-    Typography
-} from "@mui/material";
+import React, {useContext, useEffect, useState} from 'react'
+import {Box, Button, Container, Grid2, Stack, Typography} from "@mui/material";
 
 import {
     handleDateOperationFromAction,
@@ -16,8 +9,14 @@ import {
     isInEditMode
 } from './OperationDetailPage.controller';
 import CenterComponent from '../../../CenterComponent';
-import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from './OperationDetailPage.constants';
-import { OperationDetailActions } from './actions/OperationDetailActions.component';
+import {
+    createEmptyEditForm,
+    createEmptyErrors,
+    EditFormProps,
+    ErrorsFormProps,
+    OPERATION_EDITION_FORM
+} from './OperationDetailPage.constants';
+import {OperationDetailActions} from './actions/OperationDetailActions.component';
 import BudgetMensuelModel from '../../../../Models/budgets/BudgetMensuel.model';
 import CategorieOperationModel from '../../../../Models/budgets/CategorieOperation.model';
 import CompteBancaireModel from '../../../../Models/budgets/CompteBancaire.model';
@@ -27,19 +26,20 @@ import {
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
 } from '../../../../Utils/AppBusinessEnums.constants';
-import { getCategorieColor, getCategorieIcon } from '../../../../Utils/renderers/CategorieItem.renderer';
-import {
-    getOperationStateColor,
-} from '../../../../Utils/renderers/OperationItem.renderer';
-import { OperationDetailValeur } from './subcomponents/OperationDetailValeur.component';
-import { OperationDetailLibelle } from './subcomponents/OperationDetailLibelle.component';
-import { OperationDetailDate } from './subcomponents/OperationDetailDate.component';
-import { OperationDetailIntercompte } from './subcomponents/OperationDetailIntercompte.component';
-import { OperationDetailMensualite } from './subcomponents/OperationDetailMensualite.component';
-import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component';
-import OperationEditionModel, { cloneOperation, createNewOperationEdition } from '../../../../Models/budgets/OperationEdition.model';
-import { OperationDetailPageProps } from '../../../Components.props';
-import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider';
+import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer';
+import {getOperationStateColor,} from '../../../../Utils/renderers/OperationItem.renderer';
+import {OperationDetailValeur} from './subcomponents/OperationDetailValeur.component';
+import {OperationDetailLibelle} from './subcomponents/OperationDetailLibelle.component';
+import {OperationDetailDate} from './subcomponents/OperationDetailDate.component';
+import {OperationDetailIntercompte} from './subcomponents/OperationDetailIntercompte.component';
+import {OperationDetailMensualite} from './subcomponents/OperationDetailMensualite.component';
+import {OperationDetailCategories} from './subcomponents/OperationDetailCategories.component';
+import OperationEditionModel, {
+    cloneOperation,
+    createNewOperationEdition
+} from '../../../../Models/budgets/OperationEdition.model';
+import {OperationDetailPageProps} from '../../../Components.props';
+import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider';
 
 
 /**
@@ -55,7 +55,7 @@ import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextP
  * @property {(budget: BudgetMensuelModel, operationsGroupedByDateOperation: { [key: string]: OperationModel[] }) => void} onOperationChange - Fonction appelée lors du changement d'une opération, prenant en paramètres le budget mis à jour et les opérations groupées par date.
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
-export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({ 
+export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     listeCategories,
     listeLibellesOperations,
     onOperationChange
@@ -77,7 +77,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         setEditOperation(cloneOperation(operation));
         setEditForm(createEmptyEditForm(operation.id === "-1"));
         setErrors(createEmptyErrors());
-    }, [currentOperation]);
+    }, [operation]);
 
 
     useEffect(() => { }, [refresh]);
@@ -189,7 +189,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 </CenterComponent>
                 { /** VALEUR **/}
                 <OperationDetailValeur formValueInEdition={editForm.value}
-                    errorValeur={errors.valeur} 
+                                       errorValeur={errors.valeur}
                     fillOperationForm={fillOperationForm} />
 
                 { /** LIBELLE **/}
@@ -263,7 +263,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     <Grid2 size={{ md: 4 }}>
                         { /** ACTIONS SUR OPERATION **/}
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
-                            <OperationDetailActions 
+                            <OperationDetailActions
                                 isInCreateMode={isInCreateMode(editForm)}
                                 onClickRealiseInCreateMode={() => handleDateOperationFromAction(new Date(), editOperation, setEditOperation)}
                                 onOperationChange={onOperationChange} />
