@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, {useMemo, useState} from "react";
 import BudgetMensuelModel from "../budgets/BudgetMensuel.model";
 import OperationModel from "../budgets/Operation.model";
 import CompteBancaireModel from "../budgets/CompteBancaire.model";
@@ -9,21 +9,21 @@ import CategorieOperationModel from "../budgets/CategorieOperation.model";
  */
 type BudgetContextType = {
     currentBudget: BudgetMensuelModel | undefined;
-    setCurrentBudget: (currentBudget: BudgetMensuelModel) => void;
+    setCurrentBudget: React.Dispatch<React.SetStateAction<BudgetMensuelModel | undefined>>;
 
     currentOperation: OperationModel | null;
-    setCurrentOperation: (currentOperation: OperationModel) => void;
+    setCurrentOperation: React.Dispatch<React.SetStateAction<OperationModel | null>>;
 
     comptes: CompteBancaireModel[];
-    setComptes: (comptes: CompteBancaireModel[]) => void;
+    setComptes: React.Dispatch<React.SetStateAction<CompteBancaireModel[]>>;
     selectedCompte: CompteBancaireModel | null;
-    setSelectedCompte: (selectedCompte: CompteBancaireModel | null) => void;
-    
+    setSelectedCompte: React.Dispatch<React.SetStateAction<CompteBancaireModel | null>>;
+
     selectedDate: Date;
-    setSelectedDate: (selectedDate: Date) => void;
+    setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 
     categories: CategorieOperationModel[];
-    setCategories: (categories: CategorieOperationModel[]) => void;
+    setCategories: React.Dispatch<React.SetStateAction<CategorieOperationModel[]>>
 };
 
 
@@ -31,14 +31,14 @@ export const BudgetContext = React.createContext<BudgetContextType | null>(null)
 
 /**
  * Budget context provider
- * @param param0 
+ * @param param0
  * @returns  provider
  */
 export function BudgetContextProvider({ children }: { children: Readonly<React.ReactNode> }): JSX.Element {
 
     const [currentBudget, setCurrentBudget] = useState<BudgetMensuelModel>();
     const [currentOperation, setCurrentOperation] = useState<OperationModel | null>(null);
-    
+
     const [listeComptes, setComptes] = useState<CompteBancaireModel[]>([]);
     const comptes : CompteBancaireModel[] = useMemo(() => listeComptes, [listeComptes]);
     const [selectedCompte, setSelectedCompte] = useState<CompteBancaireModel | null>(null);

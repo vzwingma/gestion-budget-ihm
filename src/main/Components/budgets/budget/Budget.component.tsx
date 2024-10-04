@@ -1,24 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
-import { Box, CircularProgress, Divider, Grid2, InputBase, Paper } from "@mui/material";
+import {Box, CircularProgress, Divider, Grid2, InputBase, Paper} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import BudgetTitre from "./BudgetTitre.component";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
-import OperationModel, { createNewOperation } from "../../../Models/budgets/Operation.model";
-import { getPreferenceUtilisateur, loadCategories, reloadBudget } from "./Budget.extservices";
-import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants";
-import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButtonGroup.component";
+import OperationModel, {createNewOperation} from "../../../Models/budgets/Operation.model";
+import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices";
+import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
+import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component";
 import OperationsListe from "../operations/OperationsListe.component";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
-import { CancelRounded } from "@mui/icons-material";
-import { getLabelFromDate } from "../../../Utils/Date.utils";
-import { getOperationsGroupedByDateOperation } from "./Budget.controller";
+import {CancelRounded} from "@mui/icons-material";
+import {getLabelFromDate} from "../../../Utils/Date.utils";
+import {getOperationsGroupedByDateOperation} from "./Budget.controller";
 import CenterComponent from "../../CenterComponent";
-import { getLibellesOperation } from "../operations/detail/OperationDetailPage.extservices";
+import {getLibellesOperation} from "../operations/detail/OperationDetailPage.extservices";
+import {BudgetPageProps} from "../../Components.props";
+import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
-import { BudgetPageProps } from "../../Components.props";
-import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider";
-
 
 
 /**
@@ -42,8 +41,8 @@ import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProv
  * />
  *
  * @description
- * Ce composant gère l'affichage et les interactions de la page Budget. Il charge les catégories et les préférences utilisateur au démarrage, 
- * et met à jour le budget lorsque le compte ou la date sélectionnée change. Il permet également de filtrer les opérations, de sélectionner 
+ * Ce composant gère l'affichage et les interactions de la page Budget. Il charge les catégories et les préférences utilisateur au démarrage,
+ * et met à jour le budget lorsque le compte ou la date sélectionnée change. Il permet également de filtrer les opérations, de sélectionner
  * une opération et de créer une nouvelle opération.
  *
  * @remarks
@@ -61,11 +60,27 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const [listeLibellesOperations, setListeLibellesOperations] = useState<string[]>([]);
 
 
+    /** Callback de chargement des catégories **/
+    const handleLoadCategories = useCallback((categories: CategorieOperationModel[]) => {
+        console.log("Chargement de " + categories.length + " catégories");
+        setCategories(categories);
+    }, [setCategories]);
+
     /** Chargement des catégories et des préférences utilisateurs au 1er démarrage **/
     useEffect(() => {
-        loadCategories(handleCategoriesLoaded);
+        loadCategories(handleLoadCategories);
         getPreferenceUtilisateur(setUserDroits);
-    }, []);
+    }, [handleLoadCategories]);
+
+    /** Callback de mise à jour du budget **/
+    const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
+        console.log("(Re)Chargement du budget", budget.id, ":", budget.listeOperations.length + " opérations");
+        setCurrentBudget(budget);
+        setOperationsGroupedByDateOperation(getOperationsGroupedByDateOperation(budget.listeOperations));
+        console.log("Chargement du budget correctement effectué");
+    }, [setCurrentBudget, setOperationsGroupedByDateOperation]);
+
+
 
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
@@ -74,31 +89,9 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
         if (selectedCompte != null) {
             getLibellesOperation(selectedCompte.id, setListeLibellesOperations);
         }
-    }, [selectedCompte, selectedDate])
+    }, [selectedCompte, selectedDate, handleBudgetUpdate])
 
 
-    /**
-     *  Fonction appelée lorsque le budget est mis à jour.
-     *
-     * @param {BudgetMensuelModel} budget - Le modèle de budget mensuel à jour
-     */
-    function handleBudgetUpdate(budget: BudgetMensuelModel) {
-        console.log("(Re)Chargement du budget", budget.id, ":", budget.listeOperations.length + " opérations");
-        setCurrentBudget(budget);
-        setOperationsGroupedByDateOperation(getOperationsGroupedByDateOperation(budget.listeOperations));
-        console.log("Chargement du budget correctement effectué");
-    }
-
-
-    /**
-     * Gère le chargement des catégories.
-     *
-     * @param {CategorieOperationModel[]} categories - La liste des catégories chargées.
-     */
-    function handleCategoriesLoaded(categories: CategorieOperationModel[]) {
-        console.log("Chargement de " + categories.length + " catégories");
-        setCategories(categories);
-    }
 
     /**
      * Callback de filtre d'opération
@@ -195,7 +188,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                 <Grid2 size={{ md: 8 }} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
-                        <OperationDetailPage 
+                        <OperationDetailPage
                             listeCategories={categories}
                             listeLibellesOperations={listeLibellesOperations}
                             onOperationChange={handleBudgetUpdate} />

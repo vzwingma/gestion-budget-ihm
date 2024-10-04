@@ -1,11 +1,12 @@
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model";
-import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants";
-import { call } from "../../../Services/ClientHTTP.service";
-import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../Utils/AppTechEnums.constants";
+import {UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
+import {call} from "../../../Services/ClientHTTP.service";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
-import { populateAllCategories } from "./Budget.controller";
+import {populateAllCategories} from "./Budget.controller";
+import React from "react";
 
 /*
  * Services back-end des budgets
@@ -13,16 +14,16 @@ import { populateAllCategories } from "./Budget.controller";
 
 /**
  * Charge les catégories depuis le back-end.
- * 
- * @param handleCategoriesLoaded - Fonction de rappel pour traiter les catégories chargées.
+ *
+ * @param handleLoadCategories
  */
 
-export function loadCategories(handleCategoriesLoaded: Function) {
+export function loadCategories(handleLoadCategories: (categories: CategorieOperationModel[]) => void) {
     console.log("Chargement des catégories");
     call(METHODE_HTTP.GET, BACKEND_ENUM.URL_PARAMS, SERVICES_URL.PARAMETRES.CATEGORIES)
         .then((data : CategorieOperationModel[])=> {
             const categories = populateAllCategories(data);
-            handleCategoriesLoaded(categories)
+            handleLoadCategories(categories);
         } )
         .catch((e) => {
             console.log("Erreur lors du chargement des catégories", e)
@@ -54,7 +55,7 @@ export function reloadBudget(handleBudgetUpdate: (budget: BudgetMensuelModel) =>
 
 /**
  * Récupère les préférences de l'utilisateur.
- * 
+ *
  * @param setUserDroits - Fonction pour définir les droits de l'utilisateur.
  * @param setUserPreferences - Fonction pour définir les préférences de l'utilisateur.
  */
