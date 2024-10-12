@@ -89,6 +89,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
         if (selectedCompte != null) {
             getLibellesOperation(selectedCompte.id, setListeLibellesOperations);
         }
+        setCurrentOperation(null);
     }, [selectedCompte, selectedDate, handleBudgetUpdate])
 
 
