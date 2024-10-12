@@ -1,9 +1,9 @@
 import React from 'react'
-import { MenuItem, TextField } from "@mui/material"
-import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import { operationIsIntercompteFromLibelle } from '../../../../../Utils/OperationData.utils'
-import { getOperationIntercompteCatLibelle } from '../../../../../Utils/renderers/OperationItem.renderer'
-import { OperationDetailIntercompteProps } from '../../../../Components.props'
+import {MenuItem, TextField} from "@mui/material"
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
+import {operationIsIntercompteFromLibelle} from '../../../../../Utils/OperationData.utils'
+import {getOperationIntercompteCatLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
+import {OperationDetailIntercompteProps} from '../../../../Components.props'
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
@@ -36,7 +36,7 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
      */
     function getAffichageIntercompteRO(): JSX.Element {
         if (intercompte != null && operationIsIntercompteFromLibelle(intercompte)) {
-            return getOperationIntercompteCatLibelle(intercompte, listeAutresComptes, false)
+            return getOperationIntercompteCatLibelle(intercompte, listeAutresComptes)
         }
         else {
             return <></>

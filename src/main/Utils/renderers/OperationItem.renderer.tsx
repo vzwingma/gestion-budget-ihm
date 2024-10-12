@@ -64,7 +64,7 @@ export function getPeriodeRenderer(periodeKey : PERIODES_MENSUALITE_ENUM) {
  */
 export function getOperationLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean): JSX.Element {
 
-    if (operationLibelle != null) {
+    if (operationLibelle !== null) {
         if (operationIsIntercompteFromLibelle(operationLibelle)) {
             return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue)
         } else if (operationLibelle.startsWith("[En Retard]")) {
@@ -84,7 +84,7 @@ export function getOperationLibelle(operationLibelle : string, listeComptes : Co
  */
 function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
 
-    let operationLibelleParts = operationLibelle.split('-');
+    let operationLibelleParts = operationLibelle.split('-') ?? [];
     if (operationLibelleParts.length > 1) {
         let libelle = "-";
         for (let i = 1; i < operationLibelleParts.length; i++) {
@@ -107,26 +107,38 @@ function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
  * @param {boolean} maxVue  hauteur max de la vue
  * @returns {*|JSX.Element}
  */
-export function getOperationIntercompteLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean) {
+export function getOperationIntercompteLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[], maxVue: boolean): JSX.Element {
+    return getOperationIntercompteLabel(operationLibelle, true, listeComptes, maxVue)
+}
+
+
+/**
+ * Libellé d'une opération intercompte
+ * @param operationLibelle : string : libellé
+ * @param isLabelOperation : boolean : est-ce un label d'opération à afficher ? sinon c'est le libellé du compte
+ * @param listeComptes : CompteBancaireModel[] liste des comptes
+ * @param maxVue : boolean :vue max de l'icone
+ */
+function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation: boolean, listeComptes: CompteBancaireModel[], maxVue: boolean): JSX.Element {
     const operationLibelleParts = INTERCOMPTE_LIBELLE_REGEX.exec(operationLibelle);
     if(operationLibelleParts == null) {
         return <>{operationLibelle}</>
     }
     else{
-        const direction = operationLibelleParts[1] === "[vers " ? "vers" : "depuis"
+        const direction = operationLibelleParts[1]
         const compte = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))[0]
         if (compte?.libelle) {
-            return <Tooltip title={"Transfert intercompte " + direction + " " + compte.libelle}>
+            const label = direction + " " + compte.libelle;
+            return <Tooltip title={"Transfert intercompte " + label}>
                 <Box>
-                    {operationLibelleParts[1].startsWith("[En Retard]") ?
+                    {operationLibelle.startsWith("[En Retard]") && isLabelOperation ?
                         <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
 
                     <img src={"/img/banques/" + compte.itemIcon}
                          width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                          alt={compte.libelle}
                          style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
-                    {getOperationLibelleWithComment(operationLibelleParts[4])}
-
+                    {isLabelOperation ? operationLibelleParts[3] : label}
                 </Box>
             </Tooltip>
         } else {
@@ -135,39 +147,14 @@ export function getOperationIntercompteLibelle(operationLibelle : string, listeC
     }
 }
 
-
-
 /**
  * Libellé d'une opération intercompte
  * @param {string} operationLibelle : string libellé
  * @param {CompteBancaireModel[]} listeComptes : array : liste des comptes
- * @param {boolean} maxVue  hauteur max de la vue
- * @returns {*|JSX.Element}
+ * @returns {JSX.Element}
  */
-export function getOperationIntercompteCatLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean) {
-    const operationLibelleParts = INTERCOMPTE_LIBELLE_REGEX.exec(operationLibelle);
-    if(operationLibelleParts == null) {
-        return <>{operationLibelle}</>
-    }
-    else{
-        const direction = operationLibelleParts[1] === "[vers " ? "vers" : "depuis"
-        const compte = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))[0]
-        if (compte?.libelle) {
-            const label =  direction + " " + compte.libelle;
-            return <Tooltip title={"Transfert intercompte " + label}>
-                <Box>
-                    <img src={"/img/banques/" + compte.itemIcon}
-                         width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
-                         alt={compte.libelle}
-                         style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
-                    {label}
-                </Box>
-            </Tooltip>
-        } else {
-            return <>{operationLibelle}</>
-        }
-    }
-
+export function getOperationIntercompteCatLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[]): JSX.Element {
+    return getOperationIntercompteLabel(operationLibelle, false, listeComptes, false);
 }
 
 
@@ -176,7 +163,7 @@ export function getOperationIntercompteCatLibelle(operationLibelle : string, lis
  * @param operationLibelle
  * @returns {JSX.Element}
  */
-function getOperationEnRetardLibelle(operationLibelle : string) {
+function getOperationEnRetardLibelle(operationLibelle: string): JSX.Element {
     return <><WatchLaterRounded
         sx={{color: "#A0A0A0"}}/>{getOperationLibelleWithComment(operationLibelle.replace("[En Retard]", ""))}</>
 }
