@@ -1,12 +1,15 @@
-
 import OperationEditionModel from "../../../../Models/budgets/OperationEdition.model";
 import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model";
 import OperationModel from "../../../../Models/budgets/Operation.model";
-import { BUSINESS_GUID, TYPES_OPERATION_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
-import { getEventTargetId } from "../../../../Utils/OperationData.utils";
-import { createEmptyErrors, EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from "./OperationDetailPage.constants";
-import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices";
-
+import {BUSINESS_GUID, TYPES_OPERATION_ENUM} from "../../../../Utils/AppBusinessEnums.constants";
+import {getEventTargetId} from "../../../../Utils/OperationData.utils";
+import {
+    createEmptyErrors,
+    EditFormProps,
+    ErrorsFormProps,
+    OPERATION_EDITION_FORM
+} from "./OperationDetailPage.constants";
+import {saveOperation, saveOperationIntercompte} from "./OperationDetailPage.extservices";
 
 
 interface OperationBudgetProps {
@@ -23,7 +26,7 @@ interface OperationBudgetProps {
  * @param openEditForm fonction pour ouvrir le formulaire d'édition
  * @param errors erreurs du formulaire
  * @param setErrors fonction pour mettre à jour les erreurs du formulaire
- * @param onOperationChange fonction pour mettre à jour l'opération
+ * @param onOperationUpdate mise à jour de l'opération
  */
 export function handleOperationEditionClick(event: any, {operation, budget} : OperationBudgetProps,
     editOperation: OperationEditionModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void,
@@ -96,7 +99,7 @@ function validateDescription(editOperation: OperationEditionModel, operation: Op
 
 
 /**
- * 
+ *
  * @param editOperation valeur de l'opération en cours d'édition
  * @param operation opération à mettre à jour
  * @param editForm champs en édition
@@ -238,11 +241,9 @@ function validateValue(valeur: string): boolean {
  * @param {OperationModel} operation - Le modèle de l'opération à valider.
  * @param {BudgetMensuelModel} budget - Le modèle du budget mensuel associé.
  * @param {OperationModel} editOperation - Le modèle de l'opération en cours d'édition.
- * @param {CompteBancaireModel} intercompte - Le modèle du compte bancaire intercompte.
  * @param {EditFormProps} editForm - Les propriétés du formulaire d'édition.
- * @param {React.Dispatch<React.SetStateAction<EditFormProps>>} setEditForm - Fonction pour mettre à jour l'état du formulaire d'édition.
- * @param {ErrorsFormProps} errors - Les erreurs du formulaire.
  * @param {React.Dispatch<React.SetStateAction<ErrorsFormProps>>} setErrors - Fonction pour mettre à jour l'état des erreurs du formulaire.
+ * @param onOperationUpdate - Fonction pour mettre à jour l'opération.
  */
 export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationEditionModel,
     editForm: EditFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>,

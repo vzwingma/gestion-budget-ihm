@@ -1,9 +1,9 @@
 import React from 'react'
-import { MenuItem, TextField } from "@mui/material"
-import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import { operationIsIntercompteFromLibelle } from '../../../../../Utils/OperationData.utils'
-import { getOperationIntercompteCatLibelle } from '../../../../../Utils/renderers/OperationItem.renderer'
-import { OperationDetailIntercompteProps } from '../../../../Components.props'
+import {MenuItem, TextField} from "@mui/material"
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
+import {operationIsIntercompteFromLibelle} from '../../../../../Utils/OperationData.utils'
+import {getOperationIntercompteCatLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
+import {OperationDetailIntercompteProps} from '../../../../Components.props'
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
@@ -13,7 +13,7 @@ import { OperationDetailIntercompteProps } from '../../../../Components.props'
  * @property {CompteBancaireModel[]} listeAutresComptes - La liste des autres comptes bancaires disponibles.
  * @property {boolean} formIntercompteInEdition - Indique si le formulaire d'intercompte est en cours d'édition.
  * @property {string | null} errorIntercompte - Message d'erreur lié à l'intercompte ou null.
- * @property {(field: OPERATION_EDITION_FORM_IDS.INTERCOMPTES, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire d'opération avec les valeurs fournies.
+ * @property {(field: INTERCOMPTES, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire d'opération avec les valeurs fournies.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProps> = ({ intercompte, listeAutresComptes,
@@ -36,7 +36,7 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
      */
     function getAffichageIntercompteRO(): JSX.Element {
         if (intercompte != null && operationIsIntercompteFromLibelle(intercompte)) {
-            return getOperationIntercompteCatLibelle(intercompte, listeAutresComptes, false)
+            return getOperationIntercompteCatLibelle(intercompte, listeAutresComptes)
         }
         else {
             return <></>

@@ -1,21 +1,16 @@
-import React, { useContext } from 'react'
-import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
-import { Autocomplete, FormControl, FormHelperText, TextField, Typography } from '@mui/material'
-import { getOperationLibelle } from './../../../../../Utils/renderers/OperationItem.renderer'
-import { OperationDetailLibelleProps } from '../../../../Components.props'
-import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider'
-
+import React, {useContext} from 'react'
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
+import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from '@mui/material'
+import {getOperationLibelle} from './../../../../../Utils/renderers/OperationItem.renderer'
+import {OperationDetailLibelleProps} from '../../../../Components.props'
+import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
 
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
  *
  * @component
- * @property {OperationModel} operation - Le modèle de l'opération.
- * @property {boolean} budgetActif - Indique si le budget est actif.
- * @property {EditFormProps} editForm - Les propriétés du formulaire d'édition.
- * @property {string | null} errorValeur - Le message d'erreur pour la valeur, ou null s'il n'y a pas d'erreur.
- * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
+ * @param {OperationDetailLibelleProps} props - Les propriétés du composant.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ listeLibellesOperations,
@@ -31,7 +26,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
 
     /**
      * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
-     * @param {Event} e - L'événement de saisie
+     * @param event - L'événement de saisie
      */
     function fillLibelleForm(event: any) {
         fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, event.target.value);
@@ -67,7 +62,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
                     onChange={fillLibelleForm}
                     onFocus={() => activateValidationForm(false)}
                     onBlur={(e) => {
-                                activateValidationForm(true); 
+                        activateValidationForm(true);
                                 fillLibelleForm(e);
                             }}
                 />

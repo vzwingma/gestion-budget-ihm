@@ -16,8 +16,8 @@ import { BudgetContext } from '../../../../../Models/contextProvider/BudgetConte
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({  formCatgoriesInEdition,
-                                                                                    errorsCategories,
-                                                                                    fillOperationForm
+                                                                                        errorsCategories,
+                                                                                        fillOperationForm
                                                                                 }: OperationDetailCategoriesProps): JSX.Element => {
 
     const { currentOperation, categories } = useContext(BudgetContext)!;

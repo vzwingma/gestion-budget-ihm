@@ -1,24 +1,19 @@
-import React, { useContext } from 'react'
-import { InputAdornment, TextField, Typography } from "@mui/material"
-import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
+import React, {useContext} from 'react'
+import {InputAdornment, TextField, Typography} from "@mui/material"
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import OperationValue from "./../../../../../Utils/renderers/OperationValue.renderer"
-import { AddRounded, EuroRounded, RemoveRounded } from '@mui/icons-material'
-import { addEndingZeros } from '../../../../../Utils/OperationData.utils'
-import { TYPES_OPERATION_ENUM } from '../../../../../Utils/AppBusinessEnums.constants'
-import { OperationDetailValeurProps } from '../../../../Components.props'
-import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider'
+import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material'
+import {addEndingZeros} from '../../../../../Utils/OperationData.utils'
+import {TYPES_OPERATION_ENUM} from '../../../../../Utils/AppBusinessEnums.constants'
+import {OperationDetailValeurProps} from '../../../../Components.props'
+import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
 
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
  *
  * @component
- * @property {OperationModel} operation - Le modèle de l'opération.
- * @property {boolean} budgetActif - Indique si le budget est actif.
- * @property {boolean} formValueEdited - Les propriétés du formulaire d'édition.
- * @property {string | null} errorValeur - Le message d'erreur pour la valeur, ou null s'il n'y a pas d'erreur.
- * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
- * @returns {JSX.Element} Élément JSX représentant le composant.
+ * @param {OperationDetailValeurProps} props - Les propriétés du composant.
  */
 export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   formValueInEdition,
                                                                                 errorValeur,
