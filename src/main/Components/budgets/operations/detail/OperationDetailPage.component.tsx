@@ -244,7 +244,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
                     <Grid2 size={{ md: 5 }}>
                         { /** COMPTE DE TRANSFERT  **/}
-                        <OperationDetailIntercompte intercompte={editOperation.libelle}
+                        <OperationDetailIntercompte intercompte={editOperation.intercompte}
                             formIntercompteInEdition={
                                 isInCreateMode(editForm)
                                 && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id)

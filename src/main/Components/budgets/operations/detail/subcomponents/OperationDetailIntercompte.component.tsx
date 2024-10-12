@@ -13,7 +13,7 @@ import {OperationDetailIntercompteProps} from '../../../../Components.props'
  * @property {CompteBancaireModel[]} listeAutresComptes - La liste des autres comptes bancaires disponibles.
  * @property {boolean} formIntercompteInEdition - Indique si le formulaire d'intercompte est en cours d'édition.
  * @property {string | null} errorIntercompte - Message d'erreur lié à l'intercompte ou null.
- * @property {(field: OPERATION_EDITION_FORM_IDS.INTERCOMPTES, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire d'opération avec les valeurs fournies.
+ * @property {(field: INTERCOMPTES, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire d'opération avec les valeurs fournies.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProps> = ({ intercompte, listeAutresComptes,
