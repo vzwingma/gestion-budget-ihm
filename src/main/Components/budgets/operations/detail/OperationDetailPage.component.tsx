@@ -114,7 +114,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).filter((periode: PERIODES_MENSUALITE_ENUM) => periode === value)[0];
                 break;
             case OPERATION_EDITION_FORM.CATEGORIE:
-                fillCategorieForm(value)
+                if(value !== "") {
+                    fillCategorieForm(value);
+                }
                 break;
             case OPERATION_EDITION_FORM.INTERCOMPTES:
                 editOperation.intercompte = value
