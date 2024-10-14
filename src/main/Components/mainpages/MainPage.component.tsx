@@ -110,15 +110,14 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                     {renderLeftTabCompte(fonction)}
 
                     <Stack divider={<Divider orientation="horizontal" flexItem />}>
-                        {comptes
-                            .filter((compte) => !compte.isDisabled)
-                            .map((compte) => (
-                                <CompteItem key={compte.id}
-                                    compte={compte}
-                                    selectedFunction={fonction}
-                                    selectedDate={selectedDate}
-                                    onRefreshMenuBar={budgetMenuOpen}
-                                    onClick={handleCompteChange} />
+                        {comptes.filter((compte) => !compte.isDisabled)
+                                .map((compte) => (
+                                    <CompteItem key={compte.id}
+                                        compte={compte}
+                                        selectedFunction={fonction}
+                                        selectedDate={selectedDate}
+                                        onRefreshMenuBar={budgetMenuOpen}
+                                        onClick={handleCompteChange} />
                             ))}
                     </Stack>
 
