@@ -1,9 +1,10 @@
 import React, {useContext} from 'react'
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from '@mui/material'
-import {getOperationLibelle} from './../../../../../Utils/renderers/OperationItem.renderer'
+import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
 import {OperationDetailLibelleProps} from '../../../../Components.props'
 import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
+import {INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils";
 
 
 /**
@@ -23,13 +24,18 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
     const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budgetActif = currentBudget!.actif;
+    const rawLibelleParts = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle);
 
     /**
      * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
      * @param event - L'événement de saisie
      */
     function fillLibelleForm(event: any) {
-        fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, event.target.value);
+        let newLibelle: string = event.target.value;
+        if (rawLibelleParts !== null) {
+            newLibelle = rawLibelleParts[0].replace(rawLibelleParts[3], newLibelle);
+        }
+        fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, newLibelle);
     }
 
 
@@ -39,6 +45,19 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
      */
     function activateValidationForm(activation: boolean) {
         fillOperationForm(OPERATION_EDITION_FORM.FORM_VALIDATION, String(activation));
+    }
+
+    /**
+     * Récupère le libellé de l'opération en cours d'édition
+     * @returns {string} Le libellé de l'opération en cours d'édition
+     */
+    function getOperationLibelleInEdition(): string {
+        const extract = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle)
+        if (extract !== null) {
+            return extract[3];
+        } else {
+            return operation.libelle;
+        }
     }
 
     return (
@@ -51,7 +70,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             :
             <FormControl fullWidth required error={errorLibelle != null}>
                 <Autocomplete id={OPERATION_EDITION_FORM.LIBELLE + OPERATION_EDITION_FORM.INPUT}
-                    value={operation.libelle}
+                              value={getOperationLibelleInEdition()}
                     freeSolo={true}
                     autoComplete={true}
                     options={listeLibellesOperations}
@@ -63,8 +82,8 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
                     onFocus={() => activateValidationForm(false)}
                     onBlur={(e) => {
                         activateValidationForm(true);
-                                fillLibelleForm(e);
-                            }}
+                        fillLibelleForm(e);
+                    }}
                 />
                 <FormHelperText>{errorLibelle}</FormHelperText>
             </FormControl>

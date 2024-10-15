@@ -1,5 +1,5 @@
 import {WatchLaterRounded} from "@mui/icons-material";
-import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants";
+import {EN_RETARD, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants";
 import {Box, Tooltip} from "@mui/material";
 import React from "react";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
@@ -67,7 +67,7 @@ export function getOperationLibelle(operationLibelle : string, listeComptes : Co
     if (operationLibelle !== null) {
         if (operationIsIntercompteFromLibelle(operationLibelle)) {
             return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue)
-        } else if (operationLibelle.startsWith("[En Retard]")) {
+        } else if (operationLibelle.startsWith(EN_RETARD)) {
             return getOperationEnRetardLibelle(operationLibelle)
         } else {
             return getOperationLibelleWithComment(operationLibelle);
@@ -131,7 +131,7 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
             const label = direction + " " + compte.libelle;
             return <Tooltip title={"Transfert intercompte " + label}>
                 <Box>
-                    {operationLibelle.startsWith("[En Retard]") && isLabelOperation ?
+                    {operationLibelle.startsWith(EN_RETARD) && isLabelOperation ?
                         <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
 
                     <img src={"/img/banques/" + compte.itemIcon}
@@ -165,5 +165,5 @@ export function getOperationIntercompteCatLibelle(operationLibelle: string, list
  */
 function getOperationEnRetardLibelle(operationLibelle: string): JSX.Element {
     return <><WatchLaterRounded
-        sx={{color: "#A0A0A0"}}/>{getOperationLibelleWithComment(operationLibelle.replace("[En Retard]", ""))}</>
+        sx={{color: "#A0A0A0"}}/>{getOperationLibelleWithComment(operationLibelle.replace(EN_RETARD, ""))}</>
 }

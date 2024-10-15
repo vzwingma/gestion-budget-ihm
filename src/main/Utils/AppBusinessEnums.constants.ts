@@ -8,13 +8,13 @@ export enum BUSINESS_ONGLETS {
 }
 
 
-
+export const EN_RETARD: string = "[En Retard]";
 /**
  * Enumération des droits utilisateur.
- * 
+ *
  * Cette énumération définit les différents droits que peut avoir un utilisateur
  * dans l'application de gestion de budget.
- * 
+ *
  * @enum {number}
  * @property {number} CLOTURE_BUDGET - Droit de clôturer un budget.
  * @property {number} RAZ_BUDGET - Droit de réinitialiser un budget.
@@ -27,7 +27,7 @@ export enum UTILISATEUR_DROITS {
 
 /**
  * Enumération représentant les préférences utilisateur.
- * 
+ *
  * @enum {number}
  * @readonly
  */
