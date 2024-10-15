@@ -14,10 +14,11 @@ import {CancelRounded} from "@mui/icons-material";
 import {getLabelFromDate} from "../../../Utils/Date.utils";
 import {getOperationsGroupedByDateOperation} from "./Budget.controller";
 import CenterComponent from "../../CenterComponent";
-import {getLibellesOperation} from "../operations/detail/OperationDetailPage.extservices";
+import {getLibellesOperationsCompte} from "../operations/detail/OperationDetailPage.extservices";
 import {BudgetPageProps} from "../../Components.props";
 import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
+import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model";
 
 
 /**
@@ -57,7 +58,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
-    const [listeLibellesOperations, setListeLibellesOperations] = useState<string[]>([]);
+    const [listeLibellesOperations, setListeLibellesOperations] = useState<LibelleCategorieOperationModel[]>([]);
 
 
     /** Callback de chargement des catégories **/
@@ -87,7 +88,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFromDate(selectedDate))
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
         if (selectedCompte != null) {
-            getLibellesOperation(selectedCompte.id, setListeLibellesOperations);
+            getLibellesOperationsCompte(selectedCompte.id, setListeLibellesOperations);
         }
         setCurrentOperation(null);
     }, [selectedCompte, selectedDate, handleBudgetUpdate, setCurrentOperation]);

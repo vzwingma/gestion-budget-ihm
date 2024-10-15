@@ -1,16 +1,18 @@
-import { toast } from "react-toastify";
-import { v4 as uuid } from "uuid";
+import {toast} from "react-toastify";
+import {v4 as uuid} from "uuid";
 import OperationModel from "../../../../Models/budgets/Operation.model";
 import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model";
-import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../../../Utils/AppTechEnums.constants";
-import { OPERATION_ETATS_ENUM } from "../../../../Utils/AppBusinessEnums.constants";
-import { call } from "../../../../Services/ClientHTTP.service";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../../Utils/AppTechEnums.constants";
+import {OPERATION_ETATS_ENUM} from "../../../../Utils/AppBusinessEnums.constants";
+import {call} from "../../../../Services/ClientHTTP.service";
+import LibelleCategorieOperationModel from "../../../../Models/budgets/LibelleCategorieOperation.model";
 
 
 /**
  * Modification de l'opération sur action
  * @param operation opération modifiée
  * @param budget associé
+ * @param onOperationUpdate callback de mise à jour
  */
 export function saveOperation(operation: OperationModel, budget: BudgetMensuelModel, onOperationUpdate: (budget: BudgetMensuelModel) => void) {
 
@@ -47,6 +49,7 @@ export function saveOperation(operation: OperationModel, budget: BudgetMensuelMo
  * @param operation opération à enregistrer
  * @param budget budget concerné
  * @param idCompteCible compte cible pour la 2nde opération (intercompte)
+ * @param onOperationUpdate
  */
 export function saveOperationIntercompte(operation: OperationModel, budget: BudgetMensuelModel, idCompteCible: string | null, onOperationUpdate: (budget: BudgetMensuelModel) => void) {
     if (idCompteCible === null) {
@@ -74,21 +77,17 @@ export function saveOperationIntercompte(operation: OperationModel, budget: Budg
 /**
  * Recherche des libellés des opérations sur le compte
  * @param idCompte identifiant du compte
+ * @param setListeLibellesOperation
  */
-export function getLibellesOperation(idCompte: string, setListeLibellesOperation: React.Dispatch<React.SetStateAction<string[]>>) {
+export function getLibellesOperationsCompte(idCompte: string, setListeLibellesOperation: React.Dispatch<React.SetStateAction<LibelleCategorieOperationModel[]>>) {
 
     call(METHODE_HTTP.GET,
         BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.LIBELLES,
         [idCompte])
-        .then((listeLibelles: string[]) => {
-            listeLibelles = listeLibelles
-                .map(libelle => libelle.split('-')[0].trim())
-                .filter(
-                    (value, index, current_value) => current_value.indexOf(value) === index
-                )
-                .sort((libelle1, libelle2) => libelle1.localeCompare(libelle2));
-            setListeLibellesOperation(listeLibelles);
-            console.log(listeLibelles.length, "libellés d'opérations sur le compte : ", idCompte)
+        .then((listeLibelles: LibelleCategorieOperationModel[]) => {
+            setListeLibellesOperation(listeLibelles
+                .filter((value, index, current_value) => current_value.indexOf(value) === index)
+                .sort((libelle1, libelle2) => libelle1.libelle.localeCompare(libelle2.libelle)));
         })
         .catch(e => {
             console.error("Erreur lors de la recherche des libellés d'opérations ", e);
