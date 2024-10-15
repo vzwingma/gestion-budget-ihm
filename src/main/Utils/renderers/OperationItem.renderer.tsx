@@ -122,7 +122,7 @@ export function getOperationIntercompteLibelle(operationLibelle: string, listeCo
 function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation: boolean, listeComptes: CompteBancaireModel[], maxVue: boolean): JSX.Element {
     const operationLibelleParts = INTERCOMPTE_LIBELLE_REGEX.exec(operationLibelle);
     if(operationLibelleParts == null) {
-        return <>{operationLibelle}</>
+        return getOperationLibelleWithComment(operationLibelle);
     }
     else{
         const direction = operationLibelleParts[1]
@@ -138,11 +138,11 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
                          width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                          alt={compte.libelle}
                          style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
-                    {isLabelOperation ? operationLibelleParts[3] : label}
+                    {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3]) : label}
                 </Box>
             </Tooltip>
         } else {
-            return <>{operationLibelle}</>
+            return getOperationLibelleWithComment(operationLibelle);
         }
     }
 }
