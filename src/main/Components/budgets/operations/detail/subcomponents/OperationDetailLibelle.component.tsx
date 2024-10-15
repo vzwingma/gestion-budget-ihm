@@ -67,7 +67,6 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             return operation.libelle;
         }
     }
-
     return (
         (!formLibelleInEdition) ?
             <Typography variant={"button"} sx={{ fontSize: "large" }}
