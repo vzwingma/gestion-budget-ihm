@@ -10,6 +10,7 @@ import OperationModel from "../Models/budgets/Operation.model";
 
 import {BUSINESS_ONGLETS, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants";
 import {OPERATION_EDITION_FORM} from "./budgets/operations/detail/OperationDetailPage.constants";
+import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOperation.model";
 
 /**
  * Analyse des catégories
@@ -170,7 +171,7 @@ export interface OperationDetailIntercompteProps {
 }
 
 export interface OperationDetailLibelleProps {
-    listeLibellesOperations: string[]
+    listeLibellesOperations: LibelleCategorieOperationModel[]
     formLibelleInEdition: boolean
     errorLibelle: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
@@ -189,7 +190,7 @@ export interface OperationDetailValeurProps {
 
 export interface OperationDetailPageProps {
     listeCategories: CategorieOperationModel[]
-    listeLibellesOperations: string[]
+    listeLibellesOperations: LibelleCategorieOperationModel[]
     onOperationChange: (budget: BudgetMensuelModel) => void
 }
 
