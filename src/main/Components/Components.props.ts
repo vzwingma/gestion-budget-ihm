@@ -1,6 +1,6 @@
 import AnalyseCategoriesModel from "../Models/analyses/categories/AnalyseCategories.model";
-import { AnalyseSoldesTimelineItemModel } from "../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
-import { AnalyseCategorieTimelineItem } from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
+import {AnalyseSoldesTimelineItemModel} from "../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
+import {AnalyseCategorieTimelineItem} from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
 import AnalyseSoldesCategorie from "../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import SoldesMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model";
 import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model";
@@ -8,8 +8,8 @@ import CategorieOperationModel from "../Models/budgets/CategorieOperation.model"
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model";
 import OperationModel from "../Models/budgets/Operation.model";
 
-import { BUSINESS_ONGLETS, UTILISATEUR_DROITS } from "../Utils/AppBusinessEnums.constants";
-import { OPERATION_EDITION_FORM } from "./budgets/operations/detail/OperationDetailPage.constants";
+import {BUSINESS_ONGLETS, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants";
+import {OPERATION_EDITION_FORM} from "./budgets/operations/detail/OperationDetailPage.constants";
 
 /**
  * Analyse des catégories
@@ -162,6 +162,7 @@ export interface OperationDetailDateProps {
 
 export interface OperationDetailIntercompteProps {
     intercompte: string | null
+    libelle: string
     listeAutresComptes: CompteBancaireModel[]
     formIntercompteInEdition: boolean
     errorIntercompte: string | null

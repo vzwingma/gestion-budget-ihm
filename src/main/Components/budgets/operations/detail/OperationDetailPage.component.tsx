@@ -245,13 +245,13 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     <Grid2 size={{ md: 5 }}>
                         { /** COMPTE DE TRANSFERT  **/}
                         <OperationDetailIntercompte intercompte={editOperation.intercompte}
+                                                    libelle={editOperation.libelle}
                             formIntercompteInEdition={
                                 isInCreateMode(editForm)
                                 && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id)
                             }
                             listeAutresComptes={
-                                comptes
-                                    .filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
+                                comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
                             errorIntercompte={errors.intercompte}
                             fillOperationForm={fillOperationForm} />
                     </Grid2>

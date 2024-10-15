@@ -16,7 +16,10 @@ import {OperationDetailIntercompteProps} from '../../../../Components.props'
  * @property {(field: INTERCOMPTES, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire d'opération avec les valeurs fournies.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
-export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProps> = ({ intercompte, listeAutresComptes,
+export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProps> = ({
+                                                                                          intercompte,
+                                                                                          libelle,
+                                                                                          listeAutresComptes,
     formIntercompteInEdition,
     errorIntercompte,
     fillOperationForm
@@ -34,9 +37,9 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
     /**
      * @returns {JSX.Element} Affichage de l'intercompte en lecture seule
      */
-    function getAffichageIntercompteRO(): JSX.Element {
-        if (intercompte != null && operationIsIntercompteFromLibelle(intercompte)) {
-            return getOperationIntercompteCatLibelle(intercompte, listeAutresComptes)
+    function getAffichageIntercompteRO(libelle: string): JSX.Element {
+        if (libelle != null && operationIsIntercompteFromLibelle(libelle)) {
+            return getOperationIntercompteCatLibelle(libelle, listeAutresComptes)
         }
         else {
             return <></>
@@ -66,6 +69,6 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
                 ))}
             </TextField>
             :
-            getAffichageIntercompteRO()
+            getAffichageIntercompteRO(libelle)
     )
 }
