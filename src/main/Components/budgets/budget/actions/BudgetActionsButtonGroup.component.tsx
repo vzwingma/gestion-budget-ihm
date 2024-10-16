@@ -47,38 +47,54 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
      */
     function handleButtonsBudgetClick(event: any) {
         if (event.target.className !== "btn-close") {
-            let action = getEventTargetId(event.target);
-            let titrePopup = "";
-            let questionPopup = "";
-            let affichagePopup;
+            const action = getEventTargetId(event.target);
             if (action === ACTIONS_BUDGET_ENUM.CREATE) {
-                onActionOperationCreate()
-                return
-            } else if (action === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
+                onActionOperationCreate();
+                return;
+            }
+            handleAction(action);
+        } else {
+            setShowModale(false);
+        }
+    }
+
+    function handleAction(action: string) {
+        let titrePopup = "";
+        let questionPopup = "";
+        let affichagePopup;
+
+        switch (action) {
+            case ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER:
                 titrePopup = "Activité du budget";
                 questionPopup = "Voulez vous vraiment " + (budget.actif ? "clôturer" : "réouvrir") + " le budget ?";
                 affichagePopup = true;
-            } else if (action === ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER) {
+                break;
+            case ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER:
                 titrePopup = "Action sur le budget";
                 questionPopup = "Voulez vous vraiment réinitialiser le budget ? \n Le budget précédent sera clôturé, et les opérations en cours seront reportées";
                 affichagePopup = true;
-            } else if (action === ACTIONS_BUDGET_ENUM.ANNULER) {
+                break;
+            case ACTIONS_BUDGET_ENUM.ANNULER:
                 affichagePopup = false;
-            } else if (action === ACTIONS_BUDGET_ENUM.CONFIRMER) {
+                break;
+            case ACTIONS_BUDGET_ENUM.CONFIRMER:
                 affichagePopup = false;
-                if (actionEnCours === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
-                    callReopenCloseBudget(budget.id, !budget.actif, onActionBudgetChange)
-                } else if (actionEnCours === ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER) {
-                    callReinitBudget(budget, onActionBudgetChange);
-                }
-            }
-            setModaleContent({ title: titrePopup, question: questionPopup });
-            setShowModale(affichagePopup ?? false);
-            if(action !== null){
-                setActionEnCours(action);
-            }
-        } else {
-            setShowModale(false);
+                confirmAction();
+                break;
+        }
+
+        setModaleContent({ title: titrePopup, question: questionPopup });
+        setShowModale(affichagePopup ?? false);
+        if (action !== null) {
+            setActionEnCours(action);
+        }
+    }
+
+    function confirmAction() {
+        if (actionEnCours === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
+            callReopenCloseBudget(budget.id, !budget.actif, onActionBudgetChange);
+        } else if (actionEnCours === ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER) {
+            callReinitBudget(budget, onActionBudgetChange);
         }
     }
 
