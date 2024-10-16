@@ -15,7 +15,7 @@ type BudgetContextType = {
     setCurrentOperation: React.Dispatch<React.SetStateAction<OperationModel | null>>;
 
     comptes: CompteBancaireModel[];
-    setComptes: React.Dispatch<React.SetStateAction<CompteBancaireModel[]>>;
+    setListeComptes: React.Dispatch<React.SetStateAction<CompteBancaireModel[]>>;
     selectedCompte: CompteBancaireModel | null;
     setSelectedCompte: React.Dispatch<React.SetStateAction<CompteBancaireModel | null>>;
 
@@ -34,22 +34,35 @@ export const BudgetContext = React.createContext<BudgetContextType | null>(null)
  * @param param0
  * @returns  provider
  */
-export function BudgetContextProvider({ children }: { children: Readonly<React.ReactNode> }): JSX.Element {
+export function BudgetContextProvider({ children }: Readonly<{ children: React.ReactNode }>): JSX.Element {
 
     const [currentBudget, setCurrentBudget] = useState<BudgetMensuelModel>();
     const [currentOperation, setCurrentOperation] = useState<OperationModel | null>(null);
 
-    const [listeComptes, setComptes] = useState<CompteBancaireModel[]>([]);
+    const [listeComptes, setListeComptes] = useState<CompteBancaireModel[]>([]);
     const comptes : CompteBancaireModel[] = useMemo(() => listeComptes, [listeComptes]);
     const [selectedCompte, setSelectedCompte] = useState<CompteBancaireModel | null>(null);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0));
 
     const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
 
-
+    const contextValue = useMemo(() => ({
+        currentBudget,
+        setCurrentBudget,
+        currentOperation,
+        setCurrentOperation,
+        selectedCompte,
+        setSelectedCompte,
+        comptes,
+        setListeComptes,
+        selectedDate,
+        setSelectedDate,
+        categories,
+        setCategories
+    }), [currentBudget, currentOperation, selectedCompte, comptes, selectedDate, categories]);
 
     return (
-        <BudgetContext.Provider value={{ currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, setSelectedCompte, comptes, setComptes, selectedDate, setSelectedDate, categories, setCategories } }>
+        <BudgetContext.Provider value={contextValue}>
             {children}
         </BudgetContext.Provider>
     );

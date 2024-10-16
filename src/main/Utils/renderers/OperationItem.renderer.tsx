@@ -125,26 +125,39 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
         return getOperationLibelleWithComment(operationLibelle);
     }
     else{
-        const direction = operationLibelleParts[1]
-        const compte = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))[0]
+        const compte : CompteBancaireModel = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))[0]
         if (compte?.libelle) {
-            const label = direction + " " + compte.libelle;
-            return <Tooltip title={"Transfert intercompte " + label}>
-                <Box>
-                    {operationLibelle.startsWith(EN_RETARD) && isLabelOperation ?
-                        <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
-
-                    <img src={"/img/banques/" + compte.itemIcon}
-                         width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
-                         alt={compte.libelle}
-                         style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
-                    {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3]) : label}
-                </Box>
-            </Tooltip>
+            return getOperationIntercompteLibelleWithIconAndComment(operationLibelle, compte, operationLibelleParts, isLabelOperation, maxVue);
         } else {
             return getOperationLibelleWithComment(operationLibelle);
         }
     }
+}
+
+/**
+ * Libellé d'une opération intercompte, avec icone et commentaire
+ * @param operationLibelle libellé de l'opération
+ * @param compte compte bancaire associé à l'opération d'intecompte
+ * @param operationLibelleParts partie du libellé
+ * @param isLabelOperation est ce un label d'opération
+ * @param maxVue taille max de l'icone
+ * @returns représentation graphique
+ */
+function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: string, compte: CompteBancaireModel, operationLibelleParts: string[], isLabelOperation: boolean, maxVue: boolean): JSX.Element {
+    const direction = operationLibelleParts[1]
+    const label = direction + " " + compte.libelle;
+    return <Tooltip title={"Transfert intercompte " + label}>
+            <Box>
+                {operationLibelle.startsWith(EN_RETARD) && isLabelOperation ?
+                    <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
+
+                <img src={"/img/banques/" + compte.itemIcon}
+                    width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
+                    alt={compte.libelle}
+                    style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
+                {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3]) : label}
+            </Box>
+        </Tooltip>
 }
 
 /**

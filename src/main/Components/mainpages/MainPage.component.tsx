@@ -19,14 +19,14 @@ import { BudgetContext } from "../../Models/contextProvider/BudgetContextProvide
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    const { comptes, setComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext)!;
+    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext)!;
 
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
 
     /** Appels WS vers pour charger la liste des comptes **/
     useEffect(() => {
-        loadComptes(setComptes);
-    }, [selectedDate, setComptes])
+        loadComptes(setListeComptes);
+    }, [selectedDate, setListeComptes])
 
 
     /**
