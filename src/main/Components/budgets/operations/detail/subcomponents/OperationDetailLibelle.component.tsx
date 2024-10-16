@@ -32,9 +32,16 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
      * @param event - L'événement de saisie
      */
     function fillLibelleForm(event: any) {
+        // Récupération du libellé de l'opération
         let newLibelle: string = event.target.value;
         if (rawLibelleParts !== null) {
+            // Rajout des tags en amont
             newLibelle = rawLibelleParts[0].replace(rawLibelleParts[3], newLibelle);
+        }
+
+        const libelleFromAutocomplete: LibelleCategorieOperationModel | undefined = listeLibellesOperations.findLast((libelle: LibelleCategorieOperationModel) => libelle.libelle === newLibelle);
+        if (libelleFromAutocomplete !== undefined) {
+            fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, libelleFromAutocomplete?.ssCategorieId);
         }
         fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, newLibelle);
     }
@@ -60,7 +67,6 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             return operation.libelle;
         }
     }
-
     return (
         (!formLibelleInEdition) ?
             <Typography variant={"button"} sx={{ fontSize: "large" }}
