@@ -1,21 +1,22 @@
-import { LabelProps } from "recharts";
-import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.renderer";
-import { PolarViewBox } from "recharts/types/util/types";
+import {LabelProps} from "recharts";
+import {getCategorieColor} from "../../../../Utils/renderers/CategorieItem.renderer";
+import {PolarViewBox} from "recharts/types/util/types";
 import React from "react";
-import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
-import GraphAnalyseCategoriesModel from "../../../Models/analyses/categories/GraphAnalyseCategories.model";
-import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
-import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
+import AnalyseCategoriesModel from "../../../../Models/analyses/categories/AnalyseCategories.model";
+import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model";
+import CategorieOperationModel from "../../../../Models/budgets/CategorieOperation.model";
+import {sortLibellesCategories} from "../../../../Utils/OperationData.utils";
 
 
-
-    /**
+/**
      * Populate des data pour les graphs d'une catégorie
      * @param analysesGroupedByCategories : object analyses groupées des catégories
      * @param dataGraphCategories : array tableau pour alimenter le graphique
      * @param parentCategorie : object catégorie parente
      */
-    export function populateGraphAnalyseCategories(analysesGroupedByCategories: { [idCategorie: string]: AnalyseCategoriesModel }, 
+    export function populateGraphAnalyseCategories(analysesGroupedByCategories: {
+                                                       [idCategorie: string]: AnalyseCategoriesModel
+                                                   },
                                                                                    typeAnalyse: string,
                                                                                    dataGraphCategories: GraphAnalyseCategoriesModel[],
                                                                                    dataGraphSsCategories: GraphAnalyseCategoriesModel[] | null, parentCategorie?: CategorieOperationModel) {
@@ -43,8 +44,8 @@ import { sortLibellesCategories } from "../../../Utils/OperationData.utils";
                 }
             })
     }
-    
-    /**
+
+/**
      * Rend une étiquette de catégorie avec des propriétés spécifiques.
      *
      * @param props - Les propriétés de l'étiquette à rendre.
