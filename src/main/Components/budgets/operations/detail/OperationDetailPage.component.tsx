@@ -138,28 +138,28 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
             .filter((ssCat: CategorieOperationModel) => ssCat != null && ssCat.id === ssCatId)[0]
 
-            if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
-                editOperation.categorie.id = ssCat.categorieParente.id;
-                editOperation.categorie.libelle = ssCat.categorieParente.libelle;
-            }
+        if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
+            editOperation.categorie.id = ssCat.categorieParente.id;
+            editOperation.categorie.libelle = ssCat.categorieParente.libelle;
+        }
         editOperation.ssCategorie.id = ssCat.id;
         editOperation.ssCategorie.libelle = ssCat.libelle;
 
         /** Si type Virement **/
         const editOperationTypeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
         editOperation.typeOperation = editOperationTypeOperation;
-            setEditOperation(editOperation);
+        setEditOperation(editOperation);
 
-            /** Adaptation sur la sélection de catégorie **/
-            if (ssCat.categorieParente) {
-                operation.categorie.id = ssCat.categorieParente.id;
-                operation.categorie.libelle = ssCat.categorieParente.libelle;
-            }
+        /** Adaptation sur la sélection de catégorie **/
+        if (ssCat.categorieParente) {
+            operation.categorie.id = ssCat.categorieParente.id;
+            operation.categorie.libelle = ssCat.categorieParente.libelle;
+        }
 
         operation.ssCategorie.id = ssCat.id;
         operation.ssCategorie.libelle = ssCat.libelle;
         operation.typeOperation = editOperationTypeOperation;
-        }
+    }
 
     /**
      * RENDER
