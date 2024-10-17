@@ -126,6 +126,7 @@ function validateFormMontant(editOperation: OperationEditionModel, operation: Op
     }
     errors.valeur = null;
     operation.valeur = (editOperation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1) * Number(valeurCalculee);
+    console.log("Valeur calculée : ", operation.valeur);
 }
 
 /**

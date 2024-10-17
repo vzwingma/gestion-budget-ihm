@@ -142,22 +142,23 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 editOperation.categorie.id = ssCat.categorieParente.id;
                 editOperation.categorie.libelle = ssCat.categorieParente.libelle;
             }
-            editOperation.ssCategorie.id = ssCat.id
-            editOperation.ssCategorie.libelle = ssCat.libelle
-            setEditOperation(editOperation);
+        editOperation.ssCategorie.id = ssCat.id;
+        editOperation.ssCategorie.libelle = ssCat.libelle;
 
-            /** Si type Virement **/
-            const editOperationTypeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+        /** Si type Virement **/
+        const editOperationTypeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+        editOperation.typeOperation = editOperationTypeOperation;
+            setEditOperation(editOperation);
 
             /** Adaptation sur la sélection de catégorie **/
             if (ssCat.categorieParente) {
-                operation.categorie.id = ssCat.categorieParente.id
-                operation.categorie.libelle = ssCat.categorieParente.libelle
+                operation.categorie.id = ssCat.categorieParente.id;
+                operation.categorie.libelle = ssCat.categorieParente.libelle;
             }
 
-            operation.ssCategorie.id = ssCat.id
-            operation.ssCategorie.libelle = ssCat.libelle
-            operation.typeOperation = editOperationTypeOperation
+        operation.ssCategorie.id = ssCat.id;
+        operation.ssCategorie.libelle = ssCat.libelle;
+        operation.typeOperation = editOperationTypeOperation;
         }
 
     /**
@@ -186,7 +187,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 { /** VALEUR **/}
                 <OperationDetailValeur formValueInEdition={editForm.value}
                                        errorValeur={errors.valeur}
-                    fillOperationForm={fillOperationForm} />
+                                       fillOperationForm={fillOperationForm}/>
 
                 { /** LIBELLE **/}
                 <OperationDetailLibelle
