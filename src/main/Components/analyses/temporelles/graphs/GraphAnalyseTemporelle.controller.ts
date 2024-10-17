@@ -2,13 +2,12 @@
  * Controleur de graphique pour l'analyse temporelle.
  */
 
-import { AnalyseSoldesTimelineItemModel } from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
-import { AnalyseCategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
-import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
-import { GraphAnalyseTimelineItemModel } from "../../../Models/analyses/temporelles/GraphAnalyseMensuel.model";
-import { GraphAnalyseTimelineModel } from "../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
-import { SOLDES_ENUM } from "./GraphAnalyseTemporelle.constant";
-
+import {AnalyseSoldesTimelineItemModel} from "../../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
+import {AnalyseCategorieTimelineItem} from "../../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
+import AnalyseSoldesCategorie from "../../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
+import {GraphAnalyseTimelineItemModel} from "../../../../Models/analyses/temporelles/GraphAnalyseMensuel.model";
+import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
+import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant";
 
 
 /**

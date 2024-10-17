@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import { Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid2, } from "@mui/material";
+import {Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid2,} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { loadSoldesBudgets } from "./AnalyseTemporelle.extservices";
+import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices";
 import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
 import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
 import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
 import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
-import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
-import GraphAnalyseTemporelle from "../graphs/GraphAnalyseTemporelle.component";
-import { AnalyseTemporelleProps, DataCalculationTemporelResultsProps } from "../../Components.props";
+import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
+import GraphAnalyseTemporelle from "./graphs/GraphAnalyseTemporelle.component";
+import {AnalyseTemporelleProps, DataCalculationTemporelResultsProps} from "../../Components.props";
 import CenterComponent from "../../CenterComponent";
-import { AnalyseSoldesTimelineItemModel } from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
-import { AnalyseCategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
-
+import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
+import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
 
 
 /**
@@ -33,7 +32,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     /** Etats pour la page Budget **/
     const [anneeAnalyses, setAnneeAnalyses] = useState<number>(new Date().getFullYear());
     const [soldesMensuels, setSoldesMensuels] = useState<SoldesMensuelModel[]>();
-    
+
     const [analyseSoldesCategoriesData, setAnalyseSoldesCategoriesData] = useState<AnalyseSoldesCategorie[] | null>(null);
     const [timelinesByCategories, setTimelinesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
     const [timelinesPrevisionnellesByCategories, setTimelinesPrevisionnellesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
@@ -63,14 +62,15 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                                             timelinesByCategoriesData,
                                             timelinesPrevisionnellesByCategoriesData,
                                             timelinesSoldesData,
-                                            timelinesPrevisionnellesSoldesData }: DataCalculationTemporelResultsProps) 
+                                             timelinesPrevisionnellesSoldesData
+                                         }: DataCalculationTemporelResultsProps)
     {
         setSoldesMensuels(soldesMensuelsData);
         setAnalyseSoldesCategoriesData(soldesCategoriesData);
 
         setTimelinesByCategories(timelinesByCategoriesData);
         setTimelinesPrevisionnellesByCategories(timelinesPrevisionnellesByCategoriesData);
-        
+
         setTimelinesSoldes(timelinesSoldesData);
         setTimelinesPrevisionnellesSoldes(timelinesPrevisionnellesSoldesData);
     }

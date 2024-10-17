@@ -1,8 +1,7 @@
-import {getStyleOperation} from "../../../Utils/renderers/OperationValue.renderer";
+import {getStyleOperation} from "../../../../Utils/renderers/OperationValue.renderer";
 import React from "react";
-import { TooltipAnalyseTemporelleProps } from "../../Components.props";
-import { SOLDES_ENUM } from "./GraphAnalyseTemporelle.constant";
-
+import {TooltipAnalyseTemporelleProps} from "../../../Components.props";
+import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant";
 
 
 /**

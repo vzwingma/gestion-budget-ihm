@@ -1,10 +1,10 @@
-import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React from "react";
-import { flatCategoriesData, populateGraphCategories, populateGraphSoldes } from "./GraphAnalyseTemporelle.controller";
+import {flatCategoriesData, populateGraphCategories, populateGraphSoldes} from "./GraphAnalyseTemporelle.controller";
 import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
-import { GraphAnalyseTemporelleProps } from "../../Components.props";
-import { GraphAnalyseTimelineModel } from "../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
-import { SOLDES_ENUM } from "./GraphAnalyseTemporelle.constant";
+import {GraphAnalyseTemporelleProps} from "../../../Components.props";
+import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
+import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant";
 
 
 /**
@@ -18,13 +18,14 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
                                     timelinesPrevisionnellesByCategoriesData,
                                     timelinesPrevisionnellesSoldesData,
                                     filterSoldesActive,
-                                    analyseSoldesCategoriesData }: GraphAnalyseTemporelleProps) => {
+                                    analyseSoldesCategoriesData
+                                }: GraphAnalyseTemporelleProps): JSX.Element => {
 
     /**
-     * 
+     *
      * @returns {Array} Les données pour le graphique.
      */
-    function getGraphData() {
+    function getGraphData(): Array<any> {
         let dataGraphTimeline: GraphAnalyseTimelineModel = { dataGraphTimelineItem: {} };
 
         /** Init du tableau pour l'affichage du graphique **/
@@ -36,12 +37,12 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
         return flatCategoriesData(dataGraphTimeline, analyseSoldesCategoriesData, filterSoldesActive);
     }
 
-    
+
     /**
      * Rend les lignes du graphique.
      * @returns {Array} Un tableau de composants Line.
      */
-    const renderLines = () => {
+    const renderLines = (): Array<any> => {
         let lines: JSX.Element[] = [];
         analyseSoldesCategoriesData
             .filter(categorie => categorie.filterActive)

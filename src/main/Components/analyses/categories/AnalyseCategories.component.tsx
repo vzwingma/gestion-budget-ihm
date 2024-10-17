@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import { Box, Chip, CircularProgress, Divider, Grid2, Stack, Switch } from "@mui/material";
+import {Box, Chip, CircularProgress, Divider, Grid2, Stack, Switch} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import GraphAnalyses from "../graphs/GraphAnalyses.component";
+import GraphAnalyses from "./graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseCategoriesTitre.component";
-import { loadBudget } from "./AnalyseCategories.extservices";
+import {loadBudget} from "./AnalyseCategories.extservices";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
-import { getOperationStateColor } from "../../../Utils/renderers/OperationItem.renderer";
-import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants";
-import { selectEtatOperation, selectTypeOperation } from "./AnalyseCategories.controller";
+import {getOperationStateColor} from "../../../Utils/renderers/OperationItem.renderer";
+import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {selectEtatOperation, selectTypeOperation} from "./AnalyseCategories.controller";
 import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component";
 import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
 import CenterComponent from "../../CenterComponent";
-import { AnalyseCategoriesProps, DataCalculationResultsProps } from "../../Components.props";
-
-
+import {AnalyseCategoriesProps, DataCalculationResultsProps} from "../../Components.props";
 
 
 /**

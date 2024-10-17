@@ -1,9 +1,7 @@
 import React from "react";
-import { Button, ButtonGroup } from "@mui/material";
+import {Button, ButtonGroup} from "@mui/material";
 import {handleSelect} from "./AnneeRange.controller";
-import { AnneeRangeProps } from "../../Components.props";
-
-
+import {AnneeRangeProps} from "../../Components.props";
 
 
 /**
@@ -28,7 +26,7 @@ const AnneeRange = ({ selectedAnnee, onAnneeChange }: AnneeRangeProps) : JSX.Ele
                 <Button id="current"
                     variant={"contained"}>{dateCurrent}</Button>
                 <Button id="next"
-                    size={"small"}>{dateNext}</Button>
+                        size={"small"} disabled={dateNext > new Date().getFullYear()}>{dateNext}</Button>
             </ButtonGroup>
         </center>
     );
