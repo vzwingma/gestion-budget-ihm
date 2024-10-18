@@ -25,9 +25,6 @@ import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCateg
  * Composant principal de la page Budget.
  *
  * @param {BudgetPageProps} props - Les propriétés du composant BudgetPage.
- * @param {Object} props.selectedCompte - Le compte sélectionné.
- * @param {Date} props.selectedDate - La date sélectionnée.
- * @param {Array} props.listeComptes - La liste des comptes disponibles.
  * @param {Function} props.onOpenMenu - Fonction pour ouvrir le menu.
  * @returns {JSX.Element} - Le composant JSX de la page Budget.
  *
