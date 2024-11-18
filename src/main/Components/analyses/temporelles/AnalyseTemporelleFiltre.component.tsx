@@ -1,8 +1,7 @@
-import { Checkbox, FormControlLabel } from "@mui/material";
+import {Checkbox, FormControlLabel} from "@mui/material";
 import React from "react";
-import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
-import { AnalyseTemporelleFiltreProps } from "../../Components.props";
-
+import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
+import {AnalyseTemporelleFiltreProps} from "../../Components.props";
 
 
 /**
@@ -17,14 +16,15 @@ const AnalyseTemporelleFiltre: React.FC<AnalyseTemporelleFiltreProps> = ({ liste
     return (
         listeCategories.map(categorie => {
             return (<FormControlLabel
-                id={categorie.id}
-                key={categorie.id}
-                control={<Checkbox id={categorie.id}
-                    defaultChecked icon={<RadioButtonUnchecked />}
-                    checkedIcon={<CheckCircle />} />}
-                label={categorie.libelleCategorie}
-                style={{ color: categorie.couleur }}
-                onChange={onFilterChange} />
+                    id={categorie.id}
+                    key={categorie.id}
+                    control={<Checkbox id={categorie.id}
+                                       defaultChecked icon={<RadioButtonUnchecked/>}
+                                       checkedIcon={<CheckCircle/>}/>}
+                    label={categorie.libelleCategorie}
+                    className="filtercategorie"
+                    style={{color: categorie.couleur}}
+                    onChange={onFilterChange}/>
             )
         })
     )
