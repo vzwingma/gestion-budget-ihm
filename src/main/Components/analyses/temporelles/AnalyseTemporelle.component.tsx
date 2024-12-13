@@ -19,9 +19,6 @@ import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles
 /**
  * Tuile  d'une liste d'opérations
  * @param operationGroupedByDate opérations groupées par date d'opérations
- * @param filterOperations filtre des opérations
- * @param listeComptes liste des comptes
- * @param onClick action lors du click
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
@@ -114,9 +111,9 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     return (
         <Box sx={{ overflow: "hidden" }} >
             <Grid2 container marginTop={1} sx={{ overflow: "hidden" }}>
-                <Grid2 size={{ md: 2 }}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                <Grid2 size={{md: 3}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
                     fontSize={"large"} /></Grid2>
-                <Grid2 size={{ md: 8 }}>
+                <Grid2 size={{md: 6}}>
                     {soldesMensuels !== null && selectedCompte != null ?
                         <AnalyseTemporelleTitre currentCompte={selectedCompte}
                             currentAnnee={anneeAnalyses}
@@ -125,7 +122,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                         <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid2>
-                <Grid2 size={{ md: 2 }} direction={"row-reverse"}>
+                <Grid2 size={{md: 3}} direction={"row-reverse"}>
                     {   analyseSoldesCategoriesData != null ?
                             <>
                                 <AnalyseTemporelleFiltre listeCategories={analyseSoldesCategoriesData}
@@ -135,6 +132,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                                         icon={<RadioButtonUnchecked />}
                                         checkedIcon={<CheckCircle />} />}
                                     style={{ color: "#FFFFFF" }}
+                                                  className="filtercategorie"
                                     onChange={onFilterSoldesChange} />
                             </>
                             :

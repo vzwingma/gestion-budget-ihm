@@ -27,13 +27,13 @@ button.buttonsActionsBudget {
 /* boutons actions sur opérations*/
 button.buttonsActionsOperations {
     color: #FFFFFF;
-    padding: 5px 5px 0px 5px;
+    padding: 5px 5px 0 5px;
     margin-right: 1px;
 }
 
 button.buttonsActionsOperationsP {
     color: #FFFFFF;
-    padding: 5px 6px 0px 4px;
+    padding: 5px 6px 0 4px;
     margin-right: 1px;
 }
 
@@ -128,7 +128,7 @@ a.nav-link {
 a.nav-link_selected {
     color: #1976d2;
     background-color: #121212;
-    border-radius: 20px 20px 0px 0px;
+    border-radius: 20px 20px 0 0;
     outline: none;
     text-decoration: none;
     display: inline-block;
@@ -159,4 +159,12 @@ a.nav-link:hover {
 
 .child {
     margin: 0 auto;
+}
+
+.filtercategorie {
+    margin-top: -5px;
+}
+
+.filtercategorie > span {
+    font-size: 14px;
 }

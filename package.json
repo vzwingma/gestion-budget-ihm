@@ -5,12 +5,12 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.4",
-    "@mui/material": "^6.1.4",
-    "@testing-library/jest-dom": "^6.6.2",
+    "@mui/icons-material": "^6.1.7",
+    "@mui/material": "^6.1.7",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
-    "css-minify": "^2.0.0",
+    "css-minify": "^2.0.2",
     "gestion-budget-ihm": "file:",
     "nth-check": "^2.1.1",
     "prop-types": "^15.8.1",
@@ -20,16 +20,16 @@
     "react-router-dom": "^6.27.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^10.0.6",
-    "recharts": "^2.13.0",
-    "uuid": "^10.0.0"
+    "recharts": "^2.13.3",
+    "uuid": "^11.0.3"
   },
   "overrides": {
     "autoprefixer": "10.4.14"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
-    "@types/jest": "^29.5.13",
-    "@types/react": "^18.3.9",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.1",
+    "@types/jest": "^29.5.14",
+    "@types/react": "^18.3.12",
     "@types/uuid": "^10.0.0",
     "eslint-config-react-app": "^7.0.1"
   },

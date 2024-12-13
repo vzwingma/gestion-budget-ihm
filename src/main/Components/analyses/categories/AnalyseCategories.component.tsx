@@ -78,9 +78,9 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={"true"}>
             <Grid2 container marginTop={1} sx={{ overflow: "hidden" }}>
-                <Grid2 size={{ md: 2 }}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                <Grid2 size={{ md: 1.5 }}><MenuIcon onClick={onOpenMenu} className={"editableField"}
                     fontSize={"large"} /></Grid2>
-                <Grid2 size={{ md: 7 }}>
+                <Grid2 size={{ md: 7.5 }}>
                     {
                         currentBudget !== null && totauxGroupedByEtat !== null && selectedCompte !== null ?
                             <AnalyseTitre currentCompte={selectedCompte}
