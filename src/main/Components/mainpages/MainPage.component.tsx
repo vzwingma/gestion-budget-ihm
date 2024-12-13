@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Box, Divider, Drawer, Stack } from "@mui/material";
-import { ToastContainer } from "react-toastify";
-import { BUSINESS_ONGLETS } from "../../Utils/AppBusinessEnums.constants";
-import { loadComptes } from "./MainPage.extservices";
+import React, {useContext, useEffect, useState} from "react";
+import {Box, Divider, Drawer, Stack} from "@mui/material";
+import {ToastContainer} from "react-toastify";
+import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
+import {loadComptes} from "./MainPage.extservices";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import DateRange from "./menuSlideBar/DateRange.component";
 import BudgetPage from "../budgets/budget/Budget.component";
-import { AnalyseTemporelle } from "../analyses/temporelles/AnalyseTemporelle.component";
-import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
-import { MainPageProps } from "../Components.props";
-import { BudgetContext } from "../../Models/contextProvider/BudgetContextProvider";
-
+import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component";
+import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component";
+import {MainPageProps} from "../Components.props";
+import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider";
 
 
 /**
@@ -110,7 +109,8 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                     {renderLeftTabCompte(fonction)}
 
                     <Stack divider={<Divider orientation="horizontal" flexItem />}>
-                        {comptes.filter((compte) => !compte.isDisabled)
+                        {
+                            comptes.filter((compte) => compte.actif)
                                 .map((compte) => (
                                     <CompteItem key={compte.id}
                                         compte={compte}
