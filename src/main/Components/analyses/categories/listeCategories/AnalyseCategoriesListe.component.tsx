@@ -1,10 +1,9 @@
 import React from 'react'
 import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
-import { sortLibellesCategories } from '../../../../Utils/OperationData.utils';
+import {sortLibellesCategories} from '../../../../Utils/OperationData.utils';
 import AnalyseCategoriesModel from '../../../../Models/analyses/categories/AnalyseCategories.model';
-import { AnalyseCategoriesListeProps } from '../../../Components.props';
-
+import {AnalyseCategoriesListeProps} from '../../../Components.props';
 
 
 /**
@@ -18,7 +17,13 @@ import { AnalyseCategoriesListeProps } from '../../../Components.props';
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSelectedCategorie, analysesGroupedByCategories, typeAnalyse, selectCategorie} : AnalyseCategoriesListeProps) => {
+const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
+                                                                           rangSelectedCategorie,
+                                                                           analysesGroupedByCategories,
+                                                                           typeAnalyse,
+                                                                           selectCategorie,
+                                                                           selectDetailCategorie
+                                                                       }: AnalyseCategoriesListeProps): JSX.Element => {
     /**
      * Iterate groupe
      * @param analysesGroupedByCategories liste des opérations par catégories
@@ -41,7 +46,8 @@ const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSel
                     <AnalyseCategorieListItem key={analysesOfCategorie.categorie.id}
                                               resumeCategorie={analysesOfCategorie}
                                               typeAnalyse={typeAnalyse}
-                                              selectCategorie={() => selectCategorie(analysesOfCategorie, r)}/>
+                                              selectCategorie={() => selectCategorie(analysesOfCategorie, r)}
+                                              selectDetailCategorie={() => selectDetailCategorie(analysesOfCategorie)}/>
                 );
             });
         return renderList;

@@ -1,11 +1,11 @@
-import { toast } from "react-toastify";
-import { OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants";
-import { getCategorieColor } from "../../../Utils/renderers/CategorieItem.renderer";
+import {toast} from "react-toastify";
+import {OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
+import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer";
 import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
 import OperationModel from "../../../Models/budgets/Operation.model";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
-import { DataCalculationResultsProps } from "../../Components.props";
+import {DataCalculationResultsProps} from "../../Components.props";
 
 /**
  * Contrôleur des analyses
@@ -14,7 +14,8 @@ import { DataCalculationResultsProps } from "../../Components.props";
 
 /**
  * Notification lors de la mise à jour du budget
- * @param {Object} budgetData - Les données du budget
+ * @param currentBudget - Le budget courant
+ * @param handleDataCalculationResult - La fonction de mise à jour des résultats
  */
 export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCalculationResult: ({ currentBudget,
     analysesGroupedByCategories,
@@ -79,6 +80,7 @@ function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesMode
         group[categorie.id].nbTransactions[idx] = group[categorie.id].nbTransactions[idx] + 1;
         group[categorie.id].total[idx] = group[categorie.id].total[idx] + operation.valeur;
         group[categorie.id].pourcentage[idx] = Math.round((Math.abs(group[categorie.id].total[idx]) / Math.abs(totauxParEtats[idx])) * 100);
+        group[categorie.id].listeOperations[operation.id] = operation;
 
         // On ajoute les opérations réalisées aux prévues
         if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
@@ -87,6 +89,7 @@ function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesMode
             group[categorie.id].nbTransactions[idp] = group[categorie.id].nbTransactions[idp] + 1;
             group[categorie.id].total[idp] = group[categorie.id].total[idp] + operation.valeur;
             group[categorie.id].pourcentage[idp] = Math.round((Math.abs(group[categorie.id].total[idp]) / Math.abs(totauxParEtats[idp])) * 100);
+            group[categorie.id].listeOperations[operation.id] = operation;
         }
     }
 }
@@ -115,6 +118,8 @@ const PART_TYPE_ANALYSE_REGEX : RegExp = /(.*)_(.*)/;
 /**
  * Change l'état de l'analyse
  * @param {Event} e - L'événement
+ * @param currentTypeAnalyse - Le type d'analyse actuel
+ * @param setSelectedTypeAnalyse - La fonction de mise à jour du type d'analyse
  */
 export function selectEtatOperation(e: any, currentTypeAnalyse : string, setSelectedTypeAnalyse : React.Dispatch<React.SetStateAction<string>>) {
     const newEtat = e.target.checked ? OPERATION_ETATS_ENUM.REALISEE : OPERATION_ETATS_ENUM.PREVUE
@@ -127,6 +132,8 @@ export function selectEtatOperation(e: any, currentTypeAnalyse : string, setSele
 /**
  * Change le type d'opération
  * @param {Event} e - L'événement
+ * @param currentTypeAnalyse - Le type d'analyse actuel
+ * @param setSelectedTypeAnalyse   - La fonction de mise à jour du type d'analyse
  */
 export function selectTypeOperation(e: any, currentTypeAnalyse : string, setSelectedTypeAnalyse : React.Dispatch<React.SetStateAction<string>>) {
     const newEtat = e.target.checked ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE

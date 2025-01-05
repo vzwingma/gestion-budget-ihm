@@ -64,11 +64,21 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
 
     /**
      * Gère la sélection d'une sous-catégorie
-     * @param {number} rang - Le rang de la sous-catégorie dans la liste
      * @param {Object} resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
      */
     function handleSsCategorieSelect(resumeSelectedSsCategorie: AnalyseCategoriesModel) {
         setResumeSelectedSsCategorie(resumeSelectedSsCategorie);
+    }
+
+    /**
+     * Gère la sélection d'une sous-catégorie - liste les opérations
+     * @param resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
+     */
+    function handleDetailSsCategorieSelect(resumeSelectedSsCategorie: AnalyseCategoriesModel) {
+        console.log("Sous-catégorie : " + resumeSelectedSsCategorie.categorie.libelle)
+        for (let listeOperationsKey in resumeSelectedSsCategorie.listeOperations) {
+            console.log("   ", resumeSelectedSsCategorie.listeOperations[listeOperationsKey].libelle, resumeSelectedSsCategorie.listeOperations[listeOperationsKey].valeur)
+        }
     }
 
     /**
@@ -112,7 +122,10 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                                 rangSelectedCategorie={null}
                                 typeAnalyse={selectedTypeAnalyse}
                                 analysesGroupedByCategories={analysesGroupedByCategories}
-                                selectCategorie={handleCategorieSelect} />
+                                selectCategorie={handleCategorieSelect}
+                                selectDetailCategorie={() => {
+                                }}
+                            />
                             :
                             <CenterComponent><CircularProgress /></CenterComponent>
                         )
@@ -125,7 +138,9 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                                 rangSelectedCategorie={rangSelectedCategorie}
                                 typeAnalyse={selectedTypeAnalyse}
                                 analysesGroupedByCategories={resumeSelectedCategorie.resumesSsCategories}
-                                selectCategorie={handleSsCategorieSelect} />
+                                selectCategorie={handleSsCategorieSelect}
+                                selectDetailCategorie={handleDetailSsCategorieSelect}
+                            />
                             :
                             <></>
                         )
