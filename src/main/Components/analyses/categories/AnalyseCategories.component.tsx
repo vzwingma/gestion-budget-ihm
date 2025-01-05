@@ -70,16 +70,6 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
         setResumeSelectedSsCategorie(resumeSelectedSsCategorie);
     }
 
-    /**
-     * Gère la sélection d'une sous-catégorie - liste les opérations
-     * @param resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
-     */
-    function handleDetailSsCategorieSelect(resumeSelectedSsCategorie: AnalyseCategoriesModel) {
-        console.log("Sous-catégorie : " + resumeSelectedSsCategorie.categorie.libelle)
-        for (let listeOperationsKey in resumeSelectedSsCategorie.listeOperations) {
-            console.log("   ", resumeSelectedSsCategorie.listeOperations[listeOperationsKey].libelle, resumeSelectedSsCategorie.listeOperations[listeOperationsKey].valeur)
-        }
-    }
 
     /**
      * Render du budget
@@ -123,8 +113,6 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                                 typeAnalyse={selectedTypeAnalyse}
                                 analysesGroupedByCategories={analysesGroupedByCategories}
                                 selectCategorie={handleCategorieSelect}
-                                selectDetailCategorie={() => {
-                                }}
                             />
                             :
                             <CenterComponent><CircularProgress /></CenterComponent>
@@ -139,7 +127,6 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                                 typeAnalyse={selectedTypeAnalyse}
                                 analysesGroupedByCategories={resumeSelectedCategorie.resumesSsCategories}
                                 selectCategorie={handleSsCategorieSelect}
-                                selectDetailCategorie={handleDetailSsCategorieSelect}
                             />
                             :
                             <></>

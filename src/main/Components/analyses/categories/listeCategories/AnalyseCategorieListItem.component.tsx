@@ -4,7 +4,19 @@ import OperationValue from "../../../../Utils/renderers/OperationValue.renderer"
 import {getCategorieIcon} from "../../../../Utils/renderers/CategorieItem.renderer";
 import CenterComponent from '../../../CenterComponent';
 import {AnalyseCategorieListItemProps} from '../../../Components.props';
+import AnalyseCategoriesModel from "../../../../Models/analyses/categories/AnalyseCategories.model";
 
+
+/**
+ * Gère la sélection d'une sous-catégorie - liste les opérations
+ * @param resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
+ */
+function handleDetailSsCategorieSelect(resumeSelectedSsCategorie: AnalyseCategoriesModel) {
+    console.log("Sous-catégorie : " + resumeSelectedSsCategorie.categorie.libelle)
+    for (let listeOperationsKey in resumeSelectedSsCategorie.listeOperations) {
+        console.log("   ", resumeSelectedSsCategorie.listeOperations[listeOperationsKey].libelle, resumeSelectedSsCategorie.listeOperations[listeOperationsKey].valeur, "€")
+    }
+}
 
 /**
  * Tuile d'un résumé de catégories
@@ -18,13 +30,13 @@ import {AnalyseCategorieListItemProps} from '../../../Components.props';
 const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({
                                                                                resumeCategorie,
                                                                                typeAnalyse,
-                                                                               selectCategorie,
-                                                                               selectDetailCategorie
+                                                                               selectCategorie
                                                                            }: AnalyseCategorieListItemProps): JSX.Element => {
 
     return (
         <Box key={"liste_" + resumeCategorie.categorie.id}
-             className={"listeItem"} onMouseOver={() => selectCategorie()} onClick={() => selectDetailCategorie()}>
+             className={"listeItem"} onMouseOver={() => selectCategorie()}
+             onClick={() => handleDetailSsCategorieSelect(resumeCategorie)}>
             <Grid2 container spacing={6}>
                 <Grid2 size={{ md: 1 }}>
                     <Box width={40} height={40}

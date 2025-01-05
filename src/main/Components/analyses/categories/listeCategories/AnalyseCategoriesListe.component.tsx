@@ -10,7 +10,7 @@ import {AnalyseCategoriesListeProps} from '../../../Components.props';
  * Tuile d'une liste de catégories
  * @param rangSelectedCategorie : int rang de la catégorie
  * @param analysesGroupedByCategories : Object opérations groupées par catégories
- * @param typeAnalyse : Enum par défaut "REALISEE_DEPENSE"
+ * @param typeAnalyse : enum par défaut "REALISEE_DEPENSE"
  * @param selectCategorie : function selection d'une catégorie
  * @returns {JSX.Element} tuile
  * @constructor constructeur
@@ -21,8 +21,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                                                            rangSelectedCategorie,
                                                                            analysesGroupedByCategories,
                                                                            typeAnalyse,
-                                                                           selectCategorie,
-                                                                           selectDetailCategorie
+                                                                           selectCategorie
                                                                        }: AnalyseCategoriesListeProps): JSX.Element => {
     /**
      * Iterate groupe
@@ -46,8 +45,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                     <AnalyseCategorieListItem key={analysesOfCategorie.categorie.id}
                                               resumeCategorie={analysesOfCategorie}
                                               typeAnalyse={typeAnalyse}
-                                              selectCategorie={() => selectCategorie(analysesOfCategorie, r)}
-                                              selectDetailCategorie={() => selectDetailCategorie(analysesOfCategorie)}/>
+                                              selectCategorie={() => selectCategorie(analysesOfCategorie, r)}/>
                 );
             });
         return renderList;

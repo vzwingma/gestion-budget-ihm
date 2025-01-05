@@ -19,7 +19,6 @@ export interface AnalyseCategorieListItemProps {
     resumeCategorie: AnalyseCategoriesModel,
     typeAnalyse: string,
     selectCategorie: () => void
-    selectDetailCategorie: () => void
 }
 
 
@@ -28,7 +27,6 @@ export interface AnalyseCategoriesListeProps {
     analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel } | null,
     typeAnalyse: string,
     selectCategorie: (analyseCategoriesModel: AnalyseCategoriesModel, rang?: number) => void
-    selectDetailCategorie: (analyseCategoriesModel: AnalyseCategoriesModel) => void
 }
 
 
