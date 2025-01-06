@@ -81,7 +81,7 @@ function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesMode
         group[categorie.id].total[idx] = group[categorie.id].total[idx] + operation.valeur;
         group[categorie.id].pourcentage[idx] = Math.round((Math.abs(group[categorie.id].total[idx]) / Math.abs(totauxParEtats[idx])) * 100);
         group[categorie.id].listeOperations.push(operation);
-
+        group[categorie.id].listeOperations.sort((op1, op2) => op1.valeur - op2.valeur);
         // On ajoute les opérations réalisées aux prévues
         if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
             const idp: string = OPERATION_ETATS_ENUM.PREVUE + "_" + operation.typeOperation;
