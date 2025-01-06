@@ -80,7 +80,7 @@ function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesMode
         group[categorie.id].nbTransactions[idx] = group[categorie.id].nbTransactions[idx] + 1;
         group[categorie.id].total[idx] = group[categorie.id].total[idx] + operation.valeur;
         group[categorie.id].pourcentage[idx] = Math.round((Math.abs(group[categorie.id].total[idx]) / Math.abs(totauxParEtats[idx])) * 100);
-        group[categorie.id].listeOperations[operation.id] = operation;
+        group[categorie.id].listeOperations.push(operation);
 
         // On ajoute les opérations réalisées aux prévues
         if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
@@ -89,7 +89,6 @@ function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesMode
             group[categorie.id].nbTransactions[idp] = group[categorie.id].nbTransactions[idp] + 1;
             group[categorie.id].total[idp] = group[categorie.id].total[idp] + operation.valeur;
             group[categorie.id].pourcentage[idp] = Math.round((Math.abs(group[categorie.id].total[idp]) / Math.abs(totauxParEtats[idp])) * 100);
-            group[categorie.id].listeOperations[operation.id] = operation;
         }
     }
 }

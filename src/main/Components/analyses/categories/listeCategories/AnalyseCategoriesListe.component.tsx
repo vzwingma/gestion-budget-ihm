@@ -14,8 +14,6 @@ import {AnalyseCategoriesListeProps} from '../../../Components.props';
  * @param selectCategorie : function selection d'une catégorie
  * @returns {JSX.Element} tuile
  * @constructor constructeur
- *
- * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
 const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                                                            rangSelectedCategorie,

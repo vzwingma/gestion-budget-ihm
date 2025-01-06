@@ -11,7 +11,7 @@ class AnalyseCategoriesModel {
     nbTransactions: { [key: string]: number };
     pourcentage: { [key: string]: number };
     total: { [key: string]: number };
-    listeOperations: { [key: string]: OperationModel };
+    listeOperations: OperationModel[];
 
 
     /**
@@ -24,7 +24,7 @@ class AnalyseCategoriesModel {
         this.nbTransactions = {};
         this.pourcentage = {};
         this.total = {};
-        this.listeOperations = {};
+        this.listeOperations = [];
     }
 }
 export default AnalyseCategoriesModel
