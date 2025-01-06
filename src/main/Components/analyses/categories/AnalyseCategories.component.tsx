@@ -64,12 +64,12 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
 
     /**
      * Gère la sélection d'une sous-catégorie
-     * @param {number} rang - Le rang de la sous-catégorie dans la liste
      * @param {Object} resumeSelectedSsCategorie - Le résumé de la sous-catégorie sélectionnée
      */
     function handleSsCategorieSelect(resumeSelectedSsCategorie: AnalyseCategoriesModel) {
         setResumeSelectedSsCategorie(resumeSelectedSsCategorie);
     }
+
 
     /**
      * Render du budget
@@ -112,7 +112,8 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                                 rangSelectedCategorie={null}
                                 typeAnalyse={selectedTypeAnalyse}
                                 analysesGroupedByCategories={analysesGroupedByCategories}
-                                selectCategorie={handleCategorieSelect} />
+                                selectCategorie={handleCategorieSelect}
+                            />
                             :
                             <CenterComponent><CircularProgress /></CenterComponent>
                         )
@@ -125,7 +126,8 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                                 rangSelectedCategorie={rangSelectedCategorie}
                                 typeAnalyse={selectedTypeAnalyse}
                                 analysesGroupedByCategories={resumeSelectedCategorie.resumesSsCategories}
-                                selectCategorie={handleSsCategorieSelect} />
+                                selectCategorie={handleSsCategorieSelect}
+                            />
                             :
                             <></>
                         )

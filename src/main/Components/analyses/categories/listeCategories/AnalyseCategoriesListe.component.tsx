@@ -1,24 +1,26 @@
 import React from 'react'
 import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
-import { sortLibellesCategories } from '../../../../Utils/OperationData.utils';
+import {sortLibellesCategories} from '../../../../Utils/OperationData.utils';
 import AnalyseCategoriesModel from '../../../../Models/analyses/categories/AnalyseCategories.model';
-import { AnalyseCategoriesListeProps } from '../../../Components.props';
-
+import {AnalyseCategoriesListeProps} from '../../../Components.props';
 
 
 /**
  * Tuile d'une liste de catégories
  * @param rangSelectedCategorie : int rang de la catégorie
  * @param analysesGroupedByCategories : Object opérations groupées par catégories
- * @param typeAnalyse : Enum par défaut "REALISEE_DEPENSE"
+ * @param typeAnalyse : enum par défaut "REALISEE_DEPENSE"
  * @param selectCategorie : function selection d'une catégorie
  * @returns {JSX.Element} tuile
  * @constructor constructeur
- *
- * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSelectedCategorie, analysesGroupedByCategories, typeAnalyse, selectCategorie} : AnalyseCategoriesListeProps) => {
+const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
+                                                                           rangSelectedCategorie,
+                                                                           analysesGroupedByCategories,
+                                                                           typeAnalyse,
+                                                                           selectCategorie
+                                                                       }: AnalyseCategoriesListeProps): JSX.Element => {
     /**
      * Iterate groupe
      * @param analysesGroupedByCategories liste des opérations par catégories

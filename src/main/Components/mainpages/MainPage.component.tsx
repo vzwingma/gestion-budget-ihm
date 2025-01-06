@@ -88,7 +88,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @constructor
      */
     function renderLeftTabCompte(fonction: BUSINESS_ONGLETS): JSX.Element {
-        if (fonction === BUSINESS_ONGLETS.BUDGET) {
+        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.ANALYSE) {
             return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
         }
         else {
