@@ -22,7 +22,7 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
                                 }: GraphAnalyseTemporelleProps): JSX.Element => {
 
     /**
-     *
+     * Récupère les données pour le graphique.
      * @returns {Array} Les données pour le graphique.
      */
     function getGraphData(): Array<any> {
