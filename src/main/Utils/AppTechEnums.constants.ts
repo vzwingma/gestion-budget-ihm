@@ -58,6 +58,7 @@ export const SERVICES_URL: {
         REINIT: string;
         SOLDES: string;
         SOLDES_ANNEE: string;
+        SOLDES_ANNEES: string;
     };
     OPERATIONS: { CREATE: string; UPDATE: string; DERNIERE: string; INTERCOMPTE: string; LIBELLES: string; };
     PARAMETRES: { CATEGORIES: string; };
@@ -76,7 +77,8 @@ export const SERVICES_URL: {
         INTERVALLE: "/{{}}/intervalles",
         REINIT: "/{{}}",
         SOLDES: "/soldes?idCompte={{}}&annee={{}}&mois={{}}",
-        SOLDES_ANNEE: "/soldes?idCompte={{}}&annee={{}}"
+        SOLDES_ANNEE: "/soldes?idCompte={{}}&annee={{}}",
+        SOLDES_ANNEES: "/soldes?idCompte={{}}"
     },
     OPERATIONS: {
         CREATE: "/{{}}/operations",
