@@ -24,7 +24,7 @@ export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, s
                                                                                                                                         timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
     if (selectedCompte != null) {
 
-        if (selectedAnnee === 2000) {
+        if (selectedAnnee === 0) {
             // Appelle le service back-end pour obtenir les budgets du compte sélectionné.
             call(METHODE_HTTP.GET,
                 BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.SOLDES_ANNEES,

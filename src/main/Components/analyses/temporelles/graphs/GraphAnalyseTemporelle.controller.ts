@@ -8,7 +8,6 @@ import AnalyseSoldesCategorie from "../../../../Models/analyses/temporelles/Anal
 import {GraphAnalyseTimelineItemModel} from "../../../../Models/analyses/temporelles/GraphAnalyseMensuel.model";
 import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
 import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant";
-import {number} from "prop-types";
 
 
 /**
@@ -25,6 +24,9 @@ export function populateGraphCategories(analyseSoldesCategoriesData: AnalyseSold
         .forEach((month: string) => {
             const idxMonth = parseInt(month);
             const anneeAnalyses = Object.values(timelinesGroupedByCategories[idxMonth])?.at(0)?.annee ?? 0;
+            if (anneeAnalyses === 0) {
+                return;
+            }
             let datasTemporellesMois: GraphAnalyseTimelineItemModel;
             datasTemporellesMois = getDataGraphTimelineItem(dataGraphTimeline, idxMonth, anneeAnalyses);
             if (datasTemporellesMois === undefined) {
@@ -65,10 +67,16 @@ export function populateGraphSoldes(timelinesSoldes: AnalyseSoldesTimelineItemMo
     Object.keys(timelinesSoldes)
         .forEach((month: string) => {
             const idxMois = parseInt(month);
-            const anneeAnalyses = Object.values(timelinesSoldes[idxMois])?.at(0)?.annee ?? 0;
+            const anneeAnalyses = timelinesSoldes[idxMois]?.annee ?? 0;
+            if (anneeAnalyses === 0) {
+                return;
+            }
             let dataGraphTimelineItem: GraphAnalyseTimelineItemModel;
             dataGraphTimelineItem = getDataGraphTimelineItem(dataGraphTimeline, idxMois, anneeAnalyses);
+            if (dataGraphTimelineItem === undefined) {
+                return;
 
+            }
             // Ajout des soldes
             if (filterSoldesActive) {
                 dataGraphTimelineItem.categories[(isAtTerminaison ? SOLDES_ENUM.PREVISIONNEL : SOLDES_ENUM.REEL) + SOLDES_ENUM.SOLDE_COURANT] = timelinesSoldes[idxMois] !== undefined ? timelinesSoldes[idxMois].soldeAtFinMoisPrecedent : 0;

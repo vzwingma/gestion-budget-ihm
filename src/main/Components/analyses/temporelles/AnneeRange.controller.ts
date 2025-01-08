@@ -12,7 +12,7 @@ export function handleSelect(event : any, dateCurrent : number, onAnneeChange : 
     } else if (event.target.id === "next") {
         newDateCurrent = dateCurrent + 1;
     } else if (event.target.id === "all") {
-        newDateCurrent = 2000;
+        newDateCurrent = 0;
     }
 
     // Date sélectionnée, remonté au composant amont

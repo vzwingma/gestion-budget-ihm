@@ -11,7 +11,7 @@ import {AnneeRangeProps} from "../../Components.props";
  */
 const AnneeRange = ({ selectedAnnee, onAnneeChange }: AnneeRangeProps) : JSX.Element => {
 
-    const fullView = selectedAnnee === 2000;
+    const fullView = selectedAnnee === 0;
     if (fullView) {
         selectedAnnee = new Date().getFullYear();
     }

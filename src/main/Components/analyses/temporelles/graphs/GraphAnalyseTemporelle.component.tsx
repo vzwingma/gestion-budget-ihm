@@ -1,6 +1,6 @@
 import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React from "react";
-import {flatCategoriesData, populateGraphCategories} from "./GraphAnalyseTemporelle.controller";
+import {flatCategoriesData, populateGraphCategories, populateGraphSoldes} from "./GraphAnalyseTemporelle.controller";
 import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
 import {GraphAnalyseTemporelleProps} from "../../../Components.props";
 import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
@@ -29,11 +29,11 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
         let dataGraphTimeline: GraphAnalyseTimelineModel = { dataGraphTimelineItem: {} };
 
         /** Init du tableau pour l'affichage du graphique **/
-        console.log("Construction de l'affichage de l'analyse temporelle pour", anneeAnalyses === 2000 ? "tous les budgets" : anneeAnalyses);
+        console.log("Construction de l'affichage de l'analyse temporelle pour", anneeAnalyses === 0 ? "tous les budgets" : anneeAnalyses);
         populateGraphCategories(analyseSoldesCategoriesData, timelinesByCategoriesData, false, dataGraphTimeline);
         populateGraphCategories(analyseSoldesCategoriesData, timelinesPrevisionnellesByCategoriesData, true, dataGraphTimeline);
-        //  populateGraphSoldes(timelinesSoldesData, filterSoldesActive, false, dataGraphTimeline);
-        //  populateGraphSoldes(timelinesPrevisionnellesSoldesData, filterSoldesActive, true, dataGraphTimeline);
+        populateGraphSoldes(timelinesSoldesData, filterSoldesActive, false, dataGraphTimeline);
+        populateGraphSoldes(timelinesPrevisionnellesSoldesData, filterSoldesActive, true, dataGraphTimeline);
         return flatCategoriesData(dataGraphTimeline, analyseSoldesCategoriesData, filterSoldesActive);
     }
 
