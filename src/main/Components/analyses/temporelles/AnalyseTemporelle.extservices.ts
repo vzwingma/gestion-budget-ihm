@@ -2,11 +2,9 @@ import {toast} from "react-toastify";
 import {call} from "../../../Services/ClientHTTP.service";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model";
-import {
-    calculateTimelines,
-} from "./AnalyseTemporelle.controller";
+import {calculateTimelines,} from "./AnalyseTemporelle.controller";
 import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
-import { DataCalculationTemporelResultsProps } from "../../Components.props";
+import {DataCalculationTemporelResultsProps} from "../../Components.props";
 
 /**
  * Services back-end pour les analyses.
@@ -25,16 +23,32 @@ export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, s
                                                                                                                                         timelinesSoldesData,
                                                                                                                                         timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
     if (selectedCompte != null) {
-        // Appelle le service back-end pour obtenir les budgets du compte sélectionné.
-        call(METHODE_HTTP.GET,
-            BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.SOLDES_ANNEE,
-            [selectedCompte.id, String(selectedAnnee)])
-            .then((data : SoldesMensuelModel[]) => calculateTimelines(data, handleDataCalculationResult)) // En cas de succès, calcule les analyses temporelles.
-            .catch(e => {
-                // En cas d'erreur, affiche un message d'erreur.
-                let libErreur = "Erreur lors du chargement des budgets du compte " + selectedCompte;
-                console.log(libErreur, e)
-                toast.error(libErreur, {autoClose: false, closeOnClick: true})
-            })
+
+        if (selectedAnnee === 2000) {
+            // Appelle le service back-end pour obtenir les budgets du compte sélectionné.
+            call(METHODE_HTTP.GET,
+                BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.SOLDES_ANNEES,
+                [selectedCompte.id])
+                .then((data: SoldesMensuelModel[]) => calculateTimelines(data, handleDataCalculationResult)) // En cas de succès, calcule les analyses temporelles.
+                .catch(e => {
+                    // En cas d'erreur, affiche un message d'erreur.
+                    let libErreur = "Erreur lors du chargement de tous les budgets du compte " + selectedCompte.libelle;
+                    console.log(libErreur, e)
+                    toast.error(libErreur, {autoClose: false, closeOnClick: true})
+                })
+        } else {
+            // Appelle le service back-end pour obtenir les budgets du compte sélectionné.
+            call(METHODE_HTTP.GET,
+                BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.SOLDES_ANNEE,
+                [selectedCompte.id, String(selectedAnnee)])
+                .then((data: SoldesMensuelModel[]) => calculateTimelines(data, handleDataCalculationResult)) // En cas de succès, calcule les analyses temporelles.
+                .catch(e => {
+                    // En cas d'erreur, affiche un message d'erreur.
+                    let libErreur = "Erreur lors du chargement des budgets " + selectedAnnee + " du compte " + selectedCompte.libelle;
+                    console.log(libErreur, e)
+                    toast.error(libErreur, {autoClose: false, closeOnClick: true})
+                })
+        }
+
     }
 }

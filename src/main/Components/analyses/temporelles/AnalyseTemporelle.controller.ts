@@ -3,9 +3,10 @@ import {getMonthFromString} from "../../../Utils/Date.utils";
 import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer";
 import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
 import AnalyseSoldesCategorieModel from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
-import { DataCalculationTemporelResultsProps } from "../../Components.props";
-import { AnalyseCategorieTimelineItem } from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
-import { AnalyseSoldesTimelineItemModel } from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
+import {DataCalculationTemporelResultsProps} from "../../Components.props";
+import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
+import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
+
 /**
  * Controleur des analyses temporelles
  */
@@ -21,7 +22,9 @@ function createNewCategorieTimelineItem() {
     newResumeCategorie = {
         categorie: null,
         total: 0,
-        nbTransactions: 0
+        nbTransactions: 0,
+        annee: 0,
+        mois: ""
     };
     return newResumeCategorie;
 }
@@ -31,7 +34,7 @@ function createNewCategorieTimelineItem() {
  *
  * @param soldesMensuelsData - Un tableau de modèles de soldes mensuels représentant les données budgétaires.
  * @param handleDataCalculationResult - Une fonction de rappel qui gère les résultats du calcul des données temporelles.
- * 
+ *
  * @returns void
  */
 export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], handleDataCalculationResult : ({soldesMensuelsData,
@@ -41,7 +44,7 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
                                                                                                                timelinesSoldesData,
                                                                                                                timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
     soldesMensuelsData = Object.values(soldesMensuelsData)
-        .sort((budget1: SoldesMensuelModel, budget2: SoldesMensuelModel) => getMonthFromString(budget1.mois) - getMonthFromString(budget2.mois))
+        .sort((budget1: SoldesMensuelModel, budget2: SoldesMensuelModel) => (budget1.annee * 100 + getMonthFromString(budget1.mois)) - (budget2.annee * 100 + getMonthFromString(budget2.mois)));
 
     let soldesCategoriesData : AnalyseSoldesCategorieModel[] = [];
 
@@ -52,16 +55,15 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
 
     Object.keys(soldesMensuelsData)
         .forEach((month: string) => {
-            let mois : number = Number.parseInt(month);
-
-            timelinesByCategoriesData[mois] = calculateTimelineCategories(soldesMensuelsData[mois], false);
+            let idxMois: number = Number.parseInt(month);
+            timelinesByCategoriesData[idxMois] = calculateTimelineCategories(soldesMensuelsData[idxMois], false);
 
             // Si année en cours, recopie les données pour le budget à terminaison
             if (soldesMensuelsData.length < 12) {
-                timelinesPrevisionnellesByCategoriesData[mois] = calculateTimelineCategories(soldesMensuelsData[mois], false);
+                timelinesPrevisionnellesByCategoriesData[idxMois] = calculateTimelineCategories(soldesMensuelsData[idxMois], false);
             }
-            timelinesSoldesData[mois] = calculateTimelineSoldes(soldesMensuelsData[mois], false);
-            soldesCategoriesData = getSoldesByCategories(soldesMensuelsData[mois]);
+            timelinesSoldesData[idxMois] = calculateTimelineSoldes(soldesMensuelsData[idxMois], false);
+            soldesCategoriesData = getSoldesByCategories(soldesMensuelsData[idxMois]);
         });
     // Génération du budget à terminaison pour le budget courant
 
@@ -97,6 +99,8 @@ function calculateTimelineCategories(soldesMensuelData : SoldesMensuelModel, aTe
         group[idCategorie].total = Math.ceil(
             aTerminaison ? categorie.totalAtFinMoisCourant : categorie.totalAtMaintenant
         );
+        group[idCategorie].annee = soldesMensuelData.annee;
+        group[idCategorie].mois = soldesMensuelData.mois;
     }
     return group;
 }
@@ -109,11 +113,12 @@ function calculateTimelineCategories(soldesMensuelData : SoldesMensuelModel, aTe
  * @returns {AnalyseSoldesTimelineItemModel} Un objet contenant les résultats de l'analyse
  */
 function calculateTimelineSoldes(soldesMensuelData : SoldesMensuelModel, aTerminaison : boolean) : AnalyseSoldesTimelineItemModel {
-    const newTimelineSoldes: AnalyseSoldesTimelineItemModel = {
-        soldeAtFinMoisPrecedent : Math.ceil(soldesMensuelData.soldes.soldeAtFinMoisPrecedent),
-        soldeAtMaintenant : Math.ceil(aTerminaison ? soldesMensuelData.soldes.soldeAtFinMoisCourant : soldesMensuelData.soldes.soldeAtMaintenant)
+    return {
+        soldeAtFinMoisPrecedent: Math.ceil(soldesMensuelData.soldes.soldeAtFinMoisPrecedent),
+        soldeAtMaintenant: Math.ceil(aTerminaison ? soldesMensuelData.soldes.soldeAtFinMoisCourant : soldesMensuelData.soldes.soldeAtMaintenant),
+        mois: soldesMensuelData.mois,
+        annee: soldesMensuelData.annee
     };
-    return newTimelineSoldes;
 }
 
 
@@ -132,7 +137,8 @@ function getSoldesByCategories(soldeMensuel : SoldesMensuelModel): AnalyseSoldes
         categorie.id = idCategorie;
         categorie.couleur = getCategorieColor(categorie.id);
         categorie.filterActive = true;
-
+        categorie.mois = Number.parseInt(soldeMensuel.mois);
+        categorie.annee = soldeMensuel.annee;
         if (!soldesByCategories.some((categorieInList) => categorieInList.id === categorie.id) && categorie.id !== null) {
             soldesByCategories.push(categorie);
         }
