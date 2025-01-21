@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useState} from "react";
 
 import {
     Button,
@@ -18,33 +18,35 @@ import {
     DeleteForeverRounded,
     HistoryRounded
 } from "@mui/icons-material";
-import { OPERATION_ETATS_ENUM } from "../../../../../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants";
 import CenterComponent from "../../../../CenterComponent";
-import { handleOperationAction } from "./OperationDetailActions.controller";
-import { OperationDetailActionsProps } from "../../../../Components.props";
-import { BudgetContext } from "../../../../../Models/contextProvider/BudgetContextProvider";
-
-
+import {handleOperationAction} from "./OperationDetailActions.controller";
+import {OperationDetailActionsProps} from "../../../../Components.props";
+import {BudgetContext} from "../../../../../Models/contextProvider/BudgetContextProvider";
 
 
 /**
- * Composant affichant la liste des actions possibles sur l'opération
- * @param currentOperation opération
- * @param currentBudget budget
- * @param isInCreateMode booléen mode création ?
- * @param saveOperation fonction appelée pour déclencher la sauvegarde de l'opération
- * @returns {JSX.Element}
+ * Composant React pour afficher les actions possibles sur une opération.
+ * @param isInCreateMode mode création du formulaire
+ * @param editOperation opération en cours d'édition
+ * @param handleDateOperationFromCreateAction action de changement de date
+ * @param onOperationChange action de changement d'opération
  * @constructor
  */
-
-export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ isInCreateMode, onClickRealiseInCreateMode : handleDateOperationFromCreateAction, onOperationChange }: OperationDetailActionsProps): JSX.Element => {
+export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({
+                                                                                  isInCreateMode,
+                                                                                  editOperation,
+                                                                                  onClickRealiseInCreateMode: handleDateOperationFromCreateAction,
+                                                                                  onOperationChange
+                                                                              }: OperationDetailActionsProps): JSX.Element => {
 
     const [showModale, setShowModale] = useState<boolean>(false);
     const { currentBudget, currentOperation } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budget = currentBudget!;
     return (
-        <ButtonGroup onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, handleDateOperationFromCreateAction, onOperationChange, setShowModale)} >
+        <ButtonGroup
+            onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, editOperation, handleDateOperationFromCreateAction, onOperationChange, setShowModale)}>
             {operation.etat !== OPERATION_ETATS_ENUM.REALISEE &&
                 <Tooltip title="Valider l'opération">
                     <IconButton

@@ -1,22 +1,25 @@
 import {toast} from "react-toastify";
-import { saveOperation } from "../OperationDetailPage.extservices";
-import { getEventTargetId } from "../../../../../Utils/OperationData.utils";
+import {saveOperation} from "../OperationDetailPage.extservices";
+import {getEventTargetId} from "../../../../../Utils/OperationData.utils";
 import OperationModel from "../../../../../Models/budgets/Operation.model";
 import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model";
-import { OPERATION_ETATS_ENUM } from "../../../../../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants";
+import {Dispatch, SetStateAction} from "react";
+import OperationEditionModel from "../../../../../Models/budgets/OperationEdition.model";
 
 
 /**
  * Mise à jour de l'état de l'opération suivant le bouton
  * @param event click sur le bouton
- * @param currentOperation
- * @param budget
- * @param isInCreateMode
- * @param handleDateOperationFromAction
- * @param onOperationChange
- * @param setShowModale
+ * @param currentOperation opération en cours
+ * @param budget budget associé
+ * @param isInCreateMode mode création
+ * @param editOperation opération en cours d'édition
+ * @param handleDateOperationFromAction action de changement de date
+ * @param onOperationChange action de changement d'opération
+ * @param setShowModale action de changement de visibilité de la modale
  */
-export function handleOperationAction(event : any, currentOperation : OperationModel, budget : BudgetMensuelModel, isInCreateMode : boolean, handleDateOperationFromAction : Function, onOperationChange: (budget: BudgetMensuelModel) => void, setShowModale : React.Dispatch<React.SetStateAction<boolean>>) {
+export function handleOperationAction(event: any, currentOperation: OperationModel, budget: BudgetMensuelModel, isInCreateMode: boolean, editOperation: OperationEditionModel, handleDateOperationFromAction: Function, onOperationChange: (budget: BudgetMensuelModel) => void, setShowModale: Dispatch<SetStateAction<boolean>>) {
     /** Correction click hors cadre */
 
     if (event.target != null) {
@@ -28,9 +31,19 @@ export function handleOperationAction(event : any, currentOperation : OperationM
         } else if (isInCreateMode) {
             currentOperation.etat = action
 
-            // On ne fait que refresh la date
-            const valeurDate = (action === OPERATION_ETATS_ENUM.REALISEE) ? new Date() : null;
+            // On ne fait que refresh la date si elle n'est pas déjà renseignée
+            let valeurDate = null;
+            if (action === OPERATION_ETATS_ENUM.REALISEE) {
+                if (editOperation.autresInfos.dateOperation == null) {
+                    valeurDate = new Date();
+                } else {
+                    valeurDate = editOperation.autresInfos.dateOperation;
+                }
+            } else {
+                valeurDate = null;
+            }
             currentOperation.autresInfos.dateOperation = valeurDate;
+            console.log("currentOperation", valeurDate, currentOperation);
             handleDateOperationFromAction(valeurDate);
         } else {
 
