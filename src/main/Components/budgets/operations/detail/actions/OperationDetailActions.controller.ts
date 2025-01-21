@@ -19,7 +19,13 @@ import OperationEditionModel from "../../../../../Models/budgets/OperationEditio
  * @param onOperationChange action de changement d'opération
  * @param setShowModale action de changement de visibilité de la modale
  */
-export function handleOperationAction(event: any, currentOperation: OperationModel, budget: BudgetMensuelModel, isInCreateMode: boolean, editOperation: OperationEditionModel, handleDateOperationFromAction: Function, onOperationChange: (budget: BudgetMensuelModel) => void, setShowModale: Dispatch<SetStateAction<boolean>>) {
+export function handleOperationAction(event: any,
+                                      currentOperation: OperationModel, budget: BudgetMensuelModel,
+                                      isInCreateMode: boolean,
+                                      editOperation: OperationEditionModel,
+                                      handleDateOperationFromAction: Function,
+                                      onOperationChange: (budget: BudgetMensuelModel) => void,
+                                      setShowModale: Dispatch<SetStateAction<boolean>>) {
     /** Correction click hors cadre */
 
     if (event.target != null) {
@@ -39,11 +45,8 @@ export function handleOperationAction(event: any, currentOperation: OperationMod
                 } else {
                     valeurDate = editOperation.autresInfos.dateOperation;
                 }
-            } else {
-                valeurDate = null;
             }
             currentOperation.autresInfos.dateOperation = valeurDate;
-            console.log("currentOperation", valeurDate, currentOperation);
             handleDateOperationFromAction(valeurDate);
         } else {
 
@@ -62,6 +65,7 @@ export function handleOperationAction(event: any, currentOperation: OperationMod
  * @param operation opération modifiée
  * @param action action réalisée
  * @param budget associé
+ * @param onOperationChange action de changement d'opération
  */
 function updateOperation(operation : OperationModel, action : OPERATION_ETATS_ENUM, budget : BudgetMensuelModel, onOperationChange: (budget: BudgetMensuelModel) => void) {
 
