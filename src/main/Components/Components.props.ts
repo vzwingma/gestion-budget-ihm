@@ -11,6 +11,8 @@ import OperationModel from "../Models/budgets/Operation.model";
 import {BUSINESS_ONGLETS, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants";
 import {OPERATION_EDITION_FORM} from "./budgets/operations/detail/OperationDetailPage.constants";
 import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOperation.model";
+import OperationEditionModel from "../Models/budgets/OperationEdition.model";
+import {Dispatch, SetStateAction} from "react";
 
 /**
  * Analyse des catégories
@@ -143,7 +145,8 @@ export interface BudgetPageProps {
 
 export interface OperationDetailActionsProps {
     isInCreateMode: boolean,
-    onClickRealiseInCreateMode : (valeurDate: Date, editOperation: OperationModel, setEditOperation: React.Dispatch<React.SetStateAction<OperationModel>>) => void
+    editOperation: OperationEditionModel,
+    onClickRealiseInCreateMode: (valeurDate: Date, editOperation: OperationModel, setEditOperation: Dispatch<SetStateAction<OperationModel>>) => void
     onOperationChange: (budget: BudgetMensuelModel) => void
 }
 

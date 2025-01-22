@@ -261,8 +261,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions
                                 isInCreateMode={isInCreateMode(editForm)}
-                                onClickRealiseInCreateMode={() => handleDateOperationFromAction(new Date(), editOperation, setEditOperation)}
-                                onOperationChange={onOperationChange} />
+                                editOperation={editOperation}
+                                onClickRealiseInCreateMode={() => handleDateOperationFromAction(editOperation, setEditOperation)}
+                                onOperationChange={onOperationChange}
+                            />
                             : <></>
                         }
                     </Grid2>

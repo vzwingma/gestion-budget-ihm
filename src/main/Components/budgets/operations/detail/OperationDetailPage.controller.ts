@@ -10,6 +10,7 @@ import {
     OPERATION_EDITION_FORM
 } from "./OperationDetailPage.constants";
 import {saveOperation, saveOperationIntercompte} from "./OperationDetailPage.extservices";
+import {Dispatch, SetStateAction} from "react";
 
 
 interface OperationBudgetProps {
@@ -30,7 +31,7 @@ interface OperationBudgetProps {
  */
 export function handleOperationEditionClick(event: any, {operation, budget} : OperationBudgetProps,
     editOperation: OperationEditionModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void,
-    setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>,
+                                            setErrors: Dispatch<SetStateAction<ErrorsFormProps>>,
     onOperationUpdate: (budget: BudgetMensuelModel) => void) {
 
 
@@ -66,12 +67,10 @@ export function handleOperationEditionClick(event: any, {operation, budget} : Op
 /**
  * Met à jour la date de l'opération dans le modèle d'opération et déclenche la mise à jour de l'état.
  *
- * @param valeurDate - La nouvelle date de l'opération.
  * @param editOperation - Le modèle d'opération à mettre à jour.
  * @param setEditOperation - La fonction de mise à jour de l'état pour le modèle d'opération.
  */
-export function handleDateOperationFromAction(valeurDate: Date, editOperation: OperationEditionModel, setEditOperation: React.Dispatch<React.SetStateAction<OperationEditionModel>>) {
-    editOperation.autresInfos.dateOperation = valeurDate;
+export function handleDateOperationFromAction(editOperation: OperationEditionModel, setEditOperation: Dispatch<SetStateAction<OperationEditionModel>>) {
     setEditOperation(editOperation);
 }
 
@@ -126,7 +125,6 @@ function validateFormMontant(editOperation: OperationEditionModel, operation: Op
     }
     errors.valeur = null;
     operation.valeur = (editOperation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1) * Number(valeurCalculee);
-    console.log("Valeur calculée : ", operation.valeur);
 }
 
 /**
@@ -247,7 +245,7 @@ function validateValue(valeur: string): boolean {
  * @param onOperationUpdate - Fonction pour mettre à jour l'opération.
  */
 export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationEditionModel,
-    editForm: EditFormProps, setErrors: React.Dispatch<React.SetStateAction<ErrorsFormProps>>,
+                                            editForm: EditFormProps, setErrors: Dispatch<SetStateAction<ErrorsFormProps>>,
     onOperationUpdate: (budget: BudgetMensuelModel) => void) {
 
     if (isInEditMode(editForm)) {
