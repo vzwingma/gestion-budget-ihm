@@ -39,6 +39,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             newLibelle = rawLibelleParts[0].replace(rawLibelleParts[3], newLibelle);
         }
         const libelleFromAutocomplete: LibelleCategorieOperationModel | undefined = listeLibellesOperations.findLast((libelle: LibelleCategorieOperationModel) => libelle.libelle === newLibelle);
+
         if (libelleFromAutocomplete !== undefined && operation.id === "-1") {
             fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, libelleFromAutocomplete?.ssCategorieId);
         }
