@@ -4,7 +4,7 @@ import OperationModel from "../../budgets/Operation.model";
 /**
  * Model pour les analyse des catégories
  */
-class AnalyseCategoriesModel {
+interface AnalyseCategoriesModel {
     categorie: CategorieOperationModel;
     couleurCategorie: string;
     resumesSsCategories: { [key: string]: AnalyseCategoriesModel };
@@ -12,19 +12,5 @@ class AnalyseCategoriesModel {
     pourcentage: { [key: string]: number };
     total: { [key: string]: number };
     listeOperations: OperationModel[];
-
-
-    /**
-     * Constructor
-     */
-    constructor() {
-        this.categorie = new CategorieOperationModel("defaultId", "defaultLibelle");
-        this.couleurCategorie = "#808080";
-        this.resumesSsCategories = {};
-        this.nbTransactions = {};
-        this.pourcentage = {};
-        this.total = {};
-        this.listeOperations = [];
-    }
 }
 export default AnalyseCategoriesModel

@@ -70,7 +70,7 @@ export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCa
 function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesModel }, operation: OperationModel, categorie: CategorieOperationModel, totauxParEtats: { [idCategorie: string]: number; }, couleurCategorie: string) {
     if (categorie?.id !== null) {
 
-        group[categorie.id] = group[categorie.id] ?? new AnalyseCategoriesModel();
+        group[categorie.id] = group[categorie.id] ?? {};
         group[categorie.id].categorie = categorie;
         group[categorie.id].couleurCategorie = couleurCategorie;
 

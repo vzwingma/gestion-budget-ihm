@@ -3,6 +3,6 @@
  */
 export default interface ProprietaireModel {
 
-    id: string;
-    login: string;
+    readonly id: string;
+    readonly login: string;
 }
