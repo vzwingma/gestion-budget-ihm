@@ -15,8 +15,7 @@ import {AnalyseCategorieListItemProps} from '../../../Components.props';
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({
-                                                                               resumeCategorie,
+const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({   resumeCategorie,
                                                                                typeAnalyse,
                                                                                selectCategorie
                                                                            }: AnalyseCategorieListItemProps): JSX.Element => {

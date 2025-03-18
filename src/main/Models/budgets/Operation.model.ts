@@ -1,4 +1,8 @@
-import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM} from "../../Utils/AppBusinessEnums.constants";
+import {
+    OPERATION_ETATS_ENUM,
+    PERIODES_MENSUALITE_ENUM,
+    TYPES_OPERATION_ENUM
+} from "../../Utils/AppBusinessEnums.constants";
 import CategorieOperationModel from "./CategorieOperation.model";
 
 /**
@@ -10,8 +14,8 @@ class OperationModel {
     libelle: string;
     etat: OPERATION_ETATS_ENUM;
     readonly autresInfos: AutresInfos = new AutresInfos(null);
-    public categorie: CategorieOperationModel = new CategorieOperationModel("", "");
-    public ssCategorie: CategorieOperationModel = new CategorieOperationModel("", "");
+    public categorie: CategorieOperationModel = {id: "", libelle: ""};
+    public ssCategorie: CategorieOperationModel = {id: "", libelle: ""};
     intercompte: string | null = null;
     typeOperation: TYPES_OPERATION_ENUM;
     valeur: number;
@@ -53,7 +57,7 @@ export class AutresInfos {
  */
 export function createNewOperation(): OperationModel {
 
-    let newOperation: OperationModel = {
+    return {
         id: "-1",
         libelle: "",
         categorie: {
@@ -74,6 +78,5 @@ export function createNewOperation(): OperationModel {
         autresInfos: {
             dateOperation: null
         }
-    }
-    return newOperation;
+    };
 }

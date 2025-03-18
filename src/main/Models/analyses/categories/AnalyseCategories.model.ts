@@ -18,7 +18,7 @@ class AnalyseCategoriesModel {
      * Constructor
      */
     constructor() {
-        this.categorie = new CategorieOperationModel("defaultId", "defaultLibelle");
+        this.categorie = {id: "defaultId", libelle: "defaultLibelle"} as CategorieOperationModel;
         this.couleurCategorie = "#808080";
         this.resumesSsCategories = {};
         this.nbTransactions = {};
