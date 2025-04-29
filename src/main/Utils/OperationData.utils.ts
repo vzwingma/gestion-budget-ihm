@@ -72,7 +72,7 @@ export function sortLibellesCategories(categorie1: CategorieOperationModel, cate
 
 
 export const INTERCOMPTE_LIBELLE_REGEX: RegExp = /\[(vers|depuis) ([^\]]+)\](.+)/;
-
+export const EN_RETARD_LIBELLE_REGEX: RegExp = /\[En Retard\](.+)/;
 /**
  * Vérifie si une opération est un intercompte
  * @param operationLibelle libellé de l'opération

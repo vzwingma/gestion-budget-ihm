@@ -18,21 +18,17 @@ import {
     DeleteForeverRounded,
     HistoryRounded
 } from "@mui/icons-material";
-import { OPERATION_ETATS_ENUM } from "../../../../../Utils/AppBusinessEnums.constants";
+import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants";
 import CenterComponent from "../../../../CenterComponent";
-import { handleOperationAction } from "./OperationDetailActions.controller";
-import { OperationDetailActionsProps } from "../../../../Components.props";
-import { BudgetContext } from "../../../../../Models/contextProvider/BudgetContextProvider";
-
-
+import {handleOperationAction} from "./OperationDetailActions.controller";
+import {OperationDetailActionsProps} from "../../../../Components.props";
+import {BudgetContext} from "../../../../../Models/contextProvider/BudgetContextProvider";
 
 
 /**
  * Composant affichant la liste des actions possibles sur l'opération
  * @param currentOperation opération
- * @param currentBudget budget
  * @param isInCreateMode booléen mode création ?
- * @param saveOperation fonction appelée pour déclencher la sauvegarde de l'opération
  * @returns {JSX.Element}
  * @constructor
  */
@@ -109,10 +105,8 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                 </DialogContent>
 
                 <DialogActions>
-                    <ButtonGroup>
-                        <Button id="ANNULER" color="error">Annuler</Button>
-                        <Button id="SUPPRIMEE" color="success">Confirmer</Button>
-                    </ButtonGroup>
+                    <Button id="ANNULER" color="error">Annuler</Button>
+                    <Button id="SUPPRIMEE" color="success">Confirmer</Button>
                 </DialogActions>
             </Dialog>
         </ButtonGroup>

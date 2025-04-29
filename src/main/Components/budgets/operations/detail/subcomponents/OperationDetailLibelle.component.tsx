@@ -4,8 +4,9 @@ import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from '
 import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
 import {OperationDetailLibelleProps} from '../../../../Components.props'
 import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
-import {INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils";
+import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils";
 import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model";
+import {evaluatePendingLibelle, getOperationLibelleInEdition, prioritySort} from "./OperationDetailLibelle.controller";
 
 
 /**
@@ -25,7 +26,18 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
     const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budgetActif = currentBudget!.actif;
-    const rawLibelleParts = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle);
+    const rawLibelleIntercompteParts = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle);
+    const rawLibelleRetardParts = EN_RETARD_LIBELLE_REGEX.exec(operation.libelle);
+
+    let pendingLibelle: string = "";
+    let listeLibellesOperationsFiltered: LibelleCategorieOperationModel[] = listeLibellesOperations;
+
+    /**
+     * refresh les libellés d'opérations en fonction de la saisie de l'utilisateur
+     */
+    function refreshLibellesOperations() {
+        listeLibellesOperationsFiltered = listeLibellesOperations.sort((a, b) => prioritySort(a, b, pendingLibelle));
+    }
 
     /**
      * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
@@ -34,9 +46,13 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
     function fillLibelleForm(event: any) {
         // Récupération du libellé de l'opération
         let newLibelle: string = event.target.value;
-        if (rawLibelleParts !== null) {
+        if (rawLibelleIntercompteParts !== null) {
             // Rajout des tags en amont
-            newLibelle = rawLibelleParts[0].replace(rawLibelleParts[3], newLibelle);
+            newLibelle = rawLibelleIntercompteParts[0].replace(rawLibelleIntercompteParts[3], newLibelle);
+        }
+        if (rawLibelleRetardParts !== null) {
+            // Rajout des tags en amont
+            newLibelle = rawLibelleRetardParts[0].replace(rawLibelleRetardParts[1], newLibelle);
         }
         const libelleFromAutocomplete: LibelleCategorieOperationModel | undefined = listeLibellesOperations.findLast((libelle: LibelleCategorieOperationModel) => libelle.libelle === newLibelle);
         if (libelleFromAutocomplete !== undefined && operation.id === "-1") {
@@ -54,18 +70,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
         fillOperationForm(OPERATION_EDITION_FORM.FORM_VALIDATION, String(activation));
     }
 
-    /**
-     * Récupère le libellé de l'opération en cours d'édition
-     * @returns {string} Le libellé de l'opération en cours d'édition
-     */
-    function getOperationLibelleInEdition(): string {
-        const extract = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle)
-        if (extract !== null) {
-            return extract[3];
-        } else {
-            return operation.libelle;
-        }
-    }
+
     return (
         (!formLibelleInEdition) ?
             <Typography variant={"button"} sx={{ fontSize: "large" }}
@@ -76,15 +81,19 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             :
             <FormControl fullWidth required error={errorLibelle != null}>
                 <Autocomplete id={OPERATION_EDITION_FORM.LIBELLE + OPERATION_EDITION_FORM.INPUT}
-                              value={getOperationLibelleInEdition()}
+                              value={getOperationLibelleInEdition(operation)}
                     freeSolo={true}
                     autoComplete={true}
-                    options={listeLibellesOperations}
+                              options={listeLibellesOperationsFiltered}
                               getOptionLabel={(option: string | LibelleCategorieOperationModel) => typeof option === 'string' ? option : option.libelle}
                     renderInput={(params) =>
                         <TextField {...params} label="Description" variant="standard" size={"small"} />}
                     sx={{ width: "850px" }}
                     blurOnSelect={true}
+                              onKeyUp={(event) => {
+                                  pendingLibelle = evaluatePendingLibelle(event, pendingLibelle);
+                                  refreshLibellesOperations();
+                              }}
                     onChange={fillLibelleForm}
                     onFocus={() => activateValidationForm(false)}
                     onBlur={(e) => {
