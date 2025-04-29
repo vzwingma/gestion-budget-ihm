@@ -3,7 +3,6 @@ import {InputAdornment, TextField, Typography} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import OperationValue from "./../../../../../Utils/renderers/OperationValue.renderer"
 import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material'
-import {addEndingZeros} from '../../../../../Utils/OperationData.utils'
 import {TYPES_OPERATION_ENUM} from '../../../../../Utils/AppBusinessEnums.constants'
 import {OperationDetailValeurProps} from '../../../../Components.props'
 import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
@@ -23,13 +22,13 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
     const { currentBudget, currentOperation } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budgetActif = currentBudget!;
+
     /**
  * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur
  * @param {Event} e - L'événement de saisie
  */
     function fillValeurForm(e: any) {
-        const value: string = addEndingZeros(e.target.value)
-        fillOperationForm(OPERATION_EDITION_FORM.VALUE, value);
+        fillOperationForm(OPERATION_EDITION_FORM.VALUE, e.target.value);
     }
 
     return (
