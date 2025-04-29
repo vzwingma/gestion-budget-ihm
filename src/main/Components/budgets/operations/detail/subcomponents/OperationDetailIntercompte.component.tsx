@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {JSX} from 'react'
 import {MenuItem, TextField} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import {operationIsIntercompteFromLibelle} from '../../../../../Utils/OperationData.utils'

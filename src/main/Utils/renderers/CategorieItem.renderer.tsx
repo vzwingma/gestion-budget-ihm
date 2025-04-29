@@ -38,7 +38,7 @@ import {
     TravelExploreRounded,
     VolunteerActivismOutlined
 } from "@mui/icons-material";
-import React from "react";
+import React, {JSX} from "react";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model";
 
 /**

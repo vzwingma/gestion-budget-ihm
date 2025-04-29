@@ -1,4 +1,4 @@
-import React from "react";
+import React, {JSX} from "react";
 import {useAuth} from "react-oidc-context";
 import {NavLink} from "react-router-dom";
 import {Stack} from "@mui/material";
@@ -6,8 +6,8 @@ import {Stack} from "@mui/material";
 /**
  *   Page de Gestion du menu
  **/
-const PrivateNavLinks: React.FC = (): JSX.Element => {    
-    
+const PrivateNavLinks: React.FC = (): JSX.Element => {
+
     if (useAuth().isAuthenticated) {
         return <Stack direction="row" spacing={1}>
                     <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'} to="/infos">Infos</NavLink>

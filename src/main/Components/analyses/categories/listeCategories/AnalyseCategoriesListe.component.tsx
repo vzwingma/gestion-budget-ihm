@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {JSX} from 'react'
 import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
 import { sortLibellesCategories } from '../../../../Utils/OperationData.utils';
@@ -18,7 +18,12 @@ import { AnalyseCategoriesListeProps } from '../../../Components.props';
  *
  * <OperationItem operation={operation} onClick={this.handleOperationSelect}/>
  */
-const AnalyseCategoriesListe  : React.FC<AnalyseCategoriesListeProps>= ({rangSelectedCategorie, analysesGroupedByCategories, typeAnalyse, selectCategorie} : AnalyseCategoriesListeProps) => {
+const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
+                                                                           rangSelectedCategorie,
+                                                                           analysesGroupedByCategories,
+                                                                           typeAnalyse,
+                                                                           selectCategorie
+                                                                       }: AnalyseCategoriesListeProps): JSX.Element => {
     /**
      * Iterate groupe
      * @param analysesGroupedByCategories liste des opérations par catégories

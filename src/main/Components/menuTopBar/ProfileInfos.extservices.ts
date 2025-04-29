@@ -2,9 +2,9 @@
  * External services du profil
  */
 
-import ProfileUserModel from "../../Models/profiles/profileUser.model";
 import { call } from "../../Services/ClientHTTP.service";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../Utils/AppTechEnums.constants";
+import ProfileUserModel from "../../Models/profiles/ProfileUser.model";
 
 /**
  * Modification de l'opération sur action des boutons

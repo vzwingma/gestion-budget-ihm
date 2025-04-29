@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {JSX, useEffect, useState} from 'react'
 import {CircularProgress, Container, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants";

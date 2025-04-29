@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {JSX, useEffect} from "react";
 import {useAuth} from "react-oidc-context";
 import {Avatar, CircularProgress, Tooltip, Typography} from "@mui/material";
 import {putTokenInStorage, removeTokenFromStorage} from './../../Services/Auth.service'
@@ -7,7 +7,7 @@ import ProfileInfos from "./ProfileInfos.component";
 /**
  *   Page de Gestion du profile
  **/
-const Profile: React.FC = (): JSX.Element => {    
+const Profile: React.FC = (): JSX.Element => {
 
     const auth = useAuth();
 

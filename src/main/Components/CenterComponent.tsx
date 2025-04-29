@@ -1,5 +1,5 @@
 import {InternalStandardProps} from "@mui/material";
-import React from "react";
+import React, {JSX} from "react";
 
 
 export interface CenterComponentProps extends InternalStandardProps<React.HTMLAttributes<HTMLDivElement>, 'title'> {

@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {JSX, useMemo, useState} from "react";
 import BudgetMensuelModel from "../budgets/BudgetMensuel.model";
 import OperationModel from "../budgets/Operation.model";
 import CompteBancaireModel from "../budgets/CompteBancaire.model";

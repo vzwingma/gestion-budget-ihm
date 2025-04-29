@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {JSX, useState} from "react";
 import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { handleModalClick, handleSelect } from "./DateRange.controller";
 import CenterComponent from "../../CenterComponent";

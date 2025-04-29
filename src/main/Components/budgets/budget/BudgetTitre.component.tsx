@@ -1,14 +1,11 @@
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer'
 import {Box, Divider, Stack, Tooltip, Typography} from "@mui/material";
-import React, { useContext } from "react";
+import React, {JSX, useContext} from "react";
 import {EventOutlined} from "@mui/icons-material";
 import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider';
 
 /**
  * Page principale d'affichage du solde
- * @param currentCompte compte courant
- * @param currentDate date courante
- * @param currentBudget budget courant
  * @returns {JSX.Element} element JSX
  * @constructor
  */
@@ -30,7 +27,7 @@ const BudgetsTitre : React.FC = (): JSX.Element => {
         return "Fin " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear();
     }
 
-    
+
     return (
         <Stack direction={"row"} spacing={1} justifyContent="left" alignItems="center" marginTop={"3pt"}>
             <img src={"/img/banques/" + currentCompte.itemIcon} width={50} height={50} alt={currentCompte.libelle}/>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {JSX} from 'react'
 import {TableCell, TableRow, Typography} from "@mui/material";
 import MsInfoModel from "../../Models/infos/MsInfo.model";
 /**

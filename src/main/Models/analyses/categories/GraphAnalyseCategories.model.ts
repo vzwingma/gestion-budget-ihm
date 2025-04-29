@@ -1,5 +1,4 @@
-import CategorieOperationModel from "../CategorieOperation.model";
-
+import CategorieOperationModel from "../../budgets/CategorieOperation.model";
 
 /**
  * Model pour la représentation graphique des analyses des catégories

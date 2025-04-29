@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, {JSX, useContext} from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import { TextField, Typography } from '@mui/material'
 import { getLabelFromDate } from '../../../../../Utils/Date.utils'
@@ -11,7 +11,7 @@ import { BudgetContext } from '../../../../../Models/contextProvider/BudgetConte
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
  *
  * @component
- * 
+ *
  * @property {OperationModel} operation - Le modèle de l'opération.
  * @property {boolean} budgetActif - Indique si le budget est actif.
  * @property {EditFormProps} formDateInEdition - Les propriétés du formulaire d'édition.
@@ -26,7 +26,7 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   form
     const { currentBudget, currentOperation } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budgetActif = currentBudget!.actif;
-    
+
     /**
  * Remplit le champ "dateOperation" de l'état à partir de la saisie de l'utilisateur
  * @param {Event} e - L'événement de saisie

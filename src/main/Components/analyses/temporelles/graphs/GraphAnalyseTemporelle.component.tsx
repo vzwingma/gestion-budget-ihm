@@ -1,5 +1,5 @@
 import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import React from "react";
+import React, {JSX} from "react";
 import {flatCategoriesData, populateGraphCategories, populateGraphSoldes} from "./GraphAnalyseTemporelle.controller";
 import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
 import {GraphAnalyseTemporelleProps} from "../../../Components.props";

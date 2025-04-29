@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {JSX, useContext, useState} from 'react';
 import {
     Button,
     ButtonGroup,
@@ -16,7 +16,7 @@ import { AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded } from
 import CenterComponent from '../../../CenterComponent';
 import { getEventTargetId } from '../../../../Utils/OperationData.utils';
 import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices';
-import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "./../../../../Utils/AppBusinessEnums.constants";
+import {ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS} from "../../../../Utils/AppBusinessEnums.constants";
 import { userHasPermission } from '../../../../Utils/UserData.utils';
 import { BudgetActionsButtonGroupProps } from '../../../Components.props';
 import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider';

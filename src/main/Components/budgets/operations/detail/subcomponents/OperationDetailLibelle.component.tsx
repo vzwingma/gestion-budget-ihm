@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {JSX, useContext} from 'react'
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from '@mui/material'
 import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'

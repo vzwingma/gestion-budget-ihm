@@ -1,7 +1,7 @@
 import {WatchLaterRounded} from "@mui/icons-material";
 import {EN_RETARD, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants";
 import {Box, Tooltip} from "@mui/material";
-import React from "react";
+import React, {JSX} from "react";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
 import {INTERCOMPTE_LIBELLE_REGEX, operationIsIntercompteFromLibelle} from "../OperationData.utils";
 

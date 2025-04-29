@@ -1,7 +1,7 @@
 import {LabelProps} from "recharts";
 import {getCategorieColor} from "../../../../Utils/renderers/CategorieItem.renderer";
 import {PolarViewBox} from "recharts/types/util/types";
-import React from "react";
+import React, {JSX} from "react";
 import AnalyseCategoriesModel from "../../../../Models/analyses/categories/AnalyseCategories.model";
 import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model";
 import CategorieOperationModel from "../../../../Models/budgets/CategorieOperation.model";
@@ -52,7 +52,7 @@ import {sortLibellesCategories} from "../../../../Utils/OperationData.utils";
      * @param resumeSelectedCategorie - Le modèle de la catégorie sélectionnée ou null si aucune catégorie n'est sélectionnée.
      * @returns Un élément JSX représentant l'étiquette de la catégorie.
      */
-    export function renderLabelCategorie(props : LabelProps, resumeSelectedCategorie : AnalyseCategoriesModel | null)  : JSX.Element {
+export function renderLabelCategorie(props: LabelProps, resumeSelectedCategorie: AnalyseCategoriesModel | null): JSX.Element {
         const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
         const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie.id : null)
         return renderLabelAnalyse(props, selectedId, color);
