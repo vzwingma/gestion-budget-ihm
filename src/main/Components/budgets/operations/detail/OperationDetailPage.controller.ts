@@ -41,7 +41,7 @@ export function handleOperationEditionClick(event: any, {operation, budget} : Op
         // Validation du formulaire
         if (enterKeyPress && editForm.formValidationEnabled) {
             handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate);
-        } else if (idElement !== null && !idElement.endsWith(OPERATION_EDITION_FORM.INPUT)) {
+        } else if (idElement !== null && idElement !== undefined && !idElement.endsWith(OPERATION_EDITION_FORM.INPUT)) {
             switch (idElement) {
                 case OPERATION_EDITION_FORM.VALUE:
                     editForm.value = true;
