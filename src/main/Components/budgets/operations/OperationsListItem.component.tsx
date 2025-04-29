@@ -1,21 +1,17 @@
-import React, { useContext } from 'react'
-import {Box, Grid2, Stack, Typography} from "@mui/material";
+import React, {JSX, useContext} from 'react'
+import {Box, Grid, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import CenterComponent from '../../CenterComponent';
-import { OperationItemProps } from '../../Components.props';
-import { getOperationLibelle, getOperationStateColor } from '../../../Utils/renderers/OperationItem.renderer';
-import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer';
-import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider';
-
-
-
+import {OperationItemProps} from '../../Components.props';
+import {getOperationLibelle, getOperationStateColor} from '../../../Utils/renderers/OperationItem.renderer';
+import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer';
+import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider';
 
 
 /**
  * Tuile d'une opération dans la liste des opérations
  * @param operation : object opération affichée
  * @param listeComptes : array liste des comptes
- * @param onClick : function action lors du click
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
@@ -26,8 +22,8 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
         <Box key={"liste_" + operation.id}
              className={"listeItem"}
              onClick={() => handleOperationSelect(operation)}>
-            <Grid2 container spacing={6}>
-                <Grid2 size={{md: 1}}>
+            <Grid container spacing={6}>
+                <Grid size={{md: 1}}>
                     <Box width={50} height={50}
                          sx={{
                              borderRadius: '50%',
@@ -45,8 +41,8 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
                             <CenterComponent>{getCategorieIcon(operation.ssCategorie)}</CenterComponent>
                         </Box>
                     </Box>
-                </Grid2>
-                <Grid2 size={{md: 7}}>
+                </Grid>
+                <Grid size={{md: 7}}>
                     <Stack direction={"column"}>
                         <Typography variant={"subtitle1"} component="div" align={"left"}
                                     sx={{spacing: 2, paddingLeft: 2}}>
@@ -58,13 +54,13 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
                         </Typography>
                     </Stack>
 
-                </Grid2>
-                <Grid2 size={{md: 3}}>
+                </Grid>
+                <Grid size={{md: 3}}>
                     <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
                         <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true}/>
                     </Typography>
-                </Grid2>
-            </Grid2>
+                </Grid>
+            </Grid>
         </Box>
 
     )

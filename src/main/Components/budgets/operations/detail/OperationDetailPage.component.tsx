@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {Box, Button, Container, Grid2, Stack, Typography} from "@mui/material";
+import React, {JSX, useContext, useEffect, useState} from 'react'
+import {Box, Button, Container, Grid, Stack, Typography} from "@mui/material";
 
 import {
     handleDateOperationFromAction,
@@ -196,54 +196,54 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     errorLibelle={errors.libelle}
                     fillOperationForm={fillOperationForm} />
 
-                <Grid2 container width={"100%"}>
-                    <Grid2 size={{ md: 5 }}>
+                <Grid container width={"100%"}>
+                    <Grid size={{md: 5}}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Catégorie</Typography>
-                    </Grid2>
-                    <Grid2 size={{ md: 4 }}>
+                    </Grid>
+                    <Grid size={{md: 4}}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Etat</Typography>
-                    </Grid2>
-                    <Grid2 size={{ md: 3 }}>
+                    </Grid>
+                    <Grid size={{md: 3}}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Période</Typography>
-                    </Grid2>
+                    </Grid>
 
 
-                    <Grid2 size={{ md: 5 }}>
+                    <Grid size={{md: 5}}>
                         {  /** CATEGORIES **/}
                         <OperationDetailCategories
                             listeCategories={listeCategories}
                             formCatgoriesInEdition={editForm.categories}
                             errorsCategories={errors.categorie}
                             fillOperationForm={fillOperationForm} />
-                    </Grid2>
-                    <Grid2 size={{ md: 4 }}>
+                    </Grid>
+                    <Grid size={{md: 4}}>
                         <Typography variant={"overline"} color={getOperationStateColor(operation.etat)}>
                             {operation.etat}
                         </Typography>
-                    </Grid2>
-                    <Grid2 size={{ md: 3 }}>
+                    </Grid>
+                    <Grid size={{md: 3}}>
                         { /** PERIODE **/}
                         <OperationDetailMensualite
                             formMensualiteInEdition={editForm.mensualite}
                             fillOperationForm={fillOperationForm} />
-                    </Grid2>
+                    </Grid>
 
 
-                    <Grid2 size={{ md: 5 }} paddingTop={3}>
+                    <Grid size={{md: 5}} paddingTop={3}>
                         {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id) ?
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
-                    </Grid2>
-                    <Grid2 size={{ md: 4 }} paddingTop={3}>
+                    </Grid>
+                    <Grid size={{md: 4}} paddingTop={3}>
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Actions</Typography> : <></>
                         }
-                    </Grid2>
-                    <Grid2 size={{ md: 3 }} paddingTop={3}>
+                    </Grid>
+                    <Grid size={{md: 3}} paddingTop={3}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Date d'opération</Typography>
-                    </Grid2>
+                    </Grid>
 
 
-                    <Grid2 size={{ md: 5 }}>
+                    <Grid size={{md: 5}}>
                         { /** COMPTE DE TRANSFERT  **/}
                         <OperationDetailIntercompte intercompte={editOperation.intercompte}
                                                     libelle={editOperation.libelle}
@@ -255,8 +255,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
                             errorIntercompte={errors.intercompte}
                             fillOperationForm={fillOperationForm} />
-                    </Grid2>
-                    <Grid2 size={{ md: 4 }}>
+                    </Grid>
+                    <Grid size={{md: 4}}>
                         { /** ACTIONS SUR OPERATION **/}
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions
@@ -265,15 +265,15 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 onOperationChange={onOperationChange} />
                             : <></>
                         }
-                    </Grid2>
-                    <Grid2 size={{ md: 3 }}>
+                    </Grid>
+                    <Grid size={{md: 3}}>
                         { /** DATE OPERATION **/}
                         <OperationDetailDate
                             formDateInEdition={editForm.dateOperation}
                             errorDateOperation={errors.dateOperation}
                             fillOperationForm={fillOperationForm} />
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
 
                 {currentBudget?.actif && isInEditMode(editForm) &&
                     <Button fullWidth variant="outlined" color="success"

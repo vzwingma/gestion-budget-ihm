@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {JSX, useEffect, useState} from "react";
 
-import {Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid2,} from "@mui/material";
+import {Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
 import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices";
@@ -110,10 +110,10 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      */
     return (
         <Box sx={{ overflow: "hidden" }} >
-            <Grid2 container marginTop={1} sx={{ overflow: "hidden" }}>
-                <Grid2 size={{md: 3}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
-                    fontSize={"large"} /></Grid2>
-                <Grid2 size={{md: 6}}>
+            <Grid container marginTop={1} sx={{overflow: "hidden"}}>
+                <Grid size={{md: 3}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                                               fontSize={"large"}/></Grid>
+                <Grid size={{md: 6}}>
                     {soldesMensuels !== null && selectedCompte != null ?
                         <AnalyseTemporelleTitre currentCompte={selectedCompte}
                             currentAnnee={anneeAnalyses}
@@ -121,8 +121,8 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                         :
                         <CenterComponent><CircularProgress /></CenterComponent>
                     }
-                </Grid2>
-                <Grid2 size={{md: 3}} direction={"row-reverse"}>
+                </Grid>
+                <Grid size={{md: 3}} direction={"row-reverse"}>
                     {   analyseSoldesCategoriesData != null ?
                             <>
                                 <AnalyseTemporelleFiltre listeCategories={analyseSoldesCategoriesData}
@@ -137,10 +137,10 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                             </>
                             :
                             <CenterComponent><CircularProgress /></CenterComponent> }
-                </Grid2>
-            </Grid2>
+                </Grid>
+            </Grid>
             <Divider variant="middle" sx={{ margin: 1 }} />
-            <Grid2 size={{ md: 5 }} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
+            <Grid size={{md: 5}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
                 {soldesMensuels != null ?
                     <GraphAnalyseTemporelle
                         anneeAnalyses={anneeAnalyses}
@@ -153,7 +153,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                     :
                     <CenterComponent><CircularProgress /></CenterComponent>
                 }
-            </Grid2>
+            </Grid>
         </Box>
     )
 }
