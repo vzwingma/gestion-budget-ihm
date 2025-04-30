@@ -11,6 +11,10 @@ import {AnneeRangeProps} from "../../Components.props";
  */
 const AnneeRange = ({ selectedAnnee, onAnneeChange }: AnneeRangeProps) : JSX.Element => {
 
+    const fullView = selectedAnnee === 0;
+    if (fullView) {
+        selectedAnnee = new Date().getFullYear();
+    }
     const dateCurrent :number = selectedAnnee;
     const datePrevious : number = dateCurrent - 1;
     const dateNext : number = dateCurrent + 1;
@@ -24,9 +28,11 @@ const AnneeRange = ({ selectedAnnee, onAnneeChange }: AnneeRangeProps) : JSX.Ele
                 <Button id="previous"
                     size={"small"}>{datePrevious}  </Button>
                 <Button id="current"
-                    variant={"contained"}>{dateCurrent}</Button>
+                        variant={!fullView ? "contained" : "outlined"}>{dateCurrent}</Button>
                 <Button id="next"
                         size={"small"} disabled={dateNext > new Date().getFullYear()}>{dateNext}</Button>
+                <Button id="all"
+                        size={"small"} variant={fullView ? "contained" : "outlined"}>Tout</Button>
             </ButtonGroup>
         </center>
     );

@@ -1,13 +1,20 @@
 /**
  * Retourne le label Fr d'une date
  * @param dateOperation date à afficher
- * @returns {string} label FR de la date    
+ * @returns {string} label FR de la date
  */
-export function getLabelFromDate(dateOperation: Date): string {
-    return new Date(dateOperation).toLocaleDateString("fr");
+export function getLabelFRFromDate(dateOperation: Date): string {
+    return new Date(dateOperation).toLocaleDateString("fr-FR");
 }
 
-
+/**
+ * Retourne le label Fr d'une date
+ * @param dateOperation date à afficher
+ * @returns {string} label FR de la date
+ */
+export function getLabelISOFromDate(dateOperation: Date): string {
+    return new Date(dateOperation).toISOString().split('T')[0];
+}
 /**
  * Convertit un nom de mois en numéro de mois.
  *

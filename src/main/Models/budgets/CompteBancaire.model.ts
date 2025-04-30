@@ -1,28 +1,14 @@
+import ProprietaireModel from "./Proprietaire.model";
+
 /**
  * CompteBancaire model
  */
-class CompteBancaireModel {
+export default interface CompteBancaireModel {
 
-    id: string;
-    libelle: string;
-    itemIcon: string;
-    isDisabled: boolean;
-    ordre : number;
-
-    /**
-     * Constructor
-     * @param id identifiant
-     * @param libelle libellé
-     * @param icon icone
-     * @param isDisabled compte désactivé
-     * @param ordre ordre d'affichage
-     */
-    constructor(id: string, libelle: string, itemIcon: string, isDisabled: boolean, ordre: number) {
-        this.id = id;
-        this.libelle = libelle;
-        this.itemIcon = itemIcon;
-        this.isDisabled = isDisabled;
-        this.ordre = ordre;
-    }
+    readonly id: string;
+    readonly libelle: string;
+    readonly itemIcon: string;
+    readonly ordre: number;
+    readonly actif: boolean;
+    readonly proprietaires: ProprietaireModel[];
 }
-export default CompteBancaireModel;  // export default is used to export a single class, function or primitive from a script file.

@@ -1,8 +1,7 @@
 import {Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
-import { AnalyseTitreProps } from "../../Components.props";
-
+import {AnalyseTitreProps} from "../../Components.props";
 
 
 /**
@@ -13,14 +12,18 @@ import { AnalyseTitreProps } from "../../Components.props";
  * @returns {JSX.Element} - L'élément JSX à afficher
  * @constructor
  */
-const AnalyseTitre : React.FC<AnalyseTitreProps> = ({currentCompte, currentDate, totalOperations} : AnalyseTitreProps) => {
+const AnalyseTitre: React.FC<AnalyseTitreProps> = ({
+                                                       currentCompte,
+                                                       currentDate,
+                                                       totalOperations
+                                                   }: AnalyseTitreProps): JSX.Element => {
 
 
     /**
      * Obtient le tooltip pour la date d'aujourd'hui
      * @returns {string} - La date d'aujourd'hui formatée
      */
-    function getTooltipAuj() {
+    function getTooltipAuj(): string {
         const dateCourante = new Date(Date.now());
         return "Au " + dateCourante.getDate() + " " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear()
     }

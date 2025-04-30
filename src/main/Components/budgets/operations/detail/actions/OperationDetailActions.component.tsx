@@ -32,15 +32,20 @@ import {BudgetContext} from "../../../../../Models/contextProvider/BudgetContext
  * @returns {JSX.Element}
  * @constructor
  */
-
-export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ isInCreateMode, onClickRealiseInCreateMode : handleDateOperationFromCreateAction, onOperationChange }: OperationDetailActionsProps): JSX.Element => {
+export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({
+                                                                                  isInCreateMode,
+                                                                                  editOperation,
+                                                                                  onClickRealiseInCreateMode: handleDateOperationFromCreateAction,
+                                                                                  onOperationChange
+                                                                              }: OperationDetailActionsProps): JSX.Element => {
 
     const [showModale, setShowModale] = useState<boolean>(false);
     const { currentBudget, currentOperation } = useContext(BudgetContext)!;
     const operation = currentOperation!;
     const budget = currentBudget!;
     return (
-        <ButtonGroup onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, handleDateOperationFromCreateAction, onOperationChange, setShowModale)} >
+        <ButtonGroup
+            onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, editOperation, handleDateOperationFromCreateAction, onOperationChange, setShowModale)}>
             {operation.etat !== OPERATION_ETATS_ENUM.REALISEE &&
                 <Tooltip title="Valider l'opération">
                     <IconButton

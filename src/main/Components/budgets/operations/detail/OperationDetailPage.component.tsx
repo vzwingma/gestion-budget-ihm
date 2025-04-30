@@ -137,7 +137,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         const ssCat = listeCategories
             .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
             .filter((ssCat: CategorieOperationModel) => ssCat != null && ssCat.id === ssCatId)[0]
-
+        if (ssCat === undefined) {
+            return;
+        }
         if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
             editOperation.categorie.id = ssCat.categorieParente.id;
             editOperation.categorie.libelle = ssCat.categorieParente.libelle;
@@ -261,8 +263,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions
                                 isInCreateMode={isInCreateMode(editForm)}
-                                onClickRealiseInCreateMode={() => handleDateOperationFromAction(new Date(), editOperation, setEditOperation)}
-                                onOperationChange={onOperationChange} />
+                                editOperation={editOperation}
+                                onClickRealiseInCreateMode={() => handleDateOperationFromAction(editOperation, setEditOperation)}
+                                onOperationChange={onOperationChange}
+                            />
                             : <></>
                         }
                     </Grid>

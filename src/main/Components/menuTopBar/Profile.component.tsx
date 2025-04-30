@@ -40,6 +40,8 @@ const Profile: React.FC = (): JSX.Element => {
     // referrerPolicy="no-referrer"
     if (auth.isAuthenticated) {
         putTokenInStorage(auth.user?.id_token)
+
+
         return (
             <>
                 <Typography variant={"caption"} component="div"

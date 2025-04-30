@@ -11,7 +11,7 @@ import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGr
 import OperationsListe from "../operations/OperationsListe.component";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
 import {CancelRounded} from "@mui/icons-material";
-import {getLabelFromDate} from "../../../Utils/Date.utils";
+import {getLabelFRFromDate} from "../../../Utils/Date.utils";
 import {getOperationsGroupedByDateOperation} from "./Budget.controller";
 import CenterComponent from "../../CenterComponent";
 import {getLibellesOperationsCompte} from "../operations/detail/OperationDetailPage.extservices";
@@ -74,7 +74,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFromDate(selectedDate))
+        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate))
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
         if (selectedCompte != null) {
             getLibellesOperationsCompte(selectedCompte.id, setListeLibellesOperations);

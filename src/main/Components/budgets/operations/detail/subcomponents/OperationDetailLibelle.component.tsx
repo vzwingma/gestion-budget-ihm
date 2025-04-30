@@ -54,9 +54,15 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
             // Rajout des tags en amont
             newLibelle = rawLibelleRetardParts[0].replace(rawLibelleRetardParts[1], newLibelle);
         }
-        const libelleFromAutocomplete: LibelleCategorieOperationModel | undefined = listeLibellesOperations.findLast((libelle: LibelleCategorieOperationModel) => libelle.libelle === newLibelle);
-        if (libelleFromAutocomplete !== undefined && operation.id === "-1") {
-            fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, libelleFromAutocomplete?.ssCategorieId);
+
+        // On supprime les tags de la catégorie
+        const libelleToFindAutocomplete = newLibelle?.split("-")[0]?.trim();
+
+        const libelleFromHistory: LibelleCategorieOperationModel | undefined =
+            listeLibellesOperations.findLast((libelle: LibelleCategorieOperationModel) => libelle.libelle.toLowerCase() === libelleToFindAutocomplete.toLowerCase());
+
+        if (libelleFromHistory !== undefined && operation.id === "-1") {
+            fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, libelleFromHistory?.ssCategorieId);
         }
         fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, newLibelle);
     }

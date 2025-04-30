@@ -22,18 +22,18 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
                                 }: GraphAnalyseTemporelleProps): JSX.Element => {
 
     /**
-     *
+     * Récupère les données pour le graphique.
      * @returns {Array} Les données pour le graphique.
      */
     function getGraphData(): Array<any> {
         let dataGraphTimeline: GraphAnalyseTimelineModel = { dataGraphTimelineItem: {} };
 
         /** Init du tableau pour l'affichage du graphique **/
-        console.log("Construction de l'affichage de l'analyse temporelle pour", anneeAnalyses);
-        populateGraphCategories(anneeAnalyses, analyseSoldesCategoriesData, timelinesByCategoriesData, false, dataGraphTimeline);
-        populateGraphCategories(anneeAnalyses, analyseSoldesCategoriesData, timelinesPrevisionnellesByCategoriesData, true, dataGraphTimeline);
-        populateGraphSoldes(anneeAnalyses, timelinesSoldesData, filterSoldesActive, false, dataGraphTimeline);
-        populateGraphSoldes(anneeAnalyses, timelinesPrevisionnellesSoldesData, filterSoldesActive, true, dataGraphTimeline);
+        console.log("Construction de l'affichage de l'analyse temporelle pour", anneeAnalyses === 0 ? "tous les budgets" : anneeAnalyses);
+        populateGraphCategories(analyseSoldesCategoriesData, timelinesByCategoriesData, false, dataGraphTimeline);
+        populateGraphCategories(analyseSoldesCategoriesData, timelinesPrevisionnellesByCategoriesData, true, dataGraphTimeline);
+        populateGraphSoldes(timelinesSoldesData, filterSoldesActive, false, dataGraphTimeline);
+        populateGraphSoldes(timelinesPrevisionnellesSoldesData, filterSoldesActive, true, dataGraphTimeline);
         return flatCategoriesData(dataGraphTimeline, analyseSoldesCategoriesData, filterSoldesActive);
     }
 

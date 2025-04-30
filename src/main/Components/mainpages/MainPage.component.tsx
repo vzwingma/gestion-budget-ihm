@@ -7,11 +7,11 @@ import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import DateRange from "./menuSlideBar/DateRange.component";
 import BudgetPage from "../budgets/budget/Budget.component";
-import { AnalyseTemporelle } from "../analyses/temporelles/AnalyseTemporelle.component";
-import { AnalyseCategories } from "../analyses/categories/AnalyseCategories.component";
-import { MainPageProps } from "../Components.props";
-import { BudgetContext } from "../../Models/contextProvider/BudgetContextProvider";
-
+import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component";
+import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component";
+import {MainPageProps} from "../Components.props";
+import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider";
+import {useAuth} from "react-oidc-context";
 
 
 /**
@@ -20,7 +20,7 @@ import { BudgetContext } from "../../Models/contextProvider/BudgetContextProvide
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
     const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext)!;
-
+    const auth = useAuth();
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
 
     /** Appels WS vers pour charger la liste des comptes **/
@@ -63,7 +63,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * Render de la page principale, suivant la fonction sélectionnée
      * @returns {JSX.Element}
      */
-    function renderSubMainPage(): JSX.Element {
+    function renderSubMainPage(): JSX.Element | null {
         switch (fonction) {
 
             case BUSINESS_ONGLETS.BUDGET:
@@ -79,21 +79,21 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                     onOpenMenu={handleOpenMenuBar} />
 
             default:
-                return <></>
+                return null;
         }
     }
 
     /**
      * Render de la partie gauche de la menubar
-     * @returns {JSX.Element
+     * @returns {JSX.Element} | null
      * @constructor
      */
-    function renderLeftTabCompte(fonction: BUSINESS_ONGLETS): JSX.Element {
-        if (fonction === BUSINESS_ONGLETS.BUDGET) {
+    function renderLeftTabDate(fonction: BUSINESS_ONGLETS): JSX.Element | null {
+        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.ANALYSE) {
             return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
         }
         else {
-            return <></>
+            return null;
         }
     }
 
@@ -107,10 +107,13 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                 <Stack spacing={2}>
                     <Box sx={{ height: 80 }} />
 
-                    {renderLeftTabCompte(fonction)}
+                    {renderLeftTabDate(fonction)}
 
                     <Stack divider={<Divider orientation="horizontal" flexItem />}>
-                        {comptes.filter((compte) => !compte.isDisabled)
+                        {
+                            comptes
+                                .filter((compte) => compte.actif)
+                                .filter(compte => compte.proprietaires.flatMap(p => p.login).includes(auth?.user?.profile.email ?? ''))
                                 .map((compte) => (
                                     <CompteItem key={compte.id}
                                         compte={compte}
@@ -124,10 +127,8 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                 </Stack>
             </Drawer>
 
-            {selectedCompte !== null && selectedDate !== null ?
-                renderSubMainPage()
-                :
-                <></>}
+            { /* Render de la page principale */}
+            {selectedCompte && selectedDate ? renderSubMainPage() : null}
 
             <ToastContainer
                 position="bottom-left"

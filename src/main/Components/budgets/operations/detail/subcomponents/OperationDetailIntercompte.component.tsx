@@ -58,7 +58,9 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
                 helperText={errorIntercompte}
                 onChange={fillIntercompteForm}
                 variant="standard">
-                {listeAutresComptes.map((compte) => (
+                {listeAutresComptes
+                    .filter((compte) => compte.actif)
+                    .map((compte) => (
                     <MenuItem key={compte.id} value={compte.id}>
                         <img src={"/img/banques/" + compte.itemIcon}
                             width={20} height={20}
