@@ -1,9 +1,9 @@
 import React, {JSX, useContext} from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants"
 import { TextField, Typography } from '@mui/material'
-import { getLabelFromDate } from '../../../../../Utils/Date.utils'
 import { OperationDetailDateProps } from '../../../../Components.props'
 import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider'
+import { getLabelFRFromDate, getLabelISOFromDate } from '../../../../../Utils/Date.utils'
 
 
 /**
