@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { handleModalClick, handleSelect } from "./DateRange.controller";
+import React, {JSX, useState} from "react";
+import {Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {handleModalClick, handleSelect} from "./DateRange.controller";
 import CenterComponent from "../../CenterComponent";
-import { DateRangeProps } from "../../Components.props";
+import {DateRangeProps} from "../../Components.props";
 
 
 /**
@@ -61,18 +61,16 @@ const DateRange: React.FC<DateRangeProps> = ({ selectedDate, onDateChange: handl
                             ? </p></DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <ButtonGroup>
-                        <Button id="ANNULER" onClick={e => {
+                    <Button variant={"outlined"} id="ANNULER" onClick={e => {
                             handleModalClick(e, dateCurrentBudget, dateNextBudget, updateMonths);
-                            setShowModale(false);
-                        }}
-                            color="error" type="submit">Annuler</Button>
+                        setShowModale(false);
+                    }} color="error" type="submit">Annuler</Button>
 
-                        <Button id="CONFIRMER" color="success" onClick={e => {
-                                                                    handleModalClick(e, dateCurrentBudget, dateNextBudget, updateMonths);
-                                                                    setShowModale(false);  }}
-                                type="submit">Confirmer</Button>
-                    </ButtonGroup>
+                    <Button variant={"outlined"} id="CONFIRMER" color="success" onClick={e => {
+                        handleModalClick(e, dateCurrentBudget, dateNextBudget, updateMonths);
+                        setShowModale(false);
+                    }}
+                            type="submit">Confirmer</Button>
                 </DialogActions>
             </Dialog>
         </CenterComponent>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {JSX} from 'react'
 import {Container, Divider, Stack} from "@mui/material";
 import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';

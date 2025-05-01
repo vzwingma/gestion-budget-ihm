@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {JSX, useEffect} from "react";
 import {useAuth} from "react-oidc-context";
 import {Avatar, CircularProgress, Tooltip, Typography} from "@mui/material";
 import {putTokenInStorage, removeTokenFromStorage} from './../../Services/Auth.service'

@@ -1,5 +1,5 @@
 import {Cell, LabelList, Pie, PieChart, ResponsiveContainer} from "recharts";
-import React from "react";
+import React, {JSX} from "react";
 import {getCategorieColor} from "../../../../Utils/renderers/CategorieItem.renderer";
 import {populateGraphAnalyseCategories, renderLabelCategorie, renderLabelSsCategorie} from "./GraphAnalyses.controller";
 import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model";

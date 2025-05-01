@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {JSX, useContext, useState} from "react";
 
 import {
     Button,
@@ -26,11 +26,10 @@ import {BudgetContext} from "../../../../../Models/contextProvider/BudgetContext
 
 
 /**
- * Composant React pour afficher les actions possibles sur une opération.
- * @param isInCreateMode mode création du formulaire
- * @param editOperation opération en cours d'édition
- * @param handleDateOperationFromCreateAction action de changement de date
- * @param onOperationChange action de changement d'opération
+ * Composant affichant la liste des actions possibles sur l'opération
+ * @param currentOperation opération
+ * @param isInCreateMode booléen mode création ?
+ * @returns {JSX.Element}
  * @constructor
  */
 export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({
@@ -111,10 +110,8 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({
                 </DialogContent>
 
                 <DialogActions>
-                    <ButtonGroup>
-                        <Button id="ANNULER" color="error">Annuler</Button>
-                        <Button id="SUPPRIMEE" color="success">Confirmer</Button>
-                    </ButtonGroup>
+                    <Button id="ANNULER" color="error">Annuler</Button>
+                    <Button id="SUPPRIMEE" color="success">Confirmer</Button>
                 </DialogActions>
             </Dialog>
         </ButtonGroup>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {JSX} from 'react'
 import {Box, Divider, Stack} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
 import {sortLibellesCategories} from '../../../../Utils/OperationData.utils';

@@ -1,5 +1,5 @@
 import {Checkbox, FormControlLabel} from "@mui/material";
-import React from "react";
+import React, {JSX} from "react";
 import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
 import {AnalyseTemporelleFiltreProps} from "../../Components.props";
 

@@ -6,6 +6,7 @@ import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../../Utils/AppTec
 import {OPERATION_ETATS_ENUM} from "../../../../Utils/AppBusinessEnums.constants";
 import {call} from "../../../../Services/ClientHTTP.service";
 import LibelleCategorieOperationModel from "../../../../Models/budgets/LibelleCategorieOperation.model";
+import {Dispatch, SetStateAction} from "react";
 
 
 /**
@@ -79,7 +80,7 @@ export function saveOperationIntercompte(operation: OperationModel, budget: Budg
  * @param idCompte identifiant du compte
  * @param setListeLibellesOperation
  */
-export function getLibellesOperationsCompte(idCompte: string, setListeLibellesOperation: React.Dispatch<React.SetStateAction<LibelleCategorieOperationModel[]>>) {
+export function getLibellesOperationsCompte(idCompte: string, setListeLibellesOperation: Dispatch<SetStateAction<LibelleCategorieOperationModel[]>>) {
 
     call(METHODE_HTTP.GET,
         BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.LIBELLES,

@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, {JSX, useContext, useState} from 'react';
 import {
     Button,
-    ButtonGroup,
     Dialog,
     DialogActions,
     DialogContent,
@@ -12,15 +11,14 @@ import {
     Tooltip
 } from '@mui/material';
 
-import { AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded } from "@mui/icons-material";
+import {AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded} from "@mui/icons-material";
 import CenterComponent from '../../../CenterComponent';
-import { getEventTargetId } from '../../../../Utils/OperationData.utils';
-import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices';
-import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "./../../../../Utils/AppBusinessEnums.constants";
-import { userHasPermission } from '../../../../Utils/UserData.utils';
-import { BudgetActionsButtonGroupProps } from '../../../Components.props';
-import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider';
-
+import {getEventTargetId} from '../../../../Utils/OperationData.utils';
+import {callReinitBudget, callReopenCloseBudget} from './BudgetActionsButtonGroup.extservices';
+import {ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS} from "../../../../Utils/AppBusinessEnums.constants";
+import {userHasPermission} from '../../../../Utils/UserData.utils';
+import {BudgetActionsButtonGroupProps} from '../../../Components.props';
+import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider';
 
 
 /**
@@ -150,10 +148,8 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
                 </DialogContent>
 
                 <DialogActions>
-                    <ButtonGroup>
-                        <Button id={ACTIONS_BUDGET_ENUM.ANNULER} color="error">Annuler</Button>
-                        <Button id={ACTIONS_BUDGET_ENUM.CONFIRMER} color="success">Confirmer</Button>
-                    </ButtonGroup>
+                    <Button variant={"outlined"} id={ACTIONS_BUDGET_ENUM.ANNULER} color="error">Annuler</Button>
+                    <Button variant={"outlined"} id={ACTIONS_BUDGET_ENUM.CONFIRMER} color="success">Confirmer</Button>
                 </DialogActions>
             </Dialog>
 

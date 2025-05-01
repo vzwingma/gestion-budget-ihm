@@ -18,3 +18,10 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=vzwingma_gestion-budget-ihm&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=vzwingma_gestion-budget-ihm)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=vzwingma_gestion-budget-ihm&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=vzwingma_gestion-budget-ihm)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=vzwingma_gestion-budget-ihm&metric=security_rating)](https://sonarcloud.io/dashboard?id=vzwingma_gestion-budget-ihm)
+
+### Description
+
+Application Web de gestion du budget permettant de suivre et d'analyser les dépenses et les revenus. Elle offre des
+fonctionnalités telles que la création et la gestion de budgets, la catégorisation des opérations, et la génération de
+rapports financiers. L'application est construite avec React et utilise divers composants pour offrir une interface
+utilisateur interactive et réactive.

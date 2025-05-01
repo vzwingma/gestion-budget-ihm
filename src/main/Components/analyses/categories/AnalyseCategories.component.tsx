@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {JSX, useEffect, useState} from "react";
 
-import {Box, Chip, CircularProgress, Divider, Grid2, Stack, Switch} from "@mui/material";
+import {Box, Chip, CircularProgress, Divider, Grid, Stack, Switch} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import GraphAnalyses from "./graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseCategoriesTitre.component";
@@ -77,10 +77,10 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
 
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={"true"}>
-            <Grid2 container marginTop={1} sx={{ overflow: "hidden" }}>
-                <Grid2 size={{ md: 1.5 }}><MenuIcon onClick={onOpenMenu} className={"editableField"}
-                    fontSize={"large"} /></Grid2>
-                <Grid2 size={{ md: 7.5 }}>
+            <Grid container marginTop={1} sx={{overflow: "hidden"}}>
+                <Grid size={{md: 1.5}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                                                 fontSize={"large"}/></Grid>
+                <Grid size={{md: 7.5}}>
                     {
                         currentBudget !== null && totauxGroupedByEtat !== null && selectedCompte !== null ?
                             <AnalyseTitre currentCompte={selectedCompte}
@@ -88,8 +88,8 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                                 totalOperations={totauxGroupedByEtat?.[selectedTypeAnalyse] ?? 0} /> :
                             <CenterComponent><CircularProgress /></CenterComponent>
                     }
-                </Grid2>
-                <Grid2 size={{ md: 3 }}>
+                </Grid>
+                <Grid size={{md: 3}}>
                     <Stack direction={"row-reverse"} alignItems={"end"} style={{ position: "relative",  top: "50%", transform: "translateY(-50%)"}}>
                         <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"} style={{ height: 40}}/>
                         <Switch onClick={e => selectTypeOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
@@ -101,11 +101,11 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                         <Chip label={"Prévue"} variant="outlined"
                             sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE) }} style={{ height: 40}} />
                     </Stack>
-                </Grid2>
-            </Grid2>
+                </Grid>
+            </Grid>
             <Divider variant="middle" sx={{ margin: 1 }} />
-            <Grid2 container sx={{ overflow: "hidden" }}>
-                <Grid2 size={{ md: 3 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={"true"}>
+            <Grid container sx={{overflow: "hidden"}}>
+                <Grid size={{md: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     { /** Liste des résumés par catégories **/
                         (currentBudget != null ?
                             <AnalyseCategoriesListe
@@ -118,8 +118,8 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                             <CenterComponent><CircularProgress /></CenterComponent>
                         )
                     }
-                </Grid2>
-                <Grid2 size={{ md: 3 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={"true"}>
+                </Grid>
+                <Grid size={{md: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     { /** Liste des sous-catégories **/
                         (currentBudget !== null && resumeSelectedCategorie !== null ?
                             <AnalyseCategoriesListe
@@ -132,8 +132,8 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                             <></>
                         )
                     }
-                </Grid2>
-                <Grid2 size={{ md: 6 }} sx={{ overflow: "hidden", height: window.innerHeight - 175 }}>
+                </Grid>
+                <Grid size={{md: 6}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
                     {currentBudget !== null && analysesGroupedByCategories !== null?
                         <GraphAnalyses
                             typeAnalyse={selectedTypeAnalyse}
@@ -143,8 +143,8 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                         :
                         <CenterComponent><CircularProgress /></CenterComponent>
                     }
-                </Grid2>
-            </Grid2>
+                </Grid>
+            </Grid>
         </Box>
     )
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {JSX} from "react";
 import {Button, ButtonGroup} from "@mui/material";
 import {handleSelect} from "./AnneeRange.controller";
 import {AnneeRangeProps} from "../../Components.props";

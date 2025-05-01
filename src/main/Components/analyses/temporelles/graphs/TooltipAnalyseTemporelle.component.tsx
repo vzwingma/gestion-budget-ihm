@@ -1,5 +1,5 @@
 import {getStyleOperation} from "../../../../Utils/renderers/OperationValue.renderer";
-import React from "react";
+import React, {JSX} from "react";
 import {TooltipAnalyseTemporelleProps} from "../../../Components.props";
 import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant";
 
@@ -12,7 +12,7 @@ import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant";
  * @returns {JSX.Element}
  * @constructor
  */
-const TooltipAnalyseTemporelle = ({active, payload, label} : TooltipAnalyseTemporelleProps) => {
+const TooltipAnalyseTemporelle = ({active, payload, label}: TooltipAnalyseTemporelleProps): JSX.Element => {
     let tooltip : JSX.Element[] = [];
     if (active && payload?.length) {
 

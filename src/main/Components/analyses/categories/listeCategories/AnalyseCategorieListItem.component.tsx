@@ -1,5 +1,5 @@
-import React from 'react'
-import {Box, Grid2, Stack, styled, Tooltip, tooltipClasses, TooltipProps, Typography} from "@mui/material";
+import React, {JSX} from 'react'
+import {Box, Grid, Stack, styled, Tooltip, tooltipClasses, TooltipProps, Typography} from "@mui/material";
 import OperationValue from "../../../../Utils/renderers/OperationValue.renderer";
 import {getCategorieIcon} from "../../../../Utils/renderers/CategorieItem.renderer";
 import CenterComponent from '../../../CenterComponent';
@@ -65,8 +65,8 @@ const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({   r
                     </React.Fragment>
                 }>
 
-            <Grid2 container spacing={6}>
-                <Grid2 size={{ md: 1 }}>
+            <Grid container spacing={6}>
+                <Grid size={{ md: 1 }}>
                     <Box width={40} height={40}
                         sx={{
                             borderRadius: "50%",
@@ -76,8 +76,8 @@ const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({   r
                         }}>
                         <CenterComponent>{getCategorieIcon(resumeCategorie.categorie)}</CenterComponent>
                     </Box>
-                </Grid2>
-                <Grid2 size={{ md: 7 }}>
+                </Grid>
+                <Grid size={{md: 7}}>
                     <Stack direction={"column"}>
                         <Typography variant={"subtitle1"} component="div" align={"left"} sx={{ spacing: 2 }}>
                             {resumeCategorie.categorie.libelle}
@@ -89,13 +89,13 @@ const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({   r
                         </Typography>
                     </Stack>
 
-                </Grid2>
-                <Grid2 size={{ md: 3 }}>
+                </Grid>
+                <Grid size={{md: 3}}>
                     <Typography variant={"subtitle1"} component="div" align={"right"} sx={{ spacing: 2 }}>
                         <OperationValue id={"value_" + resumeCategorie.categorie.id} valueOperation={resumeCategorie.total[typeAnalyse]} showSign={true} />
                     </Typography>
-                </Grid2>
-            </Grid2>
+                </Grid>
+            </Grid>
             </HtmlTooltip>
         </Box>
 

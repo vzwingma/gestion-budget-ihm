@@ -42,7 +42,7 @@ export function handleOperationEditionClick(event: any, {operation, budget} : Op
         // Validation du formulaire
         if (enterKeyPress && editForm.formValidationEnabled) {
             handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate);
-        } else if (idElement !== null && !idElement.endsWith(OPERATION_EDITION_FORM.INPUT)) {
+        } else if (idElement !== null && idElement !== undefined && !idElement.endsWith(OPERATION_EDITION_FORM.INPUT)) {
             switch (idElement) {
                 case OPERATION_EDITION_FORM.VALUE:
                     editForm.value = true;
@@ -113,12 +113,13 @@ function validateFormMontant(editOperation: OperationEditionModel, operation: Op
         return;
     }
 
-    const formValeur = "" + editOperation.valeur;
-    const { valeurCalculee, error } = calculateValeur(formValeur.replace(",", "."));
+    const formValeur: string = editOperation.valeur;
+    let {valeurCalculee, error} = calculateValeur(formValeur.replace(",", "."));
     if (error) {
         errors.valeur = error;
         return;
     }
+
     if (!valeurCalculee || !validateValue(valeurCalculee)) {
         errors.valeur = "Le format est incorrect : 0000.00 €";
         return;
@@ -187,18 +188,13 @@ export function validateForm(editOperation: OperationEditionModel, operation: Op
  */
 function processEquation(valueToCalculate: string): string {
     if (valueToCalculate.length <= 1000) {
-        let match = valueToCalculate.match(/[*/+\-^]/gmsi) || [];
-        while (match.length > 0) {
-            valueToCalculate = valueToCalculate.replace(/\((.*?)\)/gmsi, (_, s) => {
-                return processEquation(s)
-            }).replace(/([0-9.-]+)\^([0-9.-]+)/gmsi, (_, n1, n2) => {
-                return Math.pow(n1, n2).toString()
-            }).replace(/([0-9.-]+)([*/])([0-9.-]+)/gmsi, (_, n1, o, n2) => {
-                return (o === '*' ? Number(n1) * Number(n2) : Number(n1) / Number(n2)).toString();
-            }).replace(/([0-9.-]+)([-+])([0-9.-]+)/gmsi, (_, n1, o, n2) => {
-                return (o === '+' ? Number(n1) + Number(n2) : Number(n1) - Number(n2)).toString();
-            });
-            match = valueToCalculate.match(/[*/+-]/gmsi) || [];
+        try {
+            // eslint-disable-next-line no-new-func
+            const result = new Function(`return ${valueToCalculate}`)();
+            return result.toString();
+        } catch (error) {
+            console.error("Erreur lors du traitement de l'équation : ", valueToCalculate, error);
+            return "0";
         }
     }
     return valueToCalculate
