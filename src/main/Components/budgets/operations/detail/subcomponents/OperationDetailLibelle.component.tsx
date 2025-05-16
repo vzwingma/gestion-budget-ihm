@@ -1,4 +1,4 @@
-import React, {JSX, useContext} from 'react'
+import React, {JSX, useContext, useEffect} from 'react'
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from '@mui/material'
 import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
@@ -24,26 +24,37 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
 
 
     const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
+
+    const [listeLibellesOperationsFiltered, setListeLibellesOperationsFiltered] = React.useState<LibelleCategorieOperationModel[]>([...listeLibellesOperations]);
+    const [pendingLibelle, setPendingLibelle] = React.useState<string>("");
+
     const operation = currentOperation!;
     const budgetActif = currentBudget!.actif;
     const rawLibelleIntercompteParts = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle);
     const rawLibelleRetardParts = EN_RETARD_LIBELLE_REGEX.exec(operation.libelle);
 
-    let pendingLibelle: string = "";
-    let listeLibellesOperationsFiltered: LibelleCategorieOperationModel[] = listeLibellesOperations;
-
     /**
      * refresh les libellés d'opérations en fonction de la saisie de l'utilisateur
      */
-    function refreshLibellesOperations() {
-        listeLibellesOperationsFiltered = listeLibellesOperations.toSorted((a, b) => prioritySort(a, b, pendingLibelle));
-    }
+    React.useEffect(() => {
+        if(pendingLibelle !== "" && pendingLibelle.length > 1){
+            setListeLibellesOperationsFiltered(listeLibellesOperations.toSorted((a, b) => prioritySort(a, b, pendingLibelle)));
+        }
+        
+        console.log(pendingLibelle);
+    }, [pendingLibelle, listeLibellesOperations]);
+
+    useEffect(() => {
+        setPendingLibelle("");
+        setListeLibellesOperationsFiltered([...listeLibellesOperations]);
+    }, [listeLibellesOperations]);
 
     /**
      * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
      * @param event - L'événement de saisie
      */
     function fillLibelleForm(event: any) {
+        setPendingLibelle(event.target.value);
         // Récupération du libellé de l'opération
         let newLibelle: string = event.target.value;
         if (rawLibelleIntercompteParts !== null) {
@@ -96,11 +107,12 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
                         <TextField {...params} label="Description" variant="standard" size={"small"} />}
                     sx={{ width: "850px" }}
                     blurOnSelect={true}
-                              onKeyUp={(event) => {
-                                  pendingLibelle = evaluatePendingLibelle(event, pendingLibelle);
-                                  refreshLibellesOperations();
-                              }}
-                    onChange={fillLibelleForm}
+                    onKeyUp={(event) => {
+                        setPendingLibelle(evaluatePendingLibelle(event, pendingLibelle));
+                    }}
+                    onChange={(e) => {
+                        fillLibelleForm(e);
+                    }}
                     onFocus={() => activateValidationForm(false)}
                     onBlur={(e) => {
                         activateValidationForm(true);

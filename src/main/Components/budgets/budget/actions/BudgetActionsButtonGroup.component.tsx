@@ -1,4 +1,3 @@
-import React, {JSX, useContext, useState} from 'react';
 import {
     Button,
     Dialog,
@@ -10,15 +9,16 @@ import {
     Stack,
     Tooltip
 } from '@mui/material';
+import React, { JSX, useContext, useState } from 'react';
 
-import {AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded} from "@mui/icons-material";
+import { AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded } from "@mui/icons-material";
+import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider';
+import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "../../../../Utils/AppBusinessEnums.constants";
+import { getEventTargetId } from '../../../../Utils/OperationData.utils';
+import { userHasPermission } from '../../../../Utils/UserData.utils';
 import CenterComponent from '../../../CenterComponent';
-import {getEventTargetId} from '../../../../Utils/OperationData.utils';
-import {callReinitBudget, callReopenCloseBudget} from './BudgetActionsButtonGroup.extservices';
-import {ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS} from "../../../../Utils/AppBusinessEnums.constants";
-import {userHasPermission} from '../../../../Utils/UserData.utils';
-import {BudgetActionsButtonGroupProps} from '../../../Components.props';
-import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider';
+import { BudgetActionsButtonGroupProps } from '../../../Components.props';
+import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices';
 
 
 /**
@@ -56,6 +56,11 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
         }
     }
 
+    /**
+     * Handle the action based on the button clicked.
+     * This function sets the appropriate modal content and determines whether to show the modal.
+     * @param action - The action identifier string to determine the action to be performed.
+     */
     function handleAction(action: string) {
         let titrePopup = "";
         let questionPopup = "";
@@ -88,6 +93,11 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
         }
     }
 
+    /**
+     * Confirme l'action en cours basée sur la dernière action enregistrée.
+     * Cette fonction appelle les services externes appropriés pour effectuer l'action
+     * confirmée par l'utilisateur.
+     */
     function confirmAction() {
         if (actionEnCours === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
             callReopenCloseBudget(budget.id, !budget.actif, onActionBudgetChange);

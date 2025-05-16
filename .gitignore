@@ -28,3 +28,6 @@ yarn-error.log*
 .env.development
 
 external-ressources/conf/.env.oidc
+.env.dev
+.env.prod
+.env.qua
