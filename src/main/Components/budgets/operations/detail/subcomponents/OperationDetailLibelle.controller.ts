@@ -32,7 +32,7 @@ export function evaluatePendingLibelle(e: any, pendingLibelle: string): string {
         pendingLibelle += " ";
     } else if (e.key === "Delete") {
         pendingLibelle = "";
-    } else if (e.key !== "Enter" && e.key !== "Tab") {
+    } else if (e.key !== "Enter" && e.key !== "Tab" && e.key !== "Shift" && e.key !== "Control" && e.key !== "Alt" && e.key !== "Meta" && e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "ArrowLeft" && e.key !== "ArrowRight" && e.key !== "Home" && e.key !== "End" && e.key !== "PageUp" && e.key !== "PageDown") {
         pendingLibelle += e.key.toString();
     }
     return pendingLibelle;
