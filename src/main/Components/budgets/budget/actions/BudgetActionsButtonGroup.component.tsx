@@ -56,6 +56,11 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
         }
     }
 
+    /**
+     * Handle the action based on the button clicked.
+     * This function sets the appropriate modal content and determines whether to show the modal.
+     * @param action - The action identifier string to determine the action to be performed.
+     */
     function handleAction(action: string) {
         let titrePopup = "";
         let questionPopup = "";
@@ -88,6 +93,11 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
         }
     }
 
+    /**
+     * Confirme l'action en cours basée sur la dernière action enregistrée.
+     * Cette fonction appelle les services externes appropriés pour effectuer l'action
+     * confirmée par l'utilisateur.
+     */
     function confirmAction() {
         if (actionEnCours === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
             callReopenCloseBudget(budget.id, !budget.actif, onActionBudgetChange);
