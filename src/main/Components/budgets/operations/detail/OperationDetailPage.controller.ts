@@ -145,7 +145,7 @@ function validateFormCategories(editOperation: OperationEditionModel, operation:
  * validation du formulaire - Transfert intercomptes
  */
 function validateFormTransfertIntercompte(editOperation: OperationEditionModel, intercompte: string | null, operation: OperationModel, errors: ErrorsFormProps) {
-    if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && intercompte === null) {
+    if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_VIREMENT_INTER_COMPTES && intercompte === null) {
         errors.intercompte = "Le champ Intercompte est obligatoire"
     } else {
         operation.intercompte = intercompte
@@ -258,7 +258,7 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
         if (hasErrors) {
             console.log("Erreurs présentes dans le formulaire", errors)
             setErrors(errors);
-        } else if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_INTER_COMPTES && isInCreateMode(editForm)) {
+        } else if (editOperation.ssCategorie.id === BUSINESS_GUID.SOUS_CAT_VIREMENT_INTER_COMPTES && isInCreateMode(editForm)) {
             // Create Update Opération Intercomptes
             saveOperationIntercompte(operation, budget, editOperation.intercompte, onOperationUpdate);
         } else {
