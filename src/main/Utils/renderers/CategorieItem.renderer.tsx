@@ -3,6 +3,7 @@ import {
     AccountBalanceWalletRounded,
     AddCardRounded,
     AddShoppingCartRounded,
+    AddToDriveRounded,
     AppShortcutRounded,
     AssuredWorkloadRounded,
     AtmRounded,
@@ -23,6 +24,7 @@ import {
     ContentCutRounded,
     CreditScoreRounded,
     CurrencyExchangeRounded,
+    DeliveryDiningRounded,
     DirectionsBusRounded,
     DownhillSkiingRounded,
     DrawRounded,
@@ -258,7 +260,7 @@ function getCategorieIconAlimentation(categorieOperation: CategorieOperationMode
         '62607c4a-b32d-4abf-85c7-ac0c10cdb65c': <LocalCafeRounded/>, // Cantine
         '84022f20-f31a-4369-a4bb-de62ab778fd0': <BrunchDiningRounded/>, // Restaurant
         '467496e4-9059-4b9b-8773-21f230c8c5c6': <ShoppingCartCheckoutRounded/>, // Courses
-        '35dc6566-f481-434d-90f7-dc9c18a26b45': <MenuBookRounded/> // Autres
+        '35dc6566-f481-434d-90f7-dc9c18a26b45': <DeliveryDiningRounded/> // Autres
     };
     return (categorieOperation.id && iconMap[categorieOperation.id as keyof typeof iconMap]) || null;
 }
@@ -343,7 +345,7 @@ function getCategorieIconDepensesPro(categorieOperation: CategorieOperationModel
     const iconMap = {
         '7dd33b1b-ca85-4b46-af6c-a21ef2d8e52a': <PrintRounded/>, // DEPENSES PRO
         '49f4089c-bef8-4d9d-92fe-3cf86a67290a': <PrintRounded/>, // Autres
-        '9d020007-1b0e-4a8e-b881-f6867d55001e': <ShoppingCartRounded/>, // Services en ligne
+        '9d020007-1b0e-4a8e-b881-f6867d55001e': <AddToDriveRounded/>, // Services en ligne
         '9dcbe0a0-b0f8-4c4f-8bb7-2d6512d6df8a': <MarkAsUnreadRounded/>, // Frais d'expédition
         'f73410e6-57b5-4eee-ab93-a7748cfc7d69': <FaxRounded/>, // Fourniture de bureau
         'bd28c498-a774-4a67-b6ec-a135d39fca46': <ContactPhoneRounded/>, // Notes de frais
@@ -430,8 +432,8 @@ function getCategorieIconScolariteEnfants(categorieOperation: CategorieOperation
 function getCategorieIconEnfants(categorieOperation: CategorieOperationModel): JSX.Element | null {
     const iconMap = {
         'c4489fe2-8613-44c3-9eec-72febe6eb2e2': <BoyRounded/>, // ENFANTS
-        'e7fce0e5-b462-4026-b8af-d129f09d6f47': <BoyRounded/>, // Vêtements
-        '7fa68dec-b0bc-4f2a-b669-7f11971215c5': <BoyRounded/>, // Chaussures
+        'e7fce0e5-b462-4026-b8af-d129f09d6f47': <CheckroomRounded/>, // Vêtements
+        '7fa68dec-b0bc-4f2a-b669-7f11971215c5': <CheckroomRounded/>, // Chaussures
         '0ad986c2-008a-4d10-be21-3af2341e4420': <SmartToyRounded/>, // Jouets
         '395e3fb6-08bd-437a-92ed-85956aa04cfc': <MenuBookRounded/>, // Livres magazine
         '751c9c3c-9df2-4c6f-bc6f-307207f31923': <SportsHandballRounded/>, // Activités
