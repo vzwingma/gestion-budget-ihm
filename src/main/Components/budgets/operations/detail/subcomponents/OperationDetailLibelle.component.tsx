@@ -36,12 +36,10 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
     /**
      * refresh les libellés d'opérations en fonction de la saisie de l'utilisateur
      */
-    React.useEffect(() => {
+    useEffect(() => {
         if(pendingLibelle !== "" && pendingLibelle.length > 1){
             setListeLibellesOperationsFiltered(listeLibellesOperations.toSorted((a, b) => prioritySort(a, b, pendingLibelle)));
         }
-        
-        console.log(pendingLibelle);
     }, [pendingLibelle, listeLibellesOperations]);
 
     useEffect(() => {
