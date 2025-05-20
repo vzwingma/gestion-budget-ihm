@@ -147,8 +147,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         editOperation.ssCategorie.id = ssCat.id;
         editOperation.ssCategorie.libelle = ssCat.libelle;
 
-        /** Si type Virement **/
-        const editOperationTypeOperation = (BUSINESS_GUID.CAT_VIREMENT === editOperation.categorie.id && BUSINESS_GUID.SOUS_CAT_INTER_COMPTES !== editOperation.ssCategorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+        /** Si type Rentrée d'argent, alors type opération = Crédit **/
+        const editOperationTypeOperation = (BUSINESS_GUID.CAT_RENTREE_ARGENT === editOperation.categorie.id)  ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
         editOperation.typeOperation = editOperationTypeOperation;
         setEditOperation(editOperation);
 
@@ -232,7 +232,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
 
                     <Grid size={{md: 5}} paddingTop={3}>
-                        {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id) ?
+                        {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
                     </Grid>
                     <Grid size={{md: 4}} paddingTop={3}>
@@ -251,7 +251,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                                     libelle={editOperation.libelle}
                             formIntercompteInEdition={
                                 isInCreateMode(editForm)
-                                && (BUSINESS_GUID.SOUS_CAT_INTER_COMPTES === editOperation.ssCategorie.id)
+                                && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id)
                             }
                             listeAutresComptes={
                                 comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}

@@ -1,4 +1,4 @@
-import React, {JSX, useContext, useEffect} from 'react'
+import React, {JSX, useContext, useEffect, useState} from 'react'
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from '@mui/material'
 import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
@@ -25,8 +25,8 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
 
     const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
 
-    const [listeLibellesOperationsFiltered, setListeLibellesOperationsFiltered] = React.useState<LibelleCategorieOperationModel[]>([...listeLibellesOperations]);
-    const [pendingLibelle, setPendingLibelle] = React.useState<string>("");
+    const [listeLibellesOperationsFiltered, setListeLibellesOperationsFiltered] = useState<LibelleCategorieOperationModel[]>([...listeLibellesOperations]);
+    const [pendingLibelle, setPendingLibelle] = useState<string>("");
 
     const operation = currentOperation!;
     const budgetActif = currentBudget!.actif;
@@ -36,12 +36,10 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
     /**
      * refresh les libellés d'opérations en fonction de la saisie de l'utilisateur
      */
-    React.useEffect(() => {
+    useEffect(() => {
         if(pendingLibelle !== "" && pendingLibelle.length > 1){
             setListeLibellesOperationsFiltered(listeLibellesOperations.toSorted((a, b) => prioritySort(a, b, pendingLibelle)));
         }
-        
-        console.log(pendingLibelle);
     }, [pendingLibelle, listeLibellesOperations]);
 
     useEffect(() => {
