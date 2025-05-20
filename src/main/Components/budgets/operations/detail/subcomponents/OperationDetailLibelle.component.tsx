@@ -1,4 +1,4 @@
-import React, {JSX, useContext, useEffect} from 'react'
+import React, {JSX, useContext, useEffect, useState} from 'react'
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from '@mui/material'
 import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
@@ -25,8 +25,8 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
 
     const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
 
-    const [listeLibellesOperationsFiltered, setListeLibellesOperationsFiltered] = React.useState<LibelleCategorieOperationModel[]>([...listeLibellesOperations]);
-    const [pendingLibelle, setPendingLibelle] = React.useState<string>("");
+    const [listeLibellesOperationsFiltered, setListeLibellesOperationsFiltered] = useState<LibelleCategorieOperationModel[]>([...listeLibellesOperations]);
+    const [pendingLibelle, setPendingLibelle] = useState<string>("");
 
     const operation = currentOperation!;
     const budgetActif = currentBudget!.actif;

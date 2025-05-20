@@ -232,7 +232,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
 
                     <Grid size={{md: 5}} paddingTop={3}>
-                        {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SOUS_CAT_VIREMENT_INTER_COMPTES === editOperation.ssCategorie.id) ?
+                        {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
                     </Grid>
                     <Grid size={{md: 4}} paddingTop={3}>
@@ -251,7 +251,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                                     libelle={editOperation.libelle}
                             formIntercompteInEdition={
                                 isInCreateMode(editForm)
-                                && (BUSINESS_GUID.SOUS_CAT_VIREMENT_INTER_COMPTES === editOperation.ssCategorie.id)
+                                && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id)
                             }
                             listeAutresComptes={
                                 comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
