@@ -7,6 +7,8 @@ on:
     branches: [ master ]
   pull_request:
     branches-ignore: [ dependabot/** ]
+permissions:
+  contents: read
 jobs:
   build:
     # The type of runner that the job will run on
