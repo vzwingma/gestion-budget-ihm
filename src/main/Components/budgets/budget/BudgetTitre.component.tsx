@@ -1,8 +1,9 @@
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer'
-import {Box, Divider, Stack, Tooltip, Typography} from "@mui/material";
+import {Box, CircularProgress, Divider, Stack, Tooltip, Typography} from "@mui/material";
 import React, {JSX, useContext} from "react";
 import {EventOutlined} from "@mui/icons-material";
 import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider';
+import CenterComponent from '../../CenterComponent';
 
 /**
  * Page principale d'affichage du solde
@@ -42,12 +43,15 @@ const BudgetsTitre : React.FC = (): JSX.Element => {
             </Stack>
             <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
+                {budget ? 
                 <Typography variant={"h6"} width={120} textAlign={"center"} sx={{cursor: "help"}}>
                     <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true} id={'soldeAtMaintenant'}/>
-                </Typography>
+                </Typography> : 
+                <CenterComponent><CircularProgress /></CenterComponent> }
             </Tooltip>
             {
-                (budget.actif) ?
+                (budget?.actif) ?
+                <>
                     <Tooltip title={getTooltipFin()}>
                         <Box sx={{cursor: "help", height: "40px", width: "100px"}}>
                             <EventOutlined sx={{paddingTop: "8px", color: "#808080"}}/>
@@ -57,10 +61,11 @@ const BudgetsTitre : React.FC = (): JSX.Element => {
                             </Typography>
                         </Box>
                     </Tooltip>
+                    <Divider orientation="vertical" flexItem/></>
                     : <></>
             }
 
-            <Divider orientation="vertical" flexItem/>
+            
         </Stack>
     )
 };

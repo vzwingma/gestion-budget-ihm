@@ -105,7 +105,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 editOperation.libelle = value;
                 break;
             case OPERATION_EDITION_FORM.DATE_OPERATION:
-                editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
+                if(value !== null && value !== undefined && value !== "") {
+                    editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
+                }
+                else{
+                    editOperation.autresInfos.dateOperation = null
+                }
                 break;
             case OPERATION_EDITION_FORM.VALUE:
                 editOperation.valeur = value;
