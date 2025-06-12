@@ -75,12 +75,13 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate))
+        setCurrentBudget(undefined);
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
         if (selectedCompte != null) {
             getLibellesOperationsCompte(selectedCompte.id, setListeLibellesOperations);
         }
         setCurrentOperation(null);
-    }, [selectedCompte, selectedDate, handleBudgetUpdate, setCurrentOperation]);
+    }, [selectedCompte, selectedDate, handleBudgetUpdate, setCurrentOperation, setCurrentBudget]);
 
 
 
@@ -145,7 +146,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                 <Grid size={{md: 1.5}}/>
                 <Grid size={{md: 6.1}}>
                     { /** Titre **/}
-                    {currentBudget != null && selectedCompte != null ?
+                    {selectedDate != null && selectedCompte != null ?
                         <BudgetTitre />
                         :
                         <CenterComponent><CircularProgress /></CenterComponent>

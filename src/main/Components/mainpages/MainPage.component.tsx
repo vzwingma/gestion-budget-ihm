@@ -86,7 +86,8 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
     /**
      * Render de la partie gauche de la menubar
      * @returns {JSX.Element} | null
-     * @constructor
+     * @constructor actif
+     * @param fonction : fonction sélectionnée
      */
     function renderLeftTabDate(fonction: BUSINESS_ONGLETS): JSX.Element | null {
         if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.ANALYSE) {
