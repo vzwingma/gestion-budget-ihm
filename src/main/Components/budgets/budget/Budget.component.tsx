@@ -137,9 +137,11 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                             placeholder="Filtrage des opérations"
                             inputProps={{ 'aria-label': 'Filtrage des opérations' }}
                             onChange={handleOperationFilter}
+                            value={filterOperations}
+
                         />
                         <CancelRounded sx={{ color: "#D0D0D0", cursor: "pointer" }}
-                            onClick={() => setFilterOperations(null)} />
+                                       onClick={() => setFilterOperations("")}/>
 
                     </Paper>
                 </Grid>
