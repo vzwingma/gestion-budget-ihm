@@ -11,11 +11,10 @@ import { OperationsListeProps } from '../../Components.props';
  * @param operationGroupedByDate opérations groupées par date d'opérations
  * @param filterOperations filtre des opérations
  * @param listeComptes liste des comptes
- * @param onClick action lors du click
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
-  */
+ */
 const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
 
     /**
