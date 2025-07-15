@@ -10,7 +10,7 @@ import ProfileInfos from "./ProfileInfos.component";
 const Profile: React.FC = (): JSX.Element => {
 
     const auth = useAuth();
-        const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     // LogOut et redirect pour nettoyer l'URL
     function logOut() {
         auth.removeUser().then(() => {console.log("Déconnexion de l'utilisateur")});

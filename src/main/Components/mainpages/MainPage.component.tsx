@@ -1,5 +1,5 @@
 import React, {JSX, useContext, useEffect, useState} from "react";
-import { Box, Divider, Drawer, Stack } from "@mui/material";
+import { Box, Divider, Drawer, Stack, useMediaQuery, useTheme } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { BUSINESS_ONGLETS } from "../../Utils/AppBusinessEnums.constants";
 import { loadComptes } from "./MainPage.extservices";
@@ -22,7 +22,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
     const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext)!;
     const auth = useAuth();
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /** Appels WS vers pour charger la liste des comptes **/
     useEffect(() => {
         loadComptes(setListeComptes);
@@ -106,7 +106,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                     keepMounted: true,
                 }}>
                 <Stack spacing={2}>
-                    <Box sx={{ height: 80 }} />
+                    <Box sx={{ height: isMobile ? 30 : 80 }} />
 
                     {renderLeftTabDate(fonction)}
 

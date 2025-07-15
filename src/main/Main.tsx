@@ -3,7 +3,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from 'react-oidc-context';
 import { removeTokenFromStorage } from "./Services/Auth.service";
 
-import { AppBar, createTheme, CssBaseline, responsiveFontSizes, Stack, ThemeProvider, Typography, useMediaQuery } from "@mui/material";
+import { AppBar, createTheme, CssBaseline, responsiveFontSizes, Stack, ThemeProvider, Typography } from "@mui/material";
 import { OIDC_ENUM } from "./Utils/AppTechEnums.constants";
 import { BUSINESS_ONGLETS } from "./Utils/AppBusinessEnums.constants";
 import MainPage from "./Components/mainpages/MainPage.component";

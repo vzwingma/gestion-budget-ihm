@@ -1,5 +1,5 @@
 import React, {JSX} from 'react'
-import {TableCell, TableRow, Typography} from "@mui/material";
+import {TableCell, TableRow} from "@mui/material";
 import MsInfoModel from "../../Models/infos/MsInfo.model";
 /**
  * Affichage d'une tuile sur un des backend
