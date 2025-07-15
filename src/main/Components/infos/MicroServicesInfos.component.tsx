@@ -11,8 +11,7 @@ import MsInfoModel from "../../Models/infos/MsInfo.model";
 const MicroServicesInfos: React.FC<MsInfoModel> = ({nom, version}): JSX.Element => {
     return (
         <TableRow>
-            <TableCell><Typography variant={"subtitle2"}>{nom}</Typography></TableCell>
-            <TableCell><Typography variant={"body2"}>{version}</Typography></TableCell>
+            <TableCell>{nom}</TableCell> <TableCell>{version}</TableCell>
         </TableRow>
     )
 };

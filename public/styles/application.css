@@ -1,44 +1,185 @@
-/* Body */
-body {
-    padding: 1px;
+/**
+___  ___      _     _ _
+|  \/  |     | |   (_) |
+| .  . | ___ | |__  _| | ___
+| |\/| |/ _ \| '_ \| | |/ _ \
+| |  | | (_) | |_) | | |  __/
+\_|  |_/\___/|_.__/|_|_|\___|
+*/
+
+/* Styles for mobile devices */
+@media only screen and (max-width: 1300px) {
+    body {
+        padding: 1px;
+    }
+
+    .App {
+        font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+        font-size: 10px !important;
+        padding-top: 40px;
+    }
+
+    .appBar {
+        height: 44px;
+    }
+
+    .favicon {
+        height: 40px;
+        margin: 2px;
+        width: 40px;
+    }
+
+    h3 {
+        font-size: 1.8rem !important;
+    }
+
+    /**
+Style Top Menu
+ */
+    a.nav-link {
+        color: white;
+        display: inline-block;
+        flex-grow: 1;
+        font-size: 1rem;
+        font-weight: 700;
+        height: 41px;
+        line-height: 3;
+        margin-top: 12px;
+        text-align: center;
+        text-decoration: none;
+        width: 200px;
+    }
+
+    a.nav-link_selected {
+        background-color: #121212;
+        border-radius: 20px 20px 0 0;
+        border-top: 4px solid #272727;
+        color: #1976d2;
+        display: inline-block;
+        flex-grow: 1;
+        font-size: 1rem;
+        font-weight: 700;
+        height: 44px;
+        line-height: 2.5;
+        text-align: center;
+        text-decoration: none;
+        width: 200px;
+    }
 }
 
-.App {
-    padding-top: 60px;
-    font-size: 14px !important;
-    font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+/**
+______          _    _
+|  _  \        | |  | |
+| | | |___  ___| | _| |_ ___  _ __
+| | | / _ \/ __| |/ / __/ _ \| '_ \
+| |/ /  __/\__ \   <| || (_) | |_) |
+|___/ \___||___/_|\_\\__\___/| .__/
+                             | |
+                             |_|
+/* Styles for desktop devices */
+@media only screen and (min-width: 1301px) {
+    body {
+        padding: 1px;
+    }
+
+    .App {
+        font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+        font-size: 14px !important;
+        padding-top: 60px;
+    }
+
+    .appBar {
+        height: 66px;
+    }
+
+    .favicon {
+        height: 60px !important;
+        margin: 2px;
+        width: 60px !important;
+    }
+
+    h3 {
+        color: #31687f;
+    }
+
+    /**
+Style Top Menu
+ */
+    a.nav-link {
+        color: white;
+        display: inline-block;
+        flex-grow: 1;
+        font-size: 1.25rem;
+        font-weight: 700;
+        height: 62px;
+        line-height: 3.5;
+        margin-right: 0.625%;
+        margin-top: 10px;
+        text-align: center;
+        text-decoration: none;
+        width: 250px;
+    }
+
+    a.nav-link_selected {
+        background-color: #121212;
+        border-radius: 20px 20px 0 0;
+        border-top: 4px solid #272727;
+        color: #1976d2;
+        display: inline-block;
+        flex-grow: 1;
+        font-size: 1.25rem;
+        font-weight: 700;
+        height: 66px;
+        line-height: 3.5;
+        margin-right: 0.625%;
+        text-align: center;
+        text-decoration: none;
+        width: 250px;
+    }
 }
 
+/**
+ _____
+/  __ \
+| /  \/ ___  _ __ ___  _ __ ___   ___  _ __
+| |    / _ \| '_ ` _ \| '_ ` _ \ / _ \| '_ \
+| \__/\ (_) | | | | | | | | | | | (_) | | | |
+ \____/\___/|_| |_| |_|_| |_| |_|\___/|_| |_|
+ */
 /* Label */
-h3, h6, .MuiTypography-h6 {
+h6,
+.MuiTypography-h6 {
     color: #31687f;
 }
 
-
-/** Style pour les budgets **/
+/** Style pour les budgets */
 /* button Créer & Réinit & Close/Open */
-button.buttonsActionsBudget {
+.buttonsActionsBudget {
     color: #FFFFFF;
-    padding: 10px 10px 5px 10px;
     margin-right: 2px;
     margin-top: 8px;
+    padding: 10px 10px 5px 10px;
 }
 
 /* boutons actions sur opérations*/
-button.buttonsActionsOperations {
+.buttonsActionsOperations {
     color: #FFFFFF;
+    margin-right: 1px;
     padding: 5px 5px 0 5px;
-    margin-right: 1px;
 }
 
-button.buttonsActionsOperationsP {
+.buttonsActionsOperationsP {
     color: #FFFFFF;
-    padding: 5px 6px 0 4px;
     margin-right: 1px;
+    padding: 5px 6px 0 4px;
 }
-
 
 /* Couleurs des opérations */
+.text-ANNULEE {
+    font-style: italic;
+    text-decoration-line: line-through;
+}
+
 .text-CREDIT {
     color: #2e7d32 !important;
 }
@@ -47,37 +188,31 @@ button.buttonsActionsOperationsP {
     color: #e74c3c !important;
 }
 
-.text-ANNULEE {
-    font-style: italic;
-    text-decoration-line: line-through;
-}
-
 /** Bouton action sur les opérations **/
-.color_REALISEE {
-    background-color: #2e7d32 !important;
-}
-
-.color_PREVUE {
-    background-color: #ed6c02 !important;
-}
-
 .color_ANNULEE {
     background-color: #ebebeb !important;
     color: #121212 !important;
-}
-
-.color_SUPPRIMEE {
-    background-color: #ed1b24 !important;
-}
-
-.color_REPORTEE {
-    background-color: #9c27b0 !important;
 }
 
 .color_PLANIFIEE {
     background-color: #0288d1 !important;
 }
 
+.color_PREVUE {
+    background-color: #ed6c02 !important;
+}
+
+.color_REALISEE {
+    background-color: #2e7d32 !important;
+}
+
+.color_REPORTEE {
+    background-color: #9c27b0 !important;
+}
+
+.color_SUPPRIMEE {
+    background-color: #ed1b24 !important;
+}
 
 .editableField {
     cursor: pointer;
@@ -92,8 +227,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
  */
 .listeItem {
     height: 68px;
-    margin-top: 5px;
     margin-bottom: 5px;
+    margin-top: 5px;
     padding: 10px;
 }
 
@@ -105,66 +240,35 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .listeItemSeparator {
     background-color: #252525 !important;
-    padding: 10px;
     color: #31687f;
-}
-
-/**
-Style Top Menu
- */
-a.nav-link {
-    color: white;
-    outline: none;
-    text-decoration: none;
-    display: inline-block;
-    width: 250px;
-    margin-right: 0.625%;
-    margin-top: 10px;
-    text-align: center;
-    line-height: 3.5;
-    height: 62px;
-}
-
-a.nav-link_selected {
-    color: #1976d2;
-    background-color: #121212;
-    border-radius: 20px 20px 0 0;
-    outline: none;
-    text-decoration: none;
-    display: inline-block;
-    width: 250px;
-    margin-right: 0.625%;
-    border-top: 4px solid #272727;
-    text-align: center;
-    line-height: 3.5;
-    height: 66px;
-}
-
-a.nav-link_selected:hover {
-    color: #114b65;
+    padding: 10px;
 }
 
 a.nav-link:hover {
     color: #114b65;
 }
 
+a.nav-link_selected:hover {
+    color: #114b65;
+}
+
 /*
  * Style Center component
  */
+.child {
+    margin: 0 auto;
+}
+
 .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.child {
-    margin: 0 auto;
-}
-
 .filtercategorie {
     margin-top: -5px;
 }
 
-.filtercategorie > span {
+.filtercategorie>span {
     font-size: 14px;
 }

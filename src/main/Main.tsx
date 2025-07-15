@@ -3,7 +3,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from 'react-oidc-context';
 import { removeTokenFromStorage } from "./Services/Auth.service";
 
-import { AppBar, createTheme, CssBaseline, Stack, ThemeProvider, Typography } from "@mui/material";
+import { AppBar, createTheme, CssBaseline, responsiveFontSizes, Stack, ThemeProvider, Typography, useMediaQuery } from "@mui/material";
 import { OIDC_ENUM } from "./Utils/AppTechEnums.constants";
 import { BUSINESS_ONGLETS } from "./Utils/AppBusinessEnums.constants";
 import MainPage from "./Components/mainpages/MainPage.component";
@@ -34,28 +34,29 @@ export default class Main extends Component {
     render() {
         removeTokenFromStorage();
 
-        const darkTheme = createTheme({
+        let darkTheme = createTheme({
             palette: {
                 mode: 'dark',
             },
         });
+        darkTheme = responsiveFontSizes(darkTheme);
+         
 
         return (
             <HashRouter>
                 <AuthProvider {...this.oidcConfig}>
                     <ThemeProvider theme={darkTheme}>
                         <CssBaseline />
-                        <AppBar position={"fixed"} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, height: "66px" }}>
+                        <AppBar position={"fixed"} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1}} className="appBar">
                             <Stack direction="row" alignItems="flex-start" spacing={1}>
-                                <img src="/img/favicon64.png" width="60" height="60" style={{ margin: "2px" }}
-                                    alt="Gestion de budgets" />
+                                <img src="/img/favicon64.png" className="favicon" alt="Gestion de budgets" />
                                 <Typography variant="h6" component="div" noWrap
-                                    sx={{ flexGrow: 1, fontWeight: 700, fontSize: "1.2rem" }}>
+                                    sx={{ flexGrow: 1}}>
                                     <PrivateNavLinks />
                                 </Typography>
                                 <Typography variant="h6" noWrap component="div"
                                     sx={{
-                                        mr: 2, display: { xs: 'none', md: 'flex' },
+                                        mr: 2, display: { md: 'flex', lg: 'flex'  },
                                         fontWeight: 300,
                                         fontSize: "1rem",
                                         color: 'inherit',
