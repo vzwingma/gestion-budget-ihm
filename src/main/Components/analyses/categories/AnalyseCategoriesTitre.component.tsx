@@ -1,5 +1,5 @@
-import {Divider, Stack, Tooltip, Typography} from "@mui/material";
-import React from "react";
+import {Divider, Stack, Tooltip, Typography, useMediaQuery, useTheme} from "@mui/material";
+import React, {JSX} from "react";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import {AnalyseTitreProps} from "../../Components.props";
 
@@ -18,7 +18,7 @@ const AnalyseTitre: React.FC<AnalyseTitreProps> = ({
                                                        totalOperations
                                                    }: AnalyseTitreProps): JSX.Element => {
 
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
      * Obtient le tooltip pour la date d'aujourd'hui
      * @returns {string} - La date d'aujourd'hui formatée
@@ -34,19 +34,22 @@ const AnalyseTitre: React.FC<AnalyseTitreProps> = ({
 
             <Divider orientation="vertical" flexItem/>
             <Tooltip title={getTooltipAuj()}>
-                <Typography variant={"h6"} width={195} textAlign={"right"} sx={{cursor: "help"}}>
+                <Typography variant={"h6"} textAlign={"right"} sx={{cursor: "help"}} width={isMobile ? 250 : 335}>
                     <OperationValue id={"graphCategories"} valueOperation={totalOperations} showSign={true}/>
                 </Typography>
             </Tooltip>
             <Divider orientation="vertical" flexItem/>
-            <Stack direction={"row"} paddingLeft={45}>
-                <img src={"/img/banques/" + currentCompte.itemIcon} width={50} height={50} alt={currentCompte.libelle}/>
-                <Stack direction={"column"}>
-                    <Typography variant={"h6"} component="div" width={300} textAlign={"center"}>
+            <Stack direction={"row"} paddingLeft={isMobile ? 10 : 80}>
+                <img src={"/img/banques/" + currentCompte.itemIcon} className={"compteIcon"}
+                     alt={currentCompte.libelle}/>
+                <Stack direction={isMobile ? "row" : "column"}>
+                    <Typography variant={"h6"} component="div" width={isMobile ? 200 : 400} textAlign={"center"}
+                                sx={{alignContent: "center", justifyContent: "center"}}>
                         {currentCompte.libelle}
                     </Typography>
-                    <Typography variant={"caption"} sx={{color: "#808080"}} component="div" width={300}
-                                textAlign={"center"}>
+                    <Typography variant={"caption"}
+                                sx={{alignContent: "center", justifyContent: "center", color: "grey"}} component="div"
+                                width={isMobile ? 100 : 400} textAlign={isMobile ? "left" : "center"}>
                         {currentDate.toLocaleString('default', {month: 'long'}) + " " + currentDate.getFullYear()}
                     </Typography>
                 </Stack>

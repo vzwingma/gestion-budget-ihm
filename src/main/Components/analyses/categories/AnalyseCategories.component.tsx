@@ -1,6 +1,6 @@
 import React, {JSX, useEffect, useState} from "react";
 
-import {Box, Chip, CircularProgress, Divider, Grid, Stack, Switch} from "@mui/material";
+import {Box, Chip, CircularProgress, Divider, Grid, Stack, Switch, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import GraphAnalyses from "./graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseCategoriesTitre.component";
@@ -32,7 +32,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
     const [resumeSelectedCategorie, setResumeSelectedCategorie] = useState<AnalyseCategoriesModel | null>(null);
     const [resumeSelectedSsCategorie, setResumeSelectedSsCategorie] = useState<AnalyseCategoriesModel | null>(null);
     const [selectedTypeAnalyse, setSelectedTypeAnalyse] = useState<string>("REALISEE_DEPENSE");
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /** Chargement des catégories **/
     useEffect(() => {
         loadBudget(selectedCompte, selectedDate, handleDataCalculationResult);
@@ -77,10 +77,10 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
 
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={"true"}>
-            <Grid container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid size={{md: 1.5}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
-                                                 fontSize={"large"}/></Grid>
-                <Grid size={{md: 7.5}}>
+            <Grid container marginTop={1}>
+                <Grid size={{md: 0.5, xl: 1.5}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                                                          fontSize={"large"}/></Grid>
+                <Grid size={{md: 7.5, xl: 7.5}}>
                     {
                         currentBudget !== null && totauxGroupedByEtat !== null && selectedCompte !== null ?
                             <AnalyseTitre currentCompte={selectedCompte}
@@ -89,17 +89,25 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                             <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid>
-                <Grid size={{md: 3}}>
-                    <Stack direction={"row-reverse"} alignItems={"end"} style={{ position: "relative",  top: "50%", transform: "translateY(-50%)"}}>
-                        <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"} style={{ height: 40}}/>
-                        <Switch onClick={e => selectTypeOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
-                        <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"} style={{ height: 40, marginLeft: 10}} />
+                <Grid size={{md: 4, xl: 3}} sx={{overflow: "hidden"}}>
+                    <Stack direction={"row-reverse"} alignItems={"end"}
+                           style={{position: "relative", top: "45%", transform: "translateY(-50%)"}}>
+                        <Chip label={"Crédit"} variant="outlined" size={isMobile ? "small" : "medium"}
+                              className={"text-CREDIT"} style={{height: isMobile ? 20 : 40}}/>
+                        <Switch onClick={e => selectTypeOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)}
+                                size={isMobile ? "small" : "medium"}/>
+                        <Chip label={" Débit"} variant="outlined" size={isMobile ? "small" : "medium"}
+                              className={"text-DEPENSE"} style={{height: isMobile ? 20 : 40, marginLeft: 10}}/>
 
-                        <Chip label={"Réalisée"} variant="outlined"
-                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE) }} style={{ height: 40}} />
-                        <Switch defaultChecked onClick={e => selectEtatOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
-                        <Chip label={"Prévue"} variant="outlined"
-                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE) }} style={{ height: 40}} />
+                        <Chip label={"Réalisée"} variant="outlined" size={isMobile ? "small" : "medium"}
+                              sx={{color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE)}}
+                              style={{height: isMobile ? 20 : 40}}/>
+                        <Switch defaultChecked
+                                onClick={e => selectEtatOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)}
+                                size={isMobile ? "small" : "medium"}/>
+                        <Chip label={"Prévue"} variant="outlined" size={isMobile ? "small" : "medium"}
+                              sx={{color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE)}}
+                              style={{height: isMobile ? 20 : 40}}/>
                     </Stack>
                 </Grid>
             </Grid>
