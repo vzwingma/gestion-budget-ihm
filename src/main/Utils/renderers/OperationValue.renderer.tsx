@@ -40,6 +40,7 @@ interface OperationValueProps {
  * @param id
  * @param valueOperation : number valeur de l'opération
  * @param showSign : boolean affichage du signe
+ * @param operation : OperationModel opération
  * @returns {JSX.Element} JSX
  * @constructor
  */

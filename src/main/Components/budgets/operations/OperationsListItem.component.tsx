@@ -23,7 +23,7 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
     return (
         <Box key={"liste_" + operation.id}
              onClick={() => handleOperationSelect(operation)}>
-            <Grid container spacing={6} height={isMobile ? 45 : 70} alignItems="center">
+            <Grid container spacing={6} height={isMobile ? 60 : 90} alignItems="center">
                 <Grid size={{md: 0.5, xl: 1}} sx={{paddingLeft: '10px'}}>
                     <Box width={isMobile ? 38 : 50} height={isMobile ? 38 : 50}
                          sx={{

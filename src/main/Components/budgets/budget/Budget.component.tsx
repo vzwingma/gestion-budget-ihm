@@ -19,6 +19,7 @@ import {BudgetPageProps} from "../../Components.props";
 import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
 import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model";
+import BudgetSoldes from "./BudgetSoldes.component";
 
 
 /**
@@ -120,12 +121,12 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={'true'}>
             <Grid container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid size={{md: 0.5, xl: 0.5}}>
+                <Grid size={{md: 0.6, xl: 0.4}}>
                     <MenuIcon onClick={onOpenMenu}
                         className={"editableField"}
                         fontSize={"large"} />
                 </Grid>
-                <Grid size={{md: 3.5, xl: 3}} paddingTop={"6px"}>
+                <Grid size={{md: 2.8, xl: 2}} paddingTop={"6px"}>
                     <Paper component="form"
                         sx={{
                             p: '2px 4px',
@@ -143,13 +144,25 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                             size={isMobile ? "small" : "medium"}
 
                         />
-                        <CancelRounded sx={{ color: "#D0D0D0", cursor: "pointer" }}
+                        <CancelRounded sx={{
+                            color: "#D0D0D0",
+                            cursor: "pointer",
+                            width: isMobile ? "16px" : "20px",
+                            height: isMobile ? "16px" : "20px"
+                        }}
                                        onClick={() => setFilterOperations("")}/>
 
                     </Paper>
                 </Grid>
-                <Grid size={{md: 1, xl: 1.5}}/>
-                <Grid size={{md: 6, xl: 6}}>
+                <Grid size={{md: 1.6, xl: 1.6}}>
+                    { /** Titre **/}
+                    {selectedDate != null && selectedCompte != null ?
+                        <BudgetSoldes/>
+                        :
+                        <CenterComponent><CircularProgress/></CenterComponent>
+                    }
+                </Grid>
+                <Grid size={{md: 6, xl: 7}}>
                     { /** Titre **/}
                     {selectedDate != null && selectedCompte != null ?
                         <BudgetTitre />
