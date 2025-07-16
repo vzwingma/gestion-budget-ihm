@@ -3,6 +3,8 @@ import {v4} from 'uuid';
 import {API_GW_ENUM} from '../Utils/AppTechEnums.constants';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
 
+let alreadyTraced: boolean = false;
+
 
 /**
  * Log Out de la session si les tokens sont expirés
@@ -50,11 +52,11 @@ function evaluateBody(body?: any): string|null {
  * Log de l'authentification
  */
 function logAuth(): void {
-    if (process.env.REACT_APP_CONFIG_DEBUG) {
+    if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
         console.log("[WS] > [X-Api-Key] : " + API_GW_ENUM.API_KEY);
         console.log("[WS] > [Bearer] : " + getOAuthToken());
         if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
-            console.log("[WS] <> [Bearer]");
+            alreadyTraced = true;
         }
     }
 }
