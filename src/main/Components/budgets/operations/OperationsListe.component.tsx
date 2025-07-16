@@ -1,9 +1,9 @@
 import React, {JSX} from 'react'
-import {Container, Divider, Stack} from "@mui/material";
+import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
 import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';
 import OperationModel from '../../../Models/budgets/Operation.model';
-import { OperationsListeProps } from '../../Components.props';
+import {OperationsListeProps} from '../../Components.props';
 
 
 /**
@@ -16,7 +16,8 @@ import { OperationsListeProps } from '../../Components.props';
  *
  */
 const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const listHeight = isMobile ? window.innerHeight - 115 : window.innerHeight - 175;
     /**
      * Iterate groupe
      * @param operationGroupedByDate
@@ -54,7 +55,7 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
 
 
     return <Stack divider={<Divider orientation="horizontal"/>}
-                  sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
+                  sx={{overflowY: "auto", overflowX: "hidden", height: listHeight}}>
         {  iterate(operationGroupedByDate) }
     </Stack>
 };

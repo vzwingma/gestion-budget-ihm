@@ -52,6 +52,10 @@ ___  ___      _     _ _
     .MuiTypography-caption {
         font-size: 0.6rem !important;
     }
+
+    .MuiInputBase-inputSizeSmall {
+        font-size: 0.8rem !important;
+    }
     /**
 Style Top Menu
  */
@@ -96,8 +100,10 @@ Style Top Menu
         background-color: #252525 !important;
         color: #31687f;
         padding: 3px;
+        font-size: 11px;
     }
 
+    /** Analyse - filtre par catégorie **/
 
     .filtercategorie {
         margin-top: -5px;
@@ -106,6 +112,30 @@ Style Top Menu
 
     .filtercategorie > span {
         font-size: 10px;
+    }
+
+    /**
+    Budget
+     */
+    /* button Créer & Réinit & Close/Open */
+    button.buttonsActionsBudget {
+        color: #FFFFFF;
+        margin-right: 2px;
+        margin-top: 2px;
+        padding: 5px 5px 0 5px;
+    }
+
+    /* boutons actions sur opérations*/
+    button.buttonsActionsOperations {
+        color: #FFFFFF;
+        margin-right: 1px;
+        padding: 5px 5px 0 5px;
+    }
+
+    button.buttonsActionsOperationsP {
+        color: #FFFFFF;
+        margin-right: 1px;
+        padding: 5px 6px 0 4px;
     }
 }
 
@@ -206,13 +236,35 @@ Style Top Menu
         padding: 10px;
     }
 
-
+    /** Analyse - checkbox filtre par catégorie */
     .filtercategorie {
         margin-top: -5px;
     }
 
     .filtercategorie > span {
         font-size: 12px;
+    }
+
+
+    /* button Créer & Réinit & Close/Open */
+    button.buttonsActionsBudget {
+        color: #FFFFFF;
+        margin-right: 2px;
+        margin-top: 8px;
+        padding: 10px 10px 5px 10px;
+    }
+
+    /* boutons actions sur opérations*/
+    button.buttonsActionsOperations {
+        color: #FFFFFF;
+        margin-right: 1px;
+        padding: 5px 5px 0 5px;
+    }
+
+    button.buttonsActionsOperationsP {
+        color: #FFFFFF;
+        margin-right: 1px;
+        padding: 5px 6px 0 4px;
     }
 }
 
@@ -226,26 +278,6 @@ Style Top Menu
 
 
 /** Style pour les budgets */
-/* button Créer & Réinit & Close/Open */
-.buttonsActionsBudget {
-    color: #FFFFFF;
-    margin-right: 2px;
-    margin-top: 8px;
-    padding: 10px 10px 5px 10px;
-}
-
-/* boutons actions sur opérations*/
-.buttonsActionsOperations {
-    color: #FFFFFF;
-    margin-right: 1px;
-    padding: 5px 5px 0 5px;
-}
-
-.buttonsActionsOperationsP {
-    color: #FFFFFF;
-    margin-right: 1px;
-    padding: 5px 6px 0 4px;
-}
 
 /* Couleurs des opérations */
 .text-ANNULEE {

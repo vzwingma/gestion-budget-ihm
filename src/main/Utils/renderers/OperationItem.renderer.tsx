@@ -60,17 +60,18 @@ export function getPeriodeRenderer(periodeKey : PERIODES_MENSUALITE_ENUM) {
  * @param {string} operationLibelle : string libellé
  * @param {CompteBancaireModel[]} listeComptes : array : liste des comptes
  * @param {boolean} maxVue : boolean hauteur max de la vue
+ * @param isMobile
  * @returns JSX.Element
  */
-export function getOperationLibelle(operationLibelle : string, listeComptes : CompteBancaireModel[], maxVue : boolean): JSX.Element {
+export function getOperationLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[], maxVue: boolean, isMobile?: boolean): JSX.Element {
 
     if (operationLibelle !== null) {
         if (operationIsIntercompteFromLibelle(operationLibelle)) {
-            return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue)
+            return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue, isMobile)
         } else if (operationLibelle.startsWith(EN_RETARD)) {
-            return getOperationEnRetardLibelle(operationLibelle)
+            return getOperationEnRetardLibelle(operationLibelle, isMobile)
         } else {
-            return getOperationLibelleWithComment(operationLibelle);
+            return getOperationLibelleWithComment(operationLibelle, isMobile);
         }
 
     }
@@ -80,9 +81,10 @@ export function getOperationLibelle(operationLibelle : string, listeComptes : Co
 /**
  * Libellé d'une opération avec des commentaires (-)
  * @param {string} operationLibelle libellé des opérations
+ * @param isMobile si on est en mode mobile
  * @returns {JSX.Element} élément graphique
  */
-function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
+function getOperationLibelleWithComment(operationLibelle: string, isMobile?: boolean): JSX.Element {
 
     let operationLibelleParts = operationLibelle.split('-') ?? [];
     if (operationLibelleParts.length > 1) {
@@ -91,7 +93,7 @@ function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
             libelle += operationLibelleParts[i] + " ";
         }
         return <><span>{operationLibelleParts[0]}</span><span
-            style={{color: "grey", fontSize: "medium", fontStyle: "italic"}}>{libelle}</span></>
+            style={{color: "grey", fontSize: isMobile ? "small" : "medium", fontStyle: "italic"}}>{libelle}</span></>
     } else {
         return <span>{operationLibelle}</span>;
     }
@@ -105,10 +107,11 @@ function getOperationLibelleWithComment(operationLibelle: string): JSX.Element {
  * @param {string} operationLibelle : string libellé
  * @param {CompteBancaireModel[]} listeComptes : array : liste des comptes
  * @param {boolean} maxVue  hauteur max de la vue
+ * @param isMobile
  * @returns {*|JSX.Element}
  */
-export function getOperationIntercompteLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[], maxVue: boolean): JSX.Element {
-    return getOperationIntercompteLabel(operationLibelle, true, listeComptes, maxVue)
+export function getOperationIntercompteLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[], maxVue: boolean, isMobile ?: boolean): JSX.Element {
+    return getOperationIntercompteLabel(operationLibelle, true, listeComptes, maxVue, isMobile)
 }
 
 
@@ -118,18 +121,19 @@ export function getOperationIntercompteLibelle(operationLibelle: string, listeCo
  * @param isLabelOperation : boolean : est-ce un label d'opération à afficher ? sinon c'est le libellé du compte
  * @param listeComptes : CompteBancaireModel[] liste des comptes
  * @param maxVue : boolean :vue max de l'icone
+ * @param isMobile
  */
-function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation: boolean, listeComptes: CompteBancaireModel[], maxVue: boolean): JSX.Element {
+function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation: boolean, listeComptes: CompteBancaireModel[], maxVue: boolean, isMobile?: boolean): JSX.Element {
     const operationLibelleParts = INTERCOMPTE_LIBELLE_REGEX.exec(operationLibelle);
     if(operationLibelleParts == null) {
-        return getOperationLibelleWithComment(operationLibelle);
+        return getOperationLibelleWithComment(operationLibelle, isMobile);
     }
     else{
         const compte : CompteBancaireModel = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))[0]
         if (compte?.libelle) {
-            return getOperationIntercompteLibelleWithIconAndComment(operationLibelle, compte, operationLibelleParts, isLabelOperation, maxVue);
+            return getOperationIntercompteLibelleWithIconAndComment(operationLibelle, compte, operationLibelleParts, isLabelOperation, maxVue, isMobile);
         } else {
-            return getOperationLibelleWithComment(operationLibelle);
+            return getOperationLibelleWithComment(operationLibelle, isMobile);
         }
     }
 }
@@ -141,21 +145,26 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
  * @param operationLibelleParts partie du libellé
  * @param isLabelOperation est ce un label d'opération
  * @param maxVue taille max de l'icone
+ * @param isMobile
  * @returns représentation graphique
  */
-function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: string, compte: CompteBancaireModel, operationLibelleParts: string[], isLabelOperation: boolean, maxVue: boolean): JSX.Element {
+function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: string, compte: CompteBancaireModel, operationLibelleParts: string[], isLabelOperation: boolean, maxVue: boolean, isMobile?: boolean): JSX.Element {
     const direction = operationLibelleParts[1]
     const label = direction + " " + compte.libelle;
     return <Tooltip title={"Transfert intercompte " + label}>
             <Box>
                 {operationLibelle.startsWith(EN_RETARD) && isLabelOperation ?
-                    <WatchLaterRounded sx={{color: "#A0A0A0"}}/> : <></>}
-
+                    <WatchLaterRounded sx={{
+                        color: "#A0A0A0",
+                        width: isMobile ? "16px" : "22px",
+                        height: isMobile ? "16px" : "22px",
+                        marginRight: "4px"
+                    }}/> : <></>}
                 <img src={"/img/banques/" + compte.itemIcon}
                     width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                     alt={compte.libelle}
                     style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
-                {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3]) : label}
+                {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3], isMobile) : label}
             </Box>
         </Tooltip>
 }
@@ -174,9 +183,15 @@ export function getOperationIntercompteCatLibelle(operationLibelle: string, list
 /**
  * Ajout de l'icone quand en retard
  * @param operationLibelle
+ * @param isMobile
  * @returns {JSX.Element}
  */
-function getOperationEnRetardLibelle(operationLibelle: string): JSX.Element {
+function getOperationEnRetardLibelle(operationLibelle: string, isMobile?: boolean): JSX.Element {
     return <><WatchLaterRounded
-        sx={{color: "#A0A0A0"}}/>{getOperationLibelleWithComment(operationLibelle.replace(EN_RETARD, ""))}</>
+        sx={{
+            color: "#A0A0A0",
+            width: isMobile ? "16px" : "22px",
+            height: isMobile ? "16px" : "22px",
+            marginRight: "4px"
+        }}/>{getOperationLibelleWithComment(operationLibelle.replace(EN_RETARD, ""), isMobile)}</>
 }
