@@ -42,12 +42,13 @@ const Profile: React.FC = (): JSX.Element => {
     // referrerPolicy="no-referrer"
     if (auth.isAuthenticated) {
         putTokenInStorage(auth.user?.id_token)
-        
+
 
         return (
             <>
                 <Typography variant={"caption"} component="div"
-                            sx={{flexGrow: 10, marginLeft: "20px", marginTop: isMobile ? "2px" :"15px"}} align={"right"}>
+                            sx={{flexGrow: 10, marginLeft: "20px", justifyContent: "center", alignContent: "center"}}
+                            align={"right"}>
                     <ProfileInfos/>
                 </Typography>
                 <Typography variant={"subtitle1"} component="div" sx={{flexGrow: 10, marginLeft: "20px"}}
@@ -55,8 +56,7 @@ const Profile: React.FC = (): JSX.Element => {
                     <Tooltip title={auth.user?.profile.name}>
                         <Avatar onClick={logOut} src={auth.user?.profile.picture}
                                 className="favicon" alt="User loggé"
-                                imgProps={{referrerPolicy: "no-referrer"}}
-                                />
+                                slotProps={{img: {referrerPolicy: "no-referrer"}}}/>
                     </Tooltip>
                 </Typography>
             </>

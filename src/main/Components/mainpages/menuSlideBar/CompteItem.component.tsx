@@ -3,8 +3,7 @@ import {CircularProgress, Container, Stack, Typography} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
 import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants";
 import {getSoldesBudget} from './CompteItem.controller';
-import { CompteItemProps } from '../../Components.props';
-
+import {CompteItemProps} from '../../Components.props';
 
 
 /**
@@ -40,7 +39,7 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
     function renderValueCompte(): JSX.Element {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
             if(soldes !== undefined){
-                return <Typography variant={"caption"} width={120} sx={{cursor: "help"}}>
+                return <Typography variant={"subtitle1"} width={120} sx={{cursor: "help"}}>
                             <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id}/>
                         </Typography>
             }
@@ -60,7 +59,7 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
         <Container className={"listeItem"}
                    onClick={() => handleCompteChange(compte)}>
             <Stack direction={"row"} spacing={5}>
-                <img src={"/img/banques/" + compte.itemIcon} width={50} height={50} alt={compte.libelle}
+                <img src={"/img/banques/" + compte.itemIcon} className={"compteListIcon"} alt={compte.libelle}
                      key={"img_" + compte.id}/>
                 <Stack direction={"column"}>
                     <Typography variant={"h6"} key={"lib_" + compte.id}>

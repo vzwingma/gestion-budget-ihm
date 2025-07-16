@@ -33,7 +33,7 @@ export const Infos: React.FC = () => {
     /** Phase de Render à partir de la liste de statuts  **/
     return (
         <CenterComponent>
-            <Table size={"small"}>
+            <Table size={isMobile ? "small" : "medium"}>
                 <TableHead>
                     <TableRow>
                         <TableCell colSpan={2}>

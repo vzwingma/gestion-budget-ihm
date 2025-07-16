@@ -68,7 +68,8 @@ const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({   r
 
     return (
         <Box key={"liste_" + resumeCategorie.categorie.id}
-             className={"listeItem"} onMouseOver={() => selectCategorie()} onClick={() => setOpenTooltip(true)}>
+             className={"listeCategorieItem"} onMouseOver={() => selectCategorie()}
+             onClick={() => setOpenTooltip(true)}>
             <HtmlTooltip
                 title={
                     <React.Fragment>
