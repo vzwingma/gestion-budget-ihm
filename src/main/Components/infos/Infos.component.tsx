@@ -22,6 +22,9 @@ import CenterComponent from "../../Components/CenterComponent";
 export const Infos: React.FC = () => {
 
     const [infos, setInfos] = useState<MsInfoModel[]>([]);
+    const [infoVersion, setInfoVersion] = useState<boolean>(false);
+
+
     /** Appels WS vers /actuator/info pour tous les µS **/
     useEffect(() => {
         getInfosFromMicroServices(setInfos);
@@ -52,16 +55,17 @@ export const Infos: React.FC = () => {
                             <CenterComponent>
                                 <img src="/img/icon.png" width={isMobile ? "205" : "450"}
                                      height={isMobile ? "193" : "425"} style={{margin: "10px"}}
-                                    className="d-inline-block align-middle" alt="Gestion de budgets" />
+                                     className="d-inline-block align-middle" alt="Gestion de budgets"
+                                     onClick={() => setInfoVersion(!infoVersion)}/>
                             </CenterComponent>
                         </TableCell>
                     </TableRow>
-
+                    {infoVersion &&
                     <MicroServicesInfos
                         key='ihm' nom='IHM'
-                        version={process.env.REACT_APP_BUDGET_VERSION} />
+                        version={process.env.REACT_APP_BUDGET_VERSION}/>}
 
-                    {infos.map((msInfos) => (
+                    {infoVersion && infos.map((msInfos) => (
                         <MicroServicesInfos
                             key={msInfos.nom} nom={msInfos.nom}
                             version={msInfos.version} />

@@ -1,9 +1,7 @@
 /** Client HTTP **/
-import { v4 } from 'uuid';
-import { API_GW_ENUM } from '../Utils/AppTechEnums.constants';
+import {v4} from 'uuid';
+import {API_GW_ENUM} from '../Utils/AppTechEnums.constants';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
-
-let alreadyTraced: boolean = false;
 
 
 /**
@@ -52,11 +50,11 @@ function evaluateBody(body?: any): string|null {
  * Log de l'authentification
  */
 function logAuth(): void {
-    if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
+    if (process.env.REACT_APP_CONFIG_DEBUG) {
         console.log("[WS] > [X-Api-Key] : " + API_GW_ENUM.API_KEY);
         console.log("[WS] > [Bearer] : " + getOAuthToken());
         if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
-            alreadyTraced = true;
+            console.log("[WS] <> [Bearer]");
         }
     }
 }
@@ -92,7 +90,7 @@ export async function call(httpMethod: string, uri: string, path: string, params
             body: jsonBody
         })
         .then(res => {
-            
+
             if (res.status >= 200 && res.status < 300) {
                 return res.json();
             } else if (res.status === 403) {

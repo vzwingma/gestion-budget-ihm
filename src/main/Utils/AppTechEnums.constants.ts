@@ -65,7 +65,7 @@ export const SERVICES_URL: {
     UTILISATEURS: { ACCESS_DATE: string; USERS_PREFS: string; };
 } = {
     INFOS: {
-        GET_INFO: "/_info"
+        GET_INFO: "/_info?t={{}}"
     },
     COMPTES: {
         GET_ALL: "/tous"

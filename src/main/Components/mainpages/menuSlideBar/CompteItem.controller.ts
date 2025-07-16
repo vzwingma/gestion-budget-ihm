@@ -1,12 +1,13 @@
 import * as ClientHTTP from "../../../Services/ClientHTTP.service";
 import * as AppConstants from "../../../Utils/AppTechEnums.constants";
 import CompteBancaireModel from '../../../Models/budgets/CompteBancaire.model';
+import {Dispatch, SetStateAction} from "react";
 
 
 /**
  Get SOLDES du budget depuis le back-end
  **/
-export function getSoldesBudget(compte: CompteBancaireModel, selectedDate: Date, setSoldes: React.Dispatch<React.SetStateAction<number | null | undefined>>) {
+export function getSoldesBudget(compte: CompteBancaireModel, selectedDate: Date, setSoldes: Dispatch<SetStateAction<number | null | undefined>>) {
     if (compte != null && selectedDate != null) {
         ClientHTTP.call(AppConstants.METHODE_HTTP.GET,
             AppConstants.BACKEND_ENUM.URL_OPERATIONS, AppConstants.SERVICES_URL.BUDGETS.SOLDES,
