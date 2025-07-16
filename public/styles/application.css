@@ -97,6 +97,16 @@ Style Top Menu
         color: #31687f;
         padding: 3px;
     }
+
+
+    .filtercategorie {
+        margin-top: -5px;
+        height: 30px;
+    }
+
+    .filtercategorie > span {
+        font-size: 10px;
+    }
 }
 
 /**
@@ -194,6 +204,15 @@ Style Top Menu
         background-color: #252525 !important;
         color: #31687f;
         padding: 10px;
+    }
+
+
+    .filtercategorie {
+        margin-top: -5px;
+    }
+
+    .filtercategorie > span {
+        font-size: 12px;
     }
 }
 
@@ -305,10 +324,3 @@ a.nav-link_selected:hover {
     justify-content: center;
 }
 
-.filtercategorie {
-    margin-top: -5px;
-}
-
-.filtercategorie>span {
-    font-size: 14px;
-}

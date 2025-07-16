@@ -1,6 +1,6 @@
 import React, {JSX, useEffect, useState} from "react";
 
-import {Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid} from "@mui/material";
+import {Box, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
 import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices";
@@ -40,6 +40,9 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
 
     const [filterChange, setFilterChange] = useState<number>(new Date().getTime());
+
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const listHeight = isMobile ? window.innerHeight - 135 : window.innerHeight - 175;
     /** Chargement des catégories **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses === 0 ? "Tous" : anneeAnalyses);
@@ -111,9 +114,9 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     return (
         <Box sx={{ overflow: "hidden" }} >
             <Grid container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid size={{md: 3}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                <Grid size={{md: 1, xl: 1}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
                                                fontSize={"large"}/></Grid>
-                <Grid size={{md: 6}}>
+                <Grid size={{md: 5, xl: 5}}>
                     {soldesMensuels !== null && selectedCompte != null ?
                         <AnalyseTemporelleTitre currentCompte={selectedCompte}
                             currentAnnee={anneeAnalyses}
@@ -122,7 +125,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                         <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid>
-                <Grid size={{md: 3}} direction={"row-reverse"}>
+                <Grid size={{md: 6, xl: 6}} direction={"row-reverse"}>
                     {   analyseSoldesCategoriesData != null ?
                             <>
                                 <AnalyseTemporelleFiltre listeCategories={analyseSoldesCategoriesData}
@@ -131,8 +134,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                                     control={<Checkbox id="Soldes" defaultChecked={false}
                                         icon={<RadioButtonUnchecked />}
                                         checkedIcon={<CheckCircle />} />}
-                                    style={{ color: "#FFFFFF" }}
-                                                  className="filtercategorie"
+                                                  style={{color: "#FFFFFF"}} className="filtercategorie"
                                     onChange={onFilterSoldesChange} />
                             </>
                             :
@@ -140,7 +142,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                 </Grid>
             </Grid>
             <Divider variant="middle" sx={{ margin: 1 }} />
-            <Grid size={{md: 5}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
+            <Grid sx={{overflow: "hidden", height: listHeight}}>
                 {soldesMensuels != null ?
                     <GraphAnalyseTemporelle
                         anneeAnalyses={anneeAnalyses}
