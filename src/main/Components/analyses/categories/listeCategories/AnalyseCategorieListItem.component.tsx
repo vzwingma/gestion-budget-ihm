@@ -1,6 +1,7 @@
 import React, {JSX} from 'react'
 import {
     Box,
+    Divider,
     Grid,
     Stack,
     styled,
@@ -71,7 +72,9 @@ const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({   r
             <HtmlTooltip
                 title={
                     <React.Fragment>
-                        <Typography color="inherit">Détails des transactions</Typography>
+                        <Typography color="inherit" variant={"subtitle1"} sx={{fontWeight: "bold"}}>Détails des
+                            transactions</Typography>
+                        <Divider orientation={"horizontal"}/>
                         {tooltipContent}
                     </React.Fragment>
                 }>

@@ -34,7 +34,7 @@ const AnalyseTitre: React.FC<AnalyseTitreProps> = ({
 
             <Tooltip title={getTooltipAuj()}>
                 <Typography variant={"h6"} textAlign={"right"} component="div" sx={{cursor: "help"}}
-                            width={isMobile ? 250 : 350}>
+                            width={isMobile ? 230 : 365}>
                     <OperationValue id={"graphCategories"} valueOperation={totalOperations} showSign={true}/>
                 </Typography>
             </Tooltip>
