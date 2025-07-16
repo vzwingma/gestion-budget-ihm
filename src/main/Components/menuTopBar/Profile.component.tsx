@@ -1,6 +1,6 @@
 import React, {JSX, useEffect} from "react";
 import {useAuth} from "react-oidc-context";
-import {Avatar, CircularProgress, Tooltip, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Avatar, CircularProgress, Tooltip, Typography} from "@mui/material";
 import {putTokenInStorage, removeTokenFromStorage} from './../../Services/Auth.service'
 import ProfileInfos from "./ProfileInfos.component";
 
@@ -10,7 +10,6 @@ import ProfileInfos from "./ProfileInfos.component";
 const Profile: React.FC = (): JSX.Element => {
 
     const auth = useAuth();
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     // LogOut et redirect pour nettoyer l'URL
     function logOut() {
         auth.removeUser().then(() => {console.log("Déconnexion de l'utilisateur")});
