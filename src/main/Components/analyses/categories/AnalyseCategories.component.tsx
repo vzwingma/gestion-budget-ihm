@@ -78,9 +78,9 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={"true"}>
             <Grid container marginTop={1}>
-                <Grid size={{md: 0.5, xl: 1.5}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
+                <Grid size={{md: 0.5, xl: 0.5}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
                                                           fontSize={"large"}/></Grid>
-                <Grid size={{md: 7.5, xl: 7.5}}>
+                <Grid size={{md: 7.5, xl: 9}}>
                     {
                         currentBudget !== null && totauxGroupedByEtat !== null && selectedCompte !== null ?
                             <AnalyseTitre currentCompte={selectedCompte}
@@ -89,7 +89,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                             <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid>
-                <Grid size={{md: 4, xl: 3}} sx={{overflow: "hidden"}}>
+                <Grid size={{md: 4, xl: 2.5}} sx={{overflow: "hidden"}}>
                     <Stack direction={"row-reverse"} alignItems={"end"}
                            style={{position: "relative", top: "45%", transform: "translateY(-50%)"}}>
                         <Chip label={"Crédit"} variant="outlined" size={isMobile ? "small" : "medium"}
