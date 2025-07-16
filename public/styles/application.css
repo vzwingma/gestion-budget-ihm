@@ -25,7 +25,7 @@ ___  ___      _     _ _
 
     .favicon {
         height: 40px;
-        margin: 2px;
+        padding: 3px;
         width: 40px;
     }
 
@@ -34,6 +34,10 @@ ___  ___      _     _ _
         width: 30px;
     }
 
+    .compteListIcon {
+        height: 45px;
+        width: 45px;
+    }
 
     h3, .MuiTypography-h3 {
         font-size: 1.8rem !important;
@@ -55,6 +59,15 @@ ___  ___      _     _ _
 
     .MuiInputBase-inputSizeSmall {
         font-size: 0.8rem !important;
+    }
+
+    .MuiInputLabel-sizeSmall {
+        font-size: 0.8rem !important;
+    }
+
+    .MuiTypography-overline {
+        font-size: 0.7rem !important;
+        line-height: 1.3 !important;
     }
     /**
 Style Top Menu
@@ -90,10 +103,16 @@ Style Top Menu
     }
 
     /**
-     * Liste d'item
+     * Liste de comptes
      */
     .listeItem {
-        height: 55px;
+        height: 45px;
+        margin: 5px;
+    }
+
+
+    .listeCategorieItem {
+        height: 45px;
     }
 
     .listeItemSeparator {
@@ -102,7 +121,6 @@ Style Top Menu
         padding: 3px;
         font-size: 11px;
     }
-
     /** Analyse - filtre par catégorie **/
 
     .filtercategorie {
@@ -166,7 +184,7 @@ ______          _    _
 
     .favicon {
         height: 60px !important;
-        margin: 2px;
+        padding: 3px;
         width: 60px !important;
     }
 
@@ -175,6 +193,10 @@ ______          _    _
         width: 60px;
     }
 
+
+    h2, .MuiTypography-h3 {
+        color: #31687f;
+    }
     h3, .MuiTypography-h3 {
         color: #31687f;
         font-size: 1.8rem !important;
@@ -224,10 +246,20 @@ Style Top Menu
  * Liste d'item
  */
     .listeItem {
+        height: 60px;
+        margin: 20px;
+    }
+
+    .listeCategorieItem {
         height: 68px;
         margin-bottom: 5px;
         margin-top: 5px;
         padding: 10px;
+    }
+
+    .compteListIcon {
+        height: 60px;
+        width: 60px;
     }
 
     .listeItemSeparator {
