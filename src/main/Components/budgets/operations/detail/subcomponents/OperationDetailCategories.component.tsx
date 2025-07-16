@@ -48,7 +48,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
             <FormControl fullWidth required error={errorsCategories != null}>
                 <Autocomplete
                     id={OPERATION_EDITION_FORM.CATEGORIE + OPERATION_EDITION_FORM.INPUT}
-                    renderInput={(params : any) => <TextField {...params} variant={"standard"} />}
+                    renderInput={(params: any) => <TextField {...params} variant={"standard"} size={"small"}/>}
                     sx={{ width: "90%" }}
                     value={operation.ssCategorie ?? { id: null, libelle: "" }}
                     options={getListeAllCategoriesFlatten(categories)}

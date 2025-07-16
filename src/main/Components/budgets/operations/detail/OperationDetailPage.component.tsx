@@ -1,5 +1,5 @@
 import React, {JSX, useContext, useEffect, useState} from 'react'
-import {Box, Button, Container, Grid, Stack, Typography} from "@mui/material";
+import {Box, Button, Container, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 
 import {
     handleDateOperationFromAction,
@@ -63,7 +63,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     const operation = currentOperation!;
     const budget = currentBudget!;
 
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
      */
@@ -174,12 +174,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      */
     return (
         <Container id={OPERATION_EDITION_FORM.FORM}
-            component="div"
-            fixed maxWidth={"md"}
+                   component="div" fixed
             onClick={(event : any) => handleOperationEditionClick(event, {operation, budget}, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
             onKeyUp={(event : any) => handleOperationEditionClick(event, {operation, budget}, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
-            <Stack direction={"column"} spacing={5} sx={{ alignItems: "center", marginTop: "20px" }}>
+            <Stack direction={"column"} spacing={isMobile ? 3 : 6} sx={{alignItems: "center", marginTop: "20px"}}>
                 <CenterComponent>
                     <Box width={56} height={56}
                         sx={{
@@ -204,18 +203,18 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     fillOperationForm={fillOperationForm} />
 
                 <Grid container width={"100%"}>
-                    <Grid size={{md: 5}}>
+                    <Grid size={{md: 4.5, xl: 5}}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Catégorie</Typography>
                     </Grid>
-                    <Grid size={{md: 4}}>
+                    <Grid size={{md: 4, xl: 4}}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Etat</Typography>
                     </Grid>
-                    <Grid size={{md: 3}}>
+                    <Grid size={{md: 3.5, xl: 3}}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Période</Typography>
                     </Grid>
 
 
-                    <Grid size={{md: 5}}>
+                    <Grid size={{md: 4.5, xl: 5}}>
                         {  /** CATEGORIES **/}
                         <OperationDetailCategories
                             listeCategories={listeCategories}
@@ -223,12 +222,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             errorsCategories={errors.categorie}
                             fillOperationForm={fillOperationForm} />
                     </Grid>
-                    <Grid size={{md: 4}}>
+                    <Grid size={{md: 4, xl: 4}}>
                         <Typography variant={"overline"} color={getOperationStateColor(operation.etat)}>
                             {operation.etat}
                         </Typography>
                     </Grid>
-                    <Grid size={{md: 3}}>
+                    <Grid size={{md: 3.5, xl: 3}}>
                         { /** PERIODE **/}
                         <OperationDetailMensualite
                             formMensualiteInEdition={editForm.mensualite}
@@ -236,21 +235,21 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     </Grid>
 
 
-                    <Grid size={{md: 5}} paddingTop={3}>
+                    <Grid size={{md: 4.5, xl: 5}} paddingTop={3}>
                         {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
                     </Grid>
-                    <Grid size={{md: 4}} paddingTop={3}>
+                    <Grid size={{md: 4, xl: 4}} paddingTop={3}>
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Actions</Typography> : <></>
                         }
                     </Grid>
-                    <Grid size={{md: 3}} paddingTop={3}>
+                    <Grid size={{md: 3.5, xl: 3}} paddingTop={3}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Date d'opération</Typography>
                     </Grid>
 
 
-                    <Grid size={{md: 5}}>
+                    <Grid size={{md: 4.5, xl: 5}}>
                         { /** COMPTE DE TRANSFERT  **/}
                         <OperationDetailIntercompte intercompte={editOperation.intercompte}
                                                     libelle={editOperation.libelle}
@@ -263,7 +262,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             errorIntercompte={errors.intercompte}
                             fillOperationForm={fillOperationForm} />
                     </Grid>
-                    <Grid size={{md: 4}}>
+                    <Grid size={{md: 4, xl: 4}}>
                         { /** ACTIONS SUR OPERATION **/}
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions
@@ -275,7 +274,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             : <></>
                         }
                     </Grid>
-                    <Grid size={{md: 3}}>
+                    <Grid size={{md: 3.5, xl: 3}}>
                         { /** DATE OPERATION **/}
                         <OperationDetailDate
                             formDateInEdition={editForm.dateOperation}

@@ -57,7 +57,7 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
                 error={errorIntercompte != null}
                 helperText={errorIntercompte}
                 onChange={fillIntercompteForm}
-                variant="standard">
+                variant="standard" size={"small"}>
                 {listeAutresComptes
                     .filter((compte) => compte.actif)
                     .map((compte) => (
