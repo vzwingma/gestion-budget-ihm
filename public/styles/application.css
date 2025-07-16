@@ -45,6 +45,13 @@ ___  ___      _     _ _
         color: #31687f;
     }
 
+    .MuiTypography-subtitle1 {
+        font-size: 0.8rem !important;
+    }
+
+    .MuiTypography-caption {
+        font-size: 0.6rem !important;
+    }
     /**
 Style Top Menu
  */
@@ -79,8 +86,8 @@ Style Top Menu
     }
 
     /**
- * Liste d'item
- */
+     * Liste d'item
+     */
     .listeItem {
         height: 55px;
     }
@@ -136,6 +143,8 @@ ______          _    _
     h6, .MuiTypography-h6 {
         color: #31687f;
     }
+
+
     /**
 Style Top Menu
  */

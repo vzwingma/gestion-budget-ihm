@@ -113,7 +113,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
             </Grid>
             <Divider variant="middle" sx={{ margin: 1 }} />
             <Grid container sx={{overflow: "hidden"}}>
-                <Grid size={{md: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
+                <Grid size={{md: 3, xl: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     { /** Liste des résumés par catégories **/
                         (currentBudget != null ?
                             <AnalyseCategoriesListe
@@ -127,7 +127,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                         )
                     }
                 </Grid>
-                <Grid size={{md: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
+                <Grid size={{md: 3, xl: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     { /** Liste des sous-catégories **/
                         (currentBudget !== null && resumeSelectedCategorie !== null ?
                             <AnalyseCategoriesListe
@@ -141,7 +141,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                         )
                     }
                 </Grid>
-                <Grid size={{md: 6}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
+                <Grid size={{md: 5.5, xl: 6}} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     {currentBudget !== null && analysesGroupedByCategories !== null?
                         <GraphAnalyses
                             typeAnalyse={selectedTypeAnalyse}

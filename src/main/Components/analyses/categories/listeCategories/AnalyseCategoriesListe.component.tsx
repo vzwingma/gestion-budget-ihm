@@ -1,5 +1,5 @@
 import React, {JSX} from 'react'
-import {Box, Divider, Stack} from "@mui/material";
+import {Box, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component";
 import {sortLibellesCategories} from '../../../../Utils/OperationData.utils';
 import AnalyseCategoriesModel from '../../../../Models/analyses/categories/AnalyseCategories.model';
@@ -33,6 +33,9 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({   rangS
                                                                            typeAnalyse,
                                                                            selectCategorie
                                                                        }: AnalyseCategoriesListeProps): JSX.Element => {
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const listHeight = isMobile ? window.innerHeight - 105 : window.innerHeight - 175;
+    const subListHeight = isMobile ? 40 : 79;
     /**
      * Iterate groupe
      * @param analysesGroupedByCategories liste des opérations par catégories
@@ -68,12 +71,12 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({   rangS
     }
 
 
-    return <Box sx={{height: window.innerHeight - 175, overflow: "hidden"}}>
+    return <Box sx={{height: listHeight, overflow: "hidden"}}>
         {
-            (rangSelectedCategorie !== null) ? <Box width={25} height={rangSelectedCategorie * 79}></Box> : <></>
+            (rangSelectedCategorie !== null) ? <Box width={25} height={rangSelectedCategorie * subListHeight}/> : <></>
         }
         <Stack divider={<Divider orientation="horizontal"/>}
-               sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
+               sx={{overflowY: "auto", overflowX: "hidden", height: listHeight}}>
             { iterate(analysesGroupedByCategories) }
         </Stack>
     </Box>
