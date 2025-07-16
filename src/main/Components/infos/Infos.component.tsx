@@ -1,6 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { getInfosFromMicroServices } from "./Infos.extservices";
+import React, {useEffect, useState} from "react";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableRow,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from "@mui/material";
+import {getInfosFromMicroServices} from "./Infos.extservices";
 import MicroServicesInfos from "./MicroServicesInfos.component";
 import MsInfoModel from "../../Models/infos/MsInfo.model";
 import CenterComponent from "../../Components/CenterComponent";
@@ -23,15 +33,15 @@ export const Infos: React.FC = () => {
     /** Phase de Render à partir de la liste de statuts  **/
     return (
         <CenterComponent>
-            <Table size={isMobile ? "small" : "medium"}>
+            <Table size={"small"}>
                 <TableHead>
                     <TableRow>
                         <TableCell colSpan={2}>
                             <CenterComponent>
                                 {isMobile ?
-                                    <Typography variant={"h3"}> Gestion mobile de budgets { window.innerHeight } x { window.innerWidth }</Typography>
+                                    <Typography variant={"h3"}> Gestion mobile de budgets</Typography>
                                     :
-                                    <Typography variant={"h3"}> Gestion de budgets</Typography>}
+                                    <Typography variant={"h2"}> Gestion de budgets</Typography>}
                             </CenterComponent>
                         </TableCell>
                     </TableRow>
@@ -40,7 +50,8 @@ export const Infos: React.FC = () => {
                     <TableRow>
                         <TableCell colSpan={2}>
                             <CenterComponent>
-                                <img src="/img/icon.png" width={isMobile ? "150" : "300"} height={isMobile ? "171" : "362"} style={isMobile ? { margin: "30px" } : { margin: "10px" }}
+                                <img src="/img/icon.png" width={isMobile ? "205" : "450"}
+                                     height={isMobile ? "193" : "425"} style={{margin: "10px"}}
                                     className="d-inline-block align-middle" alt="Gestion de budgets" />
                             </CenterComponent>
                         </TableCell>

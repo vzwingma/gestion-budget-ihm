@@ -1,8 +1,8 @@
 import React, {JSX, useContext, useEffect, useState} from "react";
-import { Box, Divider, Drawer, Stack, useMediaQuery, useTheme } from "@mui/material";
-import { ToastContainer } from "react-toastify";
-import { BUSINESS_ONGLETS } from "../../Utils/AppBusinessEnums.constants";
-import { loadComptes } from "./MainPage.extservices";
+import {Box, Divider, Drawer, Stack, useMediaQuery, useTheme} from "@mui/material";
+import {ToastContainer} from "react-toastify";
+import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
+import {loadComptes} from "./MainPage.extservices";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
 import CompteItem from "./menuSlideBar/CompteItem.component";
 import DateRange from "./menuSlideBar/DateRange.component";
@@ -106,7 +106,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                     keepMounted: true,
                 }}>
                 <Stack spacing={2}>
-                    <Box sx={{ height: isMobile ? 30 : 80 }} />
+                    <Box sx={{height: isMobile ? 40 : 80}}/>
 
                     {renderLeftTabDate(fonction)}
 
