@@ -16,20 +16,18 @@ const AnalyseTemporelleTitre: React.FC<AnalyseTemporelleTitreProps> = ({currentC
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     return (
         // Création d'une pile pour l'affichage du titre
-        <Stack direction={"row"} spacing={1} justifyContent="center" alignItems="center"
-               marginTop={"3pt"}>
-
-            <img src={"/img/banques/" + currentCompte.itemIcon} className={"compteIcon"} alt={currentCompte.libelle}/>
-            <Stack direction={isMobile ? "row" : "column"}>
-                <Typography variant={"h6"} component="div" width={isMobile ? 120 : 250} textAlign={"center"}
+        <Stack direction={"row"} spacing={2} justifyContent="center" alignItems="center" alignContent={"center"}>
+            <Stack direction={"row"} spacing={2}>
+                <img src={"/img/banques/" + currentCompte.itemIcon} className={"compteIcon"}
+                     alt={currentCompte.libelle}/>
+                <Typography variant={"h6"} component="div" textAlign={"center"}
                             justifyContent={"center"} alignContent={"center"}>
                     {currentCompte.libelle}
                 </Typography>
-                <Typography variant={"caption"} sx={{color: "#808080"}} component="div" width={isMobile ? 350 : 250}
-                            textAlign={"center"}>
+            </Stack>
+            <Typography variant={"caption"} sx={{color: "#808080"}} component="div">
                     <AnneeRange onAnneeChange={onAnneeChange} selectedAnnee={currentAnnee}/>
                 </Typography>
-            </Stack>
         </Stack>
     )
 };

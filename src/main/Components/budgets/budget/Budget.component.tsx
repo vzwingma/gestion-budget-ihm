@@ -51,7 +51,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const [listeLibellesOperations, setListeLibellesOperations] = useState<LibelleCategorieOperationModel[]>([]);
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 115 : window.innerHeight - 140;
+    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
 
     /** Callback de chargement des catégories **/
     const handleLoadCategories = useCallback((categories: CategorieOperationModel[]) => {

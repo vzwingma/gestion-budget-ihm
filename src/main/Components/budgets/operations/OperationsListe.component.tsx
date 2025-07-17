@@ -17,7 +17,7 @@ import {OperationsListeProps} from '../../Components.props';
  */
 const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 115 : window.innerHeight - 140;
+    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
     /**
      * Iterate groupe
      * @param operationGroupedByDate
@@ -55,7 +55,7 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
 
 
     return <Stack divider={<Divider orientation="horizontal"/>}
-                  sx={{overflowY: "auto", overflowX: "hidden", height: listHeight}}>
+                  sx={{overflowY: "auto", overflowX: "hidden", height: listHeight, border: '1px solid red'}}>
         {  iterate(operationGroupedByDate) }
     </Stack>
 };

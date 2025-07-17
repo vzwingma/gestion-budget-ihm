@@ -1,17 +1,16 @@
-import React, { Component } from "react";
-import { HashRouter, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from 'react-oidc-context';
-import { removeTokenFromStorage } from "./Services/Auth.service";
+import React, {Component} from "react";
+import {HashRouter, Route, Routes} from 'react-router-dom';
+import {AuthProvider} from 'react-oidc-context';
+import {removeTokenFromStorage} from "./Services/Auth.service";
 
-import { AppBar, createTheme, CssBaseline, responsiveFontSizes, Stack, ThemeProvider, Typography } from "@mui/material";
-import { OIDC_ENUM } from "./Utils/AppTechEnums.constants";
-import { BUSINESS_ONGLETS } from "./Utils/AppBusinessEnums.constants";
+import {AppBar, createTheme, CssBaseline, responsiveFontSizes, Stack, ThemeProvider, Typography} from "@mui/material";
+import {OIDC_ENUM} from "./Utils/AppTechEnums.constants";
+import {BUSINESS_ONGLETS} from "./Utils/AppBusinessEnums.constants";
 import MainPage from "./Components/mainpages/MainPage.component";
 import PrivateNavLinks from "./Components/menuTopBar/PrivateNavLinks.component";
 import Profile from "./Components/menuTopBar/Profile.component";
-import { Infos } from "./Components/infos/Infos.component";
-import { BudgetContextProvider } from "./Models/contextProvider/BudgetContextProvider";
-
+import {Infos} from "./Components/infos/Infos.component";
+import {BudgetContextProvider} from "./Models/contextProvider/BudgetContextProvider";
 
 
 /** Page principale avec le routeur **/
@@ -40,14 +39,14 @@ export default class Main extends Component {
             },
         });
         darkTheme = responsiveFontSizes(darkTheme);
-         
+
 
         return (
             <HashRouter>
                 <AuthProvider {...this.oidcConfig}>
                     <ThemeProvider theme={darkTheme}>
                         <CssBaseline />
-                        <AppBar position={"fixed"} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1}} className="appBar">
+                        <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
                             <Stack direction="row" alignItems="flex-start" spacing={1}>
                                 <img src="/img/favicon64.png" className="favicon" alt="Gestion de budgets" />
                                 <Typography variant="h6" component="div" noWrap
