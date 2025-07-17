@@ -77,10 +77,11 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
 
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={"true"}>
-            <Grid container marginTop={1}>
-                <Grid size={{md: 0.5, xl: 0.5}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
-                                                          fontSize={"large"}/></Grid>
-                <Grid size={{md: 7.5, xl: 9}}>
+            <Grid container marginTop={1} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+                <Grid size={{md: 0.5, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+                    <MenuIcon onClick={onOpenMenu} className={"editableField"} fontSize={"large"}/>
+                </Grid>
+                <Grid size={{md: 8, xl: 10.1}}>
                     {
                         currentBudget !== null && totauxGroupedByEtat !== null && selectedCompte !== null ?
                             <AnalyseTitre currentCompte={selectedCompte}
@@ -89,9 +90,9 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                             <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid>
-                <Grid size={{md: 4, xl: 2.5}} sx={{overflow: "hidden"}}>
-                    <Stack direction={"row-reverse"} alignItems={"end"}
-                           style={{position: "relative", top: "45%", transform: "translateY(-50%)"}}>
+                <Grid size={{md: 3.5, xl: 1.5}}
+                      sx={{overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+                    <Stack direction={"row-reverse"} alignItems={"end"}>
                         <Chip label={"Crédit"} variant="outlined" size={isMobile ? "small" : "medium"}
                               className={"text-CREDIT"} style={{height: isMobile ? 20 : 40}}/>
                         <Switch onClick={e => selectTypeOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)}

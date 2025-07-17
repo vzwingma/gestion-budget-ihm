@@ -83,29 +83,27 @@ const AnalyseCategorieListItem: React.FC<AnalyseCategorieListItemProps> = ({   r
                 <Grid container spacing={isMobile ? 1 : 6}>
                     <Grid size={{md: 1, xl: 1}}>
                         <Box width={isMobile ? 30 : 40} height={isMobile ? 30 : 40}
-                        sx={{
-                            borderRadius: "50%",
-                            backgroundColor: resumeCategorie.couleurCategorie,
-                            padding: isMobile ? '3px' : '7px',
-                            color: '#FFFFFF',
-                            margin: isMobile ? '3px' : '0px',
-                        }}>
-                        <CenterComponent>{getCategorieIcon(resumeCategorie.categorie)}</CenterComponent>
-                    </Box>
-                </Grid>
-                    <Grid size={{md: 6.5, xl: 7}} sx={{marginLeft: "15px"}}>
-                    <Stack direction={"column"}>
-                        <Typography variant={"subtitle1"} component="div" align={"left"}>
-                            {resumeCategorie.categorie.libelle}
-                        </Typography>
-                        <Typography variant={"caption"} component="div" align={"left"}
-                                    sx={{color: "#808080"}}>
-                            {resumeCategorie.pourcentage[typeAnalyse]} %
-                            - {resumeCategorie.nbTransactions[typeAnalyse]} transactions
-                        </Typography>
-                    </Stack>
-
-                </Grid>
+                             sx={{
+                                 borderRadius: "50%",
+                                 backgroundColor: resumeCategorie.couleurCategorie,
+                                 padding: isMobile ? '3px' : '7px',
+                                 color: '#FFFFFF',
+                                 margin: isMobile ? '3px' : '0px',
+                             }}>
+                            <CenterComponent>{getCategorieIcon(resumeCategorie.categorie)}</CenterComponent>
+                        </Box>
+                    </Grid>
+                    <Grid size={{md: 6.5, xl: 7}} sx={{marginLeft: "20px"}}>
+                        <Stack direction={"column"}>
+                            <Typography variant={"subtitle1"} component="div"
+                                        align={"left"}>{resumeCategorie.categorie.libelle}</Typography>
+                            <Typography variant={"caption"} component="div" align={"left"}
+                                        sx={{color: "#808080"}}>
+                                {resumeCategorie.pourcentage[typeAnalyse]} %
+                                - {resumeCategorie.nbTransactions[typeAnalyse]} transactions
+                            </Typography>
+                        </Stack>
+                    </Grid>
                     <Grid size={{md: 2.5, xl: 3}}>
                         <Typography variant={"subtitle1"} component="div" align={"right"} sx={{
                             spacing: 2,

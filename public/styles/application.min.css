@@ -57,6 +57,10 @@ ___  ___      _     _ _
         font-size: 0.6rem !important;
     }
 
+    .MuiChip-labelSmall {
+        font-size: 0.7rem !important;
+    }
+
     .MuiInputBase-inputSizeSmall {
         font-size: 0.8rem !important;
     }
@@ -113,6 +117,7 @@ Style Top Menu
 
     .listeCategorieItem {
         height: 45px;
+        padding: 5px;
     }
 
     .listeItemSeparator {

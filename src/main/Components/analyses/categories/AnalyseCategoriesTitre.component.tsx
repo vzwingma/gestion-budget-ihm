@@ -30,15 +30,15 @@ const AnalyseTitre: React.FC<AnalyseTitreProps> = ({
 
     // Rendu du composant
     return (
-        <Stack direction={"row"} spacing={1} justifyContent="left" alignItems="center" marginTop={"3pt"}>
+        <Stack direction={"row"} spacing={1} justifyContent="left" alignItems="center">
 
             <Tooltip title={getTooltipAuj()}>
                 <Typography variant={"h6"} textAlign={"right"} component="div" sx={{cursor: "help"}}
-                            width={isMobile ? 230 : 365}>
+                            width={isMobile ? 350 : 750}>
                     <OperationValue id={"graphCategories"} valueOperation={totalOperations} showSign={true}/>
                 </Typography>
             </Tooltip>
-            <Stack direction={"row"} paddingLeft={isMobile ? 20 : 50}>
+            <Stack direction={"row"} sx={{width: "100%", justifyContent: "center"}}>
                 <img src={"/img/banques/" + currentCompte.itemIcon} className={"compteIcon"}
                      alt={currentCompte.libelle}/>
                 <Stack direction={isMobile ? "row" : "column"}>
@@ -48,7 +48,7 @@ const AnalyseTitre: React.FC<AnalyseTitreProps> = ({
                     </Typography>
                     <Typography variant={"caption"}
                                 sx={{alignContent: "center", justifyContent: "center", color: "grey"}} component="div"
-                                width={isMobile ? 100 : 200} textAlign={isMobile ? "left" : "center"}>
+                                width={isMobile ? 70 : 200} textAlign={isMobile ? "left" : "center"}>
                         {currentDate.toLocaleString('default', {month: 'long'}) + " " + currentDate.getFullYear()}
                     </Typography>
                 </Stack>

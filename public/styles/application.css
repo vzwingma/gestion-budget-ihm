@@ -113,6 +113,7 @@ Style Top Menu
 
     .listeCategorieItem {
         height: 45px;
+        padding: 5px;
     }
 
     .listeItemSeparator {
