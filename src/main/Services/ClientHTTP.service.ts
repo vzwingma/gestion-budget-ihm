@@ -1,6 +1,6 @@
 /** Client HTTP **/
-import { v4 } from 'uuid';
-import { API_GW_ENUM } from '../Utils/AppTechEnums.constants';
+import {v4} from 'uuid';
+import {API_GW_ENUM} from '../Utils/AppTechEnums.constants';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
 
 let alreadyTraced: boolean = false;
@@ -92,7 +92,7 @@ export async function call(httpMethod: string, uri: string, path: string, params
             body: jsonBody
         })
         .then(res => {
-            
+
             if (res.status >= 200 && res.status < 300) {
                 return res.json();
             } else if (res.status === 403) {

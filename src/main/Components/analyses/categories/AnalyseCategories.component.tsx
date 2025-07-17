@@ -1,6 +1,6 @@
 import React, {JSX, useEffect, useState} from "react";
 
-import {Box, Chip, CircularProgress, Divider, Grid, Stack, Switch} from "@mui/material";
+import {Box, Chip, CircularProgress, Divider, Grid, Stack, Switch, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import GraphAnalyses from "./graphs/GraphAnalyses.component";
 import AnalyseTitre from "./AnalyseCategoriesTitre.component";
@@ -32,7 +32,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
     const [resumeSelectedCategorie, setResumeSelectedCategorie] = useState<AnalyseCategoriesModel | null>(null);
     const [resumeSelectedSsCategorie, setResumeSelectedSsCategorie] = useState<AnalyseCategoriesModel | null>(null);
     const [selectedTypeAnalyse, setSelectedTypeAnalyse] = useState<string>("REALISEE_DEPENSE");
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /** Chargement des catégories **/
     useEffect(() => {
         loadBudget(selectedCompte, selectedDate, handleDataCalculationResult);
@@ -77,10 +77,11 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
 
     return (
         <Box sx={{ overflow: "hidden" }} maxHeight={"true"}>
-            <Grid container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid size={{md: 1.5}}><MenuIcon onClick={onOpenMenu} className={"editableField"}
-                                                 fontSize={"large"}/></Grid>
-                <Grid size={{md: 7.5}}>
+            <Grid container marginTop={1} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+                <Grid size={{md: 0.5, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+                    <MenuIcon onClick={onOpenMenu} className={"editableField"} fontSize={"large"}/>
+                </Grid>
+                <Grid size={{md: 8, xl: 10.1}}>
                     {
                         currentBudget !== null && totauxGroupedByEtat !== null && selectedCompte !== null ?
                             <AnalyseTitre currentCompte={selectedCompte}
@@ -89,23 +90,31 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                             <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid>
-                <Grid size={{md: 3}}>
-                    <Stack direction={"row-reverse"} alignItems={"end"} style={{ position: "relative",  top: "50%", transform: "translateY(-50%)"}}>
-                        <Chip label={"Crédit"} variant="outlined" className={"text-CREDIT"} style={{ height: 40}}/>
-                        <Switch onClick={e => selectTypeOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
-                        <Chip label={" Débit"} variant="outlined" className={"text-DEPENSE"} style={{ height: 40, marginLeft: 10}} />
+                <Grid size={{md: 3.5, xl: 1.5}}
+                      sx={{overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+                    <Stack direction={"row-reverse"} alignItems={"end"}>
+                        <Chip label={"Crédit"} variant="outlined" size={isMobile ? "small" : "medium"}
+                              className={"text-CREDIT"} style={{height: isMobile ? 20 : 40}}/>
+                        <Switch onClick={e => selectTypeOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)}
+                                size={isMobile ? "small" : "medium"}/>
+                        <Chip label={" Débit"} variant="outlined" size={isMobile ? "small" : "medium"}
+                              className={"text-DEPENSE"} style={{height: isMobile ? 20 : 40, marginLeft: 10}}/>
 
-                        <Chip label={"Réalisée"} variant="outlined"
-                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE) }} style={{ height: 40}} />
-                        <Switch defaultChecked onClick={e => selectEtatOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)} />
-                        <Chip label={"Prévue"} variant="outlined"
-                            sx={{ color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE) }} style={{ height: 40}} />
+                        <Chip label={"Réalisée"} variant="outlined" size={isMobile ? "small" : "medium"}
+                              sx={{color: getOperationStateColor(OPERATION_ETATS_ENUM.REALISEE)}}
+                              style={{height: isMobile ? 20 : 40}}/>
+                        <Switch defaultChecked
+                                onClick={e => selectEtatOperation(e, selectedTypeAnalyse, setSelectedTypeAnalyse)}
+                                size={isMobile ? "small" : "medium"}/>
+                        <Chip label={"Prévue"} variant="outlined" size={isMobile ? "small" : "medium"}
+                              sx={{color: getOperationStateColor(OPERATION_ETATS_ENUM.PREVUE)}}
+                              style={{height: isMobile ? 20 : 40}}/>
                     </Stack>
                 </Grid>
             </Grid>
             <Divider variant="middle" sx={{ margin: 1 }} />
             <Grid container sx={{overflow: "hidden"}}>
-                <Grid size={{md: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
+                <Grid size={{md: 3, xl: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     { /** Liste des résumés par catégories **/
                         (currentBudget != null ?
                             <AnalyseCategoriesListe
@@ -119,7 +128,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                         )
                     }
                 </Grid>
-                <Grid size={{md: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
+                <Grid size={{md: 3, xl: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     { /** Liste des sous-catégories **/
                         (currentBudget !== null && resumeSelectedCategorie !== null ?
                             <AnalyseCategoriesListe
@@ -133,7 +142,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                         )
                     }
                 </Grid>
-                <Grid size={{md: 6}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
+                <Grid size={{md: 5.5, xl: 6}} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     {currentBudget !== null && analysesGroupedByCategories !== null?
                         <GraphAnalyses
                             typeAnalyse={selectedTypeAnalyse}

@@ -1,5 +1,14 @@
 import React, {JSX, useContext} from 'react'
-import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from "@mui/material"
+import {
+    Autocomplete,
+    Box,
+    FormControl,
+    FormHelperText,
+    TextField,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import {sortLibellesCategories} from '../../../../../Utils/OperationData.utils'
 import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model'
@@ -22,6 +31,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
     const { currentOperation, categories } = useContext(BudgetContext)!;
     const operation = currentOperation!;
 
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
      * Active ou désactive le formulaire d'édition lors des autocomplétions
      * @param {boolean} activation - Indique si le formulaire doit être activé ou désactivé
@@ -48,7 +58,16 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
             <FormControl fullWidth required error={errorsCategories != null}>
                 <Autocomplete
                     id={OPERATION_EDITION_FORM.CATEGORIE + OPERATION_EDITION_FORM.INPUT}
-                    renderInput={(params : any) => <TextField {...params} variant={"standard"} />}
+                    renderInput={(params: any) => <TextField {...params} variant={"standard"} size={"small"}/>}
+                    renderOption={(props, option, state, ownerState) => {
+                        const {key, ...optionProps} = props;
+                        return (<Box key={key}
+                                     sx={{fontSize: isMobile ? 'small' : 'medium'}}
+                                     component="li"  {...optionProps} >
+                                {ownerState.getOptionLabel(option)}
+                            </Box>
+                        )
+                    }}
                     sx={{ width: "90%" }}
                     value={operation.ssCategorie ?? { id: null, libelle: "" }}
                     options={getListeAllCategoriesFlatten(categories)}

@@ -4,7 +4,7 @@
 import React, {JSX} from 'react';
 import {addEndingZeros} from '../OperationData.utils'
 import OperationModel from '../../Models/budgets/Operation.model';
-import { OPERATION_ETATS_ENUM } from '../AppBusinessEnums.constants';
+import {OPERATION_ETATS_ENUM} from '../AppBusinessEnums.constants';
 
 /**
  * Affichage du style de l'opération suivant sa valeur
@@ -38,9 +38,9 @@ interface OperationValueProps {
 /**
  * Affichage d'une opération
  * @param id
- * @param {OperationModel} operation : opération
  * @param valueOperation : number valeur de l'opération
  * @param showSign : boolean affichage du signe
+ * @param operation : OperationModel opération
  * @returns {JSX.Element} JSX
  * @constructor
  */

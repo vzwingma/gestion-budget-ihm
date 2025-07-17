@@ -1,6 +1,6 @@
 import React, {JSX, useContext, useEffect, useState} from 'react'
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
-import {Autocomplete, FormControl, FormHelperText, TextField, Typography} from '@mui/material'
+import {Autocomplete, FormControl, FormHelperText, TextField, Typography, useMediaQuery, useTheme} from '@mui/material'
 import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
 import {OperationDetailLibelleProps} from '../../../../Components.props'
 import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
@@ -33,6 +33,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
     const rawLibelleIntercompteParts = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle);
     const rawLibelleRetardParts = EN_RETARD_LIBELLE_REGEX.exec(operation.libelle);
 
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
      * refresh les libellés d'opérations en fonction de la saisie de l'utilisateur
      */
@@ -88,7 +89,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
 
     return (
         (!formLibelleInEdition) ?
-            <Typography variant={"button"} sx={{ fontSize: "large" }}
+            <Typography variant={"button"} sx={{fontSize: isMobile ? "medium" : "large"}}
                 className={budgetActif ? "editableField" : ""}
                 id={OPERATION_EDITION_FORM.LIBELLE}>
                 {getOperationLibelle(operation.libelle, comptes, true)}
@@ -102,8 +103,9 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
                               options={listeLibellesOperationsFiltered}
                               getOptionLabel={(option: string | LibelleCategorieOperationModel) => typeof option === 'string' ? option : option.libelle}
                     renderInput={(params) =>
-                        <TextField {...params} label="Description" variant="standard" size={"small"} />}
-                    sx={{ width: "850px" }}
+                        <TextField {...params} label="Description" variant="standard"
+                                   size={isMobile ? "small" : "medium"}/>}
+                              sx={{width: "100%"}}
                     blurOnSelect={true}
                     onKeyUp={(event) => {
                         setPendingLibelle(evaluatePendingLibelle(event, pendingLibelle));

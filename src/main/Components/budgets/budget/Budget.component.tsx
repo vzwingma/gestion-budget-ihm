@@ -1,6 +1,6 @@
 import React, {JSX, useCallback, useContext, useEffect, useState} from "react";
 
-import {Box, CircularProgress, Divider, Grid, InputBase, Paper} from "@mui/material";
+import {Box, CircularProgress, Divider, Grid, InputBase, Paper, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import BudgetTitre from "./BudgetTitre.component";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
@@ -19,6 +19,7 @@ import {BudgetPageProps} from "../../Components.props";
 import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
 import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model";
+import BudgetSoldes from "./BudgetSoldes.component";
 
 
 /**
@@ -49,6 +50,8 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
     const [listeLibellesOperations, setListeLibellesOperations] = useState<LibelleCategorieOperationModel[]>([]);
 
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
 
     /** Callback de chargement des catégories **/
     const handleLoadCategories = useCallback((categories: CategorieOperationModel[]) => {
@@ -116,14 +119,14 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      * Render du budget
      */
     return (
-        <Box sx={{ overflow: "hidden" }} maxHeight={'true'}>
+        <Box sx={{overflow: "hidden"}} maxHeight={'true'}>
             <Grid container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid size={{md: 0.33}}>
+                <Grid size={{md: 0.6, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     <MenuIcon onClick={onOpenMenu}
                         className={"editableField"}
                         fontSize={"large"} />
                 </Grid>
-                <Grid size={{md: 3}} paddingTop={"6px"}>
+                <Grid size={{md: 2.8, xl: 2}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     <Paper component="form"
                         sx={{
                             p: '2px 4px',
@@ -138,15 +141,28 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                             inputProps={{ 'aria-label': 'Filtrage des opérations' }}
                             onChange={handleOperationFilter}
                             value={filterOperations}
+                            size={isMobile ? "small" : "medium"}
 
                         />
-                        <CancelRounded sx={{ color: "#D0D0D0", cursor: "pointer" }}
+                        <CancelRounded sx={{
+                            color: "#D0D0D0",
+                            cursor: "pointer",
+                            width: isMobile ? "16px" : "20px",
+                            height: isMobile ? "16px" : "20px"
+                        }}
                                        onClick={() => setFilterOperations("")}/>
 
                     </Paper>
                 </Grid>
-                <Grid size={{md: 1.5}}/>
-                <Grid size={{md: 6.1}}>
+                <Grid size={{md: 1.6, xl: 1.6}}>
+                    { /** Titre **/}
+                    {selectedDate != null && selectedCompte != null ?
+                        <BudgetSoldes/>
+                        :
+                        <CenterComponent><CircularProgress/></CenterComponent>
+                    }
+                </Grid>
+                <Grid size={{md: 6, xl: 7}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     { /** Titre **/}
                     {selectedDate != null && selectedCompte != null ?
                         <BudgetTitre />
@@ -154,7 +170,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                         <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid>
-                <Grid size={{md: 1}}>
+                <Grid size={{md: 1, xl: 1}}>
                     {/** Actions sur le budget (close / reinit) **/
                         (currentBudget != null) ?
                             <BudgetActionsButtonGroupComponent
@@ -165,9 +181,9 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                     }
                 </Grid>
             </Grid>
-            <Divider variant="middle" sx={{ margin: 1 }} />
+            <Divider variant="middle" sx={{marginTop: isMobile ? 0 : 1}}/>
             <Grid container sx={{overflow: "hidden"}}>
-                <Grid size={{md: 4}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
+                <Grid size={{md: 5, xl: 4}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
                     { /** Liste des opérations **/
                         (currentBudget != null ?
                             <OperationsListe
@@ -179,7 +195,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                         )
                     }
                 </Grid>
-                <Grid size={{md: 8}} sx={{overflow: "hidden", height: window.innerHeight - 175}}>
+                <Grid size={{md: 7, xl: 8}} sx={{overflow: "hidden", height: listHeight}}>
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationDetailPage

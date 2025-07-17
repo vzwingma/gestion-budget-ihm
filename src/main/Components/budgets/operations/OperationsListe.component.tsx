@@ -1,9 +1,9 @@
 import React, {JSX} from 'react'
-import {Container, Divider, Stack} from "@mui/material";
+import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
 import CenterComponent from '../../CenterComponent';
 import OperationItem from './OperationsListItem.component';
 import OperationModel from '../../../Models/budgets/Operation.model';
-import { OperationsListeProps } from '../../Components.props';
+import {OperationsListeProps} from '../../Components.props';
 
 
 /**
@@ -11,13 +11,13 @@ import { OperationsListeProps } from '../../Components.props';
  * @param operationGroupedByDate opérations groupées par date d'opérations
  * @param filterOperations filtre des opérations
  * @param listeComptes liste des comptes
- * @param onClick action lors du click
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  *
-  */
+ */
 const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
     /**
      * Iterate groupe
      * @param operationGroupedByDate
@@ -55,7 +55,7 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
 
 
     return <Stack divider={<Divider orientation="horizontal"/>}
-                  sx={{overflowY: "auto", overflowX: "hidden", height: window.innerHeight - 175}}>
+                  sx={{overflowY: "auto", overflowX: "hidden", height: listHeight}}>
         {  iterate(operationGroupedByDate) }
     </Stack>
 };

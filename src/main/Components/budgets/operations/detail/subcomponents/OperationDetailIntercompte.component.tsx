@@ -1,5 +1,5 @@
 import React, {JSX} from 'react'
-import {MenuItem, TextField} from "@mui/material"
+import {MenuItem, TextField, useMediaQuery, useTheme} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
 import {operationIsIntercompteFromLibelle} from '../../../../../Utils/OperationData.utils'
 import {getOperationIntercompteCatLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
@@ -25,6 +25,7 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
     fillOperationForm
 }: OperationDetailIntercompteProps): JSX.Element => {
 
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
      * Remplit le champ "intercompte" de l'état à partir de la saisie de l'utilisateur
      * @param {Event} e - L'événement de saisie
@@ -39,7 +40,7 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
      */
     function getAffichageIntercompteRO(libelle: string): JSX.Element {
         if (libelle != null && operationIsIntercompteFromLibelle(libelle)) {
-            return getOperationIntercompteCatLibelle(libelle, listeAutresComptes)
+            return getOperationIntercompteCatLibelle(libelle, listeAutresComptes, isMobile)
         }
         else {
             return <></>
@@ -57,7 +58,7 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
                 error={errorIntercompte != null}
                 helperText={errorIntercompte}
                 onChange={fillIntercompteForm}
-                variant="standard">
+                variant="standard" size={"small"}>
                 {listeAutresComptes
                     .filter((compte) => compte.actif)
                     .map((compte) => (
