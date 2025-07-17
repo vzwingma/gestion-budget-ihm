@@ -95,7 +95,7 @@ function getOperationLibelleWithComment(operationLibelle: string, isMobile?: boo
         return <><span>{operationLibelleParts[0]}</span><span
             style={{color: "grey", fontSize: isMobile ? "small" : "medium", fontStyle: "italic"}}>{libelle}</span></>
     } else {
-        return <span>{operationLibelle}</span>;
+        return <span style={{fontSize: isMobile ? "small" : "medium"}}>{operationLibelle}</span>;
     }
 
 
@@ -164,7 +164,8 @@ function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: stri
                     width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                     alt={compte.libelle}
                     style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
-                {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3], isMobile) : label}
+                {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3], isMobile) :
+                    <span style={{fontSize: isMobile ? "small" : "medium"}}>{label}</span>}
             </Box>
         </Tooltip>
 }
@@ -173,10 +174,11 @@ function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: stri
  * Libellé d'une opération intercompte
  * @param {string} operationLibelle : string libellé
  * @param {CompteBancaireModel[]} listeComptes : array : liste des comptes
+ * @param isMobile
  * @returns {JSX.Element}
  */
-export function getOperationIntercompteCatLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[]): JSX.Element {
-    return getOperationIntercompteLabel(operationLibelle, false, listeComptes, false);
+export function getOperationIntercompteCatLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[], isMobile?: boolean): JSX.Element {
+    return getOperationIntercompteLabel(operationLibelle, false, listeComptes, false, isMobile);
 }
 
 
