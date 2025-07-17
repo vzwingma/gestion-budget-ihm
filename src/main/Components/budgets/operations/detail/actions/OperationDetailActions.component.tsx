@@ -45,6 +45,8 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({
     const budget = currentBudget!;
     return (
         <ButtonGroup
+            sx={{padding: "10px"}}
+            variant="contained"
             onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, editOperation, handleDateOperationFromCreateAction, onOperationChange, setShowModale)}>
             {operation.etat !== OPERATION_ETATS_ENUM.REALISEE &&
                 <Tooltip title="Valider l'opération">
@@ -60,7 +62,7 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({
             {operation.etat !== OPERATION_ETATS_ENUM.PREVUE &&
                 <Tooltip title="Prévoir l'opération">
                     <IconButton
-                        className={"buttonsActionsOperationsP color_" + OPERATION_ETATS_ENUM.PREVUE}
+                        className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.PREVUE}
                         id={OPERATION_ETATS_ENUM.PREVUE}>
                         <CenterComponent>
                             <HistoryRounded id={OPERATION_ETATS_ENUM.PREVUE} />

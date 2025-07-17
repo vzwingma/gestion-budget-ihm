@@ -55,7 +55,7 @@ const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate
 
 
     return <Stack divider={<Divider orientation="horizontal"/>}
-                  sx={{overflowY: "auto", overflowX: "hidden", height: listHeight, border: '1px solid red'}}>
+                  sx={{overflowY: "auto", overflowX: "hidden", height: listHeight}}>
         {  iterate(operationGroupedByDate) }
     </Stack>
 };
