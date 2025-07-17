@@ -20,7 +20,7 @@ export function getInfosFromMicroServices(setInfos: React.Dispatch<React.SetStat
     let msInfos : MsInfoModel[] = [];
 
     for (const backEnd of backEnds.filter(backEnd => backEnd.url !== undefined)) {
-        promisesGetInfos.push(call(METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO, [Math.random().toString().substring(2, 22)])
+        promisesGetInfos.push(call(METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
             .then((msInfo : MsInfoModel) => { msInfos.push(msInfo); })
             .catch((e) => {
                 console.log("Erreur pour " + backEnd.idMS, e)

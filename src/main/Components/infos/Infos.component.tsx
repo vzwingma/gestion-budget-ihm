@@ -56,7 +56,8 @@ export const Infos: React.FC = () => {
                                 <img src="/img/icon.png" width={isMobile ? "205" : "450"}
                                      height={isMobile ? "193" : "425"} style={{margin: "10px"}}
                                      className="d-inline-block align-middle" alt="Gestion de budgets"
-                                     onClick={() => setInfoVersion(!infoVersion)}/>
+                                     onClick={() => setInfoVersion(!infoVersion)}
+                                     onKeyDown={() => setInfoVersion(!infoVersion)}/>
                             </CenterComponent>
                         </TableCell>
                     </TableRow>
