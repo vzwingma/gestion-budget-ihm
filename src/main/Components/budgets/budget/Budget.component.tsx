@@ -51,7 +51,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const [listeLibellesOperations, setListeLibellesOperations] = useState<LibelleCategorieOperationModel[]>([]);
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 115 : window.innerHeight - 175;
+    const listHeight = isMobile ? window.innerHeight - 115 : window.innerHeight - 140;
 
     /** Callback de chargement des catégories **/
     const handleLoadCategories = useCallback((categories: CategorieOperationModel[]) => {
@@ -119,14 +119,14 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      * Render du budget
      */
     return (
-        <Box sx={{ overflow: "hidden" }} maxHeight={'true'}>
+        <Box sx={{overflow: "hidden"}} maxHeight={'true'}>
             <Grid container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid size={{md: 0.6, xl: 0.4}}>
+                <Grid size={{md: 0.6, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     <MenuIcon onClick={onOpenMenu}
                         className={"editableField"}
                         fontSize={"large"} />
                 </Grid>
-                <Grid size={{md: 2.8, xl: 2}} paddingTop={"6px"}>
+                <Grid size={{md: 2.8, xl: 2}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     <Paper component="form"
                         sx={{
                             p: '2px 4px',
@@ -162,7 +162,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                         <CenterComponent><CircularProgress/></CenterComponent>
                     }
                 </Grid>
-                <Grid size={{md: 6, xl: 7}}>
+                <Grid size={{md: 6, xl: 7}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     { /** Titre **/}
                     {selectedDate != null && selectedCompte != null ?
                         <BudgetTitre />
@@ -181,7 +181,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                     }
                 </Grid>
             </Grid>
-            <Divider variant="middle" sx={{ margin: 1 }} />
+            <Divider variant="middle" sx={{marginTop: isMobile ? 0 : 1}}/>
             <Grid container sx={{overflow: "hidden"}}>
                 <Grid size={{md: 5, xl: 4}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
                     { /** Liste des opérations **/

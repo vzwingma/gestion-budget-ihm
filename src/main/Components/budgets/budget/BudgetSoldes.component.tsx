@@ -40,8 +40,9 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
                 <Tooltip title={getTooltipFin()}>
                     <Typography variant={"caption"} width={isMobile ? 100 : 240} textAlign={"right"}
                                 sx={{cursor: "help"}}>
-                        ( <OperationValue valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true}
-                                          id={'soldeAtFinMoisCourant'}/> )
+                        <span style={{color: "#808080"}}>(</span> <OperationValue
+                        valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true}
+                        id={'soldeAtFinMoisCourant'}/> <span style={{color: "#808080"}}>)</span>
                     </Typography>
                 </Tooltip>
                 : <></>

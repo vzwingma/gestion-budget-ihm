@@ -42,7 +42,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
     const [filterChange, setFilterChange] = useState<number>(new Date().getTime());
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 135 : window.innerHeight - 175;
+    const listHeight = isMobile ? window.innerHeight - 115 : window.innerHeight - 160;
     /** Chargement des catégories **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses === 0 ? "Tous" : anneeAnalyses);
