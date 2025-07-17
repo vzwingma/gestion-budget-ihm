@@ -1,4 +1,4 @@
-import {Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Stack, Typography} from "@mui/material";
 import React, {JSX} from "react";
 import AnneeRange from "./AnneeRange.component";
 import {AnalyseTemporelleTitreProps} from "../../Components.props";
@@ -13,7 +13,7 @@ import {AnalyseTemporelleTitreProps} from "../../Components.props";
  * @returns {JSX.Element} Le composant du titre de l'analyse temporelle.
  */
 const AnalyseTemporelleTitre: React.FC<AnalyseTemporelleTitreProps> = ({currentCompte, currentAnnee, onAnneeChange} : AnalyseTemporelleTitreProps): JSX.Element => {
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+
     return (
         // Création d'une pile pour l'affichage du titre
         <Stack direction={"row"} spacing={2} justifyContent="center" alignItems="center" alignContent={"center"}>
