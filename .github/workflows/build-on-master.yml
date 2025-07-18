@@ -34,7 +34,7 @@ jobs:
           sed -i 's/__API_GW_API_KEY__/${{ secrets.API_GW_API_KEY }}/g' external-ressources/conf/.env.staging;
       - run: mv external-ressources/conf/.env.staging .env
         name: Set env STAGING
-      - run: npm run prod --if-present
+      - run: npm run build --if-present
         name: Build Staging
       - run: zip -r app_build.zip build/*
       - uses: actions/upload-artifact@v4
