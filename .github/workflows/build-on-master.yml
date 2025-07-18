@@ -98,7 +98,7 @@ jobs:
       - name: Deploy
         uses: reggionick/s3-deploy@v4
         with:
-          folder: build
+          folder: dist
           bucket: budget-app-ihm-qua
           bucket-region: eu-west-3
           invalidation: /
