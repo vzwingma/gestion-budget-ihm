@@ -1,11 +1,10 @@
-import {LabelProps} from "recharts";
-import {getCategorieColor} from "../../../../Utils/renderers/CategorieItem.renderer";
-import {PolarViewBox} from "recharts/types/util/types";
 import React, {JSX} from "react";
 import AnalyseCategoriesModel from "../../../../Models/analyses/categories/AnalyseCategories.model";
 import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model";
 import CategorieOperationModel from "../../../../Models/budgets/CategorieOperation.model";
 import {sortLibellesCategories} from "../../../../Utils/OperationData.utils";
+import {PieLabelProps} from "recharts/types/polar/Pie";
+import { getCategorieColor } from "../../../../Utils/renderers/CategorieItem.renderer";
 
 
 /**
@@ -54,7 +53,7 @@ export function populateGraphAnalyseCategories(analysesGroupedByCategories: {
      * @param resumeSelectedCategorie - Le modèle de la catégorie sélectionnée ou null si aucune catégorie n'est sélectionnée.
      * @returns Un élément JSX représentant l'étiquette de la catégorie.
      */
-export function renderLabelCategorie(props: LabelProps, resumeSelectedCategorie: AnalyseCategoriesModel | null): JSX.Element {
+export function renderLabelCategorie(props: PieLabelProps, resumeSelectedCategorie: AnalyseCategoriesModel | null): JSX.Element {
     const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
     const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie.id : null)
     return renderLabelAnalyse(props, selectedId, color);
@@ -67,52 +66,40 @@ export function renderLabelCategorie(props: LabelProps, resumeSelectedCategorie:
  * @param resumeSelectedSsCategorie - Le modèle de la sous-catégorie sélectionnée ou null si aucune sous-catégorie n'est sélectionnée.
  * @returns Un élément JSX représentant l'étiquette de la sous-catégorie.
  */
-export function renderLabelSsCategorie(props: LabelProps, resumeSelectedSsCategorie: AnalyseCategoriesModel | null): JSX.Element {
+export function renderLabelSsCategorie(props: PieLabelProps, resumeSelectedSsCategorie: AnalyseCategoriesModel | null): JSX.Element {
     const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
-    return renderLabelAnalyse(props, selectedId, "#808080");
+    const color = getCategorieColor(resumeSelectedSsCategorie !== null ? resumeSelectedSsCategorie.categorie.id : null)
+    return renderLabelAnalyse(props, selectedId, color);
 }
 
-/**
- * Render du label pour une analyse
- * @param props properties
- * @param selectedId : boolean si la catégorie est sélectionnée
- * @param color couleur
- * @returns {JSX.Element}
- */
-export function renderLabelAnalyse(props: LabelProps, selectedId: boolean, color: string): JSX.Element {
-    const {cx, cy, viewBox, value} = props;
-    const polarViewBox = viewBox as PolarViewBox;
-    console.log("viewBox", viewBox)
-    if (viewBox) {
-        const midRadius = ((polarViewBox?.outerRadius ?? 0) + (polarViewBox?.innerRadius ?? 0)) / 2;
-        // Calcul de l'angle du texte au milieu de la circonference
-        // Conversion en radian, dans le sens horaire
-        const midAngle = -((viewBox as any).startAngle + (viewBox as any).endAngle) / 2 * Math.PI / 180;
-        const x = (typeof cx === 'number' ? cx : 0) + Math.cos(midAngle) * midRadius;
-        const y = (typeof cy === 'number' ? cy : 0) + Math.sin(midAngle) * midRadius;
 
-        return (
-            <>
-                <defs>
-                    <filter x="0" y="0" width="1" height="1" id="solid">
-                        <feFlood floodColor={color} result="bg"/>
-                        <feMerge>
-                            <feMergeNode in="bg"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                </defs>
-                <text x={x} y={y} dy={10}
-                      stroke={"white"} strokeWidth={selectedId ? 0.5 : 0.1}
-                      fill={"white"}
-                      filter={selectedId ? "url(#solid)" : ""}
-                      fontSize={selectedId ? 17 : 10} textAnchor="middle">
-                    {value}
-                </text>
-            </>
-        );
-    } else {
-        return <></>
-    }
-}
+
+export const renderLabelAnalyse = (props: PieLabelProps, selectedId: boolean, color : string) => {
+    const RADIAN = Math.PI / 180;
+    const { cx, cy, midAngle, innerRadius, outerRadius, payload } = props;
+    
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
+    const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
+
+    return (<>
+            <defs>
+                <filter x="0" y="0" width="1" height="1" id="solid">
+                    <feFlood floodColor={color} result="bg"/>
+                    <feMerge>
+                        <feMergeNode in="bg"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <text x={x} y={y} dy={10}
+                  stroke={"white"} strokeWidth={selectedId ? 0.5 : 0.1}
+                  fill={"white"}
+                  filter={selectedId ? "url(#solid)" : ""}
+                  fontSize={selectedId ? 17 : 12} textAnchor="middle">
+                {payload.name}
+            </text>
+        </>
+    );
+};
 
