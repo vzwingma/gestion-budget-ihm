@@ -39,7 +39,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
      */
     useEffect(() => {
         if(pendingLibelle !== "" && pendingLibelle.length > 1){
-            setListeLibellesOperationsFiltered(listeLibellesOperations.toSorted((a, b) => prioritySort(a, b, pendingLibelle)));
+            setListeLibellesOperationsFiltered(listeLibellesOperations.toSorted((a: LibelleCategorieOperationModel, b: LibelleCategorieOperationModel) => prioritySort(a, b, pendingLibelle)));
         }
     }, [pendingLibelle, listeLibellesOperations]);
 
