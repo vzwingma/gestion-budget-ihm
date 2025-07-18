@@ -15,13 +15,14 @@
     },
     {
       "src": "img/icon.webp",
-      "sizes": "72x72 96x96 128x128 256x256",
+      "sizes": "72x72 96x96 128x128 192x192 256x256 512x512",
       "type": "image/webp"
     }
   ],
   "start_url": ".",
   "display": "standalone",
   "orientation": "landscape-primary",
+  "prefer_related_applications": false,
   "lang": "fr",
   "theme_color": "#000000",
   "background_color": "#ffffff"
