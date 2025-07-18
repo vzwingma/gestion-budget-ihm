@@ -63,7 +63,7 @@ const Profile: React.FC = (): JSX.Element => {
     } else {
         return (
                 <Tooltip title="Non connecté. Cliquez pour vous identifier">
-                    <Avatar onClick={() => auth.signinRedirect()} src="/img/avatar.png"
+                    <Avatar onClick={() => auth.signinRedirect()} src="/img/avatar.webp"
                             className="favicon" alt="User non loggé"/>
                 </Tooltip>
         );
