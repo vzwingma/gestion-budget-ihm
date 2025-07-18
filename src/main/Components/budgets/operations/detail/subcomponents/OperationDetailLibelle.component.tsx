@@ -39,7 +39,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
      */
     useEffect(() => {
         if(pendingLibelle !== "" && pendingLibelle.length > 1){
-            setListeLibellesOperationsFiltered(listeLibellesOperations.toSorted((a: LibelleCategorieOperationModel, b: LibelleCategorieOperationModel) => prioritySort(a, b, pendingLibelle)));
+            setListeLibellesOperationsFiltered([...listeLibellesOperations].toSorted((a: LibelleCategorieOperationModel, b: LibelleCategorieOperationModel) => prioritySort(a, b, pendingLibelle)));
         }
     }, [pendingLibelle, listeLibellesOperations]);
 
@@ -69,7 +69,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
         const libelleToFindAutocomplete = newLibelle?.split("-")[0]?.trim();
 
         const libelleFromHistory: LibelleCategorieOperationModel | undefined =
-            listeLibellesOperations.findLast((libelle: LibelleCategorieOperationModel) => libelle.libelle.toLowerCase() === libelleToFindAutocomplete.toLowerCase());
+            [...listeLibellesOperations].findLast((libelle: LibelleCategorieOperationModel) => libelle.libelle.toLowerCase() === libelleToFindAutocomplete.toLowerCase());
 
         if (libelleFromHistory !== undefined && operation.id === "-1") {
             fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, libelleFromHistory?.ssCategorieId);
