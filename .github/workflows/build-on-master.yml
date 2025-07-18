@@ -36,7 +36,7 @@ jobs:
         name: Set env STAGING
       - run: npm run prod --if-present
         name: Build Staging
-      - run: zip -r app_build.zip dist/*
+      - run: zip -r app_build.zip build/*
       - uses: actions/upload-artifact@v4
         name: Upload IHM app
         with:
@@ -98,7 +98,7 @@ jobs:
       - name: Deploy
         uses: reggionick/s3-deploy@v4
         with:
-          folder: dist
+          folder: build
           bucket: budget-app-ihm-qua
           bucket-region: eu-west-3
           invalidation: /
