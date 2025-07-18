@@ -53,7 +53,7 @@ export const Infos: React.FC = () => {
                     <TableRow>
                         <TableCell colSpan={2}>
                             <CenterComponent>
-                                <img src="/img/icon.png" width={isMobile ? "205" : "450"}
+                                <img src="/img/icon.webp" width={isMobile ? "205" : "450"}
                                      height={isMobile ? "193" : "425"} style={{margin: "10px"}}
                                      className="d-inline-block align-middle" alt="Gestion de budgets"
                                      onClick={() => setInfoVersion(!infoVersion)}

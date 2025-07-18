@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
+    "target": "esnext",
     "lib": [
       "dom",
       "es2015",
@@ -11,7 +11,7 @@
       "ES2020",
       "ES2021",
       "ES2022",
-      "ES2023"
+      "ESNEXT"
     ],
     "strict": true,
     "esModuleInterop": true,

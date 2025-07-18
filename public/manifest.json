@@ -1,15 +1,29 @@
 {
   "short_name": "IHM Gestion Budget",
   "name": "Application Gestion de Budgets",
+  "description": "Application Gestion de Budgets",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "img/favicon64.webp",
+      "sizes": "64x64",
+      "type": "image/webp"
+    },
+    {
+      "src": "img/icon.webp",
+      "sizes": "72x72 96x96 128x128 192x192 256x256 512x512",
+      "type": "image/webp"
     }
   ],
   "start_url": ".",
   "display": "standalone",
+  "orientation": "landscape-primary",
+  "prefer_related_applications": false,
+  "lang": "fr",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }

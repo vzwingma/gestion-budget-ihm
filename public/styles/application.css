@@ -33,6 +33,11 @@ ___  ___      _     _ _
     .compteListIcon {
         height: 45px;
         width: 45px;
+        border-radius: 10%;
+        background-color: #FFFFFF;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid #FFFFFF;
     }
 
     h3, .MuiTypography-h3 {
@@ -256,6 +261,11 @@ ______          _    _
     .compteListIcon {
         height: 60px;
         width: 60px;
+        border-radius: 10%;
+        background-color: #FFFFFF;
+        justify-content: center;
+        align-items: center;
+        border: 5px solid #FFFFFF;
     }
 
     .listeItemSeparator {

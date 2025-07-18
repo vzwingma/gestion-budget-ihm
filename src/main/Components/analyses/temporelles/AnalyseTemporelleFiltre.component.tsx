@@ -11,23 +11,26 @@ import {AnalyseTemporelleFiltreProps} from "../../Components.props";
  * @returns {unknown[]} Les filtres de l'analyse temporelle.
  * @constructor
  */
-const AnalyseTemporelleFiltre: React.FC<AnalyseTemporelleFiltreProps> = ({ listeCategories, onFilterChange }: AnalyseTemporelleFiltreProps): JSX.Element[] => {
+const AnalyseTemporelleFiltre: React.FC<AnalyseTemporelleFiltreProps> = ({
+                                                                             listeCategories,
+                                                                             onFilterChange
+                                                                         }: AnalyseTemporelleFiltreProps): JSX.Element => {
+    let renderList: JSX.Element[] = []
+    listeCategories.forEach(categorie => {
+        renderList.push(<FormControlLabel
+            id={categorie.id}
+            key={categorie.id}
+            control={<Checkbox id={categorie.id}
+                               defaultChecked icon={<RadioButtonUnchecked/>}
+                               checkedIcon={<CheckCircle/>}/>}
+            label={categorie.libelleCategorie}
+            className="filtercategorie"
+            style={{color: categorie.couleur}}
+            onChange={onFilterChange}/>
+        )
+    });
 
-    return (
-        listeCategories.map(categorie => {
-            return (<FormControlLabel
-                    id={categorie.id}
-                    key={categorie.id}
-                    control={<Checkbox id={categorie.id}
-                                       defaultChecked icon={<RadioButtonUnchecked/>}
-                                       checkedIcon={<CheckCircle/>}/>}
-                    label={categorie.libelleCategorie}
-                    className="filtercategorie"
-                    style={{color: categorie.couleur}}
-                    onChange={onFilterChange}/>
-            )
-        })
-    )
+    return (<>{renderList}</>)
 
 };
 
