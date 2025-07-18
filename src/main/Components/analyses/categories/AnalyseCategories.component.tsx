@@ -81,7 +81,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                 <Grid size={{md: 0.5, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     <MenuIcon onClick={onOpenMenu} className={"editableField"} fontSize={"large"}/>
                 </Grid>
-                <Grid size={{md: 8, xl: 10.1}}>
+                <Grid size={{md: 8, xl: 9.6}}>
                     {
                         currentBudget !== null && totauxGroupedByEtat !== null && selectedCompte !== null ?
                             <AnalyseTitre currentCompte={selectedCompte}
@@ -90,7 +90,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
                             <CenterComponent><CircularProgress /></CenterComponent>
                     }
                 </Grid>
-                <Grid size={{md: 3.5, xl: 1.5}}
+                <Grid size={{md: 3.5, xl: 2}}
                       sx={{overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     <Stack direction={"row-reverse"} alignItems={"end"}>
                         <Chip label={"Crédit"} variant="outlined" size={isMobile ? "small" : "medium"}

@@ -1,4 +1,4 @@
-import {InternalStandardProps} from "@mui/material";
+import {InternalStandardProps} from "@mui/material/internal";
 import React, {JSX} from "react";
 
 

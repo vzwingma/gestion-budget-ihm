@@ -9,41 +9,43 @@ import {sortLibellesCategories} from "../../../../Utils/OperationData.utils";
 
 
 /**
-     * Populate des data pour les graphs d'une catégorie
-     * @param analysesGroupedByCategories : object analyses groupées des catégories
-     * @param dataGraphCategories : array tableau pour alimenter le graphique
-     * @param parentCategorie : object catégorie parente
-     */
-    export function populateGraphAnalyseCategories(analysesGroupedByCategories: {
-                                                       [idCategorie: string]: AnalyseCategoriesModel
-                                                   },
-                                                                                   typeAnalyse: string,
-                                                                                   dataGraphCategories: GraphAnalyseCategoriesModel[],
-                                                                                   dataGraphSsCategories: GraphAnalyseCategoriesModel[] | null, parentCategorie?: CategorieOperationModel) {
-        const arrayAnalysesGroupedByCategories: AnalyseCategoriesModel[] = []
-        // transform en array
-        for (let categorieId in analysesGroupedByCategories) {
-            arrayAnalysesGroupedByCategories.push(analysesGroupedByCategories[categorieId]);
-        }
-
-        // Populate datagategories
-        arrayAnalysesGroupedByCategories
-            .filter(analysesOfCategorie => analysesOfCategorie.nbTransactions[typeAnalyse] > 0)
-            .sort((analysesOfCategorie1, analysesOfCategorie2) => sortLibellesCategories(analysesOfCategorie1.categorie, analysesOfCategorie2.categorie))
-            .forEach((analysesOfCategorie) => {
-
-                dataGraphCategories.push({
-                    id: analysesOfCategorie.categorie.id!,
-                    categorie: parentCategorie ?? analysesOfCategorie.categorie,
-                    name: analysesOfCategorie.categorie.libelle + " : " + analysesOfCategorie.pourcentage[typeAnalyse] + "%",
-                    value: Math.abs(analysesOfCategorie.total[typeAnalyse])
-                })
-                // Populate pour les sous catégories
-                if (analysesOfCategorie.resumesSsCategories !== undefined && analysesOfCategorie.resumesSsCategories !== null && dataGraphSsCategories !== null) {
-                    populateGraphAnalyseCategories(analysesOfCategorie.resumesSsCategories, typeAnalyse, dataGraphSsCategories, null, analysesOfCategorie.categorie);
-                }
-            })
+ * Populate des data pour les graphs d'une catégorie
+ * @param analysesGroupedByCategories : object analyses groupées des catégories
+ * @param typeAnalyse
+ * @param dataGraphCategories : array tableau pour alimenter le graphique
+ * @param dataGraphSsCategories
+ * @param parentCategorie : object catégorie parente
+ */
+export function populateGraphAnalyseCategories(analysesGroupedByCategories: {
+                                                   [idCategorie: string]: AnalyseCategoriesModel
+                                               },
+                                               typeAnalyse: string,
+                                               dataGraphCategories: GraphAnalyseCategoriesModel[],
+                                               dataGraphSsCategories: GraphAnalyseCategoriesModel[] | null, parentCategorie?: CategorieOperationModel) {
+    const arrayAnalysesGroupedByCategories: AnalyseCategoriesModel[] = []
+    // transform en array
+    for (let categorieId in analysesGroupedByCategories) {
+        arrayAnalysesGroupedByCategories.push(analysesGroupedByCategories[categorieId]);
     }
+
+    // Populate datagategories
+    arrayAnalysesGroupedByCategories
+        .filter(analysesOfCategorie => analysesOfCategorie.nbTransactions[typeAnalyse] > 0)
+        .sort((analysesOfCategorie1, analysesOfCategorie2) => sortLibellesCategories(analysesOfCategorie1.categorie, analysesOfCategorie2.categorie))
+        .forEach((analysesOfCategorie) => {
+
+            dataGraphCategories.push({
+                id: analysesOfCategorie.categorie.id!,
+                categorie: parentCategorie ?? analysesOfCategorie.categorie,
+                name: analysesOfCategorie.categorie.libelle + " : " + analysesOfCategorie.pourcentage[typeAnalyse] + "%",
+                value: Math.abs(analysesOfCategorie.total[typeAnalyse])
+            })
+            // Populate pour les sous catégories
+            if (analysesOfCategorie.resumesSsCategories !== undefined && analysesOfCategorie.resumesSsCategories !== null && dataGraphSsCategories !== null) {
+                populateGraphAnalyseCategories(analysesOfCategorie.resumesSsCategories, typeAnalyse, dataGraphSsCategories, null, analysesOfCategorie.categorie);
+            }
+        })
+}
 
 /**
      * Rend une étiquette de catégorie avec des propriétés spécifiques.
@@ -53,33 +55,35 @@ import {sortLibellesCategories} from "../../../../Utils/OperationData.utils";
      * @returns Un élément JSX représentant l'étiquette de la catégorie.
      */
 export function renderLabelCategorie(props: LabelProps, resumeSelectedCategorie: AnalyseCategoriesModel | null): JSX.Element {
-        const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
-        const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie.id : null)
-        return renderLabelAnalyse(props, selectedId, color);
-    }
+    const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
+    const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie.id : null)
+    return renderLabelAnalyse(props, selectedId, color);
+}
 
-    /**
-     * Rend une étiquette de sous-catégorie avec des propriétés spécifiques.
-     *
-     * @param props - Les propriétés de l'étiquette à rendre.
-     * @param resumeSelectedSsCategorie - Le modèle de la sous-catégorie sélectionnée ou null si aucune sous-catégorie n'est sélectionnée.
-     * @returns Un élément JSX représentant l'étiquette de la sous-catégorie.
-     */
-    export function renderLabelSsCategorie(props : LabelProps, resumeSelectedSsCategorie : AnalyseCategoriesModel | null) : JSX.Element {
-        const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
-        return renderLabelAnalyse(props, selectedId, "#808080");
-    }
+/**
+ * Rend une étiquette de sous-catégorie avec des propriétés spécifiques.
+ *
+ * @param props - Les propriétés de l'étiquette à rendre.
+ * @param resumeSelectedSsCategorie - Le modèle de la sous-catégorie sélectionnée ou null si aucune sous-catégorie n'est sélectionnée.
+ * @returns Un élément JSX représentant l'étiquette de la sous-catégorie.
+ */
+export function renderLabelSsCategorie(props: LabelProps, resumeSelectedSsCategorie: AnalyseCategoriesModel | null): JSX.Element {
+    const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
+    return renderLabelAnalyse(props, selectedId, "#808080");
+}
 
-    /**
-     * Render du label pour une analyse
-     * @param props properties
-     * @param selectedId : boolean si la catégorie est sélectionnée
-     * @param color couleur
-     * @returns {JSX.Element}
-     */
-    export function renderLabelAnalyse(props : LabelProps, selectedId : boolean, color : string) : JSX.Element {
-        const {cx, cy, viewBox, value} = props;
-        const polarViewBox = viewBox as PolarViewBox;
+/**
+ * Render du label pour une analyse
+ * @param props properties
+ * @param selectedId : boolean si la catégorie est sélectionnée
+ * @param color couleur
+ * @returns {JSX.Element}
+ */
+export function renderLabelAnalyse(props: LabelProps, selectedId: boolean, color: string): JSX.Element {
+    const {cx, cy, viewBox, value} = props;
+    const polarViewBox = viewBox as PolarViewBox;
+    console.log("viewBox", viewBox)
+    if (viewBox) {
         const midRadius = ((polarViewBox?.outerRadius ?? 0) + (polarViewBox?.innerRadius ?? 0)) / 2;
         // Calcul de l'angle du texte au milieu de la circonference
         // Conversion en radian, dans le sens horaire
@@ -107,5 +111,8 @@ export function renderLabelCategorie(props: LabelProps, resumeSelectedCategorie:
                 </text>
             </>
         );
+    } else {
+        return <></>
     }
+}
 
