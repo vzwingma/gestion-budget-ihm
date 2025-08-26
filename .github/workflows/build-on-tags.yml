@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: PROD
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/cache@v4
         with:
           path: ~/.npm
@@ -67,7 +67,7 @@ jobs:
     name: deploy to S3 PROD
     needs: build-ihm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/download-artifact@v5
         name: Download IHM app
         with:
