@@ -24,7 +24,7 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Update config in .env
         run: |
           sed -e 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' -e 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.dev;
@@ -52,6 +52,6 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - run: npm install eslint --save
       - run: npm run lint
