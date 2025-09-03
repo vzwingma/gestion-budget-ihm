@@ -51,6 +51,7 @@ import {
     LocalGasStationRounded,
     LocalHospitalRounded,
     LocalParkingRounded,
+    LocalPoliceRounded,
     LocalTaxiRounded,
     MarkAsUnreadRounded,
     MedicalInformationRounded,
@@ -61,6 +62,7 @@ import {
     MuseumRounded,
     NoCrashRounded,
     PedalBikeRounded,
+    PersonalInjuryRounded,
     PoolRounded,
     PrintRounded,
     QrCode2Rounded,
@@ -243,7 +245,8 @@ function getCategorieIconTransport(categorieOperation: CategorieOperationModel):
         'bbc1f327-35cb-4db6-8134-61af30d3246c': <NoCrashRounded/>, // Assurance
         'd67224cd-a2d1-429f-8e6c-2fb957109afa': <FlightRounded/>, // Billets d'avion
         '973f3410-a3af-4107-98f2-518169898a93': <TrainRounded/>, // Billets de train
-        '80698e57-4f34-42f8-b3ee-0487df01f0a1': <DirectionsBusRounded/> // Transport en commun
+        '80698e57-4f34-42f8-b3ee-0487df01f0a1': <DirectionsBusRounded/>, // Transport en commun
+        '389d7b3b-9bc3-4b0e-a926-5326edbe2169': <LocalPoliceRounded/> // Amende
     };
     return (categorieOperation.id && iconMap[categorieOperation.id as keyof typeof iconMap]) || null;
 }
@@ -421,6 +424,8 @@ function getCategorieIconScolariteEnfants(categorieOperation: CategorieOperation
         '93a90f35-a125-4962-a784-cb9ff85be60f': <ChildCareRounded/>, // Crèche
         '5d00df44-c8d9-4a22-99fe-bd5dcde2a7d1': <SchoolRounded/>, // Ecole
         '8f81f7aa-f0f1-4e50-9eaf-dd9ceb502925': <DrawRounded/>, // Fourniture scolaire
+        '58af45ba-575d-4e5b-b9f6-c13f1401e088': <PersonalInjuryRounded/>, // Assurance scolaire
+        '26793a31-77c2-4673-bed7-dcf1cad64be7': <SchoolRounded/>, // Autres
     };
     return (categorieOperation.id && iconMap[categorieOperation.id as keyof typeof iconMap]) || null;
 }
