@@ -24,7 +24,7 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: latest
       - name: Update config in .env
         run: |
           sed -e 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' -e 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.dev;

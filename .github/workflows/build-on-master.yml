@@ -22,10 +22,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node.js 20
+      - name: Use Node.js 
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: latest
       - run: npm ci
         name: CI Install
       - name: Update config in .env.staging
