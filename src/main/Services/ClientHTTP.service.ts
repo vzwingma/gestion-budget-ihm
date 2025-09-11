@@ -1,5 +1,5 @@
 /** Client HTTP **/
-import {v4} from 'uuid';
+import {v7} from 'uuid';
 import {API_GW_ENUM} from '../Utils/AppTechEnums.constants';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
 
@@ -74,7 +74,7 @@ export async function call(httpMethod: string, uri: string, path: string, params
 
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
-    const uuid = v4().slice(0, 8);
+    const uuid = v7().slice(0, 8);
     console.log("[WS-"+uuid+"] > [" + httpMethod + " -> " + fullURL + "]")
     const jsonBody = evaluateBody(body);
 
