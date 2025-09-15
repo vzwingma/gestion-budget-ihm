@@ -1,7 +1,7 @@
 import React from "react";
-import MsInfoModel from "../../Models/infos/MsInfo.model.js";
-import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants.js";
-import {call} from "../../Services/ClientHTTP.service.js";
+import MsInfoModel from "../../Models/infos/MsInfo.model.ts";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants.ts";
+import {call} from "../../Services/ClientHTTP.service.ts";
 
 
 /**

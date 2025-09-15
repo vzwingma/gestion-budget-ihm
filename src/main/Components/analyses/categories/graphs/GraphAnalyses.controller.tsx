@@ -1,9 +1,9 @@
 import React, {JSX} from "react";
-import AnalyseCategoriesModel from "../../../../Models/analyses/categories/AnalyseCategories.model.js";
-import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model.js";
-import CategorieOperationModel from "../../../../Models/budgets/CategorieOperation.model.js";
-import {sortLibellesCategories} from "../../../../Utils/OperationData.utils.js";
-import { getCategorieColor } from "../../../../Utils/renderers/CategorieItem.renderer.js";
+import AnalyseCategoriesModel from "../../../../Models/analyses/categories/AnalyseCategories.model.ts";
+import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model.ts";
+import CategorieOperationModel from "../../../../Models/budgets/CategorieOperation.model.ts";
+import {sortLibellesCategories} from "../../../../Utils/OperationData.utils.ts";
+import { getCategorieColor } from "../../../../Utils/renderers/CategorieItem.renderer.tsx";
 
 
 /**
@@ -79,7 +79,7 @@ export function renderLabelSsCategorie(props: any, resumeSelectedSsCategorie: An
  * @param color couleur de la catégorie
  * @returns renvoie le label de la catégorie
  */
-export const renderLabelAnalyse = (props: any, selectedId: boolean, color : string) => {
+export const renderLabelAnalyse = (props: any, selectedId: boolean, color : string): JSX.Element => {
     const RADIAN = Math.PI / 180;
     const { cx, cy, midAngle, innerRadius, outerRadius, payload } = props;
     
@@ -87,7 +87,7 @@ export const renderLabelAnalyse = (props: any, selectedId: boolean, color : stri
     const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
     const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
 
-    return (<>
+    return (<React.Fragment>
             <defs>
                 <filter x="0" y="0" width="1" height="1" id="solid">
                     <feFlood floodColor={color} result="bg"/>
@@ -104,7 +104,7 @@ export const renderLabelAnalyse = (props: any, selectedId: boolean, color : stri
                   fontSize={selectedId ? 17 : 12} textAnchor="middle">
                 {payload.name}
             </text>
-        </>
+        </React.Fragment>
     );
 };
 

@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
-import {getMonthFromString} from "../../../Utils/Date.utils.js";
-import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer.js";
-import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.js";
-import AnalyseSoldesCategorieModel from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model.js";
-import {DataCalculationTemporelResultsProps} from "../../Components.props.js";
-import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.js";
-import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.js";
+import {getMonthFromString} from "../../../Utils/Date.utils.ts";
+import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer.tsx";
+import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.ts";
+import AnalyseSoldesCategorieModel from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model.ts";
+import {DataCalculationTemporelResultsProps} from "../../Components.props.tsx";
+import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.ts";
+import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.ts";
 
 /**
  * Controleur des analyses temporelles

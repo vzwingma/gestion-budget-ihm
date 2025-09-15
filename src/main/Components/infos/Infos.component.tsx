@@ -10,10 +10,10 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material";
-import {getInfosFromMicroServices} from "./Infos.extservices.js";
-import MicroServicesInfos from "./MicroServicesInfos.component.js";
-import MsInfoModel from "../../Models/infos/MsInfo.model.js";
-import CenterComponent from "../../Components/CenterComponent.js";
+import {getInfosFromMicroServices} from "./Infos.extservices.ts";
+import MicroServicesInfos from "./MicroServicesInfos.component.tsx";
+import MsInfoModel from "../../Models/infos/MsInfo.model.ts";
+import { CenterComponent } from "../../Components/CenterComponent.tsx";
 
 
 /**

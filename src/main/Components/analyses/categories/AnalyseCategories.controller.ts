@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
-import {OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants.js";
-import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer.js";
-import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model.js";
-import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.js";
-import OperationModel from "../../../Models/budgets/Operation.model.js";
-import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.js";
-import {DataCalculationResultsProps} from "../../Components.props.js";
+import {OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
+import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer.tsx";
+import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model.ts";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
+import OperationModel from "../../../Models/budgets/Operation.model.ts";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
+import {DataCalculationResultsProps} from "../../Components.props.tsx";
 
 /**
  * Contrôleur des analyses

@@ -13,7 +13,6 @@
       "ES2022",
       "ESNEXT"
     ],
-    "strict": true,
     "moduleResolution": "nodenext",
     "module": "nodenext",
     "forceConsistentCasingInFileNames": true,
@@ -21,12 +20,21 @@
       "node_modules/@types"
     ],
     "types": [
-      "uuid", "node", "jest"
+      "uuid",
+      "node",
+      "jest"
     ],
-    "jsx": "react"
+    "jsx": "react",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx"
-]
+  ],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "experimentalResolver": true
+  }
 }

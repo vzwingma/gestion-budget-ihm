@@ -1,4 +1,4 @@
-import AnalyseSoldesCategorie from "./AnalyseSoldesCategorie.model.js";
+import AnalyseSoldesCategorie from "./AnalyseSoldesCategorie.model.ts";
 
 
 /**

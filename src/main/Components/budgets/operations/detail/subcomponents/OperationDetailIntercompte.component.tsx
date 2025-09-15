@@ -1,9 +1,9 @@
 import React, {JSX} from 'react'
 import {MenuItem, TextField, useMediaQuery, useTheme} from "@mui/material"
-import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.js"
-import {operationIsIntercompteFromLibelle} from '../../../../../Utils/OperationData.utils.js'
-import {getOperationIntercompteCatLibelle} from '../../../../../Utils/renderers/OperationItem.renderer.js'
-import {OperationDetailIntercompteProps} from '../../../../Components.props.js'
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
+import {operationIsIntercompteFromLibelle} from '../../../../../Utils/OperationData.utils.ts'
+import {getOperationIntercompteCatLibelle} from '../../../../../Utils/renderers/OperationItem.renderer.tsx'
+import {OperationDetailIntercompteProps} from '../../../../Components.props.tsx'
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.

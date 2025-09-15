@@ -2,9 +2,9 @@
  * External services du profil
  */
 
-import {call} from "../../Services/ClientHTTP.service.js";
-import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants.js";
-import ProfileUserModel from "../../Models/profiles/ProfileUser.model.js";
+import {call} from "../../Services/ClientHTTP.service.ts";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants.ts";
+import ProfileUserModel from "../../Models/profiles/ProfileUser.model.ts";
 import {Dispatch, SetStateAction} from "react";
 
 /**

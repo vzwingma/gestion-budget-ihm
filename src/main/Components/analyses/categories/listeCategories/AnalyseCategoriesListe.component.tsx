@@ -1,9 +1,9 @@
 import React, {JSX} from 'react'
 import {Box, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
-import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component.js";
-import {sortLibellesCategories} from '../../../../Utils/OperationData.utils.js';
-import AnalyseCategoriesModel from '../../../../Models/analyses/categories/AnalyseCategories.model.js';
-import {AnalyseCategoriesListeProps} from '../../../Components.props.js';
+import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component.tsx";
+import {sortLibellesCategories} from '../../../../Utils/OperationData.utils.ts';
+import AnalyseCategoriesModel from '../../../../Models/analyses/categories/AnalyseCategories.model.ts';
+import {AnalyseCategoriesListeProps} from '../../../Components.props.tsx';
 
 
 /**

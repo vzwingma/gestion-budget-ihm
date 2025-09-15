@@ -1,4 +1,4 @@
-import ProprietaireModel from "./Proprietaire.model.js";
+import ProprietaireModel from "./Proprietaire.model.ts";
 
 /**
  * CompteBancaire model

@@ -2,9 +2,9 @@
  * Affichage d'une valeur dans la liste des opérations
  */
 import React, {JSX} from 'react';
-import OperationModel from '../../Models/budgets/Operation.model.js';
-import {OPERATION_ETATS_ENUM} from '../AppBusinessEnums.constants.js';
-import { addEndingZeros } from '../OperationData.utils.js';
+import OperationModel from '../../Models/budgets/Operation.model.ts';
+import {OPERATION_ETATS_ENUM} from '../AppBusinessEnums.constants.ts';
+import { addEndingZeros } from '../OperationData.utils.ts';
 
 /**
  * Affichage du style de l'opération suivant sa valeur

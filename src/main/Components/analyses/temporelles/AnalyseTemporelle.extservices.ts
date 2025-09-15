@@ -1,10 +1,10 @@
 import {toast} from "react-toastify";
-import {call} from "../../../Services/ClientHTTP.service.js";
-import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants.js";
-import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.js";
-import {calculateTimelines,} from "./AnalyseTemporelle.controller.js";
-import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.js";
-import {DataCalculationTemporelResultsProps} from "../../Components.props.js";
+import {call} from "../../../Services/ClientHTTP.service.ts";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants.ts";
+import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
+import {calculateTimelines,} from "./AnalyseTemporelle.controller.ts";
+import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.ts";
+import {DataCalculationTemporelResultsProps} from "../../Components.props.tsx";
 
 /**
  * Services back-end pour les analyses.

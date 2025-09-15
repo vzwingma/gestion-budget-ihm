@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
-import {saveOperation} from "../OperationDetailPage.extservices.js";
-import {getEventTargetId} from "../../../../../Utils/OperationData.utils.js";
-import OperationModel from "../../../../../Models/budgets/Operation.model.js";
-import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.js";
-import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants.js";
+import {saveOperation} from "../OperationDetailPage.extservices.ts";
+import {getEventTargetId} from "../../../../../Utils/OperationData.utils.ts";
+import OperationModel from "../../../../../Models/budgets/Operation.model.ts";
+import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
+import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants.ts";
 import {Dispatch, SetStateAction} from "react";
-import OperationEditionModel from "../../../../../Models/budgets/OperationEdition.model.js";
+import OperationEditionModel from "../../../../../Models/budgets/OperationEdition.model.ts";
 
 
 /**

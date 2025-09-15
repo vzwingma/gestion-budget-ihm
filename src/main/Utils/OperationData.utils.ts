@@ -1,6 +1,6 @@
-import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.js";
-import OperationModel from "../Models/budgets/Operation.model.js";
-import * as AppConstants from "./AppBusinessEnums.constants.js";
+import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
+import OperationModel from "../Models/budgets/Operation.model.ts";
+import * as AppConstants from "./AppBusinessEnums.constants.ts";
 
 /**
  * Ajout de leading zero devant une valeur

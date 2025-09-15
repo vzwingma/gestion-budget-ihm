@@ -1,12 +1,12 @@
 import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
 import React, {JSX} from "react";
-import {getCategorieColor} from "../../../../Utils/renderers/CategorieItem.renderer.js";
+import {getCategorieColor} from "../../../../Utils/renderers/CategorieItem.renderer.tsx";
 import {
     populateGraphAnalyseCategories,
     renderLabelCategorie, renderLabelSsCategorie,
-} from "./GraphAnalyses.controller.js";
-import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model.js";
-import {GraphAnalysesProps} from "../../../Components.props.js";
+} from "./GraphAnalyses.controller.tsx";
+import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model.ts";
+import {GraphAnalysesProps} from "../../../Components.props.tsx";
 
 
 

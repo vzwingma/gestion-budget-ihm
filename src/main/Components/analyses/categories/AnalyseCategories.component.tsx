@@ -2,17 +2,19 @@ import React, {JSX, useEffect, useState} from "react";
 
 import {Box, Chip, CircularProgress, Divider, Grid, Stack, Switch, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import GraphAnalyses from "./graphs/GraphAnalyses.component.js";
-import AnalyseTitre from "./AnalyseCategoriesTitre.component.js";
-import {loadBudget} from "./AnalyseCategories.extservices.js";
-import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.js";
-import {getOperationStateColor} from "../../../Utils/renderers/OperationItem.renderer.js";
-import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants.js";
-import {selectEtatOperation, selectTypeOperation} from "./AnalyseCategories.controller.js";
-import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component.js";
-import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model.js";
-import CenterComponent from "../../CenterComponent.js";
-import {AnalyseCategoriesProps, DataCalculationResultsProps} from "../../Components.props.js";
+import GraphAnalyses from "./graphs/GraphAnalyses.component.tsx";
+import AnalyseTitre from "./AnalyseCategoriesTitre.component.tsx";
+import {loadBudget} from "./AnalyseCategories.extservices.ts";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
+import {getOperationStateColor} from "../../../Utils/renderers/OperationItem.renderer.tsx";
+import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
+import {selectEtatOperation, selectTypeOperation} from "./AnalyseCategories.controller.ts";
+import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component.tsx";
+import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model.ts";
+import {AnalyseCategoriesProps, DataCalculationResultsProps} from "../../Components.props.tsx";
+import { CenterComponent } from "../../CenterComponent.tsx";
+
+
 
 
 /**

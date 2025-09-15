@@ -1,6 +1,6 @@
 import React, {JSX} from 'react'
 import {TableCell, TableRow} from "@mui/material";
-import MsInfoModel from "../../Models/infos/MsInfo.model.js";
+import MsInfoModel from "../../Models/infos/MsInfo.model.ts";
 /**
  * Affichage d'une tuile sur un des backend
  * @param nom nom du µS

@@ -1,11 +1,11 @@
 import React, {JSX, useContext} from 'react'
 import {Box, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
-import OperationValue from "../../../Utils/renderers/OperationValue.renderer.js";
-import CenterComponent from '../../CenterComponent.js';
-import {OperationItemProps} from '../../Components.props.js';
-import {getOperationLibelle, getOperationStateColor} from '../../../Utils/renderers/OperationItem.renderer.js';
-import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer.js';
-import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.js';
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
+import { CenterComponent } from '../../CenterComponent.tsx';
+import {OperationItemProps} from '../../Components.props.tsx';
+import {getOperationLibelle, getOperationStateColor} from '../../../Utils/renderers/OperationItem.renderer.tsx';
+import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer.tsx';
+import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
 
 
 /**

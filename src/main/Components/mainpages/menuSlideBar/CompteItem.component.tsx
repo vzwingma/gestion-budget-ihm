@@ -1,9 +1,9 @@
 import React, {JSX, useEffect, useState} from 'react'
 import {CircularProgress, Container, Stack, Typography} from "@mui/material";
-import OperationValue from "../../../Utils/renderers/OperationValue.renderer.js";
-import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants.js";
-import {getSoldesBudget} from './CompteItem.controller.js';
-import {CompteItemProps} from '../../Components.props.js';
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
+import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants.ts";
+import {getSoldesBudget} from './CompteItem.controller.ts';
+import {CompteItemProps} from '../../Components.props.ts';
 
 
 /**
