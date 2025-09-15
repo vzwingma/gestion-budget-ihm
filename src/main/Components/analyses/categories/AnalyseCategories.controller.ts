@@ -101,15 +101,9 @@ function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesMode
  * @returns {Object} Le groupe initialisé
  */
 function initGroup(group: { [idCategorie: string]: AnalyseCategoriesModel }, idCategorie: string, idxOperation: string) {
-    if (group[idCategorie].nbTransactions[idxOperation] === undefined) {
-        group[idCategorie].nbTransactions[idxOperation] = 0;
-    }
-    if (group[idCategorie].total[idxOperation] === undefined) {
-        group[idCategorie].total[idxOperation] = 0;
-    }
-    if (group[idCategorie].pourcentage[idxOperation] === undefined) {
-        group[idCategorie].pourcentage[idxOperation] = 0;
-    }
+    group[idCategorie].nbTransactions[idxOperation] ??= 0;
+    group[idCategorie].total[idxOperation] ??= 0;
+    group[idCategorie].pourcentage[idxOperation] ??= 0;
     return group
 }
 

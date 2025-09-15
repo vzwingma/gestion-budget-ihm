@@ -29,14 +29,12 @@ export function populateGraphCategories(analyseSoldesCategoriesData: AnalyseSold
             }
             let datasTemporellesMois: GraphAnalyseTimelineItemModel;
             datasTemporellesMois = getDataGraphTimelineItem(dataGraphTimeline, idxMonth, anneeAnalyses);
-            if (datasTemporellesMois === undefined) {
-                datasTemporellesMois = {
+                datasTemporellesMois ??= {
                     id: "id_" + idxMonth + "_" + anneeAnalyses + "_" + (isAtTerminaison ? SOLDES_ENUM.PREVISIONNEL : SOLDES_ENUM.REEL),
                     name: createLabelTimeline(idxMonth, anneeAnalyses),
                     categories: {}
                 };
 
-            }
             // Ajout des données pour chaque catégorie
             analyseSoldesCategoriesData
                 .filter(categorie => categorie.filterActive)
@@ -49,9 +47,7 @@ export function populateGraphCategories(analyseSoldesCategoriesData: AnalyseSold
                 })
 
             // Publication des données temporelles
-            if (dataGraphTimeline.dataGraphTimelineItem === undefined) {
-                dataGraphTimeline.dataGraphTimelineItem = {};
-            }
+            dataGraphTimeline.dataGraphTimelineItem ??= {};
             dataGraphTimeline.dataGraphTimelineItem[datasTemporellesMois.id] = datasTemporellesMois;
         });
 }
