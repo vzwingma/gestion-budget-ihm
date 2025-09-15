@@ -1,17 +1,17 @@
-import AnalyseCategoriesModel from "../Models/analyses/categories/AnalyseCategories.model";
-import {AnalyseSoldesTimelineItemModel} from "../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
-import {AnalyseCategorieTimelineItem} from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
-import AnalyseSoldesCategorie from "../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
-import SoldesMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model";
-import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model";
-import CategorieOperationModel from "../Models/budgets/CategorieOperation.model";
-import CompteBancaireModel from "../Models/budgets/CompteBancaire.model";
-import OperationModel from "../Models/budgets/Operation.model";
+import AnalyseCategoriesModel from "../Models/analyses/categories/AnalyseCategories.model.ts";
+import {AnalyseSoldesTimelineItemModel} from "../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.ts";
+import {AnalyseCategorieTimelineItem} from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.ts";
+import AnalyseSoldesCategorie from "../Models/analyses/temporelles/AnalyseSoldesCategorie.model.ts";
+import SoldesMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model.ts";
+import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model.ts";
+import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
+import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
+import OperationModel from "../Models/budgets/Operation.model.ts";
 
-import {BUSINESS_ONGLETS, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants";
-import {OPERATION_EDITION_FORM} from "./budgets/operations/detail/OperationDetailPage.constants";
-import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOperation.model";
-import OperationEditionModel from "../Models/budgets/OperationEdition.model";
+import {BUSINESS_ONGLETS, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants.ts";
+import {OPERATION_EDITION_FORM} from "./budgets/operations/detail/OperationDetailPage.constants.ts";
+import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOperation.model.ts";
+import OperationEditionModel from "../Models/budgets/OperationEdition.model.ts";
 import {Dispatch, SetStateAction} from "react";
 
 /**

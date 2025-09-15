@@ -2,24 +2,24 @@ import React, {JSX, useCallback, useContext, useEffect, useState} from "react";
 
 import {Box, CircularProgress, Divider, Grid, InputBase, Paper, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import BudgetTitre from "./BudgetTitre.component";
-import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
-import OperationModel, {createNewOperation} from "../../../Models/budgets/Operation.model";
-import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices";
-import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
-import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component";
-import OperationsListe from "../operations/OperationsListe.component";
-import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
+import BudgetTitre from "./BudgetTitre.component.tsx";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
+import OperationModel, {createNewOperation} from "../../../Models/budgets/Operation.model.ts";
+import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices.ts";
+import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants.ts";
+import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component.tsx";
+import OperationsListe from "../operations/OperationsListe.component.tsx";
+import OperationDetailPage from "../operations/detail/OperationDetailPage.component.tsx";
 import {CancelRounded} from "@mui/icons-material";
-import {getLabelFRFromDate} from "../../../Utils/Date.utils";
-import {getOperationsGroupedByDateOperation} from "./Budget.controller";
-import CenterComponent from "../../CenterComponent";
-import {getLibellesOperationsCompte} from "../operations/detail/OperationDetailPage.extservices";
-import {BudgetPageProps} from "../../Components.props";
-import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider";
-import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
-import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model";
-import BudgetSoldes from "./BudgetSoldes.component";
+import {getLabelFRFromDate} from "../../../Utils/Date.utils.ts";
+import {getOperationsGroupedByDateOperation} from "./Budget.controller.ts";
+import { CenterComponent } from "../../CenterComponent.tsx";
+import {getLibellesOperationsCompte} from "../operations/detail/OperationDetailPage.extservices.ts";
+import {BudgetPageProps} from "../../Components.props.tsx";
+import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider.tsx";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
+import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.ts";
+import BudgetSoldes from "./BudgetSoldes.component.tsx";
 
 
 /**
@@ -101,9 +101,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      * @param operation opération
      */
     function handleOperationSelect(operation: OperationModel) {
-        if (operation.mensualite == null) {
-            operation.mensualite = { periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE };
-        }
+        operation.mensualite ??= { periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE };
         setCurrentOperation(operation);
     }
 

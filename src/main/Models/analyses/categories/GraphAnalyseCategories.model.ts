@@ -1,4 +1,4 @@
-import CategorieOperationModel from "../../budgets/CategorieOperation.model";
+import CategorieOperationModel from "../../budgets/CategorieOperation.model.ts";
 
 /**
  * Model pour la représentation graphique des analyses des catégories

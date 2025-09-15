@@ -1,9 +1,9 @@
 import {WatchLaterRounded} from "@mui/icons-material";
-import {EN_RETARD, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants";
+import {EN_RETARD, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants.ts";
 import {Box, Tooltip} from "@mui/material";
 import React, {JSX} from "react";
-import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
-import {INTERCOMPTE_LIBELLE_REGEX, operationIsIntercompteFromLibelle} from "../OperationData.utils";
+import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
+import {INTERCOMPTE_LIBELLE_REGEX, operationIsIntercompteFromLibelle} from "../OperationData.utils.ts";
 
 /**
  * Couleur d'une opération selon son état

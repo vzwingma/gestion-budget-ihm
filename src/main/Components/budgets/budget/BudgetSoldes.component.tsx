@@ -1,8 +1,8 @@
-import OperationValue from '../../../Utils/renderers/OperationValue.renderer'
+import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx'
 import {CircularProgress, Stack, Tooltip, Typography, useMediaQuery, useTheme} from "@mui/material";
 import React, {JSX, useContext} from "react";
-import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider';
-import CenterComponent from '../../CenterComponent';
+import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { CenterComponent } from '../../CenterComponent.tsx';
 
 /**
  * Page principale d'affichage du solde

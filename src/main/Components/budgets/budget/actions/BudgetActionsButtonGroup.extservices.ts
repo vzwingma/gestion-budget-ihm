@@ -1,6 +1,6 @@
-import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model";
-import { call } from "./../../../../Services/ClientHTTP.service";
-import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "./../../../../Utils/AppTechEnums.constants";
+import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model.ts";
+import { call } from "./../../../../Services/ClientHTTP.service.ts";
+import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "./../../../../Utils/AppTechEnums.constants.ts";
 import {toast} from "react-toastify";
 
 

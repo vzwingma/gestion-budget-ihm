@@ -2,8 +2,8 @@ import {
     OPERATION_ETATS_ENUM,
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
-} from "../../Utils/AppBusinessEnums.constants";
-import CategorieOperationModel from "./CategorieOperation.model";
+} from "../../Utils/AppBusinessEnums.constants.ts";
+import CategorieOperationModel from "./CategorieOperation.model.ts";
 
 /**
  * Opérations model

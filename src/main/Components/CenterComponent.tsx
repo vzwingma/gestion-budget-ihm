@@ -10,13 +10,14 @@ export interface CenterComponentProps extends InternalStandardProps<React.HTMLAt
 }
 
 
-  export default function CenterComponent(props: Readonly<CenterComponentProps>): JSX.Element {
-    return (
+export const CenterComponent: React.FC<CenterComponentProps> = (props: CenterComponentProps): JSX.Element => {
+return (
         <div className="container">
             <div className="child">
                 {props.children}
             </div>
         </div>
     );
-  }
+}
+
 

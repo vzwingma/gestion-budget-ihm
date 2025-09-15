@@ -2,12 +2,12 @@
  * Controleur de graphique pour l'analyse temporelle.
  */
 
-import {AnalyseSoldesTimelineItemModel} from "../../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
-import {AnalyseCategorieTimelineItem} from "../../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
-import AnalyseSoldesCategorie from "../../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
-import {GraphAnalyseTimelineItemModel} from "../../../../Models/analyses/temporelles/GraphAnalyseMensuel.model";
-import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
-import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant";
+import {AnalyseSoldesTimelineItemModel} from "../../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.ts";
+import {AnalyseCategorieTimelineItem} from "../../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.ts";
+import AnalyseSoldesCategorie from "../../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model.ts";
+import {GraphAnalyseTimelineItemModel} from "../../../../Models/analyses/temporelles/GraphAnalyseMensuel.model.ts";
+import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model.ts";
+import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant.ts";
 
 
 /**
@@ -29,14 +29,12 @@ export function populateGraphCategories(analyseSoldesCategoriesData: AnalyseSold
             }
             let datasTemporellesMois: GraphAnalyseTimelineItemModel;
             datasTemporellesMois = getDataGraphTimelineItem(dataGraphTimeline, idxMonth, anneeAnalyses);
-            if (datasTemporellesMois === undefined) {
-                datasTemporellesMois = {
+                datasTemporellesMois ??= {
                     id: "id_" + idxMonth + "_" + anneeAnalyses + "_" + (isAtTerminaison ? SOLDES_ENUM.PREVISIONNEL : SOLDES_ENUM.REEL),
                     name: createLabelTimeline(idxMonth, anneeAnalyses),
                     categories: {}
                 };
 
-            }
             // Ajout des données pour chaque catégorie
             analyseSoldesCategoriesData
                 .filter(categorie => categorie.filterActive)
@@ -49,9 +47,7 @@ export function populateGraphCategories(analyseSoldesCategoriesData: AnalyseSold
                 })
 
             // Publication des données temporelles
-            if (dataGraphTimeline.dataGraphTimelineItem === undefined) {
-                dataGraphTimeline.dataGraphTimelineItem = {};
-            }
+            dataGraphTimeline.dataGraphTimelineItem ??= {};
             dataGraphTimeline.dataGraphTimelineItem[datasTemporellesMois.id] = datasTemporellesMois;
         });
 }

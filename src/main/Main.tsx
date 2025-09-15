@@ -1,16 +1,16 @@
 import React, {Component} from "react";
 import {HashRouter, Route, Routes} from 'react-router-dom';
 import {AuthProvider} from 'react-oidc-context';
-import {removeTokenFromStorage} from "./Services/Auth.service";
+import {removeTokenFromStorage} from "./Services/Auth.service.ts";
 
 import {AppBar, createTheme, CssBaseline, responsiveFontSizes, Stack, ThemeProvider, Typography} from "@mui/material";
-import {OIDC_ENUM} from "./Utils/AppTechEnums.constants";
-import {BUSINESS_ONGLETS} from "./Utils/AppBusinessEnums.constants";
-import MainPage from "./Components/mainpages/MainPage.component";
-import PrivateNavLinks from "./Components/menuTopBar/PrivateNavLinks.component";
-import Profile from "./Components/menuTopBar/Profile.component";
-import {Infos} from "./Components/infos/Infos.component";
-import {BudgetContextProvider} from "./Models/contextProvider/BudgetContextProvider";
+import {OIDC_ENUM} from "./Utils/AppTechEnums.constants.ts";
+import {BUSINESS_ONGLETS} from "./Utils/AppBusinessEnums.constants.ts";
+import MainPage from "./Components/mainpages/MainPage.component.tsx";
+import PrivateNavLinks from "./Components/menuTopBar/PrivateNavLinks.component.tsx";
+import Profile from "./Components/menuTopBar/Profile.component.tsx";
+import {Infos} from "./Components/infos/Infos.component.tsx";
+import {BudgetContextProvider} from "./Models/contextProvider/BudgetContextProvider.tsx";
 
 
 /** Page principale avec le routeur **/

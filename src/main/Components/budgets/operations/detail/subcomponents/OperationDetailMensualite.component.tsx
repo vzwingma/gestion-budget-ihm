@@ -1,10 +1,10 @@
 import React, {JSX, useContext} from 'react'
 import {MenuItem, TextField, Typography} from "@mui/material"
-import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
-import {getPeriodeRenderer} from '../../../../../Utils/renderers/OperationItem.renderer'
-import {PERIODES_MENSUALITE_ENUM} from '../../../../../Utils/AppBusinessEnums.constants'
-import {OperationDetailMensualiteProps} from '../../../../Components.props'
-import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
+import {getPeriodeRenderer} from '../../../../../Utils/renderers/OperationItem.renderer.tsx'
+import {PERIODES_MENSUALITE_ENUM} from '../../../../../Utils/AppBusinessEnums.constants.ts'
+import {OperationDetailMensualiteProps} from '../../../../Components.props.tsx'
+import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.

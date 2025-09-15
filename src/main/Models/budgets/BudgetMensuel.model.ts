@@ -1,4 +1,4 @@
-import OperationModel from "./Operation.model";
+import OperationModel from "./Operation.model.ts";
 
 /**
  * Catégorie Opérations model

@@ -2,17 +2,19 @@ import React, {JSX, useEffect, useState} from "react";
 
 import {Box, Chip, CircularProgress, Divider, Grid, Stack, Switch, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import GraphAnalyses from "./graphs/GraphAnalyses.component";
-import AnalyseTitre from "./AnalyseCategoriesTitre.component";
-import {loadBudget} from "./AnalyseCategories.extservices";
-import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
-import {getOperationStateColor} from "../../../Utils/renderers/OperationItem.renderer";
-import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
-import {selectEtatOperation, selectTypeOperation} from "./AnalyseCategories.controller";
-import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component";
-import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
-import CenterComponent from "../../CenterComponent";
-import {AnalyseCategoriesProps, DataCalculationResultsProps} from "../../Components.props";
+import GraphAnalyses from "./graphs/GraphAnalyses.component.tsx";
+import AnalyseTitre from "./AnalyseCategoriesTitre.component.tsx";
+import {loadBudget} from "./AnalyseCategories.extservices.ts";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
+import {getOperationStateColor} from "../../../Utils/renderers/OperationItem.renderer.tsx";
+import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
+import {selectEtatOperation, selectTypeOperation} from "./AnalyseCategories.controller.ts";
+import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component.tsx";
+import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model.ts";
+import {AnalyseCategoriesProps, DataCalculationResultsProps} from "../../Components.props.tsx";
+import { CenterComponent } from "../../CenterComponent.tsx";
+
+
 
 
 /**

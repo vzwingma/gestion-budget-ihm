@@ -88,7 +88,7 @@ import {
     WifiRounded
 } from "@mui/icons-material";
 import React, {JSX} from "react";
-import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model";
+import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 
 /**
  * Couleur de la catégorie

@@ -1,10 +1,10 @@
 import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React, {JSX} from "react";
-import {flatCategoriesData, populateGraphCategories, populateGraphSoldes} from "./GraphAnalyseTemporelle.controller";
-import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component";
-import {GraphAnalyseTemporelleProps} from "../../../Components.props";
-import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model";
-import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant";
+import {flatCategoriesData, populateGraphCategories, populateGraphSoldes} from "./GraphAnalyseTemporelle.controller.ts";
+import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component.tsx";
+import {GraphAnalyseTemporelleProps} from "../../../Components.props.tsx";
+import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model.ts";
+import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant.ts";
 
 
 /**

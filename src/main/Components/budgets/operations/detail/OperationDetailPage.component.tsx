@@ -7,39 +7,39 @@ import {
     handleValidateOperationForm,
     isInCreateMode,
     isInEditMode
-} from './OperationDetailPage.controller';
-import CenterComponent from '../../../CenterComponent';
+} from './OperationDetailPage.controller.ts';
+import { CenterComponent } from '../../../CenterComponent.tsx';
 import {
     createEmptyEditForm,
     createEmptyErrors,
     EditFormProps,
     ErrorsFormProps,
     OPERATION_EDITION_FORM
-} from './OperationDetailPage.constants';
-import {OperationDetailActions} from './actions/OperationDetailActions.component';
-import BudgetMensuelModel from '../../../../Models/budgets/BudgetMensuel.model';
-import CategorieOperationModel from '../../../../Models/budgets/CategorieOperation.model';
-import CompteBancaireModel from '../../../../Models/budgets/CompteBancaire.model';
+} from './OperationDetailPage.constants.ts';
+import {OperationDetailActions} from './actions/OperationDetailActions.component.tsx';
+import BudgetMensuelModel from '../../../../Models/budgets/BudgetMensuel.model.ts';
+import CategorieOperationModel from '../../../../Models/budgets/CategorieOperation.model.ts';
+import CompteBancaireModel from '../../../../Models/budgets/CompteBancaire.model.ts';
 import {
     BUSINESS_GUID,
     OPERATION_ETATS_ENUM,
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
-} from '../../../../Utils/AppBusinessEnums.constants';
-import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer';
-import {getOperationStateColor,} from '../../../../Utils/renderers/OperationItem.renderer';
-import {OperationDetailValeur} from './subcomponents/OperationDetailValeur.component';
-import {OperationDetailLibelle} from './subcomponents/OperationDetailLibelle.component';
-import {OperationDetailDate} from './subcomponents/OperationDetailDate.component';
-import {OperationDetailIntercompte} from './subcomponents/OperationDetailIntercompte.component';
-import {OperationDetailMensualite} from './subcomponents/OperationDetailMensualite.component';
-import {OperationDetailCategories} from './subcomponents/OperationDetailCategories.component';
+} from '../../../../Utils/AppBusinessEnums.constants.ts';
+import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer.tsx';
+import {getOperationStateColor,} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
+import {OperationDetailValeur} from './subcomponents/OperationDetailValeur.component.tsx';
+import {OperationDetailLibelle} from './subcomponents/OperationDetailLibelle.component.tsx';
+import {OperationDetailDate} from './subcomponents/OperationDetailDate.component.tsx';
+import {OperationDetailIntercompte} from './subcomponents/OperationDetailIntercompte.component.tsx';
+import {OperationDetailMensualite} from './subcomponents/OperationDetailMensualite.component.tsx';
+import {OperationDetailCategories} from './subcomponents/OperationDetailCategories.component.tsx';
 import OperationEditionModel, {
     cloneOperation,
     createNewOperationEdition
-} from '../../../../Models/budgets/OperationEdition.model';
-import {OperationDetailPageProps} from '../../../Components.props';
-import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider';
+} from '../../../../Models/budgets/OperationEdition.model.ts';
+import {OperationDetailPageProps} from '../../../Components.props.tsx';
+import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
 
 
 /**

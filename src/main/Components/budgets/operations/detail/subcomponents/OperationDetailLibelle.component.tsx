@@ -1,12 +1,12 @@
 import React, {JSX, useContext, useEffect, useState} from 'react'
-import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {Autocomplete, FormControl, FormHelperText, TextField, Typography, useMediaQuery, useTheme} from '@mui/material'
-import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer'
-import {OperationDetailLibelleProps} from '../../../../Components.props'
-import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
-import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils";
-import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model";
-import {evaluatePendingLibelle, getOperationLibelleInEdition, prioritySort} from "./OperationDetailLibelle.controller";
+import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer.tsx'
+import {OperationDetailLibelleProps} from '../../../../Components.props.tsx'
+import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils.ts";
+import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
+import {evaluatePendingLibelle, getOperationLibelleInEdition, prioritySort} from "./OperationDetailLibelle.controller.ts";
 
 
 /**

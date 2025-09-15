@@ -1,6 +1,6 @@
-import * as ClientHTTP from "../../../Services/ClientHTTP.service";
-import * as AppConstants from "../../../Utils/AppTechEnums.constants";
-import CompteBancaireModel from '../../../Models/budgets/CompteBancaire.model';
+import * as ClientHTTP from "../../../Services/ClientHTTP.service.ts";
+import * as AppConstants from "../../../Utils/AppTechEnums.constants.ts";
+import CompteBancaireModel from '../../../Models/budgets/CompteBancaire.model.ts';
 import {Dispatch, SetStateAction} from "react";
 
 

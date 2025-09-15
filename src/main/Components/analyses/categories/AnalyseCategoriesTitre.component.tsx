@@ -1,7 +1,7 @@
 import {Stack, Tooltip, Typography, useMediaQuery, useTheme} from "@mui/material";
 import React, {JSX} from "react";
-import OperationValue from "../../../Utils/renderers/OperationValue.renderer";
-import {AnalyseTitreProps} from "../../Components.props";
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
+import {AnalyseTitreProps} from "../../Components.props.tsx";
 
 
 /**

@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
 import {v7 as uuid} from "uuid";
-import OperationModel from "../../../../Models/budgets/Operation.model";
-import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model";
-import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../../Utils/AppTechEnums.constants";
-import {OPERATION_ETATS_ENUM} from "../../../../Utils/AppBusinessEnums.constants";
-import {call} from "../../../../Services/ClientHTTP.service";
-import LibelleCategorieOperationModel from "../../../../Models/budgets/LibelleCategorieOperation.model";
+import OperationModel from "../../../../Models/budgets/Operation.model.ts";
+import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model.ts";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../../Utils/AppTechEnums.constants.ts";
+import {OPERATION_ETATS_ENUM} from "../../../../Utils/AppBusinessEnums.constants.ts";
+import {call} from "../../../../Services/ClientHTTP.service.ts";
+import LibelleCategorieOperationModel from "../../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import {Dispatch, SetStateAction} from "react";
 
 

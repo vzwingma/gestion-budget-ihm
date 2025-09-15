@@ -1,9 +1,9 @@
 import {toast} from "react-toastify";
-import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model";
-import {call} from "../../../Services/ClientHTTP.service";
-import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
-import {calculateResumes} from "./AnalyseCategories.controller";
-import {DataCalculationResultsProps} from "../../Components.props";
+import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
+import {call} from "../../../Services/ClientHTTP.service.ts";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants.ts";
+import {calculateResumes} from "./AnalyseCategories.controller.ts";
+import {DataCalculationResultsProps} from "../../Components.props.tsx";
 
 /**
  * Services back-end pour les analyses

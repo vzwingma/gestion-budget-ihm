@@ -12,10 +12,10 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material";
-import OperationValue from "../../../../Utils/renderers/OperationValue.renderer";
-import {getCategorieIcon} from "../../../../Utils/renderers/CategorieItem.renderer";
-import CenterComponent from '../../../CenterComponent';
-import {AnalyseCategorieListItemProps} from '../../../Components.props';
+import OperationValue from "../../../../Utils/renderers/OperationValue.renderer.tsx";
+import {getCategorieIcon} from "../../../../Utils/renderers/CategorieItem.renderer.tsx";
+import {AnalyseCategorieListItemProps} from '../../../Components.props.tsx';
+import { CenterComponent } from '../../../CenterComponent.tsx';
 
 
 /**

@@ -18,11 +18,11 @@ import {
     DeleteForeverRounded,
     HistoryRounded
 } from "@mui/icons-material";
-import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants";
-import CenterComponent from "../../../../CenterComponent";
-import {handleOperationAction} from "./OperationDetailActions.controller";
-import {OperationDetailActionsProps} from "../../../../Components.props";
-import {BudgetContext} from "../../../../../Models/contextProvider/BudgetContextProvider";
+import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants.ts";
+import { CenterComponent } from "../../../../CenterComponent.tsx";
+import {handleOperationAction} from "./OperationDetailActions.controller.ts";
+import {OperationDetailActionsProps} from "../../../../Components.props.tsx";
+import {BudgetContext} from "../../../../../Models/contextProvider/BudgetContextProvider.tsx";
 
 
 /**

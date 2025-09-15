@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
-import {OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants";
-import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer";
-import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model";
-import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
-import OperationModel from "../../../Models/budgets/Operation.model";
-import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
-import {DataCalculationResultsProps} from "../../Components.props";
+import {OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
+import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer.tsx";
+import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model.ts";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
+import OperationModel from "../../../Models/budgets/Operation.model.ts";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
+import {DataCalculationResultsProps} from "../../Components.props.tsx";
 
 /**
  * Contrôleur des analyses
@@ -101,15 +101,9 @@ function populateCategorie(group: { [idCategorie: string]: AnalyseCategoriesMode
  * @returns {Object} Le groupe initialisé
  */
 function initGroup(group: { [idCategorie: string]: AnalyseCategoriesModel }, idCategorie: string, idxOperation: string) {
-    if (group[idCategorie].nbTransactions[idxOperation] === undefined) {
-        group[idCategorie].nbTransactions[idxOperation] = 0;
-    }
-    if (group[idCategorie].total[idxOperation] === undefined) {
-        group[idCategorie].total[idxOperation] = 0;
-    }
-    if (group[idCategorie].pourcentage[idxOperation] === undefined) {
-        group[idCategorie].pourcentage[idxOperation] = 0;
-    }
+    group[idCategorie].nbTransactions[idxOperation] ??= 0;
+    group[idCategorie].total[idxOperation] ??= 0;
+    group[idCategorie].pourcentage[idxOperation] ??= 0;
     return group
 }
 

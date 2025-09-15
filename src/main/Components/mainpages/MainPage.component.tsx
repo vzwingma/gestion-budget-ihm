@@ -1,16 +1,16 @@
 import React, {JSX, useContext, useEffect, useState} from "react";
 import {Box, Divider, Drawer, Stack, useMediaQuery, useTheme} from "@mui/material";
 import {ToastContainer} from "react-toastify";
-import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
-import {loadComptes} from "./MainPage.extservices";
-import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
-import CompteItem from "./menuSlideBar/CompteItem.component";
-import DateRange from "./menuSlideBar/DateRange.component";
-import BudgetPage from "../budgets/budget/Budget.component";
-import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component";
-import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component";
-import {MainPageProps} from "../Components.props";
-import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider";
+import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants.ts";
+import {loadComptes} from "./MainPage.extservices.ts";
+import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
+import CompteItem from "./menuSlideBar/CompteItem.component.tsx";
+import DateRange from "./menuSlideBar/DateRange.component.tsx";
+import BudgetPage from "../budgets/budget/Budget.component.tsx";
+import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component.tsx";
+import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component.tsx";
+import {MainPageProps} from "../Components.props.tsx";
+import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
 import {useAuth} from "react-oidc-context";
 
 

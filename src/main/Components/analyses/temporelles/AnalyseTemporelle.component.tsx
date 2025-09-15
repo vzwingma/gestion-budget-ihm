@@ -3,17 +3,17 @@ import React, {JSX, useEffect, useState} from "react";
 import {Box, Checkbox, CircularProgress, FormControlLabel, Grid, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
-import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices";
-import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
-import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
-import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
-import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
+import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices.ts";
+import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.ts";
+import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model.ts";
+import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component.tsx";
+import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component.tsx";
 import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
-import GraphAnalyseTemporelle from "./graphs/GraphAnalyseTemporelle.component";
-import {AnalyseTemporelleProps, DataCalculationTemporelResultsProps} from "../../Components.props";
-import CenterComponent from "../../CenterComponent";
-import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
-import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
+import GraphAnalyseTemporelle from "./graphs/GraphAnalyseTemporelle.component.tsx";
+import {AnalyseTemporelleProps, DataCalculationTemporelResultsProps} from "../../Components.props.tsx";
+import { CenterComponent } from "../../CenterComponent.tsx";
+import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.ts";
+import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.ts";
 
 
 /**
