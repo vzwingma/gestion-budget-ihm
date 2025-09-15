@@ -7,7 +7,7 @@ import {
 } from "./GraphAnalyses.controller";
 import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model";
 import {GraphAnalysesProps} from "../../../Components.props";
-import {PieLabelProps} from "recharts/types/polar/Pie";
+
 
 
 /**
@@ -42,7 +42,7 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({ typeAnalyse,
                     cx="50%" cy="50%" innerRadius="30%" outerRadius="65%"
                     isAnimationActive={false}
                     labelLine={true}
-                    label={(props: PieLabelProps) => renderLabelCategorie(props, resumeSelectedCategorie)} >
+                    label={(props) => renderLabelCategorie(props, resumeSelectedCategorie)} >
                     {dataGraphCategories.map((entry) => (
                         <Cell key={`cell-categorie-${entry.categorie.id}`}
                             fill={getCategorieColor(entry.categorie.id) + (resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === entry.id ? "" : "5A")} />
@@ -53,7 +53,7 @@ const GraphAnalyses: React.FC<GraphAnalysesProps> = ({ typeAnalyse,
                     cx="50%" cy="50%" innerRadius="70%" outerRadius="95%"
                     isAnimationActive={false}
                     labelLine={true}
-                    label={(props: PieLabelProps) => renderLabelSsCategorie(props, resumeSelectedSsCategorie)} >
+                    label={(props) => renderLabelSsCategorie(props, resumeSelectedSsCategorie)} >
                     {dataGraphSsCategories.map((entry, index) => (
                         <Cell key={`cell-sscategorie-${entry.categorie.id}-${index}`}
                             fill={getCategorieColor(entry.categorie.id) + (resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === entry.id ? "" : "5A")}/>

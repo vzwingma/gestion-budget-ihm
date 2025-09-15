@@ -3,7 +3,6 @@ import AnalyseCategoriesModel from "../../../../Models/analyses/categories/Analy
 import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model";
 import CategorieOperationModel from "../../../../Models/budgets/CategorieOperation.model";
 import {sortLibellesCategories} from "../../../../Utils/OperationData.utils";
-import {PieLabelProps} from "recharts/types/polar/Pie";
 import { getCategorieColor } from "../../../../Utils/renderers/CategorieItem.renderer";
 
 
@@ -53,7 +52,7 @@ export function populateGraphAnalyseCategories(analysesGroupedByCategories: {
      * @param resumeSelectedCategorie - Le modèle de la catégorie sélectionnée ou null si aucune catégorie n'est sélectionnée.
      * @returns Un élément JSX représentant l'étiquette de la catégorie.
      */
-export function renderLabelCategorie(props: PieLabelProps, resumeSelectedCategorie: AnalyseCategoriesModel | null): JSX.Element {
+export function renderLabelCategorie(props: any, resumeSelectedCategorie: AnalyseCategoriesModel | null): JSX.Element {
     const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
     const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie.id : null)
     return renderLabelAnalyse(props, selectedId, color);
@@ -66,15 +65,21 @@ export function renderLabelCategorie(props: PieLabelProps, resumeSelectedCategor
  * @param resumeSelectedSsCategorie - Le modèle de la sous-catégorie sélectionnée ou null si aucune sous-catégorie n'est sélectionnée.
  * @returns Un élément JSX représentant l'étiquette de la sous-catégorie.
  */
-export function renderLabelSsCategorie(props: PieLabelProps, resumeSelectedSsCategorie: AnalyseCategoriesModel | null): JSX.Element {
+export function renderLabelSsCategorie(props: any, resumeSelectedSsCategorie: AnalyseCategoriesModel | null): JSX.Element {
     const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
     const color = getCategorieColor(resumeSelectedSsCategorie !== null ? resumeSelectedSsCategorie.categorie.id : null)
     return renderLabelAnalyse(props, selectedId, color);
 }
 
 
-
-export const renderLabelAnalyse = (props: PieLabelProps, selectedId: boolean, color : string) => {
+/**
+ * Rend le label d'une catégorie dans le graphique des analyses
+ * @param props propriétés du label
+ * @param selectedId id de la catégorie sélectionnée
+ * @param color couleur de la catégorie
+ * @returns renvoie le label de la catégorie
+ */
+export const renderLabelAnalyse = (props: any, selectedId: boolean, color : string) => {
     const RADIAN = Math.PI / 180;
     const { cx, cy, midAngle, innerRadius, outerRadius, payload } = props;
     

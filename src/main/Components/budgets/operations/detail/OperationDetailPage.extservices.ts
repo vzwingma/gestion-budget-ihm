@@ -1,5 +1,5 @@
 import {toast} from "react-toastify";
-import {v4 as uuid} from "uuid";
+import {v7 as uuid} from "uuid";
 import OperationModel from "../../../../Models/budgets/Operation.model";
 import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../../Utils/AppTechEnums.constants";
