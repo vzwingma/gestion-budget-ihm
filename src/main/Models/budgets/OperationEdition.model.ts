@@ -2,9 +2,9 @@ import {
     OPERATION_ETATS_ENUM,
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
-} from "../../Utils/AppBusinessEnums.constants";
-import CategorieOperationModel from "./CategorieOperation.model";
-import OperationModel, {AutresInfos, createNewOperation} from "./Operation.model";
+} from "../../Utils/AppBusinessEnums.constants.js";
+import CategorieOperationModel from "./CategorieOperation.model.js";
+import OperationModel, {AutresInfos, createNewOperation} from "./Operation.model.js";
 
 /**
  * Opérations Edition model

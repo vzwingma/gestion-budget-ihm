@@ -1,6 +1,6 @@
 // @ts-ignore
 import React from "react";
-import Main from "./main/Main";
+import Main from "./main/Main.js";
 import 'react-toastify/dist/ReactToastify.css';
 import {createRoot} from 'react-dom/client';
 

@@ -9,11 +9,11 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material"
-import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants"
-import {sortLibellesCategories} from '../../../../../Utils/OperationData.utils'
-import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model'
-import {OperationDetailCategoriesProps} from '../../../../Components.props'
-import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider'
+import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.js"
+import {sortLibellesCategories} from '../../../../../Utils/OperationData.utils.js'
+import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.js'
+import {OperationDetailCategoriesProps} from '../../../../Components.props.js'
+import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.js'
 
 
 /**

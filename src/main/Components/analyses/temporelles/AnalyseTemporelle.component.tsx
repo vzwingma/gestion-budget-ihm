@@ -3,17 +3,17 @@ import React, {JSX, useEffect, useState} from "react";
 import {Box, Checkbox, CircularProgress, FormControlLabel, Grid, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
-import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices";
-import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model";
-import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model";
-import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component";
-import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component";
+import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices.js";
+import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.js";
+import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model.js";
+import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component.js";
+import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component.js";
 import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
-import GraphAnalyseTemporelle from "./graphs/GraphAnalyseTemporelle.component";
-import {AnalyseTemporelleProps, DataCalculationTemporelResultsProps} from "../../Components.props";
-import CenterComponent from "../../CenterComponent";
-import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model";
-import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model";
+import GraphAnalyseTemporelle from "./graphs/GraphAnalyseTemporelle.component.js";
+import {AnalyseTemporelleProps, DataCalculationTemporelResultsProps} from "../../Components.props.js";
+import CenterComponent from "../../CenterComponent.js";
+import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.js";
+import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.js";
 
 
 /**

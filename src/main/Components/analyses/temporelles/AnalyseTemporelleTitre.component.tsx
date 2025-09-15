@@ -1,7 +1,7 @@
 import {Stack, Typography} from "@mui/material";
 import React, {JSX} from "react";
-import AnneeRange from "./AnneeRange.component";
-import {AnalyseTemporelleTitreProps} from "../../Components.props";
+import AnneeRange from "./AnneeRange.component.js";
+import {AnalyseTemporelleTitreProps} from "../../Components.props.js";
 
 
 /**

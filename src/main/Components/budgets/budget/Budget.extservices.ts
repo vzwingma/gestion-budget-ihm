@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
-import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model";
-import {UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
-import {call} from "../../../Services/ClientHTTP.service";
-import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants";
-import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
-import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
-import {populateAllCategories} from "./Budget.controller";
+import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.js";
+import {UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants.js";
+import {call} from "../../../Services/ClientHTTP.service.js";
+import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants.js";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.js";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.js";
+import {populateAllCategories} from "./Budget.controller.js";
 import React from "react";
 
 /*

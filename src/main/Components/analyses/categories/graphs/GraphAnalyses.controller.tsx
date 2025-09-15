@@ -1,9 +1,9 @@
 import React, {JSX} from "react";
-import AnalyseCategoriesModel from "../../../../Models/analyses/categories/AnalyseCategories.model";
-import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model";
-import CategorieOperationModel from "../../../../Models/budgets/CategorieOperation.model";
-import {sortLibellesCategories} from "../../../../Utils/OperationData.utils";
-import { getCategorieColor } from "../../../../Utils/renderers/CategorieItem.renderer";
+import AnalyseCategoriesModel from "../../../../Models/analyses/categories/AnalyseCategories.model.js";
+import GraphAnalyseCategoriesModel from "../../../../Models/analyses/categories/GraphAnalyseCategories.model.js";
+import CategorieOperationModel from "../../../../Models/budgets/CategorieOperation.model.js";
+import {sortLibellesCategories} from "../../../../Utils/OperationData.utils.js";
+import { getCategorieColor } from "../../../../Utils/renderers/CategorieItem.renderer.js";
 
 
 /**

@@ -1,4 +1,4 @@
-import { GraphAnalyseTimelineItemModel } from "./GraphAnalyseMensuel.model";
+import { GraphAnalyseTimelineItemModel } from "./GraphAnalyseMensuel.model.js";
 
 /**
  * Modèle représentant l'analyse temporelle d'un graphique.

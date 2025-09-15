@@ -1,4 +1,4 @@
-import { UTILISATEUR_DROITS } from "./AppBusinessEnums.constants";
+import { UTILISATEUR_DROITS } from "./AppBusinessEnums.constants.js";
 
 
 /**

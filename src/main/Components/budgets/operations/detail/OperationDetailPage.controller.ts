@@ -1,15 +1,15 @@
-import OperationEditionModel from "../../../../Models/budgets/OperationEdition.model";
-import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model";
-import OperationModel from "../../../../Models/budgets/Operation.model";
-import {BUSINESS_GUID, TYPES_OPERATION_ENUM} from "../../../../Utils/AppBusinessEnums.constants";
-import {getEventTargetId} from "../../../../Utils/OperationData.utils";
+import OperationEditionModel from "../../../../Models/budgets/OperationEdition.model.js";
+import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model.js";
+import OperationModel from "../../../../Models/budgets/Operation.model.js";
+import {BUSINESS_GUID, TYPES_OPERATION_ENUM} from "../../../../Utils/AppBusinessEnums.constants.js";
+import {getEventTargetId} from "../../../../Utils/OperationData.utils.js";
 import {
     createEmptyErrors,
     EditFormProps,
     ErrorsFormProps,
     OPERATION_EDITION_FORM
-} from "./OperationDetailPage.constants";
-import {saveOperation, saveOperationIntercompte} from "./OperationDetailPage.extservices";
+} from "./OperationDetailPage.constants.js";
+import {saveOperation, saveOperationIntercompte} from "./OperationDetailPage.extservices.js";
 import {Dispatch, SetStateAction} from "react";
 
 

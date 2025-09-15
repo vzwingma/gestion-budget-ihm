@@ -1,7 +1,7 @@
 /** Client HTTP **/
 import {v7} from 'uuid';
-import {API_GW_ENUM} from '../Utils/AppTechEnums.constants';
-import {getOAuthToken, removeTokenFromStorage} from './Auth.service'
+import {API_GW_ENUM} from '../Utils/AppTechEnums.constants.js';
+import {getOAuthToken, removeTokenFromStorage} from './Auth.service.js'
 
 let alreadyTraced: boolean = false;
 

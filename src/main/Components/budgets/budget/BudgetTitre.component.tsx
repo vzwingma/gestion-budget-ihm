@@ -1,6 +1,6 @@
 import {Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import React, {JSX, useContext} from "react";
-import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider';
+import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.js';
 
 /**
  * Page principale d'affichage du solde

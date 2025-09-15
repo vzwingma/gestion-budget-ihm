@@ -1,8 +1,8 @@
-import {getLabelFRFromDate} from "../../../Utils/Date.utils";
-import OperationModel from "../../../Models/budgets/Operation.model";
-import {sortOperations} from "../../../Utils/OperationData.utils";
-import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants";
-import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
+import {getLabelFRFromDate} from "../../../Utils/Date.utils.js";
+import OperationModel from "../../../Models/budgets/Operation.model.js";
+import {sortOperations} from "../../../Utils/OperationData.utils.js";
+import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants.js";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.js";
 
 /**
  * Controleur des budgets

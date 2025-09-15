@@ -1,5 +1,5 @@
-import CategorieOperationModel from "../../budgets/CategorieOperation.model";
-import OperationModel from "../../budgets/Operation.model";
+import CategorieOperationModel from "../../budgets/CategorieOperation.model.js";
+import OperationModel from "../../budgets/Operation.model.js";
 
 /**
  * Model pour les analyse des catégories

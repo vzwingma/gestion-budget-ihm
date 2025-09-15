@@ -12,13 +12,13 @@ import {
 import React, { JSX, useContext, useState } from 'react';
 
 import { AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded } from "@mui/icons-material";
-import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider';
-import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "../../../../Utils/AppBusinessEnums.constants";
-import { getEventTargetId } from '../../../../Utils/OperationData.utils';
-import { userHasPermission } from '../../../../Utils/UserData.utils';
-import CenterComponent from '../../../CenterComponent';
-import { BudgetActionsButtonGroupProps } from '../../../Components.props';
-import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices';
+import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider.js';
+import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "../../../../Utils/AppBusinessEnums.constants.js";
+import { getEventTargetId } from '../../../../Utils/OperationData.utils.js';
+import { userHasPermission } from '../../../../Utils/UserData.utils.js';
+import CenterComponent from '../../../CenterComponent.js';
+import { BudgetActionsButtonGroupProps } from '../../../Components.props.js';
+import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices.js';
 
 
 /**

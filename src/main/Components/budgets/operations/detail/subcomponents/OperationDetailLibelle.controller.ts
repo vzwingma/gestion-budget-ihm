@@ -1,6 +1,6 @@
-import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils";
-import OperationModel from "../../../../../Models/budgets/Operation.model";
-import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model";
+import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils.js";
+import OperationModel from "../../../../../Models/budgets/Operation.model.js";
+import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.js";
 
 /**
  * Récupère le libellé de l'opération en cours d'édition

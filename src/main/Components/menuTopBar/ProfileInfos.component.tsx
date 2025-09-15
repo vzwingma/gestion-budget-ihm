@@ -1,6 +1,6 @@
 import React, {JSX, useEffect, useState} from "react";
 import { Stack } from "@mui/material";
-import { getLastAccessDateUtilisateur } from "./ProfileInfos.extservices";
+import { getLastAccessDateUtilisateur } from "./ProfileInfos.extservices.js";
 /**
  *   Page de Gestion du profile
  **/

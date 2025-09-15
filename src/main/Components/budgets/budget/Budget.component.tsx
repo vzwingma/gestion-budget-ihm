@@ -2,24 +2,24 @@ import React, {JSX, useCallback, useContext, useEffect, useState} from "react";
 
 import {Box, CircularProgress, Divider, Grid, InputBase, Paper, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import BudgetTitre from "./BudgetTitre.component";
-import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model";
-import OperationModel, {createNewOperation} from "../../../Models/budgets/Operation.model";
-import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices";
-import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants";
-import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component";
-import OperationsListe from "../operations/OperationsListe.component";
-import OperationDetailPage from "../operations/detail/OperationDetailPage.component";
+import BudgetTitre from "./BudgetTitre.component.js";
+import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.js";
+import OperationModel, {createNewOperation} from "../../../Models/budgets/Operation.model.js";
+import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices.js";
+import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants.js";
+import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component.js";
+import OperationsListe from "../operations/OperationsListe.component.js";
+import OperationDetailPage from "../operations/detail/OperationDetailPage.component.js";
 import {CancelRounded} from "@mui/icons-material";
-import {getLabelFRFromDate} from "../../../Utils/Date.utils";
-import {getOperationsGroupedByDateOperation} from "./Budget.controller";
-import CenterComponent from "../../CenterComponent";
-import {getLibellesOperationsCompte} from "../operations/detail/OperationDetailPage.extservices";
-import {BudgetPageProps} from "../../Components.props";
-import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider";
-import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model";
-import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model";
-import BudgetSoldes from "./BudgetSoldes.component";
+import {getLabelFRFromDate} from "../../../Utils/Date.utils.js";
+import {getOperationsGroupedByDateOperation} from "./Budget.controller.js";
+import CenterComponent from "../../CenterComponent.js";
+import {getLibellesOperationsCompte} from "../operations/detail/OperationDetailPage.extservices.js";
+import {BudgetPageProps} from "../../Components.props.js";
+import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider.js";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.js";
+import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.js";
+import BudgetSoldes from "./BudgetSoldes.component.js";
 
 
 /**

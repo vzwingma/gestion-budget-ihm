@@ -1,5 +1,5 @@
-import { Soldes } from "../../budgets/BudgetMensuel.model";
-import AnalyseSoldesCategorie from "./AnalyseSoldesCategorie.model";
+import { Soldes } from "../../budgets/BudgetMensuel.model.js";
+import AnalyseSoldesCategorie from "./AnalyseSoldesCategorie.model.js";
 
 /**
  * Modèle des soldes d'un mois

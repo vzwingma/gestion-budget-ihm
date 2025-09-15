@@ -1,9 +1,9 @@
 import React, {JSX} from 'react'
 import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
-import CenterComponent from '../../CenterComponent';
-import OperationItem from './OperationsListItem.component';
-import OperationModel from '../../../Models/budgets/Operation.model';
-import {OperationsListeProps} from '../../Components.props';
+import CenterComponent from '../../CenterComponent.js';
+import OperationItem from './OperationsListItem.component.js';
+import OperationModel from '../../../Models/budgets/Operation.model.js';
+import {OperationsListeProps} from '../../Components.props.js';
 
 
 /**

@@ -1,8 +1,8 @@
 import React, {JSX, useEffect} from "react";
 import {useAuth} from "react-oidc-context";
 import {Avatar, CircularProgress, Tooltip, Typography} from "@mui/material";
-import {putTokenInStorage, removeTokenFromStorage} from '../../Services/Auth.service'
-import ProfileInfos from "./ProfileInfos.component";
+import {putTokenInStorage, removeTokenFromStorage} from '../../Services/Auth.service.js'
+import ProfileInfos from "./ProfileInfos.component.js";
 
 /**
  *   Page de Gestion du profile

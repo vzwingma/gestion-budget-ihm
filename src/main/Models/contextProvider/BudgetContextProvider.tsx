@@ -1,8 +1,8 @@
 import React, {JSX, useMemo, useState} from "react";
-import BudgetMensuelModel from "../budgets/BudgetMensuel.model";
-import OperationModel from "../budgets/Operation.model";
-import CompteBancaireModel from "../budgets/CompteBancaire.model";
-import CategorieOperationModel from "../budgets/CategorieOperation.model";
+import BudgetMensuelModel from "../budgets/BudgetMensuel.model.js";
+import OperationModel from "../budgets/Operation.model.js";
+import CompteBancaireModel from "../budgets/CompteBancaire.model.js";
+import CategorieOperationModel from "../budgets/CategorieOperation.model.js";
 
 /**
  * Contexte de la partie budget

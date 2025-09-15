@@ -1,16 +1,16 @@
 import React, {JSX, useContext, useEffect, useState} from "react";
 import {Box, Divider, Drawer, Stack, useMediaQuery, useTheme} from "@mui/material";
 import {ToastContainer} from "react-toastify";
-import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants";
-import {loadComptes} from "./MainPage.extservices";
-import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model";
-import CompteItem from "./menuSlideBar/CompteItem.component";
-import DateRange from "./menuSlideBar/DateRange.component";
-import BudgetPage from "../budgets/budget/Budget.component";
-import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component";
-import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component";
-import {MainPageProps} from "../Components.props";
-import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider";
+import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants.js";
+import {loadComptes} from "./MainPage.extservices.js";
+import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.js";
+import CompteItem from "./menuSlideBar/CompteItem.component.js";
+import DateRange from "./menuSlideBar/DateRange.component.js";
+import BudgetPage from "../budgets/budget/Budget.component.js";
+import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component.js";
+import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component.js";
+import {MainPageProps} from "../Components.props.js";
+import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.js";
 import {useAuth} from "react-oidc-context";
 
 

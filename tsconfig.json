@@ -14,7 +14,6 @@
       "ESNEXT"
     ],
     "strict": true,
-    "esModuleInterop": true,
     "moduleResolution": "nodenext",
     "module": "nodenext",
     "forceConsistentCasingInFileNames": true,
