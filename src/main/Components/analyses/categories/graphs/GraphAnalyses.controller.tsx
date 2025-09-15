@@ -33,7 +33,7 @@ export function populateGraphAnalyseCategories(analysesGroupedByCategories: {
         .forEach((analysesOfCategorie) => {
 
             dataGraphCategories.push({
-                id: analysesOfCategorie.categorie.id!,
+                id: analysesOfCategorie.categorie.id,
                 categorie: parentCategorie ?? analysesOfCategorie.categorie,
                 name: analysesOfCategorie.categorie.libelle + " : " + analysesOfCategorie.pourcentage[typeAnalyse] + "%",
                 value: Math.abs(analysesOfCategorie.total[typeAnalyse])
