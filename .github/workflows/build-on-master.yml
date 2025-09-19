@@ -56,7 +56,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node.js 20
+      - name: Use Node.js Latest
         uses: actions/setup-node@v5
         with:
           node-version: latest
