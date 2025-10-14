@@ -22,7 +22,7 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-npm-cache-
       - name: Use Node.js Latest
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: latest
       - name: Update config in .env
@@ -50,7 +50,7 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-npm-cache-
       - name: Use Node.js Latest
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: latest
       - run: npm install eslint --save
