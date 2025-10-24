@@ -39,7 +39,7 @@ jobs:
       - run: npm run build --if-present
         name: Build Staging
       - run: zip -r app_build.zip build/*
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         name: Upload IHM app
         with:
           path: app_build.zip
@@ -97,7 +97,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         name: Download IHM app
         with:
           name: app_build.zip
