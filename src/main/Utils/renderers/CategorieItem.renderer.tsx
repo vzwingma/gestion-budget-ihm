@@ -118,7 +118,7 @@ export function getCategorieColor(idCategorieOperation: string | null): string {
 
     return idCategorieOperation && colorMap[idCategorieOperation as ColorMapKeys]
         ? colorMap[idCategorieOperation as ColorMapKeys]
-        : (console.warn("L'Opération " + idCategorieOperation + " n'a pas de couleur de fond définie"), "#808080");
+        : (console.warn("La catégorie " + idCategorieOperation + " n'a pas de couleur de fond définie"), "#808080");
 }
 
 

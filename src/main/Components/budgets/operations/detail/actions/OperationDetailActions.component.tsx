@@ -32,17 +32,16 @@ import {BudgetContext} from "../../../../../Models/contextProvider/BudgetContext
  * @returns {JSX.Element}
  * @constructor
  */
-export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({
-                                                                                  isInCreateMode,
+export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({   isInCreateMode,
                                                                                   editOperation,
                                                                                   onClickRealiseInCreateMode: handleDateOperationFromCreateAction,
                                                                                   onOperationChange
                                                                               }: OperationDetailActionsProps): JSX.Element => {
 
     const [showModale, setShowModale] = useState<boolean>(false);
-    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
-    const budget = currentBudget!;
+    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const operation = currentOperation;
+    const budget = currentBudget;
     return (
         <ButtonGroup
             sx={{padding: "10px"}}
