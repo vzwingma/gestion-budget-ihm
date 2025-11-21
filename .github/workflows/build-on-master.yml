@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: QUA
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/cache@v4
         with:
           path: ~/.npm
@@ -23,7 +23,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Use Node.js 
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: latest
       - run: npm ci
@@ -39,7 +39,7 @@ jobs:
       - run: npm run build --if-present
         name: Build Staging
       - run: zip -r app_build.zip build/*
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         name: Upload IHM app
         with:
           path: app_build.zip
@@ -49,7 +49,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/cache@v4
         with:
           path: ~/.npm
@@ -57,7 +57,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Use Node.js Latest
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: latest
       - run: npm install eslint --save
@@ -69,7 +69,7 @@ jobs:
       contents: read
       security-events: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
@@ -96,8 +96,8 @@ jobs:
     name: deploy to S3 QUA
     needs: build
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v6
         name: Download IHM app
         with:
           name: app_build.zip

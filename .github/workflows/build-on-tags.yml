@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: PROD
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/cache@v4
         with:
           path: ~/.npm
@@ -28,7 +28,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Use Node.js 
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: latest
       # Update version
@@ -52,7 +52,7 @@ jobs:
         name: Build
       - run: zip -r app_build.zip build/*
       # Upload RELEASE
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         name: Upload IHM app
         with:
           path: app_build.zip
@@ -67,8 +67,8 @@ jobs:
     name: deploy to S3 PROD
     needs: build-ihm
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v6
         name: Download IHM app
         with:
           name: app_build.zip

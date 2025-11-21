@@ -29,7 +29,12 @@ export function handleOperationAction(event: any,
     /** Correction click hors cadre */
 
     if (event.target != null) {
+        
         let action = getEventTargetId(event.target)
+
+        if(action === 'OPERATION_FORM'){
+            return;
+        }
         if (action === "SUPPRIMEE_A_CONFIRMER") {
             setShowModale(true);
         } else if (action === "ANNULER") {

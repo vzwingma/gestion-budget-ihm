@@ -83,7 +83,7 @@ export async function call(httpMethod: string, uri: string, path: string, params
     return await fetch(fullURL,
         {
             method: httpMethod.toString(),
-            mode: "cors",
+            mode: 'cors',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'X-Api-Key': API_GW_ENUM.API_KEY,
