@@ -52,7 +52,7 @@ jobs:
         name: Build
       - run: zip -r app_build.zip build/*
       # Upload RELEASE
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         name: Upload IHM app
         with:
           path: app_build.zip
@@ -68,7 +68,7 @@ jobs:
     needs: build-ihm
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         name: Download IHM app
         with:
           name: app_build.zip
