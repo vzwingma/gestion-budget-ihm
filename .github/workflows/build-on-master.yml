@@ -74,7 +74,7 @@ jobs:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
       - name: SonarCloud Scan
-        uses: sonarsource/sonarqube-scan-action@v6
+        uses: sonarsource/sonarqube-scan-action@v7
         with:
           projectBaseDir: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm
           args: >
