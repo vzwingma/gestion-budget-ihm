@@ -129,7 +129,7 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
         return getOperationLibelleWithComment(operationLibelle, isMobile);
     }
     else{
-        const compte : CompteBancaireModel = (listeComptes.filter((compte) => compte.id === operationLibelleParts[2]))[0]
+        const compte : CompteBancaireModel = listeComptes.find((compte) => compte.id === operationLibelleParts[2])
         if (compte?.libelle) {
             return getOperationIntercompteLibelleWithIconAndComment(operationLibelle, compte, operationLibelleParts, isLabelOperation, maxVue, isMobile);
         } else {

@@ -21,9 +21,9 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   form
                                                                             fillOperationForm
                                                                         }: OperationDetailDateProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
-    const budgetActif = currentBudget!.actif;
+    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const operation = currentOperation;
+    const budgetActif = currentBudget.actif;
 
     /**
  * Remplit le champ "dateOperation" de l'état à partir de la saisie de l'utilisateur
@@ -38,20 +38,20 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   form
     }
     return (
 
-        (!formDateInEdition) ?
-            <Typography id={OPERATION_EDITION_FORM.DATE_OPERATION} variant={"subtitle1"}
-                className={budgetActif ? "editableField" : ""}
-                sx={{ color: (operation.autresInfos.dateOperation != null ? "#FFFFFF" : "#121212") }}>
-                {operation.autresInfos.dateOperation != null ? getLabelFRFromDate(operation.autresInfos.dateOperation) : "jj/mm/aaaa"}
-            </Typography>
-            :
+        (formDateInEdition) ?
             <TextField
                 id={OPERATION_EDITION_FORM.DATE_OPERATION + OPERATION_EDITION_FORM.INPUT}
-                defaultValue={operation.autresInfos.dateOperation != null ? getLabelISOFromDate(operation.autresInfos.dateOperation) : null}
+                defaultValue={operation.autresInfos.dateOperation == null ? null : getLabelISOFromDate(operation.autresInfos.dateOperation)}
                 variant={"standard"} type={"date"} fullWidth size={"small"}
                 error={errorDateOperation != null}
                 helperText={errorDateOperation}
                 onChange={fillDateOperationForm} />
+            :
+            <Typography id={OPERATION_EDITION_FORM.DATE_OPERATION} variant={"subtitle1"}
+                className={budgetActif ? "editableField" : ""}
+                sx={{ color: (operation.autresInfos.dateOperation == null ? "#121212" : "#FFFFFF") }}>
+                {operation.autresInfos.dateOperation == null ? "jj/mm/aaaa" : getLabelFRFromDate(operation.autresInfos.dateOperation)}
+            </Typography>
 
     )
 }

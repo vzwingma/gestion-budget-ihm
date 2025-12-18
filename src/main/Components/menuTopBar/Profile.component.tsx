@@ -14,7 +14,7 @@ const Profile: React.FC = (): JSX.Element => {
     function logOut() {
         auth.removeUser().then(() => {console.log("Déconnexion de l'utilisateur")});
         removeTokenFromStorage();
-        window.location.href = "/";
+        globalThis.location.href = "/";
     }
 
     useEffect(() => {

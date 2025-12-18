@@ -43,12 +43,12 @@ export function calculateResumes(currentBudget: BudgetMensuelModel, handleDataCa
         .filter((operation: OperationModel) => operation.etat === OPERATION_ETATS_ENUM.REALISEE || operation.etat === OPERATION_ETATS_ENUM.PREVUE)
         .reduce((group: { [idCategorieOperation: string]: AnalyseCategoriesModel }, operation: OperationModel) => {
             let couleurCategorie = getCategorieColor(operation.categorie.id);
-            if (operation.categorie?.id !== null) {
-                populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
-                populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
+            if (operation.categorie?.id === null) {
+                console.warn("La catégorie de l'opération [" + operation.id + "] est vide")
             }
             else {
-                console.warn("La catégorie de l'opération [" + operation.id + "] est vide")
+                populateCategorie(group, operation, operation.categorie, totauxGroupedByEtat, couleurCategorie);
+                populateCategorie(group[operation.categorie.id].resumesSsCategories, operation, operation.ssCategorie, totauxGroupedByEtat, couleurCategorie);
             }
             return group;
         }, {});

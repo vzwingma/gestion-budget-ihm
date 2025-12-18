@@ -118,15 +118,15 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
             <Grid container sx={{overflow: "hidden"}}>
                 <Grid size={{md: 3, xl: 3}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={"true"}>
                     { /** Liste des résumés par catégories **/
-                        (currentBudget != null ?
+                        (currentBudget == null ?
+                            <CenterComponent><CircularProgress /></CenterComponent>
+                            :
                             <AnalyseCategoriesListe
                                 rangSelectedCategorie={null}
                                 typeAnalyse={selectedTypeAnalyse}
                                 analysesGroupedByCategories={analysesGroupedByCategories}
                                 selectCategorie={handleCategorieSelect}
                             />
-                            :
-                            <CenterComponent><CircularProgress /></CenterComponent>
                         )
                     }
                 </Grid>

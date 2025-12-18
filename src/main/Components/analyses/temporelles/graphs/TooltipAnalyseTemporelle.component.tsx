@@ -17,7 +17,7 @@ const TooltipAnalyseTemporelle = ({active, payload, label}: TooltipAnalyseTempor
     if (active && payload?.length) {
 
         payload.forEach((item : any) => {
-            if (!(item.dataKey.startsWith(SOLDES_ENUM.PREVISIONNEL) && payload.find(p => p.dataKey === item.dataKey.replace(SOLDES_ENUM.PREVISIONNEL, "")) !== undefined)) {
+            if (!(item.dataKey.startsWith(SOLDES_ENUM.PREVISIONNEL) && payload.some(p => p.dataKey === item.dataKey.replace(SOLDES_ENUM.PREVISIONNEL, "")))) {
                 let name = (item.dataKey.startsWith(SOLDES_ENUM.PREVISIONNEL) ? "Prévisionnel " : "") + item.name.replace(SOLDES_ENUM.PREVISIONNEL, "");
 
                 if (item.name.includes("Soldes")) {

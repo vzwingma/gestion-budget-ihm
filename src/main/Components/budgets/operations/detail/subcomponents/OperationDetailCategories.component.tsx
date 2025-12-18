@@ -28,8 +28,8 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                                                                                         fillOperationForm
                                                                                 }: OperationDetailCategoriesProps): JSX.Element => {
 
-    const { currentOperation, categories } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
+    const { currentOperation, categories } = useContext(BudgetContext);
+    const operation = currentOperation;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
@@ -50,11 +50,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
 
 
     return (
-        !formCatgoriesInEdition ?
-            <Typography variant={"overline"}>
-                {operation.categorie.libelle} / {operation.ssCategorie.libelle}
-            </Typography>
-            :
+        formCatgoriesInEdition ?
             <FormControl fullWidth required error={errorsCategories != null}>
                 <Autocomplete
                     id={OPERATION_EDITION_FORM.CATEGORIE + OPERATION_EDITION_FORM.INPUT}
@@ -74,10 +70,10 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                     groupBy={(option: CategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
                     getOptionLabel={(option: CategorieOperationModel) => option?.libelle ?? ""}
                     isOptionEqualToValue={(option : any, value : any) => {
-                        if (option.id != null) {
-                            return (option.id === (value.id ?? null))
-                        } else {
+                        if (option.id == null) {
                             return false;
+                        } else {
+                            return (option.id === (value.id ?? null))
                         }
                     }}
                     blurOnSelect={true}
@@ -87,6 +83,10 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                 />
                 <FormHelperText>{errorsCategories}</FormHelperText>
             </FormControl>
+            :
+            <Typography variant={"overline"}>
+                {operation.categorie.libelle} / {operation.ssCategorie.libelle}
+            </Typography>
     )
 }
 

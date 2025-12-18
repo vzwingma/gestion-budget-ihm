@@ -54,7 +54,7 @@ export function populateGraphAnalyseCategories(analysesGroupedByCategories: {
      */
 export function renderLabelCategorie(props: any, resumeSelectedCategorie: AnalyseCategoriesModel | null): JSX.Element {
     const selectedId = resumeSelectedCategorie !== null && resumeSelectedCategorie.categorie.id === props.id;
-    const color = getCategorieColor(resumeSelectedCategorie !== null ? resumeSelectedCategorie.categorie.id : null)
+    const color = getCategorieColor(resumeSelectedCategorie === null ? null : resumeSelectedCategorie.categorie.id)
     return renderLabelAnalyse(props, selectedId, color);
 }
 
@@ -67,7 +67,7 @@ export function renderLabelCategorie(props: any, resumeSelectedCategorie: Analys
  */
 export function renderLabelSsCategorie(props: any, resumeSelectedSsCategorie: AnalyseCategoriesModel | null): JSX.Element {
     const selectedId = resumeSelectedSsCategorie !== null && resumeSelectedSsCategorie.categorie.id === props.id;
-    const color = getCategorieColor(resumeSelectedSsCategorie !== null ? resumeSelectedSsCategorie.categorie.id : null)
+    const color = getCategorieColor(resumeSelectedSsCategorie === null ? null : resumeSelectedSsCategorie.categorie.id)
     return renderLabelAnalyse(props, selectedId, color);
 }
 

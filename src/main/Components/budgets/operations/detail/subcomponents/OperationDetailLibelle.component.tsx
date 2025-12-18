@@ -23,13 +23,13 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
 }: OperationDetailLibelleProps): JSX.Element => {
 
 
-    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
+    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext);
 
     const [listeLibellesOperationsFiltered, setListeLibellesOperationsFiltered] = useState<LibelleCategorieOperationModel[]>([...listeLibellesOperations]);
     const [pendingLibelle, setPendingLibelle] = useState<string>("");
 
-    const operation = currentOperation!;
-    const budgetActif = currentBudget!.actif;
+    const operation = currentOperation;
+    const budgetActif = currentBudget.actif;
     const rawLibelleIntercompteParts = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle);
     const rawLibelleRetardParts = EN_RETARD_LIBELLE_REGEX.exec(operation.libelle);
 
@@ -89,13 +89,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
 
 
     return (
-        (!formLibelleInEdition) ?
-            <Typography variant={"button"} sx={{fontSize: isMobile ? "medium" : "large"}}
-                className={budgetActif ? "editableField" : ""}
-                id={OPERATION_EDITION_FORM.LIBELLE}>
-                {getOperationLibelle(operation.libelle, comptes, true)}
-            </Typography>
-            :
+        (formLibelleInEdition) ?
             <FormControl fullWidth required error={errorLibelle != null}>
                 <Autocomplete id={OPERATION_EDITION_FORM.LIBELLE + OPERATION_EDITION_FORM.INPUT}
                               value={getOperationLibelleInEdition(operation)}
@@ -122,5 +116,11 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
                 />
                 <FormHelperText>{errorLibelle}</FormHelperText>
             </FormControl>
+            :
+            <Typography variant={"button"} sx={{fontSize: isMobile ? "medium" : "large"}}
+                className={budgetActif ? "editableField" : ""}
+                id={OPERATION_EDITION_FORM.LIBELLE}>
+                {getOperationLibelle(operation.libelle, comptes, true)}
+            </Typography>
     )
 }

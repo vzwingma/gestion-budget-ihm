@@ -43,7 +43,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Etats pour la page Budget **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories } = useContext(BudgetContext)!;
+    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories } = useContext(BudgetContext);
 
     const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
@@ -170,12 +170,12 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                 </Grid>
                 <Grid size={{md: 1, xl: 1}}>
                     {/** Actions sur le budget (close / reinit) **/
-                        (currentBudget != null) ?
+                        (currentBudget == null) ?
+                            <CenterComponent><CircularProgress /></CenterComponent> :
                             <BudgetActionsButtonGroupComponent
                                 droits={userDroits}
                                 onActionBudgetChange={handleBudgetUpdate}
-                                onActionOperationCreate={handleButtonCreateClick} /> :
-                            <CenterComponent><CircularProgress /></CenterComponent>
+                                onActionOperationCreate={handleButtonCreateClick} />
                     }
                 </Grid>
             </Grid>
@@ -183,13 +183,13 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
             <Grid container sx={{overflow: "hidden"}}>
                 <Grid size={{md: 5, xl: 4}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
                     { /** Liste des opérations **/
-                        (currentBudget != null ?
+                        (currentBudget == null ?
+                            <CenterComponent><CircularProgress /></CenterComponent>
+                            :
                             <OperationsListe
                                 operationGroupedByDate={operationsGroupedByDateOperation}
                                 filterOperations={filterOperations}
                                 onClick={handleOperationSelect} />
-                            :
-                            <CenterComponent><CircularProgress /></CenterComponent>
                         )
                     }
                 </Grid>

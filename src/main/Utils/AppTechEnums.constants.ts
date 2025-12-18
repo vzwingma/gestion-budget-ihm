@@ -5,7 +5,7 @@ export const OIDC_ENUM = {
     AUTHORITY: process.env.REACT_APP_CONFIG_OIDC_AUTHORITY,
     CLIENT_ID: process.env.REACT_APP_CONFIG_OIDC_CLIENT_ID,
     CLIENT_SECRET: process.env.REACT_APP_CONFIG_OIDC_CLIENT_SECRET,
-    URL: window.location.href
+    URL: globalThis.location.href
 }
 
 /**

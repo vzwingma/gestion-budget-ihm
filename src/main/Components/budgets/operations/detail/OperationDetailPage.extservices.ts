@@ -25,8 +25,8 @@ export function saveOperation(operation: OperationModel, budget: BudgetMensuelMo
         }
 
         call(operation.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ? METHODE_HTTP.DELETE : METHODE_HTTP.POST,
-            BACKEND_ENUM.URL_OPERATIONS, !isCreation ? SERVICES_URL.OPERATIONS.UPDATE : SERVICES_URL.OPERATIONS.CREATE,
-            [budget.id, !isCreation ? operation.id : ""], operation)
+            BACKEND_ENUM.URL_OPERATIONS, isCreation ? SERVICES_URL.OPERATIONS.CREATE : SERVICES_URL.OPERATIONS.UPDATE,
+            [budget.id, isCreation ? "" : operation.id], operation)
             .then((data: BudgetMensuelModel) => {
 
                 // Update du budget global (parent)

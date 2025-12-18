@@ -31,8 +31,8 @@ import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGr
 
 export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGroupProps> = ({ droits, onActionBudgetChange, onActionOperationCreate }: BudgetActionsButtonGroupProps): JSX.Element => {
 
-    const { currentBudget } = useContext(BudgetContext)!;
-    const budget = currentBudget!;
+    const { currentBudget } = useContext(BudgetContext);
+    const budget = currentBudget;
     const [showModale, setShowModale] = useState<boolean>(false);
     const [modaleContent, setModaleContent] = useState<{ title: string, question: string }>();
     const [actionEnCours, setActionEnCours] = useState<string>();
@@ -44,15 +44,15 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
      * @param event : Event sur le bouton
      */
     function handleButtonsBudgetClick(event: any) {
-        if (event.target.className !== "btn-close") {
+        if (event.target.className === "btn-close") {
+            setShowModale(false);
+        } else {
             const action = getEventTargetId(event.target);
             if (action === ACTIONS_BUDGET_ENUM.CREATE) {
                 onActionOperationCreate();
                 return;
             }
             handleAction(action);
-        } else {
-            setShowModale(false);
         }
     }
 

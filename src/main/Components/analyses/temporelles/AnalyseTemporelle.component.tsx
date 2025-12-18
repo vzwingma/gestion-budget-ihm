@@ -39,7 +39,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
 
     const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
 
-    const [filterChange, setFilterChange] = useState<number>(new Date().getTime());
+    const [filterChange, setFilterChange] = useState<number>(Date.now());
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     const listHeight = isMobile ? window.innerHeight - 125 : window.innerHeight - 160;
@@ -93,7 +93,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                 categorie.filterActive = event.target.checked;
             }
             setAnalyseSoldesCategoriesData(listeCategoriesUpdated);
-            setFilterChange(new Date().getTime());
+            setFilterChange(Date.now());
         }
     }
 
@@ -103,7 +103,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      */
     function onFilterSoldesChange(event: any) {
         setFilterSoldesActive(event.target.checked);
-        setFilterChange(new Date().getTime());
+        setFilterChange(Date.now());
     }
 
 
@@ -128,7 +128,9 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                     }
                 </Grid>
                 <Grid size={{md: 6, xl: 6}} direction={"row-reverse"}>
-                    {   analyseSoldesCategoriesData != null ?
+                    {   analyseSoldesCategoriesData == null ?
+                            <CenterComponent><CircularProgress /></CenterComponent>
+                            :
                             <>
                                 <AnalyseTemporelleFiltre listeCategories={analyseSoldesCategoriesData}
                                     onFilterChange={onFilterChange} />
@@ -138,13 +140,13 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                                         checkedIcon={<CheckCircle />} />}
                                                   style={{color: "#FFFFFF"}} className="filtercategorie"
                                     onChange={onFilterSoldesChange} />
-                            </>
-                            :
-                            <CenterComponent><CircularProgress /></CenterComponent> }
+                            </> }
                 </Grid>
             </Grid>
             <Grid sx={{overflow: "hidden", height: listHeight}}>
-                {soldesMensuels != null ?
+                {soldesMensuels == null ?
+                    <CenterComponent><CircularProgress /></CenterComponent>
+                    :
                     <GraphAnalyseTemporelle
                         anneeAnalyses={anneeAnalyses}
                         timelinesByCategoriesData={timelinesByCategories || []}
@@ -153,8 +155,6 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                         timelinesPrevisionnellesSoldesData={timelinesPrevisionnellesSoldes || []}
                         filterSoldesActive={filterSoldesActive}
                         analyseSoldesCategoriesData={analyseSoldesCategoriesData || []} />
-                    :
-                    <CenterComponent><CircularProgress /></CenterComponent>
                 }
             </Grid>
         </Box>

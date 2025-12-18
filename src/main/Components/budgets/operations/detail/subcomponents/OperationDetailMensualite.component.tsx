@@ -20,9 +20,9 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     fillOperationForm
 }: OperationDetailMensualiteProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
-    const budgetActif = currentBudget!.actif;
+    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const operation = currentOperation;
+    const budgetActif = currentBudget.actif;
     /**
  * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur
  * @param {Event} e - L'événement de saisie
@@ -39,13 +39,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     }
 
     return (
-        (!formMensualiteInEdition) ?
-            <Typography id={OPERATION_EDITION_FORM.MENSUALITE} variant={"overline"}
-                className={budgetActif ? "editableField" : ""}
-                color={getPeriodeRenderer(operation.mensualite.periode).color}>
-                {getPeriodeRenderer(operation.mensualite.periode).text}
-            </Typography>
-            :
+        (formMensualiteInEdition) ?
             <TextField
                 id={OPERATION_EDITION_FORM.MENSUALITE + OPERATION_EDITION_FORM.INPUT}
                 required select fullWidth
@@ -62,5 +56,11 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
                     </MenuItem>
                 ))}
             </TextField>
+            :
+            <Typography id={OPERATION_EDITION_FORM.MENSUALITE} variant={"overline"}
+                className={budgetActif ? "editableField" : ""}
+                color={getPeriodeRenderer(operation.mensualite.periode).color}>
+                {getPeriodeRenderer(operation.mensualite.periode).text}
+            </Typography>
     )
 }
