@@ -51,9 +51,8 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
                     type="monotone"
                     dataKey={categorie.libelleCategorie}
                     strokeWidth="3"
-                    stroke={categorie.couleur} />)
-
-                lines.push(<Line key={SOLDES_ENUM.PREVISIONNEL + (categorie.id ?? 'defaultId')}
+                    stroke={categorie.couleur} />, 
+                    <Line key={SOLDES_ENUM.PREVISIONNEL + (categorie.id ?? 'defaultId')}
                     type="monotone"
                     dataKey={SOLDES_ENUM.PREVISIONNEL + categorie.libelleCategorie}
                     strokeWidth="1"

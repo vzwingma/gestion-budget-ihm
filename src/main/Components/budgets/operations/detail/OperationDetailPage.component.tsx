@@ -59,9 +59,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
-    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
-    const budget = currentBudget!;
+    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext);
+    const operation = currentOperation;
+    const budget = currentBudget;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**

@@ -20,9 +20,9 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     fillOperationForm
 }: OperationDetailMensualiteProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
-    const budgetActif = currentBudget!.actif;
+    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const operation = currentOperation;
+    const budgetActif = currentBudget.actif;
     /**
  * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur
  * @param {Event} e - L'événement de saisie

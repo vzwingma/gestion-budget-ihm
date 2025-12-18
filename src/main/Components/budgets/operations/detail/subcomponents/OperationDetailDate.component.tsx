@@ -21,9 +21,9 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   form
                                                                             fillOperationForm
                                                                         }: OperationDetailDateProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
-    const budgetActif = currentBudget!.actif;
+    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const operation = currentOperation;
+    const budgetActif = currentBudget.actif;
 
     /**
  * Remplit le champ "dateOperation" de l'état à partir de la saisie de l'utilisateur

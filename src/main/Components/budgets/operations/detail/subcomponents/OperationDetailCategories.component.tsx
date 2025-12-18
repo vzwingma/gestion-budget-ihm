@@ -28,8 +28,8 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                                                                                         fillOperationForm
                                                                                 }: OperationDetailCategoriesProps): JSX.Element => {
 
-    const { currentOperation, categories } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
+    const { currentOperation, categories } = useContext(BudgetContext);
+    const operation = currentOperation;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**

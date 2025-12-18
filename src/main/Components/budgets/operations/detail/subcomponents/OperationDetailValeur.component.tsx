@@ -19,9 +19,9 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
                                                                                 fillOperationForm
                                                                             }: OperationDetailValeurProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext)!;
-    const operation = currentOperation!;
-    const budgetActif = currentBudget!;
+    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const operation = currentOperation;
+    const budgetActif = currentBudget;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
