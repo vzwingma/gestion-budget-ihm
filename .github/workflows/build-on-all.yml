@@ -30,7 +30,7 @@ jobs:
           OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
           OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
         run: |
-          sed -e "s/__OIDC_CLIENT_ID__/$OIDC_CLIENT_ID/g" -e "s/__OIDC_CLIENT_SECRET__/$OIDC_CLIENT_SECRET/g" external-ressources/conf/.env.dev;
+          sed -e "s/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g" -e "s/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g" external-ressources/conf/.env.dev;
       - run: mv external-ressources/conf/.env.dev .env
         name: Set env DEV
       - run: npm install --ignore-scripts
