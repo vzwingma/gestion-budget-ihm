@@ -94,7 +94,7 @@ ___  ___      _     _ _
     a.nav-link_selected {
         background-color: #121212;
         border-radius: 20px 20px 0 0;
-        color: #1976d2;
+        color: #42a5f5;
         display: inline-block;
         flex-grow: 1;
         font-size: 1rem;
@@ -124,7 +124,7 @@ ___  ___      _     _ _
 
     .listeItemSeparator {
         background-color: #252525 !important;
-        color: #31687f;
+        color: #5fa9cc;
         padding: 3px;
         font-size: 11px;
     }
@@ -229,7 +229,7 @@ ______          _    _
     a.nav-link_selected {
         background-color: #121212;
         border-radius: 20px 20px 0 0;
-        color: #1976d2;
+        color: #42a5f5;
         display: inline-block;
         flex-grow: 1;
         font-size: 1.25rem;
@@ -270,7 +270,7 @@ ______          _    _
 
     .listeItemSeparator {
         background-color: #252525 !important;
-        color: #31687f;
+        color: #5fa9cc;
         padding: 10px;
     }
 
