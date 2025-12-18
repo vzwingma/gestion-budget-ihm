@@ -3,6 +3,14 @@ import React, {JSX} from "react";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
 import {AnalyseTitreProps} from "../../Components.props.tsx";
 
+/**
+ * Obtient le tooltip pour la date d'aujourd'hui
+ * @returns {string} - La date d'aujourd'hui formatée
+ */
+function getTooltipAuj(): string {
+    const dateCourante = new Date(Date.now());
+    return "Au " + dateCourante.getDate() + " " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear()
+}
 
 /**
  * Page principale pour l'affichage du solde
@@ -19,14 +27,6 @@ const AnalyseTitre: React.FC<AnalyseTitreProps> = ({
                                                    }: AnalyseTitreProps): JSX.Element => {
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    /**
-     * Obtient le tooltip pour la date d'aujourd'hui
-     * @returns {string} - La date d'aujourd'hui formatée
-     */
-    function getTooltipAuj(): string {
-        const dateCourante = new Date(Date.now());
-        return "Au " + dateCourante.getDate() + " " + dateCourante.toLocaleString('default', {month: 'long'}) + " " + dateCourante.getFullYear()
-    }
 
     // Rendu du composant
     return (
