@@ -38,13 +38,13 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
      */
     function renderValueCompte(): JSX.Element {
         if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
-            if(soldes !== undefined){
+            if(soldes === undefined){
+                return <CircularProgress size={20}/>
+            }
+            else{
                 return <Typography variant={"subtitle1"} width={120} sx={{cursor: "help"}}>
                             <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id}/>
                         </Typography>
-            }
-            else{
-                return <CircularProgress size={20}/>
             }
         } else {
             return <></>

@@ -34,13 +34,7 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
 
     return (
         <>
-            {(!formValueInEdition) ?
-                <Typography variant={"h4"} className={budgetActif ? "editableField" : ""}
-                            id={OPERATION_EDITION_FORM.VALUE}>
-                <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}
-                    id={OPERATION_EDITION_FORM.VALUE} />
-                </Typography>
-                :
+            {(formValueInEdition) ?
                 <TextField id={OPERATION_EDITION_FORM.VALUE + OPERATION_EDITION_FORM.INPUT}
                     required label="Montant"
                     slotProps={{
@@ -59,6 +53,12 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
                            size={isMobile ? "small" : "medium"}
                            error={errorValeur != null} helperText={errorValeur}
                     onChange={fillValeurForm} />
+                :
+                <Typography variant={"h4"} className={budgetActif ? "editableField" : ""}
+                            id={OPERATION_EDITION_FORM.VALUE}>
+                <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}
+                    id={OPERATION_EDITION_FORM.VALUE} />
+                </Typography>
             }
         </>
     )

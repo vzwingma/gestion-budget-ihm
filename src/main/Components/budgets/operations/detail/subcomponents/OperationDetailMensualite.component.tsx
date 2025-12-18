@@ -39,13 +39,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     }
 
     return (
-        (!formMensualiteInEdition) ?
-            <Typography id={OPERATION_EDITION_FORM.MENSUALITE} variant={"overline"}
-                className={budgetActif ? "editableField" : ""}
-                color={getPeriodeRenderer(operation.mensualite.periode).color}>
-                {getPeriodeRenderer(operation.mensualite.periode).text}
-            </Typography>
-            :
+        (formMensualiteInEdition) ?
             <TextField
                 id={OPERATION_EDITION_FORM.MENSUALITE + OPERATION_EDITION_FORM.INPUT}
                 required select fullWidth
@@ -62,5 +56,11 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
                     </MenuItem>
                 ))}
             </TextField>
+            :
+            <Typography id={OPERATION_EDITION_FORM.MENSUALITE} variant={"overline"}
+                className={budgetActif ? "editableField" : ""}
+                color={getPeriodeRenderer(operation.mensualite.periode).color}>
+                {getPeriodeRenderer(operation.mensualite.periode).text}
+            </Typography>
     )
 }

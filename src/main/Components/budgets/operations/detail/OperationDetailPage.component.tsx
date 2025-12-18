@@ -116,7 +116,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 editOperation.valeur = value;
                 break;
             case OPERATION_EDITION_FORM.MENSUALITE:
-                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).filter((periode: PERIODES_MENSUALITE_ENUM) => periode === value)[0];
+                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
                 break;
             case OPERATION_EDITION_FORM.CATEGORIE:
                 if(value !== "") {
@@ -141,7 +141,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     function fillCategorieForm(ssCatId: string) {
         const ssCat = listeCategories
             .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
-            .filter((ssCat: CategorieOperationModel) => ssCat != null && ssCat.id === ssCatId)[0]
+            .find((ssCat: CategorieOperationModel) => ssCat?.id === ssCatId)
         if (ssCat === undefined) {
             return;
         }

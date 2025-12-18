@@ -12,7 +12,7 @@ let alreadyTraced: boolean = false;
 function logOut() {
 
     removeTokenFromStorage();
-    window.location.href = "/";
+    globalThis.location.href = "/";
 }
 
 /**

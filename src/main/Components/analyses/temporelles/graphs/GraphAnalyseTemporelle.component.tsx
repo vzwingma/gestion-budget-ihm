@@ -69,20 +69,17 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
         soldes.push(<Bar key={SOLDES_ENUM.SOLDE_COURANT} dataKey={SOLDES_ENUM.SOLDE_COURANT}
             type="monotone"
             fill="url('#colorSoldesD')" stroke="url('#colorSoldesD')"
-            barSize={40} />)
-
-        soldes.push(<Bar key={SOLDES_ENUM.SOLDE_FIN} dataKey={SOLDES_ENUM.SOLDE_FIN}
+            barSize={40} />, 
+            <Bar key={SOLDES_ENUM.SOLDE_FIN} dataKey={SOLDES_ENUM.SOLDE_FIN}
             type="monotone"
             fill="url('#colorSoldesF')" stroke="url('#colorSoldesF')"
-            barSize={40} />)
-
-        soldes.push(<Bar key={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_COURANT}
+            barSize={40} />, 
+            <Bar key={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_COURANT}
             dataKey={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_COURANT}
             type="monotone"
             fill="url('#colorSoldesD')" stroke="url('#colorSoldesD')"
-            barSize={40} strokeDasharray="5 5" />)
-
-        soldes.push(<Bar key={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_FIN}
+            barSize={40} strokeDasharray="5 5" />, 
+            <Bar key={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_FIN}
             dataKey={SOLDES_ENUM.PREVISIONNEL + SOLDES_ENUM.SOLDE_FIN}
             type="monotone"
             fill="url('#colorSoldesF')" stroke="url('#colorSoldesF')"

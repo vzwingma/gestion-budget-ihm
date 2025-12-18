@@ -27,7 +27,7 @@ const AnneeRange = ({ selectedAnnee, onAnneeChange }: AnneeRangeProps) : JSX.Ele
             <ButtonGroup onClick={(e) => handleSelect(e, dateCurrent, onAnneeChange)}>
                 <Button id="previous" size={"small"}>{datePrevious}</Button>
                 <Button id="current" size={"small"}
-                        variant={!fullView ? "contained" : "outlined"}>{dateCurrent}</Button>
+                        variant={fullView ? "outlined" : "contained"}>{dateCurrent}</Button>
                 <Button id="next"
                         size={"small"} disabled={dateNext > new Date().getFullYear()}>{dateNext}</Button>
                 <Button id="all"

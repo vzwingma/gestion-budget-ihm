@@ -44,15 +44,15 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
      * @param event : Event sur le bouton
      */
     function handleButtonsBudgetClick(event: any) {
-        if (event.target.className !== "btn-close") {
+        if (event.target.className === "btn-close") {
+            setShowModale(false);
+        } else {
             const action = getEventTargetId(event.target);
             if (action === ACTIONS_BUDGET_ENUM.CREATE) {
                 onActionOperationCreate();
                 return;
             }
             handleAction(action);
-        } else {
-            setShowModale(false);
         }
     }
 
