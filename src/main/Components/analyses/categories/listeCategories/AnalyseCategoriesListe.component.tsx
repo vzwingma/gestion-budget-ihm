@@ -73,7 +73,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({   rangS
 
     return <Box sx={{height: listHeight, overflow: "hidden"}}>
         {
-            (rangSelectedCategorie !== null) ? <Box width={25} height={rangSelectedCategorie * subListHeight}/> : <></>
+            (rangSelectedCategorie === null) ? <></> : <Box width={25} height={rangSelectedCategorie * subListHeight}/>
         }
         <Stack divider={<Divider orientation="horizontal"/>}
                sx={{overflowY: "auto", overflowX: "hidden", height: listHeight}}>

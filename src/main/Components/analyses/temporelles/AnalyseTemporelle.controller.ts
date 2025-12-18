@@ -68,9 +68,9 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
     // Génération du budget à terminaison pour le budget courant
 
     if (soldesMensuelsData.length < 12) {
-        timelinesPrevisionnellesByCategoriesData[soldesMensuelsData.length - 1]   = calculateTimelineCategories(soldesMensuelsData[soldesMensuelsData.length - 1], false);
-        timelinesPrevisionnellesByCategoriesData[soldesMensuelsData.length]       = calculateTimelineCategories(soldesMensuelsData[soldesMensuelsData.length - 1], true);
-        timelinesPrevisionnellesSoldesData[soldesMensuelsData.length]             = calculateTimelineSoldes(soldesMensuelsData[soldesMensuelsData.length - 1], true);
+        timelinesPrevisionnellesByCategoriesData[soldesMensuelsData.length - 1]   = calculateTimelineCategories(soldesMensuelsData.at(-1), false);
+        timelinesPrevisionnellesByCategoriesData[soldesMensuelsData.length]       = calculateTimelineCategories(soldesMensuelsData.at(-1), true);
+        timelinesPrevisionnellesSoldesData[soldesMensuelsData.length]             = calculateTimelineSoldes(soldesMensuelsData.at(-1), true);
     }
 
     handleDataCalculationResult({soldesMensuelsData, soldesCategoriesData, timelinesByCategoriesData, timelinesPrevisionnellesByCategoriesData, timelinesSoldesData, timelinesPrevisionnellesSoldesData});
