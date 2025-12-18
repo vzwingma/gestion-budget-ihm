@@ -26,17 +26,22 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: latest
-      - run: npm ci
+      - run: npm ci --ignore-scripts
         name: CI Install
       - name: Update config in .env.staging
+        env:
+          OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
+          OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
+          CONFIG_URL_BACKENDS: ${{ vars.CONFIG_URL_BACKENDS }}
+          API_GW_API_KEY: ${{ secrets.API_GW_API_KEY }}
         run: |
-          sed -i 's/__OIDC_CLIENT_ID__/${{ secrets.OIDC_CLIENT_ID }}/g' external-ressources/conf/.env.staging; 
-          sed -i 's/__OIDC_CLIENT_SECRET__/${{ secrets.OIDC_CLIENT_SECRET }}/g' external-ressources/conf/.env.staging;
-          sed -i 's/__CONFIG_URL_BACKENDS__/${{ vars.CONFIG_URL_BACKENDS }}/g' external-ressources/conf/.env.staging;
-          sed -i 's/__API_GW_API_KEY__/${{ secrets.API_GW_API_KEY }}/g' external-ressources/conf/.env.staging;
+          sed -i 's/__OIDC_CLIENT_ID__/$OIDC_CLIENT_ID/g' external-ressources/conf/.env.staging; 
+          sed -i 's/__OIDC_CLIENT_SECRET__/$OIDC_CLIENT_SECRET/g' external-ressources/conf/.env.staging;
+          sed -i 's/__CONFIG_URL_BACKENDS__/$CONFIG_URL_BACKENDS/g' external-ressources/conf/.env.staging;
+          sed -i 's/__API_GW_API_KEY__/$API_GW_API_KEY/g' external-ressources/conf/.env.staging;
       - run: mv external-ressources/conf/.env.staging .env
         name: Set env STAGING
-      - run: npm run build --if-present
+      - run: npm run build --if-present 
         name: Build Staging
       - run: zip -r app_build.zip build/*
       - uses: actions/upload-artifact@v5
@@ -60,7 +65,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: latest
-      - run: npm install eslint --save
+      - run: npm install eslint --save --ignore-scripts
       - run: npm run lint
   sonarcloud:
     runs-on: ubuntu-latest
