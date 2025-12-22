@@ -53,11 +53,19 @@ export const Infos: React.FC = () => {
                     <TableRow>
                         <TableCell colSpan={2}>
                             <CenterComponent>
-                                <img src="/img/icon.webp" width={isMobile ? "205" : "450"}
-                                     height={isMobile ? "193" : "425"} style={{margin: "10px"}}
-                                     className="d-inline-block align-middle" alt="Gestion de budgets"
-                                     onClick={() => setInfoVersion(!infoVersion)}
-                                     onKeyDown={() => setInfoVersion(!infoVersion)}/>
+                                <button 
+                                    onClick={() => setInfoVersion(!infoVersion)}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                        padding: 0,
+                                        cursor: "pointer"
+                                    }}
+                                    aria-label="Gestion de budgets">
+                                    <img src="/img/icon.webp" width={isMobile ? "205" : "450"}
+                                         height={isMobile ? "193" : "425"} style={{margin: "10px"}}
+                                         className="d-inline-block align-middle" alt="Gestion de budgets"/>
+                                </button>
                             </CenterComponent>
                         </TableCell>
                     </TableRow>
