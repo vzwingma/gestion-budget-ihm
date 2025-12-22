@@ -6,11 +6,10 @@ on:
     # Sequence of patterns matched against refs/heads
     branches-ignore: [ master ]
 
-permissions:
-  contents: read
-
 jobs:
   build:
+    permissions:
+      contents: read
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +41,8 @@ jobs:
 
   # LINT
   lint:
+    permissions:
+      contents: read
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
