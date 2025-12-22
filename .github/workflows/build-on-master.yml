@@ -7,13 +7,13 @@ on:
     branches: [ master ]
   pull_request:
     branches-ignore: [ dependabot/** ]
-permissions:
-  contents: read
 jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: QUA
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
       - uses: actions/cache@v4
@@ -54,6 +54,8 @@ jobs:
   lint:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
       - uses: actions/cache@v4

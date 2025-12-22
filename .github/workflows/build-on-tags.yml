@@ -1,9 +1,5 @@
 name: CI/CD - Release IHM
 
-permissions:
-  contents: read
-  actions: write
-
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for tags
@@ -19,6 +15,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: PROD
+    permissions:
+      contents: read
+      actions: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/cache@v4
@@ -66,6 +65,8 @@ jobs:
   # Deploy sur S3
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
