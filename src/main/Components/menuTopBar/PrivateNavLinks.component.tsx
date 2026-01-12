@@ -10,14 +10,14 @@ const PrivateNavLinks: React.FC = (): JSX.Element => {
 
     if (useAuth().isAuthenticated) {
         return <Stack direction="row" spacing={1}>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'} to="/infos">🏠 Accueil</NavLink>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                    <NavLink id="accueil-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'} to="/infos">🏠 Accueil</NavLink>
+                    <NavLink id="operations-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
                             to="/budgets">💳 Opérations</NavLink>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                    <NavLink id="recurrents-link"  className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
                             to="/recurrents">🔁 Récurrents</NavLink>                            
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                    <NavLink id="analyses-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
                             to="/analyses">🍰 Par catégories</NavLink>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                    <NavLink id="tendances-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
                             to="/analysesTemporelles">📈 Tendances</NavLink>
                 </Stack>
     } else {
