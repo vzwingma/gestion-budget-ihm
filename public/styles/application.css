@@ -148,7 +148,7 @@ a#tendances-link.nav-link_selected:hover {
     border: 3px solid #4ADE80;
     border-radius: 8px;
     padding: 8px;
-    max-height: calc(100vh - 60px);
+    height: calc(100vh - 60px);
 }
 /* Analyses categories page container */
 .analyses-page-container {
@@ -156,7 +156,7 @@ a#tendances-link.nav-link_selected:hover {
     border: 3px solid #4DA3FF;
     border-radius: 8px;
     padding: 8px;
-    max-height: calc(100vh - 70px);
+    height: calc(100vh - 70px);
 }
 
 /* Analyses temporelle page container */
@@ -165,7 +165,7 @@ a#tendances-link.nav-link_selected:hover {
     border: 3px solid #A78BFA;
     border-radius: 8px;
     padding: 8px;
-    max-height: calc(100vh - 70px);
+    height: calc(100vh - 70px);
 }
 
 /* Infos page container */
@@ -174,7 +174,7 @@ a#tendances-link.nav-link_selected:hover {
     border: 3px solid #4DA3FF;
     border-radius: 8px;
     padding: 8px;
-    max-height: calc(100vh - 70px);
+    height: calc(100vh - 70px);
     width: 100%;
     max-width: 100%;
     display: flex;
