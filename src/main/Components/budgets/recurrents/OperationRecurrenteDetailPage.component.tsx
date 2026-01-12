@@ -36,6 +36,16 @@ export const OperationRecurrenteDetailPage: React.FC = (): JSX.Element => {
             return <></>
         }
     }
+
+    function getProchaineEcheance(dateOperation: Date, prochaineEcheance: number): string {
+        if (prochaineEcheance < 0) {
+            return "Aucune"
+        } else {
+            let dateNow = dateOperation ? new Date(dateOperation) : new Date();
+            dateNow.setMonth(dateNow.getMonth() + prochaineEcheance);
+            return getLabelFRFromDate(dateNow)
+        }
+    }
     /**
      * RENDER
      * @returns {JSX.Element} Le composant JSX de la page de détail d'une opération.
@@ -92,8 +102,8 @@ export const OperationRecurrenteDetailPage: React.FC = (): JSX.Element => {
                     <Grid size={{md: 3, xl: 3}}>
                         { /** DATE OPERATION **/}
                         <Typography id={"OPERATION_EDITION_FORM.DATE_OPERATION"} variant={"subtitle1"}
-                                        sx={{ color: (operation.autresInfos.dateOperation == null ? "#121212" : "#FFFFFF") }}>
-                                        {operation.autresInfos.dateOperation == null ? "jj/mm/aaaa" : getLabelFRFromDate(operation.autresInfos.dateOperation)}
+                                        sx={{ color: (operation.mensualite.prochaineEcheance == null ? "#121212" : "#FFFFFF") }}>
+                                        {operation.mensualite.prochaineEcheance == null ? "jj/mm/aaaa" : getProchaineEcheance(operation.autresInfos.dateOperation, operation.mensualite.prochaineEcheance)}
                                     </Typography>
                     </Grid>
 

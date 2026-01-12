@@ -6,18 +6,13 @@ import RecurrentsTitre from "./RecurrentsTitre.component.tsx";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
 import {reloadBudget} from "./../budget/Budget.extservices.ts";
-import {PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
 
-import OperationsListe from "../operations/OperationsListe.component.tsx";
-import OperationDetailPage from "../operations/detail/OperationDetailPage.component.tsx";
 import {CancelRounded} from "@mui/icons-material";
 import {getLabelFRFromDate} from "../../../Utils/Date.utils.ts";
 import {getOperationsGroupedByPeriodicity} from "./Recurrents.controller.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
-import {getLibellesOperationsCompte} from "../operations/detail/OperationDetailPage.extservices.ts";
 import {RecurrentsPageProps} from "../../Components.props.ts";
 import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider.tsx";
-import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import OperationsRecurrentesListe from "../operations/OperationsRecurrentesListe.component.tsx";
 import OperationRecurrenteDetailPage from "./OperationRecurrenteDetailPage.component.tsx";
 
@@ -43,11 +38,10 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
 
     /** Etats pour la page Recurrents **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories } = useContext(BudgetContext);
+    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useContext(BudgetContext);
 
     const [operationsGroupedByPeriodicity, setOperationsGroupedByPeriodicity] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
-    const [listeLibellesOperations, setListeLibellesOperations] = useState<LibelleCategorieOperationModel[]>([]);
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
@@ -69,9 +63,6 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate))
         setCurrentBudget(undefined);
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
-        if (selectedCompte != null) {
-            getLibellesOperationsCompte(selectedCompte.id, setListeLibellesOperations);
-        }
         setCurrentOperation(null);
     }, [selectedCompte, selectedDate, handleBudgetUpdate, setCurrentOperation, setCurrentBudget]);
 
@@ -90,8 +81,8 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
      * @param operation opération
      */
     function handleOperationSelect(operation: OperationModel) {
-        operation.mensualite ??= { periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE };
         setCurrentOperation(operation);
+        console.log("Opération sélectionnée :", operation.id, operation);
     }
 
 

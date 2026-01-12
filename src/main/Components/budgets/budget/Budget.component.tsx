@@ -101,7 +101,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      * @param operation opération
      */
     function handleOperationSelect(operation: OperationModel) {
-        operation.mensualite ??= { periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE };
+        operation.mensualite ??= { periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE, prochaineEcheance: -1 };
         setCurrentOperation(operation);
     }
 
