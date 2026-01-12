@@ -2,20 +2,20 @@ import React, {JSX, useContext} from 'react'
 import {Box, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
 import { CenterComponent } from '../../CenterComponent.tsx';
-import {OperationItemProps} from '../../Components.props.tsx';
-import {getOperationLibelle, getOperationStateColor} from '../../../Utils/renderers/OperationItem.renderer.tsx';
+import {OperationItemProps} from '../../Components.props.ts';
+import {getOperationLibelle, getOperationStateColor, getPeriodeRenderer} from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
 
 
 /**
- * Tuile d'une opération dans la liste des opérations
+ * Tuile d'une opération récurrente dans la liste des opérations récurrentes
  * @param operation : object opération affichée
  * @param listeComptes : array liste des comptes
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handleOperationSelect} : OperationItemProps) : JSX.Element => {
+const OperationRecurrenteItem: React.FC<OperationItemProps> = ({operation, onClick : handleOperationSelect} : OperationItemProps) : JSX.Element => {
 
     const { comptes } = useContext(BudgetContext);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
@@ -28,7 +28,7 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
                     <Box width={isMobile ? 38 : 50} height={isMobile ? 38 : 50}
                          sx={{
                              borderRadius: '50%',
-                             border: (isMobile ? '2px' : '3px') + ' solid ' + getOperationStateColor(operation.etat),
+                             border: (isMobile ? '2px' : '3px') + ' solid ' + getPeriodeRenderer(operation.mensualite.periode).color,
                          }}>
 
                         <Box width={isMobile ? 34 : 44} height={isMobile ? 34 : 44}
@@ -66,4 +66,4 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
 
     )
 };
-export default OperationItem
+export default OperationRecurrenteItem

@@ -171,10 +171,11 @@ export function sortPeriodicOperations(ope1: OperationModel, ope2: OperationMode
     const periodeComparison = comparePeriodes(ope1.mensualite.periode, ope2.mensualite.periode);
     if (periodeComparison !== 0) return periodeComparison;
 
-    // 2ème TRI : par Etat
-    const rangOpe1 = getRangEtatOperation(ope1.etat);
-    const rangOpe2 = getRangEtatOperation(ope2.etat);
-    if (rangOpe1 !== rangOpe2) return rangOpe1 - rangOpe2;
+    // 2ème TRI : par libellé
+    if (ope1.libelle && ope2.libelle) {
+        const libelleComparison = ope1.libelle.localeCompare(ope2.libelle);
+        if (libelleComparison !== 0) return libelleComparison;
+    }
 
     // 3ème TRI : par date mise à jour
     return compareDatesMaj(ope1.autresInfos.dateMaj, ope2.autresInfos.dateMaj);

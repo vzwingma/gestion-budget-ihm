@@ -1,7 +1,6 @@
-import {getLabelFRFromDate} from "../../../Utils/Date.utils.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
-import {sortOperations, sortPeriodicOperations} from "../../../Utils/OperationData.utils.ts";
-import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
+import {sortPeriodicOperations} from "../../../Utils/OperationData.utils.ts";
+import {PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
 
 /**
  * Controleur des budgets

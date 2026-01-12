@@ -18,6 +18,7 @@ import {getLibellesOperationsCompte} from "../operations/detail/OperationDetailP
 import {RecurrentsPageProps} from "../../Components.props.ts";
 import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.ts";
+import OperationsRecurrentesListe from "../operations/OperationsRecurrentesListe.component.tsx";
 
 
 /**
@@ -149,8 +150,8 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                         (currentBudget == null ?
                             <CenterComponent><CircularProgress /></CenterComponent>
                             :
-                            <OperationsListe
-                                operationGroupedByDate={operationsGroupedByPeriodicity}
+                            <OperationsRecurrentesListe
+                                operationGroupedByPeriodicity={operationsGroupedByPeriodicity}
                                 filterOperations={filterOperations}
                                 onClick={handleOperationSelect} />
                         )

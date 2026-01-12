@@ -201,8 +201,15 @@ export interface OperationDetailPageProps {
     onOperationChange: (budget: BudgetMensuelModel) => void
 }
 
+
 export interface OperationsListeProps {
     operationGroupedByDate: {[key: string]: OperationModel[]}
+    filterOperations: string | null
+    onClick: (operation : OperationModel) => void
+}
+
+export interface OperationsRecurrentesListeProps {
+    operationGroupedByPeriodicity: {[key: string]: OperationModel[]}
     filterOperations: string | null
     onClick: (operation : OperationModel) => void
 }
