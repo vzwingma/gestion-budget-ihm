@@ -3,7 +3,7 @@ import {Box, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/materi
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
 import { CenterComponent } from '../../CenterComponent.tsx';
 import {OperationItemProps} from '../../Components.props.ts';
-import {getOperationLibelle, getOperationStateColor, getPeriodeRenderer} from '../../../Utils/renderers/OperationItem.renderer.tsx';
+import {getOperationLibelle, getPeriodeRenderer} from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
 

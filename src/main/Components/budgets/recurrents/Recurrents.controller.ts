@@ -11,6 +11,10 @@ import {PERIODES_MENSUALITE_ENUM} from "../../../Utils/AppBusinessEnums.constant
  * @param listeOperations liste des opérations
  */
 export function getOperationsGroupedByPeriodicity(listeOperations: OperationModel[]): { [key: string]: OperationModel[] } {
+
+    if(listeOperations == null || listeOperations.length === 0){
+        return {};
+    }
     return listeOperations
         .filter((operation: OperationModel) => operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE)
         .sort((ope1: OperationModel, ope2: OperationModel) => sortPeriodicOperations(ope1, ope2))

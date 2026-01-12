@@ -1,7 +1,6 @@
 import React, {JSX} from 'react'
 import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
 import { CenterComponent } from '../../CenterComponent.tsx';
-import OperationItem from './OperationsListItem.component.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import {OperationsRecurrentesListeProps} from '../../Components.props.ts';
 import OperationRecurrenteItem from './OperationsRecurrentesListItem.component.tsx';
@@ -27,20 +26,20 @@ const OperationsRecurrentesListe: React.FC<OperationsRecurrentesListeProps> = ({
     function iterate(operationGroupedByPeriodicity : {[key: string]: OperationModel[]}): JSX.Element[] {
 
         let renderList = [] as JSX.Element[];
-        for (let dateOperationKey in operationGroupedByPeriodicity) {
+        for (let recurrentOperationKey in operationGroupedByPeriodicity) {
 
-            const operationsFilteredForPeriodicity = operationGroupedByPeriodicity[dateOperationKey]
+            const operationsFilteredForPeriodicity = operationGroupedByPeriodicity[recurrentOperationKey]
                 .filter((operation : OperationModel) => filterOperations === null
                     || filterOperations === ""
                     || operation.libelle.toLowerCase().includes(filterOperations.toLowerCase())
                     || operation.categorie.libelle.toLowerCase().includes(filterOperations.toLowerCase())
                     || operation.ssCategorie.libelle.toLowerCase().includes(filterOperations.toLowerCase()));
 
-            if (dateOperationKey !== null && dateOperationKey !== "null" && operationsFilteredForPeriodicity.length > 0) {
+            if (recurrentOperationKey !== null && recurrentOperationKey !== "null" && operationsFilteredForPeriodicity.length > 0) {
                 renderList.push(
-                    <Container key={"liste_" + dateOperationKey}
+                    <Container key={"liste_" + recurrentOperationKey}
                                className={"listeItemSeparator"}>
-                        <CenterComponent><>{dateOperationKey}</></CenterComponent>
+                        <CenterComponent><>{recurrentOperationKey}</></CenterComponent>
                     </Container>)
             }
 
