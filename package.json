@@ -41,15 +41,16 @@
     "webpack-cli": "^6.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "start:dev": "env-cmd -f .env.dev react-scripts start",
-    "start:qua": "env-cmd -f .env.qua react-scripts start",
-    "start:prod": "env-cmd -f .env.prod react-scripts start",
+    "minify-css": "css-minify -f public/styles/application.css -o public/styles/",
+    "start": "npm run minify-css && react-scripts start",
+    "build": "npm run minify-css && react-scripts build",
+    "start:dev": "npm run minify-css && env-cmd -f .env.dev react-scripts start",
+    "start:qua": "npm run minify-css && env-cmd -f .env.qua react-scripts start",
+    "start:prod": "npm run minify-css && env-cmd -f .env.prod react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.ts src/**/*.tsx",
-    "prod": "webpack --mode production --config webpack.config.js"
+    "prod": "npm run minify-css && webpack --mode production --config webpack.config.js"
   },
   "eslintConfig": {
     "extends": [
