@@ -1,25 +1,25 @@
 import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React, {JSX} from "react";
-import {flatCategoriesData, populateGraphCategories, populateGraphSoldes} from "./GraphAnalyseTemporelle.controller.ts";
-import TooltipAnalyseTemporelle from "./TooltipAnalyseTemporelle.component.tsx";
-import {GraphAnalyseTemporelleProps} from "../../../Components.props.tsx";
-import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model.ts";
-import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant.ts";
+import {flatCategoriesData, populateGraphCategories, populateGraphSoldes} from "./GraphAnalyseTendances.controller.ts";
+import TooltipAnalyseTemporelle from "./TooltipAnalyseTendances.component.tsx";
+import {GraphAnalyseTendancesProps} from "../../../Components.props.ts";
+import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/tendances/GraphAnalyseTimeline.model.ts";
+import {SOLDES_ENUM} from "./GraphAnalyseTendances.constant.ts";
 
 
 /**
  * Composant de graphique pour l'analyse temporelle.
- * @param {GraphAnalyseTemporelleProps} props - Les propriétés passées au composant.
+ * @param {GraphAnalyseTendancesProps} props - Les propriétés passées au composant.
  * @returns {JSX.Element} Le composant de graphique.
  */
-const GraphAnalyseTemporelle = ({   anneeAnalyses,
+const GraphAnalyseTendances = ({   anneeAnalyses,
                                     timelinesByCategoriesData,
                                     timelinesSoldesData,
                                     timelinesPrevisionnellesByCategoriesData,
                                     timelinesPrevisionnellesSoldesData,
                                     filterSoldesActive,
                                     analyseSoldesCategoriesData
-                                }: GraphAnalyseTemporelleProps): JSX.Element => {
+                                }: GraphAnalyseTendancesProps): JSX.Element => {
 
     /**
      * Récupère les données pour le graphique.
@@ -116,4 +116,4 @@ const GraphAnalyseTemporelle = ({   anneeAnalyses,
     );
 }
 
-export default GraphAnalyseTemporelle
+export default GraphAnalyseTendances

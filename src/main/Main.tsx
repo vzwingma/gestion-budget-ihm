@@ -71,7 +71,7 @@ export default class Main extends Component {
                                     <Route path="/" element={<Infos />} />
                                     <Route path="/budgets" element={<MainPage fonction={BUSINESS_ONGLETS.BUDGET} />} />
                                     <Route path="/analyses" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSE} />} />
-                                    <Route path="/analysesTemporelles" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSE_TEMP} />} />
+                                    <Route path="/analysesTendances" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSE_TENDANCES} />} />
                                     <Route path="/infos" element={<Infos />} />
                                 </Routes>
                             </BudgetContextProvider>

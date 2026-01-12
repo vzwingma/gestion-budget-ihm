@@ -1,7 +1,7 @@
 import {Checkbox, FormControlLabel} from "@mui/material";
 import React, {JSX} from "react";
 import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
-import {AnalyseTemporelleFiltreProps} from "../../Components.props.tsx";
+import {AnalyseTendancesFiltreProps} from "../../Components.props.ts";
 
 
 /**
@@ -11,10 +11,10 @@ import {AnalyseTemporelleFiltreProps} from "../../Components.props.tsx";
  * @returns {unknown[]} Les filtres de l'analyse temporelle.
  * @constructor
  */
-const AnalyseTemporelleFiltre: React.FC<AnalyseTemporelleFiltreProps> = ({
+const AnalyseTendancesFiltre: React.FC<AnalyseTendancesFiltreProps> = ({
                                                                              listeCategories,
                                                                              onFilterChange
-                                                                         }: AnalyseTemporelleFiltreProps): JSX.Element => {
+                                                                         }: AnalyseTendancesFiltreProps): JSX.Element => {
     let renderList: JSX.Element[] = []
     listeCategories.forEach(categorie => {
         renderList.push(<FormControlLabel
@@ -34,4 +34,4 @@ const AnalyseTemporelleFiltre: React.FC<AnalyseTemporelleFiltreProps> = ({
 
 };
 
-export default AnalyseTemporelleFiltre
+export default AnalyseTendancesFiltre

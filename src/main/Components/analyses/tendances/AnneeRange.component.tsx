@@ -1,7 +1,7 @@
 import React, {JSX} from "react";
 import {Button, ButtonGroup} from "@mui/material";
 import {handleSelect} from "./AnneeRange.controller.ts";
-import {AnneeRangeProps} from "../../Components.props.tsx";
+import {AnneeRangeProps} from "../../Components.props.ts";
 
 
 /**

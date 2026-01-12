@@ -1,7 +1,7 @@
 import {Stack, Typography} from "@mui/material";
 import React, {JSX} from "react";
 import AnneeRange from "./AnneeRange.component.tsx";
-import {AnalyseTemporelleTitreProps} from "../../Components.props.tsx";
+import {AnalyseTendancesTitreProps} from "../../Components.props.ts";
 
 
 /**
@@ -12,7 +12,7 @@ import {AnalyseTemporelleTitreProps} from "../../Components.props.tsx";
  * @param {function} props.onAnneeChange - Fonction pour gérer le changement d'année.
  * @returns {JSX.Element} Le composant du titre de l'analyse temporelle.
  */
-const AnalyseTemporelleTitre: React.FC<AnalyseTemporelleTitreProps> = ({currentCompte, currentAnnee, onAnneeChange} : AnalyseTemporelleTitreProps): JSX.Element => {
+const AnalyseTendancesTitre: React.FC<AnalyseTendancesTitreProps> = ({currentCompte, currentAnnee, onAnneeChange} : AnalyseTendancesTitreProps): JSX.Element => {
 
     return (
         // Création d'une pile pour l'affichage du titre
@@ -32,4 +32,4 @@ const AnalyseTemporelleTitre: React.FC<AnalyseTemporelleTitreProps> = ({currentC
     )
 };
 
-export default AnalyseTemporelleTitre
+export default AnalyseTendancesTitre

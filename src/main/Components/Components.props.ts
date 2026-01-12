@@ -1,8 +1,8 @@
 import AnalyseCategoriesModel from "../Models/analyses/categories/AnalyseCategories.model.ts";
-import {AnalyseSoldesTimelineItemModel} from "../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.ts";
-import {AnalyseCategorieTimelineItem} from "../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.ts";
-import AnalyseSoldesCategorie from "../Models/analyses/temporelles/AnalyseSoldesCategorie.model.ts";
-import SoldesMensuelModel from "../Models/analyses/temporelles/SoldeMensuel.model.ts";
+import {AnalyseSoldesTimelineItemModel} from "../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
+import {AnalyseCategorieTimelineItem} from "../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
+import AnalyseSoldesCategorie from "../Models/analyses/tendances/AnalyseSoldesCategorie.model.ts";
+import SoldesMensuelModel from "../Models/analyses/tendances/SoldeMensuel.model.ts";
 import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model.ts";
 import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
@@ -64,7 +64,7 @@ export interface GraphAnalysesProps {
 /**
  * Propriétés du composant de graphique pour l'analyse temporelle.
  */
-export interface GraphAnalyseTemporelleProps {
+export interface GraphAnalyseTendancesProps {
     anneeAnalyses: number,
     filterSoldesActive: boolean,
     analyseSoldesCategoriesData: AnalyseSoldesCategorie[],
@@ -75,9 +75,9 @@ export interface GraphAnalyseTemporelleProps {
 }
 
 /**
- * Analyse temporelle
+ * Analyse tendances
  */
-export interface TooltipAnalyseTemporelleProps {
+export interface TooltipAnalyseTendancesProps {
     active?: boolean,
     payload?: any[],
     label?: string
@@ -86,7 +86,7 @@ export interface TooltipAnalyseTemporelleProps {
 /**
  * Interface pour les propriétés des résultats de calcul des données.
  *
- * @interface DataCalculationTemporelResultsProps
+ * @interface DataCalculationTendancesResultsProps
  * @property {SoldeMensuelModel[]} soldesBudgetsData - Les données des soldes budgétaires.
  * @property {SoldeCategorieModel[]} soldesCategoriesData - Les données des catégories.
  * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesGroupedByCategoriesData - Les timelines groupées par catégories.
@@ -94,7 +94,7 @@ export interface TooltipAnalyseTemporelleProps {
  * @property {SoldeMensuelModel[]} timelinesSoldesData - Les timelines des soldes.
  * @property {SoldeMensuelModel[]} timelinesPrevisionnellesSoldesData - Les timelines prévisionnelles des soldes.
  */
-export interface DataCalculationTemporelResultsProps {
+export interface DataCalculationTendancesResultsProps {
     soldesMensuelsData: SoldesMensuelModel[],
     soldesCategoriesData: AnalyseSoldesCategorie[],
     timelinesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
@@ -103,18 +103,18 @@ export interface DataCalculationTemporelResultsProps {
     timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }
 
-export  interface AnalyseTemporelleProps {
+export  interface AnalyseTendancesProps {
    selectedCompte: CompteBancaireModel | null
    onOpenMenu: () => void
 }
 
 
-export interface AnalyseTemporelleFiltreProps {
+export interface AnalyseTendancesFiltreProps {
     listeCategories: AnalyseSoldesCategorie[];
     onFilterChange: (event: React.SyntheticEvent) => void;
 }
 
-export interface AnalyseTemporelleTitreProps {
+export interface AnalyseTendancesTitreProps {
     currentCompte: CompteBancaireModel;
     currentAnnee: number;
     onAnneeChange: React.Dispatch<React.SetStateAction<number>>;

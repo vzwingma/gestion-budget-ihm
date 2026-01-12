@@ -3,18 +3,17 @@ import React, {JSX, useEffect, useState} from "react";
 import {Box, Checkbox, CircularProgress, FormControlLabel, Grid, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
+import {loadSoldesBudgets} from "./AnalyseTendances.extservices.ts";
 import SoldesMensuelModel from "../../../Models/analyses/tendances/SoldeMensuel.model.ts";
 import AnalyseSoldesCategorie from "../../../Models/analyses/tendances/AnalyseSoldesCategorie.model.ts";
-
+import AnalyseTendancesTitre from "./AnalyseTendancesTitre.component.tsx";
+import AnalyseTendancesFiltre from "./AnalyseTendancesFiltre.component.tsx";
 import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
+import GraphAnalyseTendances from "./graphs/GraphAnalyseTendances.component.tsx";
 import {AnalyseTendancesProps, DataCalculationTendancesResultsProps} from "../../Components.props.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
 import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
 import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
-import { loadSoldesBudgets } from "../tendances/AnalyseTendances.extservices.ts";
-import AnalyseTendancesTitre from "../tendances/AnalyseTendancesTitre.component.tsx";
-import AnalyseTendancesFiltre from "../tendances/AnalyseTendancesFiltre.component.tsx";
-import GraphAnalyseTendances from "../tendances/graphs/GraphAnalyseTendances.component.tsx";
 
 
 /**
@@ -24,7 +23,7 @@ import GraphAnalyseTendances from "../tendances/graphs/GraphAnalyseTendances.com
  * @constructor constructeur
  *
  */
-export const AnalyseTemporelle: React.FC<AnalyseTendancesProps> = ({ selectedCompte, onOpenMenu }: AnalyseTendancesProps): JSX.Element => {
+export const AnalyseTendances: React.FC<AnalyseTendancesProps> = ({ selectedCompte, onOpenMenu }: AnalyseTendancesProps): JSX.Element => {
 
 
     /** Etats pour la page Budget **/

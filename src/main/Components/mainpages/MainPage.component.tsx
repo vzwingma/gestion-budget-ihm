@@ -7,7 +7,7 @@ import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import CompteItem from "./menuSlideBar/CompteItem.component.tsx";
 import DateRange from "./menuSlideBar/DateRange.component.tsx";
 import BudgetPage from "../budgets/budget/Budget.component.tsx";
-import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component.tsx";
+import {AnalyseTendances} from "../analyses/tendances/AnalyseTendances.component.tsx";
 import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component.tsx";
 import {MainPageProps} from "../Components.props.tsx";
 import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
@@ -74,8 +74,8 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                     selectedDate={selectedDate}
                     onOpenMenu={handleOpenMenuBar} />
 
-            case BUSINESS_ONGLETS.ANALYSE_TEMP:
-                return <AnalyseTemporelle selectedCompte={selectedCompte}
+            case BUSINESS_ONGLETS.ANALYSE_TENDANCES:
+                return <AnalyseTendances selectedCompte={selectedCompte}
                     onOpenMenu={handleOpenMenuBar} />
 
             default:

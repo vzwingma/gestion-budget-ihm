@@ -2,9 +2,9 @@ import {toast} from "react-toastify";
 import {call} from "../../../Services/ClientHTTP.service.ts";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants.ts";
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
-import {calculateTimelines,} from "./AnalyseTemporelle.controller.ts";
-import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.ts";
-import {DataCalculationTemporelResultsProps} from "../../Components.props.tsx";
+import {calculateTimelines,} from "./AnalyseTendances.controller.ts";
+import SoldesMensuelModel from "../../../Models/analyses/tendances/SoldeMensuel.model.ts";
+import {DataCalculationTendancesResultsProps} from "../../Components.props.ts";
 
 /**
  * Services back-end pour les analyses.
@@ -21,7 +21,7 @@ export function loadSoldesBudgets(selectedCompte : CompteBancaireModel | null, s
                                                                                                                                         timelinesByCategoriesData,
                                                                                                                                         timelinesPrevisionnellesByCategoriesData,
                                                                                                                                         timelinesSoldesData,
-                                                                                                                                        timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
+                                                                                                                                        timelinesPrevisionnellesSoldesData} : DataCalculationTendancesResultsProps) => void) : void {
     if (selectedCompte != null) {
 
         if (selectedAnnee === 0) {

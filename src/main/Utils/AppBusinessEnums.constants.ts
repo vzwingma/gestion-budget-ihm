@@ -4,7 +4,7 @@
 export enum BUSINESS_ONGLETS {
     BUDGET,
     ANALYSE,
-    ANALYSE_TEMP
+    ANALYSE_TENDANCES
 }
 
 
