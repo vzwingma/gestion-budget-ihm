@@ -139,6 +139,10 @@ export interface BudgetPageProps {
 }
 
 
+export interface RecurrentsPageProps {
+    onOpenMenu: () => void
+}
+
 /**
  * Opertions
  */

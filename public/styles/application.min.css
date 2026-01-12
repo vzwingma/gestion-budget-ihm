@@ -1,4 +1,48 @@
-
+/* CSS Variables - Color Palette */
+:root {
+    /* Tab colors */
+    --color-accueil-primary: #4DA3FF;
+    --color-accueil-hover: #78BBFF;
+    --color-accueil-selected: #E5E7EB;
+    --color-accueil-selected-hover: #F3F4F6;
+    
+    --color-operations-primary: #4ADE80;
+    --color-operations-hover: #86EFAC;
+    --color-operations-selected-hover: #09f15e;
+    
+    --color-recurrents-primary: #FB923C;
+    --color-recurrents-hover: #FDBA74;
+    
+    --color-analyses-primary: #4DA3FF;
+    --color-analyses-hover: #78BBFF;
+    
+    --color-tendances-primary: #A78BFA;
+    --color-tendances-hover: #C4B5FD;
+    
+    /* Common colors */
+    --color-heading: #31687f;
+    --color-dark-bg: #121212;
+    --color-white: #FFFFFF;
+    --color-nav-hover: #114b65;
+    
+    /* List colors */
+    --color-separator-bg: #252525;
+    --color-separator-text: #5fa9cc;
+    
+    /* Item hover */
+    --color-item-hover-bg: #2f2f2f;
+    --color-item-hover-text: #ebebeb;
+    
+    /* Operation states */
+    --color-credit: #2e7d32;
+    --color-depense: #e74c3c;
+    --color-annulee-bg: #ebebeb;
+    --color-planifiee: #0288d1;
+    --color-prevue: #ed6c02;
+    --color-realisee: #2e7d32;
+    --color-reportee: #9c27b0;
+    --color-supprimee: #ed1b24;
+}
 
 /* Common styles */
 body {
@@ -17,7 +61,7 @@ body {
 }
 
 h2, h3, h6, .MuiTypography-h3, .MuiTypography-h6 {
-    color: #31687f;
+    color: var(--color-heading);
 }
 
 /* Top Menu */
@@ -33,148 +77,136 @@ a.nav-link_selected {
 }
 
 a.nav-link {
-    color: white;
+    color: var(--color-white);
 }
 
 a.nav-link_selected {
-    background-color: #121212;
+    background-color: var(--color-dark-bg);
     border-radius: 20px 20px 0 0;
-    color: white;
+    color: var(--color-white);
 }
 
 /* Couleurs spécifiques pour le lien Accueil */
 a#accueil-link.nav-link {
-    color: white;
+    color: var(--color-white);
 }
 
 a#accueil-link.nav-link:hover {
-    color: #E5E7EB;
+    color: var(--color-accueil-selected);
 }
 
 a#accueil-link.nav-link_selected {
-    color: #E5E7EB;
-    border: 3px solid #4DA3FF;
+    color: var(--color-accueil-selected);
+    border: 3px solid var(--color-accueil-primary);
     border-bottom: 0;
 }
 
 a#accueil-link.nav-link_selected:hover {
-    color: #F3F4F6;
+    color: var(--color-accueil-selected-hover);
 }
 
 /* Couleurs spécifiques pour le lien Opérations */
 a#operations-link.nav-link:hover {
-    color: #86EFAC;
+    color: var(--color-operations-hover);
 }
 
 a#operations-link.nav-link_selected {
-    color: #4ADE80;
-    background-color: #121212;
-    border: 3px solid #4ADE80;
+    color: var(--color-operations-primary);
+    border: 3px solid var(--color-operations-primary);
     border-bottom: 0;
 }
 
 a#operations-link.nav-link_selected:hover {
-    color: #09f15e;
+    color: var(--color-operations-selected-hover);
 }
-
 
 /* Couleurs spécifiques pour le lien Récurrents */
 a#recurrents-link.nav-link:hover {
-    color: #FB923C;
+    color: var(--color-recurrents-primary);
 }
 
 a#recurrents-link.nav-link_selected {
-    color: #FB923C;
-    border: 3px solid #FB923C;
+    color: var(--color-recurrents-primary);
+    border: 3px solid var(--color-recurrents-primary);
     border-bottom: 0;
 }
 
 a#recurrents-link.nav-link_selected:hover {
-    color: #FDBA74;
+    color: var(--color-recurrents-hover);
 }
 
-
 /* Couleurs spécifiques pour le lien Analyses */
-
 a#analyses-link.nav-link:hover {
-    color: #4DA3FF;
+    color: var(--color-analyses-primary);
 }
 
 a#analyses-link.nav-link_selected {
-    color: #4DA3FF;
-    border: 3px solid #4DA3FF;
+    color: var(--color-analyses-primary);
+    border: 3px solid var(--color-analyses-primary);
     border-bottom: 0;
 }
 
 a#analyses-link.nav-link_selected:hover {
-    color: #78BBFF;
+    color: var(--color-analyses-hover);
 }
 
 /* Couleurs spécifiques pour le lien Tendances */
 a#tendances-link.nav-link:hover {
-    color: #A78BFA;
+    color: var(--color-tendances-primary);
 }
 
 a#tendances-link.nav-link_selected {
-    color: #A78BFA;
-    border: 3px solid #A78BFA;
+    color: var(--color-tendances-primary);
+    border: 3px solid var(--color-tendances-primary);
     border-bottom: 0;
-
 }
 
 a#tendances-link.nav-link_selected:hover {
-    color: #C4B5FD;
+    color: var(--color-tendances-hover);
 }
 
 .compteListIcon {
     border-radius: 10%;
-    background-color: #FFFFFF;
+    background-color: var(--color-white);
     justify-content: center;
     align-items: center;
 }
 
 .listeItemSeparator {
-    background-color: #252525 !important;
-    color: #5fa9cc;
+    background-color: var(--color-separator-bg) !important;
+    color: var(--color-separator-text);
 }
 
 .filtercategorie {
     margin-top: -5px;
 }
 
-/* Budget page container */
+/* Page containers - Common base */
+.page-container {
+    overflow: hidden;
+    border-radius: 8px;
+    padding: 8px;
+    height: calc(100vh - 70px);
+}
+
+/* Page containers - Specific colors */
 .budget-page-container {
-    overflow: hidden;
-    border: 3px solid #4ADE80;
-    border-radius: 8px;
-    padding: 8px;
-    height: calc(100vh - 60px);
+    border: 3px solid var(--color-operations-primary);
 }
-/* Analyses categories page container */
+.recurrents-page-container {
+    border: 3px solid var(--color-recurrents-primary);
+}
+
 .analyses-page-container {
-    overflow: hidden;
-    border: 3px solid #4DA3FF;
-    border-radius: 8px;
-    padding: 8px;
-    height: calc(100vh - 70px);
+    border: 3px solid var(--color-analyses-primary);
 }
 
-/* Analyses tendances page container */
 .tendances-page-container {
-    overflow: hidden;
-    border: 3px solid #A78BFA;
-    border-radius: 8px;
-    padding: 8px;
-    height: calc(100vh - 70px);
+    border: 3px solid var(--color-tendances-primary);
 }
 
-/* Infos page container */
 .infos-page-container {
-    overflow: hidden;
-    border: 3px solid #4DA3FF;
-    border-radius: 8px;
-    padding: 8px;
-    height: calc(100vh - 70px);
+    border: 3px solid var(--color-accueil-primary);
     width: 100%;
     max-width: 100%;
     display: flex;
@@ -225,7 +257,7 @@ ___  ___      _     _ _
     .compteListIcon {
         height: 45px;
         width: 45px;
-        border: 2px solid #FFFFFF;
+        border: 2px solid var(--color-white);
     }
 
     h3, .MuiTypography-h3 {
@@ -329,7 +361,7 @@ ______          _    _
     .compteListIcon {
         height: 60px;
         width: 60px;
-        border: 5px solid #FFFFFF;
+        border: 5px solid var(--color-white);
     }
 
     h3, .MuiTypography-h3 {
@@ -387,37 +419,37 @@ ______          _    _
 }
 
 .text-CREDIT {
-    color: #2e7d32 !important;
+    color: var(--color-credit) !important;
 }
 
 .text-DEPENSE {
-    color: #e74c3c !important;
+    color: var(--color-depense) !important;
 }
 
 /** Bouton action sur les opérations **/
 .color_ANNULEE {
-    background-color: #ebebeb !important;
-    color: #121212 !important;
+    background-color: var(--color-annulee-bg) !important;
+    color: var(--color-dark-bg) !important;
 }
 
 .color_PLANIFIEE {
-    background-color: #0288d1 !important;
+    background-color: var(--color-planifiee) !important;
 }
 
 .color_PREVUE {
-    background-color: #ed6c02 !important;
+    background-color: var(--color-prevue) !important;
 }
 
 .color_REALISEE {
-    background-color: #2e7d32 !important;
+    background-color: var(--color-realisee) !important;
 }
 
 .color_REPORTEE {
-    background-color: #9c27b0 !important;
+    background-color: var(--color-reportee) !important;
 }
 
 .color_SUPPRIMEE {
-    background-color: #ed1b24 !important;
+    background-color: var(--color-supprimee) !important;
 }
 
 .editableField {
@@ -430,17 +462,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 .listeItem:hover {
-    background-color: #2f2f2f;
-    color: #ebebeb;
+    background-color: var(--color-item-hover-bg);
+    color: var(--color-item-hover-text);
     cursor: pointer;
 }
 
 
 a.nav-link:hover {
-    color: #114b65;
+    color: var(--color-nav-hover);
 }
 a.nav-link_selected:hover {
-    color: #114b65;
+    color: var(--color-nav-hover);
 }
 
 /* Style Center component */

@@ -18,7 +18,7 @@ const PrivateNavLinks: React.FC = (): JSX.Element => {
                     <NavLink id="analyses-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
                             to="/analyses">🍰 Par catégories</NavLink>
                     <NavLink id="tendances-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/analysesTemporelles">📈 Tendances</NavLink>
+                            to="/analysesTendances">📈 Tendances</NavLink>
                 </Stack>
     } else {
         return <Stack direction="row" spacing={1}><NavLink id="accueil-link" className='nav-link_selected' to="/infos">🏠 Accueil</NavLink></Stack>

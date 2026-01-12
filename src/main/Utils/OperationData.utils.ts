@@ -131,6 +131,56 @@ export function sortOperations(ope1: OperationModel, ope2: OperationModel): numb
 
 
 /**
+ * Compare deux périodes
+ */
+function comparePeriodes(periode1: AppConstants.PERIODES_MENSUALITE_ENUM, periode2: AppConstants.PERIODES_MENSUALITE_ENUM): number {
+    if ((periode1 === null || periode1 === undefined) && periode2 !== null) {
+        return -1;
+    }
+    if ((periode2 === null || periode2 === undefined) && periode1 !== null) {
+        return 1;
+    }
+    if (periode1 !== null && periode2 !== null) {
+        const keys = Object.keys(AppConstants.PERIODES_MENSUALITE_ENUM);
+        const index1 = keys.indexOf(periode1);
+        const index2 = keys.indexOf(periode2);
+        return index1 - index2;
+    }
+    return 0;
+}
+
+/**
+ * Compare deux dates de mise à jour
+ */
+function compareDatesMaj(dateM1: any, dateM2: any): number {
+    if (dateM1 !== undefined && dateM2 !== undefined) {
+        if (dateM1 > dateM2) return -1;
+        if (dateM1 < dateM2) return 1;
+    }
+    return 0;
+}
+
+/**
+ * Tri des opérations, par date sinon par statut
+ * @param {OperationModel} ope1 :  1ère opération
+ * @param {OperationModel} ope2 2ème opération
+ * @returns {number} comparaison
+ */
+export function sortPeriodicOperations(ope1: OperationModel, ope2: OperationModel): number {
+    // Premier TRI : Par période
+    const periodeComparison = comparePeriodes(ope1.mensualite.periode, ope2.mensualite.periode);
+    if (periodeComparison !== 0) return periodeComparison;
+
+    // 2ème TRI : par Etat
+    const rangOpe1 = getRangEtatOperation(ope1.etat);
+    const rangOpe2 = getRangEtatOperation(ope2.etat);
+    if (rangOpe1 !== rangOpe2) return rangOpe1 - rangOpe2;
+
+    // 3ème TRI : par date mise à jour
+    return compareDatesMaj(ope1.autresInfos.dateMaj, ope2.autresInfos.dateMaj);
+}
+
+/**
  * Rang opération
  * @param etatOperation
  * @returns {number}

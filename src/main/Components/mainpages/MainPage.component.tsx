@@ -12,6 +12,7 @@ import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.compon
 import {MainPageProps} from "../Components.props.tsx";
 import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
 import {useAuth} from "react-oidc-context";
+import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
 
 
 /**
@@ -69,7 +70,10 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             case BUSINESS_ONGLETS.BUDGET:
                 return  <BudgetPage onOpenMenu={handleOpenMenuBar} />
 
-            case BUSINESS_ONGLETS.ANALYSE:
+            case BUSINESS_ONGLETS.RECURRENTS:
+                return  <RecurrentsPage onOpenMenu={handleOpenMenuBar} />
+
+            case BUSINESS_ONGLETS.ANALYSE_CATEGORIES:
                 return <AnalyseCategories selectedCompte={selectedCompte}
                     selectedDate={selectedDate}
                     onOpenMenu={handleOpenMenuBar} />
@@ -90,7 +94,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @param fonction : fonction sélectionnée
      */
     function renderLeftTabDate(fonction: BUSINESS_ONGLETS): JSX.Element | null {
-        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.ANALYSE) {
+        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.ANALYSE_CATEGORIES) {
             return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
         }
         else {

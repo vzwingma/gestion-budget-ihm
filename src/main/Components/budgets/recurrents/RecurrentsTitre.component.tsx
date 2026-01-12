@@ -7,7 +7,7 @@ import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvid
  * @returns {JSX.Element} element JSX
  * @constructor
  */
-const BudgetTitre: React.FC = (): JSX.Element => {
+const RecurrentsTitre: React.FC = (): JSX.Element => {
 
     const {selectedCompte, selectedDate} = useContext(BudgetContext);
     const currentCompte = selectedCompte;
@@ -32,4 +32,4 @@ const BudgetTitre: React.FC = (): JSX.Element => {
     )
 };
 
-export default BudgetTitre
+export default RecurrentsTitre

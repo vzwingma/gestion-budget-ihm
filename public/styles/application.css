@@ -193,6 +193,9 @@ a#tendances-link.nav-link_selected:hover {
 .budget-page-container {
     border: 3px solid var(--color-operations-primary);
 }
+.recurrents-page-container {
+    border: 3px solid var(--color-recurrents-primary);
+}
 
 .analyses-page-container {
     border: 3px solid var(--color-analyses-primary);
