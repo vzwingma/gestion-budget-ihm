@@ -10,16 +10,18 @@ const PrivateNavLinks: React.FC = (): JSX.Element => {
 
     if (useAuth().isAuthenticated) {
         return <Stack direction="row" spacing={1}>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'} to="/infos">Infos</NavLink>
+                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'} to="/infos">🏠 Accueil</NavLink>
                     <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/budgets">Budgets</NavLink>
+                            to="/budgets">💳 Opérations</NavLink>
                     <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/analyses">Analyses Catégories</NavLink>
+                            to="/recurrents">🔁 Récurrents</NavLink>                            
                     <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/analysesTemporelles">Analyses Temporelles</NavLink>
+                            to="/analyses">🍰 Par catégories</NavLink>
+                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                            to="/analysesTemporelles">📈 Tendances</NavLink>
                 </Stack>
     } else {
-        return <Stack direction="row" spacing={1}><NavLink className="nav-link" to="/infos">Infos</NavLink></Stack>
+        return <Stack direction="row" spacing={1}><NavLink className="nav-link" to="/infos">Accueil</NavLink></Stack>
     }
 }
 
