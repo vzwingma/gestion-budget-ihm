@@ -4,6 +4,8 @@ import { CenterComponent } from '../../CenterComponent.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import {OperationsRecurrentesListeProps} from '../../Components.props.ts';
 import OperationRecurrenteItem from './OperationsRecurrentesListItem.component.tsx';
+import { getPeriodeRenderer } from '../../../Utils/renderers/OperationItem.renderer.tsx';
+import { PERIODES_MENSUALITE_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 
 
 /**
@@ -38,7 +40,7 @@ const OperationsRecurrentesListe: React.FC<OperationsRecurrentesListeProps> = ({
             if (recurrentOperationKey !== null && recurrentOperationKey !== "null" && operationsFilteredForPeriodicity.length > 0) {
                 renderList.push(
                     <Container key={"liste_" + recurrentOperationKey}
-                               className={"listeItemSeparator"}>
+                               className={"listeItemSeparator"} style={{color: getPeriodeRenderer(recurrentOperationKey as PERIODES_MENSUALITE_ENUM).color}}>
                         <CenterComponent><>{recurrentOperationKey}</></CenterComponent>
                     </Container>)
             }

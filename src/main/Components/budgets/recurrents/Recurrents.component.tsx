@@ -109,7 +109,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                         <InputBase
                             sx={{ ml: 1, flex: 1, color: "#808080" }}
                             placeholder="Filtrage des opérations"
-                            inputProps={{ 'aria-label': 'Filtrage des opérations' }}
+                            inputProps={{ 'aria-label': 'Filtrage des opérations récurrentes' }}
                             onChange={handleOperationFilter}
                             value={filterOperations}
                             size={isMobile ? "small" : "medium"}

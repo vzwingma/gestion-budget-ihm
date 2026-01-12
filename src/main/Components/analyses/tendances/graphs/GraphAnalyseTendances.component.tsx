@@ -1,7 +1,7 @@
 import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import React, {JSX} from "react";
 import {flatCategoriesData, populateGraphCategories, populateGraphSoldes} from "./GraphAnalyseTendances.controller.ts";
-import TooltipAnalyseTemporelle from "./TooltipAnalyseTendances.component.tsx";
+import TooltipAnalyseTendances from "./TooltipAnalyseTendances.component.tsx";
 import {GraphAnalyseTendancesProps} from "../../../Components.props.ts";
 import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/tendances/GraphAnalyseTimeline.model.ts";
 import {SOLDES_ENUM} from "./GraphAnalyseTendances.constant.ts";
@@ -105,7 +105,7 @@ const GraphAnalyseTendances = ({   anneeAnalyses,
                 <CartesianGrid strokeDasharray="1 10" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                { <Tooltip content={<TooltipAnalyseTemporelle/>}/> }
+                { <Tooltip content={<TooltipAnalyseTendances/>}/> }
 
                 {renderLines()}
 
