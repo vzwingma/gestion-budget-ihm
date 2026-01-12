@@ -129,7 +129,9 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             </Drawer>
 
             { /* Render de la page principale */}
-            {selectedCompte && selectedDate ? renderSubMainPage() : null}
+            <Box sx={{ height: 'calc(100vh - 70px)', overflow: 'hidden' }}>
+                {selectedCompte && selectedDate ? renderSubMainPage() : null}
+            </Box>
 
             <ToastContainer
                 position="bottom-left"
