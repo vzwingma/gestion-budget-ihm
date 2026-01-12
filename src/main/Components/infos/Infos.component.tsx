@@ -36,7 +36,7 @@ export const Infos: React.FC = () => {
 
     /** Phase de Render à partir de la liste de statuts  **/
     return (
-        <Box className="infos-page-container">
+        <Box className="page-container infos-page-container">
         <CenterComponent>
             
             <Table size={isMobile ? "small" : "medium"}>

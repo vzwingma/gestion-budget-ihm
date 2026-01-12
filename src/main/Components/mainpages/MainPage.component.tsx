@@ -19,7 +19,7 @@ import {useAuth} from "react-oidc-context";
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext)!;
+    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext);
     const auth = useAuth();
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));

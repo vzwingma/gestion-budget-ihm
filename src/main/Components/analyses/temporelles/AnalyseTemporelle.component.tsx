@@ -112,7 +112,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      * Render du budget
      */
     return (
-        <Box className="tendances-page-container">
+        <Box className="page-container tendances-page-container">
             <Grid container marginTop={1}
                   sx={{overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                 <Grid size={{md: 0.6, xl: 0.4}}

@@ -117,7 +117,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      * Render du budget
      */
     return (
-        <Box className="budget-page-container">
+        <Box className="page-container budget-page-container">
             <Grid container marginTop={1} sx={{overflow: "hidden"}}>
                 <Grid size={{md: 0.6, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     <MenuIcon onClick={onOpenMenu}
