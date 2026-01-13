@@ -1,9 +1,8 @@
 import React, {JSX} from 'react'
-import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
-import { CenterComponent } from '../../CenterComponent.tsx';
 import OperationItem from './OperationsListItem.component.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import {OperationsListeProps} from '../../Components.props.tsx';
+import SharedOperationsListe from './OperationsListe.shared.tsx';
 
 
 /**
@@ -16,48 +15,21 @@ import {OperationsListeProps} from '../../Components.props.tsx';
  *
  */
 const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
-    /**
-     * Iterate groupe
-     * @param operationGroupedByDate
-     * @returns {JSX.Element}
-     */
-    function iterate(operationGroupedByDate : {[key: string]: OperationModel[]}): JSX.Element[] {
+    
+    const renderItem = (operation: OperationModel, onClick: (operation: OperationModel) => void): JSX.Element => (
+        <OperationItem key={operation.id}
+                      operation={operation}
+                      onClick={onClick}/>
+    );
 
-        let renderList = [] as JSX.Element[];
-        for (let dateOperationKey in operationGroupedByDate) {
-
-            const operationsFilteredForDate = operationGroupedByDate[dateOperationKey]
-                .filter((operation : OperationModel) => filterOperations === null
-                    || filterOperations === ""
-                    || operation.libelle.toLowerCase().includes(filterOperations.toLowerCase())
-                    || operation.categorie.libelle.toLowerCase().includes(filterOperations.toLowerCase())
-                    || operation.ssCategorie.libelle.toLowerCase().includes(filterOperations.toLowerCase()));
-
-            if (dateOperationKey !== null && dateOperationKey !== "null" && operationsFilteredForDate.length > 0) {
-                renderList.push(
-                    <Container key={"liste_" + dateOperationKey}
-                               className={"listeItemSeparator"}>
-                        <CenterComponent><>{dateOperationKey}</></CenterComponent>
-                    </Container>)
-            }
-
-            operationsFilteredForDate
-                .forEach((operation) => renderList.push(
-                    <OperationItem key={operation.id}
-                                    operation={operation}
-                                    onClick={handleOperationSelect}/>)
-                )
-        }
-        return renderList;
-    }
-
-
-    return <Stack divider={<Divider orientation="horizontal"/>}
-                  sx={{overflowY: "auto", overflowX: "hidden", height: listHeight}}>
-        {  iterate(operationGroupedByDate) }
-    </Stack>
+    return (
+        <SharedOperationsListe
+            operationsGrouped={operationGroupedByDate}
+            filterOperations={filterOperations}
+            onClick={handleOperationSelect}
+            renderItem={renderItem}
+        />
+    );
 };
 
 export default OperationsListe

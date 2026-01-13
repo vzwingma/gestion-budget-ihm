@@ -1,11 +1,10 @@
 import React, {JSX} from 'react'
-import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
-import { CenterComponent } from '../../CenterComponent.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import {OperationsRecurrentesListeProps} from '../../Components.props.ts';
 import OperationRecurrenteItem from './OperationsRecurrentesListItem.component.tsx';
 import { getPeriodeRenderer } from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import { PERIODES_MENSUALITE_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
+import SharedOperationsListe from './OperationsListe.shared.tsx';
 
 
 /**
@@ -18,48 +17,26 @@ import { PERIODES_MENSUALITE_ENUM } from '../../../Utils/AppBusinessEnums.consta
  *
  */
 const OperationsRecurrentesListe: React.FC<OperationsRecurrentesListeProps> = ({operationGroupedByPeriodicity, filterOperations, onClick : handleOperationSelect} : OperationsRecurrentesListeProps) : JSX.Element => {
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
-    /**
-     * Iterate groupe
-     * @param operationGroupedByPeriodicity
-     * @returns {JSX.Element}
-     */
-    function iterate(operationGroupedByPeriodicity : {[key: string]: OperationModel[]}): JSX.Element[] {
+    
+    const renderItem = (operation: OperationModel, onClick: (operation: OperationModel) => void): JSX.Element => (
+        <OperationRecurrenteItem key={operation.id}
+                                operation={operation}
+                                onClick={onClick}/>
+    );
 
-        let renderList = [] as JSX.Element[];
-        for (let recurrentOperationKey in operationGroupedByPeriodicity) {
+    const getSeparatorStyle = (key: string) => ({
+        color: getPeriodeRenderer(key as PERIODES_MENSUALITE_ENUM).color
+    });
 
-            const operationsFilteredForPeriodicity = operationGroupedByPeriodicity[recurrentOperationKey]
-                .filter((operation : OperationModel) => filterOperations === null
-                    || filterOperations === ""
-                    || operation.libelle.toLowerCase().includes(filterOperations.toLowerCase())
-                    || operation.categorie.libelle.toLowerCase().includes(filterOperations.toLowerCase())
-                    || operation.ssCategorie.libelle.toLowerCase().includes(filterOperations.toLowerCase()));
-
-            if (recurrentOperationKey !== null && recurrentOperationKey !== "null" && operationsFilteredForPeriodicity.length > 0) {
-                renderList.push(
-                    <Container key={"liste_" + recurrentOperationKey}
-                               className={"listeItemSeparator"} style={{color: getPeriodeRenderer(recurrentOperationKey as PERIODES_MENSUALITE_ENUM).color}}>
-                        <CenterComponent><>{recurrentOperationKey}</></CenterComponent>
-                    </Container>)
-            }
-
-            operationsFilteredForPeriodicity
-                .forEach((operation) => renderList.push(
-                    <OperationRecurrenteItem key={operation.id}
-                                    operation={operation}
-                                    onClick={handleOperationSelect}/>)
-                )
-        }
-        return renderList;
-    }
-
-
-    return <Stack divider={<Divider orientation="horizontal"/>}
-                  sx={{overflowY: "auto", overflowX: "hidden", height: listHeight}}>
-        {  iterate(operationGroupedByPeriodicity) }
-    </Stack>
+    return (
+        <SharedOperationsListe
+            operationsGrouped={operationGroupedByPeriodicity}
+            filterOperations={filterOperations}
+            onClick={handleOperationSelect}
+            renderItem={renderItem}
+            getSeparatorStyle={getSeparatorStyle}
+        />
+    );
 };
 
 export default OperationsRecurrentesListe
