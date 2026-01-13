@@ -1,13 +1,13 @@
 import {Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import React, {JSX, useContext} from "react";
-import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
+import {BudgetContext} from '../../Models/contextProvider/BudgetContextProvider.tsx';
 
 /**
- * Page principale d'affichage du solde
+ * Composant réutilisable pour afficher le titre avec compte et date
  * @returns {JSX.Element} element JSX
  * @constructor
  */
-const RecurrentsTitre: React.FC = (): JSX.Element => {
+const CompteTitre: React.FC = (): JSX.Element => {
 
     const {selectedCompte, selectedDate} = useContext(BudgetContext);
     const currentCompte = selectedCompte;
@@ -32,4 +32,4 @@ const RecurrentsTitre: React.FC = (): JSX.Element => {
     )
 };
 
-export default RecurrentsTitre
+export default CompteTitre

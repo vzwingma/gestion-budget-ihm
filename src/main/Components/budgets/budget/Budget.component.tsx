@@ -2,7 +2,6 @@ import React, {JSX, useCallback, useContext, useEffect, useState} from "react";
 
 import {Box, CircularProgress, Divider, Grid, InputBase, Paper, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import BudgetTitre from "./BudgetTitre.component.tsx";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel, {createNewOperation} from "../../../Models/budgets/Operation.model.ts";
 import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices.ts";
@@ -20,6 +19,7 @@ import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvid
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import BudgetSoldes from "./BudgetSoldes.component.tsx";
+import CompteTitre from "../CompteTitre.component.tsx";
 
 
 /**
@@ -163,7 +163,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                 <Grid size={{md: 6, xl: 7}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     { /** Titre **/}
                     {selectedDate != null && selectedCompte != null ?
-                        <BudgetTitre />
+                        <CompteTitre />
                         :
                         <CenterComponent><CircularProgress /></CenterComponent>
                     }

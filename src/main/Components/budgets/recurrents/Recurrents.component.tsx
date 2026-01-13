@@ -2,7 +2,6 @@ import React, {JSX, useCallback, useContext, useEffect, useState} from "react";
 
 import {Box, CircularProgress, Divider, Grid, InputBase, Paper, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import RecurrentsTitre from "./RecurrentsTitre.component.tsx";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
 import {reloadBudget} from "./../budget/Budget.extservices.ts";
@@ -15,6 +14,7 @@ import {RecurrentsPageProps} from "../../Components.props.ts";
 import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import OperationsRecurrentesListe from "../operations/OperationsRecurrentesListe.component.tsx";
 import OperationRecurrenteDetailPage from "./OperationRecurrenteDetailPage.component.tsx";
+import CompteTitre from "../CompteTitre.component.tsx";
 
 
 /**
@@ -120,16 +120,14 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                             cursor: "pointer",
                             width: isMobile ? "16px" : "20px",
                             height: isMobile ? "16px" : "20px"
-                        }}
-                                       onClick={() => setFilterOperations("")}/>
-
+                        }}  onClick={() => setFilterOperations("")}/>
                     </Paper>
                 </Grid>
 
                 <Grid size={{md: 6, xl: 7}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     { /** Titre **/}
                     {selectedDate != null && selectedCompte != null ?
-                        <RecurrentsTitre />
+                        <CompteTitre />
                         :
                         <CenterComponent><CircularProgress /></CenterComponent>
                     }

@@ -11,8 +11,8 @@ import { CenterComponent } from '../../CenterComponent.tsx';
  */
 const BudgetSoldes: React.FC = (): JSX.Element => {
 
-    const {currentBudget} = useContext(BudgetContext)!;
-    const budget = currentBudget!;
+    const {currentBudget} = useContext(BudgetContext);
+    const budget = currentBudget;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     // définition de la date courante
     const dateCourante = new Date(Date.now());
