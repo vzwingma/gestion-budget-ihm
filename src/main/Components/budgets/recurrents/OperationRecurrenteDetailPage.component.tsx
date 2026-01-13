@@ -4,7 +4,7 @@ import {Box, Container, Grid, Stack, Typography, useMediaQuery, useTheme} from "
 import { CenterComponent } from '../../CenterComponent.tsx';
 import CompteBancaireModel from '../../../Models/budgets/CompteBancaire.model.ts';
 import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer.tsx';
-import {getOperationIntercompteCatLibelle, getOperationLibelle, getOperationStateColor, getPeriodeRenderer,} from '../../../Utils/renderers/OperationItem.renderer.tsx';
+import {getOperationIntercompteCatLibelle, getOperationLibelle, getPeriodeRenderer,} from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx';
 import { operationIsIntercompteFromLibelle } from '../../../Utils/OperationData.utils.ts';
