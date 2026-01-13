@@ -18,6 +18,30 @@ interface SharedOperationItemProps {
     getSelectedOperationColor?: string;
     isSelected?: boolean;
 }
+/**
+ * 
+ * @param getSelectedOperationColor couleur
+ * @returns  style
+ */
+function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined) {
+    return {
+        borderLeft: '4px solid ' + getSelectedOperationColor,
+        borderTop: '1px solid ' + getSelectedOperationColor,
+        borderBottom: '1px solid ' + getSelectedOperationColor,
+        borderRadius: '6px 0px 0px 6px',
+        paddingLeft: '6px'
+    };
+}
+
+function getUnselectedBoxBorderStyle() {
+    return {
+        borderLeft: 'none',
+        borderTop: 'none',
+        borderBottom: 'none',
+        borderRadius: '0px',
+        paddingLeft: '10px'
+    };
+}
 
 /**
  * Shared operation item component
@@ -44,8 +68,7 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
              onClick={() => handleOperationSelect(operation)}
              sx={{
                  cursor: 'pointer',
-                 borderLeft: isSelected ? '4px solid ' + getSelectedOperationColor : 'none',
-                 paddingLeft: isSelected ? '6px' : '10px',
+                 ...(isSelected ? getSelectedBoxBorderStyle(getSelectedOperationColor) : getUnselectedBoxBorderStyle()),
                  '&:hover': {
                      backgroundColor: getOperationsColor || '#1F3D2B'
                  }
