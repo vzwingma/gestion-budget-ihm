@@ -1,6 +1,6 @@
 import {Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import React, {JSX, useContext} from "react";
-import {BudgetContext} from '../../Models/contextProvider/BudgetContextProvider.tsx';
+import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 
 /**
  * Composant réutilisable pour afficher le titre avec compte et date

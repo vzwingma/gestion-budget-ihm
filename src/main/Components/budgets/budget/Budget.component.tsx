@@ -1,7 +1,6 @@
 import React, {JSX, useCallback, useContext, useEffect, useState} from "react";
 
-import {Box, CircularProgress, Divider, Grid, InputBase, Paper, useMediaQuery, useTheme} from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import {Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme} from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel, {createNewOperation} from "../../../Models/budgets/Operation.model.ts";
 import {getPreferenceUtilisateur, loadCategories, reloadBudget} from "./Budget.extservices.ts";
@@ -9,7 +8,6 @@ import {PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS} from "../../../Utils/AppBu
 import {BudgetActionsButtonGroupComponent} from "./actions/BudgetActionsButtonGroup.component.tsx";
 import OperationsListe from "../operations/OperationsListe.component.tsx";
 import OperationDetailPage from "../operations/detail/OperationDetailPage.component.tsx";
-import {CancelRounded} from "@mui/icons-material";
 import {getLabelFRFromDate} from "../../../Utils/Date.utils.ts";
 import {getOperationsGroupedByDateOperation} from "./Budget.controller.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
@@ -19,7 +17,7 @@ import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvid
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import BudgetSoldes from "./BudgetSoldes.component.tsx";
-import CompteTitre from "../CompteTitre.component.tsx";
+import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
 
 
 /**
@@ -86,16 +84,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
         setCurrentOperation(null);
     }, [selectedCompte, selectedDate, handleBudgetUpdate, setCurrentOperation, setCurrentBudget]);
 
-
-
-    /**
-     * Callback de filtre d'opération
-     * @param event event
-     */
-    function handleOperationFilter(event: any) {
-        setFilterOperations(event.target.value);
-    }
-
     /**
      * Sélection d'une opération
      * @param operation opération
@@ -118,67 +106,34 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      */
     return (
         <Box className="page-container budget-page-container">
-            <Grid container marginTop={1} sx={{overflow: "hidden"}}>
-                <Grid size={{md: 0.6, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
-                    <MenuIcon onClick={onOpenMenu}
-                        className={"editableField"}
-                        fontSize={"large"} />
-                </Grid>
-                <Grid size={{md: 2.8, xl: 2}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
-                    <Paper component="form"
-                        sx={{
-                            p: '2px 4px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            width: '100%',
-                            paddingRight: "10px"
-                        }}>
-                        <InputBase
-                            sx={{ ml: 1, flex: 1, color: "#808080" }}
-                            placeholder="Filtrage des opérations"
-                            inputProps={{ 'aria-label': 'Filtrage des opérations' }}
-                            onChange={handleOperationFilter}
-                            value={filterOperations}
-                            size={isMobile ? "small" : "medium"}
-
-                        />
-                        <CancelRounded sx={{
-                            color: "#D0D0D0",
-                            cursor: "pointer",
-                            width: isMobile ? "16px" : "20px",
-                            height: isMobile ? "16px" : "20px"
-                        }}
-                                       onClick={() => setFilterOperations("")}/>
-
-                    </Paper>
-                </Grid>
-                <Grid size={{md: 1.6, xl: 1.6}}>
-                    { /** Titre **/}
-                    {selectedDate != null && selectedCompte != null ?
-                        <BudgetSoldes/>
-                        :
-                        <CenterComponent><CircularProgress/></CenterComponent>
-                    }
-                </Grid>
-                <Grid size={{md: 6, xl: 7}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
-                    { /** Titre **/}
-                    {selectedDate != null && selectedCompte != null ?
-                        <CompteTitre />
-                        :
-                        <CenterComponent><CircularProgress /></CenterComponent>
-                    }
-                </Grid>
-                <Grid size={{md: 1, xl: 1}}>
-                    {/** Actions sur le budget (close / reinit) **/
-                        (currentBudget == null) ?
-                            <CenterComponent><CircularProgress /></CenterComponent> :
-                            <BudgetActionsButtonGroupComponent
-                                droits={userDroits}
-                                onActionBudgetChange={handleBudgetUpdate}
-                                onActionOperationCreate={handleButtonCreateClick} />
-                    }
-                </Grid>
-            </Grid>
+            <BudgetPageHeader
+                onOpenMenu={onOpenMenu}
+                filterOperations={filterOperations}
+                onFilterChange={setFilterOperations}
+                selectedCompte={selectedCompte}
+                selectedDate={selectedDate}
+                filterPlaceholder="Filtrage des opérations"
+                additionalHeaderContent={
+                    <>
+                        <Grid size={{md: 1.6, xl: 1.6}}>
+                            {selectedDate != null && selectedCompte != null ?
+                                <BudgetSoldes/>
+                                :
+                                <CenterComponent><CircularProgress/></CenterComponent>
+                            }
+                        </Grid>
+                        <Grid size={{md: 1, xl: 1}}>
+                            {currentBudget == null ?
+                                <CenterComponent><CircularProgress /></CenterComponent> :
+                                <BudgetActionsButtonGroupComponent
+                                    droits={userDroits}
+                                    onActionBudgetChange={handleBudgetUpdate}
+                                    onActionOperationCreate={handleButtonCreateClick} />
+                            }
+                        </Grid>
+                    </>
+                }
+            />
             <Divider variant="middle" sx={{marginTop: isMobile ? 0 : 1}}/>
             <Grid container sx={{overflow: "hidden"}}>
                 <Grid size={{md: 5, xl: 4}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
