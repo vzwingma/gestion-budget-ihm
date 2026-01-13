@@ -21,11 +21,12 @@ class OperationModel {
     valeur: number;
     mensualite: {
         periode: PERIODES_MENSUALITE_ENUM;
+        prochaineEcheance: number | null;
     };
 
     /** */
     constructor(id: string, libelle: string, typeOperation: TYPES_OPERATION_ENUM, etat: OPERATION_ETATS_ENUM, valeur: number, mensualite: {
-        periode: PERIODES_MENSUALITE_ENUM
+        periode: PERIODES_MENSUALITE_ENUM, prochaineEcheance: number | null
     }) {
         this.id = id;
         this.libelle = libelle;
@@ -72,7 +73,8 @@ export function createNewOperation(): OperationModel {
         etat: OPERATION_ETATS_ENUM.PREVUE,
         valeur: 0,
         mensualite: {
-            periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE
+            periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE,
+            prochaineEcheance: -1
         },
         intercompte: null,
         autresInfos: {

@@ -3,17 +3,17 @@ import React, {JSX, useEffect, useState} from "react";
 import {Box, Checkbox, CircularProgress, FormControlLabel, Grid, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
-import {loadSoldesBudgets} from "./AnalyseTemporelle.extservices.ts";
-import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.ts";
-import AnalyseSoldesCategorie from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model.ts";
-import AnalyseTemporelleTitre from "./AnalyseTemporelleTitre.component.tsx";
-import AnalyseTemporelleFiltre from "./AnalyseTemporelleFiltre.component.tsx";
+import {loadSoldesBudgets} from "./AnalyseTendances.extservices.ts";
+import SoldesMensuelModel from "../../../Models/analyses/tendances/SoldeMensuel.model.ts";
+import AnalyseSoldesCategorie from "../../../Models/analyses/tendances/AnalyseSoldesCategorie.model.ts";
+import AnalyseTendancesTitre from "./AnalyseTendancesTitre.component.tsx";
+import AnalyseTendancesFiltre from "./AnalyseTendancesFiltre.component.tsx";
 import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
-import GraphAnalyseTemporelle from "./graphs/GraphAnalyseTemporelle.component.tsx";
-import {AnalyseTemporelleProps, DataCalculationTemporelResultsProps} from "../../Components.props.tsx";
+import GraphAnalyseTendances from "./graphs/GraphAnalyseTendances.component.tsx";
+import {AnalyseTendancesProps, DataCalculationTendancesResultsProps} from "../../Components.props.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
-import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.ts";
-import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.ts";
+import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
+import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
 
 
 /**
@@ -23,7 +23,7 @@ import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles
  * @constructor constructeur
  *
  */
-export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCompte, onOpenMenu }: AnalyseTemporelleProps): JSX.Element => {
+export const AnalyseTendances: React.FC<AnalyseTendancesProps> = ({ selectedCompte, onOpenMenu }: AnalyseTendancesProps): JSX.Element => {
 
 
     /** Etats pour la page Budget **/
@@ -63,7 +63,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                                             timelinesPrevisionnellesByCategoriesData,
                                             timelinesSoldesData,
                                              timelinesPrevisionnellesSoldesData
-                                         }: DataCalculationTemporelResultsProps)
+                                         }: DataCalculationTendancesResultsProps)
     {
         setSoldesMensuels(soldesMensuelsData);
         setAnalyseSoldesCategoriesData(soldesCategoriesData);
@@ -112,7 +112,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
      * Render du budget
      */
     return (
-        <Box sx={{ overflow: "hidden" }} >
+        <Box className="page-container tendances-page-container">
             <Grid container marginTop={1}
                   sx={{overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                 <Grid size={{md: 0.6, xl: 0.4}}
@@ -120,7 +120,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                     onClick={onOpenMenu} className={"editableField"} fontSize={"large"}/></Grid>
                 <Grid size={{md: 5.4, xl: 5.6}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     {soldesMensuels !== null && selectedCompte != null ?
-                        <AnalyseTemporelleTitre currentCompte={selectedCompte}
+                        <AnalyseTendancesTitre currentCompte={selectedCompte}
                             currentAnnee={anneeAnalyses}
                             onAnneeChange={setAnneeAnalyses} />
                         :
@@ -132,7 +132,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                             <CenterComponent><CircularProgress /></CenterComponent>
                             :
                             <>
-                                <AnalyseTemporelleFiltre listeCategories={analyseSoldesCategoriesData}
+                                <AnalyseTendancesFiltre listeCategories={analyseSoldesCategoriesData}
                                     onFilterChange={onFilterChange} />
                                 <FormControlLabel id="Soldes" key="Soldes" label="Soldes"
                                     control={<Checkbox id="Soldes" defaultChecked={false}
@@ -147,7 +147,7 @@ export const AnalyseTemporelle: React.FC<AnalyseTemporelleProps> = ({ selectedCo
                 {soldesMensuels == null ?
                     <CenterComponent><CircularProgress /></CenterComponent>
                     :
-                    <GraphAnalyseTemporelle
+                    <GraphAnalyseTendances
                         anneeAnalyses={anneeAnalyses}
                         timelinesByCategoriesData={timelinesByCategories || []}
                         timelinesSoldesData={timelinesSoldes || []}

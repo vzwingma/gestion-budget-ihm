@@ -7,11 +7,12 @@ import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import CompteItem from "./menuSlideBar/CompteItem.component.tsx";
 import DateRange from "./menuSlideBar/DateRange.component.tsx";
 import BudgetPage from "../budgets/budget/Budget.component.tsx";
-import {AnalyseTemporelle} from "../analyses/temporelles/AnalyseTemporelle.component.tsx";
+import {AnalyseTendances} from "../analyses/tendances/AnalyseTendances.component.tsx";
 import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component.tsx";
 import {MainPageProps} from "../Components.props.tsx";
 import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
 import {useAuth} from "react-oidc-context";
+import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
 
 
 /**
@@ -19,7 +20,7 @@ import {useAuth} from "react-oidc-context";
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext)!;
+    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext);
     const auth = useAuth();
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
@@ -69,13 +70,16 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             case BUSINESS_ONGLETS.BUDGET:
                 return  <BudgetPage onOpenMenu={handleOpenMenuBar} />
 
-            case BUSINESS_ONGLETS.ANALYSE:
+            case BUSINESS_ONGLETS.RECURRENTS:
+                return  <RecurrentsPage onOpenMenu={handleOpenMenuBar} />
+
+            case BUSINESS_ONGLETS.ANALYSE_CATEGORIES:
                 return <AnalyseCategories selectedCompte={selectedCompte}
                     selectedDate={selectedDate}
                     onOpenMenu={handleOpenMenuBar} />
 
-            case BUSINESS_ONGLETS.ANALYSE_TEMP:
-                return <AnalyseTemporelle selectedCompte={selectedCompte}
+            case BUSINESS_ONGLETS.ANALYSE_TENDANCES:
+                return <AnalyseTendances selectedCompte={selectedCompte}
                     onOpenMenu={handleOpenMenuBar} />
 
             default:
@@ -90,7 +94,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @param fonction : fonction sélectionnée
      */
     function renderLeftTabDate(fonction: BUSINESS_ONGLETS): JSX.Element | null {
-        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.ANALYSE) {
+        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.ANALYSE_CATEGORIES) {
             return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
         }
         else {
@@ -129,7 +133,9 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             </Drawer>
 
             { /* Render de la page principale */}
-            {selectedCompte && selectedDate ? renderSubMainPage() : null}
+            <Box sx={{ height: 'calc(100vh - 70px)', overflow: 'hidden' }}>
+                {selectedCompte && selectedDate ? renderSubMainPage() : null}
+            </Box>
 
             <ToastContainer
                 position="bottom-left"

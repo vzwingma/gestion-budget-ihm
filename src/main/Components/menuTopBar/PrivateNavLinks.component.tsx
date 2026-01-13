@@ -10,16 +10,18 @@ const PrivateNavLinks: React.FC = (): JSX.Element => {
 
     if (useAuth().isAuthenticated) {
         return <Stack direction="row" spacing={1}>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'} to="/infos">Infos</NavLink>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/budgets">Budgets</NavLink>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/analyses">Analyses Catégories</NavLink>
-                    <NavLink className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/analysesTemporelles">Analyses Temporelles</NavLink>
+                    <NavLink id="accueil-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'} to="/infos">🏠 Accueil</NavLink>
+                    <NavLink id="operations-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                            to="/budgets">💳 Opérations</NavLink>
+                    <NavLink id="recurrents-link"  className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                            to="/recurrents">🔁 Abonnements & charges</NavLink>                            
+                    <NavLink id="analyses-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                            to="/analyses">🍰 Par catégories</NavLink>
+                    <NavLink id="tendances-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
+                            to="/analysesTendances">📈 Tendances</NavLink>
                 </Stack>
     } else {
-        return <Stack direction="row" spacing={1}><NavLink className="nav-link" to="/infos">Infos</NavLink></Stack>
+        return <Stack direction="row" spacing={1}><NavLink id="accueil-link" className='nav-link_selected' to="/infos">🏠 Accueil</NavLink></Stack>
     }
 }
 

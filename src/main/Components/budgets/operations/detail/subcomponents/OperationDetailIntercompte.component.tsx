@@ -16,8 +16,7 @@ import {OperationDetailIntercompteProps} from '../../../../Components.props.tsx'
  * @property {(field: INTERCOMPTES, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire d'opération avec les valeurs fournies.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
-export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProps> = ({
-                                                                                          intercompte,
+export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProps> = ({   intercompte,
                                                                                           libelle,
                                                                                           listeAutresComptes,
     formIntercompteInEdition,

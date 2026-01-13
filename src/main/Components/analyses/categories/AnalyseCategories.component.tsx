@@ -78,7 +78,7 @@ export const AnalyseCategories: React.FC<AnalyseCategoriesProps> = ({ selectedCo
      */
 
     return (
-        <Box sx={{ overflow: "hidden" }} maxHeight={"true"}>
+        <Box className="page-container analyses-page-container">
             <Grid container marginTop={1} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                 <Grid size={{md: 0.5, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                     <MenuIcon onClick={onOpenMenu} className={"editableField"} fontSize={"large"}/>

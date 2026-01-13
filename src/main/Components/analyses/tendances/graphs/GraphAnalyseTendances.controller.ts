@@ -2,12 +2,12 @@
  * Controleur de graphique pour l'analyse temporelle.
  */
 
-import {AnalyseSoldesTimelineItemModel} from "../../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.ts";
-import {AnalyseCategorieTimelineItem} from "../../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.ts";
-import AnalyseSoldesCategorie from "../../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model.ts";
-import {GraphAnalyseTimelineItemModel} from "../../../../Models/analyses/temporelles/GraphAnalyseMensuel.model.ts";
-import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/temporelles/GraphAnalyseTimeline.model.ts";
-import {SOLDES_ENUM} from "./GraphAnalyseTemporelle.constant.ts";
+import {AnalyseSoldesTimelineItemModel} from "../../../../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
+import {AnalyseCategorieTimelineItem} from "../../../../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
+import AnalyseSoldesCategorie from "../../../../Models/analyses/tendances/AnalyseSoldesCategorie.model.ts";
+import {GraphAnalyseTimelineItemModel} from "../../../../Models/analyses/tendances/GraphAnalyseMensuel.model.ts";
+import {GraphAnalyseTimelineModel} from "../../../../Models/analyses/tendances/GraphAnalyseTimeline.model.ts";
+import {SOLDES_ENUM} from "./GraphAnalyseTendances.constant.ts";
 
 
 /**

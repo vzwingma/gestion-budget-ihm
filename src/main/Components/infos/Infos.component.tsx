@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
+    Box,
     Table,
     TableBody,
     TableCell,
@@ -35,7 +36,9 @@ export const Infos: React.FC = () => {
 
     /** Phase de Render à partir de la liste de statuts  **/
     return (
+        <Box className="page-container infos-page-container">
         <CenterComponent>
+            
             <Table size={isMobile ? "small" : "medium"}>
                 <TableHead>
                     <TableRow>
@@ -87,6 +90,8 @@ export const Infos: React.FC = () => {
                     </TableRow>
                 </TableFooter>
             </Table>
+            
         </CenterComponent>
+        </Box>
     )
 }

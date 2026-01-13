@@ -1,11 +1,11 @@
 import {toast} from "react-toastify";
 import {getMonthFromString} from "../../../Utils/Date.utils.ts";
 import {getCategorieColor} from "../../../Utils/renderers/CategorieItem.renderer.tsx";
-import SoldesMensuelModel from "../../../Models/analyses/temporelles/SoldeMensuel.model.ts";
-import AnalyseSoldesCategorieModel from "../../../Models/analyses/temporelles/AnalyseSoldesCategorie.model.ts";
-import {DataCalculationTemporelResultsProps} from "../../Components.props.tsx";
-import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/temporelles/AnalyseCategorieTimelineItem.model.ts";
-import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/temporelles/AnalyseSoldesTimelineItem.model.ts";
+import SoldesMensuelModel from "../../../Models/analyses/tendances/SoldeMensuel.model.ts";
+import AnalyseSoldesCategorieModel from "../../../Models/analyses/tendances/AnalyseSoldesCategorie.model.ts";
+import {DataCalculationTendancesResultsProps} from "../../Components.props.ts";
+import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
+import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
 
 /**
  * Controleur des analyses temporelles
@@ -42,7 +42,7 @@ export function calculateTimelines(soldesMensuelsData : SoldesMensuelModel[], ha
                                                                                                                timelinesByCategoriesData,
                                                                                                                timelinesPrevisionnellesByCategoriesData,
                                                                                                                timelinesSoldesData,
-                                                                                                               timelinesPrevisionnellesSoldesData} : DataCalculationTemporelResultsProps) => void) : void {
+                                                                                                               timelinesPrevisionnellesSoldesData} : DataCalculationTendancesResultsProps) => void) : void {
     soldesMensuelsData = Object.values(soldesMensuelsData)
         .sort((budget1: SoldesMensuelModel, budget2: SoldesMensuelModel) => (budget1.annee * 100 + getMonthFromString(budget1.mois)) - (budget2.annee * 100 + getMonthFromString(budget2.mois)));
 
