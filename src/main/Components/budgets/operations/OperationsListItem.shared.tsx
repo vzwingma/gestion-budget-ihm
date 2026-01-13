@@ -14,6 +14,7 @@ interface SharedOperationItemProps {
     operation: OperationModel;
     onClick: (operation: OperationModel) => void;
     getBorderColor: (operation: OperationModel) => string;
+    getOperationsColor?: string;
 }
 
 /**
@@ -27,7 +28,8 @@ interface SharedOperationItemProps {
 const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     operation,
     onClick: handleOperationSelect,
-    getBorderColor
+    getBorderColor,
+    getOperationsColor
 }: SharedOperationItemProps): JSX.Element => {
 
     const { comptes } = useContext(BudgetContext);
@@ -35,7 +37,13 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
 
     return (
         <Box key={"liste_" + operation.id}
-             onClick={() => handleOperationSelect(operation)}>
+             onClick={() => handleOperationSelect(operation)}
+             sx={{
+                 cursor: 'pointer',
+                 '&:hover': {
+                     backgroundColor: getOperationsColor || '#1F3D2B'
+                 }
+             }}>
             <Grid container spacing={6} height={isMobile ? 60 : 90} alignItems="center">
                 <Grid size={{md: 0.5, xl: 1}} sx={{paddingLeft: '10px'}}>
                     <Box width={isMobile ? 38 : 50} height={isMobile ? 38 : 50}

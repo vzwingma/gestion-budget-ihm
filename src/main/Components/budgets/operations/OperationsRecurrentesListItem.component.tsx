@@ -21,6 +21,7 @@ const OperationRecurrenteItem: React.FC<OperationItemProps> = ({operation, onCli
             operation={operation}
             onClick={handleOperationSelect}
             getBorderColor={getBorderColor}
+            getOperationsColor='#4A2E12'
         />
     );
 };
