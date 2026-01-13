@@ -15,6 +15,33 @@ interface SharedOperationItemProps {
     onClick: (operation: OperationModel) => void;
     getBorderColor: (operation: OperationModel) => string;
     getOperationsColor?: string;
+    getSelectedOperationColor?: string;
+    isSelected?: boolean;
+}
+/**
+ * 
+ * @param getSelectedOperationColor couleur
+ * @returns  style
+ */
+function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined) {
+    return {
+        borderLeft: '4px solid ' + getSelectedOperationColor,
+        borderTop: '1px solid ' + getSelectedOperationColor,
+        borderBottom: '1px solid ' + getSelectedOperationColor,
+        borderRight: '4px solid ' + getSelectedOperationColor,
+        borderRadius: '6px',
+        paddingLeft: '6px'
+    };
+}
+
+function getUnselectedBoxBorderStyle() {
+    return {
+        borderLeft: 'none',
+        borderTop: 'none',
+        borderBottom: 'none',
+        borderRadius: '0px',
+        paddingLeft: '10px'
+    };
 }
 
 /**
@@ -29,7 +56,9 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     operation,
     onClick: handleOperationSelect,
     getBorderColor,
-    getOperationsColor
+    getOperationsColor,
+    getSelectedOperationColor,
+    isSelected
 }: SharedOperationItemProps): JSX.Element => {
 
     const { comptes } = useContext(BudgetContext);
@@ -40,6 +69,7 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
              onClick={() => handleOperationSelect(operation)}
              sx={{
                  cursor: 'pointer',
+                 ...(isSelected ? getSelectedBoxBorderStyle(getSelectedOperationColor) : getUnselectedBoxBorderStyle()),
                  '&:hover': {
                      backgroundColor: getOperationsColor || '#1F3D2B'
                  }

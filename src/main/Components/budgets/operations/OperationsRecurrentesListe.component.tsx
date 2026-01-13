@@ -16,12 +16,13 @@ import SharedOperationsListe from './OperationsListe.shared.tsx';
  * @constructor constructeur
  *
  */
-const OperationsRecurrentesListe: React.FC<OperationsRecurrentesListeProps> = ({operationGroupedByPeriodicity, filterOperations, onClick : handleOperationSelect} : OperationsRecurrentesListeProps) : JSX.Element => {
+const OperationsRecurrentesListe: React.FC<OperationsRecurrentesListeProps> = ({operationGroupedByPeriodicity, filterOperations, onClick : handleOperationSelect, selectedOperationId} : OperationsRecurrentesListeProps) : JSX.Element => {
     
     const renderItem = (operation: OperationModel, onClick: (operation: OperationModel) => void): JSX.Element => (
         <OperationRecurrenteItem key={operation.id}
                                 operation={operation}
-                                onClick={onClick}/>
+                                onClick={onClick}
+                                isSelected={operation.id === selectedOperationId}/>
     );
 
     const getSeparatorStyle = (key: string) => ({

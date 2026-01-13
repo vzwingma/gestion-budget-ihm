@@ -144,7 +144,8 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                             <OperationsListe
                                 operationGroupedByDate={operationsGroupedByDateOperation}
                                 filterOperations={filterOperations}
-                                onClick={handleOperationSelect} />
+                                onClick={handleOperationSelect} 
+                                selectedOperationId={currentOperation?.id}/>
                         )
                     }
                 </Grid>
