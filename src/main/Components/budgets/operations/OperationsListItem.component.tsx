@@ -1,7 +1,7 @@
 import React, {JSX} from 'react'
 import {OperationItemProps} from '../../Components.props.tsx';
 import {getOperationStateColor} from '../../../Utils/renderers/OperationItem.renderer.tsx';
-import SharedOperationItem from './OperationListItem.shared.tsx';
+import SharedOperationItem from './OperationsListItem.shared.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 
 
