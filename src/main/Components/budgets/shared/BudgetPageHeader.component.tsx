@@ -14,7 +14,8 @@ interface BudgetPageHeaderProps {
     selectedCompte: CompteBancaireModel | null;
     selectedDate: Date | null;
     filterPlaceholder?: string;
-    additionalHeaderContent?: ReactNode;
+    additionalHeaderContentLeft?: ReactNode;
+    additionalHeaderContentRight?: ReactNode;
 }
 
 /**
@@ -29,7 +30,8 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
     selectedCompte,
     selectedDate,
     filterPlaceholder = "Filtrage des opérations",
-    additionalHeaderContent
+    additionalHeaderContentLeft,
+    additionalHeaderContentRight
 }: BudgetPageHeaderProps): JSX.Element => {
 
     return (
@@ -48,8 +50,8 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
                     placeholder={filterPlaceholder}
                 />
             </Grid>
-            {additionalHeaderContent}
-            <Grid size={{md: additionalHeaderContent ? 6 : 7.6, xl: additionalHeaderContent ? 7 : 8.6}} 
+            {additionalHeaderContentLeft}
+            <Grid size={{md: additionalHeaderContentLeft ? 6 : 7.6, xl: additionalHeaderContentLeft ? 7 : 8.6}} 
                   sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                 {selectedDate != null && selectedCompte != null ?
                     <CompteTitre />
@@ -57,6 +59,7 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
                     <CenterComponent><CircularProgress /></CenterComponent>
                 }
             </Grid>
+            {additionalHeaderContentRight}
         </Grid>
     );
 };

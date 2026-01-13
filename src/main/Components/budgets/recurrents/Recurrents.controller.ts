@@ -16,7 +16,7 @@ export function getOperationsGroupedByPeriodicity(listeOperations: OperationMode
         return {};
     }
     return listeOperations
-        .filter((operation: OperationModel) => operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE)
+        .filter((operation: OperationModel) => operation.mensualite != null &&operation.mensualite?.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE)
         .sort((ope1: OperationModel, ope2: OperationModel) => sortPeriodicOperations(ope1, ope2))
         .reduce((group: { [key: string]: OperationModel[] }, operation: OperationModel) => {
             const periodeOperation: PERIODES_MENSUALITE_ENUM | null = operation.mensualite.periode;
