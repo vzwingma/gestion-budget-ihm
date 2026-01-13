@@ -28,7 +28,8 @@ function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined
         borderLeft: '4px solid ' + getSelectedOperationColor,
         borderTop: '1px solid ' + getSelectedOperationColor,
         borderBottom: '1px solid ' + getSelectedOperationColor,
-        borderRadius: '6px 0px 0px 6px',
+        borderRight: '4px solid ' + getSelectedOperationColor,
+        borderRadius: '6px',
         paddingLeft: '6px'
     };
 }
