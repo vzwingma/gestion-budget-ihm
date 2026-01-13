@@ -206,17 +206,20 @@ export interface OperationsListeProps {
     operationGroupedByDate: {[key: string]: OperationModel[]}
     filterOperations: string | null
     onClick: (operation : OperationModel) => void
+    selectedOperationId?: string | null
 }
 
 export interface OperationsRecurrentesListeProps {
     operationGroupedByPeriodicity: {[key: string]: OperationModel[]}
     filterOperations: string | null
     onClick: (operation : OperationModel) => void
+    selectedOperationId?: string | null
 }
 
 export interface OperationItemProps {
     operation: OperationModel
     onClick: (operation : OperationModel) => void
+    isSelected?: boolean
 }
 
 /**

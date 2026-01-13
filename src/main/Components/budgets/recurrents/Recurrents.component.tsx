@@ -97,7 +97,8 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                             <OperationsRecurrentesListe
                                 operationGroupedByPeriodicity={operationsGroupedByPeriodicity}
                                 filterOperations={filterOperations}
-                                onClick={handleOperationSelect} />
+                                onClick={handleOperationSelect} 
+                                selectedOperationId={currentOperation?.id}/>
                         )
                     }
                 </Grid>

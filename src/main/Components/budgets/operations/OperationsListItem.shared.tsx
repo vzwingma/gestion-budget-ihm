@@ -15,6 +15,8 @@ interface SharedOperationItemProps {
     onClick: (operation: OperationModel) => void;
     getBorderColor: (operation: OperationModel) => string;
     getOperationsColor?: string;
+    getSelectedOperationColor?: string;
+    isSelected?: boolean;
 }
 
 /**
@@ -29,7 +31,9 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     operation,
     onClick: handleOperationSelect,
     getBorderColor,
-    getOperationsColor
+    getOperationsColor,
+    getSelectedOperationColor,
+    isSelected
 }: SharedOperationItemProps): JSX.Element => {
 
     const { comptes } = useContext(BudgetContext);
@@ -40,6 +44,8 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
              onClick={() => handleOperationSelect(operation)}
              sx={{
                  cursor: 'pointer',
+                 borderLeft: isSelected ? '4px solid ' + getSelectedOperationColor : 'none',
+                 paddingLeft: isSelected ? '6px' : '10px',
                  '&:hover': {
                      backgroundColor: getOperationsColor || '#1F3D2B'
                  }

@@ -14,13 +14,16 @@ import SharedOperationsListe from './OperationsListe.shared.tsx';
  * @constructor constructeur
  *
  */
-const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect} : OperationsListeProps) : JSX.Element => {
+const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect, selectedOperationId} : OperationsListeProps) : JSX.Element => {
     
-    const renderItem = (operation: OperationModel, onClick: (operation: OperationModel) => void): JSX.Element => (
-        <OperationItem key={operation.id}
+    const renderItem = (operation: OperationModel, onClick: (operation: OperationModel) => void): JSX.Element => {
+        console.log("Rendering operation item", operation.id, selectedOperationId, operation.id === selectedOperationId);
+
+        return <OperationItem key={operation.id}
                       operation={operation}
-                      onClick={onClick}/>
-    );
+                      onClick={onClick}
+                      isSelected={operation.id === selectedOperationId}/>
+    };
 
     return (
         <SharedOperationsListe

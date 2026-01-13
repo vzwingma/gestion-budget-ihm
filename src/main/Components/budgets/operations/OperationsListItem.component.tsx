@@ -12,7 +12,7 @@ import OperationModel from '../../../Models/budgets/Operation.model.ts';
  * @returns {JSX.Element} tuile
  * @constructor constructeur
  */
-const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handleOperationSelect} : OperationItemProps) : JSX.Element => {
+const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handleOperationSelect, isSelected} : OperationItemProps) : JSX.Element => {
 
     const getBorderColor = (op: OperationModel): string => getOperationStateColor(op.etat);
 
@@ -22,6 +22,8 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
             onClick={handleOperationSelect}
             getBorderColor={getBorderColor}
             getOperationsColor={"#1F3D2B"}
+            getSelectedOperationColor={"#4ADE80"}
+            isSelected={isSelected}
         />
     );
 };
