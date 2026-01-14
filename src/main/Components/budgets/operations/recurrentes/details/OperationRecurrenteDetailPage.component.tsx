@@ -1,14 +1,23 @@
-import React, {JSX, useContext} from 'react'
+import React, {JSX, useContext, useEffect, useState} from 'react'
 import {Box, Container, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 
-import { CenterComponent } from '../../CenterComponent.tsx';
-import CompteBancaireModel from '../../../Models/budgets/CompteBancaire.model.ts';
-import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer.tsx';
-import {getOperationIntercompteCatLibelle, getOperationLibelle, getPeriodeRenderer,} from '../../../Utils/renderers/OperationItem.renderer.tsx';
-import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
-import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx';
-import { operationIsIntercompteFromLibelle } from '../../../Utils/OperationData.utils.ts';
-import { getLabelFRFromDate } from '../../../Utils/Date.utils.ts';
+
+import { CenterComponent } from '../../../../CenterComponent.tsx';
+import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import CompteBancaireModel from '../../../../../Models/budgets/CompteBancaire.model.ts';
+import { operationIsIntercompteFromLibelle } from '../../../../../Utils/OperationData.utils.ts';
+import { getOperationLibelle, getPeriodeRenderer } from '../../../../../Utils/renderers/OperationItem.renderer.tsx';
+import { getCategorieColor, getCategorieIcon } from '../../../../../Utils/renderers/CategorieItem.renderer.tsx';
+import OperationValue from '../../../../../Utils/renderers/OperationValue.renderer.tsx';
+import { OperationDetailDateFin } from './subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
+import OperationEditionModel, { createNewOperationEdition } from '../../../../../Models/budgets/OperationEdition.model.ts';
+import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, getProchaineEcheance, OPERATION_RECURRENTE_EDITION_FORM } from './OperationRecurrenteDetailPage.constants.ts';
+import { handleOperationRecurrenteEditionClick } from './OperationRecurrenteDetailPage.controller.ts';
+import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
+import { OperationRecurrenteDetailPageProps } from '../../../../Components.props.ts';
+import { getAffichageIntercompteRO } from '../../courantes/detail/subcomponents/OperationDetailIntercompte.component.tsx';
+
+
 
 
 /**
@@ -18,40 +27,67 @@ import { getLabelFRFromDate } from '../../../Utils/Date.utils.ts';
  * Il gère également les états du formulaire d'édition et les interactions utilisateur.
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
-export const OperationRecurrenteDetailPage: React.FC = (): JSX.Element => {
+export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPageProps> = ({
+    onOperationChange
+}: OperationRecurrenteDetailPageProps): JSX.Element => {
 
+    const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm());
+    const [refresh, setRefresh] = useState<Date>(new Date());
+    const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
+    const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
     const { currentBudget, currentOperation, comptes } = useContext(BudgetContext);
     const operation = currentOperation;
+    const budget = currentBudget;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
+    useEffect(() => { }, [refresh]);
     /**
-     * @returns {JSX.Element} Affichage de l'intercompte en lecture seule
+     * Ouverture du formulaire d'édition
+     * @param editForm formulaire d'édition
      */
-    function getAffichageIntercompteRO(libelle: string, listeAutresComptes: CompteBancaireModel[]): JSX.Element {
-        if (libelle != null && operationIsIntercompteFromLibelle(libelle)) {
-            return getOperationIntercompteCatLibelle(libelle, listeAutresComptes, isMobile)
-        }
-        else {
-            return <></>
-        }
+    function openEditForm(editForm: EditFormProps) {
+        setEditForm(editForm)
+        setRefresh(new Date())
     }
 
-    function getProchaineEcheance(dateOperation: Date, prochaineEcheance: number): string {
-        if (prochaineEcheance < 0) {
-            return "Aucune"
-        } else {
-            let dateNow = dateOperation ? new Date(dateOperation) : new Date();
-            dateNow.setMonth(dateNow.getMonth() + prochaineEcheance);
-            return getLabelFRFromDate(dateNow)
-        }
+    /**
+     * callback de mise à jour de l'opération
+     * @param budget budget mis à jour
+     */
+    function onOperationUpdate(budget: BudgetMensuelModel) {
+        openEditForm(createEmptyEditForm());
+        onOperationChange(budget);
     }
+
+
+    /**
+     * Mise à jour du formulaire d'édition
+     * @param field champ du formulaire à mettre à jour
+     * @param value valeur du champ
+     */
+    function fillOperationRecurrenteForm(field: OPERATION_RECURRENTE_EDITION_FORM, value: string) {
+        const editOperationUpdated = {...editOperation};
+        if (field === OPERATION_RECURRENTE_EDITION_FORM.DATE_FIN) {
+            if(value !== null && value !== undefined && value !== "") {
+                editOperationUpdated.mensualite.dateFin = new Date(Date.parse(value))
+            }
+            else{
+                editOperationUpdated.mensualite.dateFin = null
+            }
+        }
+        openEditForm(editForm);
+        setEditOperation(editOperationUpdated);
+    }
+
     /**
      * RENDER
      * @returns {JSX.Element} Le composant JSX de la page de détail d'une opération.
      */
     return (
-        <Container component="div" fixed>
+        <Container component="div" fixed
+                    onClick={(event : any) => handleOperationRecurrenteEditionClick(event, {operation, budget}, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
+                    onKeyUp={(event : any) => handleOperationRecurrenteEditionClick(event, {operation, budget}, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
             <Stack direction={"column"} spacing={isMobile ? 3 : 6}
                    sx={{alignItems: "center", justifyContent: "center", marginTop: "20px"}}>
@@ -124,18 +160,17 @@ export const OperationRecurrenteDetailPage: React.FC = (): JSX.Element => {
 
                     <Grid size={{md: 4.5, xl: 5}}>
                         { /** COMPTE DE TRANSFERT  **/}
-                        {getAffichageIntercompteRO(operation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id))}
+                        {getAffichageIntercompteRO(operation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
                     </Grid>
                     <Grid size={{md: 4.5, xl: 4}}>
                         { /** ACTIONS SUR OPERATION **/}
                          .
                     </Grid>
                     <Grid size={{md: 3, xl: 3}}>
-                        { /** DATE OPERATION **/}
-                        <Typography id={"OPERATION_EDITION_FORM.DATE_OPERATION"} variant={"subtitle1"}
-                                        sx={{ color: (operation.autresInfos.dateOperation == null ? "#121212" : "#FFFFFF") }}>
-                                        {operation.autresInfos.dateOperation == null ? "jj/mm/aaaa" : getLabelFRFromDate(operation.autresInfos.dateOperation)}
-                                    </Typography>
+                        { /** DATE FIN **/}
+                        <OperationDetailDateFin formDateInEdition={editForm.dateFin}
+                                                errorDateOperation={errors.dateFin}
+                                                fillOperationForm={fillOperationRecurrenteForm} />
                     </Grid>
                 </Grid>
             </Stack>

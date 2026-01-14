@@ -1,11 +1,11 @@
 import React, {JSX, useContext} from 'react'
 import {InputAdornment, TextField, Typography, useMediaQuery, useTheme} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
-import OperationValue from "./../../../../../Utils/renderers/OperationValue.renderer.tsx"
+import OperationValue from "../../../../../../Utils/renderers/OperationValue.renderer.tsx"
 import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material'
-import {TYPES_OPERATION_ENUM} from '../../../../../Utils/AppBusinessEnums.constants.ts'
-import {OperationDetailValeurProps} from '../../../../Components.props.tsx'
-import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {TYPES_OPERATION_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
+import {OperationDetailValeurProps} from '../../../../../Components.props.ts'
+import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 
 
 /**

@@ -1,6 +1,6 @@
 {
   "name": "gestion-budget-ihm",
-  "version": "23.0-SNAPSHOT",
+  "version": "24.0-SNAPSHOT",
   "private": true,
   "type": "module",
   "exports": "./src/index.js",

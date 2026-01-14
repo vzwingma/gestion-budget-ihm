@@ -22,6 +22,7 @@ class OperationModel {
     mensualite: {
         periode: PERIODES_MENSUALITE_ENUM;
         prochaineEcheance: number | null;
+        dateFin?: Date | null;
     };
 
     /** */

@@ -10,10 +10,10 @@ import {
     useTheme
 } from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
-import {sortLibellesCategories} from '../../../../../Utils/OperationData.utils.ts'
-import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.ts'
-import {OperationDetailCategoriesProps} from '../../../../Components.props.tsx'
-import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {sortLibellesCategories} from '../../../../../../Utils/OperationData.utils.ts'
+import CategorieOperationModel from '../../../../../../Models/budgets/CategorieOperation.model.ts'
+import {OperationDetailCategoriesProps} from '../../../../../Components.props.ts'
+import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 
 
 /**

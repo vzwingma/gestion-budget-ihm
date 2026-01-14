@@ -7,11 +7,11 @@ import { getPreferenceUtilisateur, loadCategories, reloadBudget } from "./Budget
 import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButtonGroup.component.tsx";
 import OperationsListe from "../operations/OperationsListe.component.tsx";
-import OperationDetailPage from "../operations/detail/OperationDetailPage.component.tsx";
+import OperationDetailPage from "../operations/courantes/detail/OperationDetailPage.component.tsx";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsGroupedByDateOperation } from "./Budget.controller.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
-import { getLibellesOperationsCompte } from "../operations/detail/OperationDetailPage.extservices.ts";
+import { getLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
 import { BudgetPageProps } from "../../Components.props.tsx";
 import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";

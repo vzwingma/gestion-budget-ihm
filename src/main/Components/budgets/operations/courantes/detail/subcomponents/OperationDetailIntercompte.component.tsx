@@ -1,10 +1,24 @@
 import React, {JSX} from 'react'
 import {MenuItem, TextField, useMediaQuery, useTheme} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
-import {operationIsIntercompteFromLibelle} from '../../../../../Utils/OperationData.utils.ts'
-import {getOperationIntercompteCatLibelle} from '../../../../../Utils/renderers/OperationItem.renderer.tsx'
-import {OperationDetailIntercompteProps} from '../../../../Components.props.tsx'
+import {operationIsIntercompteFromLibelle} from '../../../../../../Utils/OperationData.utils.ts'
+import {getOperationIntercompteCatLibelle} from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
+import {OperationDetailIntercompteProps} from '../../../../../Components.props.ts'
+import CompteBancaireModel from '../../../../../../Models/budgets/CompteBancaire.model.ts'
 
+
+    /**
+     * @returns {JSX.Element} Affichage de l'intercompte en lecture seule
+     */
+    export function getAffichageIntercompteRO(libelle: string, listeAutresComptes: CompteBancaireModel[], isMobile: boolean): JSX.Element {
+        
+        if (libelle != null && operationIsIntercompteFromLibelle(libelle)) {
+            return getOperationIntercompteCatLibelle(libelle, listeAutresComptes, isMobile)
+        }
+        else {
+            return <></>
+        }
+    }
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
  *
@@ -34,17 +48,6 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
     }
 
 
-    /**
-     * @returns {JSX.Element} Affichage de l'intercompte en lecture seule
-     */
-    function getAffichageIntercompteRO(libelle: string): JSX.Element {
-        if (libelle != null && operationIsIntercompteFromLibelle(libelle)) {
-            return getOperationIntercompteCatLibelle(libelle, listeAutresComptes, isMobile)
-        }
-        else {
-            return <></>
-        }
-    }
 
 
     return (
@@ -71,6 +74,6 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
                 ))}
             </TextField>
             :
-            getAffichageIntercompteRO(libelle)
+            getAffichageIntercompteRO(libelle, listeAutresComptes, isMobile)
     )
 }

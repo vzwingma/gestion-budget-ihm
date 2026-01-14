@@ -1,7 +1,7 @@
-import React, {JSX} from 'react'
-import OperationItem from './OperationsListItem.component.tsx';
+import React, { JSX } from 'react'
+import OperationItem from './courantes/OperationsListItem.component.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
-import {OperationsListeProps} from '../../Components.props.tsx';
+import { OperationsListeProps } from '../../Components.props.tsx';
 import SharedOperationsListe from './OperationsListe.shared.tsx';
 
 
@@ -14,15 +14,13 @@ import SharedOperationsListe from './OperationsListe.shared.tsx';
  * @constructor constructeur
  *
  */
-const OperationsListe: React.FC<OperationsListeProps> = ({operationGroupedByDate, filterOperations, onClick : handleOperationSelect, selectedOperationId} : OperationsListeProps) : JSX.Element => {
-    
-    const renderItem = (operation: OperationModel, onClick: (operation: OperationModel) => void): JSX.Element => {
-        console.log("Rendering operation item", operation.id, selectedOperationId, operation.id === selectedOperationId);
+const OperationsListe: React.FC<OperationsListeProps> = ({ operationGroupedByDate, filterOperations, onClick: handleOperationSelect, selectedOperationId }: OperationsListeProps): JSX.Element => {
 
+    const renderItem = (operation: OperationModel, onClick: (operation: OperationModel) => void): JSX.Element => {
         return <OperationItem key={operation.id}
-                      operation={operation}
-                      onClick={onClick}
-                      isSelected={operation.id === selectedOperationId}/>
+            operation={operation}
+            onClick={onClick}
+            isSelected={operation.id === selectedOperationId} />
     };
 
     return (

@@ -10,9 +10,9 @@ import {getOperationsGroupedByPeriodicity} from "./Recurrents.controller.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
 import {RecurrentsPageProps} from "../../Components.props.ts";
 import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider.tsx";
-import OperationsRecurrentesListe from "../operations/OperationsRecurrentesListe.component.tsx";
-import OperationRecurrenteDetailPage from "./OperationRecurrenteDetailPage.component.tsx";
+import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
 import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
+import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
 
 
 /**
@@ -105,7 +105,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                 <Grid size={{md: 7, xl: 8}} sx={{overflow: "hidden", height: listHeight}}>
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
-                        <OperationRecurrenteDetailPage  />
+                        <OperationRecurrenteDetailPage onOperationChange={handleBudgetUpdate} />
                         : <></>
                     }
                 </Grid>

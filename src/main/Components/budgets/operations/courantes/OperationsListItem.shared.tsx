@@ -1,11 +1,11 @@
 import React, {JSX, useContext} from 'react'
 import {Box, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
-import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
-import { CenterComponent } from '../../CenterComponent.tsx';
-import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer.tsx';
-import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
-import {getOperationLibelle} from '../../../Utils/renderers/OperationItem.renderer.tsx';
-import OperationModel from '../../../Models/budgets/Operation.model.ts';
+import OperationValue from "../../../../Utils/renderers/OperationValue.renderer.tsx";
+import { CenterComponent } from '../../../CenterComponent.tsx';
+import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer.tsx';
+import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import {getOperationLibelle} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
+import OperationModel from '../../../../Models/budgets/Operation.model.ts';
 
 /**
  * Props for the shared operation item component

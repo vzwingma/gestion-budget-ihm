@@ -1,8 +1,8 @@
 import React, {JSX} from 'react'
-import {OperationItemProps} from '../../Components.props.ts';
-import {getPeriodeRenderer} from '../../../Utils/renderers/OperationItem.renderer.tsx';
-import SharedOperationItem from './OperationsListItem.shared.tsx';
-import OperationModel from '../../../Models/budgets/Operation.model.ts';
+import {OperationItemProps} from '../../../Components.props.ts';
+import {getPeriodeRenderer} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
+import SharedOperationItem from '../courantes/OperationsListItem.shared.tsx';
+import OperationModel from '../../../../Models/budgets/Operation.model.ts';
 
 
 /**

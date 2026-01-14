@@ -8,7 +8,7 @@ import {
     isInCreateMode,
     isInEditMode
 } from './OperationDetailPage.controller.ts';
-import { CenterComponent } from '../../../CenterComponent.tsx';
+import { CenterComponent } from '../../../../CenterComponent.tsx';
 import {
     createEmptyEditForm,
     createEmptyErrors,
@@ -17,29 +17,29 @@ import {
     OPERATION_EDITION_FORM
 } from './OperationDetailPage.constants.ts';
 import {OperationDetailActions} from './actions/OperationDetailActions.component.tsx';
-import BudgetMensuelModel from '../../../../Models/budgets/BudgetMensuel.model.ts';
-import CategorieOperationModel from '../../../../Models/budgets/CategorieOperation.model.ts';
-import CompteBancaireModel from '../../../../Models/budgets/CompteBancaire.model.ts';
+import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
+import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.ts';
+import CompteBancaireModel from '../../../../../Models/budgets/CompteBancaire.model.ts';
 import {
     BUSINESS_GUID,
     OPERATION_ETATS_ENUM,
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
-} from '../../../../Utils/AppBusinessEnums.constants.ts';
-import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer.tsx';
-import {getOperationStateColor,} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
+} from '../../../../../Utils/AppBusinessEnums.constants.ts';
+import {getCategorieColor, getCategorieIcon} from '../../../../../Utils/renderers/CategorieItem.renderer.tsx';
+import {getOperationStateColor,} from '../../../../../Utils/renderers/OperationItem.renderer.tsx';
 import {OperationDetailValeur} from './subcomponents/OperationDetailValeur.component.tsx';
 import {OperationDetailLibelle} from './subcomponents/OperationDetailLibelle.component.tsx';
-import {OperationDetailDate} from './subcomponents/OperationDetailDate.component.tsx';
 import {OperationDetailIntercompte} from './subcomponents/OperationDetailIntercompte.component.tsx';
 import {OperationDetailMensualite} from './subcomponents/OperationDetailMensualite.component.tsx';
 import {OperationDetailCategories} from './subcomponents/OperationDetailCategories.component.tsx';
 import OperationEditionModel, {
     cloneOperation,
     createNewOperationEdition
-} from '../../../../Models/budgets/OperationEdition.model.ts';
-import {OperationDetailPageProps} from '../../../Components.props.tsx';
-import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
+} from '../../../../../Models/budgets/OperationEdition.model.ts';
+import {OperationDetailPageProps} from '../../../../Components.props.ts';
+import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { OperationDetailDate } from './subcomponents/OperationDetailDateOperation.component.tsx';
 
 
 /**
@@ -100,23 +100,24 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param value valeur du champ
      */
     function fillOperationForm(field: OPERATION_EDITION_FORM, value: string) {
+        let editOperationUpdated = { ...editOperation };
         switch (field) {
             case OPERATION_EDITION_FORM.LIBELLE:
-                editOperation.libelle = value;
+                editOperationUpdated.libelle = value;
                 break;
             case OPERATION_EDITION_FORM.DATE_OPERATION:
                 if(value !== null && value !== undefined && value !== "") {
-                    editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
+                    editOperationUpdated.autresInfos.dateOperation = new Date(Date.parse(value))
                 }
                 else{
-                    editOperation.autresInfos.dateOperation = null
+                    editOperationUpdated.autresInfos.dateOperation = null
                 }
                 break;
             case OPERATION_EDITION_FORM.VALUE:
-                editOperation.valeur = value;
+                editOperationUpdated.valeur = value;
                 break;
             case OPERATION_EDITION_FORM.MENSUALITE:
-                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
+                editOperationUpdated.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
                 break;
             case OPERATION_EDITION_FORM.CATEGORIE:
                 if(value !== "") {
@@ -124,14 +125,14 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 }
                 break;
             case OPERATION_EDITION_FORM.INTERCOMPTES:
-                editOperation.intercompte = value
+                editOperationUpdated.intercompte = value
                 break;
             case OPERATION_EDITION_FORM.FORM_VALIDATION:
                 editForm.formValidationEnabled = (value === "true")
                 break;
         }
         openEditForm(editForm);
-        setEditOperation(editOperation);
+        setEditOperation(editOperationUpdated);
     }
 
     /**
