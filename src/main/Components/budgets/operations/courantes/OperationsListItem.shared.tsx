@@ -6,6 +6,7 @@ import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/C
 import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import {getOperationLibelle} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
 import OperationModel from '../../../../Models/budgets/Operation.model.ts';
+import OperationStatus from '../../../../Utils/renderers/OperationStatus.renderer.tsx';
 
 /**
  * Props for the shared operation item component
@@ -41,7 +42,9 @@ function getUnselectedBoxBorderStyle() {
         borderTop: 'none',
         borderBottom: 'none',
         borderRadius: '0px',
-        paddingLeft: '10px'
+        paddingLeft: '6px',
+        marginRight: '4px'
+
     };
 }
 
@@ -95,7 +98,7 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                         </Box>
                     </Box>
                 </Grid>
-                <Grid size={{md: 7, xl: 7}}>
+                <Grid size={{md: 6, xl: 6}}>
                     <Stack direction={"column"}>
                         <Typography variant={"subtitle1"} component="div" align={"left"}
                                     sx={{spacing: 2, paddingLeft: isMobile ? 1 : 2}}>
@@ -106,7 +109,11 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                             {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                         </Typography>
                     </Stack>
-
+                </Grid>
+                <Grid size={{md: 1, xl: 1}}>
+                    <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
+                        <OperationStatus statutsOperation={operation.statuts} />
+                    </Typography>
                 </Grid>
                 <Grid size={{md: 3, xl: 3}}>
                     <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>

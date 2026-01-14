@@ -1,10 +1,21 @@
+
+const LOCALE_FR : Intl.LocalesArgument = 'fr-FR';
 /**
  * Retourne le label Fr d'une date
  * @param dateOperation date à afficher
  * @returns {string} label FR de la date
  */
 export function getLabelFRFromDate(dateOperation: Date): string {
-    return new Date(dateOperation).toLocaleDateString("fr-FR");
+    return new Date(dateOperation).toLocaleDateString(LOCALE_FR);
+}
+
+
+export function getLabelMonthFRFromDate(dateOperation: Date): string {
+    const options : Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "long"
+        };
+    return new Date(dateOperation).toLocaleDateString(LOCALE_FR, options);
 }
 
 /**

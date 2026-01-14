@@ -6,7 +6,7 @@ import OperationModel from "../../../Models/budgets/Operation.model.ts";
 import {reloadBudget} from "./../budget/Budget.extservices.ts";
 
 import {getLabelFRFromDate} from "../../../Utils/Date.utils.ts";
-import {getOperationsGroupedByPeriodicity} from "./Recurrents.controller.ts";
+import {getOperationsRecurrentesGroupedByPeriodicity} from "./Recurrents.controller.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
 import {RecurrentsPageProps} from "../../Components.props.ts";
 import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider.tsx";
@@ -38,7 +38,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
 
     const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useContext(BudgetContext);
 
-    const [operationsGroupedByPeriodicity, setOperationsGroupedByPeriodicity] = useState<{ [key: string]: OperationModel[] }>({});
+    const [operationsRecurrentesGroupedByPeriodicity, setOperationsRecurrentesGroupedByPeriodicity] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
@@ -50,9 +50,9 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
     const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
         console.log("(Re)Chargement du budget", budget.id, ":", budget.listeOperations.length + " opérations");
         setCurrentBudget(budget);
-        setOperationsGroupedByPeriodicity(getOperationsGroupedByPeriodicity(budget.listeOperations));
+        setOperationsRecurrentesGroupedByPeriodicity(getOperationsRecurrentesGroupedByPeriodicity(budget.listeOperations, budget.id));
         console.log("Chargement du budget correctement effectué");
-    }, [setCurrentBudget, setOperationsGroupedByPeriodicity]);
+    }, [setCurrentBudget, setOperationsRecurrentesGroupedByPeriodicity]);
 
 
 
@@ -95,7 +95,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                             <CenterComponent><CircularProgress /></CenterComponent>
                             :
                             <OperationsRecurrentesListe
-                                operationGroupedByPeriodicity={operationsGroupedByPeriodicity}
+                                operationGroupedByPeriodicity={operationsRecurrentesGroupedByPeriodicity}
                                 filterOperations={filterOperations}
                                 onClick={handleOperationSelect} 
                                 selectedOperationId={currentOperation?.id}/>

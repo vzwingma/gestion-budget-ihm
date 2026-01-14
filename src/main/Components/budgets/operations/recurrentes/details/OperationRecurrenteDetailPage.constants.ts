@@ -1,3 +1,4 @@
+import OperationModel from "../../../../../Models/budgets/Operation.model.ts"
 import { getLabelFRFromDate } from "../../../../../Utils/Date.utils.ts"
 
 /**
@@ -16,18 +17,15 @@ export enum OPERATION_RECURRENTE_EDITION_FORM {
  * @description Interface représentant les propriétés du formulaire d'édition.
  *
  * @property {boolean} dateFin - Indique si la date de fin est éditée.
- * @property {boolean} mensualite - Indique si la mensualité est éditée.
  * @property {boolean} formValidationEnabled - Indique si la validation du formulaire est éditée.
  */
 export interface EditFormProps {
     dateFin: boolean
-    mensualite: boolean
     formValidationEnabled: boolean
 }
 
 export function createEmptyEditForm(): EditFormProps {
     return {
-        mensualite: false,
         dateFin: false,
         formValidationEnabled: false
     }
@@ -62,5 +60,20 @@ export function getProchaineEcheance(dateOperation: Date, prochaineEcheance: num
         let dateNow = dateOperation ? new Date(dateOperation) : new Date();
         dateNow.setMonth(dateNow.getMonth() + prochaineEcheance);
         return getLabelFRFromDate(dateNow)
+    }
+}
+/**
+ * 
+ * @param operationMensualite mensualite opération
+ * @returns 
+ */
+export function isDerniereEcheanceRO(operationMensualite: OperationModel, budgetId : string): boolean {
+    if (operationMensualite.mensualite.dateFin === null || operationMensualite.mensualite.dateFin === undefined) {
+        return false
+    } else {
+        const [, annee, mois] = budgetId.split('_');
+        const moisBudget = Number.parseInt(mois) - 1; // Les mois en JavaScript commencent à 0
+        const anneeBudget = Number.parseInt(annee);
+        return new Date(operationMensualite.mensualite.dateFin).getMonth() === moisBudget && new Date(operationMensualite.mensualite.dateFin).getFullYear() === anneeBudget;
     }
 }

@@ -1,5 +1,5 @@
 import {WatchLaterRounded} from "@mui/icons-material";
-import {EN_RETARD, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants.ts";
+import {OPERATION_ETATS_ENUM, OPERATION_STATUS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants.ts";
 import {Box, Tooltip} from "@mui/material";
 import React, {JSX} from "react";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
@@ -68,7 +68,7 @@ export function getOperationLibelle(operationLibelle: string, listeComptes: Comp
     if (operationLibelle !== null) {
         if (operationIsIntercompteFromLibelle(operationLibelle)) {
             return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue, isMobile)
-        } else if (operationLibelle.startsWith(EN_RETARD)) {
+        } else if (operationLibelle.startsWith(OPERATION_STATUS_ENUM.EN_RETARD)) {
             return getOperationEnRetardLibelle(operationLibelle, isMobile)
         } else {
             return getOperationLibelleWithComment(operationLibelle, isMobile);
@@ -153,7 +153,7 @@ function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: stri
     const label = direction + " " + compte.libelle;
     return <Tooltip title={"Transfert intercompte " + label}>
             <Box>
-                {operationLibelle.startsWith(EN_RETARD) && isLabelOperation ?
+                {operationLibelle.startsWith(OPERATION_STATUS_ENUM.EN_RETARD) && isLabelOperation ?
                     <WatchLaterRounded sx={{
                         color: "#A0A0A0",
                         width: isMobile ? "16px" : "22px",
@@ -195,5 +195,5 @@ function getOperationEnRetardLibelle(operationLibelle: string, isMobile?: boolea
             width: isMobile ? "16px" : "22px",
             height: isMobile ? "16px" : "22px",
             marginRight: "4px"
-        }}/>{getOperationLibelleWithComment(operationLibelle.replace(EN_RETARD, ""), isMobile)}</>
+        }}/>{getOperationLibelleWithComment(operationLibelle.replace(OPERATION_STATUS_ENUM.EN_RETARD, ""), isMobile)}</>
 }

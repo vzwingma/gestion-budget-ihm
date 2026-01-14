@@ -11,11 +11,12 @@ import { getCategorieColor, getCategorieIcon } from '../../../../../Utils/render
 import OperationValue from '../../../../../Utils/renderers/OperationValue.renderer.tsx';
 import { OperationDetailDateFin } from './subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
 import OperationEditionModel, { createNewOperationEdition } from '../../../../../Models/budgets/OperationEdition.model.ts';
-import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, getProchaineEcheance, OPERATION_RECURRENTE_EDITION_FORM } from './OperationRecurrenteDetailPage.constants.ts';
+import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, getProchaineEcheance, isDerniereEcheanceRO, OPERATION_RECURRENTE_EDITION_FORM } from './OperationRecurrenteDetailPage.constants.ts';
 import { handleOperationRecurrenteEditionClick, handleValidateOperationForm, isInEditMode } from './OperationRecurrenteDetailPage.controller.ts';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
 import { OperationRecurrenteDetailPageProps } from '../../../../Components.props.ts';
 import { getAffichageIntercompteRO } from '../../courantes/detail/subcomponents/OperationDetailIntercompte.component.tsx';
+import OperationStatus from '../../../../../Utils/renderers/OperationStatus.renderer.tsx';
 
 
 
@@ -70,7 +71,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
         const editOperationUpdated = { ...editOperation };
         if (field === OPERATION_RECURRENTE_EDITION_FORM.DATE_FIN) {
             if (value !== null && value !== undefined && value !== "") {
-                editOperationUpdated.mensualite.dateFin = new Date(Date.parse(value))
+                editOperationUpdated.mensualite.dateFin = new Date(Date.parse(value));
             }
             else {
                 editOperationUpdated.mensualite.dateFin = null
@@ -151,7 +152,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                     </Grid>
                     <Grid size={{ md: 4.5, xl: 4 }} paddingTop={3} paddingBottom={1}>
 
-                        <Typography variant={"caption"} sx={{ color: "#808080" }}>.</Typography>
+                        <Typography variant={"caption"} sx={{ color: "#808080" }}>Dernière échéance</Typography>
                     </Grid>
                     <Grid size={{ md: 3, xl: 3 }} paddingTop={3} paddingBottom={1}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Se termine</Typography>
@@ -163,8 +164,11 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                         {getAffichageIntercompteRO(operation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
                     </Grid>
                     <Grid size={{ md: 4.5, xl: 4 }}>
-                        { /** ACTIONS SUR OPERATION **/}
-                        .
+                        { /** DERNIERE ECHEANCE **/}
+                        {isDerniereEcheanceRO(operation, budget.id) ? 
+                            <><OperationStatus statutsOperation={operation.statuts} /><Typography variant={"overline"} sx={{ color: "#4caf50" }}>Oui</Typography> </>
+                            : 
+                            <Typography variant={"overline"} sx={{ color: "#9e9e9e" }}>Non</Typography>}
                     </Grid>
                     <Grid size={{ md: 3, xl: 3 }}>
                         { /** DATE FIN **/}

@@ -1,5 +1,6 @@
 import {
     OPERATION_ETATS_ENUM,
+    OPERATION_STATUS_ENUM,
     PERIODES_MENSUALITE_ENUM,
     TYPES_OPERATION_ENUM
 } from "../../Utils/AppBusinessEnums.constants.ts";
@@ -24,6 +25,7 @@ class OperationModel {
         prochaineEcheance: number | null;
         dateFin?: Date | null;
     };
+    statuts?: OPERATION_STATUS_ENUM[] | null;
 
     /** */
     constructor(id: string, libelle: string, typeOperation: TYPES_OPERATION_ENUM, etat: OPERATION_ETATS_ENUM, valeur: number, mensualite: {

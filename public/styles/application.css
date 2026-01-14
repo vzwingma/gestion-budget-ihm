@@ -465,7 +465,10 @@ ______          _    _
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
-
+input[type="month"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    color: #000 !important;
+}
 
 .listeItem:hover {
     background-color: var(--color-item-hover-bg);

@@ -114,6 +114,6 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
  * @returns {boolean}
  */
 export function isInEditMode(editForm: EditFormProps): boolean {
-    return editForm.dateFin || editForm.mensualite;
+    return editForm.dateFin;
 }
 
