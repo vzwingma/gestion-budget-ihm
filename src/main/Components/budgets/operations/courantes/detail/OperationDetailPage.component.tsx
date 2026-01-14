@@ -140,6 +140,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param ssCatId  id de la sous catégorie
      */
     function fillCategorieForm(ssCatId: string) {
+        let editOperationUpdated = { ...editOperation };
         const ssCat = listeCategories
             .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
             .find((ssCat: CategorieOperationModel) => ssCat?.id === ssCatId)
@@ -147,16 +148,15 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             return;
         }
         if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
-            editOperation.categorie.id = ssCat.categorieParente.id;
-            editOperation.categorie.libelle = ssCat.categorieParente.libelle;
+            editOperationUpdated.categorie.id = ssCat.categorieParente.id;
+            editOperationUpdated.categorie.libelle = ssCat.categorieParente.libelle;
         }
-        editOperation.ssCategorie.id = ssCat.id;
-        editOperation.ssCategorie.libelle = ssCat.libelle;
-
+        editOperationUpdated.ssCategorie.id = ssCat.id;
+        editOperationUpdated.ssCategorie.libelle = ssCat.libelle;
         /** Si type Rentrée d'argent, alors type opération = Crédit **/
-        const editOperationTypeOperation = (BUSINESS_GUID.CAT_RENTREE_ARGENT === editOperation.categorie.id)  ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
-        editOperation.typeOperation = editOperationTypeOperation;
-        setEditOperation(editOperation);
+        const editOperationTypeOperation = (BUSINESS_GUID.CAT_RENTREE_ARGENT === editOperationUpdated.categorie.id)  ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+        editOperationUpdated.typeOperation = editOperationTypeOperation;
+        setEditOperation(editOperationUpdated);
 
         /** Adaptation sur la sélection de catégorie **/
         if (ssCat.categorieParente) {
@@ -256,7 +256,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         <OperationDetailIntercompte intercompte={editOperation.intercompte}
                                                     libelle={editOperation.libelle}
                             formIntercompteInEdition={
-                                isInCreateMode(editForm)
+                                    isInCreateMode(editForm)
                                 && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id)
                             }
                             listeAutresComptes={

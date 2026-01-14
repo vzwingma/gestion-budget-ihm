@@ -30,7 +30,8 @@ function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined
         borderBottom: '1px solid ' + getSelectedOperationColor,
         borderRight: '4px solid ' + getSelectedOperationColor,
         borderRadius: '6px',
-        paddingLeft: '6px'
+        paddingLeft: '6px',
+        marginRight: '4px'
     };
 }
 

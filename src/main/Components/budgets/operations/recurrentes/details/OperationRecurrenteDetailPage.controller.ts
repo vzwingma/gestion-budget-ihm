@@ -36,12 +36,8 @@ export function handleOperationRecurrenteEditionClick(event: any, {operation, bu
         if (enterKeyPress && editForm.formValidationEnabled) {
             handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate);
         } else if (idElement !== null && idElement !== undefined && !idElement.endsWith(OPERATION_RECURRENTE_EDITION_FORM.INPUT)) {
-            switch (idElement) {
-                case OPERATION_RECURRENTE_EDITION_FORM.DATE_FIN:
-                    editForm.dateFin = true;
-                    break;
-                default:
-                    break;
+            if (idElement === OPERATION_RECURRENTE_EDITION_FORM.DATE_FIN) {
+                editForm.dateFin = true;
             }
             openEditForm(editForm);
         }
@@ -70,10 +66,8 @@ export function handleDateOperationFromAction(editOperation: OperationEditionMod
 * @param {ErrorsFormProps} errors - Les erreurs du formulaire.
 */
 export function validateForm(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
-   
     // DateOperation
     operation.mensualite.dateFin = editOperation.mensualite.dateFin;
-
 }
 
 
@@ -107,8 +101,8 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
             console.log("Erreurs présentes dans le formulaire", errors)
             setErrors(errors);
         } else {
-            // Create Update Opération
-        //    saveOperation(operation, budget, onOperationUpdate);
+        // Create Update Opération
+        saveOperation(operation, budget, onOperationUpdate);
         console.log("Opération sauvegardée", operation);
         }
     }
