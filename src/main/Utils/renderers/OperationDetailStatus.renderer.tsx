@@ -33,7 +33,7 @@ const OperationDetailStatus: React.FC<OperationStatusProps> = ({ statutsOperatio
         // définition du libellé
         return (
             <Tooltip title="En retard">
-                <Stack direction="row" spacing={1} alignItems="center" style={{ border: '1px solid #7C3E10', padding: '10px', paddingRight: '10px', borderRadius: '4px', backgroundColor: '#FB923C26' }}>
+                <Stack direction="row" spacing={1} alignItems="center" className="operation-status-badge operation-status-en-retard">
                     <WatchLaterRounded
                         sx={{
                             color: "#FB923C",
@@ -49,7 +49,7 @@ const OperationDetailStatus: React.FC<OperationStatusProps> = ({ statutsOperatio
         // définition du libellé
         return (
             <Tooltip title="Dernière échéance ce mois">
-                <Stack direction="row" spacing={1} alignItems="center" style={{ border: '1px solid #2563EB', padding: '10px', paddingRight: '10px', borderRadius: '4px', backgroundColor: '#60A5FA26' }}>
+                <Stack direction="row" spacing={1} alignItems="center" className="operation-status-badge operation-status-derniere-echeance">
                     <FlagCircleRounded sx={{
                         color: "#60A5FA",
                         width: getIconSize() + "px",
@@ -63,7 +63,7 @@ const OperationDetailStatus: React.FC<OperationStatusProps> = ({ statutsOperatio
         )
     }
     else {
-        return <span style={{ color: "#f70505" }}>{statutsOperation.join("||")}</span>
+        return <span className="operation-status-error">{statutsOperation.join("||")}</span>
     }
 };
 export default OperationDetailStatus

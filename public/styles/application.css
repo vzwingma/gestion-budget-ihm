@@ -495,3 +495,24 @@ a.nav-link_selected:hover {
     justify-content: center;
 }
 
+/* Operation Detail Status Styles */
+.operation-status-badge {
+    border: 1px solid;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.operation-status-en-retard {
+    border-color: #7C3E10;
+    background-color: #FB923C26;
+}
+
+.operation-status-derniere-echeance {
+    border-color: #2563EB;
+    background-color: #60A5FA26;
+}
+
+.operation-status-error {
+    color: #f70505;
+}
+
