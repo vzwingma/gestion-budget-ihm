@@ -40,6 +40,7 @@ import OperationEditionModel, {
 import {OperationDetailPageProps} from '../../../../Components.props.ts';
 import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import { OperationDetailDate } from './subcomponents/OperationDetailDateOperation.component.tsx';
+import OperationStatus from '../../../../../Utils/renderers/OperationStatus.renderer.tsx';
 
 
 /**
@@ -225,9 +226,16 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             fillOperationForm={fillOperationForm} />
                     </Grid>
                     <Grid size={{md: 4.5, xl: 4}}>
-                        <Typography variant={"overline"} color={getOperationStateColor(operation.etat)}>
-                            {operation.etat}
-                        </Typography>
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <Typography variant={"overline"} color={getOperationStateColor(operation.etat)} style={{border: '1px solid ' + getOperationStateColor(operation.etat), paddingLeft: '10px', paddingRight: '10px', borderRadius: '4px'}}>
+                                {operation.etat}
+                            </Typography>
+                            { /** STATUT **/}
+                            {currentBudget?.actif && currentOperation?.statuts !== null ?
+                                <OperationStatus statutsOperation={operation.statuts} detailPage={true} />
+                                    : <></>
+                            }
+                        </Stack>
                     </Grid>
                     <Grid size={{md: 3, xl: 3}}>
                         { /** PERIODE **/}
@@ -242,8 +250,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
                     </Grid>
                     <Grid size={{md: 4.5, xl: 4}} paddingTop={3} paddingBottom={1}>
-                        {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Actions</Typography> : <></>
+                        {currentBudget?.actif ?
+                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Statut</Typography> : <></>
                         }
                     </Grid>
                     <Grid size={{md: 3, xl: 3}} paddingTop={3} paddingBottom={1}>
@@ -265,7 +273,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             fillOperationForm={fillOperationForm} />
                     </Grid>
                     <Grid size={{md: 4.5, xl: 4}}>
-                        { /** ACTIONS SUR OPERATION **/}
+                        { /** STATUT **/}
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions
                                 isInCreateMode={isInCreateMode(editForm)}

@@ -1,5 +1,4 @@
-import {WatchLaterRounded} from "@mui/icons-material";
-import {OPERATION_ETATS_ENUM, OPERATION_STATUS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants.ts";
+import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants.ts";
 import {Box, Tooltip} from "@mui/material";
 import React, {JSX} from "react";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
@@ -129,7 +128,7 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
     else{
         const compte : CompteBancaireModel = listeComptes.find((compte) => compte.id === operationLibelleParts[2])
         if (compte?.libelle) {
-            return getOperationIntercompteLibelleWithIconAndComment(operationLibelle, compte, operationLibelleParts, isLabelOperation, maxVue, isMobile);
+            return getOperationIntercompteLibelleWithIconAndComment(compte, operationLibelleParts, isLabelOperation, maxVue, isMobile);
         } else {
             return getOperationLibelleWithComment(operationLibelle, isMobile);
         }
@@ -138,7 +137,6 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
 
 /**
  * Libellé d'une opération intercompte, avec icone et commentaire
- * @param operationLibelle libellé de l'opération
  * @param compte compte bancaire associé à l'opération d'intecompte
  * @param operationLibelleParts partie du libellé
  * @param isLabelOperation est ce un label d'opération
@@ -146,7 +144,7 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
  * @param isMobile
  * @returns représentation graphique
  */
-function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: string, compte: CompteBancaireModel, operationLibelleParts: string[], isLabelOperation: boolean, maxVue: boolean, isMobile?: boolean): JSX.Element {
+function getOperationIntercompteLibelleWithIconAndComment(compte: CompteBancaireModel, operationLibelleParts: string[], isLabelOperation: boolean, maxVue: boolean, isMobile?: boolean): JSX.Element {
     const direction = operationLibelleParts[1]
     const label = direction + " " + compte.libelle;
     return <Tooltip title={"Transfert intercompte " + label}>
@@ -155,7 +153,7 @@ function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: stri
                     width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                     alt={compte.libelle}
                     style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
-                    
+
                 {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3], isMobile) :
                     <span style={{fontSize: isMobile ? "small" : "medium"}}>{label}</span>}
             </Box>

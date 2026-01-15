@@ -43,6 +43,16 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
     useEffect(() => { }, [refresh]);
+
+    /**
+     * Init de l'opération du formulaire à la sélection d'une nouvelle opération
+     */
+    useEffect(() => {
+        setEditOperation({ ...editOperation });
+        setEditForm(createEmptyEditForm());
+        setErrors(createEmptyErrors());
+    }, [operation]);
+
     /**
      * Ouverture du formulaire d'édition
      * @param editForm formulaire d'édition
@@ -131,8 +141,8 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                     </Grid>
                     <Grid size={{ md: 4.5, xl: 4 }}>
                         { /** PERIODE **/}
-                        <Typography id={"OPERATION_EDITION_FORM.MENSUALITE"} variant={"overline"}
-                            color={getPeriodeRenderer(operation.mensualite.periode).color}>
+                        <Typography id={"OPERATION_EDITION_FORM.MENSUALITE"} variant={"overline"} color={getPeriodeRenderer(operation.mensualite.periode).color} 
+                                    style={{ border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '10px', paddingRight: '10px', borderRadius: '4px' }}>
                             {getPeriodeRenderer(operation.mensualite.periode).text}
                         </Typography>
                     </Grid>
@@ -165,10 +175,13 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                     </Grid>
                     <Grid size={{ md: 4.5, xl: 4 }}>
                         { /** DERNIERE ECHEANCE **/}
-                        {isDerniereEcheanceRO(operation, budget.id) ? 
-                            <><OperationStatus statutsOperation={operation.statuts} /><Typography variant={"overline"} sx={{ color: "#4caf50" }}>Oui</Typography> </>
-                            : 
-                            <Typography variant={"overline"} sx={{ color: "#9e9e9e" }}>Non</Typography>}
+                        {isDerniereEcheanceRO(operation, budget.id) ?
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <OperationStatus statutsOperation={operation.statuts} detailPage={true} />
+                                <Typography variant={"overline"} sx={{ color: "#4caf50" }}>Oui</Typography>
+                            </Stack>
+                            :
+                            <Typography variant={"overline"} >Non</Typography>}
                     </Grid>
                     <Grid size={{ md: 3, xl: 3 }}>
                         { /** DATE FIN **/}

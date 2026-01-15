@@ -50,7 +50,7 @@ export const OperationDetailDateFin: React.FC<OperationDetailDateProps> = ({ for
             :
             <Typography id={OPERATION_RECURRENTE_EDITION_FORM.DATE_FIN} variant={"subtitle1"}
                 className={budgetActif ? "editableField" : ""}
-                sx={{ color: (operation.mensualite.dateFin == null ? "#666666" : "#FFFFFF") }}>
+                sx={{ color:"#FFFFFF" }}>
                 {operation.mensualite.dateFin == null ? "Jamais" : getLabelMonthFRFromDate(operation.mensualite.dateFin)}
             </Typography>
 
