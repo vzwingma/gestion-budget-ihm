@@ -9,7 +9,7 @@ import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButton
 import OperationsListe from "../operations/OperationsListe.component.tsx";
 import OperationDetailPage from "../operations/courantes/detail/OperationDetailPage.component.tsx";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
-import { getOperationsGroupedByDateOperation } from "./Budget.controller.ts";
+import { getOperationsGroupedByDateOperation, updateOperationsStatus } from "./Budget.controller.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
 import { getLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
 import { BudgetPageProps } from "../../Components.props.tsx";
@@ -67,6 +67,10 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
         console.log("(Re)Chargement du budget", budget.id, ":", budget.listeOperations.length + " opérations");
         setCurrentBudget(budget);
+
+        // Compatibilité des opérations sur le statut en retard
+        updateOperationsStatus(budget.listeOperations);
+
         setOperationsGroupedByDateOperation(getOperationsGroupedByDateOperation(budget.listeOperations));
         console.log("Chargement du budget correctement effectué");
     }, [setCurrentBudget, setOperationsGroupedByDateOperation]);

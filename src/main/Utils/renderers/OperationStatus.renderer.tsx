@@ -49,5 +49,8 @@ const OperationStatus: React.FC<OperationStatusProps> = ({ statutsOperation}: Op
             </Tooltip>
         )
     }
+    else{
+        return <span style={{ color: "#f70505" }}>{statutsOperation.join("||")}</span>
+    }
 };
 export default OperationStatus

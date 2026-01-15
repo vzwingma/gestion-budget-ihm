@@ -13,7 +13,8 @@ export enum BUSINESS_ONGLETS {
  * Etat des opérations
  */
 export enum OPERATION_STATUS_ENUM {
-    EN_RETARD = "[En Retard]",
+    EN_RETARD = "EN_RETARD",
+    EN_RETARD_LEGACY = "[En Retard]",
     DERNIERE_ECHEANCE = "DERNIERE_ECHEANCE"
 }
 

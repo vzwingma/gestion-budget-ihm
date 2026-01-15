@@ -68,8 +68,6 @@ export function getOperationLibelle(operationLibelle: string, listeComptes: Comp
     if (operationLibelle !== null) {
         if (operationIsIntercompteFromLibelle(operationLibelle)) {
             return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue, isMobile)
-        } else if (operationLibelle.startsWith(OPERATION_STATUS_ENUM.EN_RETARD)) {
-            return getOperationEnRetardLibelle(operationLibelle, isMobile)
         } else {
             return getOperationLibelleWithComment(operationLibelle, isMobile);
         }
@@ -153,17 +151,11 @@ function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: stri
     const label = direction + " " + compte.libelle;
     return <Tooltip title={"Transfert intercompte " + label}>
             <Box>
-                {operationLibelle.startsWith(OPERATION_STATUS_ENUM.EN_RETARD) && isLabelOperation ?
-                    <WatchLaterRounded sx={{
-                        color: "#A0A0A0",
-                        width: isMobile ? "16px" : "22px",
-                        height: isMobile ? "16px" : "22px",
-                        marginRight: "4px"
-                    }}/> : <></>}
                 <img src={"/img/banques/" + compte.itemIcon}
                     width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                     alt={compte.libelle}
                     style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
+                    
                 {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3], isMobile) :
                     <span style={{fontSize: isMobile ? "small" : "medium"}}>{label}</span>}
             </Box>
@@ -179,21 +171,4 @@ function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: stri
  */
 export function getOperationIntercompteCatLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[], isMobile?: boolean): JSX.Element {
     return getOperationIntercompteLabel(operationLibelle, false, listeComptes, false, isMobile);
-}
-
-
-/**
- * Ajout de l'icone quand en retard
- * @param operationLibelle
- * @param isMobile
- * @returns {JSX.Element}
- */
-function getOperationEnRetardLibelle(operationLibelle: string, isMobile?: boolean): JSX.Element {
-    return <><WatchLaterRounded
-        sx={{
-            color: "#A0A0A0",
-            width: isMobile ? "16px" : "22px",
-            height: isMobile ? "16px" : "22px",
-            marginRight: "4px"
-        }}/>{getOperationLibelleWithComment(operationLibelle.replace(OPERATION_STATUS_ENUM.EN_RETARD, ""), isMobile)}</>
 }

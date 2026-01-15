@@ -1,12 +1,27 @@
-import {getLabelFRFromDate} from "../../../Utils/Date.utils.ts";
+import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
-import {sortOperations} from "../../../Utils/OperationData.utils.ts";
-import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
+import { sortOperations } from "../../../Utils/OperationData.utils.ts";
+import { OPERATION_ETATS_ENUM, OPERATION_STATUS_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 
 /**
  * Controleur des budgets
  */
+
+/**
+ * 
+ * @param listeOperations liste des opérations
+ */
+export function updateOperationsStatus(listeOperations: OperationModel[]): void {
+    listeOperations.forEach((operation: OperationModel) => {
+        operation.statuts ??= [];
+        if (operation.libelle.includes(OPERATION_STATUS_ENUM.EN_RETARD_LEGACY)) {
+            operation.statuts.push(OPERATION_STATUS_ENUM.EN_RETARD);
+            operation.libelle = operation.libelle.replaceAll(OPERATION_STATUS_ENUM.EN_RETARD_LEGACY, "");
+        }
+    })
+}
+
 
 /**
  * Fonction appelée lorsque le budget est mis à jour. pour trier et grouper les opérations
@@ -34,7 +49,7 @@ export function populateAllCategories(listeCategories: CategorieOperationModel[]
     listeCategories
         .forEach((cat: CategorieOperationModel) => {
             if (cat.listeSSCategories != null) {
-                for(let ssCategorie of cat.listeSSCategories){
+                for (let ssCategorie of cat.listeSSCategories) {
                     ssCategorie.categorieParente = cat;
                 }
             }
