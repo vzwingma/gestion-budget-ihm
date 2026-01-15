@@ -1,9 +1,9 @@
-import React, {JSX, useCallback, useContext, useEffect, useState} from "react";
+import React, {JSX, use, useCallback, useContext, useEffect, useState} from "react";
 
 import {Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme} from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
-import {reloadBudget} from "./../budget/Budget.extservices.ts";
+import {getPreferenceUtilisateur, reloadBudget} from "./../budget/Budget.extservices.ts";
 
 import {getLabelFRFromDate} from "../../../Utils/Date.utils.ts";
 import {getOperationsRecurrentesGroupedByPeriodicity} from "./Recurrents.controller.ts";
@@ -13,6 +13,8 @@ import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvid
 import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
 import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
 import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
+import { BudgetActionsButtonGroupComponent } from "../budget/actions/BudgetActionsButtonGroup.component.tsx";
+import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
 
 
 /**
@@ -40,7 +42,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
 
     const [operationsRecurrentesGroupedByPeriodicity, setOperationsRecurrentesGroupedByPeriodicity] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
-
+    const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
 
@@ -54,7 +56,9 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
         console.log("Chargement du budget correctement effectué");
     }, [setCurrentBudget, setOperationsRecurrentesGroupedByPeriodicity]);
 
-
+    useEffect(() => {
+        getPreferenceUtilisateur(setUserDroits);
+    }, []);
 
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
@@ -86,6 +90,16 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                 selectedCompte={selectedCompte}
                 selectedDate={selectedDate}
                 filterPlaceholder="Filtrage des opérations récurrentes"
+                                additionalHeaderContentRight={
+                                    <Grid size={{ md: 1, xl: 1 }}>
+                                        {currentBudget == null ?
+                                            <CenterComponent><CircularProgress /></CenterComponent> :
+                                            <BudgetActionsButtonGroupComponent
+                                                droits={userDroits}
+                                                onActionBudgetChange={handleBudgetUpdate}
+                                                onActionOperationCreate={() => {}} />
+                                        }
+                                    </Grid>}
             />
             <Divider variant="middle" sx={{marginTop: isMobile ? 0 : 1}}/>
             <Grid container sx={{overflow: "hidden"}}>

@@ -131,7 +131,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                         {currentBudget == null ?
                             <CenterComponent><CircularProgress /></CenterComponent> :
                             <BudgetActionsButtonGroupComponent
-                                droits={userDroits}
+                                droits={[...userDroits, UTILISATEUR_DROITS.DROIT_CREATE_OPERATION]}
                                 onActionBudgetChange={handleBudgetUpdate}
                                 onActionOperationCreate={handleButtonCreateClick} />
                         }
