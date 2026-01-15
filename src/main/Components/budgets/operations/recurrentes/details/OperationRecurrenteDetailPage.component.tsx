@@ -48,7 +48,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     useEffect(() => {
-        setEditOperation({ ...editOperation });
+        setEditOperation(createNewOperationEdition());
         setEditForm(createEmptyEditForm());
         setErrors(createEmptyErrors());
     }, [operation]);

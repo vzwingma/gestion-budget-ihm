@@ -171,9 +171,7 @@ export interface OperationDetailDateProps {
 
 export interface OperationDetailIntercompteProps {
     intercompte: string | null
-    libelle: string
     listeAutresComptes: CompteBancaireModel[]
-    formIntercompteInEdition: boolean
     errorIntercompte: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM.INTERCOMPTES, value: string) => void
 }

@@ -12,10 +12,8 @@ interface OperationStatusProps {
     detailPage?: boolean;
 }
 
-    const ICON_SIZE_MOBILE = 16;
-    const ICON_SIZE_DESKTOP = 22;
-    const ICON_SIZE_DETAIL_MOBILE = 22;
-    const ICON_SIZE_DETAIL_DESKTOP = 30;
+    const ICON_SIZE_MOBILE = 20;
+    const ICON_SIZE_DESKTOP = 26;
 /**
  * Affichage du statut (en retard, dernière échéance) d'une opération
  * @param statutsOperation : OPERATION_STATUS_ENUM[] statuts de l'opération
@@ -24,25 +22,19 @@ interface OperationStatusProps {
  * @constructor
  */
 const OperationStatus: React.FC<OperationStatusProps> = ({ statutsOperation, detailPage}: OperationStatusProps): JSX.Element => {
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-
-    function getIconSize(){
-        const mobileIconSize = detailPage ? ICON_SIZE_DETAIL_MOBILE : ICON_SIZE_MOBILE;
-        const desktopIconSize = detailPage ? ICON_SIZE_DETAIL_DESKTOP : ICON_SIZE_DESKTOP;
-        return isMobile ? mobileIconSize : desktopIconSize;
-    }
+    const iconSize = useMediaQuery(useTheme().breakpoints.down('lg')) ? ICON_SIZE_MOBILE : ICON_SIZE_DESKTOP;
     
-    if (statutsOperation === null) {
-        return <span style={{ color: "#808080" }}>.</span>
+    if (statutsOperation === null || statutsOperation === undefined) {
+        return <></>
     } else if (statutsOperation.includes(OPERATION_STATUS_ENUM.EN_RETARD)) {
         // définition du libellé
         return (
             <Tooltip title="En retard">
                 <WatchLaterRounded
                     sx={{
-                        color: "#A0A0A0",
-                        width: getIconSize() + "px",
-                        height: getIconSize() + "px",
+                        color: "#FB923C",
+                        width: iconSize + "px",
+                        height: iconSize + "px",
                         marginRight: "4px"
                     }} />
             </Tooltip>
@@ -53,9 +45,9 @@ const OperationStatus: React.FC<OperationStatusProps> = ({ statutsOperation, det
             <Tooltip title="Dernière échéance ce mois">
                 <FlagCircleRounded
                     sx={{
-                        color: "#14db14",
-                        width: getIconSize() + "px",
-                        height: getIconSize() + "px",
+                        color: "#60A5FA",
+                        width: iconSize + "px",
+                        height: iconSize + "px",
                         marginRight: "4px"
                     }} />
             </Tooltip>
