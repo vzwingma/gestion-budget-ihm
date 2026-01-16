@@ -64,7 +64,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                             </Box>
                         )
                     }}
-                    sx={{ width: "90%" }}
+                    sx={{ width: "100%" }}
                     value={operation.ssCategorie ?? { id: null, libelle: "" }}
                     options={getListeAllCategoriesFlatten(categories)}
                     groupBy={(option: CategorieOperationModel) => option?.categorieParente?.libelle ?? ""}

@@ -22,6 +22,7 @@
     /* Common colors */
     --color-heading: #31687f;
     --color-dark-bg: #121212;
+    --color-dark-container: #1E1E1E;
     --color-white: #FFFFFF;
     --color-nav-hover: #114b65;
     
@@ -184,29 +185,33 @@ a#tendances-link.nav-link_selected:hover {
 /* Page containers - Common base */
 .page-container {
     overflow: hidden;
-    border-radius: 8px;
     padding: 8px;
     height: calc(100vh - 70px);
 }
 
 /* Page containers - Specific colors */
 .budget-page-container {
-    border: 3px solid var(--color-operations-primary);
+    border-top: 3px solid var(--color-operations-primary);
+    border-bottom: 3px solid var(--color-operations-primary);
 }
 .recurrents-page-container {
-    border: 3px solid var(--color-recurrents-primary);
+    border-top: 3px solid var(--color-recurrents-primary);
+    border-bottom: 3px solid var(--color-recurrents-primary);
 }
 
 .analyses-page-container {
-    border: 3px solid var(--color-analyses-primary);
+    border-top: 3px solid var(--color-analyses-primary);
+    border-bottom: 3px solid var(--color-analyses-primary);
 }
 
 .tendances-page-container {
-    border: 3px solid var(--color-tendances-primary);
+    border-top: 3px solid var(--color-tendances-primary);
+    border-bottom: 3px solid var(--color-tendances-primary);
 }
 
 .infos-page-container {
-    border: 3px solid var(--color-accueil-primary);
+    border-top: 3px solid var(--color-accueil-primary);
+    border-bottom: 3px solid var(--color-accueil-primary);
     width: 100%;
     max-width: 100%;
     display: flex;
@@ -222,7 +227,8 @@ button.buttonsActionsOperations{
 
 button.buttonsActionsOperations {
     padding: 5px 5px 0 5px;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 /**

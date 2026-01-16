@@ -47,7 +47,7 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
     return (
         <TextField
             id={OPERATION_EDITION_FORM.INTERCOMPTES + OPERATION_EDITION_FORM.INPUT}
-            required select sx={{ width: "90%" }}
+            required select sx={{ width: "100%" }}
             value={intercompte}
             placeholder={"Sélectionnez un compte"}
             error={errorIntercompte != null}

@@ -11,7 +11,6 @@ import {
 } from "./OperationDetailPage.constants.ts";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices.ts";
 import { Dispatch, SetStateAction } from "react";
-import { getLabelFRFromDate } from "../../../../../Utils/Date.utils.ts";
 import { isDerniereEcheanceRO } from "../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
 
 

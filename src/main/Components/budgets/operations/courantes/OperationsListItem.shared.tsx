@@ -26,11 +26,8 @@ interface SharedOperationItemProps {
  */
 function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined) {
     return {
-        borderLeft: '4px solid ' + getSelectedOperationColor,
         borderTop: '1px solid ' + getSelectedOperationColor,
         borderBottom: '1px solid ' + getSelectedOperationColor,
-        borderRight: '4px solid ' + getSelectedOperationColor,
-        borderRadius: '6px',
         paddingLeft: '6px',
         marginRight: '4px'
     };
@@ -38,10 +35,8 @@ function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined
 
 function getUnselectedBoxBorderStyle() {
     return {
-        borderLeft: 'none',
         borderTop: 'none',
         borderBottom: 'none',
-        borderRadius: '0px',
         paddingLeft: '6px',
         marginRight: '4px'
 
