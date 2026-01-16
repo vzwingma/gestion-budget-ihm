@@ -5,35 +5,35 @@
     --color-accueil-hover: #78BBFF;
     --color-accueil-selected: #E5E7EB;
     --color-accueil-selected-hover: #F3F4F6;
-    
+
     --color-operations-primary: #4ADE80;
     --color-operations-hover: #86EFAC;
     --color-operations-selected-hover: #09f15e;
-    
+
     --color-recurrents-primary: #FB923C;
     --color-recurrents-hover: #FDBA74;
-    
+
     --color-analyses-primary: #4DA3FF;
     --color-analyses-hover: #78BBFF;
-    
+
     --color-tendances-primary: #A78BFA;
     --color-tendances-hover: #C4B5FD;
-    
+
     /* Common colors */
     --color-heading: #31687f;
     --color-dark-bg: #121212;
     --color-dark-container: #1E1E1E;
     --color-white: #FFFFFF;
     --color-nav-hover: #114b65;
-    
+
     /* List colors */
     --color-separator-bg: #252525;
     --color-separator-text: #5fa9cc;
-    
+
     /* Item hover */
     --color-item-hover-bg: #2f2f2f;
     --color-item-hover-text: #ebebeb;
-    
+
     /* Operation states */
     --color-credit: #2e7d32;
     --color-depense: #e74c3c;
@@ -61,7 +61,11 @@ body {
     padding: 3px;
 }
 
-h2, h3, h6, .MuiTypography-h3, .MuiTypography-h6 {
+h2,
+h3,
+h6,
+.MuiTypography-h3,
+.MuiTypography-h6 {
     color: var(--color-heading);
 }
 
@@ -189,14 +193,33 @@ a#tendances-link.nav-link_selected:hover {
     height: calc(100vh - 70px);
 }
 
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(24px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 /* Page containers - Specific colors */
 .budget-page-container {
     border-top: 3px solid var(--color-operations-primary);
     border-bottom: 3px solid var(--color-operations-primary);
+    align-items: center;
+    justify-content: center;
+    animation: slideInFromRight 0.3s ease-out;
 }
+
 .recurrents-page-container {
     border-top: 3px solid var(--color-recurrents-primary);
     border-bottom: 3px solid var(--color-recurrents-primary);
+    align-items: center;
+    justify-content: center;
+    animation: slideInFromRight 0.3s ease-out;
 }
 
 .analyses-page-container {
@@ -218,9 +241,10 @@ a#tendances-link.nav-link_selected:hover {
     justify-content: center;
     align-items: center;
 }
+
 /* Budget buttons */
 button.buttonsActionsBudget,
-button.buttonsActionsOperations{
+button.buttonsActionsOperations {
     color: #FFFFFF;
     margin-right: 1px;
 }
@@ -262,11 +286,13 @@ ___  ___      _     _ _
         border: 2px solid var(--color-white);
     }
 
-    h3, .MuiTypography-h3 {
+    h3,
+    .MuiTypography-h3 {
         font-size: 1.8rem !important;
     }
 
-    h6, .MuiTypography-h6 {
+    h6,
+    .MuiTypography-h6 {
         font-size: 1.0rem !important;
     }
 
@@ -297,7 +323,7 @@ ___  ___      _     _ _
         height: 40px;
         width: 150px;
         margin-top: 12px;
-    } 
+    }
 
     a.nav-link_selected {
         font-size: 1rem;
@@ -324,7 +350,7 @@ ___  ___      _     _ _
         height: 30px;
     }
 
-    .filtercategorie > span {
+    .filtercategorie>span {
         font-size: 10px;
     }
 
@@ -367,7 +393,8 @@ ______          _    _
         border: 5px solid var(--color-white);
     }
 
-    h3, .MuiTypography-h3 {
+    h3,
+    .MuiTypography-h3 {
         font-size: 1.8rem !important;
     }
 
@@ -376,7 +403,7 @@ ______          _    _
         height: 60px;
         width: 150px;
     }
-    
+
     a.nav-link_selected {
         font-size: 1.25rem;
         height: 60px;
@@ -398,7 +425,7 @@ ______          _    _
         padding: 10px;
     }
 
-    .filtercategorie > span {
+    .filtercategorie>span {
         font-size: 12px;
     }
 
@@ -467,6 +494,7 @@ ______          _    _
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
+
 input[type="month"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     color: #000 !important;
@@ -482,6 +510,7 @@ input[type="month"]::-webkit-calendar-picker-indicator {
 a.nav-link:hover {
     color: var(--color-nav-hover);
 }
+
 a.nav-link_selected:hover {
     color: var(--color-nav-hover);
 }
@@ -517,4 +546,3 @@ a.nav-link_selected:hover {
 .operation-status-error {
     color: #f70505;
 }
-

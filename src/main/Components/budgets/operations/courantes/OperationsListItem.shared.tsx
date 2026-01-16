@@ -18,6 +18,7 @@ interface SharedOperationItemProps {
     getOperationsColor?: string;
     getSelectedOperationColor?: string;
     isSelected?: boolean;
+    isOneSelected?: boolean;
 }
 /**
  * 
@@ -28,20 +29,26 @@ function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined
     return {
         borderTop: '1px solid ' + getSelectedOperationColor,
         borderBottom: '1px solid ' + getSelectedOperationColor,
-        paddingLeft: '6px',
-        marginRight: '4px'
     };
 }
 
-function getUnselectedBoxBorderStyle() {
-    return {
-        borderTop: 'none',
-        borderBottom: 'none',
-        paddingLeft: '6px',
-        marginRight: '4px'
-
-    };
+/**
+ * Get the box style based on selection state
+ * @param isSelected whether the operation is selected
+ * @param isOneSelected whether any operation is selected
+ * @param getSelectedOperationColor color for selected operation
+ * @returns style object
+ */
+function getBoxStyle(isSelected: boolean | undefined, isOneSelected: boolean | undefined, getSelectedOperationColor: string | undefined) {
+    if (isSelected) {
+        return getSelectedBoxBorderStyle(getSelectedOperationColor);
+    }
+    if (isOneSelected) {
+        return { opacity: 0.6 };
+    }
+    return {};
 }
+
 
 /**
  * Shared operation item component
@@ -57,7 +64,8 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     getBorderColor,
     getOperationsColor,
     getSelectedOperationColor,
-    isSelected
+    isSelected,
+    isOneSelected
 }: SharedOperationItemProps): JSX.Element => {
 
     const { comptes } = useContext(BudgetContext);
@@ -66,9 +74,9 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     return (
         <Box key={"liste_" + operation.id}
              onClick={() => handleOperationSelect(operation)}
+             className="operation-list-item"
              sx={{
-                 cursor: 'pointer',
-                 ...(isSelected ? getSelectedBoxBorderStyle(getSelectedOperationColor) : getUnselectedBoxBorderStyle()),
+                 ...getBoxStyle(isSelected, isOneSelected, getSelectedOperationColor),
                  '&:hover': {
                      backgroundColor: getOperationsColor || '#1F3D2B'
                  }

@@ -22,7 +22,8 @@ const OperationsRecurrentesListe: React.FC<OperationsRecurrentesListeProps> = ({
         <OperationRecurrenteItem key={operation.id}
                                 operation={operation}
                                 onClick={onClick}
-                                isSelected={operation.id === selectedOperationId}/>
+                                isSelected={operation.id === selectedOperationId}
+                                isOneSelected={selectedOperationId !== null && selectedOperationId !== undefined} />
     );
 
     const getSeparatorStyle = (key: string) => ({

@@ -219,6 +219,7 @@ export interface OperationItemProps {
     operation: OperationModel
     onClick: (operation : OperationModel) => void
     isSelected?: boolean
+    isOneSelected?: boolean
 }
 export interface OperationRecurrenteDetailPageProps {
     onOperationChange: (budget: BudgetMensuelModel) => void

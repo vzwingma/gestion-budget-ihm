@@ -33,7 +33,12 @@ const OperationDetailStatus: React.FC<OperationStatusProps> = ({ statutsOperatio
         // définition du libellé
         return (
             <Tooltip title="En retard">
-                <Stack direction="row" spacing={1} alignItems="center" className="operation-status-badge operation-status-en-retard">
+                <Stack 
+                    direction="row" 
+                    spacing={1} 
+                    alignItems="center" 
+                    className="operation-status-badge operation-status-en-retard"
+                >
                     <WatchLaterRounded
                         sx={{
                             color: "#FB923C",

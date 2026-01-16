@@ -20,7 +20,8 @@ const OperationsListe: React.FC<OperationsListeProps> = ({ operationGroupedByDat
         return <OperationItem key={operation.id}
             operation={operation}
             onClick={onClick}
-            isSelected={operation.id === selectedOperationId} />
+            isSelected={operation.id === selectedOperationId}
+            isOneSelected={selectedOperationId !== null && selectedOperationId !== undefined} />
     };
 
     return (

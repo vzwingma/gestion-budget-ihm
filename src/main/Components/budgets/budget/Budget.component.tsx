@@ -155,13 +155,11 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                 </Grid>
                 <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: listHeight }}>
                     {currentBudget != null && currentOperation != null ?
-                        /** Affichage d'une opération **/
                         <OperationDetailPage
                             listeCategories={categories}
                             listeLibellesOperations={listeLibellesOperations}
                             onOperationChange={handleBudgetUpdate} />
-                        : <></>
-                    }
+                    : <></>                      }
                 </Grid>
             </Grid>
         </Box>
