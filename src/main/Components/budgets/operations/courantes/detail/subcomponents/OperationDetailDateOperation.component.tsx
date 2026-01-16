@@ -49,8 +49,8 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   form
             :
             <Typography id={OPERATION_EDITION_FORM.DATE_OPERATION} variant={"subtitle1"}
                 className={budgetActif ? "editableField" : ""}
-                sx={{ color: (operation.autresInfos.dateOperation == null ? "#121212" : "#FFFFFF") }}>
-                {operation.autresInfos.dateOperation == null ? "jj/mm/aaaa" : getLabelFRFromDate(operation.autresInfos.dateOperation)}
+                sx={{ color: "#FFFFFF" }}>
+                {operation.autresInfos.dateOperation == null || operation.autresInfos.dateOperation === undefined ? "jj/mm/aaaa" : getLabelFRFromDate(operation.autresInfos.dateOperation)}
             </Typography>
 
     )

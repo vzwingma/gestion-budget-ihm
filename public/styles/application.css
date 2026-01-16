@@ -215,20 +215,16 @@ a#tendances-link.nav-link_selected:hover {
 }
 /* Budget buttons */
 button.buttonsActionsBudget,
-button.buttonsActionsOperations,
-button.buttonsActionsOperationsP {
+button.buttonsActionsOperations{
     color: #FFFFFF;
     margin-right: 1px;
 }
 
-button.buttonsActionsOperations,
-button.buttonsActionsOperationsP {
+button.buttonsActionsOperations {
     padding: 5px 5px 0 5px;
+    margin-right: 10px;
 }
 
-button.buttonsActionsOperationsP {
-    padding: 5px 6px 0 4px;
-}
 /**
 ___  ___      _     _ _
 |  \/  |     | |   (_) |

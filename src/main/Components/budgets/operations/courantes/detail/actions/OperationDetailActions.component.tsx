@@ -44,7 +44,6 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
     const budget = currentBudget;
     return (
         <ButtonGroup
-            sx={{padding: "10px"}}
             variant="contained"
             onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, editOperation, handleDateOperationFromCreateAction, onOperationChange, setShowModale)}>
             {operation.etat !== OPERATION_ETATS_ENUM.REALISEE &&
