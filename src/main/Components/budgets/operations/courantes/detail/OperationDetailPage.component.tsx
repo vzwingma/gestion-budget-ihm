@@ -41,6 +41,7 @@ import { OperationDetailPageProps } from '../../../../Components.props.ts';
 import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import { OperationDetailDate } from './subcomponents/OperationDetailDateOperation.component.tsx';
 import OperationDetailStatus from '../../../../../Utils/renderers/OperationDetailStatus.renderer.tsx';
+import { OperationDetailDateFin } from '../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
 
 
 /**
@@ -120,6 +121,14 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             case OPERATION_EDITION_FORM.MENSUALITE:
                 editOperationUpdated.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
                 break;
+            case OPERATION_EDITION_FORM.DATE_FIN:
+                if (value !== null && value !== undefined && value !== "") {
+                    editOperationUpdated.mensualite.dateFin = new Date(Date.parse(value))
+                }
+                else {
+                    editOperationUpdated.mensualite.dateFin = null
+                }
+                break;                
             case OPERATION_EDITION_FORM.CATEGORIE:
                 if (value !== "") {
                     fillCategorieForm(value);
@@ -213,7 +222,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                  * CATEGORIES 
                  **/}
 
-                <Grid container width={"80%"}>
+                <Grid container width={"70%"} columnSpacing={10}>
                     <Grid size={{ md: 4.5, xl: 8 }} paddingBottom={1}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Catégorie</Typography>
                     </Grid>
@@ -230,7 +239,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             formCatgoriesInEdition={editForm.categories}
                             errorsCategories={errors.categorie}
                             fillOperationForm={fillOperationForm} />
-                             { /** COMPTE DE TRANSFERT  **/}
+                        { /** COMPTE DE TRANSFERT  **/}
                         {isInCreateMode(editForm) && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                             <OperationDetailIntercompte intercompte={editOperation.intercompte}
                                 listeAutresComptes={
@@ -238,17 +247,17 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 errorIntercompte={errors.intercompte}
                                 fillOperationForm={fillOperationForm} />
                             : getAffichageIntercompteRO(editOperation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
-                        
+
                     </Grid>
                     <Grid size={{ md: 3, xl: 4 }} paddingBottom={1}>
                         { /** DATE OPERATION **/}
                         <OperationDetailDate
                             formDateInEdition={editForm.dateOperation}
                             errorDateOperation={errors.dateOperation}
-                            fillOperationForm={fillOperationForm} />     
-                    </Grid> 
+                            fillOperationForm={fillOperationForm} />
+                    </Grid>
 
-                {/** 
+                    {/** 
                  * MENSUALITES
                  **/}
 
@@ -256,8 +265,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Période</Typography>
                     </Grid>
                     <Grid size={{ md: 3, xl: 4 }} paddingTop={3} paddingBottom={1}>
-                        <Typography variant={"caption"} sx={{ color: "#808080" }}>Date de fin</Typography>
-                    </Grid>                    
+                        {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
+                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Date de fin</Typography>
+                        }
+                    </Grid>
                     <Grid size={{ md: 4.5, xl: 8 }}>
                         { /** Période **/}
                         <OperationDetailMensualite
@@ -265,13 +276,15 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             fillOperationForm={fillOperationForm} />
                     </Grid>
                     <Grid size={{ md: 3, xl: 4 }}>
-                        <OperationDetailMensualite
-                            formMensualiteInEdition={editForm.mensualite}
-                            fillOperationForm={fillOperationForm} />
+                        { /** DATE FIN **/}
+                        {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
+                            <OperationDetailDateFin formDateInEdition={editForm.dateFin}
+                                errorDateOperation={errors.dateFin}
+                                fillOperationForm={fillOperationForm} />}
                     </Grid>
 
 
-                {/** 
+                    {/** 
                  * ETATS et Actions 
                  **/}
                     <Grid size={{ md: 4.5, xl: 8 }} paddingTop={3} paddingBottom={1}>
@@ -287,7 +300,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             {operation.etat}
                         </Typography>
                     </Grid>
-                    <Grid size={{ md: 3, xl: 4 }} style={{ display: 'flex', alignItems: 'left', border: '1px solid red' }}>
+                    <Grid size={{ md: 3, xl: 4 }}>
                         { /** ACTIONS **/}
                         {currentBudget?.actif && currentOperation?.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE ?
                             <OperationDetailActions

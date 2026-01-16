@@ -1,16 +1,18 @@
 import OperationEditionModel from "../../../../../Models/budgets/OperationEdition.model.ts";
 import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../../../Models/budgets/Operation.model.ts";
-import {BUSINESS_GUID, TYPES_OPERATION_ENUM} from "../../../../../Utils/AppBusinessEnums.constants.ts";
-import {getEventTargetId} from "../../../../../Utils/OperationData.utils.ts";
+import { BUSINESS_GUID, OPERATION_STATUS_ENUM, TYPES_OPERATION_ENUM } from "../../../../../Utils/AppBusinessEnums.constants.ts";
+import { getEventTargetId } from "../../../../../Utils/OperationData.utils.ts";
 import {
     createEmptyErrors,
     EditFormProps,
     ErrorsFormProps,
     OPERATION_EDITION_FORM
 } from "./OperationDetailPage.constants.ts";
-import {saveOperation, saveOperationIntercompte} from "./OperationDetailPage.extservices.ts";
-import {Dispatch, SetStateAction} from "react";
+import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices.ts";
+import { Dispatch, SetStateAction } from "react";
+import { getLabelFRFromDate } from "../../../../../Utils/Date.utils.ts";
+import { isDerniereEcheanceRO } from "../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
 
 
 interface OperationBudgetProps {
@@ -29,9 +31,9 @@ interface OperationBudgetProps {
  * @param setErrors fonction pour mettre à jour les erreurs du formulaire
  * @param onOperationUpdate mise à jour de l'opération
  */
-export function handleOperationEditionClick(event: any, {operation, budget} : OperationBudgetProps,
+export function handleOperationEditionClick(event: any, { operation, budget }: OperationBudgetProps,
     editOperation: OperationEditionModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void,
-                                            setErrors: Dispatch<SetStateAction<ErrorsFormProps>>,
+    setErrors: Dispatch<SetStateAction<ErrorsFormProps>>,
     onOperationUpdate: (budget: BudgetMensuelModel) => void) {
 
 
@@ -55,6 +57,9 @@ export function handleOperationEditionClick(event: any, {operation, budget} : Op
                     break;
                 case OPERATION_EDITION_FORM.MENSUALITE:
                     editForm.mensualite = true;
+                    break;
+                case OPERATION_EDITION_FORM.DATE_FIN:
+                    editForm.dateFin = true;
                     break;
                 default:
                     break;
@@ -114,7 +119,7 @@ function validateFormMontant(editOperation: OperationEditionModel, operation: Op
     }
 
     const formValeur: string = editOperation.valeur;
-    let {valeurCalculee, error} = calculateValeur(formValeur.replace(",", "."));
+    let { valeurCalculee, error } = calculateValeur(formValeur.replace(",", "."));
     if (error) {
         errors.valeur = error;
         return;
@@ -153,7 +158,35 @@ function validateFormTransfertIntercompte(editOperation: OperationEditionModel, 
     }
 }
 
+/**
+ * validation du formulaire - DateFin
+ * @param budget budget mensuel
+ * @param editOperation opération en cours d'édition
+ * @param operation opération à mettre à jour
+ * @param editForm formulaire d'édition
+ * @param errors erreurs du formulaire
+ */
+function validateFormDateFinPeriode(budget: BudgetMensuelModel, editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
+    if (!editForm.dateFin) return;
+    const dateFin = editOperation.mensualite.dateFin;
 
+    const [, annee, mois] = budget.id.split('_');
+    let dateBudget = new Date(Number.parseInt(annee), Number.parseInt(mois) - 1, 0); // Premier jour du mois du budget
+    if (dateFin !== null && dateFin !== undefined && dateFin < dateBudget) {
+        errors.dateFin = "La date de fin doit être supérieure ou égale au mois du budget";
+    }
+    else {
+        errors.dateFin = null;
+        operation.mensualite.dateFin = dateFin ?? null;
+        if (isDerniereEcheanceRO(operation, budget.id)) {
+            operation.statuts ??= [];
+            if (!operation.statuts.includes(OPERATION_STATUS_ENUM.DERNIERE_ECHEANCE)) {
+                operation.statuts.push(OPERATION_STATUS_ENUM.DERNIERE_ECHEANCE);
+            }
+        }
+    }
+
+}
 /**
 * Validation du formulaire d'opération.
 *
@@ -162,7 +195,7 @@ function validateFormTransfertIntercompte(editOperation: OperationEditionModel, 
 * @param {EditFormProps} editForm - Les propriétés du formulaire d'édition.
 * @param {ErrorsFormProps} errors - Les erreurs du formulaire.
 */
-export function validateForm(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
+export function validateForm(budget: BudgetMensuelModel, editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
     // Description
     validateDescription(editOperation, operation, errors);
 
@@ -170,6 +203,8 @@ export function validateForm(editOperation: OperationEditionModel, operation: Op
     validateFormMontant(editOperation, operation, editForm, errors);
     // DateOperation
     operation.autresInfos.dateOperation = editOperation.autresInfos.dateOperation;
+    // DateFin
+    validateFormDateFinPeriode(budget, editOperation, operation, editForm, errors);
 
     // Catégorie / ssCatégorie
     validateFormCategories(editOperation, operation, errors);
@@ -241,12 +276,12 @@ function validateValue(valeur: string): boolean {
  * @param onOperationUpdate - Fonction pour mettre à jour l'opération.
  */
 export function handleValidateOperationForm(operation: OperationModel, budget: BudgetMensuelModel, editOperation: OperationEditionModel,
-                                            editForm: EditFormProps, setErrors: Dispatch<SetStateAction<ErrorsFormProps>>,
+    editForm: EditFormProps, setErrors: Dispatch<SetStateAction<ErrorsFormProps>>,
     onOperationUpdate: (budget: BudgetMensuelModel) => void) {
 
     if (isInEditMode(editForm)) {
         let errors = createEmptyErrors();
-        validateForm(editOperation, operation, editForm, errors);
+        validateForm(budget, editOperation, operation, editForm, errors);
 
         let hasErrors = false;
         for (let error in errors) {
@@ -274,7 +309,7 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
  * @returns {boolean}
  */
 export function isInEditMode(editForm: EditFormProps): boolean {
-    return editForm.value || editForm.libelle || editForm.dateOperation || editForm.mensualite;
+    return editForm.value || editForm.libelle || editForm.dateOperation || editForm.mensualite || editForm.dateFin;
 }
 
 /**

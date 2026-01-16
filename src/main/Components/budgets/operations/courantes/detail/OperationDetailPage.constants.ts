@@ -33,6 +33,7 @@ export interface EditFormProps {
     libelle: boolean
     dateOperation: boolean
     mensualite: boolean
+    dateFin: boolean
     categories: boolean
     formValidationEnabled: boolean
 }
@@ -43,6 +44,7 @@ export function createEmptyEditForm(operationInCreation: boolean): EditFormProps
         libelle: operationInCreation,
         dateOperation: operationInCreation,
         mensualite: operationInCreation,
+        dateFin: operationInCreation,
         categories: operationInCreation,
         formValidationEnabled: false
     }
@@ -59,6 +61,7 @@ export function createEmptyEditForm(operationInCreation: boolean): EditFormProps
 export interface ErrorsFormProps {
     valeur: string | null
     dateOperation: string | null
+    dateFin: string | null
     libelle: string | null
     categorie: string | null
     compte: string | null
@@ -69,6 +72,7 @@ export function createEmptyErrors(): ErrorsFormProps {
     return {
         valeur: null,
         dateOperation: null,
+        dateFin: null,
         libelle: null,
         categorie: null,
         compte: null,
