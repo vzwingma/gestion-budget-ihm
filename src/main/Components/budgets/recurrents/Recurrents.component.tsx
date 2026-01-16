@@ -1,15 +1,15 @@
-import React, {JSX, useCallback, useContext, useEffect, useState} from "react";
+import React, { JSX, useCallback, useContext, useEffect, useState } from "react";
 
-import {Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme} from "@mui/material";
+import { Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
-import {getPreferenceUtilisateur, reloadBudget} from "./../budget/Budget.extservices.ts";
+import { getPreferenceUtilisateur, reloadBudget } from "./../budget/Budget.extservices.ts";
 
-import {getLabelFRFromDate} from "../../../Utils/Date.utils.ts";
-import {getOperationsRecurrentesGroupedByPeriodicity} from "./Recurrents.controller.ts";
+import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
+import { getOperationsRecurrentesGroupedByPeriodicity } from "./Recurrents.controller.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
-import {RecurrentsPageProps} from "../../Components.props.ts";
-import {BudgetContext} from "../../../Models/contextProvider/BudgetContextProvider.tsx";
+import { RecurrentsPageProps } from "../../Components.props.ts";
+import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
 import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
 import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
@@ -90,33 +90,33 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                 selectedCompte={selectedCompte}
                 selectedDate={selectedDate}
                 filterPlaceholder="Filtrage des opérations récurrentes"
-                                additionalHeaderContentRight={
-                                    <Grid size={{ md: 1, xl: 1 }}>
-                                        {currentBudget == null ?
-                                            <CenterComponent><CircularProgress /></CenterComponent> :
-                                            <BudgetActionsButtonGroupComponent
-                                                droits={userDroits}
-                                                onActionBudgetChange={handleBudgetUpdate}
-                                                onActionOperationCreate={() => {}} />
-                                        }
-                                    </Grid>}
+                additionalHeaderContentRight={
+                    <Grid size={{ md: 1, xl: 1 }}>
+                        {currentBudget == null ?
+                            <CenterComponent><CircularProgress /></CenterComponent> :
+                            <BudgetActionsButtonGroupComponent
+                                droits={userDroits}
+                                onActionBudgetChange={handleBudgetUpdate}
+                                onActionOperationCreate={() => { }} />
+                        }
+                    </Grid>}
             />
-            <Divider variant="middle" sx={{marginTop: isMobile ? 0 : 1}}/>
-            <Grid container sx={{overflow: "hidden"}}>
-                <Grid size={{md: 5, xl: 4}} direction={"column"} sx={{overflow: "hidden"}} maxHeight={'true'}>
-                    { /** Liste des opérations **/
+            <Divider variant="middle" sx={{ marginTop: isMobile ? 0 : 1 }} />
+            <Grid container sx={{ overflow: "hidden" }}>
+                <Grid size={{ md: 5, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
+                    { /** Liste des opérations récurrentes **/
                         (currentBudget == null ?
                             <CenterComponent><CircularProgress /></CenterComponent>
                             :
                             <OperationsRecurrentesListe
                                 operationGroupedByPeriodicity={operationsRecurrentesGroupedByPeriodicity}
                                 filterOperations={filterOperations}
-                                onClick={handleOperationSelect} 
-                                selectedOperationId={currentOperation?.id}/>
+                                onClick={handleOperationSelect}
+                                selectedOperationId={currentOperation?.id} />
                         )
                     }
                 </Grid>
-                <Grid size={{md: 7, xl: 8}} sx={{overflow: "hidden", height: listHeight}}>
+                <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: listHeight }}>
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationRecurrenteDetailPage onOperationChange={handleBudgetUpdate} />

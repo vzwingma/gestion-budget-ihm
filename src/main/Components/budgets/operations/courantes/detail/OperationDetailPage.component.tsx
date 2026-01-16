@@ -231,13 +231,13 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                  * CATEGORIES 
                  **/}
 
-                    <Grid container width={"90%"} columnSpacing={10}>
+                    <Grid container width={"90%"} columnSpacing={10} sx={{borderTop: '1px solid var(--color-heading-text)', paddingTop: 2}}>
                         <Grid size={{ md: 4.5, xl: 8 }} paddingBottom={1}>
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Catégorie</Typography>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                         </Grid>
                         <Grid size={{ md: 3, xl: 4 }} paddingBottom={1}>
                             {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
-                                <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>}
+                                <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography> : <></>}
                         </Grid>
 
                         <Grid size={{ md: 4.5, xl: 8 }}>
@@ -265,11 +265,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                      **/}
 
                         <Grid size={{ md: 4.5, xl: 8 }} paddingTop={3} paddingBottom={1}>
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Période</Typography>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
                         </Grid>
                         <Grid size={{ md: 3, xl: 4 }} paddingTop={3} paddingBottom={1}>
                             {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
-                                <Typography variant={"caption"} sx={{ color: "#808080" }}>Date de fin</Typography>
+                                <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date de fin</Typography>
                             }
                         </Grid>
                         <Grid size={{ md: 4.5, xl: 8 }}>
@@ -291,10 +291,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                      * ETATS et Actions 
                      **/}
                         <Grid size={{ md: 4.5, xl: 8 }} paddingTop={3} paddingBottom={1}>
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Etat</Typography>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Etat</Typography>
                         </Grid>
                         <Grid size={{ md: 4.5, xl: 4 }} paddingTop={3} paddingBottom={1}>
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Date d'opération</Typography>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date d'opération</Typography>
                         </Grid>
 
 
@@ -314,34 +314,36 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
                     </Grid>
 
-                    {currentBudget?.actif && !isInEditMode(editForm) &&
-                        <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }} paddingTop={2} >
+                    <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }} paddingTop={2} >
+                        {currentBudget?.actif && !isInEditMode(editForm) &&
 
-                            <Grid size={{ md: 3, xl: 2 }}>
-                                <Typography variant={"caption"} sx={{ color: "#808080" }}>Actions</Typography>
-                            </Grid>
-                            <Grid size={{ md: 3, xl: 8 }}>
-                                <Stack direction={"column"} spacing={2} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
-                                    { /** ACTIONS **/}
-                                    {currentOperation?.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ?
-                                        <></>
-                                        : <OperationDetailActions
-                                            isInCreateMode={isInCreateMode(editForm)}
-                                            editOperation={editOperation}
-                                            onClickRealiseInCreateMode={() => handleDateOperationFromAction(editOperation, setEditOperation)}
-                                            onOperationChange={onOperationChange}
-                                        />
-                                    }
-                                </Stack>
-                            </Grid>
-                            <Grid size={{ md: 3, xl: 2 }}></Grid>
-                        </Grid>
-                    }
-                    {currentBudget?.actif && isInEditMode(editForm) &&
-                        <Button fullWidth variant="outlined" color="success"
-                            onClick={() => handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate)}>Valider</Button>
-                    }
+                            <>
+                                <Grid size={{ md: 3, xl: 2 }}>
+                                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Actions</Typography>
+                                </Grid>
+                                <Grid size={{ md: 3, xl: 8 }}>
+                                    <Stack direction={"column"} spacing={2} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
+                                        { /** ACTIONS **/}
+                                        {currentOperation?.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ?
+                                            <></>
+                                            : <OperationDetailActions
+                                                isInCreateMode={isInCreateMode(editForm)}
+                                                editOperation={editOperation}
+                                                onClickRealiseInCreateMode={() => handleDateOperationFromAction(editOperation, setEditOperation)}
+                                                onOperationChange={onOperationChange}
+                                            />
+                                        }
+                                    </Stack>
+                                </Grid>
+                                <Grid size={{ md: 3, xl: 2 }}></Grid>
+                            </>
 
+                        }
+                        {currentBudget?.actif && isInEditMode(editForm) &&
+                            <Button fullWidth variant="outlined" color="success"
+                                onClick={() => handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate)}>Valider</Button>
+                        }
+                    </Grid>
                 </Stack>
             </Stack>
         </Container>

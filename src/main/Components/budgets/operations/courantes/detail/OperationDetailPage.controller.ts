@@ -1,7 +1,7 @@
 import OperationEditionModel from "../../../../../Models/budgets/OperationEdition.model.ts";
 import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../../../Models/budgets/Operation.model.ts";
-import { BUSINESS_GUID, OPERATION_STATUS_ENUM, TYPES_OPERATION_ENUM } from "../../../../../Utils/AppBusinessEnums.constants.ts";
+import { BUSINESS_GUID} from "../../../../../Utils/AppBusinessEnums.constants.ts";
 import { getEventTargetId } from "../../../../../Utils/OperationData.utils.ts";
 import {
     createEmptyErrors,
@@ -11,7 +11,11 @@ import {
 } from "./OperationDetailPage.constants.ts";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices.ts";
 import { Dispatch, SetStateAction } from "react";
-import { isDerniereEcheanceRO } from "../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
+import { validateFormDateFinPeriode } from "../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx";
+import { validateDescription } from "./subcomponents/OperationDetailLibelle.controller.ts";
+import { validateFormCategories } from "./subcomponents/OperationDetailCategories.component.tsx";
+import { validateFormTransfertIntercompte } from "./subcomponents/OperationDetailIntercompte.component.tsx";
+import { validateFormMontant } from "./subcomponents/OperationDetailValeur.component.tsx";
 
 
 interface OperationBudgetProps {
@@ -79,113 +83,10 @@ export function handleDateOperationFromAction(editOperation: OperationEditionMod
 }
 
 
-/**
- * validation du formulaire - Description
- */
-/**
- * Valide la description d'une opération et met à jour les erreurs si nécessaire.
- *
- * @param {OperationModel} editOperation - L'opération en cours d'édition.
- * @param {OperationModel} operation - L'opération à mettre à jour.
- * @param {ErrorsFormProps} errors - Les erreurs de formulaire à mettre à jour.
- */
-function validateDescription(editOperation: OperationEditionModel, operation: OperationModel, errors: ErrorsFormProps) {
-    // Description
-    if (editOperation.libelle === null || editOperation.libelle === "") {
-        errors.libelle = "Le champ Description est obligatoire";
-    } else {
-        operation.libelle = editOperation.libelle;
-        errors.libelle = null;
-    }
-}
 
 
 
-/**
- *
- * @param editOperation valeur de l'opération en cours d'édition
- * @param operation opération à mettre à jour
- * @param editForm champs en édition
- * @param errors erreurs du formulaire
- * @returns opération mise à jour ou erreurs
- */
-function validateFormMontant(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
-    if (!editForm.value) return;
 
-    if (!editOperation.valeur) {
-        errors.valeur = "Le champ Valeur est obligatoire";
-        return;
-    }
-
-    const formValeur: string = editOperation.valeur;
-    let { valeurCalculee, error } = calculateValeur(formValeur.replace(",", "."));
-    if (error) {
-        errors.valeur = error;
-        return;
-    }
-
-    if (!valeurCalculee || !validateValue(valeurCalculee)) {
-        errors.valeur = "Le format est incorrect : 0000.00 €";
-        return;
-    }
-    errors.valeur = null;
-    operation.valeur = (editOperation.typeOperation === TYPES_OPERATION_ENUM.DEPENSE ? -1 : 1) * Number(valeurCalculee);
-}
-
-/**
- * validation du formulaire - Catégories
- */
-function validateFormCategories(editOperation: OperationEditionModel, operation: OperationModel, errors: ErrorsFormProps) {
-    if (editOperation.categorie.id === null || editOperation.categorie.libelle === null || editOperation.ssCategorie.id === null || editOperation.ssCategorie.libelle === null) {
-        errors.categorie = "Le champ Catégorie est obligatoire"
-    } else {
-        operation.categorie = editOperation.categorie
-        operation.ssCategorie = editOperation.ssCategorie
-        errors.categorie = null
-    }
-}
-
-/**
- * validation du formulaire - Transfert intercomptes
- */
-function validateFormTransfertIntercompte(editOperation: OperationEditionModel, intercompte: string | null, operation: OperationModel, errors: ErrorsFormProps) {
-    if (editOperation.ssCategorie.id === BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE && intercompte === null) {
-        errors.intercompte = "Le champ Intercompte est obligatoire"
-    } else {
-        operation.intercompte = intercompte
-        errors.intercompte = null
-    }
-}
-
-/**
- * validation du formulaire - DateFin
- * @param budget budget mensuel
- * @param editOperation opération en cours d'édition
- * @param operation opération à mettre à jour
- * @param editForm formulaire d'édition
- * @param errors erreurs du formulaire
- */
-function validateFormDateFinPeriode(budget: BudgetMensuelModel, editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
-    if (!editForm.dateFin) return;
-    const dateFin = editOperation.mensualite.dateFin;
-
-    const [, annee, mois] = budget.id.split('_');
-    let dateBudget = new Date(Number.parseInt(annee), Number.parseInt(mois) - 1, 0); // Premier jour du mois du budget
-    if (dateFin !== null && dateFin !== undefined && dateFin < dateBudget) {
-        errors.dateFin = "La date de fin doit être supérieure ou égale au mois du budget";
-    }
-    else {
-        errors.dateFin = null;
-        operation.mensualite.dateFin = dateFin ?? null;
-        if (isDerniereEcheanceRO(operation, budget.id)) {
-            operation.statuts ??= [];
-            if (!operation.statuts.includes(OPERATION_STATUS_ENUM.DERNIERE_ECHEANCE)) {
-                operation.statuts.push(OPERATION_STATUS_ENUM.DERNIERE_ECHEANCE);
-            }
-        }
-    }
-
-}
 /**
 * Validation du formulaire d'opération.
 *
@@ -214,54 +115,6 @@ export function validateForm(budget: BudgetMensuelModel, editOperation: Operatio
 }
 
 
-/**
- * Calcul de l'équation mathématique (sans eval) depuis une chaine de caractères
- * @param valueToCalculate : string : chaine de caractères à calculer à saisie
- * @returns {string} résultat
- *
- */
-function processEquation(valueToCalculate: string): string {
-    if (valueToCalculate.length <= 1000) {
-        try {
-            // eslint-disable-next-line no-new-func
-            const result = new Function(`return ${valueToCalculate}`)();
-            return result.toString();
-        } catch (error) {
-            console.error("Erreur lors du traitement de l'équation : ", valueToCalculate, error);
-            return "0";
-        }
-    }
-    return valueToCalculate
-}
-
-/**
- * Calcul de la valeur d'une opération (en prenant en compte les opérations
- * @param formValue : string valeur saisie du formulaire
- * @returns {number} total
- */
-function calculateValeur(formValue: string): { valeurCalculee: string | null, error: string | null } {
-
-    try {
-        // eslint-disable-next-line no-eval
-        const calculee = Number(processEquation(formValue)).toFixed(2);
-        console.log("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
-        return { valeurCalculee: calculee, error: null };
-    } catch (e) {
-        console.error("Erreur dans la valeur saisie ", formValue, e)
-        return { valeurCalculee: null, error: "Le champ Montant est incorrect" };
-    }
-}
-
-
-/**
- * Validation du format de la valeur saisie
- * @param valeur valeur
- * @returns {boolean} vrai si la valeur est correcte
- */
-function validateValue(valeur: string): boolean {
-    const valeurATester = valeur.replace(",", ".");
-    return /(^\d*(.\d{1,2})?$)/.test(valeurATester);
-}
 
 
 /**

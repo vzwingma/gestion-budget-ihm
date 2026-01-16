@@ -11,7 +11,7 @@ import { getCategorieColor, getCategorieIcon } from '../../../../../Utils/render
 import OperationValue from '../../../../../Utils/renderers/OperationValue.renderer.tsx';
 import { OperationDetailDateFin } from './subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
 import OperationEditionModel, { createNewOperationEdition } from '../../../../../Models/budgets/OperationEdition.model.ts';
-import { createEmptyEditForm, createEmptyErrors, EditFormProps, ErrorsFormProps, getProchaineEcheance, OPERATION_RECURRENTE_EDITION_FORM } from './OperationRecurrenteDetailPage.constants.ts';
+import { createEmptyEditForm, createEmptyErrors, EditRFormProps, ErrorsRFormProps, getProchaineEcheance, OPERATION_RECURRENTE_EDITION_FORM } from './OperationRecurrenteDetailPage.constants.ts';
 import { handleOperationRecurrenteEditionClick, handleValidateOperationForm, isInEditMode } from './OperationRecurrenteDetailPage.controller.ts';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
 import { OperationRecurrenteDetailPageProps } from '../../../../Components.props.ts';
@@ -32,9 +32,9 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
     onOperationChange
 }: OperationRecurrenteDetailPageProps): JSX.Element => {
 
-    const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm());
+    const [editForm, setEditForm] = useState<EditRFormProps>(createEmptyEditForm());
     const [refresh, setRefresh] = useState<Date>(new Date());
-    const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
+    const [errors, setErrors] = useState<ErrorsRFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
     const { currentBudget, currentOperation, comptes } = useContext(BudgetContext);
     const operation = currentOperation;
@@ -57,7 +57,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
      * Ouverture du formulaire d'édition
      * @param editForm formulaire d'édition
      */
-    function openEditForm(editForm: EditFormProps) {
+    function openEditForm(editForm: EditRFormProps) {
         setEditForm(editForm)
         setRefresh(new Date())
     }
@@ -142,11 +142,11 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
 
                     <Grid container width={"100%"} columnSpacing={10}>
                         <Grid size={{ md: 4.5, xl: 6 }} paddingTop={3} paddingBottom={1}>
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Catégorie</Typography>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                         </Grid>
                         <Grid size={{ md: 4.5, xl: 6 }} paddingTop={3} paddingBottom={1}>
                             {(operation.libelle != null && operationIsIntercompteFromLibelle(operation.libelle)) ?
-                                <Typography variant={"caption"} sx={{ color: "#808080" }}>Compte de transfert</Typography> : <></>
+                                <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography> : <></>
                             }
                         </Grid>
                         <Grid size={{ md: 4.5, xl: 6 }}>
@@ -159,13 +159,13 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                         </Grid>
 
                         <Grid size={{ md: 4.5, xl: 6 }} paddingTop={3} paddingBottom={1}>
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Période</Typography>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
                         </Grid>
                         <Grid size={{ md: 3, xl: 3 }} paddingTop={3} paddingBottom={1}>
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Prochaine échéance</Typography>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Prochaine échéance</Typography>
                         </Grid>
                         <Grid size={{ md: 3, xl: 3 }} paddingTop={3} paddingBottom={1}>
-                            <Typography variant={"caption"} sx={{ color: "#808080" }}>Se termine</Typography>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Se termine</Typography>
                         </Grid>
 
 
@@ -179,7 +179,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                         <Grid size={{ md: 3, xl: 3 }}>
                             { /** DATE OPERATION **/}
                             <Typography id={"OPERATION_EDITION_FORM.DATE_OPERATION"} variant={"subtitle1"}
-                                sx={{ color: (operation.mensualite.prochaineEcheance == null ? "#121212" : "#FFFFFF") }}>
+                                sx={{ color: (operation.mensualite.prochaineEcheance == null ? "var(--color-heading-text)" : "var(--color-white)") }}>
                                 {operation.mensualite.prochaineEcheance == null ? "jj/mm/aaaa" : getProchaineEcheance(operation.autresInfos.dateOperation, operation.mensualite.prochaineEcheance)}
                             </Typography>
                         </Grid>

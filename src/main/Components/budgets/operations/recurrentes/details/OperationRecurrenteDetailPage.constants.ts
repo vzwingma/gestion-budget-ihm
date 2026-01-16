@@ -19,12 +19,12 @@ export enum OPERATION_RECURRENTE_EDITION_FORM {
  * @property {boolean} dateFin - Indique si la date de fin est éditée.
  * @property {boolean} formValidationEnabled - Indique si la validation du formulaire est éditée.
  */
-export interface EditFormProps {
+export interface EditRFormProps {
     dateFin: boolean
     formValidationEnabled: boolean
 }
 
-export function createEmptyEditForm(): EditFormProps {
+export function createEmptyEditForm(): EditRFormProps {
     return {
         dateFin: false,
         formValidationEnabled: false
@@ -36,11 +36,11 @@ export function createEmptyEditForm(): EditFormProps {
  *
  * @property {string | null} dateFin - Erreur associée à la date de fin de l'opération.
  */
-export interface ErrorsFormProps {
+export interface ErrorsRFormProps {
     dateFin: string | null
 }
 
-export function createEmptyErrors(): ErrorsFormProps {
+export function createEmptyErrors(): ErrorsRFormProps {
     return {
         dateFin: null,
     }

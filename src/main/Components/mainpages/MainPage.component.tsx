@@ -94,7 +94,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @param fonction : fonction sélectionnée
      */
     function renderLeftTabDate(fonction: BUSINESS_ONGLETS): JSX.Element | null {
-        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.ANALYSE_CATEGORIES) {
+        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.RECURRENTS || fonction === BUSINESS_ONGLETS.ANALYSE_CATEGORIES) {
             return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
         }
         else {

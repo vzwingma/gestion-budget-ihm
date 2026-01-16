@@ -1,10 +1,13 @@
 import React, { JSX } from 'react'
 import { MenuItem, TextField } from "@mui/material"
-import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants.ts"
+import { ErrorsFormProps, OPERATION_EDITION_FORM } from "../OperationDetailPage.constants.ts"
 import { operationIsIntercompteFromLibelle } from '../../../../../../Utils/OperationData.utils.ts'
 import { getOperationIntercompteCatLibelle } from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
 import { OperationDetailIntercompteProps } from '../../../../../Components.props.ts'
 import CompteBancaireModel from '../../../../../../Models/budgets/CompteBancaire.model.ts'
+import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
+import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
+import { BUSINESS_GUID } from '../../../../../../Utils/AppBusinessEnums.constants.ts'
 
 
 /**
@@ -67,4 +70,17 @@ export const OperationDetailIntercompte: React.FC<OperationDetailIntercompteProp
                 ))}
         </TextField>
     )
+}
+
+
+/**
+ * validation du formulaire - Transfert intercomptes
+ */
+export function validateFormTransfertIntercompte(editOperation: OperationEditionModel, intercompte: string | null, operation: OperationModel, errors: ErrorsFormProps) {
+    if (editOperation.ssCategorie.id === BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE && intercompte === null) {
+        errors.intercompte = "Le champ Intercompte est obligatoire"
+    } else {
+        operation.intercompte = intercompte
+        errors.intercompte = null
+    }
 }

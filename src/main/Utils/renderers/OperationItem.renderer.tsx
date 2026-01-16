@@ -39,17 +39,17 @@ export function getPeriodeRenderer(periodeKey : PERIODES_MENSUALITE_ENUM) {
 
     switch (periodeKey) {
         case PERIODES_MENSUALITE_ENUM.PONCTUELLE:
-            return {value: periodeKey, text: "Ponctuelle", color: "#9e9e9e"}
+            return {value: periodeKey, text: "Ponctuelle", color: "var(--color-periode-ponctuelle)"}
         case PERIODES_MENSUALITE_ENUM.MENSUELLE:
-            return {value: periodeKey, text: "Mensuelle", color: "#4caf50"}
+            return {value: periodeKey, text: "Mensuelle", color: "var(--color-periode-mensuelle)"}
         case PERIODES_MENSUALITE_ENUM.TRIMESTRIELLE:
-            return {value: periodeKey, text: "Trimestrielle", color: "#2196f3"}
+            return {value: periodeKey, text: "Trimestrielle", color: "var(--color-periode-trimestrielle)"}
         case PERIODES_MENSUALITE_ENUM.SEMESTRIELLE:
-            return {value: periodeKey, text: "Semestrielle", color: "#ff9800"}
+            return {value: periodeKey, text: "Semestrielle", color: "var(--color-periode-semestrielle)"}
         case PERIODES_MENSUALITE_ENUM.ANNUELLE:
-            return {value: periodeKey, text: "Annuelle", color: "#f44336"}
+            return {value: periodeKey, text: "Annuelle", color: "var(--color-periode-annuelle)"}
         default:
-            return {value: periodeKey, text: "N/D", color: "#757575"}
+            return {value: periodeKey, text: "N/D", color: "var(--color-periode-default)"}
     }
 }
 

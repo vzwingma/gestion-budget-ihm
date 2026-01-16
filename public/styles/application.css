@@ -21,6 +21,7 @@
 
     /* Common colors */
     --color-heading: #31687f;
+    --color-heading-text: #808080;
     --color-dark-bg: #121212;
     --color-dark-container: #1E1E1E;
     --color-white: #FFFFFF;
@@ -43,6 +44,14 @@
     --color-realisee: #2e7d32;
     --color-reportee: #9c27b0;
     --color-supprimee: #ed1b24;
+
+    /* Periode mensualité colors */
+    --color-periode-ponctuelle : #9e9e9e;
+    --color-periode-mensuelle : #2e7d32;
+    --color-periode-trimestrielle : #2196f3;
+    --color-periode-semestrielle : #ff9800;
+    --color-periode-annuelle : #f44336;
+    --color-periode-default : #757575;
 }
 
 /* Common styles */
@@ -489,6 +498,11 @@ ______          _    _
 
 .editableField {
     cursor: pointer;
+}
+
+.editableField--disabled {
+    cursor: not-allowed;
+    color: var(--color-heading-text) !important;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
