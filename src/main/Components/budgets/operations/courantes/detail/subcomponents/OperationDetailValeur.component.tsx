@@ -56,8 +56,7 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
                 :
                 <Typography variant={"h4"} className={budgetActif ? "editableField" : ""}
                             id={OPERATION_EDITION_FORM.VALUE}>
-                <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true}
-                    id={OPERATION_EDITION_FORM.VALUE} />
+                    <OperationValue operation={operation} valueOperation={operation.valeur} showSign={true} id={OPERATION_EDITION_FORM.VALUE} />
                 </Typography>
             }
         </>

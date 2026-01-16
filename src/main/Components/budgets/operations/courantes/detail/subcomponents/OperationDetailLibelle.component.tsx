@@ -117,9 +117,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
                 <FormHelperText>{errorLibelle}</FormHelperText>
             </FormControl>
             :
-            <Typography variant={"button"} sx={{fontSize: isMobile ? "medium" : "large"}}
-                className={budgetActif ? "editableField" : ""}
-                id={OPERATION_EDITION_FORM.LIBELLE}>
+            <Typography variant={"button"} sx={{fontSize: isMobile ? "medium" : "large"}} className={budgetActif ? "editableField" : ""} id={OPERATION_EDITION_FORM.LIBELLE}>
                 {getOperationLibelle(operation.libelle, comptes, true)}
             </Typography>
     )

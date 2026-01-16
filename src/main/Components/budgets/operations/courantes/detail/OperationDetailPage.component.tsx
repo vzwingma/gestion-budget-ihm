@@ -190,20 +190,32 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             onKeyUp={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}> 
 
             <Stack direction={"column"} minHeight={"90vh"}
-                sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px"}}>
-            <Stack direction={"column"} spacing={isMobile ? 3 : 6} className="budget-page-container"
-                sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
-                <CenterComponent>
-                    <Box width={56} height={56}
-                        sx={{
-                            borderRadius: "50%",
-                            backgroundColor: getCategorieColor(operation.categorie.id),
-                            color: 'var(--color-white)',
-                            padding: '15px 0px 0px 15px'
-                        }}>
-                        {getCategorieIcon(operation.ssCategorie)}
-                    </Box>
-                </CenterComponent>
+                sx={{ alignItems: "center", justifyContent: "center" }}>
+                <Stack direction={"column"} spacing={isMobile ? 3 : 4} className="budget-page-container"
+                    sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
+                    <Grid container width={"100%"} columnSpacing={10}>
+                        <Grid size={{ md: 4.5, xl: 3 }}/>
+                        <Grid size={{ md: 4.5, xl: 6 }}>
+                            <CenterComponent>
+                                <Box width={56} height={56}
+                                    sx={{
+                                        borderRadius: "50%",
+                                        backgroundColor: getCategorieColor(operation.categorie.id),
+                                        color: 'var(--color-white)',
+                                        padding: '15px 0px 0px 15px'
+                                    }}>
+                                    {getCategorieIcon(operation.ssCategorie)}
+                                </Box>
+                            </CenterComponent>
+
+                        </Grid>
+                        <Grid size={{ md: 4.5, xl: 3 }} sx={{display:"flex", justifyContent:"flex-end"}}>
+                            { /** STATUT **/}
+                            {currentOperation?.statuts !== null && currentOperation?.statuts !== undefined ?
+                                <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>
+                            }             
+                            </Grid>
+                    </Grid>
                 { /** VALEUR **/}
                 <OperationDetailValeur formValueInEdition={editForm.value}
                     errorValeur={errors.valeur}
@@ -216,15 +228,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     errorLibelle={errors.libelle}
                     fillOperationForm={fillOperationForm} />
 
-                { /** STATUT **/}
-                {currentOperation?.statuts !== null && currentOperation?.statuts !== undefined ?
-                    <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>
-                }
                 {/** 
                  * CATEGORIES 
                  **/}
 
-                <Grid container width={"100%"} columnSpacing={10}>
+                <Grid container width={"90%"} columnSpacing={10}>
                     <Grid size={{ md: 4.5, xl: 8 }} paddingBottom={1}>
                         <Typography variant={"caption"} sx={{ color: "#808080" }}>Catégorie</Typography>
                     </Grid>
@@ -308,7 +316,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 </Grid>
 
                 {currentBudget?.actif && !isInEditMode(editForm) &&
-                    <Grid container width={"100%"}  sx={{ alignItems: "center", justifyContent: "center" }} paddingTop={2} >
+                    <Grid container width={"90%"}  sx={{ alignItems: "center", justifyContent: "center" }} paddingTop={2} >
 
                         <Grid size={{ md: 3, xl: 2 }}>
                             <Typography variant={"caption"} sx={{ color: "#808080" }}>Actions</Typography>
