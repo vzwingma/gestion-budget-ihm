@@ -44,7 +44,7 @@ function getBoxStyle(isSelected: boolean | undefined, isOneSelected: boolean | u
         return getSelectedBoxBorderStyle(getSelectedOperationColor);
     }
     if (isOneSelected) {
-        return { opacity: 0.6 };
+        return { opacity: 0.75 };
     }
     return {};
 }

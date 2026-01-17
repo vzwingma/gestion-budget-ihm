@@ -77,6 +77,7 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
  * @returns opération mise à jour ou erreurs
  */
 export function validateFormMontant(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
+    console.log("Validation du montant de l'opération :", editOperation.valeur, editOperation.typeOperation);
     if (!editForm.value) return;
 
     if (!editOperation.valeur) {

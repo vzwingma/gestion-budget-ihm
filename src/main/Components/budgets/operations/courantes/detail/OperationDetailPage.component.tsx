@@ -102,31 +102,30 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param value valeur du champ
      */
     function fillOperationForm(field: OPERATION_EDITION_FORM, value: string) {
-        let editOperationUpdated = { ...editOperation };
         switch (field) {
             case OPERATION_EDITION_FORM.LIBELLE:
-                editOperationUpdated.libelle = value;
+                editOperation.libelle = value;
                 break;
             case OPERATION_EDITION_FORM.DATE_OPERATION:
                 if (value !== null && value !== undefined && value !== "") {
-                    editOperationUpdated.autresInfos.dateOperation = new Date(Date.parse(value))
+                    editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
                 }
                 else {
-                    editOperationUpdated.autresInfos.dateOperation = null
+                    editOperation.autresInfos.dateOperation = null
                 }
                 break;
             case OPERATION_EDITION_FORM.VALUE:
-                editOperationUpdated.valeur = value;
+                editOperation.valeur = value;
                 break;
             case OPERATION_EDITION_FORM.MENSUALITE:
-                editOperationUpdated.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
+                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
                 break;
             case OPERATION_EDITION_FORM.DATE_FIN:
                 if (value !== null && value !== undefined && value !== "") {
-                    editOperationUpdated.mensualite.dateFin = new Date(Date.parse(value))
+                    editOperation.mensualite.dateFin = new Date(Date.parse(value))
                 }
                 else {
-                    editOperationUpdated.mensualite.dateFin = null
+                    editOperation.mensualite.dateFin = null
                 }
                 break;
             case OPERATION_EDITION_FORM.CATEGORIE:
@@ -135,14 +134,14 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 }
                 break;
             case OPERATION_EDITION_FORM.INTERCOMPTES:
-                editOperationUpdated.intercompte = value
+                editOperation.intercompte = value
                 break;
             case OPERATION_EDITION_FORM.FORM_VALIDATION:
                 editForm.formValidationEnabled = (value === "true")
                 break;
         }
         openEditForm(editForm);
-        setEditOperation(editOperationUpdated);
+        setEditOperation({ ...editOperation });
     }
 
     /**
@@ -150,7 +149,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param ssCatId  id de la sous catégorie
      */
     function fillCategorieForm(ssCatId: string) {
-        let editOperationUpdated = { ...editOperation };
         const ssCat = listeCategories
             .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
             .find((ssCat: CategorieOperationModel) => ssCat?.id === ssCatId)
@@ -158,15 +156,15 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             return;
         }
         if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
-            editOperationUpdated.categorie.id = ssCat.categorieParente.id;
-            editOperationUpdated.categorie.libelle = ssCat.categorieParente.libelle;
+            editOperation.categorie.id = ssCat.categorieParente.id;
+            editOperation.categorie.libelle = ssCat.categorieParente.libelle;
         }
-        editOperationUpdated.ssCategorie.id = ssCat.id;
-        editOperationUpdated.ssCategorie.libelle = ssCat.libelle;
+        editOperation.ssCategorie.id = ssCat.id;
+        editOperation.ssCategorie.libelle = ssCat.libelle;
         /** Si type Rentrée d'argent, alors type opération = Crédit **/
-        const editOperationTypeOperation = (BUSINESS_GUID.CAT_RENTREE_ARGENT === editOperationUpdated.categorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
-        editOperationUpdated.typeOperation = editOperationTypeOperation;
-        setEditOperation(editOperationUpdated);
+        const editOperationTypeOperation = (BUSINESS_GUID.CAT_RENTREE_ARGENT === editOperation.categorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+        console.log("Changement type opération en fonction de la catégorie sélectionnée :", editOperationTypeOperation);
+        editOperation.typeOperation = editOperationTypeOperation;
 
         /** Adaptation sur la sélection de catégorie **/
         if (ssCat.categorieParente) {
@@ -232,10 +230,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     </Grid>
 
                     {/** 
-                 * CATEGORIES 
-                 **/}
+                     * CATEGORIES 
+                     **/}
 
-                    <Grid container width={"90%"} columnSpacing={10} sx={{ borderTop: '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
+                    <Grid container width={"90%"} columnSpacing={10} sx={{ borderTop: isInCreateMode(editForm) ? 'none' : '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
                         <Grid size={{ md: 8, xl: 8 }} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                         </Grid>
