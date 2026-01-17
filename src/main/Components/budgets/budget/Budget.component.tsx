@@ -140,7 +140,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
             />
             <Divider variant="middle" sx={{ marginTop: isMobile ? 0 : 1 }} />
             <Grid container sx={{ overflow: "hidden" }}>
-                <Grid size={{ md: 5, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
+                <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
                     { /** Liste des opérations **/
                         (currentBudget == null ?
                             <CenterComponent><CircularProgress /></CenterComponent>
@@ -153,7 +153,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                         )
                     }
                 </Grid>
-                <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: listHeight }}>
+                <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: listHeight }}>
                     {currentBudget != null && currentOperation != null ?
                         <OperationDetailPage
                             listeCategories={categories}

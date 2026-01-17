@@ -187,7 +187,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             onClick={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
             onKeyUp={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
-            <Stack direction={"column"} minHeight={"90vh"} sx={{ justifyContent: "center" }}>
+            <Stack direction={"column"} minHeight={"90vh"} sx={{ justifyContent: isMobile ? "none" : "center", paddingTop: isMobile ? "30px" : "0px" }} spacing={isMobile ? 2 : 4}>
                 <Stack direction={"column"} spacing={isMobile ? 3 : 4} className="budget-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
                     <Grid container width={"90%"} columnSpacing={10}>
@@ -266,10 +266,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                          * MENSUALITES
                          **/}
 
-                        <Grid size={{ md: 8, xl: 8 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 8, xl: 8 }} paddingTop={3} paddingBottom={2}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
                         </Grid>
-                        <Grid size={{ md: 4, xl: 4 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingTop={3} paddingBottom={2}>
                             {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
                                 <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date de fin</Typography>
                             }
@@ -292,10 +292,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         {/** 
                          * ETATS et Actions 
                          **/}
-                        <Grid size={{ md: 8, xl: 8 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 8, xl: 8 }} paddingTop={3} paddingBottom={2}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Etat</Typography>
                         </Grid>
-                        <Grid size={{ md: 4, xl: 4 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingTop={3} paddingBottom={2}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date d'opération</Typography>
                         </Grid>
 
@@ -318,12 +318,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
                     <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }} paddingTop={2} >
                         {currentBudget?.actif &&
-
                             <>
-                                <Grid size={{ md: 4, xl: 2 }} paddingBottom={3}>
+                                <Grid size={{ md: 4, xl: 2 }} paddingBottom={2}>
                                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Actions</Typography>
                                 </Grid>
-                                <Grid size={{ md: 4, xl: 8 }} paddingBottom={3}>
+                                <Grid size={{ md: 4, xl: 8 }} paddingBottom={2}>
                                     <Stack direction={"column"} spacing={2} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
                                         { /** ACTIONS **/}
                                         {currentOperation?.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ?
