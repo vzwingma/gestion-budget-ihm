@@ -329,16 +329,16 @@ ___  ___      _     _ _
     }
 
     a.nav-link {
-        font-size: 1rem;
+        font-size: 0.8rem;
         height: 40px;
         width: 150px;
-        margin-top: 12px;
+        padding-top: 3px;
     }
 
     a.nav-link_selected {
         font-size: 1rem;
         height: 40px;
-        width: 200px;
+        width: 220px;
     }
 
     .listeItem {
@@ -409,7 +409,7 @@ ______          _    _
     }
 
     a.nav-link {
-        font-size: 1.15rem;
+        font-size: 1rem;
         height: 60px;
         width: 150px;
     }
