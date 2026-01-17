@@ -1,5 +1,5 @@
 import React, { JSX, useContext } from 'react'
-import { EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM } from "../../../courantes/detail/OperationDetailPage.constants.ts"
+import { EditFormProps, ErrorsFormProps } from "../../../courantes/detail/OperationDetailPage.constants.ts"
 import { TextField, Typography } from '@mui/material'
 import { OperationDetailDateProps } from '../../../../../Components.props.ts'
 import { BudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
@@ -47,7 +47,7 @@ export const OperationDetailDateFin: React.FC<OperationDetailDateProps> = ({ for
 
         (formDateInEdition) ?
             <TextField
-                id={OPERATION_RECURRENTE_EDITION_FORM + OPERATION_EDITION_FORM.INPUT}
+                id={OPERATION_RECURRENTE_EDITION_FORM.FORM + OPERATION_RECURRENTE_EDITION_FORM.INPUT}
                 defaultValue={operation.mensualite.dateFin == null ? null : getLabelISOFromDate(operation.mensualite.dateFin)}
                 variant={"standard"} type={"month"} fullWidth size={"small"}
                 error={errorDateOperation != null}

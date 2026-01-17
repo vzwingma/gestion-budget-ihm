@@ -28,40 +28,46 @@ export function handleOperationAction(event: any,
                                       setShowModale: Dispatch<SetStateAction<boolean>>) {
     /** Correction click hors cadre */
 
-    if (event.target != null) {
-        
-        let action = getEventTargetId(event.target)
-
-        if(action === 'OPERATION_FORM'){
-            return;
-        }
-        if (action === "SUPPRIMEE_A_CONFIRMER") {
-            setShowModale(true);
-        } else if (action === "ANNULER") {
-            setShowModale(false);
-        } else if (isInCreateMode) {
-            currentOperation.etat = action
-
-            // On ne fait que refresh la date si elle n'est pas déjà renseignée
-            let valeurDate = null;
-            if (action === OPERATION_ETATS_ENUM.REALISEE) {
-                if (editOperation.autresInfos.dateOperation == null) {
-                    valeurDate = new Date();
-                } else {
-                    valeurDate = editOperation.autresInfos.dateOperation;
-                }
-            }
-            currentOperation.autresInfos.dateOperation = valeurDate;
-            handleDateOperationFromAction(valeurDate);
-        } else {
-
-            updateOperation(currentOperation, action, budget, onOperationChange);
-        }
-        // Après l'action d'update SUPPRIMEE, on clot la popup
-        if (action === OPERATION_ETATS_ENUM.SUPPRIMEE) {
-            setShowModale(false);
-        }
+    if (event.target == null) {
+        return;
     }
+    
+    const action = getEventTargetId(event.target);
+
+    if (action === 'OPERATION_FORM') {
+        return;
+    }
+
+    if (action === "SUPPRIMEE_A_CONFIRMER") {
+        setShowModale(true);
+        return;
+    }
+    
+    if (action === "ANNULER") {
+        setShowModale(false);
+        return;
+    }
+
+    if (isInCreateMode) {
+        handleCreateModeAction(currentOperation, action, editOperation, handleDateOperationFromAction);
+    } else {
+        updateOperation(currentOperation, action, budget, onOperationChange);
+    }
+
+    if (action === OPERATION_ETATS_ENUM.SUPPRIMEE) {
+        setShowModale(false);
+    }
+}
+
+function handleCreateModeAction(currentOperation: OperationModel, action: OPERATION_ETATS_ENUM, editOperation: OperationEditionModel, handleDateOperationFromAction: Function) {
+    currentOperation.etat = action;
+
+    const valeurDate = action === OPERATION_ETATS_ENUM.REALISEE
+        ? editOperation.autresInfos.dateOperation || new Date()
+        : null;
+    
+    currentOperation.autresInfos.dateOperation = valeurDate;
+    handleDateOperationFromAction(valeurDate);
 }
 
 
