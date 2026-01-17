@@ -106,8 +106,8 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
 
                     <Grid container width={"100%"} columnSpacing={10}>
-                        <Grid size={{ md: 4.5, xl: 3 }}/>
-                        <Grid size={{ md: 4.5, xl: 6 }}>
+                        <Grid size={{ md: 3, xl: 3 }}/>
+                        <Grid size={{ md: 6, xl: 6 }}>
                             <CenterComponent>
                                 <Box width={56} height={56}
                                     sx={{
@@ -121,7 +121,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                             </CenterComponent>
 
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 3 }} sx={{display:"flex", justifyContent:"flex-end", alignItems:"center"}}>
+                        <Grid size={{ md: 3, xl: 3 }} sx={{display:"flex", justifyContent:"flex-end", alignItems:"center"}}>
                             { /** STATUT **/}
                             {currentOperation?.statuts !== null && currentOperation?.statuts !== undefined ?
                                 <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>
@@ -141,42 +141,42 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
 
 
                     <Grid container width={"100%"} columnSpacing={10}>
-                        <Grid size={{ md: 4.5, xl: 6 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 6, xl: 5 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 6 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 6, xl: 7 }} paddingTop={3} paddingBottom={1}>
                             {(operation.libelle != null && operationIsIntercompteFromLibelle(operation.libelle)) ?
                                 <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography> : <></>
                             }
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 6 }}>
+                        <Grid size={{ md: 6, xl: 5 }}>
                             {  /** CATEGORIES **/}
                             <Typography variant={"overline"}>{operation.categorie.libelle} / {operation.ssCategorie.libelle}</Typography>
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 6 }}>
+                        <Grid size={{ md: 6, xl: 7 }}>
                             { /** COMPTE DE TRANSFERT  **/}
                             {getAffichageIntercompteRO(operation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
                         </Grid>
 
-                        <Grid size={{ md: 4.5, xl: 6 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 5, xl: 5 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
                         </Grid>
-                        <Grid size={{ md: 3, xl: 3 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 3.5, xl: 3.5 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Prochaine échéance</Typography>
                         </Grid>
-                        <Grid size={{ md: 3, xl: 3 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 3.5, xl: 3.5 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Se termine</Typography>
                         </Grid>
 
 
-                        <Grid size={{ md: 4.5, xl: 6 }}>
+                        <Grid size={{ md: 5, xl: 5 }}>
                             { /** PERIODE **/}
                             <Typography id={"OPERATION_EDITION_FORM.MENSUALITE"} variant={"overline"} color={getPeriodeRenderer(operation.mensualite.periode).color}
                                 style={{ border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '10px', paddingRight: '10px', borderRadius: '4px' }}>
                                 {getPeriodeRenderer(operation.mensualite.periode).text}
                             </Typography>
                         </Grid>
-                        <Grid size={{ md: 3, xl: 3 }}>
+                        <Grid size={{ md: 3.5, xl: 3.5 }}>
                             { /** DATE OPERATION **/}
                             <Typography id={"OPERATION_EDITION_FORM.DATE_OPERATION"} variant={"subtitle1"}
                                 sx={{ color: (operation.mensualite.prochaineEcheance == null ? "var(--color-heading-text)" : "var(--color-white)") }}>
@@ -184,7 +184,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                             </Typography>
                         </Grid>
 
-                        <Grid size={{ md: 3, xl: 3 }}>
+                        <Grid size={{ md: 3.5, xl: 3.5 }}>
                             { /** DATE FIN **/}
                             <OperationDetailDateFin formDateInEdition={editForm.dateFin}
                                 errorDateOperation={errors.dateFin}
