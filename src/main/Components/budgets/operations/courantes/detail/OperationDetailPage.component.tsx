@@ -216,26 +216,26 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         </Grid>
                     </Grid>
                     <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
-                    { /** VALEUR **/}
-                    <OperationDetailValeur formValueInEdition={editForm.value}
-                        errorValeur={errors.valeur}
-                        fillOperationForm={fillOperationForm} />
+                        { /** VALEUR **/}
+                        <OperationDetailValeur formValueInEdition={editForm.value}
+                            errorValeur={errors.valeur}
+                            fillOperationForm={fillOperationForm} />
                     </Grid>
                     <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
 
-                    { /** LIBELLE **/}
-                    <OperationDetailLibelle
-                        listeLibellesOperations={listeLibellesOperations}
-                        formLibelleInEdition={editForm.libelle}
-                        errorLibelle={errors.libelle}
-                        fillOperationForm={fillOperationForm} />
+                        { /** LIBELLE **/}
+                        <OperationDetailLibelle
+                            listeLibellesOperations={listeLibellesOperations}
+                            formLibelleInEdition={editForm.libelle}
+                            errorLibelle={errors.libelle}
+                            fillOperationForm={fillOperationForm} />
                     </Grid>
 
                     {/** 
                  * CATEGORIES 
                  **/}
 
-                    <Grid container width={"90%"} columnSpacing={10} sx={{borderTop: '1px solid var(--color-operations-primary)', paddingTop: 2}}>
+                    <Grid container width={"90%"} columnSpacing={10} sx={{ borderTop: '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
                         <Grid size={{ md: 8, xl: 8 }} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                         </Grid>
