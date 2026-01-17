@@ -193,8 +193,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 <Stack direction={"column"} spacing={isMobile ? 3 : 4} className="budget-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
                     <Grid container width={"90%"} columnSpacing={10}>
-                        <Grid size={{ md: 3, xl: 3 }} />
-                        <Grid size={{ md: 6, xl: 6 }}>
+                        <Grid size={{ md: 4, xl: 4 }} />
+                        <Grid size={{ md: 4, xl: 4 }}>
                             <CenterComponent>
                                 <Box width={56} height={56}
                                     sx={{
@@ -208,7 +208,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             </CenterComponent>
 
                         </Grid>
-                        <Grid size={{ md: 3, xl: 3 }} sx={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Grid size={{ md: 4, xl: 4 }} sx={{ display: "flex", justifyContent: "flex-end" }}>
                             { /** STATUT **/}
                             {currentOperation?.statuts !== null && currentOperation?.statuts !== undefined ?
                                 <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>

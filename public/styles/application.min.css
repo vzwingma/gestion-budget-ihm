@@ -221,7 +221,6 @@ a#tendances-link.nav-link_selected:hover {
     align-items: center;
     justify-content: center;
     animation: slideInFromRight 0.3s ease-out;
-    width: 90%;
 }
 
 .recurrents-page-container {
@@ -551,11 +550,29 @@ a.nav-link_selected:hover {
 .operation-status-en-retard {
     border-color: #7C3E10;
     background-color: #FB923C26;
+    animation: pop 0.3s ease-out;
+}
+@keyframes pop {
+    from {
+        transform: scale(0.5);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+@keyframes pop2 {
+    from {
+        transform: scale(0.9);
+    }
+    to {
+        transform: scale(1);
+    }
 }
 
 .operation-status-derniere-echeance {
     border-color: #2563EB;
     background-color: #60A5FA26;
+    animation: pop2 0.3s ease-out;
 }
 
 .operation-status-error {
