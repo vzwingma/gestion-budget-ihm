@@ -102,31 +102,30 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param value valeur du champ
      */
     function fillOperationForm(field: OPERATION_EDITION_FORM, value: string) {
-        let editOperationUpdated = { ...editOperation };
         switch (field) {
             case OPERATION_EDITION_FORM.LIBELLE:
-                editOperationUpdated.libelle = value;
+                editOperation.libelle = value;
                 break;
             case OPERATION_EDITION_FORM.DATE_OPERATION:
                 if (value !== null && value !== undefined && value !== "") {
-                    editOperationUpdated.autresInfos.dateOperation = new Date(Date.parse(value))
+                    editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
                 }
                 else {
-                    editOperationUpdated.autresInfos.dateOperation = null
+                    editOperation.autresInfos.dateOperation = null
                 }
                 break;
             case OPERATION_EDITION_FORM.VALUE:
-                editOperationUpdated.valeur = value;
+                editOperation.valeur = value;
                 break;
             case OPERATION_EDITION_FORM.MENSUALITE:
-                editOperationUpdated.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
+                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
                 break;
             case OPERATION_EDITION_FORM.DATE_FIN:
                 if (value !== null && value !== undefined && value !== "") {
-                    editOperationUpdated.mensualite.dateFin = new Date(Date.parse(value))
+                    editOperation.mensualite.dateFin = new Date(Date.parse(value))
                 }
                 else {
-                    editOperationUpdated.mensualite.dateFin = null
+                    editOperation.mensualite.dateFin = null
                 }
                 break;
             case OPERATION_EDITION_FORM.CATEGORIE:
@@ -135,14 +134,14 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 }
                 break;
             case OPERATION_EDITION_FORM.INTERCOMPTES:
-                editOperationUpdated.intercompte = value
+                editOperation.intercompte = value
                 break;
             case OPERATION_EDITION_FORM.FORM_VALIDATION:
                 editForm.formValidationEnabled = (value === "true")
                 break;
         }
         openEditForm(editForm);
-        setEditOperation(editOperationUpdated);
+        setEditOperation({ ...editOperation });
     }
 
     /**
@@ -150,7 +149,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param ssCatId  id de la sous catégorie
      */
     function fillCategorieForm(ssCatId: string) {
-        let editOperationUpdated = { ...editOperation };
         const ssCat = listeCategories
             .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
             .find((ssCat: CategorieOperationModel) => ssCat?.id === ssCatId)
@@ -158,15 +156,15 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             return;
         }
         if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
-            editOperationUpdated.categorie.id = ssCat.categorieParente.id;
-            editOperationUpdated.categorie.libelle = ssCat.categorieParente.libelle;
+            editOperation.categorie.id = ssCat.categorieParente.id;
+            editOperation.categorie.libelle = ssCat.categorieParente.libelle;
         }
-        editOperationUpdated.ssCategorie.id = ssCat.id;
-        editOperationUpdated.ssCategorie.libelle = ssCat.libelle;
+        editOperation.ssCategorie.id = ssCat.id;
+        editOperation.ssCategorie.libelle = ssCat.libelle;
         /** Si type Rentrée d'argent, alors type opération = Crédit **/
-        const editOperationTypeOperation = (BUSINESS_GUID.CAT_RENTREE_ARGENT === editOperationUpdated.categorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
-        editOperationUpdated.typeOperation = editOperationTypeOperation;
-        setEditOperation(editOperationUpdated);
+        const editOperationTypeOperation = (BUSINESS_GUID.CAT_RENTREE_ARGENT === editOperation.categorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
+        console.log("Changement type opération en fonction de la catégorie sélectionnée :", editOperationTypeOperation);
+        editOperation.typeOperation = editOperationTypeOperation;
 
         /** Adaptation sur la sélection de catégorie **/
         if (ssCat.categorieParente) {
@@ -192,9 +190,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             <Stack direction={"column"} minHeight={"90vh"} sx={{ justifyContent: "center" }}>
                 <Stack direction={"column"} spacing={isMobile ? 3 : 4} className="budget-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
-                    <Grid container width={"100%"} columnSpacing={10}>
-                        <Grid size={{ md: 4.5, xl: 3 }} />
-                        <Grid size={{ md: 4.5, xl: 6 }}>
+                    <Grid container width={"90%"} columnSpacing={10}>
+                        <Grid size={{ md: 4, xl: 4 }} />
+                        <Grid size={{ md: 4, xl: 4 }}>
                             <CenterComponent>
                                 <Box width={56} height={56}
                                     sx={{
@@ -208,39 +206,43 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             </CenterComponent>
 
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 3 }} sx={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Grid size={{ md: 4, xl: 4 }} sx={{ display: "flex", justifyContent: "flex-end" }}>
                             { /** STATUT **/}
                             {currentOperation?.statuts !== null && currentOperation?.statuts !== undefined ?
                                 <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>
                             }
                         </Grid>
                     </Grid>
-                    { /** VALEUR **/}
-                    <OperationDetailValeur formValueInEdition={editForm.value}
-                        errorValeur={errors.valeur}
-                        fillOperationForm={fillOperationForm} />
+                    <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
+                        { /** VALEUR **/}
+                        <OperationDetailValeur formValueInEdition={editForm.value}
+                            errorValeur={errors.valeur}
+                            fillOperationForm={fillOperationForm} />
+                    </Grid>
+                    <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
 
-                    { /** LIBELLE **/}
-                    <OperationDetailLibelle
-                        listeLibellesOperations={listeLibellesOperations}
-                        formLibelleInEdition={editForm.libelle}
-                        errorLibelle={errors.libelle}
-                        fillOperationForm={fillOperationForm} />
+                        { /** LIBELLE **/}
+                        <OperationDetailLibelle
+                            listeLibellesOperations={listeLibellesOperations}
+                            formLibelleInEdition={editForm.libelle}
+                            errorLibelle={errors.libelle}
+                            fillOperationForm={fillOperationForm} />
+                    </Grid>
 
                     {/** 
-                 * CATEGORIES 
-                 **/}
+                     * CATEGORIES 
+                     **/}
 
-                    <Grid container width={"90%"} columnSpacing={10} sx={{borderTop: '1px solid var(--color-heading-text)', paddingTop: 2}}>
-                        <Grid size={{ md: 4.5, xl: 8 }} paddingBottom={1}>
+                    <Grid container width={"90%"} columnSpacing={10} sx={{ borderTop: isInCreateMode(editForm) ? 'none' : '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
+                        <Grid size={{ md: 8, xl: 8 }} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                         </Grid>
-                        <Grid size={{ md: 3, xl: 4 }} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingBottom={1}>
                             {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                                 <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography> : <></>}
                         </Grid>
 
-                        <Grid size={{ md: 4.5, xl: 8 }}>
+                        <Grid size={{ md: 8, xl: 8 }}>
                             {  /** CATEGORIES **/}
                             <OperationDetailCategories
                                 listeCategories={listeCategories}
@@ -248,7 +250,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 errorsCategories={errors.categorie}
                                 fillOperationForm={fillOperationForm} />
                         </Grid>
-                        <Grid size={{ md: 3, xl: 4 }} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingBottom={1}>
                             { /** COMPTE DE TRANSFERT  **/}
                             {isInCreateMode(editForm) && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                                 <OperationDetailIntercompte intercompte={editOperation.intercompte}
@@ -261,24 +263,24 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         </Grid>
 
                         {/** 
-                     * MENSUALITES
-                     **/}
+                         * MENSUALITES
+                         **/}
 
-                        <Grid size={{ md: 4.5, xl: 8 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 8, xl: 8 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
                         </Grid>
-                        <Grid size={{ md: 3, xl: 4 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingTop={3} paddingBottom={1}>
                             {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
                                 <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date de fin</Typography>
                             }
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 8 }}>
+                        <Grid size={{ md: 8, xl: 8 }}>
                             { /** Période **/}
                             <OperationDetailMensualite
                                 formMensualiteInEdition={editForm.mensualite}
                                 fillOperationForm={fillOperationForm} />
                         </Grid>
-                        <Grid size={{ md: 3, xl: 4 }}>
+                        <Grid size={{ md: 4, xl: 4 }}>
                             { /** DATE FIN **/}
                             {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
                                 <OperationDetailDateFin formDateInEdition={editForm.dateFin}
@@ -288,23 +290,23 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
 
                         {/** 
-                     * ETATS et Actions 
-                     **/}
-                        <Grid size={{ md: 4.5, xl: 8 }} paddingTop={3} paddingBottom={1}>
+                         * ETATS et Actions 
+                         **/}
+                        <Grid size={{ md: 8, xl: 8 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Etat</Typography>
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 4 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date d'opération</Typography>
                         </Grid>
 
 
-                        <Grid size={{ md: 4.5, xl: 8 }}>
+                        <Grid size={{ md: 8, xl: 8 }}>
                             <Typography variant={"overline"} color={getOperationStateColor(operation.etat)} style={{ border: '1px solid ' + getOperationStateColor(operation.etat), padding: '10px', paddingRight: '10px', borderRadius: '4px' }}>
                                 {operation.etat}
                             </Typography>
                         </Grid>
 
-                        <Grid size={{ md: 3, xl: 4 }}>
+                        <Grid size={{ md: 4, xl: 4 }}>
                             { /** DATE OPERATION **/}
                             <OperationDetailDate
                                 formDateInEdition={editForm.dateOperation}
@@ -315,13 +317,13 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     </Grid>
 
                     <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }} paddingTop={2} >
-                        {currentBudget?.actif && !isInEditMode(editForm) &&
+                        {currentBudget?.actif &&
 
                             <>
-                                <Grid size={{ md: 3, xl: 2 }}>
+                                <Grid size={{ md: 4, xl: 2 }} paddingBottom={3}>
                                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Actions</Typography>
                                 </Grid>
-                                <Grid size={{ md: 3, xl: 8 }}>
+                                <Grid size={{ md: 4, xl: 8 }} paddingBottom={3}>
                                     <Stack direction={"column"} spacing={2} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
                                         { /** ACTIONS **/}
                                         {currentOperation?.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ?
@@ -335,7 +337,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                         }
                                     </Stack>
                                 </Grid>
-                                <Grid size={{ md: 3, xl: 2 }}></Grid>
+                                <Grid size={{ md: 3, xl: 2 }} paddingBottom={3}></Grid>
                             </>
 
                         }

@@ -328,16 +328,16 @@ ___  ___      _     _ _
     }
 
     a.nav-link {
-        font-size: 1rem;
+        font-size: 0.8rem;
         height: 40px;
         width: 150px;
-        margin-top: 12px;
+        padding-top: 3px;
     }
 
     a.nav-link_selected {
         font-size: 1rem;
         height: 40px;
-        width: 200px;
+        width: 220px;
     }
 
     .listeItem {
@@ -408,7 +408,7 @@ ______          _    _
     }
 
     a.nav-link {
-        font-size: 1.15rem;
+        font-size: 1rem;
         height: 60px;
         width: 150px;
     }
@@ -550,11 +550,29 @@ a.nav-link_selected:hover {
 .operation-status-en-retard {
     border-color: #7C3E10;
     background-color: #FB923C26;
+    animation: pop 0.3s ease-out;
+}
+@keyframes pop {
+    from {
+        transform: scale(0.5);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+@keyframes pop2 {
+    from {
+        transform: scale(0.9);
+    }
+    to {
+        transform: scale(1);
+    }
 }
 
 .operation-status-derniere-echeance {
     border-color: #2563EB;
     background-color: #60A5FA26;
+    animation: pop2 0.3s ease-out;
 }
 
 .operation-status-error {
