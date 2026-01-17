@@ -9,7 +9,15 @@ export enum BUSINESS_ONGLETS {
 }
 
 
-export const EN_RETARD: string = "[En Retard]";
+/**
+ * Etat des opérations
+ */
+export enum OPERATION_STATUS_ENUM {
+    EN_RETARD = "EN_RETARD",
+    EN_RETARD_LEGACY = "[En Retard]",
+    DERNIERE_ECHEANCE = "DERNIERE_ECHEANCE"
+}
+
 /**
  * Enumération des droits utilisateur.
  *
@@ -22,7 +30,8 @@ export const EN_RETARD: string = "[En Retard]";
  */
 export enum UTILISATEUR_DROITS {
     DROIT_CLOTURE_BUDGET,
-    DROIT_RAZ_BUDGET
+    DROIT_RAZ_BUDGET,
+    DROIT_CREATE_OPERATION
 }
 
 

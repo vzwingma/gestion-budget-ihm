@@ -1,11 +1,12 @@
 import React, {JSX, useContext} from 'react'
 import {Box, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
-import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
-import { CenterComponent } from '../../CenterComponent.tsx';
-import {getCategorieColor, getCategorieIcon} from '../../../Utils/renderers/CategorieItem.renderer.tsx';
-import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
-import {getOperationLibelle} from '../../../Utils/renderers/OperationItem.renderer.tsx';
-import OperationModel from '../../../Models/budgets/Operation.model.ts';
+import OperationValue from "../../../../Utils/renderers/OperationValue.renderer.tsx";
+import { CenterComponent } from '../../../CenterComponent.tsx';
+import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer.tsx';
+import {BudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import {getOperationLibelle} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
+import OperationModel from '../../../../Models/budgets/Operation.model.ts';
+import OperationStatus from '../../../../Utils/renderers/OperationStatus.renderer.tsx';
 
 /**
  * Props for the shared operation item component
@@ -17,6 +18,7 @@ interface SharedOperationItemProps {
     getOperationsColor?: string;
     getSelectedOperationColor?: string;
     isSelected?: boolean;
+    isOneSelected?: boolean;
 }
 /**
  * 
@@ -25,24 +27,28 @@ interface SharedOperationItemProps {
  */
 function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined) {
     return {
-        borderLeft: '4px solid ' + getSelectedOperationColor,
         borderTop: '1px solid ' + getSelectedOperationColor,
         borderBottom: '1px solid ' + getSelectedOperationColor,
-        borderRight: '4px solid ' + getSelectedOperationColor,
-        borderRadius: '6px',
-        paddingLeft: '6px'
     };
 }
 
-function getUnselectedBoxBorderStyle() {
-    return {
-        borderLeft: 'none',
-        borderTop: 'none',
-        borderBottom: 'none',
-        borderRadius: '0px',
-        paddingLeft: '10px'
-    };
+/**
+ * Get the box style based on selection state
+ * @param isSelected whether the operation is selected
+ * @param isOneSelected whether any operation is selected
+ * @param getSelectedOperationColor color for selected operation
+ * @returns style object
+ */
+function getBoxStyle(isSelected: boolean | undefined, isOneSelected: boolean | undefined, getSelectedOperationColor: string | undefined) {
+    if (isSelected) {
+        return getSelectedBoxBorderStyle(getSelectedOperationColor);
+    }
+    if (isOneSelected) {
+        return { opacity: 0.6 };
+    }
+    return {};
 }
+
 
 /**
  * Shared operation item component
@@ -58,7 +64,8 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     getBorderColor,
     getOperationsColor,
     getSelectedOperationColor,
-    isSelected
+    isSelected,
+    isOneSelected
 }: SharedOperationItemProps): JSX.Element => {
 
     const { comptes } = useContext(BudgetContext);
@@ -67,9 +74,9 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     return (
         <Box key={"liste_" + operation.id}
              onClick={() => handleOperationSelect(operation)}
+             className="operation-list-item"
              sx={{
-                 cursor: 'pointer',
-                 ...(isSelected ? getSelectedBoxBorderStyle(getSelectedOperationColor) : getUnselectedBoxBorderStyle()),
+                 ...getBoxStyle(isSelected, isOneSelected, getSelectedOperationColor),
                  '&:hover': {
                      backgroundColor: getOperationsColor || '#1F3D2B'
                  }
@@ -94,7 +101,7 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                         </Box>
                     </Box>
                 </Grid>
-                <Grid size={{md: 7, xl: 7}}>
+                <Grid size={{md: 6, xl: 6}}>
                     <Stack direction={"column"}>
                         <Typography variant={"subtitle1"} component="div" align={"left"}
                                     sx={{spacing: 2, paddingLeft: isMobile ? 1 : 2}}>
@@ -105,7 +112,11 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                             {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                         </Typography>
                     </Stack>
-
+                </Grid>
+                <Grid size={{md: 1, xl: 1}}>
+                    <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
+                        <OperationStatus statutsOperation={operation.statuts} />
+                    </Typography>
                 </Grid>
                 <Grid size={{md: 3, xl: 3}}>
                     <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>

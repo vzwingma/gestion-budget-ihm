@@ -9,10 +9,11 @@ import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
 
 import {BUSINESS_ONGLETS, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants.ts";
-import {OPERATION_EDITION_FORM} from "./budgets/operations/detail/OperationDetailPage.constants.ts";
+import {OPERATION_EDITION_FORM} from "./budgets/operations/courantes/detail/OperationDetailPage.constants.ts";
 import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOperation.model.ts";
 import OperationEditionModel from "../Models/budgets/OperationEdition.model.ts";
 import {Dispatch, SetStateAction} from "react";
+import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
 
 /**
  * Analyse des catégories
@@ -165,14 +166,12 @@ export interface OperationDetailCategoriesProps {
 export interface OperationDetailDateProps {
     formDateInEdition: boolean
     errorDateOperation: string | null
-    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
+    fillOperationForm: (field: OPERATION_RECURRENTE_EDITION_FORM | OPERATION_EDITION_FORM, value: string) => void
 }
 
 export interface OperationDetailIntercompteProps {
     intercompte: string | null
-    libelle: string
     listeAutresComptes: CompteBancaireModel[]
-    formIntercompteInEdition: boolean
     errorIntercompte: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM.INTERCOMPTES, value: string) => void
 }
@@ -220,6 +219,10 @@ export interface OperationItemProps {
     operation: OperationModel
     onClick: (operation : OperationModel) => void
     isSelected?: boolean
+    isOneSelected?: boolean
+}
+export interface OperationRecurrenteDetailPageProps {
+    onOperationChange: (budget: BudgetMensuelModel) => void
 }
 
 /**

@@ -7,11 +7,11 @@ import { getPreferenceUtilisateur, loadCategories, reloadBudget } from "./Budget
 import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButtonGroup.component.tsx";
 import OperationsListe from "../operations/OperationsListe.component.tsx";
-import OperationDetailPage from "../operations/detail/OperationDetailPage.component.tsx";
+import OperationDetailPage from "../operations/courantes/detail/OperationDetailPage.component.tsx";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
-import { getOperationsGroupedByDateOperation } from "./Budget.controller.ts";
+import { getOperationsGroupedByDateOperation, updateOperationsStatus } from "./Budget.controller.ts";
 import { CenterComponent } from "../../CenterComponent.tsx";
-import { getLibellesOperationsCompte } from "../operations/detail/OperationDetailPage.extservices.ts";
+import { getLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
 import { BudgetPageProps } from "../../Components.props.tsx";
 import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
@@ -67,6 +67,10 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
         console.log("(Re)Chargement du budget", budget.id, ":", budget.listeOperations.length + " opérations");
         setCurrentBudget(budget);
+
+        // Compatibilité des opérations sur le statut en retard
+        updateOperationsStatus(budget.listeOperations);
+
         setOperationsGroupedByDateOperation(getOperationsGroupedByDateOperation(budget.listeOperations));
         console.log("Chargement du budget correctement effectué");
     }, [setCurrentBudget, setOperationsGroupedByDateOperation]);
@@ -127,7 +131,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                         {currentBudget == null ?
                             <CenterComponent><CircularProgress /></CenterComponent> :
                             <BudgetActionsButtonGroupComponent
-                                droits={userDroits}
+                                droits={[...userDroits, UTILISATEUR_DROITS.DROIT_CREATE_OPERATION]}
                                 onActionBudgetChange={handleBudgetUpdate}
                                 onActionOperationCreate={handleButtonCreateClick} />
                         }
@@ -151,13 +155,11 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                 </Grid>
                 <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: listHeight }}>
                     {currentBudget != null && currentOperation != null ?
-                        /** Affichage d'une opération **/
                         <OperationDetailPage
                             listeCategories={categories}
                             listeLibellesOperations={listeLibellesOperations}
                             onOperationChange={handleBudgetUpdate} />
-                        : <></>
-                    }
+                    : <></>                      }
                 </Grid>
             </Grid>
         </Box>

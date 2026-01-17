@@ -1,10 +1,10 @@
 import React, {JSX, useContext} from 'react'
 import {MenuItem, TextField, Typography} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
-import {getPeriodeRenderer} from '../../../../../Utils/renderers/OperationItem.renderer.tsx'
-import {PERIODES_MENSUALITE_ENUM} from '../../../../../Utils/AppBusinessEnums.constants.ts'
-import {OperationDetailMensualiteProps} from '../../../../Components.props.tsx'
-import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {getPeriodeRenderer} from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
+import {PERIODES_MENSUALITE_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
+import {OperationDetailMensualiteProps} from '../../../../../Components.props.ts'
+import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
@@ -57,8 +57,10 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
                 ))}
             </TextField>
             :
+            
             <Typography id={OPERATION_EDITION_FORM.MENSUALITE} variant={"overline"}
-                className={budgetActif ? "editableField" : ""}
+                className={budgetActif ? "editableField" : "editableField--disabled"}
+                style={{border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '10px', paddingRight: '10px', borderRadius: '4px', width: '400px'}}
                 color={getPeriodeRenderer(operation.mensualite.periode).color}>
                 {getPeriodeRenderer(operation.mensualite.periode).text}
             </Typography>

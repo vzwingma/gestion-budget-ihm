@@ -9,11 +9,13 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material"
-import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
-import {sortLibellesCategories} from '../../../../../Utils/OperationData.utils.ts'
-import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.ts'
-import {OperationDetailCategoriesProps} from '../../../../Components.props.tsx'
-import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {ErrorsFormProps, OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
+import {sortLibellesCategories} from '../../../../../../Utils/OperationData.utils.ts'
+import CategorieOperationModel from '../../../../../../Models/budgets/CategorieOperation.model.ts'
+import {OperationDetailCategoriesProps} from '../../../../../Components.props.ts'
+import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
+import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
 
 
 /**
@@ -64,7 +66,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                             </Box>
                         )
                     }}
-                    sx={{ width: "90%" }}
+                    sx={{ width: "100%" }}
                     value={operation.ssCategorie ?? { id: null, libelle: "" }}
                     options={getListeAllCategoriesFlatten(categories)}
                     groupBy={(option: CategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
@@ -98,4 +100,18 @@ function getListeAllCategoriesFlatten(listeCategories: CategorieOperationModel[]
     return listeCategories
         .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
         .sort(sortLibellesCategories);
+}
+
+
+/**
+ * validation du formulaire - Catégories
+ */
+export function validateFormCategories(editOperation: OperationEditionModel, operation: OperationModel, errors: ErrorsFormProps) {
+    if (editOperation.categorie.id === null || editOperation.categorie.libelle === null || editOperation.ssCategorie.id === null || editOperation.ssCategorie.libelle === null) {
+        errors.categorie = "Le champ Catégorie est obligatoire"
+    } else {
+        operation.categorie = editOperation.categorie
+        operation.ssCategorie = editOperation.ssCategorie
+        errors.categorie = null
+    }
 }

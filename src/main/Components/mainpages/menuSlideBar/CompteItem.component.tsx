@@ -1,9 +1,9 @@
-import React, {JSX, useEffect, useState} from 'react'
-import {CircularProgress, Container, Stack, Typography} from "@mui/material";
+import React, { JSX, useEffect, useState } from 'react'
+import { CircularProgress, Container, Stack, Typography } from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
-import {BUSINESS_ONGLETS} from "../../../Utils/AppBusinessEnums.constants.ts";
-import {getSoldesBudget} from './CompteItem.controller.ts';
-import {CompteItemProps} from '../../Components.props.ts';
+import { BUSINESS_ONGLETS } from "../../../Utils/AppBusinessEnums.constants.ts";
+import { getSoldesBudget } from './CompteItem.controller.ts';
+import { CompteItemProps } from '../../Components.props.ts';
 
 
 /**
@@ -16,7 +16,7 @@ import {CompteItemProps} from '../../Components.props.ts';
  * @returns {JSX.Element}
  * @constructor
  */
-const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedFunction, onRefreshMenuBar, onClick : handleCompteChange} : CompteItemProps): JSX.Element => {
+const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedFunction, onRefreshMenuBar, onClick: handleCompteChange }: CompteItemProps): JSX.Element => {
 
     const [soldes, setSoldes] = useState<number | null | undefined>();
 
@@ -25,7 +25,7 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
      * Rechargement à chaque changement de compte ou de date
      */
     useEffect(() => {
-        if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
+        if (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS) {
             getSoldesBudget(compte, selectedDate, setSoldes)
         }
     }, [compte, selectedDate, selectedFunction, onRefreshMenuBar]);
@@ -37,15 +37,20 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
      * @constructor
      */
     function renderValueCompte(): JSX.Element {
-        if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
-            if(soldes === undefined){
-                return <CircularProgress size={20}/>
-            }
-            else{
-                return <Typography variant={"subtitle1"} width={120} sx={{cursor: "help"}}>
-                            <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id}/>
-                        </Typography>
-            }
+        if (soldes === undefined) {
+            return <CircularProgress size={20} />
+        }
+        else if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
+            return <Typography variant={"subtitle1"} width={120} sx={{ cursor: "help" }}>
+                <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id} />
+            </Typography>
+        }
+        else if (selectedFunction === BUSINESS_ONGLETS.RECURRENTS) {
+            return <Typography variant={"subtitle1"} width={120} sx={{ cursor: "help" }}>
+                { (soldes === null) && <span style={{color: "var( --color-heading-text)"}}>Non initialisé</span> }
+                { (soldes !== null) && <span style={{color: 'var(--color-realisee)'}}>Actif</span> }
+            </Typography>
+
         } else {
             return <></>
         }
@@ -57,10 +62,10 @@ const CompteItem : React.FC<CompteItemProps> = ({compte, selectedDate, selectedF
      */
     return (
         <Container className={"listeItem"}
-                   onClick={() => handleCompteChange(compte)}>
+            onClick={() => handleCompteChange(compte)}>
             <Stack direction={"row"} spacing={5}>
                 <img src={"/img/banques/" + compte.itemIcon} className={"compteListIcon"} alt={compte.libelle}
-                     key={"img_" + compte.id}/>
+                    key={"img_" + compte.id} />
                 <Stack direction={"column"}>
                     <Typography variant={"h6"} key={"lib_" + compte.id}>
                         {compte.libelle}

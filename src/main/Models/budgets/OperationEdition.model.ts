@@ -22,6 +22,7 @@ class OperationEditionModel {
     valeur: string | null;
     mensualite: {
         periode: PERIODES_MENSUALITE_ENUM;
+        dateFin?: Date | null;
     };
 
     /** */

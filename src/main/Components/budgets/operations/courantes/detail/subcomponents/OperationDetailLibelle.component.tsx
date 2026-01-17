@@ -1,11 +1,11 @@
 import React, {JSX, useContext, useEffect, useState} from 'react'
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {Autocomplete, FormControl, FormHelperText, TextField, Typography, useMediaQuery, useTheme} from '@mui/material'
-import {getOperationLibelle} from '../../../../../Utils/renderers/OperationItem.renderer.tsx'
-import {OperationDetailLibelleProps} from '../../../../Components.props.tsx'
-import {BudgetContext} from '../../../../../Models/contextProvider/BudgetContextProvider.tsx'
-import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils.ts";
-import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
+import {getOperationLibelle} from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
+import {OperationDetailLibelleProps} from '../../../../../Components.props.ts'
+import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../../Utils/OperationData.utils.ts";
+import LibelleCategorieOperationModel from "../../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import {evaluatePendingLibelle, getOperationLibelleInEdition, prioritySort} from "./OperationDetailLibelle.controller.ts";
 
 
@@ -117,9 +117,7 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
                 <FormHelperText>{errorLibelle}</FormHelperText>
             </FormControl>
             :
-            <Typography variant={"button"} sx={{fontSize: isMobile ? "medium" : "large"}}
-                className={budgetActif ? "editableField" : ""}
-                id={OPERATION_EDITION_FORM.LIBELLE}>
+            <Typography variant={"button"} sx={{fontSize: isMobile ? "medium" : "large"}} className={budgetActif ? "editableField" : "editableField--disabled"} id={OPERATION_EDITION_FORM.LIBELLE}>
                 {getOperationLibelle(operation.libelle, comptes, true)}
             </Typography>
     )

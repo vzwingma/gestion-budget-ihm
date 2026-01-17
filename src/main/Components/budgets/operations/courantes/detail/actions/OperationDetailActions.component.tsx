@@ -18,11 +18,11 @@ import {
     DeleteForeverRounded,
     HistoryRounded
 } from "@mui/icons-material";
-import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants.ts";
-import { CenterComponent } from "../../../../CenterComponent.tsx";
-import {handleOperationAction} from "./OperationDetailActions.controller.ts";
-import {OperationDetailActionsProps} from "../../../../Components.props.tsx";
-import {BudgetContext} from "../../../../../Models/contextProvider/BudgetContextProvider.tsx";
+import {OPERATION_ETATS_ENUM} from "../../../../../../Utils/AppBusinessEnums.constants.ts";
+import { CenterComponent } from "../../../../../CenterComponent.tsx";
+import {OperationDetailActionsProps} from "../../../../../Components.props.ts";
+import {BudgetContext} from "../../../../../../Models/contextProvider/BudgetContextProvider.tsx";
+import { handleOperationAction } from "./OperationDetailActions.controller.ts";
 
 
 /**
@@ -44,7 +44,6 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
     const budget = currentBudget;
     return (
         <ButtonGroup
-            sx={{padding: "10px"}}
             variant="contained"
             onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, editOperation, handleDateOperationFromCreateAction, onOperationChange, setShowModale)}>
             {operation.etat !== OPERATION_ETATS_ENUM.REALISEE &&

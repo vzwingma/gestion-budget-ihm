@@ -1,5 +1,4 @@
-import {WatchLaterRounded} from "@mui/icons-material";
-import {EN_RETARD, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants.ts";
+import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants.ts";
 import {Box, Tooltip} from "@mui/material";
 import React, {JSX} from "react";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
@@ -40,17 +39,17 @@ export function getPeriodeRenderer(periodeKey : PERIODES_MENSUALITE_ENUM) {
 
     switch (periodeKey) {
         case PERIODES_MENSUALITE_ENUM.PONCTUELLE:
-            return {value: periodeKey, text: "Ponctuelle", color: "#9e9e9e"}
+            return {value: periodeKey, text: "Ponctuelle", color: "var(--color-periode-ponctuelle)"}
         case PERIODES_MENSUALITE_ENUM.MENSUELLE:
-            return {value: periodeKey, text: "Mensuelle", color: "#4caf50"}
+            return {value: periodeKey, text: "Mensuelle", color: "var(--color-periode-mensuelle)"}
         case PERIODES_MENSUALITE_ENUM.TRIMESTRIELLE:
-            return {value: periodeKey, text: "Trimestrielle", color: "#2196f3"}
+            return {value: periodeKey, text: "Trimestrielle", color: "var(--color-periode-trimestrielle)"}
         case PERIODES_MENSUALITE_ENUM.SEMESTRIELLE:
-            return {value: periodeKey, text: "Semestrielle", color: "#ff9800"}
+            return {value: periodeKey, text: "Semestrielle", color: "var(--color-periode-semestrielle)"}
         case PERIODES_MENSUALITE_ENUM.ANNUELLE:
-            return {value: periodeKey, text: "Annuelle", color: "#f44336"}
+            return {value: periodeKey, text: "Annuelle", color: "var(--color-periode-annuelle)"}
         default:
-            return {value: periodeKey, text: "N/D", color: "#757575"}
+            return {value: periodeKey, text: "N/D", color: "var(--color-periode-default)"}
     }
 }
 
@@ -68,8 +67,6 @@ export function getOperationLibelle(operationLibelle: string, listeComptes: Comp
     if (operationLibelle !== null) {
         if (operationIsIntercompteFromLibelle(operationLibelle)) {
             return getOperationIntercompteLibelle(operationLibelle, listeComptes, maxVue, isMobile)
-        } else if (operationLibelle.startsWith(EN_RETARD)) {
-            return getOperationEnRetardLibelle(operationLibelle, isMobile)
         } else {
             return getOperationLibelleWithComment(operationLibelle, isMobile);
         }
@@ -131,7 +128,7 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
     else{
         const compte : CompteBancaireModel = listeComptes.find((compte) => compte.id === operationLibelleParts[2])
         if (compte?.libelle) {
-            return getOperationIntercompteLibelleWithIconAndComment(operationLibelle, compte, operationLibelleParts, isLabelOperation, maxVue, isMobile);
+            return getOperationIntercompteLibelleWithIconAndComment(compte, operationLibelleParts, isLabelOperation, maxVue, isMobile);
         } else {
             return getOperationLibelleWithComment(operationLibelle, isMobile);
         }
@@ -140,7 +137,6 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
 
 /**
  * Libellé d'une opération intercompte, avec icone et commentaire
- * @param operationLibelle libellé de l'opération
  * @param compte compte bancaire associé à l'opération d'intecompte
  * @param operationLibelleParts partie du libellé
  * @param isLabelOperation est ce un label d'opération
@@ -148,22 +144,16 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
  * @param isMobile
  * @returns représentation graphique
  */
-function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: string, compte: CompteBancaireModel, operationLibelleParts: string[], isLabelOperation: boolean, maxVue: boolean, isMobile?: boolean): JSX.Element {
+function getOperationIntercompteLibelleWithIconAndComment(compte: CompteBancaireModel, operationLibelleParts: string[], isLabelOperation: boolean, maxVue: boolean, isMobile?: boolean): JSX.Element {
     const direction = operationLibelleParts[1]
     const label = direction + " " + compte.libelle;
     return <Tooltip title={"Transfert intercompte " + label}>
             <Box>
-                {operationLibelle.startsWith(EN_RETARD) && isLabelOperation ?
-                    <WatchLaterRounded sx={{
-                        color: "#A0A0A0",
-                        width: isMobile ? "16px" : "22px",
-                        height: isMobile ? "16px" : "22px",
-                        marginRight: "4px"
-                    }}/> : <></>}
                 <img src={"/img/banques/" + compte.itemIcon}
                     width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
                     alt={compte.libelle}
                     style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
+
                 {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3], isMobile) :
                     <span style={{fontSize: isMobile ? "small" : "medium"}}>{label}</span>}
             </Box>
@@ -179,21 +169,4 @@ function getOperationIntercompteLibelleWithIconAndComment(operationLibelle: stri
  */
 export function getOperationIntercompteCatLibelle(operationLibelle: string, listeComptes: CompteBancaireModel[], isMobile?: boolean): JSX.Element {
     return getOperationIntercompteLabel(operationLibelle, false, listeComptes, false, isMobile);
-}
-
-
-/**
- * Ajout de l'icone quand en retard
- * @param operationLibelle
- * @param isMobile
- * @returns {JSX.Element}
- */
-function getOperationEnRetardLibelle(operationLibelle: string, isMobile?: boolean): JSX.Element {
-    return <><WatchLaterRounded
-        sx={{
-            color: "#A0A0A0",
-            width: isMobile ? "16px" : "22px",
-            height: isMobile ? "16px" : "22px",
-            marginRight: "4px"
-        }}/>{getOperationLibelleWithComment(operationLibelle.replace(EN_RETARD, ""), isMobile)}</>
 }

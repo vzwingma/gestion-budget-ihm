@@ -142,7 +142,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
                 </Tooltip>
             }
 
-            {budget.actif &&
+            {budget.actif && userHasPermission(droits, UTILISATEUR_DROITS.DROIT_CREATE_OPERATION) &&
                 <Tooltip title="Créer une nouvelle opération">
                     <IconButton
                         className={"buttonsActionsBudget"} sx={{ backgroundColor: '#209ED8', marginX: '10px' }}

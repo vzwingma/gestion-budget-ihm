@@ -1,6 +1,29 @@
-import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../Utils/OperationData.utils.ts";
-import OperationModel from "../../../../../Models/budgets/Operation.model.ts";
-import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
+import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../../Utils/OperationData.utils.ts";
+import OperationModel from "../../../../../../Models/budgets/Operation.model.ts";
+import LibelleCategorieOperationModel from "../../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
+import OperationEditionModel from "../../../../../../Models/budgets/OperationEdition.model.ts";
+import { ErrorsFormProps } from "../OperationDetailPage.constants.ts";
+
+
+/**
+ * validation du formulaire - Description
+ */
+/**
+ * Valide la description d'une opération et met à jour les erreurs si nécessaire.
+ *
+ * @param {OperationEditionModel} editOperation - L'opération en cours d'édition.
+ * @param {OperationModel} operation - L'opération à mettre à jour.
+ * @param {ErrorsFormProps} errors - Les erreurs de formulaire à mettre à jour.
+ */
+export function validateDescription(editOperation: OperationEditionModel, operation: OperationModel, errors: ErrorsFormProps) {
+    // Description
+    if (editOperation.libelle === null || editOperation.libelle === "") {
+        errors.libelle = "Le champ Description est obligatoire";
+    } else {
+        operation.libelle = editOperation.libelle;
+        errors.libelle = null;
+    }
+}
 
 /**
  * Récupère le libellé de l'opération en cours d'édition
