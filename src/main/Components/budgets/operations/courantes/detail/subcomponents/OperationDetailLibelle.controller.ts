@@ -1,4 +1,4 @@
-import {EN_RETARD_LIBELLE_REGEX, INTERCOMPTE_LIBELLE_REGEX} from "../../../../../../Utils/OperationData.utils.ts";
+import {INTERCOMPTE_LIBELLE_REGEX} from "../../../../../../Utils/OperationData.utils.ts";
 import OperationModel from "../../../../../../Models/budgets/Operation.model.ts";
 import LibelleCategorieOperationModel from "../../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import OperationEditionModel from "../../../../../../Models/budgets/OperationEdition.model.ts";
@@ -33,10 +33,6 @@ export function getOperationLibelleInEdition(operation: OperationModel): string 
     let extract = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle)
     if (extract !== null) {
         return extract[3];
-    }
-    extract = EN_RETARD_LIBELLE_REGEX.exec(operation.libelle);
-    if (extract !== null) {
-        return extract[1];
     }
     return operation.libelle;
 }
