@@ -221,6 +221,7 @@ a#tendances-link.nav-link_selected:hover {
     align-items: center;
     justify-content: center;
     animation: slideInFromRight 0.3s ease-out;
+    width: 90%;
 }
 
 .recurrents-page-container {
