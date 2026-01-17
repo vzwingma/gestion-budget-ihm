@@ -187,7 +187,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             onClick={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
             onKeyUp={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
-            <Stack direction={"column"} minHeight={"90vh"} sx={{ justifyContent: isMobile ? "none" : "center", paddingTop: isMobile ? "30px" : "0px" }} spacing={isMobile ? 2 : 4}>
+            <Stack direction={"column"} sx={{ justifyContent: isMobile ? "none" : "center", paddingTop: isMobile ? "30px" : "10vh" }} spacing={isMobile ? 2 : 4}>
                 <Stack direction={"column"} spacing={isMobile ? 3 : 4} className="budget-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
                     <Grid container width={"90%"} columnSpacing={10}>
