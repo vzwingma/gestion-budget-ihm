@@ -276,7 +276,7 @@ ___  ___      _     _ _
 @media only screen and (max-width: 1300px) {
     .App {
         font-size: 10px !important;
-        padding-top: 40px;
+        padding-top: 25px;
     }
 
     .favicon {

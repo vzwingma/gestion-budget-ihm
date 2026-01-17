@@ -81,8 +81,8 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                      backgroundColor: getOperationsColor || '#1F3D2B'
                  }
              }}>
-            <Grid container spacing={6} height={isMobile ? 60 : 90} alignItems="center">
-                <Grid size={{md: 0.5, xl: 1}} sx={{paddingLeft: '10px'}}>
+            <Grid container height={isMobile ? 60 : 90} alignItems="center">
+                <Grid size={{md: 1.5, xl: 1.5}} sx={{paddingLeft: isMobile ? '4px' : '10px'}}>
                     <Box width={isMobile ? 38 : 50} height={isMobile ? 38 : 50}
                          sx={{
                              borderRadius: '50%',
@@ -101,7 +101,7 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                         </Box>
                     </Box>
                 </Grid>
-                <Grid size={{md: 6, xl: 6}}>
+                <Grid size={{md: 6.5, xl: 6.5}}>
                     <Stack direction={"column"}>
                         <Typography variant={"subtitle1"} component="div" align={"left"}
                                     sx={{spacing: 2, paddingLeft: isMobile ? 1 : 2}}>
@@ -113,13 +113,13 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                         </Typography>
                     </Stack>
                 </Grid>
-                <Grid size={{md: 1, xl: 1}}>
-                    <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
+                <Grid size={{md: 1.5, xl: 1.5}}>
+                    <Typography component="div" align={"center"}>
                         <OperationStatus statutsOperation={operation.statuts} />
                     </Typography>
                 </Grid>
-                <Grid size={{md: 3, xl: 3}}>
-                    <Typography variant={"subtitle1"} component="div" align={"right"} sx={{spacing: 2}}>
+                <Grid  size={{md: 2.5, xl: 2.5}}>
+                    <Typography variant={"subtitle1"} component="div" align={"right"} paddingRight={isMobile ? 1 : 2}>
                         <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true}/>
                     </Typography>
                 </Grid>
