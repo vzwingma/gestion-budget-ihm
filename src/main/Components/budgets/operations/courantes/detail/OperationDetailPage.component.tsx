@@ -193,8 +193,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 <Stack direction={"column"} spacing={isMobile ? 3 : 4} className="budget-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
                     <Grid container width={"90%"} columnSpacing={10}>
-                        <Grid size={{ md: 4.5, xl: 3 }} />
-                        <Grid size={{ md: 4.5, xl: 6 }}>
+                        <Grid size={{ md: 3, xl: 3 }} />
+                        <Grid size={{ md: 6, xl: 6 }}>
                             <CenterComponent>
                                 <Box width={56} height={56}
                                     sx={{
@@ -208,14 +208,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             </CenterComponent>
 
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 3 }} sx={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Grid size={{ md: 3, xl: 3 }} sx={{ display: "flex", justifyContent: "flex-end" }}>
                             { /** STATUT **/}
                             {currentOperation?.statuts !== null && currentOperation?.statuts !== undefined ?
                                 <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>
                             }
-                        </Grid>
-                        <Grid>
-
                         </Grid>
                     </Grid>
                     <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
@@ -239,15 +236,15 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                  **/}
 
                     <Grid container width={"90%"} columnSpacing={10} sx={{borderTop: '1px solid var(--color-operations-primary)', paddingTop: 2}}>
-                        <Grid size={{ md: 4.5, xl: 8 }} paddingBottom={1}>
+                        <Grid size={{ md: 8, xl: 8 }} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                         </Grid>
-                        <Grid size={{ md: 3, xl: 4 }} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingBottom={1}>
                             {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                                 <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography> : <></>}
                         </Grid>
 
-                        <Grid size={{ md: 4.5, xl: 8 }}>
+                        <Grid size={{ md: 8, xl: 8 }}>
                             {  /** CATEGORIES **/}
                             <OperationDetailCategories
                                 listeCategories={listeCategories}
@@ -255,7 +252,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 errorsCategories={errors.categorie}
                                 fillOperationForm={fillOperationForm} />
                         </Grid>
-                        <Grid size={{ md: 3, xl: 4 }} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingBottom={1}>
                             { /** COMPTE DE TRANSFERT  **/}
                             {isInCreateMode(editForm) && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                                 <OperationDetailIntercompte intercompte={editOperation.intercompte}
@@ -271,21 +268,21 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                          * MENSUALITES
                          **/}
 
-                        <Grid size={{ md: 4.5, xl: 8 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 8, xl: 8 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
                         </Grid>
-                        <Grid size={{ md: 3, xl: 4 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingTop={3} paddingBottom={1}>
                             {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
                                 <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date de fin</Typography>
                             }
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 8 }}>
+                        <Grid size={{ md: 8, xl: 8 }}>
                             { /** Période **/}
                             <OperationDetailMensualite
                                 formMensualiteInEdition={editForm.mensualite}
                                 fillOperationForm={fillOperationForm} />
                         </Grid>
-                        <Grid size={{ md: 3, xl: 4 }}>
+                        <Grid size={{ md: 4, xl: 4 }}>
                             { /** DATE FIN **/}
                             {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
                                 <OperationDetailDateFin formDateInEdition={editForm.dateFin}
@@ -297,21 +294,21 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         {/** 
                          * ETATS et Actions 
                          **/}
-                        <Grid size={{ md: 4.5, xl: 8 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 8, xl: 8 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Etat</Typography>
                         </Grid>
-                        <Grid size={{ md: 4.5, xl: 4 }} paddingTop={3} paddingBottom={1}>
+                        <Grid size={{ md: 4, xl: 4 }} paddingTop={3} paddingBottom={1}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date d'opération</Typography>
                         </Grid>
 
 
-                        <Grid size={{ md: 4.5, xl: 8 }}>
+                        <Grid size={{ md: 8, xl: 8 }}>
                             <Typography variant={"overline"} color={getOperationStateColor(operation.etat)} style={{ border: '1px solid ' + getOperationStateColor(operation.etat), padding: '10px', paddingRight: '10px', borderRadius: '4px' }}>
                                 {operation.etat}
                             </Typography>
                         </Grid>
 
-                        <Grid size={{ md: 3, xl: 4 }}>
+                        <Grid size={{ md: 4, xl: 4 }}>
                             { /** DATE OPERATION **/}
                             <OperationDetailDate
                                 formDateInEdition={editForm.dateOperation}
@@ -325,10 +322,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         {currentBudget?.actif &&
 
                             <>
-                                <Grid size={{ md: 3, xl: 2 }} paddingBottom={3}>
+                                <Grid size={{ md: 4, xl: 2 }} paddingBottom={3}>
                                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Actions</Typography>
                                 </Grid>
-                                <Grid size={{ md: 3, xl: 8 }} paddingBottom={3}>
+                                <Grid size={{ md: 4, xl: 8 }} paddingBottom={3}>
                                     <Stack direction={"column"} spacing={2} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
                                         { /** ACTIONS **/}
                                         {currentOperation?.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ?
