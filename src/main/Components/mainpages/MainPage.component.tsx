@@ -133,7 +133,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             </Drawer>
 
             { /* Render de la page principale */}
-            <Box sx={{ height: 'calc(100vh - 70px)', overflow: 'hidden' }}>
+            <Box sx={{overflow: 'hidden' }}>
                 {selectedCompte && selectedDate ? renderSubMainPage() : null}
             </Box>
 
