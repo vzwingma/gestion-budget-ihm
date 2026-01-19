@@ -187,7 +187,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             onClick={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
             onKeyUp={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
-            <Stack direction={"column"} sx={{ justifyContent: isMobile ? "none" : "center", paddingTop: isMobile ? "30px" : "10vh" }}>
+            <Stack direction={"column"} sx={{ justifyContent: isMobile ? "none" : "center", paddingTop: isMobile ? "15px" : "10vh" }}>
                 <Stack direction={"column"} spacing={isMobile ? 1 : 4} className="budget-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
                     <Grid container width={"90%"}>
@@ -318,11 +318,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
                         {currentBudget?.actif &&
                             <>
-                                <Grid size={{ md: 4, xl: 2 }}>
+                                <Grid size={{ md: 2, xl: 2 }}>
                                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Actions</Typography>
                                 </Grid>
-                                <Grid size={{ md: 4, xl: 8 }}>
-                                    <Stack direction={"column"} spacing={2} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
+                                <Grid size={{ md: 8, xl: 8 }} paddingBottom={2}>
+                                    <Stack direction={"column"} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
                                         { /** ACTIONS **/}
                                         {currentOperation?.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ?
                                             <></>
@@ -335,7 +335,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                         }
                                     </Stack>
                                 </Grid>
-                                <Grid size={{ md: 3, xl: 2 }}></Grid>
+                                <Grid size={{ md: 2, xl: 2 }}></Grid>
                             </>
 
                         }
