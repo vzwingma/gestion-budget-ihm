@@ -60,7 +60,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
             
             <Typography id={OPERATION_EDITION_FORM.MENSUALITE} variant={"overline"}
                 className={budgetActif ? "editableField" : "editableField--disabled"}
-                style={{border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '10px', paddingRight: '10px', borderRadius: '4px', width: '400px'}}
+                style={{border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '8px', paddingRight: '10px', borderRadius: '4px'}}
                 color={getPeriodeRenderer(operation.mensualite.periode).color}>
                 {getPeriodeRenderer(operation.mensualite.periode).text}
             </Typography>
