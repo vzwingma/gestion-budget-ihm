@@ -83,18 +83,17 @@ export function getTypeCategorieRenderer(typeCategorieKey : TYPES_CATEGORIES_OPE
 
     switch (typeCategorieKey) {
         case TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL:
-            return {value: typeCategorieKey, text: "Obligatoire", color: "var(--color-periode-ponctuelle)"}
+            return {value: typeCategorieKey, text: "Essentiel", color: "var(--color-type-essentiel-primary)"}
         case TYPES_CATEGORIES_OPERATION_ENUM.REVENUS:
-            return {value: typeCategorieKey, text: "Revenus", color: "var(--color-periode-mensuelle)"}
+            return {value: typeCategorieKey, text: "Revenus", color: "var(--color-type-revenus-primary)"}
         case TYPES_CATEGORIES_OPERATION_ENUM.PLAISIR:
-            return {value: typeCategorieKey, text: "Plaisir", color: "var(--color-periode-trimestrielle)"}
+            return {value: typeCategorieKey, text: "Plaisir", color: "var(--color-type-plaisir-primary)"}
         case TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES:
-            return {value: typeCategorieKey, text: "Economies", color: "var(--color-periode-semestrielle)"}
+            return {value: typeCategorieKey, text: "Economies", color: "var(--color-type-economies-primary)"}
         default:
             return {value: typeCategorieKey, text: "N/D", color: "var(--color-periode-default)"}
     }
 }
-
 
 /**
  * Libellé d'une opération avec des commentaires (-)
