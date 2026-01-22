@@ -18,7 +18,7 @@ class OperationModel {
     etat: OPERATION_ETATS_ENUM;
     readonly autresInfos: AutresInfos = new AutresInfos(null);
     public categorie: CategorieOperationModel = {id: "", libelle: ""};
-    public ssCategorie: SsCategorieOperationModel = {id: "", libelle: "", type: TYPES_CATEGORIES_OPERATION_ENUM.OBLIGATOIRE};
+    public ssCategorie: SsCategorieOperationModel = {id: "", libelle: "", type: TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL};
     intercompte: string | null = null;
     typeOperation: TYPES_OPERATION_ENUM;
     valeur: number;
@@ -73,7 +73,7 @@ export function createNewOperation(): OperationModel {
         ssCategorie: {
             id: null,
             libelle: "",
-            type: TYPES_CATEGORIES_OPERATION_ENUM.OBLIGATOIRE
+            type: TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL
         },
         typeOperation: TYPES_OPERATION_ENUM.DEPENSE,
         etat: OPERATION_ETATS_ENUM.PREVUE,

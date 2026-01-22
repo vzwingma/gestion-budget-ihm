@@ -28,7 +28,7 @@ export const OperationDetailCategorieType: React.FC<OperationDetailCategorieType
  * @param {Event} e - L'événement de saisie
  */
     function fillCategorieTypeForm(e: any) {
-        fillOperationForm(OPERATION_EDITION_FORM.MENSUALITE, e.target.value);
+        fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE_TYPE, e.target.value);
     }
     /**
      * Active ou désactive le formulaire d'édition lors des autocomplétions
@@ -44,6 +44,7 @@ export const OperationDetailCategorieType: React.FC<OperationDetailCategorieType
                 id={OPERATION_EDITION_FORM.CATEGORIE_TYPE + OPERATION_EDITION_FORM.INPUT}
                 required select fullWidth
                 value={operation.ssCategorie.type}
+                disabled={operation.ssCategorie.type === TYPES_CATEGORIES_OPERATION_ENUM.REVENUS}
                 placeholder={"Sélectionnez un type de catégorie"}
                 onChange={fillCategorieTypeForm}
                 onFocus={() => activateValidationForm(false)}

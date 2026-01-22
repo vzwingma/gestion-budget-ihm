@@ -75,8 +75,8 @@ export enum OPERATION_ETATS_ENUM {
 export enum TYPES_CATEGORIES_OPERATION_ENUM {
     // Revenu
     REVENUS = "REVENUS",
-    // obligatoire
-    OBLIGATOIRE = "OBLIGATOIRE",
+    // essentiel
+    ESSENTIEL = "ESSENTIEL",
     // plaisir
     PLAISIR     = "PLAISIR",
     // épargne

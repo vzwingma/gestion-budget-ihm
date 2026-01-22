@@ -18,7 +18,7 @@ class OperationEditionModel {
     etat: OPERATION_ETATS_ENUM;
     readonly autresInfos: AutresInfos = new AutresInfos(null);
     readonly categorie: CategorieOperationModel = {id: "", libelle: ""};
-    readonly ssCategorie: SsCategorieOperationModel = {id: "", libelle: "", type: TYPES_CATEGORIES_OPERATION_ENUM.OBLIGATOIRE};
+    readonly ssCategorie: SsCategorieOperationModel = {id: "", libelle: "", type: TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL};
     intercompte: string | null = null;
     typeOperation: TYPES_OPERATION_ENUM | null;
     valeur: string | null;
@@ -68,7 +68,7 @@ export function cloneOperation(operation: OperationModel): OperationEditionModel
         ssCategorie: {
             id: operation.ssCategorie.id ?? null,
             libelle: operation.ssCategorie.libelle ?? "",
-            type: operation.ssCategorie.type ?? TYPES_CATEGORIES_OPERATION_ENUM.OBLIGATOIRE,
+            type: operation.ssCategorie.type ?? TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL,
         },
         
         typeOperation: operation.typeOperation,
