@@ -190,7 +190,6 @@ export interface OperationDetailMensualiteProps {
 
 export interface OperationDetailCategorieTypeProps {
     formCategorieTypeInEdition: boolean
-    listeCategories: CategorieOperationModel[]
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
 }
 

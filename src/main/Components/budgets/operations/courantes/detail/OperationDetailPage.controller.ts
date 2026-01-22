@@ -55,6 +55,9 @@ export function handleOperationEditionClick(event: any, { operation, budget }: O
                 case OPERATION_EDITION_FORM.LIBELLE:
                     editForm.libelle = true;
                     break;
+                case OPERATION_EDITION_FORM.CATEGORIE_TYPE:
+                    editForm.categorieType = true;
+                    break;
                 case OPERATION_EDITION_FORM.DATE_OPERATION:
                     editForm.dateOperation = true;
                     break;
@@ -161,7 +164,7 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
  * @returns {boolean}
  */
 export function isInEditMode(editForm: EditFormProps): boolean {
-    return editForm.value || editForm.libelle || editForm.dateOperation || editForm.mensualite || editForm.dateFin;
+    return editForm.value || editForm.libelle || editForm.dateOperation || editForm.mensualite || editForm.dateFin || editForm.categorieType;
 }
 
 /**
@@ -169,5 +172,5 @@ export function isInEditMode(editForm: EditFormProps): boolean {
  * @returns {boolean}
  */
 export function isInCreateMode(editForm: EditFormProps): boolean {
-    return editForm.value && editForm.libelle && editForm.dateOperation && editForm.mensualite;
+    return editForm.value && editForm.libelle && editForm.dateOperation && editForm.mensualite && editForm.categorieType;
 }

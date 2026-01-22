@@ -135,6 +135,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     fillCategorieForm(value);
                 }
                 break;
+            case OPERATION_EDITION_FORM.CATEGORIE_TYPE:
+                editOperation.ssCategorie.type = Object.values(TYPES_CATEGORIES_OPERATION_ENUM).find((type: TYPES_CATEGORIES_OPERATION_ENUM) => type === value);
+                break;
             case OPERATION_EDITION_FORM.INTERCOMPTES:
                 editOperation.intercompte = value
                 break;
@@ -163,6 +166,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         }
         editOperation.ssCategorie.id = ssCat.id;
         editOperation.ssCategorie.libelle = ssCat.libelle;
+        editOperation.ssCategorie.type = ssCat.type;
 
         /** Adaptation sur la sélection de catégorie **/
         if (ssCat.categorieParente) {
@@ -267,7 +271,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         <Grid size={{ md: 4, xl: 4 }} >
                             { /** Période **/}
                             <OperationDetailCategorieType
-                                listeCategories={listeCategories}
                                 formCategorieTypeInEdition={editForm.categorieType}
                                 fillOperationForm={fillOperationForm} />
                         </Grid>

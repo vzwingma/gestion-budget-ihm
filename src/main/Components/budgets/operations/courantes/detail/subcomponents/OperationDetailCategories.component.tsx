@@ -113,6 +113,7 @@ export function validateFormCategories(editOperation: OperationEditionModel, ope
     } else {
         operation.categorie = editOperation.categorie
         operation.ssCategorie = editOperation.ssCategorie
+        operation.ssCategorie.type = editOperation.ssCategorie.type
         errors.categorie = null
     }
 }

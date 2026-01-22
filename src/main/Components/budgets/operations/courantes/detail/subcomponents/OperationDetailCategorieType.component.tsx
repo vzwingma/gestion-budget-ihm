@@ -16,9 +16,7 @@ import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetCont
  * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
-export const OperationDetailCategorieType: React.FC<OperationDetailCategorieTypeProps> = ({ formCategorieTypeInEdition,
-    fillOperationForm
-}: OperationDetailCategorieTypeProps): JSX.Element => {
+export const OperationDetailCategorieType: React.FC<OperationDetailCategorieTypeProps> = ({ formCategorieTypeInEdition, fillOperationForm }: OperationDetailCategorieTypeProps): JSX.Element => {
 
     const { currentBudget, currentOperation } = useContext(BudgetContext);
     const operation = currentOperation;
@@ -28,6 +26,7 @@ export const OperationDetailCategorieType: React.FC<OperationDetailCategorieType
  * @param {Event} e - L'événement de saisie
  */
     function fillCategorieTypeForm(e: any) {
+        console.log("Changement type catégorie : " + e.target.value);
         fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE_TYPE, e.target.value);
     }
     /**
@@ -44,7 +43,6 @@ export const OperationDetailCategorieType: React.FC<OperationDetailCategorieType
                 id={OPERATION_EDITION_FORM.CATEGORIE_TYPE + OPERATION_EDITION_FORM.INPUT}
                 required select fullWidth
                 value={operation.ssCategorie.type}
-                disabled={operation.ssCategorie.type === TYPES_CATEGORIES_OPERATION_ENUM.REVENUS}
                 placeholder={"Sélectionnez un type de catégorie"}
                 onChange={fillCategorieTypeForm}
                 onFocus={() => activateValidationForm(false)}
