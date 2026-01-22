@@ -16,10 +16,10 @@ import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetCont
  * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
-export const OperationDetailCategorieType: React.FC<OperationDetailCategorieTypeProps> = ({ formCategorieTypeInEdition, fillOperationForm }: OperationDetailCategorieTypeProps): JSX.Element => {
+export const OperationDetailCategorieType: React.FC<OperationDetailCategorieTypeProps> = ({ formCategorieTypeInEdition, editOperation, fillOperationForm }: OperationDetailCategorieTypeProps): JSX.Element => {
 
     const { currentBudget, currentOperation } = useContext(BudgetContext);
-    const operation = currentOperation;
+    const operation = formCategorieTypeInEdition ? editOperation : currentOperation;
     const budgetActif = currentBudget.actif;
     /**
  * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur

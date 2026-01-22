@@ -269,9 +269,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
                         </Grid>
                         <Grid size={{ md: 4, xl: 4 }} >
-                            { /** Période **/}
+                            { /** Détail catégorie **/}
                             <OperationDetailCategorieType
                                 formCategorieTypeInEdition={editForm.categorieType}
+                                editOperation={editOperation}
                                 fillOperationForm={fillOperationForm} />
                         </Grid>
 
