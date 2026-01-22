@@ -10,6 +10,7 @@ class BudgetMensuelModel {
     actif: boolean = true;
     idCompteBancaire!: string;
     soldes: Soldes = new Soldes();
+    totauxParTypeCategories: { [key: string]: TotauxParTypeCategorie } = {};
     listeOperations: Array<OperationModel> = new Array<OperationModel>();
     /**
      * Constructor
@@ -26,5 +27,17 @@ export class Soldes {
     soldeAtMaintenant: number = 0;
     soldeAtFinMoisCourant: number = 0;
     soldeAtFinMoisPrecedent: number = 0;
+}
+
+
+export class TotauxParTypeCategorie {
+    libelleCategorie: string;
+    totalAtMaintenant: number;
+    totalAtFinMoisCourant: number;
+    constructor(libelleCategorie: string, totalAtMaintenant: number, totalAtFinMoisCourant: number) {
+        this.libelleCategorie = libelleCategorie;
+        this.totalAtMaintenant = totalAtMaintenant;
+        this.totalAtFinMoisCourant = totalAtFinMoisCourant;
+    }
 }
 export default BudgetMensuelModel;  // export default is used to export a single class, function or primitive from a script file.

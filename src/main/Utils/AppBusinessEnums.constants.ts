@@ -80,7 +80,7 @@ export enum TYPES_CATEGORIES_OPERATION_ENUM {
     // plaisir
     PLAISIR     = "PLAISIR",
     // épargne
-    ECONOMIES = "ECONOMIES"
+    ECONOMIES = "ECONOMIES",
 }
 
 
