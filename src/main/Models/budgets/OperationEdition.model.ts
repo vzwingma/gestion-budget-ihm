@@ -1,10 +1,12 @@
 import {
     OPERATION_ETATS_ENUM,
     PERIODES_MENSUALITE_ENUM,
+    TYPES_CATEGORIES_OPERATION_ENUM,
     TYPES_OPERATION_ENUM
 } from "../../Utils/AppBusinessEnums.constants.ts";
 import CategorieOperationModel from "./CategorieOperation.model.ts";
 import OperationModel, {AutresInfos, createNewOperation} from "./Operation.model.ts";
+import SsCategorieOperationModel from "./SSCategorieOperation.model.ts";
 
 /**
  * Opérations Edition model
@@ -16,7 +18,7 @@ class OperationEditionModel {
     etat: OPERATION_ETATS_ENUM;
     readonly autresInfos: AutresInfos = new AutresInfos(null);
     readonly categorie: CategorieOperationModel = {id: "", libelle: ""};
-    readonly ssCategorie: CategorieOperationModel = {id: "", libelle: ""};
+    readonly ssCategorie: SsCategorieOperationModel = {id: "", libelle: "", type: TYPES_CATEGORIES_OPERATION_ENUM.OBLIGATOIRE};
     intercompte: string | null = null;
     typeOperation: TYPES_OPERATION_ENUM | null;
     valeur: string | null;
@@ -65,8 +67,10 @@ export function cloneOperation(operation: OperationModel): OperationEditionModel
         },
         ssCategorie: {
             id: operation.ssCategorie.id ?? null,
-            libelle: operation.ssCategorie.libelle ?? ""
+            libelle: operation.ssCategorie.libelle ?? "",
+            type: operation.ssCategorie.type ?? TYPES_CATEGORIES_OPERATION_ENUM.OBLIGATOIRE,
         },
+        
         typeOperation: operation.typeOperation,
         etat: operation.etat,
         valeur: valeur,

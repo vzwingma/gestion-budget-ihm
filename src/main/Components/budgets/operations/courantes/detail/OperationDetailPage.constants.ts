@@ -10,6 +10,7 @@ export enum OPERATION_EDITION_FORM {
     DATE_FIN = "OPERATION_DATE_FIN",
     MENSUALITE = "OPERATION_MENSUALITE",
     CATEGORIE = "OPERATION_CATEGORIE",
+    CATEGORIE_TYPE = "OPERATION_TYPE_CATEGORIE",    
     INTERCOMPTES = "OPERATION_INTERCOMPTES",
     INPUT = "_INPUT",
     FORM_VALIDATION = "FORM_VALIDATION"
@@ -26,6 +27,7 @@ export enum OPERATION_EDITION_FORM {
  * @property {boolean} dateOperation - Indique si la date de l'opération est éditée.
  * @property {boolean} mensualite - Indique si la mensualité est éditée.
  * @property {boolean} categories - Indique si les catégories sont éditée.
+ * @property {boolean} categorieType - Indique si le type de catégorie est éditée.
  * @property {boolean} formValidationEnabled - Indique si la validation du formulaire est éditée.
  */
 export interface EditFormProps {
@@ -35,6 +37,7 @@ export interface EditFormProps {
     mensualite: boolean
     dateFin: boolean
     categories: boolean
+    categorieType: boolean
     formValidationEnabled: boolean
 }
 
@@ -46,6 +49,7 @@ export function createEmptyEditForm(operationInCreation: boolean): EditFormProps
         mensualite: operationInCreation,
         dateFin: operationInCreation,
         categories: operationInCreation,
+        categorieType: operationInCreation,
         formValidationEnabled: false
     }
 }
