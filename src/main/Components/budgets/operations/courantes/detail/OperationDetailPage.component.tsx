@@ -24,6 +24,7 @@ import {
     BUSINESS_GUID,
     OPERATION_ETATS_ENUM,
     PERIODES_MENSUALITE_ENUM,
+    TYPES_CATEGORIES_OPERATION_ENUM,
     TYPES_OPERATION_ENUM
 } from '../../../../../Utils/AppBusinessEnums.constants.ts';
 import { getCategorieColor, getCategorieIcon } from '../../../../../Utils/renderers/CategorieItem.renderer.tsx';
@@ -42,6 +43,7 @@ import { BudgetContext } from '../../../../../Models/contextProvider/BudgetConte
 import { OperationDetailDate } from './subcomponents/OperationDetailDateOperation.component.tsx';
 import OperationDetailStatus from '../../../../../Utils/renderers/OperationDetailStatus.renderer.tsx';
 import { OperationDetailDateFin } from '../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
+import { OperationDetailCategorieType } from './subcomponents/OperationDetailCategorieType.component.tsx';
 
 
 /**
@@ -133,6 +135,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     fillCategorieForm(value);
                 }
                 break;
+            case OPERATION_EDITION_FORM.CATEGORIE_TYPE:
+                editOperation.ssCategorie.type = Object.values(TYPES_CATEGORIES_OPERATION_ENUM).find((type: TYPES_CATEGORIES_OPERATION_ENUM) => type === value);
+                break;
             case OPERATION_EDITION_FORM.INTERCOMPTES:
                 editOperation.intercompte = value
                 break;
@@ -161,20 +166,23 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         }
         editOperation.ssCategorie.id = ssCat.id;
         editOperation.ssCategorie.libelle = ssCat.libelle;
-        /** Si type Rentrée d'argent, alors type opération = Crédit **/
-        const editOperationTypeOperation = (BUSINESS_GUID.CAT_RENTREE_ARGENT === editOperation.categorie.id) ? TYPES_OPERATION_ENUM.CREDIT : TYPES_OPERATION_ENUM.DEPENSE;
-        console.log("Changement type opération en fonction de la catégorie sélectionnée :", editOperationTypeOperation);
-        editOperation.typeOperation = editOperationTypeOperation;
+        editOperation.ssCategorie.type = ssCat.type;
 
         /** Adaptation sur la sélection de catégorie **/
         if (ssCat.categorieParente) {
             operation.categorie.id = ssCat.categorieParente.id;
             operation.categorie.libelle = ssCat.categorieParente.libelle;
         }
-
         operation.ssCategorie.id = ssCat.id;
         operation.ssCategorie.libelle = ssCat.libelle;
-        operation.typeOperation = editOperationTypeOperation;
+        operation.ssCategorie.type = ssCat.type;
+
+        /** Si type Rentrée d'argent, alors type opération = Crédit **/
+        if(BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.id) {
+            editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+            editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
+            console.log("Changement type opération en fonction de la catégorie sélectionnée :", editOperation.typeOperation);
+        }
     }
 
     /**
@@ -235,10 +243,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     <Grid container width={"90%"} columnSpacing={2} rowSpacing={isMobile ? 1 : 2} sx={{ borderTop: isInCreateMode(editForm) ? 'none' : '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
                         <Grid size={{ md: 8, xl: 8 }}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
-                        </Grid>
-                        <Grid size={{ md: 4, xl: 4 }}>
                             {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                                 <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography> : <></>}
+
+                        </Grid>
+                        <Grid size={{ md: 4, xl: 4 }}>
+                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Type Catégorie</Typography>
                         </Grid>
 
                         <Grid size={{ md: 8, xl: 8 }}>
@@ -248,8 +258,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 formCatgoriesInEdition={editForm.categories}
                                 errorsCategories={errors.categorie}
                                 fillOperationForm={fillOperationForm} />
-                        </Grid>
-                        <Grid size={{ md: 4, xl: 4 }} >
                             { /** COMPTE DE TRANSFERT  **/}
                             {isInCreateMode(editForm) && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
                                 <OperationDetailIntercompte intercompte={editOperation.intercompte}
@@ -259,6 +267,13 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                     fillOperationForm={fillOperationForm} />
                                 : getAffichageIntercompteRO(editOperation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
 
+                        </Grid>
+                        <Grid size={{ md: 4, xl: 4 }} >
+                            { /** Détail catégorie **/}
+                            <OperationDetailCategorieType
+                                formCategorieTypeInEdition={editForm.categorieType}
+                                editOperation={editOperation}
+                                fillOperationForm={fillOperationForm} />
                         </Grid>
 
                         {/** 

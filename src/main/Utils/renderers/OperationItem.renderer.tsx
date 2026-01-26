@@ -1,4 +1,4 @@
-import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from "../AppBusinessEnums.constants.ts";
+import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_CATEGORIES_OPERATION_ENUM} from "../AppBusinessEnums.constants.ts";
 import {Box, Tooltip} from "@mui/material";
 import React, {JSX} from "react";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
@@ -73,6 +73,26 @@ export function getOperationLibelle(operationLibelle: string, listeComptes: Comp
 
     }
     return <></>;
+}
+
+
+/** Libellé & Couleur du background de l'attribut Mensualité
+ * @param periodeKey : string enum période
+ * */
+export function getTypeCategorieRenderer(typeCategorieKey : TYPES_CATEGORIES_OPERATION_ENUM) {
+
+    switch (typeCategorieKey) {
+        case TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL:
+            return {value: typeCategorieKey, text: "Essentiel", color: "var(--color-type-essentiel-primary)"}
+        case TYPES_CATEGORIES_OPERATION_ENUM.REVENUS:
+            return {value: typeCategorieKey, text: "Revenus", color: "var(--color-type-revenus-primary)"}
+        case TYPES_CATEGORIES_OPERATION_ENUM.PLAISIR:
+            return {value: typeCategorieKey, text: "Plaisir", color: "var(--color-type-plaisir-primary)"}
+        case TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES:
+            return {value: typeCategorieKey, text: "Economies", color: "var(--color-type-economies-primary)"}
+        default:
+            return {value: typeCategorieKey, text: "N/D", color: "var(--color-periode-default)"}
+    }
 }
 
 /**

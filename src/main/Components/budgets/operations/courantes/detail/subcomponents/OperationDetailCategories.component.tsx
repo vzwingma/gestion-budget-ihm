@@ -16,6 +16,7 @@ import {OperationDetailCategoriesProps} from '../../../../../Components.props.ts
 import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
+import SsCategorieOperationModel from '../../../../../../Models/budgets/SSCategorieOperation.model.ts'
 
 
 /**
@@ -68,9 +69,9 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                     }}
                     sx={{ width: "100%" }}
                     value={operation.ssCategorie ?? { id: null, libelle: "" }}
-                    options={getListeAllCategoriesFlatten(categories)}
-                    groupBy={(option: CategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
-                    getOptionLabel={(option: CategorieOperationModel) => option?.libelle ?? ""}
+                    options={getListeAllSsCategoriesFlatten(categories)}
+                    groupBy={(option: SsCategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
+                    getOptionLabel={(option: SsCategorieOperationModel) => option?.libelle ?? ""}
                     isOptionEqualToValue={(option : any, value : any) => {
                         if (option.id == null) {
                             return false;
@@ -96,7 +97,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
  * Liste de toutes les catégories
  * @returns tableau de catégories
  */
-function getListeAllCategoriesFlatten(listeCategories: CategorieOperationModel[]): (CategorieOperationModel)[]  {
+function getListeAllSsCategoriesFlatten(listeCategories: CategorieOperationModel[]): (CategorieOperationModel)[]  {
     return listeCategories
         .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
         .sort(sortLibellesCategories);
@@ -112,6 +113,7 @@ export function validateFormCategories(editOperation: OperationEditionModel, ope
     } else {
         operation.categorie = editOperation.categorie
         operation.ssCategorie = editOperation.ssCategorie
+        operation.ssCategorie.type = editOperation.ssCategorie.type
         errors.categorie = null
     }
 }

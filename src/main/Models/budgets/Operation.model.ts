@@ -2,9 +2,11 @@ import {
     OPERATION_ETATS_ENUM,
     OPERATION_STATUS_ENUM,
     PERIODES_MENSUALITE_ENUM,
+    TYPES_CATEGORIES_OPERATION_ENUM,
     TYPES_OPERATION_ENUM
 } from "../../Utils/AppBusinessEnums.constants.ts";
 import CategorieOperationModel from "./CategorieOperation.model.ts";
+import SsCategorieOperationModel from "./SSCategorieOperation.model.ts";
 
 /**
  * Opérations model
@@ -16,7 +18,7 @@ class OperationModel {
     etat: OPERATION_ETATS_ENUM;
     readonly autresInfos: AutresInfos = new AutresInfos(null);
     public categorie: CategorieOperationModel = {id: "", libelle: ""};
-    public ssCategorie: CategorieOperationModel = {id: "", libelle: ""};
+    public ssCategorie: SsCategorieOperationModel = {id: "", libelle: "", type: TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL};
     intercompte: string | null = null;
     typeOperation: TYPES_OPERATION_ENUM;
     valeur: number;
@@ -70,7 +72,8 @@ export function createNewOperation(): OperationModel {
         },
         ssCategorie: {
             id: null,
-            libelle: ""
+            libelle: "",
+            type: TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL
         },
         typeOperation: TYPES_OPERATION_ENUM.DEPENSE,
         etat: OPERATION_ETATS_ENUM.PREVUE,

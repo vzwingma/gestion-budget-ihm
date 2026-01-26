@@ -188,6 +188,14 @@ export interface OperationDetailMensualiteProps {
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
 }
 
+export interface OperationDetailCategorieTypeProps {
+    formCategorieTypeInEdition: boolean
+    editOperation: any
+    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
+}
+
+
+
 export interface OperationDetailValeurProps {
     formValueInEdition: boolean
     errorValeur: string | null

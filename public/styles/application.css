@@ -52,6 +52,12 @@
     --color-periode-semestrielle : #ff9800;
     --color-periode-annuelle : #f44336;
     --color-periode-default : #757575;
+
+    /* Budget types */
+    --color-type-essentiel-primary: #4DA3FF;
+    --color-type-plaisir-primary:   #A78BFA;
+    --color-type-economies-primary: #4ADE80;
+    --color-type-revenus-primary:   #FB923C;
 }
 
 /* Common styles */

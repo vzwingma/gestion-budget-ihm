@@ -72,6 +72,17 @@ export enum OPERATION_ETATS_ENUM {
     SUPPRIMEE = "SUPPRIMEE"
 }
 
+export enum TYPES_CATEGORIES_OPERATION_ENUM {
+    // Revenu
+    REVENUS = "REVENUS",
+    // essentiel
+    ESSENTIEL = "ESSENTIEL",
+    // plaisir
+    PLAISIR     = "PLAISIR",
+    // épargne
+    ECONOMIES = "ECONOMIES",
+}
+
 
 /**
  * Constantes des périodes pour la liste des périodes
