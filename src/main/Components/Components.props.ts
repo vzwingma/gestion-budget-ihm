@@ -14,6 +14,7 @@ import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOp
 import OperationEditionModel from "../Models/budgets/OperationEdition.model.ts";
 import {Dispatch, SetStateAction} from "react";
 import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
+import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.ts";
 
 /**
  * Analyse des catégories
@@ -104,6 +105,16 @@ export interface DataCalculationTendancesResultsProps {
     timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }
 
+export  interface AnalyseProps {
+   selectedCompte: CompteBancaireModel | null
+   onOpenMenu: () => void
+}
+
+export interface AnalysesTitreProps {
+    currentCompte: CompteBancaireModel;
+    currentPeriode: AnalysesPeriodeModel;
+}
+
 export  interface AnalyseTendancesProps {
    selectedCompte: CompteBancaireModel | null
    onOpenMenu: () => void
@@ -145,7 +156,7 @@ export interface RecurrentsPageProps {
 }
 
 /**
- * Opertions
+ * Operations
  */
 
 export interface OperationDetailActionsProps {

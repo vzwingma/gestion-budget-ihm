@@ -13,6 +13,7 @@ import {MainPageProps} from "../Components.props.tsx";
 import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
 import {useAuth} from "react-oidc-context";
 import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
+import { Analyses } from "../analyses/Analyses.component.tsx";
 
 
 /**
@@ -72,6 +73,10 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
 
             case BUSINESS_ONGLETS.RECURRENTS:
                 return  <RecurrentsPage onOpenMenu={handleOpenMenuBar} />
+
+            case BUSINESS_ONGLETS.ANALYSES:
+                return <Analyses selectedCompte={selectedCompte}
+                    onOpenMenu={handleOpenMenuBar} />
 
             case BUSINESS_ONGLETS.ANALYSE_CATEGORIES:
                 return <AnalyseCategories selectedCompte={selectedCompte}

@@ -37,7 +37,7 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedF
      * @constructor
      */
     function renderValueCompte(): JSX.Element {
-        if (soldes === undefined) {
+        if ( (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS) && (soldes === undefined) ) {
             return <CircularProgress size={20} />
         }
         else if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
@@ -52,7 +52,10 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedF
             </Typography>
 
         } else {
-            return <></>
+            return <Typography variant={"subtitle1"} width={120} sx={{ cursor: "help" }}>
+                { (!compte.actif) && <span style={{color: "var( --color-heading-text)"}}>Inactif</span> }
+                { (compte.actif) && <span style={{color: 'var(--color-realisee)'}}>Actif</span> }
+            </Typography>
         }
     }
     /**
