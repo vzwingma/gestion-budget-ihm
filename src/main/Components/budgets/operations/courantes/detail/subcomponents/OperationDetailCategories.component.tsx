@@ -10,7 +10,7 @@ import {
     useTheme
 } from "@mui/material"
 import {ErrorsFormProps, OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
-import {sortLibellesCategories} from '../../../../../../Utils/OperationData.utils.ts'
+import {sortLibellesSsCategories} from '../../../../../../Utils/OperationData.utils.ts'
 import CategorieOperationModel from '../../../../../../Models/budgets/CategorieOperation.model.ts'
 import {OperationDetailCategoriesProps} from '../../../../../Components.props.ts'
 import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
@@ -100,7 +100,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
 function getListeAllSsCategoriesFlatten(listeCategories: CategorieOperationModel[]): (CategorieOperationModel)[]  {
     return listeCategories
         .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
-        .sort(sortLibellesCategories);
+        .sort(sortLibellesSsCategories);
 }
 
 

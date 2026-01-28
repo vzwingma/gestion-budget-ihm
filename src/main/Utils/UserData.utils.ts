@@ -10,3 +10,4 @@ import { UTILISATEUR_DROITS } from "./AppBusinessEnums.constants.ts";
 export function userHasPermission(droitsUtilisateur: UTILISATEUR_DROITS[], droitNecessaire : UTILISATEUR_DROITS) : boolean {
     return droitsUtilisateur.includes(droitNecessaire);
 }
+

@@ -20,8 +20,7 @@ function getTooltipAuj(): string {
  * @returns {JSX.Element} - L'élément JSX à afficher
  * @constructor
  */
-const AnalyseTitre: React.FC<AnalyseTitreProps> = ({
-                                                       currentCompte,
+const AnalyseTitre: React.FC<AnalyseTitreProps> = ({   currentCompte,
                                                        currentDate,
                                                        totalOperations
                                                    }: AnalyseTitreProps): JSX.Element => {

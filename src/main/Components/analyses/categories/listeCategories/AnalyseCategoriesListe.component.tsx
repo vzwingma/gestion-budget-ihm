@@ -1,9 +1,10 @@
 import React, {JSX} from 'react'
 import {Box, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
 import AnalyseCategorieListItem from "./AnalyseCategorieListItem.component.tsx";
-import {sortLibellesCategories} from '../../../../Utils/OperationData.utils.ts';
+import { sortLibellesCategories} from '../../../../Utils/OperationData.utils.ts';
 import AnalyseCategoriesModel from '../../../../Models/analyses/categories/AnalyseCategories.model.ts';
 import {AnalyseCategoriesListeProps} from '../../../Components.props.tsx';
+import { getHeightList } from '../../../../Utils/ListData.utils.tsx';
 
 
 /**
@@ -34,7 +35,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({   rangS
                                                                            selectCategorie
                                                                        }: AnalyseCategoriesListeProps): JSX.Element => {
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
+    const listHeight = getHeightList();
     const subListHeight = isMobile ? 40 : 79;
     /**
      * Iterate groupe

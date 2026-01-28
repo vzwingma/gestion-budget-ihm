@@ -18,6 +18,7 @@ import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.
 import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import BudgetSoldes from "./BudgetSoldes.component.tsx";
 import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
+import { getHeightList } from "../../../Utils/ListData.utils.tsx";
 
 
 /**
@@ -49,7 +50,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const [listeLibellesOperations, setListeLibellesOperations] = useState<LibelleCategorieOperationModel[]>([]);
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
 
     /** Callback de chargement des catégories **/
     const handleLoadCategories = useCallback((categories: CategorieOperationModel[]) => {
@@ -153,7 +153,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                         )
                     }
                 </Grid>
-                <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: listHeight }}>
+                <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
                     {currentBudget != null && currentOperation != null ?
                         <OperationDetailPage
                             listeCategories={categories}

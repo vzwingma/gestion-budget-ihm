@@ -1,11 +1,13 @@
-import React, {JSX, useEffect, useState} from "react";
+import React, { JSX, useEffect, useState } from "react";
 
-import {Box, CircularProgress, Grid, useMediaQuery, useTheme} from "@mui/material";
+import { Box, CircularProgress, Grid} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AnalyseProps } from "../Components.props.ts";
 import { CenterComponent } from "../CenterComponent.tsx";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
+import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
+import { getHeightList } from "../../Utils/ListData.utils.tsx";
 
 
 
@@ -24,9 +26,10 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     const [periodeAnalyses, setPeriodeAnalyses] = useState<AnalysesPeriodeModel>({
         vueAnnee: false,
         periodeDebut: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-        periodeFin:   new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
-    }
-    );
+        periodeFin: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
+    });
+
+
     /**
     const [soldesMensuels, setSoldesMensuels] = useState<SoldesMensuelModel[]>();
 
@@ -41,12 +44,10 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
  */
     const [filterChange, setFilterChange] = useState<number>(Date.now());
 
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 125 : window.innerHeight - 160;
     /** Chargement des catégories **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
-     //   loadSoldesBudgets(selectedCompte, anneeAnalyses, handleDataCalculationResult);
+        //   loadSoldesBudgets(selectedCompte, anneeAnalyses, handleDataCalculationResult);
     }, [selectedCompte, periodeAnalyses]);
 
 
@@ -86,15 +87,15 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
      * @param {Object} event - L'objet d'événement du changement de filtre. La cible de cet événement est censée avoir une propriété 'id' qui correspond à un id de catégorie et une propriété 'checked' qui représente le nouvel état du filtre.
      */
     function onFilterChange(event: any) {
-    /*    let listeCategoriesUpdated = analyseSoldesCategoriesData;
-        if (listeCategoriesUpdated) {
-            const categorie = listeCategoriesUpdated.find((categorie: AnalyseSoldesCategorie) => categorie.id === event.target.id);
-            if (categorie) {
-                categorie.filterActive = event.target.checked;
-            }
-            setAnalyseSoldesCategoriesData(listeCategoriesUpdated);
-            setFilterChange(Date.now());
-        } */
+        /*    let listeCategoriesUpdated = analyseSoldesCategoriesData;
+            if (listeCategoriesUpdated) {
+                const categorie = listeCategoriesUpdated.find((categorie: AnalyseSoldesCategorie) => categorie.id === event.target.id);
+                if (categorie) {
+                    categorie.filterActive = event.target.checked;
+                }
+                setAnalyseSoldesCategoriesData(listeCategoriesUpdated);
+                setFilterChange(Date.now());
+            } */
     }
 
     /**
@@ -102,7 +103,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
      * @param {Object} event - L'objet d'événement du changement de filtre pour les soldes.
      */
     function onFilterSoldesChange(event: any) {
-    //    setFilterSoldesActive(event.target.checked);
+        //    setFilterSoldesActive(event.target.checked);
         setFilterChange(Date.now());
     }
 
@@ -113,12 +114,12 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
      */
     return (
         <Box className="page-container tendances-page-container">
-            <Grid container marginTop={1}
-                  sx={{overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
-                <Grid size={{md: 0.6, xl: 0.4}}
-                      sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}><MenuIcon
-                    onClick={onOpenMenu} className={"editableField"} fontSize={"large"}/></Grid>
-                <Grid size={{md: 11.4, xl: 11.6}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+            <Grid container
+                sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                <Grid size={{ md: 0.6, xl: 0.4 }}
+                    sx={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}><MenuIcon
+                        onClick={onOpenMenu} className={"editableField"} fontSize={"large"} /></Grid>
+                <Grid size={{ md: 11.4, xl: 11.6 }} sx={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                     {selectedCompte == null ?
                         <CenterComponent><CircularProgress /></CenterComponent>
                         :
@@ -126,26 +127,17 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                             currentPeriode={periodeAnalyses} />
                     }
                 </Grid>
-                <Grid size={{md: 6, xl: 6}} direction={"row-reverse"}>
-                    { /*  analyseSoldesCategoriesData == null ?
-                            <CenterComponent><CircularProgress /></CenterComponent>
-                            :
-                            <>
-                                <AnalyseTendancesFiltre listeCategories={analyseSoldesCategoriesData}
-                                    onFilterChange={onFilterChange} />
-                                <FormControlLabel id="Soldes" key="Soldes" label="Soldes"
-                                    control={<Checkbox id="Soldes" defaultChecked={false}
-                                        icon={<RadioButtonUnchecked />}
-                                        checkedIcon={<CheckCircle />} />}
-                                                  style={{color: "#FFFFFF"}} className="filtercategorie"
-                                    onChange={onFilterSoldesChange} />
-                            </> */ }
+                <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
+                    {selectedCompte == null ?
+                        <CenterComponent><CircularProgress /></CenterComponent>
+                        :
+                        <AnalysesFiltres currentCompte={selectedCompte}
+                            currentPeriode={periodeAnalyses} />
+                    }
                 </Grid>
-            </Grid>
-            <Grid sx={{overflow: "hidden", height: listHeight}}>
-                
+                <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
                     <CenterComponent><CircularProgress /></CenterComponent>
-                  
+                </Grid>
             </Grid>
         </Box>
     )

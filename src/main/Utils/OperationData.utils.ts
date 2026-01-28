@@ -1,5 +1,6 @@
 import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
+import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
 import * as AppConstants from "./AppBusinessEnums.constants.ts";
 
 /**
@@ -45,7 +46,9 @@ export function getEventTargetId(eventTarget: any): any {
     }
     return null;
 }
-
+function isSsCategorieOperationModel(obj: any): obj is SsCategorieOperationModel {
+    return obj && typeof obj === "object" && "categorieParente" in obj;
+}
 /**
  * Tri par libellé
  * @param {CategorieOperationModel} categorie1 :  1ère catégorie
@@ -53,6 +56,27 @@ export function getEventTargetId(eventTarget: any): any {
  * @returns {number} comparaison
  */
 export function sortLibellesCategories(categorie1: CategorieOperationModel, categorie2: CategorieOperationModel): number {
+    if (categorie1 !== null && categorie1 !== undefined && categorie2 !== null && categorie2 !== undefined) {
+        if (isSsCategorieOperationModel(categorie1) && isSsCategorieOperationModel(categorie2)) {
+            return sortLibellesSsCategories(categorie1 as SsCategorieOperationModel, categorie2 as SsCategorieOperationModel);
+        }
+        if (categorie1.libelle > categorie2.libelle) {
+            return 1;
+        } else if (categorie1.libelle < categorie2.libelle) {
+            return -1;
+        }
+    }
+    return 0;
+}
+
+
+/**
+ * Tri par libellé
+ * @param {CategorieOperationModel} categorie1 :  1ère catégorie
+ * @param {CategorieOperationModel} categorie2 : 2ème catégorie
+ * @returns {number} comparaison
+ */
+export function sortLibellesSsCategories(categorie1: SsCategorieOperationModel, categorie2: SsCategorieOperationModel): number {
     if (categorie1 !== null && categorie1 !== undefined && categorie2 !== null && categorie2 !== undefined) {
         if (categorie1.categorieParente !== null && categorie1.categorieParente !== undefined && categorie2.categorieParente !== null && categorie2.categorieParente !== undefined) {
             if (categorie1.categorieParente.libelle > categorie2.categorieParente.libelle) {
@@ -69,7 +93,6 @@ export function sortLibellesCategories(categorie1: CategorieOperationModel, cate
     }
     return 0;
 }
-
 
 export const INTERCOMPTE_LIBELLE_REGEX: RegExp = /\[(vers|depuis) ([^\]]+)\](.+)/;
 /**
