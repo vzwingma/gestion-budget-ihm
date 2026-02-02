@@ -97,37 +97,22 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
             </FormControl>
 
             {!vuePeriode && (
-                <Stack direction="row" spacing={2}>
-                    <FormControl sx={{ minWidth: 150 }}>
-                        <Select
-                            value={moisSelectionne}
-                            onChange={(e) => setMoisSelectionne(e.target.value)}
-                        >
-                            {MOIS.map((mois, index) => (
-                                <MenuItem
-                                    key={`mois-${mois}`}
-                                    value={index}
-                                    disabled={anneeSelectionnee === anneeCourante && index > moisCourant}
-                                >
-                                    {mois}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    <FormControl sx={{ minWidth: 100 }}>
-                        <Select
-                            value={anneeSelectionnee}
-                            onChange={(e) => setAnneeSelectionnee(e.target.value)}
-                        >
-                            {genererAnnees().map((annee) => (
-                                <MenuItem key={annee} value={annee}>
-                                    {annee}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Stack>
+                <TextField
+                    label="Mois"
+                    type="month"
+                    value={`${anneeSelectionnee}-${String(moisSelectionne + 1).padStart(2, '0')}`}
+                    onChange={(e) => {
+                        const [year, month] = e.target.value.split('-');
+                        setAnneeSelectionnee(Number.parseInt(year));
+                        setMoisSelectionne(Number.parseInt(month) - 1);
+                    }}
+                    slotProps={{ 
+                        inputLabel: { shrink: true },
+                        htmlInput: {
+                            max: `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
+                        }
+                    }}
+                />
             )}
 
             {vuePeriode && (

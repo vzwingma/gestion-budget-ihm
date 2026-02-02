@@ -39,19 +39,11 @@ export default AnalysesTitre
 
 
 export function formatPeriode(periode: AnalysesPeriodeModel): string {
-    if (periode.vuePeriode) {
-        return "Analyse " + (periode.periodeDebut.getFullYear() === periode.periodeFin.getFullYear() ?
-            periode.periodeDebut.getFullYear()
-            :
-            periode.periodeDebut.getFullYear() + " - " + periode.periodeFin.getFullYear()
-        );
-    } else {
-        return "Analyses de " + (periode.periodeDebut.getFullYear() === periode.periodeFin.getFullYear()
+    return "Analyses de " + (periode.periodeDebut.getFullYear() === periode.periodeFin.getFullYear()
             && periode.periodeDebut.getMonth() === periode.periodeFin.getMonth() ?
             getLabelMonthFRFromDate(periode.periodeDebut)
             :
             getLabelMonthFRFromDate(periode.periodeDebut) + " à " +
             getLabelMonthFRFromDate(periode.periodeFin)
         );
-    }
 }

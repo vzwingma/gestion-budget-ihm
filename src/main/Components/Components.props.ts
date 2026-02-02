@@ -116,6 +116,7 @@ export interface AnalysesTitreProps {
 }
 
 export interface AnalysesFiltresProps {
+    isLoading: boolean;
     budgetConsolide: BudgetMensuelModel;
     currentPeriode: AnalysesPeriodeModel;
     setPeriodeAnalyses: Dispatch<SetStateAction<AnalysesPeriodeModel>>;

@@ -34,6 +34,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     });
 
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
    
     const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>( null);
  /**
@@ -51,6 +52,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     /** Chargement des catégories **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
+        setIsLoading(true);
         loadBudgetsPeriodes(selectedCompte, periodeAnalyses, handleDataCalculationResult);
     }, [selectedCompte, periodeAnalyses]);
 
@@ -67,6 +69,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     {
         console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations");
         setBudgetConsolide(budgetConsolide);
+        setIsLoading(false);
     }
 
     /**
@@ -123,7 +126,8 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                     {selectedCompte == null || budgetConsolide == null ?
                         <CenterComponent><CircularProgress /></CenterComponent>
                         :
-                        <AnalysesFiltres budgetConsolide={budgetConsolide}
+                        <AnalysesFiltres isLoading={isLoading}
+                            budgetConsolide={budgetConsolide}
                             currentPeriode={periodeAnalyses} 
                             setPeriodeAnalyses={setPeriodeAnalyses} />
                     }
