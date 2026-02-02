@@ -16,6 +16,7 @@ import {Dispatch, SetStateAction} from "react";
 import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
 import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.ts";
 import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
+import { AnalysesFiltersModel } from "../Models/analyses/AnalysesFilters.model.ts";
 
 /**
  * Analyse des catégories
@@ -106,6 +107,8 @@ export interface DataCalculationTendancesResultsProps {
     timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }
 
+
+
 export  interface AnalyseProps {
    selectedCompte: CompteBancaireModel | null
    onOpenMenu: () => void
@@ -120,16 +123,8 @@ export interface AnalysesFiltresProps {
     isLoading: boolean;
     currentPeriode: AnalysesPeriodeModel;
     setPeriodeAnalyses: Dispatch<SetStateAction<AnalysesPeriodeModel>>;
-    selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
-    setSelectedTypes: Dispatch<SetStateAction<TYPES_CATEGORIES_OPERATION_ENUM[]>>;
-    selectedOperationEtats: OPERATION_ETATS_ENUM[];
-    setSelectedOperationEtats: Dispatch<SetStateAction<OPERATION_ETATS_ENUM[]>>;
-    selectedOperationTypes: TYPES_OPERATION_ENUM[];
-    setSelectedOperationTypes: Dispatch<SetStateAction<TYPES_OPERATION_ENUM[]>>;
-    selectedCategories: CategorieOperationModel[];
-    setSelectedCategories: Dispatch<SetStateAction<CategorieOperationModel[]>>;
-    selectedSubcategories: SsCategorieOperationModel[];
-    setSelectedSubcategories: Dispatch<SetStateAction<SsCategorieOperationModel[]>>;
+    filters: AnalysesFiltersModel;
+    setFilters: Dispatch<SetStateAction<AnalysesFiltersModel>>;
     distinctCategories: CategorieOperationModel[];
     distinctSubcategories: SsCategorieOperationModel[];
 }

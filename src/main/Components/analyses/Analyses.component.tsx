@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect, useMemo, useState } from "react";
 
 import { Backdrop, Box, CircularProgress, Grid } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -8,12 +8,13 @@ import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.mode
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
 import { getHeightList } from "../../Utils/ListData.utils.tsx";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
-import { loadBudgetsPeriodes } from "./Analyses.controller.ts";
+import OperationModel from "../../Models/budgets/Operation.model.ts";
+import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import OperationsListe from "../budgets/operations/OperationsListe.component.tsx";
 import { getOperationsGroupedByDateOperation } from "../budgets/budget/Budget.controller.ts";
-import { OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM } from "../../Utils/AppBusinessEnums.constants.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 import SsCategorieOperationModel from "../../Models/budgets/SSCategorieOperation.model.ts";
+import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/analyses/AnalysesFilters.model.ts";
 
 
 
@@ -38,17 +39,20 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [selectedTypes, setSelectedTypes] = useState<TYPES_CATEGORIES_OPERATION_ENUM[]>([TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL, TYPES_CATEGORIES_OPERATION_ENUM.IMPREVUS, TYPES_CATEGORIES_OPERATION_ENUM.PLAISIR, TYPES_CATEGORIES_OPERATION_ENUM.EXTRAS, TYPES_CATEGORIES_OPERATION_ENUM.IMPREVUS]);
-    const [selectedOperationEtats, setSelectedOperationEtats] = useState<OPERATION_ETATS_ENUM[]>([OPERATION_ETATS_ENUM.PREVUE]);
-    const [selectedOperationTypes, setSelectedOperationTypes] = useState<TYPES_OPERATION_ENUM[]>([TYPES_OPERATION_ENUM.DEPENSE]);
-    const [selectedCategories, setSelectedCategories] = useState<CategorieOperationModel[]>([]);
-    const [selectedSubcategories, setSelectedSubcategories] = useState<SsCategorieOperationModel[]>([]);
+    const [filters, setFilters] = useState<AnalysesFiltersModel>(getDefaultAnalysesFilters());
 
     const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
     const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
     const [distinctSubcategories, setDistinctSubcategories] = useState<SsCategorieOperationModel[]>([]);
+
+    /**
+     * Filtre les opérations en fonction des filtres sélectionnés
+     */
+    const filteredOperations = useMemo(() => {
+        return applyFiltersToOperations(budgetConsolide?.listeOperations || [], filters);
+    }, [budgetConsolide, filters]);
  
-    /** Chargement des catégories **/
+    /** Chargement du compte **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
         setIsLoading(true);
@@ -69,26 +73,6 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
         setIsLoading(false);
     }
 
-    /**
-     * Gère le changement de filtre.
-     *
-     * Cette fonction met à jour l'état de l'application pour refléter les modifications apportées au filtre.
-     * Elle trouve la catégorie dans l'état qui correspond à l'id de la cible de l'événement et met à jour sa propriété 'filterActive'.
-     * Elle met ensuite à jour l'état avec la nouvelle liste de catégories et l'heure actuelle comme 'filterChange'.
-     *
-     * @param {Object} event - L'objet d'événement du changement de filtre. La cible de cet événement est censée avoir une propriété 'id' qui correspond à un id de catégorie et une propriété 'checked' qui représente le nouvel état du filtre.
-     */
-    function onFilterChange(event: any) {
-        /*    let listeCategoriesUpdated = analyseSoldesCategoriesData;
-            if (listeCategoriesUpdated) {
-                const categorie = listeCategoriesUpdated.find((categorie: AnalyseSoldesCategorie) => categorie.id === event.target.id);
-                if (categorie) {
-                    categorie.filterActive = event.target.checked;
-                }
-                setAnalyseSoldesCategoriesData(listeCategoriesUpdated);
-                setFilterChange(Date.now());
-            } */
-    }
 
 
     /**
@@ -117,31 +101,43 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 currentPeriode={periodeAnalyses} />
                         }
                     </Grid>
-                    <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflowX: "hidden", overflowY: "auto", height: getHeightList() }}>
+                    <Grid size={{ md: 3, xl: 3 }} direction={"column"} sx={{ overflowX: "hidden", overflowY: "auto", height: getHeightList() }}>
                         {selectedCompte == null ?
                             <></>
                             :
                             <AnalysesFiltres isLoading={isLoading}
                                 currentPeriode={periodeAnalyses}
                                 setPeriodeAnalyses={setPeriodeAnalyses}
-                                selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes}
-                                selectedOperationEtats={selectedOperationEtats} setSelectedOperationEtats={setSelectedOperationEtats}
-                                selectedOperationTypes={selectedOperationTypes} setSelectedOperationTypes={setSelectedOperationTypes}
-                                selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}
-                                selectedSubcategories={selectedSubcategories} setSelectedSubcategories={setSelectedSubcategories}
-                                distinctCategories={distinctCategories} distinctSubcategories={distinctSubcategories}
+                                filters={filters}
+                                setFilters={setFilters}
+                                distinctCategories={distinctCategories}
+                                distinctSubcategories={distinctSubcategories}
                             />
                         }
                     </Grid>
-                    <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
+                    <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: getHeightList() }}>
                         {selectedCompte == null || budgetConsolide == null ?
                             <></>
                             :
-                            <OperationsListe
-                                operationGroupedByDate={getOperationsGroupedByDateOperation(budgetConsolide?.listeOperations || [])}
-                                filterOperations={null}
-                                onClick={() => { }}
-                                selectedOperationId={null} />
+                            <Grid container sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
+                                    
+                                </Grid>
+                                <Grid size={{ md:  6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
+                                    <OperationsListe
+                                        operationGroupedByDate={getOperationsGroupedByDateOperation(filteredOperations)}
+                                        filterOperations={null}
+                                        onClick={() => { }}
+                                        selectedOperationId={null} />
+                                </Grid>
+                                <Grid size={{ md:  6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
+                                    
+                                </Grid>
+                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
+                                    
+                                </Grid>
+
+                            </Grid>
                         }
                     </Grid>
                 </Grid>

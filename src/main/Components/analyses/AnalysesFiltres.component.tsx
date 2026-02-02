@@ -16,7 +16,7 @@ import { AnalysesFiltresSsCategories } from "./filtres/AnalysesFiltresSsCategori
  * @param {Object} props.currentPeriode - La période courante.
  * @returns {JSX.Element} Le composant du titre de l'analyse temporelle.
  */
-const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPeriode, setPeriodeAnalyses, selectedTypes, setSelectedTypes, selectedOperationEtats, setSelectedOperationEtats, selectedOperationTypes, setSelectedOperationTypes, selectedCategories, setSelectedCategories, selectedSubcategories, setSelectedSubcategories, distinctCategories, distinctSubcategories }: AnalysesFiltresProps): JSX.Element => {
+const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPeriode, setPeriodeAnalyses, filters, setFilters, distinctCategories, distinctSubcategories }: AnalysesFiltresProps): JSX.Element => {
 
     const handlePeriodeChange = useCallback((periode) => {
         setPeriodeAnalyses(periode);
@@ -24,21 +24,20 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
 
 
     const handleSelectedTypesChange = useCallback((selectedTypes) => {
-        setSelectedTypes(selectedTypes);
-    }, [setSelectedTypes]);
+        setFilters(prev => ({ ...prev, selectedTypes }));
+    }, [setFilters]);
 
     const handleOperationFiltersChange = useCallback((etats, types) => {
-        setSelectedOperationEtats(etats);
-        setSelectedOperationTypes(types);
-    }, [setSelectedOperationEtats, setSelectedOperationTypes]);
+        setFilters(prev => ({ ...prev, selectedOperationEtats: etats, selectedOperationTypes: types }));
+    }, [setFilters]);
 
     const handleCategoriesChange = useCallback((categories) => {
-        setSelectedCategories(categories);
-    }, [setSelectedCategories]);
+        setFilters(prev => ({ ...prev, selectedCategories: categories }));
+    }, [setFilters]);
 
     const handleSubcategoriesChange = useCallback((subcategories) => {
-        setSelectedSubcategories(subcategories);
-    }, [setSelectedSubcategories]);
+        setFilters(prev => ({ ...prev, selectedSubcategories: subcategories }));
+    }, [setFilters]);
 
     return (
         <>
@@ -50,12 +49,9 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
             </Backdrop>
             {/* Création d'une pile pour l'affichage du titre */}
             <Stack direction={"column"} spacing={2} justifyContent="center" alignItems="center" alignContent={"center"}>
-                <Typography variant={"h3"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
+                <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
                     Filtres
                 </Typography>
-            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
-                Filtres actifs
-            </Typography>
             <Divider flexItem />
             <Typography variant={"body2"} component="div">
                 <AnalysesFiltrePeriodeComponent periode={currentPeriode} onChange={handlePeriodeChange} />
@@ -64,14 +60,14 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
                 Types
             </Typography>
-            <AnalysesFiltreTypesCategories selectedTypes={selectedTypes} onChange={handleSelectedTypesChange} />
+            <AnalysesFiltreTypesCategories selectedTypes={filters.selectedTypes} onChange={handleSelectedTypesChange} />
             <Divider flexItem />
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
                 Opérations
             </Typography>
             <AnalysesFiltresOperation
-                selectedEtats={selectedOperationEtats}
-                selectedTypes={selectedOperationTypes}
+                selectedEtats={filters.selectedOperationEtats}
+                selectedTypes={filters.selectedOperationTypes}
                 onChange={handleOperationFiltersChange}
             />
             <Divider flexItem />
@@ -80,7 +76,7 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
             </Typography>
             <AnalysesFiltreCategories
                 distinctCategories={distinctCategories}
-                selectedCategories={selectedCategories}
+                selectedCategories={filters.selectedCategories}
                 onChange={handleCategoriesChange}
             />
             <Divider flexItem />
@@ -89,7 +85,7 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
             </Typography>
             <AnalysesFiltresSsCategories
                 distinctSubcategories={distinctSubcategories}
-                selectedSubcategories={selectedSubcategories}
+                selectedSubcategories={filters.selectedSubcategories}
                 onChange={handleSubcategoriesChange}
             />
 
