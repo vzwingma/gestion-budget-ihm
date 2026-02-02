@@ -12,6 +12,8 @@ import { loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import OperationsListe from "../budgets/operations/OperationsListe.component.tsx";
 import { getOperationsGroupedByDateOperation } from "../budgets/budget/Budget.controller.ts";
 import { OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM } from "../../Utils/AppBusinessEnums.constants.ts";
+import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
+import SsCategorieOperationModel from "../../Models/budgets/SSCategorieOperation.model.ts";
 
 
 
@@ -39,8 +41,12 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     const [selectedTypes, setSelectedTypes] = useState<TYPES_CATEGORIES_OPERATION_ENUM[]>([TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL, TYPES_CATEGORIES_OPERATION_ENUM.IMPREVUS, TYPES_CATEGORIES_OPERATION_ENUM.PLAISIR, TYPES_CATEGORIES_OPERATION_ENUM.EXTRAS, TYPES_CATEGORIES_OPERATION_ENUM.IMPREVUS]);
     const [selectedOperationEtats, setSelectedOperationEtats] = useState<OPERATION_ETATS_ENUM[]>([OPERATION_ETATS_ENUM.PREVUE]);
     const [selectedOperationTypes, setSelectedOperationTypes] = useState<TYPES_OPERATION_ENUM[]>([TYPES_OPERATION_ENUM.DEPENSE]);
+    const [selectedCategories, setSelectedCategories] = useState<CategorieOperationModel[]>([]);
+    const [selectedSubcategories, setSelectedSubcategories] = useState<SsCategorieOperationModel[]>([]);
 
     const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
+    const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
+    const [distinctSubcategories, setDistinctSubcategories] = useState<SsCategorieOperationModel[]>([]);
     /**
        const [analyseSoldesCategoriesData, setAnalyseSoldesCategoriesData] = useState<AnalyseSoldesCategorie[] | null>(null);
        const [timelinesByCategories, setTimelinesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
@@ -65,9 +71,11 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
      * @param {Object} param0 - Les résultats du calcul des données.
         */
 
-    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel) {
+    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[], distinctSubcategories: SsCategorieOperationModel[]) {
         console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations");
         setBudgetConsolide(budgetConsolide);
+        setDistinctCategories(distinctCategories);
+        setDistinctSubcategories(distinctSubcategories);
         setIsLoading(false);
     }
 
@@ -119,17 +127,20 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 currentPeriode={periodeAnalyses} />
                         }
                     </Grid>
-                    <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
-                        {selectedCompte == null || budgetConsolide == null ?
+                    <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflowX: "hidden", overflowY: "auto", height: getHeightList() }}>
+                        {selectedCompte == null ?
                             <></>
                             :
                             <AnalysesFiltres isLoading={isLoading}
-                                budgetConsolide={budgetConsolide}
                                 currentPeriode={periodeAnalyses}
                                 setPeriodeAnalyses={setPeriodeAnalyses}
                                 selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes}
                                 selectedOperationEtats={selectedOperationEtats} setSelectedOperationEtats={setSelectedOperationEtats}
-                                selectedOperationTypes={selectedOperationTypes} setSelectedOperationTypes={setSelectedOperationTypes} />
+                                selectedOperationTypes={selectedOperationTypes} setSelectedOperationTypes={setSelectedOperationTypes}
+                                selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}
+                                selectedSubcategories={selectedSubcategories} setSelectedSubcategories={setSelectedSubcategories}
+                                distinctCategories={distinctCategories} distinctSubcategories={distinctSubcategories}
+                            />
                         }
                     </Grid>
                     <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>

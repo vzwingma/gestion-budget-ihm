@@ -3,7 +3,10 @@ import React, { JSX, useCallback } from "react";
 import { AnalysesFiltresProps } from "../Components.props.ts";
 import { AnalysesFiltrePeriodeComponent } from "./filtres/AnalysesFiltrePeriode.component.tsx";
 import { AnalysesFiltreTypesCategories } from "./filtres/AnalysesFiltreTypesCategories.component.tsx";
-import { AnalysesFiltreOperation } from "./filtres/AnalysesFiltreOperation.component.tsx";
+import { AnalysesFiltresOperation } from "./filtres/AnalysesFiltresOperation.component.tsx";
+import { AnalysesFiltreCategories } from "./filtres/AnalysesFiltreCategories.component.tsx";
+import { AnalysesFiltresSsCategories } from "./filtres/AnalysesFiltresSsCategories.component.tsx";
+
 
 
 /**
@@ -13,7 +16,7 @@ import { AnalysesFiltreOperation } from "./filtres/AnalysesFiltreOperation.compo
  * @param {Object} props.currentPeriode - La période courante.
  * @returns {JSX.Element} Le composant du titre de l'analyse temporelle.
  */
-const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, budgetConsolide, currentPeriode, setPeriodeAnalyses, selectedTypes, setSelectedTypes, selectedOperationEtats, setSelectedOperationEtats, selectedOperationTypes, setSelectedOperationTypes }: AnalysesFiltresProps): JSX.Element => {
+const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPeriode, setPeriodeAnalyses, selectedTypes, setSelectedTypes, selectedOperationEtats, setSelectedOperationEtats, selectedOperationTypes, setSelectedOperationTypes, selectedCategories, setSelectedCategories, selectedSubcategories, setSelectedSubcategories, distinctCategories, distinctSubcategories }: AnalysesFiltresProps): JSX.Element => {
 
     const handlePeriodeChange = useCallback((periode) => {
         setPeriodeAnalyses(periode);
@@ -28,6 +31,14 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, budgetCons
         setSelectedOperationEtats(etats);
         setSelectedOperationTypes(types);
     }, [setSelectedOperationEtats, setSelectedOperationTypes]);
+
+    const handleCategoriesChange = useCallback((categories) => {
+        setSelectedCategories(categories);
+    }, [setSelectedCategories]);
+
+    const handleSubcategoriesChange = useCallback((subcategories) => {
+        setSelectedSubcategories(subcategories);
+    }, [setSelectedSubcategories]);
 
     return (
         <>
@@ -58,19 +69,29 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, budgetCons
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
                 Opérations
             </Typography>
-            <AnalysesFiltreOperation
+            <AnalysesFiltresOperation
                 selectedEtats={selectedOperationEtats}
                 selectedTypes={selectedOperationTypes}
                 onChange={handleOperationFiltersChange}
             />
             <Divider flexItem />
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
-                catégories
+                Catégories
             </Typography>
+            <AnalysesFiltreCategories
+                distinctCategories={distinctCategories}
+                selectedCategories={selectedCategories}
+                onChange={handleCategoriesChange}
+            />
             <Divider flexItem />
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
                 Ss Categories
             </Typography>
+            <AnalysesFiltresSsCategories
+                distinctSubcategories={distinctSubcategories}
+                selectedSubcategories={selectedSubcategories}
+                onChange={handleSubcategoriesChange}
+            />
 
         </Stack>
         </>

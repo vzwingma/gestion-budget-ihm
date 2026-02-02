@@ -1,7 +1,7 @@
 import React, { JSX } from "react";
 import { Box, Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
 import { OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
-import { AnalysesFiltreOperationProps } from "../../Components.props.ts";
+import { AnalysesFiltresOperationProps } from "../../Components.props.ts";
 
 /**
  * Composant pour filtrer les opérations par état et par type.
@@ -11,11 +11,11 @@ import { AnalysesFiltreOperationProps } from "../../Components.props.ts";
  * @property {(selectedEtats: OPERATION_ETATS_ENUM[], selectedTypes: TYPES_OPERATION_ENUM[]) => void} onChange - Callback lors d'une sélection
  * @returns {JSX.Element} Élément JSX représentant le composant
  */
-export const AnalysesFiltreOperation: React.FC<AnalysesFiltreOperationProps> = ({
+export const AnalysesFiltresOperation: React.FC<AnalysesFiltresOperationProps> = ({
 	selectedEtats,
 	selectedTypes,
 	onChange
-}: AnalysesFiltreOperationProps): JSX.Element => {
+}: AnalysesFiltresOperationProps): JSX.Element => {
 
 	const toggleEtat = (etat: OPERATION_ETATS_ENUM) => {
 		const newEtats = selectedEtats.includes(etat)

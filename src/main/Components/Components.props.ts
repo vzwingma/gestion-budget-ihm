@@ -15,6 +15,7 @@ import OperationEditionModel from "../Models/budgets/OperationEdition.model.ts";
 import {Dispatch, SetStateAction} from "react";
 import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
 import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.ts";
+import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
 
 /**
  * Analyse des catégories
@@ -117,7 +118,6 @@ export interface AnalysesTitreProps {
 
 export interface AnalysesFiltresProps {
     isLoading: boolean;
-    budgetConsolide: BudgetMensuelModel;
     currentPeriode: AnalysesPeriodeModel;
     setPeriodeAnalyses: Dispatch<SetStateAction<AnalysesPeriodeModel>>;
     selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
@@ -126,6 +126,12 @@ export interface AnalysesFiltresProps {
     setSelectedOperationEtats: Dispatch<SetStateAction<OPERATION_ETATS_ENUM[]>>;
     selectedOperationTypes: TYPES_OPERATION_ENUM[];
     setSelectedOperationTypes: Dispatch<SetStateAction<TYPES_OPERATION_ENUM[]>>;
+    selectedCategories: CategorieOperationModel[];
+    setSelectedCategories: Dispatch<SetStateAction<CategorieOperationModel[]>>;
+    selectedSubcategories: SsCategorieOperationModel[];
+    setSelectedSubcategories: Dispatch<SetStateAction<SsCategorieOperationModel[]>>;
+    distinctCategories: CategorieOperationModel[];
+    distinctSubcategories: SsCategorieOperationModel[];
 }
 
 export interface AnalysesFiltrePeriodeProps {
@@ -138,10 +144,22 @@ export interface AnalysesFiltreTypesCategoriesProps {
     onChange: (selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[]) => void;
 }
 
-export interface AnalysesFiltreOperationProps {
+export interface AnalysesFiltresOperationProps {
     selectedEtats: OPERATION_ETATS_ENUM[];
     selectedTypes: TYPES_OPERATION_ENUM[];
     onChange: (selectedEtats: OPERATION_ETATS_ENUM[], selectedTypes: TYPES_OPERATION_ENUM[]) => void;
+}
+
+export interface AnalysesFiltresCategoriesProps {
+    distinctCategories: CategorieOperationModel[];
+    selectedCategories: CategorieOperationModel[];
+    onChange: (selectedCategories: CategorieOperationModel[]) => void;
+}
+
+export interface AnalysesFiltresSsCategoriesProps {
+    distinctSubcategories: SsCategorieOperationModel[];
+    selectedSubcategories: SsCategorieOperationModel[];
+    onChange: (selectedSubcategories: SsCategorieOperationModel[]) => void;
 }
 
 export  interface AnalyseTendancesProps {

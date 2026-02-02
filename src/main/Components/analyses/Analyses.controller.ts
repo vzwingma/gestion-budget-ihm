@@ -4,11 +4,13 @@ import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { loadBudget } from "./Analyses.extservices.ts";
+import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
+import SsCategorieOperationModel from "../../Models/budgets/SSCategorieOperation.model.ts";
 
 /**
  * Contrôleur des analyses
  */
-export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, periodeAnalyses: AnalysesPeriodeModel, handleDataCalculationResult: (budgetConsolide: BudgetMensuelModel) => void) {
+export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, periodeAnalyses: AnalysesPeriodeModel, handleDataCalculationResult: (budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[], distinctSubcategories: SsCategorieOperationModel[]) => void) {
     const startDate = new Date(periodeAnalyses.periodeDebut);
     const endDate = new Date(periodeAnalyses.periodeFin);
 
@@ -46,7 +48,10 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
     )
     .then(allOperations => {
         budgetConsolide.listeOperations = allOperations.flat();
-        handleDataCalculationResult(budgetConsolide);
+        const distinctCategories = [...new Set(budgetConsolide.listeOperations.map(op => op.categorie.id))].map(id => budgetConsolide.listeOperations.find(op => op.categorie.id === id)?.categorie).filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
+        const distinctSubcategories = [...new Set(budgetConsolide.listeOperations.map(op => op.ssCategorie.id))].map(id => budgetConsolide.listeOperations.find(op => op.ssCategorie.id === id)?.ssCategorie).filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
+        console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations sur ", distinctCategories, " catégories et ", distinctSubcategories, " sous-catégories");
+        handleDataCalculationResult(budgetConsolide, distinctCategories, distinctSubcategories);
     });
 
 }
