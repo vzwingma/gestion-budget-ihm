@@ -39,7 +39,7 @@ export default AnalysesTitre
 
 
 export function formatPeriode(periode: AnalysesPeriodeModel): string {
-    if (periode.vueAnnee) {
+    if (periode.vuePeriode) {
         return "Analyse " + (periode.periodeDebut.getFullYear() === periode.periodeFin.getFullYear() ?
             periode.periodeDebut.getFullYear()
             :

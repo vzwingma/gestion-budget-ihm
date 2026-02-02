@@ -115,6 +115,14 @@ export interface AnalysesTitreProps {
     currentPeriode: AnalysesPeriodeModel;
 }
 
+export interface AnalysesFiltresProps {
+    budgetConsolide: BudgetMensuelModel;
+    currentPeriode: AnalysesPeriodeModel;
+    setPeriodeAnalyses: Dispatch<SetStateAction<AnalysesPeriodeModel>>;
+}
+
+
+
 export  interface AnalyseTendancesProps {
    selectedCompte: CompteBancaireModel | null
    onOpenMenu: () => void

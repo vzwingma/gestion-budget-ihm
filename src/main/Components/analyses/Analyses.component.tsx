@@ -28,7 +28,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     /** Etats pour la page Budget **/
     const [periodeAnalyses, setPeriodeAnalyses] = useState<AnalysesPeriodeModel>({
-        vueAnnee: false,
+        vuePeriode: true,
         periodeDebut: new Date(new Date().getFullYear(), new Date().getMonth() - 3, 1),
         periodeFin: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
     });
@@ -120,15 +120,16 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                     }
                 </Grid>
                 <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
-                    {selectedCompte == null ?
+                    {selectedCompte == null || budgetConsolide == null ?
                         <CenterComponent><CircularProgress /></CenterComponent>
                         :
-                        <AnalysesFiltres currentCompte={selectedCompte}
-                            currentPeriode={periodeAnalyses} />
+                        <AnalysesFiltres budgetConsolide={budgetConsolide}
+                            currentPeriode={periodeAnalyses} 
+                            setPeriodeAnalyses={setPeriodeAnalyses} />
                     }
                 </Grid>
                 <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
-                    {budgetConsolide == null ?
+                    {selectedCompte == null || budgetConsolide == null ?
                     <CenterComponent><CircularProgress /></CenterComponent>
                     :
                     <OperationsListe

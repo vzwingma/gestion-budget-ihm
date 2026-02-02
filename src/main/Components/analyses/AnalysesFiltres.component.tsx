@@ -1,57 +1,54 @@
-import { Stack, Typography } from "@mui/material";
-import React, { JSX } from "react";
-import { AnalysesTitreProps } from "../Components.props.ts";
-import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
-import { getLabelMonthFRFromDate } from "../../Utils/Date.utils.ts";
+import { Divider, Stack, Typography } from "@mui/material";
+import React, { JSX, useCallback } from "react";
+import { AnalysesFiltresProps } from "../Components.props.ts";
+import { AnalysesFiltrePeriodeComponent } from "./filtres/AnalysesFiltrePeriode.component.tsx";
 
 
 /**
  * Composant pour l'affichage du titre de l'analyse temporelle.
  * @param {Object} props - Les propriétés passées au composant.
- * @param {Object} props.currentCompte - Le compte courant.
+ * @param {Object} props.budgetConsolide - Le budget consolidé.
  * @param {Object} props.currentPeriode - La période courante.
  * @returns {JSX.Element} Le composant du titre de l'analyse temporelle.
  */
-const AnalysesFiltres: React.FC<AnalysesTitreProps> = ({ currentCompte, currentPeriode }: AnalysesTitreProps): JSX.Element => {
+const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ budgetConsolide, currentPeriode, setPeriodeAnalyses }: AnalysesFiltresProps): JSX.Element => {
 
+    const handlePeriodeChange = useCallback((periode) => {
+        setPeriodeAnalyses(periode);
+    }, [setPeriodeAnalyses]);
 
     return (
         // Création d'une pile pour l'affichage du titre
         <Stack direction={"column"} spacing={2} justifyContent="center" alignItems="center" alignContent={"center"}>
-            <img src={"/img/banques/" + currentCompte.itemIcon} className={"compteIcon"}
-                alt={currentCompte.libelle} />
-            <Typography variant={"h6"} component="div" textAlign={"center"}
-                justifyContent={"center"} alignContent={"center"}>
-                {currentCompte.libelle}
+            <Typography variant={"h3"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
+                Filtres
             </Typography>
-            <Typography variant={"caption"} component="div" sx={{color: "grey"}}>
-                |
+            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
+                Filtres actifs
             </Typography>
+            <Divider flexItem />
             <Typography variant={"body2"} component="div">
-                {formatPeriode(currentPeriode)}
+                <AnalysesFiltrePeriodeComponent periode={currentPeriode} onChange={handlePeriodeChange} />
             </Typography>
+            <Divider flexItem />
+            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
+                Types
+            </Typography>
+            <Divider flexItem />
+            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
+                Opérations
+            </Typography>
+            <Divider flexItem />
+            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
+                catégories
+            </Typography>
+            <Divider flexItem />
+            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
+                Ss Categories
+            </Typography>
+
         </Stack>
     )
 };
 
 export default AnalysesFiltres
-
-
-
-export function formatPeriode(periode: AnalysesPeriodeModel): string {
-    if (periode.vueAnnee) {
-        return "Analyse " + (periode.periodeDebut.getFullYear() === periode.periodeFin.getFullYear() ?
-            periode.periodeDebut.getFullYear()
-            :
-            periode.periodeDebut.getFullYear() + " - " + periode.periodeFin.getFullYear()
-        );
-    } else {
-        return "Analyses de " + (periode.periodeDebut.getFullYear() === periode.periodeFin.getFullYear()
-            && periode.periodeDebut.getMonth() === periode.periodeFin.getMonth() ?
-            getLabelMonthFRFromDate(periode.periodeDebut)
-            :
-            getLabelMonthFRFromDate(periode.periodeDebut) + " à " +
-            getLabelMonthFRFromDate(periode.periodeFin)
-        );
-    }
-}

@@ -1,5 +1,5 @@
 export interface AnalysesPeriodeModel {
-    vueAnnee : boolean,
+    vuePeriode : boolean,
     periodeDebut : Date, 
     periodeFin : Date,
 }
