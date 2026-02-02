@@ -8,7 +8,7 @@ import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
 
-import {BUSINESS_ONGLETS, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants.ts";
+import {BUSINESS_ONGLETS, OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants.ts";
 import {OPERATION_EDITION_FORM} from "./budgets/operations/courantes/detail/OperationDetailPage.constants.ts";
 import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOperation.model.ts";
 import OperationEditionModel from "../Models/budgets/OperationEdition.model.ts";
@@ -120,9 +120,29 @@ export interface AnalysesFiltresProps {
     budgetConsolide: BudgetMensuelModel;
     currentPeriode: AnalysesPeriodeModel;
     setPeriodeAnalyses: Dispatch<SetStateAction<AnalysesPeriodeModel>>;
+    selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
+    setSelectedTypes: Dispatch<SetStateAction<TYPES_CATEGORIES_OPERATION_ENUM[]>>;
+    selectedOperationEtats: OPERATION_ETATS_ENUM[];
+    setSelectedOperationEtats: Dispatch<SetStateAction<OPERATION_ETATS_ENUM[]>>;
+    selectedOperationTypes: TYPES_OPERATION_ENUM[];
+    setSelectedOperationTypes: Dispatch<SetStateAction<TYPES_OPERATION_ENUM[]>>;
 }
 
+export interface AnalysesFiltrePeriodeProps {
+    periode: AnalysesPeriodeModel;
+    onChange: (periode: AnalysesPeriodeModel) => void;
+}
 
+export interface AnalysesFiltreTypesCategoriesProps {
+    selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
+    onChange: (selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[]) => void;
+}
+
+export interface AnalysesFiltreOperationProps {
+    selectedEtats: OPERATION_ETATS_ENUM[];
+    selectedTypes: TYPES_OPERATION_ENUM[];
+    onChange: (selectedEtats: OPERATION_ETATS_ENUM[], selectedTypes: TYPES_OPERATION_ENUM[]) => void;
+}
 
 export  interface AnalyseTendancesProps {
    selectedCompte: CompteBancaireModel | null

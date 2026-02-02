@@ -1,9 +1,8 @@
 import React, { JSX, useEffect, useState } from "react";
 
-import { Box, CircularProgress, Grid} from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AnalyseProps } from "../Components.props.ts";
-import { CenterComponent } from "../CenterComponent.tsx";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
@@ -12,6 +11,7 @@ import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import OperationsListe from "../budgets/operations/OperationsListe.component.tsx";
 import { getOperationsGroupedByDateOperation } from "../budgets/budget/Budget.controller.ts";
+import { OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM } from "../../Utils/AppBusinessEnums.constants.ts";
 
 
 
@@ -35,20 +35,23 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const [selectedTypes, setSelectedTypes] = useState<TYPES_CATEGORIES_OPERATION_ENUM[]>([TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL, TYPES_CATEGORIES_OPERATION_ENUM.IMPREVUS, TYPES_CATEGORIES_OPERATION_ENUM.PLAISIR, TYPES_CATEGORIES_OPERATION_ENUM.EXTRAS, TYPES_CATEGORIES_OPERATION_ENUM.IMPREVUS]);
+    const [selectedOperationEtats, setSelectedOperationEtats] = useState<OPERATION_ETATS_ENUM[]>([OPERATION_ETATS_ENUM.PREVUE]);
+    const [selectedOperationTypes, setSelectedOperationTypes] = useState<TYPES_OPERATION_ENUM[]>([TYPES_OPERATION_ENUM.DEPENSE]);
+
+    const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
+    /**
+       const [analyseSoldesCategoriesData, setAnalyseSoldesCategoriesData] = useState<AnalyseSoldesCategorie[] | null>(null);
+       const [timelinesByCategories, setTimelinesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
+       const [timelinesPrevisionnellesByCategories, setTimelinesPrevisionnellesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
    
-    const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>( null);
- /**
-    const [analyseSoldesCategoriesData, setAnalyseSoldesCategoriesData] = useState<AnalyseSoldesCategorie[] | null>(null);
-    const [timelinesByCategories, setTimelinesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
-    const [timelinesPrevisionnellesByCategories, setTimelinesPrevisionnellesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
-
-    const [timelinesSoldes, setTimelinesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
-    const [timelinesPrevisionnellesSoldes, setTimelinesPrevisionnellesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
-
-    const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
- */
-    const [filterChange, setFilterChange] = useState<number>(Date.now());
-
+       const [timelinesSoldes, setTimelinesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
+       const [timelinesPrevisionnellesSoldes, setTimelinesPrevisionnellesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
+   
+       const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
+    */
+ 
     /** Chargement des catégories **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
@@ -57,16 +60,12 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     }, [selectedCompte, periodeAnalyses]);
 
 
-    useEffect(() => {
-        console.debug("[TRIGGER] Filter change :", filterChange);
-    }, [filterChange]);
     /**
      * Gère les résultats du calcul des données.
      * @param {Object} param0 - Les résultats du calcul des données.
         */
-       
-    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel)
-    {
+
+    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel) {
         console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations");
         setBudgetConsolide(budgetConsolide);
         setIsLoading(false);
@@ -93,57 +92,59 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
             } */
     }
 
-    /**
-     * Gère le changement de filtre pour les soldes.
-     * @param {Object} event - L'objet d'événement du changement de filtre pour les soldes.
-     */
-    function onFilterSoldesChange(event: any) {
-        //    setFilterSoldesActive(event.target.checked);
-        setFilterChange(Date.now());
-    }
-
-
 
     /**
      * Render du budget
      */
     return (
-        <Box className="page-container tendances-page-container">
-            <Grid container
-                sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
-                <Grid size={{ md: 0.6, xl: 0.4 }}
-                    sx={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}><MenuIcon
-                        onClick={onOpenMenu} className={"editableField"} fontSize={"large"} /></Grid>
-                <Grid size={{ md: 11.4, xl: 11.6 }} sx={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
-                    {selectedCompte == null ?
-                        <CenterComponent><CircularProgress /></CenterComponent>
-                        :
-                        <AnalysesTitre currentCompte={selectedCompte}
-                            currentPeriode={periodeAnalyses} />
-                    }
-                </Grid>
-                <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
-                    {selectedCompte == null || budgetConsolide == null ?
-                        <CenterComponent><CircularProgress /></CenterComponent>
-                        :
-                        <AnalysesFiltres isLoading={isLoading}
-                            budgetConsolide={budgetConsolide}
-                            currentPeriode={periodeAnalyses} 
-                            setPeriodeAnalyses={setPeriodeAnalyses} />
-                    }
-                </Grid>
-                <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
-                    {selectedCompte == null || budgetConsolide == null ?
-                    <CenterComponent><CircularProgress /></CenterComponent>
-                    :
-                    <OperationsListe
+        <>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+
+            <Box className="page-container tendances-page-container">
+                <Grid container
+                    sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                    <Grid size={{ md: 0.6, xl: 0.4 }}
+                        sx={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}><MenuIcon
+                            onClick={onOpenMenu} className={"editableField"} fontSize={"large"} /></Grid>
+                    <Grid size={{ md: 11.4, xl: 11.6 }} sx={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                        {selectedCompte == null ?
+                            <></>
+                            :
+                            <AnalysesTitre currentCompte={selectedCompte}
+                                currentPeriode={periodeAnalyses} />
+                        }
+                    </Grid>
+                    <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
+                        {selectedCompte == null || budgetConsolide == null ?
+                            <></>
+                            :
+                            <AnalysesFiltres isLoading={isLoading}
+                                budgetConsolide={budgetConsolide}
+                                currentPeriode={periodeAnalyses}
+                                setPeriodeAnalyses={setPeriodeAnalyses}
+                                selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes}
+                                selectedOperationEtats={selectedOperationEtats} setSelectedOperationEtats={setSelectedOperationEtats}
+                                selectedOperationTypes={selectedOperationTypes} setSelectedOperationTypes={setSelectedOperationTypes} />
+                        }
+                    </Grid>
+                    <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
+                        {selectedCompte == null || budgetConsolide == null ?
+                            <></>
+                            :
+                            <OperationsListe
                                 operationGroupedByDate={getOperationsGroupedByDateOperation(budgetConsolide?.listeOperations || [])}
                                 filterOperations={null}
-                                onClick={() => {}} 
-                                selectedOperationId={null}/>
-                    }
+                                onClick={() => { }}
+                                selectedOperationId={null} />
+                        }
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Box>
+            </Box>
+        </>
     )
 }

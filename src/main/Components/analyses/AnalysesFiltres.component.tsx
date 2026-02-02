@@ -2,6 +2,8 @@ import { Backdrop, CircularProgress, Divider, Stack, Typography } from "@mui/mat
 import React, { JSX, useCallback } from "react";
 import { AnalysesFiltresProps } from "../Components.props.ts";
 import { AnalysesFiltrePeriodeComponent } from "./filtres/AnalysesFiltrePeriode.component.tsx";
+import { AnalysesFiltreTypesCategories } from "./filtres/AnalysesFiltreTypesCategories.component.tsx";
+import { AnalysesFiltreOperation } from "./filtres/AnalysesFiltreOperation.component.tsx";
 
 
 /**
@@ -11,11 +13,21 @@ import { AnalysesFiltrePeriodeComponent } from "./filtres/AnalysesFiltrePeriode.
  * @param {Object} props.currentPeriode - La période courante.
  * @returns {JSX.Element} Le composant du titre de l'analyse temporelle.
  */
-const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, budgetConsolide, currentPeriode, setPeriodeAnalyses }: AnalysesFiltresProps): JSX.Element => {
+const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, budgetConsolide, currentPeriode, setPeriodeAnalyses, selectedTypes, setSelectedTypes, selectedOperationEtats, setSelectedOperationEtats, selectedOperationTypes, setSelectedOperationTypes }: AnalysesFiltresProps): JSX.Element => {
 
     const handlePeriodeChange = useCallback((periode) => {
         setPeriodeAnalyses(periode);
     }, [setPeriodeAnalyses]);
+
+
+    const handleSelectedTypesChange = useCallback((selectedTypes) => {
+        setSelectedTypes(selectedTypes);
+    }, [setSelectedTypes]);
+
+    const handleOperationFiltersChange = useCallback((etats, types) => {
+        setSelectedOperationEtats(etats);
+        setSelectedOperationTypes(types);
+    }, [setSelectedOperationEtats, setSelectedOperationTypes]);
 
     return (
         <>
@@ -41,10 +53,16 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, budgetCons
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
                 Types
             </Typography>
+            <AnalysesFiltreTypesCategories selectedTypes={selectedTypes} onChange={handleSelectedTypesChange} />
             <Divider flexItem />
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
                 Opérations
             </Typography>
+            <AnalysesFiltreOperation
+                selectedEtats={selectedOperationEtats}
+                selectedTypes={selectedOperationTypes}
+                onChange={handleOperationFiltersChange}
+            />
             <Divider flexItem />
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
                 catégories

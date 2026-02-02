@@ -6,8 +6,6 @@ import {
     RadioGroup,
     FormControlLabel,
     FormControl,
-    Select,
-    MenuItem,
     Button,
     ButtonGroup,
     Typography,
@@ -15,18 +13,10 @@ import {
     TextField
 } from '@mui/material';
 import { AnalysesPeriodeModel } from '../../../Models/analyses/AnalysesPeriode.model.ts';
+import { AnalysesFiltrePeriodeProps } from '../../Components.props.ts';
 
 
 
-interface AnalysesFiltrePeriodeProps {
-    periode: AnalysesPeriodeModel;
-    onChange: (periode: AnalysesPeriodeModel) => void;
-}
-
-const MOIS = [
-    'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-    'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-];
 
 export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps> = ({ periode, onChange }) => {
     const [vuePeriode, setVuePeriode] = useState<boolean>(periode.vuePeriode);
@@ -78,14 +68,6 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
         };
         onChange(nouvellePeriode);
     }, [vuePeriode, moisSelectionne, anneeSelectionnee, dateDebut, dateFin, onChange]);
-
-    const genererAnnees = (): number[] => {
-        const annees: number[] = [];
-        for (let a = anneeCourante; a >= anneeCourante - 10; a--) {
-            annees.push(a);
-        }
-        return annees;
-    };
 
     return (
         <Stack direction="column" spacing={2}>
