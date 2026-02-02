@@ -1,6 +1,6 @@
 import React, {JSX, useEffect, useState} from "react";
 
-import {Box, Checkbox, CircularProgress, FormControlLabel, Grid} from "@mui/material";
+import {Box, Checkbox, CircularProgress, FormControlLabel, Grid, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
 import {loadSoldesBudgets} from "./AnalyseTendances.extservices.ts";
@@ -14,7 +14,6 @@ import {AnalyseTendancesProps, DataCalculationTendancesResultsProps} from "../..
 import { CenterComponent } from "../../CenterComponent.tsx";
 import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
 import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
-import { getHeightList } from "../../../Utils/ListData.utils.tsx";
 
 
 /**
@@ -41,6 +40,9 @@ export const AnalyseTendances: React.FC<AnalyseTendancesProps> = ({ selectedComp
     const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
 
     const [filterChange, setFilterChange] = useState<number>(Date.now());
+
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const listHeight = isMobile ? window.innerHeight - 125 : window.innerHeight - 160;
 
     /** Chargement des catégories **/
     useEffect(() => {
@@ -142,7 +144,7 @@ export const AnalyseTendances: React.FC<AnalyseTendancesProps> = ({ selectedComp
                             </> }
                 </Grid>
             </Grid>
-            <Grid sx={{overflow: "hidden", height: getHeightList()}}>
+            <Grid sx={{overflow: "hidden", height: listHeight}}>
                 {soldesMensuels == null ?
                     <CenterComponent><CircularProgress /></CenterComponent>
                     :

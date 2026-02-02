@@ -8,6 +8,10 @@ import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
 import { getHeightList } from "../../Utils/ListData.utils.tsx";
+import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
+import { loadBudgetsPeriodes } from "./Analyses.controller.ts";
+import OperationsListe from "../budgets/operations/OperationsListe.component.tsx";
+import { getOperationsGroupedByDateOperation } from "../budgets/budget/Budget.controller.ts";
 
 
 
@@ -25,14 +29,14 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     /** Etats pour la page Budget **/
     const [periodeAnalyses, setPeriodeAnalyses] = useState<AnalysesPeriodeModel>({
         vueAnnee: false,
-        periodeDebut: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        periodeDebut: new Date(new Date().getFullYear(), new Date().getMonth() - 3, 1),
         periodeFin: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
     });
 
 
-    /**
-    const [soldesMensuels, setSoldesMensuels] = useState<SoldesMensuelModel[]>();
-
+   
+    const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>( null);
+ /**
     const [analyseSoldesCategoriesData, setAnalyseSoldesCategoriesData] = useState<AnalyseSoldesCategorie[] | null>(null);
     const [timelinesByCategories, setTimelinesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
     const [timelinesPrevisionnellesByCategories, setTimelinesPrevisionnellesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
@@ -47,7 +51,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     /** Chargement des catégories **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
-        //   loadSoldesBudgets(selectedCompte, anneeAnalyses, handleDataCalculationResult);
+        loadBudgetsPeriodes(selectedCompte, periodeAnalyses, handleDataCalculationResult);
     }, [selectedCompte, periodeAnalyses]);
 
 
@@ -57,25 +61,13 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     /**
      * Gère les résultats du calcul des données.
      * @param {Object} param0 - Les résultats du calcul des données.
-
-    function handleDataCalculationResult({  soldesMensuelsData,
-                                            soldesCategoriesData,
-                                            timelinesByCategoriesData,
-                                            timelinesPrevisionnellesByCategoriesData,
-                                            timelinesSoldesData,
-                                             timelinesPrevisionnellesSoldesData
-                                         }: DataCalculationTendancesResultsProps)
+        */
+       
+    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel)
     {
-        setSoldesMensuels(soldesMensuelsData);
-        setAnalyseSoldesCategoriesData(soldesCategoriesData);
-
-        setTimelinesByCategories(timelinesByCategoriesData);
-        setTimelinesPrevisionnellesByCategories(timelinesPrevisionnellesByCategoriesData);
-
-        setTimelinesSoldes(timelinesSoldesData);
-        setTimelinesPrevisionnellesSoldes(timelinesPrevisionnellesSoldesData);
+        console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations");
+        setBudgetConsolide(budgetConsolide);
     }
-     */
 
     /**
      * Gère le changement de filtre.
@@ -136,7 +128,15 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                     }
                 </Grid>
                 <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
+                    {budgetConsolide == null ?
                     <CenterComponent><CircularProgress /></CenterComponent>
+                    :
+                    <OperationsListe
+                                operationGroupedByDate={getOperationsGroupedByDateOperation(budgetConsolide?.listeOperations || [])}
+                                filterOperations={null}
+                                onClick={() => {}} 
+                                selectedOperationId={null}/>
+                    }
                 </Grid>
             </Grid>
         </Box>
