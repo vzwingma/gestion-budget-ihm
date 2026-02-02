@@ -85,7 +85,7 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
             />
             <Divider flexItem />
             <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
-                Ss Categories
+                Sous Categories
             </Typography>
             <AnalysesFiltresSsCategories
                 distinctSubcategories={distinctSubcategories}

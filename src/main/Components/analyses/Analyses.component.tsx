@@ -47,16 +47,6 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
     const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
     const [distinctSubcategories, setDistinctSubcategories] = useState<SsCategorieOperationModel[]>([]);
-    /**
-       const [analyseSoldesCategoriesData, setAnalyseSoldesCategoriesData] = useState<AnalyseSoldesCategorie[] | null>(null);
-       const [timelinesByCategories, setTimelinesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
-       const [timelinesPrevisionnellesByCategories, setTimelinesPrevisionnellesByCategories] = useState<{ [key: string]: AnalyseCategorieTimelineItem }[] | null>(null);
-   
-       const [timelinesSoldes, setTimelinesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
-       const [timelinesPrevisionnellesSoldes, setTimelinesPrevisionnellesSoldes] = useState<AnalyseSoldesTimelineItemModel[] | null>(null);
-   
-       const [filterSoldesActive, setFilterSoldesActive] = useState<boolean>(false);
-    */
  
     /** Chargement des catégories **/
     useEffect(() => {
