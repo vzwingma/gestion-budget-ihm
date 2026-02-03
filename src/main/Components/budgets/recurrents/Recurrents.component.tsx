@@ -15,6 +15,7 @@ import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
 import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
 import { BudgetActionsButtonGroupComponent } from "../budget/actions/BudgetActionsButtonGroup.component.tsx";
 import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
+import { getHeightList } from "../../../Utils/ListData.utils.tsx";
 
 
 /**
@@ -44,7 +45,6 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = isMobile ? window.innerHeight - 95 : window.innerHeight - 140;
 
 
 
@@ -116,7 +116,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                         )
                     }
                 </Grid>
-                <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: listHeight }}>
+                <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationRecurrenteDetailPage onOperationChange={handleBudgetUpdate} />

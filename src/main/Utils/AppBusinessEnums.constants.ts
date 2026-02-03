@@ -3,6 +3,7 @@
  */
 export enum BUSINESS_ONGLETS {
     BUDGET,
+    ANALYSES,
     ANALYSE_CATEGORIES,
     ANALYSE_TENDANCES,
     RECURRENTS
@@ -81,6 +82,11 @@ export enum TYPES_CATEGORIES_OPERATION_ENUM {
     PLAISIR     = "PLAISIR",
     // épargne
     ECONOMIES = "ECONOMIES",
+    // imprévus
+    IMPREVUS = "IMPREVUS",
+    // extras
+    EXTRAS = "EXTRAS",
+
 }
 
 
@@ -88,11 +94,11 @@ export enum TYPES_CATEGORIES_OPERATION_ENUM {
  * Constantes des périodes pour la liste des périodes
  */
 export enum PERIODES_MENSUALITE_ENUM {
-    PONCTUELLE = "PONCTUELLE",
-    MENSUELLE = "MENSUELLE",
-    TRIMESTRIELLE = "TRIMESTRIELLE",
-    SEMESTRIELLE = "SEMESTRIELLE",
-    ANNUELLE = "ANNUELLE"
+    PONCTUELLE      = "PONCTUELLE",
+    MENSUELLE       = "MENSUELLE",
+    TRIMESTRIELLE   = "TRIMESTRIELLE",
+    SEMESTRIELLE    = "SEMESTRIELLE",
+    ANNUELLE        = "ANNUELLE"
 }
 
 
@@ -100,7 +106,7 @@ export enum PERIODES_MENSUALITE_ENUM {
  * Constantes des type d'opération
  */
 export enum TYPES_OPERATION_ENUM {
-    CREDIT = "CREDIT",
+    CREDIT  = "CREDIT",
     DEPENSE = "DEPENSE"
 }
 

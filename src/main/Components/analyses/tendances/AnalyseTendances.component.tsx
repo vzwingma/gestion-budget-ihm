@@ -43,6 +43,7 @@ export const AnalyseTendances: React.FC<AnalyseTendancesProps> = ({ selectedComp
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     const listHeight = isMobile ? window.innerHeight - 125 : window.innerHeight - 160;
+
     /** Chargement des catégories **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", anneeAnalyses === 0 ? "Tous" : anneeAnalyses);

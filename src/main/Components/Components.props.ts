@@ -8,12 +8,15 @@ import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
 
-import {BUSINESS_ONGLETS, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants.ts";
+import {BUSINESS_ONGLETS, OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants.ts";
 import {OPERATION_EDITION_FORM} from "./budgets/operations/courantes/detail/OperationDetailPage.constants.ts";
 import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOperation.model.ts";
 import OperationEditionModel from "../Models/budgets/OperationEdition.model.ts";
 import {Dispatch, SetStateAction} from "react";
 import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
+import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.ts";
+import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
+import { AnalysesFiltersModel } from "../Models/analyses/AnalysesFilters.model.ts";
 
 /**
  * Analyse des catégories
@@ -104,6 +107,61 @@ export interface DataCalculationTendancesResultsProps {
     timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
 }
 
+
+
+export  interface AnalyseProps {
+   selectedCompte: CompteBancaireModel | null
+   onOpenMenu: () => void
+}
+
+export interface AnalysesTitreProps {
+    currentCompte: CompteBancaireModel;
+    currentPeriode: AnalysesPeriodeModel;
+}
+
+export interface AnalysesFiltresProps {
+    isLoading: boolean;
+    currentPeriode: AnalysesPeriodeModel;
+    setPeriodeAnalyses: Dispatch<SetStateAction<AnalysesPeriodeModel>>;
+    filters: AnalysesFiltersModel;
+    setFilters: Dispatch<SetStateAction<AnalysesFiltersModel>>;
+    distinctCategories: CategorieOperationModel[];
+    distinctSubcategories: SsCategorieOperationModel[];
+}
+
+export interface AnalysesFiltrePeriodeProps {
+    periode: AnalysesPeriodeModel;
+    onChange: (periode: AnalysesPeriodeModel) => void;
+}
+
+export interface AnalysesFiltreTypesCategoriesProps {
+    selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
+    onChange: (selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[]) => void;
+}
+
+export interface AnalysesFiltresOperationProps {
+    selectedEtats: OPERATION_ETATS_ENUM[];
+    selectedTypes: TYPES_OPERATION_ENUM[];
+    onChange: (selectedEtats: OPERATION_ETATS_ENUM[], selectedTypes: TYPES_OPERATION_ENUM[]) => void;
+}
+
+export interface AnalysesFiltresCategoriesProps {
+    distinctCategories: CategorieOperationModel[];
+    selectedCategories: CategorieOperationModel[];
+    onChange: (selectedCategories: CategorieOperationModel[]) => void;
+}
+
+export interface AnalysesFiltresSsCategoriesProps {
+    distinctSubcategories: SsCategorieOperationModel[];
+    selectedSubcategories: SsCategorieOperationModel[];
+    onChange: (selectedSubcategories: SsCategorieOperationModel[]) => void;
+}
+
+export interface AnalyseSyntheseTypesProps {
+    operations: OperationModel[];
+    selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
+}
+
 export  interface AnalyseTendancesProps {
    selectedCompte: CompteBancaireModel | null
    onOpenMenu: () => void
@@ -120,6 +178,11 @@ export interface AnalyseTendancesTitreProps {
     currentAnnee: number;
     onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
 }
+
+export interface AnalyseOperationsListeProps {
+    operations: OperationModel[]
+}
+
 
 export interface AnneeRangeProps {
     selectedAnnee: number;
@@ -145,7 +208,7 @@ export interface RecurrentsPageProps {
 }
 
 /**
- * Opertions
+ * Operations
  */
 
 export interface OperationDetailActionsProps {
@@ -225,7 +288,7 @@ export interface OperationsRecurrentesListeProps {
 
 export interface OperationItemProps {
     operation: OperationModel
-    onClick: (operation : OperationModel) => void
+    onClick: (operation : OperationModel) => void | null
     isSelected?: boolean
     isOneSelected?: boolean
 }

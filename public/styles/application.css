@@ -58,6 +58,8 @@
     --color-type-plaisir-primary:   #A78BFA;
     --color-type-economies-primary: #4ADE80;
     --color-type-revenus-primary:   #FB923C;
+    --color-type-imprevus-primary: #FBBF24;  /* ambre */
+    --color-type-extras-primary:   #F472B6;  /* rose */
 }
 
 /* Common styles */

@@ -90,6 +90,10 @@ export function getTypeCategorieRenderer(typeCategorieKey : TYPES_CATEGORIES_OPE
             return {value: typeCategorieKey, text: "Plaisir", color: "var(--color-type-plaisir-primary)"}
         case TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES:
             return {value: typeCategorieKey, text: "Economies", color: "var(--color-type-economies-primary)"}
+        case TYPES_CATEGORIES_OPERATION_ENUM.IMPREVUS:
+            return {value: typeCategorieKey, text: "Imprévus", color: "var(--color-type-imprevus-primary)"}
+        case TYPES_CATEGORIES_OPERATION_ENUM.EXTRAS:
+            return {value: typeCategorieKey, text: "Extras", color: "var(--color-type-extras-primary)"}
         default:
             return {value: typeCategorieKey, text: "N/D", color: "var(--color-periode-default)"}
     }
