@@ -1,6 +1,6 @@
 import React, { JSX, useEffect, useMemo, useState } from "react";
 
-import { Backdrop, Box, CircularProgress, Grid, Typography } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AnalyseProps } from "../Components.props.ts";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
@@ -43,7 +43,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
     const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
     const [distinctSubcategories, setDistinctSubcategories] = useState<SsCategorieOperationModel[]>([]);
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
      * Filtre les opérations en fonction des filtres sélectionnés
      */
@@ -100,7 +100,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 currentPeriode={periodeAnalyses} />
                         }
                     </Grid>
-                    <Grid size={{ md: 3, xl: 3 }} direction={"column"} sx={{ overflowX: "hidden", overflowY: "auto", height: getHeightList() }}>
+                    <Grid size={{ md: 3, xl: 3 }} direction={"column"} sx={{ overflowX: "hidden", overflowY: "auto", height: getHeightList(isMobile) }}>
                         {selectedCompte == null ?
                             <></>
                             :
@@ -114,7 +114,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                             />
                         }
                     </Grid>
-                    <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: getHeightList() }}>
+                    <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
                         {selectedCompte == null || budgetConsolide == null ?
                             <></>
                             :

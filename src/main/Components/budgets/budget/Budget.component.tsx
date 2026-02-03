@@ -153,7 +153,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                         )
                     }
                 </Grid>
-                <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
+                <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
                     {currentBudget != null && currentOperation != null ?
                         <OperationDetailPage
                             listeCategories={categories}

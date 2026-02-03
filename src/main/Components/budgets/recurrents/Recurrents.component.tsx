@@ -116,7 +116,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                         )
                     }
                 </Grid>
-                <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList() }}>
+                <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
                     {currentBudget != null && currentOperation != null ?
                         /** Affichage d'une opération **/
                         <OperationRecurrenteDetailPage onOperationChange={handleBudgetUpdate} />

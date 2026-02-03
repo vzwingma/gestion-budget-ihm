@@ -1,5 +1,5 @@
 import React, {JSX} from 'react'
-import {Container, Divider, Stack} from "@mui/material";
+import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
 import { CenterComponent } from '../../CenterComponent.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { getHeightList } from '../../../Utils/ListData.utils.tsx';
@@ -90,7 +90,7 @@ const SharedOperationsListe: React.FC<SharedOperationsListeProps> = ({
 
     return (
         <Stack divider={<Divider orientation="horizontal"/>}
-               sx={{overflowY: "auto", overflowX: "hidden", height: getHeightList()}}>
+               sx={{overflowY: "auto", overflowX: "hidden", height: getHeightList(useMediaQuery(useTheme().breakpoints.down('lg')))}}>
             {iterateOperations(operationsGrouped, filterOperations, handleOperationSelect, renderItem, getSeparatorStyle)}
         </Stack>
     );

@@ -1,7 +1,7 @@
 import React, { JSX } from 'react'
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { AnalyseOperationsListeProps } from '../../Components.props.ts';
-import { Stack } from '@mui/material';
+import { Stack, useMediaQuery, useTheme } from '@mui/material';
 import { getHeightList } from '../../../Utils/ListData.utils.tsx';
 import AnalyseOperationItem from './AnalyseOperationItem.component.tsx';
 
@@ -45,7 +45,7 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
 
 
     return (
-        <Stack sx={{ overflowY: "auto", overflowX: "hidden", height: getHeightList() }}>
+        <Stack sx={{ overflowY: "auto", overflowX: "hidden", height: getHeightList(useMediaQuery(useTheme().breakpoints.down('lg'))) }}>
             {iterateOperations(operations, renderItem)}
         </Stack>
     );

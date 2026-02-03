@@ -35,7 +35,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({   rangS
                                                                            selectCategorie
                                                                        }: AnalyseCategoriesListeProps): JSX.Element => {
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    const listHeight = getHeightList();
+    const listHeight = getHeightList(isMobile);
     const subListHeight = isMobile ? 40 : 79;
     /**
      * Iterate groupe
