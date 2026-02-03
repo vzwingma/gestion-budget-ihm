@@ -80,9 +80,9 @@ export const AnalysesFiltreTypesCategories: React.FC<AnalysesFiltreTypesCategori
                 variant="overline"
                 onClick={() => handleTypeClick(typeKey)}
                 sx={{
-                    border: `${isSelected ? '3px' : '1px'} solid ${elementColor}`,
-                    padding: '8px',
-                    paddingRight: '10px',
+                    border: `1px solid ${elementColor}`,
+                    paddingLeft: '8px',
+                    paddingRight: '8px',
                     borderRadius: '4px',
                     cursor: 'pointer',
                     color: isSelected ? 'white' : '#d0d0d0',

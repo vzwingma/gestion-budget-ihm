@@ -80,15 +80,15 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
 
             {!vuePeriode && (
                 <TextField
-                    label="Mois"
-                    type="month"
+                    label="Mois" type="month"
+                    variant='standard' size={'small'}
                     value={`${anneeSelectionnee}-${String(moisSelectionne + 1).padStart(2, '0')}`}
                     onChange={(e) => {
                         const [year, month] = e.target.value.split('-');
                         setAnneeSelectionnee(Number.parseInt(year));
                         setMoisSelectionne(Number.parseInt(month) - 1);
                     }}
-                    slotProps={{ 
+                    slotProps={{
                         inputLabel: { shrink: true },
                         htmlInput: {
                             max: `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
@@ -98,59 +98,62 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
             )}
 
             {vuePeriode && (
+                <>
+                    <Stack direction="row" spacing={5}>
+                        <TextField
+                            label="Début" type="month"
+                            variant='standard' size={'small'}
+                            sx={{ minWidth: '45%' }}
+                            value={dateDebut ? `${dateDebut.getFullYear()}-${String(dateDebut.getMonth() + 1).padStart(2, '0')}` : ''}
+                            onChange={(e) => {
+                                const [year, month] = e.target.value.split('-');
+                                setDateDebut(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
+                            }}
+                            slotProps={{
+                                inputLabel: { shrink: true },
+                                htmlInput: {
+                                    max: dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
+                                }
+                            }}
+                        />
+                        <TextField
+                            label="Fin" type="month"
+                            variant='standard' size={'small'}
+                            sx={{ minWidth: '45%' }}
+                            value={dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : ''}
+                            onChange={(e) => {
+                                const [year, month] = e.target.value.split('-');
+                                setDateFin(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
+                            }}
+                            slotProps={{
+                                inputLabel: { shrink: true },
+                                htmlInput: {
+                                    min: dateDebut ? `${dateDebut.getFullYear()}-${String(dateDebut.getMonth() + 1).padStart(2, '0')}` : undefined,
+                                    max: `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
+                                }
+                            }}
+                        />
+                    </Stack>
 
-                <Stack direction="row" spacing={2}>
-                    <TextField
-                        label="Début"
-                        type="month"
-                        value={dateDebut ? `${dateDebut.getFullYear()}-${String(dateDebut.getMonth() + 1).padStart(2, '0')}` : ''}
-                        onChange={(e) => {
-                            const [year, month] = e.target.value.split('-');
-                            setDateDebut(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
-                        }}
-                        slotProps={{ 
-                            inputLabel: { shrink: true },
-                            htmlInput: {
-                                max: dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
-                            }
-                        }}
-                    />
-                    <TextField
-                        label="Fin"
-                        type="month"
-                        value={dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : ''}
-                        onChange={(e) => {
-                            const [year, month] = e.target.value.split('-');
-                            setDateFin(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
-                        }}
-                        slotProps={{ 
-                            inputLabel: { shrink: true },
-                            htmlInput: {
-                                min: dateDebut ? `${dateDebut.getFullYear()}-${String(dateDebut.getMonth() + 1).padStart(2, '0')}` : undefined,
-                                max: `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
-                            }
-                        }}
-                    />
-                </Stack>
+                    <Box>
+                        <Typography variant="body2">
+                            Durée : {calculerDuree()} mois
+                        </Typography>
+                    </Box>
+
+                    <ButtonGroup variant="outlined" size="small">
+                        <Button onClick={() => appliquerRaccourci(3)}>3 mois</Button>
+                        <Button onClick={() => appliquerRaccourci(6)}>6 mois</Button>
+                        <Button onClick={() => appliquerRaccourci(12)}>12 mois</Button>
+                        <Button onClick={() => appliquerRaccourci(0, 'annee-courante')}>Année courante</Button>
+                        <Button onClick={() => appliquerRaccourci(0, 'annee-precedente')}>Année précédente</Button>
+                    </ButtonGroup>
+
+                    <Typography variant="caption" color="text.secondary">
+                        12 mois maximum
+                    </Typography>
+                </>
             )}
-
-            <Box>
-                <Typography variant="body2">
-                    Durée : {calculerDuree()} mois
-                </Typography>
-            </Box>
-
-            <ButtonGroup variant="outlined" size="small">
-                <Button onClick={() => appliquerRaccourci(3)}>3 mois</Button>
-                <Button onClick={() => appliquerRaccourci(6)}>6 mois</Button>
-                <Button onClick={() => appliquerRaccourci(12)}>12 mois</Button>
-                <Button onClick={() => appliquerRaccourci(0, 'annee-courante')}>Année courante</Button>
-                <Button onClick={() => appliquerRaccourci(0, 'annee-precedente')}>Année précédente</Button>
-            </ButtonGroup>
-
-            <Typography variant="caption" color="text.secondary">
-                12 mois maximum
-            </Typography>
         </Stack>
     );
 };

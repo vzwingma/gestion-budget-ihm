@@ -48,48 +48,36 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
                 <CircularProgress color="inherit" />
             </Backdrop>
             {/* Création d'une pile pour l'affichage du titre */}
-            <Stack direction={"column"} spacing={2} justifyContent="center" alignItems="center" alignContent={"center"}>
-                <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
-                    Filtres
-                </Typography>
-            <Divider flexItem />
-            <Typography variant={"body2"} component="div">
-                <AnalysesFiltrePeriodeComponent periode={currentPeriode} onChange={handlePeriodeChange} />
-            </Typography>
-            <Divider flexItem />
-            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
-                Types
-            </Typography>
-            <AnalysesFiltreTypesCategories selectedTypes={filters.selectedTypes} onChange={handleSelectedTypesChange} />
-            <Divider flexItem />
-            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
-                Opérations
-            </Typography>
-            <AnalysesFiltresOperation
-                selectedEtats={filters.selectedOperationEtats}
-                selectedTypes={filters.selectedOperationTypes}
-                onChange={handleOperationFiltersChange}
-            />
-            <Divider flexItem />
-            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
-                Catégories
-            </Typography>
-            <AnalysesFiltreCategories
-                distinctCategories={distinctCategories}
-                selectedCategories={filters.selectedCategories}
-                onChange={handleCategoriesChange}
-            />
-            <Divider flexItem />
-            <Typography variant={"h6"} component="div" textAlign={"center"} justifyContent={"center"} alignContent={"center"}>
-                Sous Categories
-            </Typography>
-            <AnalysesFiltresSsCategories
-                distinctSubcategories={distinctSubcategories}
-                selectedSubcategories={filters.selectedSubcategories}
-                onChange={handleSubcategoriesChange}
-            />
-
-        </Stack>
+            <Stack direction={"column"} spacing={2} justifyContent="center" >
+                <Divider flexItem />
+                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Périodes</Typography>
+                    <AnalysesFiltrePeriodeComponent periode={currentPeriode} onChange={handlePeriodeChange} />
+                <Divider flexItem />
+                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Types </Typography>
+                    <AnalysesFiltreTypesCategories selectedTypes={filters.selectedTypes} onChange={handleSelectedTypesChange} />
+                <Divider flexItem />
+                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Opérations</Typography>
+                    <AnalysesFiltresOperation
+                        selectedEtats={filters.selectedOperationEtats}
+                        selectedTypes={filters.selectedOperationTypes}
+                        onChange={handleOperationFiltersChange}
+                    />
+                <Divider flexItem />
+                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégories</Typography>
+                    <AnalysesFiltreCategories
+                        distinctCategories={distinctCategories}
+                        selectedCategories={filters.selectedCategories}
+                        onChange={handleCategoriesChange}
+                    />
+                <Divider flexItem />
+                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Sous Categories</Typography>
+                    <AnalysesFiltresSsCategories
+                        distinctSubcategories={distinctSubcategories}
+                        selectedSubcategories={filters.selectedSubcategories}
+                        onChange={handleSubcategoriesChange}
+                    />
+                <Divider flexItem sx={{padding: 5}} />
+            </Stack>
         </>
     )
 };

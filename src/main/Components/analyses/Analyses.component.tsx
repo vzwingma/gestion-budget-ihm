@@ -8,7 +8,6 @@ import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.mode
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
 import { getHeightList } from "../../Utils/ListData.utils.tsx";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
-import OperationModel from "../../Models/budgets/Operation.model.ts";
 import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import OperationsListe from "../budgets/operations/OperationsListe.component.tsx";
 import { getOperationsGroupedByDateOperation } from "../budgets/budget/Budget.controller.ts";
