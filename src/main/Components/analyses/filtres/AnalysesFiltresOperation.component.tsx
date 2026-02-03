@@ -34,9 +34,9 @@ export const AnalysesFiltresOperation: React.FC<AnalysesFiltresOperationProps> =
 	};
 
 	return (
-		<Stack direction={"column"} spacing={1} alignItems={"flex-start"}>
+		<Stack direction={"column"} spacing={1} alignItems={"flex-start"} paddingLeft={2}>
 
-			<Grid container width={"90%"} columnSpacing={2} rowSpacing={1} alignItems={"center"}>
+			<Grid container width={"90%"} columnSpacing={2} alignItems={"center"}>
 				<Grid size={{ md: 4, xl: 4 }}>
 					<Typography variant={"subtitle2"} sx={{ color: 'var(--color-operations-secondary)' }}>État</Typography>
 				</Grid>
@@ -46,8 +46,7 @@ export const AnalysesFiltresOperation: React.FC<AnalysesFiltresOperationProps> =
 							<Checkbox
 								checked={selectedEtats.includes(OPERATION_ETATS_ENUM.PREVUE)}
 								onChange={() => toggleEtat(OPERATION_ETATS_ENUM.PREVUE)}
-								size="small"
-							/>
+								size="small" />
 						}
 						label={"Prévue"}
 					/>
@@ -58,8 +57,7 @@ export const AnalysesFiltresOperation: React.FC<AnalysesFiltresOperationProps> =
 							<Checkbox
 								checked={selectedEtats.includes(OPERATION_ETATS_ENUM.REALISEE)}
 								onChange={() => toggleEtat(OPERATION_ETATS_ENUM.REALISEE)}
-								size="small"
-							/>
+								size="small" />
 						}
 						label={"Réalisée"}
 					/>
@@ -73,8 +71,7 @@ export const AnalysesFiltresOperation: React.FC<AnalysesFiltresOperationProps> =
 							<Checkbox
 								checked={selectedTypes.includes(TYPES_OPERATION_ENUM.DEPENSE)}
 								onChange={() => toggleType(TYPES_OPERATION_ENUM.DEPENSE)}
-								size="small"
-							/>
+								size="small" />
 						}
 						label={"Dépense"}
 					/>
@@ -85,8 +82,7 @@ export const AnalysesFiltresOperation: React.FC<AnalysesFiltresOperationProps> =
 							<Checkbox
 								checked={selectedTypes.includes(TYPES_OPERATION_ENUM.CREDIT)}
 								onChange={() => toggleType(TYPES_OPERATION_ENUM.CREDIT)}
-								size="small"
-							/>
+								size="small" />
 						}
 						label={"Crédit"}
 					/>

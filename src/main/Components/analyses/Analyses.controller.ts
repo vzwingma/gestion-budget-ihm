@@ -58,6 +58,21 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
 }
 
 
+/**
+ * Applique des filtres aux opérations fournies.
+ *
+ * Cette fonction filtre un tableau d'opérations en fonction des critères spécifiés dans le modèle de filtres.
+ * Les opérations sont conservées si elles correspondent à au moins un des critères de filtrage suivants :
+ * - Type de catégorie
+ * - État de l'opération
+ * - Type d'opération
+ * - Catégorie
+ * - Sous-catégorie
+ *
+ * @param operations - Un tableau d'objets OperationModel à filtrer.
+ * @param filters - Un objet AnalysesFiltersModel contenant les critères de filtrage.
+ * @returns Un tableau d'objets OperationModel qui correspondent aux critères de filtrage.
+ */
 export function applyFiltersToOperations(operations: Array<OperationModel>, filters: AnalysesFiltersModel): Array<OperationModel> {
     return operations.filter(op => {
         const matchesTypeCategorie = filters.selectedTypes.length === 0 || filters.selectedTypes.includes(op.ssCategorie.type);
@@ -65,6 +80,6 @@ export function applyFiltersToOperations(operations: Array<OperationModel>, filt
         const matchesTypeOperation = filters.selectedOperationTypes.length === 0 || filters.selectedOperationTypes.includes(op.typeOperation);
         const matchesCategorie = filters.selectedCategories.length === 0 || filters.selectedCategories.some(cat => cat.id === op.categorie.id);
         const matchesSubcategorie = filters.selectedSubcategories.length === 0 || filters.selectedSubcategories.some(subcat => subcat.id === op.ssCategorie.id);
-        return matchesTypeCategorie && matchesEtat && matchesTypeOperation && matchesCategorie && matchesSubcategorie;
+        return matchesTypeCategorie && matchesEtat && matchesTypeOperation && (matchesCategorie || matchesSubcategorie);
     });
 }

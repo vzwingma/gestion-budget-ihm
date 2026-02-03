@@ -108,6 +108,7 @@ export const AnalysesFiltreTypesCategories: React.FC<AnalysesFiltreTypesCategori
                 flexWrap: 'wrap',
                 gap: '8px',
                 alignItems: 'center',
+                paddingX: 2
             }}
         >
             {/* Super type TOUS */}

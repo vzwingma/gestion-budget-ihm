@@ -69,8 +69,6 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
                         selectedCategories={filters.selectedCategories}
                         onChange={handleCategoriesChange}
                     />
-                <Divider flexItem />
-                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Sous Categories</Typography>
                     <AnalysesFiltresSsCategories
                         distinctSubcategories={distinctSubcategories}
                         selectedSubcategories={filters.selectedSubcategories}

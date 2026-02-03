@@ -70,7 +70,7 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
     }, [vuePeriode, moisSelectionne, anneeSelectionnee, dateDebut, dateFin, onChange]);
 
     return (
-        <Stack direction="column" spacing={2}>
+        <Stack direction="column" spacing={2} paddingLeft={2}>
             <FormControl>
                 <RadioGroup row value={vuePeriode} onChange={(e) => setVuePeriode(e.target.value === 'true')}>
                     <FormControlLabel value="false" control={<Radio />} label="Mois" />
