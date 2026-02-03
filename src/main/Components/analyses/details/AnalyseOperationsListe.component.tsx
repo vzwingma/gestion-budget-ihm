@@ -3,7 +3,7 @@ import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { AnalyseOperationsListeProps } from '../../Components.props.ts';
 import { Stack } from '@mui/material';
 import { getHeightList } from '../../../Utils/ListData.utils.tsx';
-import AnalyseOperationItem from './AnalyseOperationItem.tsx';
+import AnalyseOperationItem from './AnalyseOperationItem.component.tsx';
 
 
 /**

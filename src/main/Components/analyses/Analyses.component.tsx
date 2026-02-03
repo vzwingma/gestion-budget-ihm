@@ -1,11 +1,12 @@
 import React, { JSX, useEffect, useMemo, useState } from "react";
 
-import { Backdrop, Box, CircularProgress, Grid } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AnalyseProps } from "../Components.props.ts";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
+import { AnalyseSyntheseTypes } from "./details/AnalyseSyntheseTypes.component.tsx";
 import { getHeightList } from "../../Utils/ListData.utils.tsx";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
@@ -119,7 +120,8 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                             :
                             <Grid container sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                                 <Grid size={{ md: 12, xl: 12 }} >
-                                    Teest
+                                    <Typography variant="h6" sx={{ paddingLeft: 2, paddingTop: 1, paddingBottom: 1, color: "var(--color-heading-text)" }}>Synthèse des types d'opérations</Typography>
+                                    <AnalyseSyntheseTypes operations={filteredOperations} selectedTypes={filters.selectedTypes} />
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
                                     <AnalyseOperationsListe operations={filteredOperations} />

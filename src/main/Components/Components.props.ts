@@ -157,6 +157,11 @@ export interface AnalysesFiltresSsCategoriesProps {
     onChange: (selectedSubcategories: SsCategorieOperationModel[]) => void;
 }
 
+export interface AnalyseSyntheseTypesProps {
+    operations: OperationModel[];
+    selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
+}
+
 export  interface AnalyseTendancesProps {
    selectedCompte: CompteBancaireModel | null
    onOpenMenu: () => void
