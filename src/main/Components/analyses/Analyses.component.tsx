@@ -9,11 +9,10 @@ import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
 import { getHeightList } from "../../Utils/ListData.utils.tsx";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
-import OperationsListe from "../budgets/operations/OperationsListe.component.tsx";
-import { getOperationsGroupedByDateOperation } from "../budgets/budget/Budget.controller.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 import SsCategorieOperationModel from "../../Models/budgets/SSCategorieOperation.model.ts";
 import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/analyses/AnalysesFilters.model.ts";
+import AnalyseOperationsListe from "./details/AnalyseOperationsListe.component.tsx";
 
 
 
@@ -119,15 +118,14 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                             <></>
                             :
                             <Grid container sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                                <Grid size={{ md: 12, xl: 12 }} >
+                                    Teest
+                                </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-                                    
+                                    <AnalyseOperationsListe operations={filteredOperations} />
                                 </Grid>
                                 <Grid size={{ md:  6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-                                    <OperationsListe
-                                        operationGroupedByDate={getOperationsGroupedByDateOperation(filteredOperations)}
-                                        filterOperations={null}
-                                        onClick={() => { }}
-                                        selectedOperationId={null} />
+                                    
                                 </Grid>
                                 <Grid size={{ md:  6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
                                     

@@ -174,6 +174,11 @@ export interface AnalyseTendancesTitreProps {
     onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
 }
 
+export interface AnalyseOperationsListeProps {
+    operations: OperationModel[]
+}
+
+
 export interface AnneeRangeProps {
     selectedAnnee: number;
     onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
@@ -278,7 +283,7 @@ export interface OperationsRecurrentesListeProps {
 
 export interface OperationItemProps {
     operation: OperationModel
-    onClick: (operation : OperationModel) => void
+    onClick: (operation : OperationModel) => void | null
     isSelected?: boolean
     isOneSelected?: boolean
 }
