@@ -25,22 +25,17 @@ export const ExpandableDetailSection: React.FC<ExpandableSectionProps> = ({ labe
     return (
         <>
             {/* Section normale */}
-            <Box sx={{ border: '1px solid var(--color-dark-container)', borderRadius: 5, margin: 1 }}>
+            <Box sx={{ border: '2px solid var(--color-dark-container)', borderRadius: 3, margin: 1 }}>
                 {/* En-tête avec label et icône agrandir */}
                 <Box sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    borderBottom: '2px solid var(--color-dark-container)',
-                    backgroundColor: 'var(--color-dark-bg)'
+                    borderBottom: '2px solid var(--color-dark-container)'
                 }}>
                     <Typography
                         variant="h6"
-                        sx={{ paddingLeft: 2,
-                            paddingTop: 1,
-                            paddingBottom: 1,
-                            color: 'var(--color-heading)'
-                        }}>
+                        sx={{ paddingLeft: 2, paddingTop: 1, paddingBottom: 1, color: 'var(--color-heading)' }}>
                         {label}
                     </Typography>
                     <IconButton

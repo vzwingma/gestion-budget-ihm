@@ -1,6 +1,6 @@
 import React, { JSX, useEffect, useMemo, useState } from "react";
 
-import { Backdrop, Box, CircularProgress, Grid, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AnalyseProps } from "../Components.props.ts";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
@@ -106,32 +106,32 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                             <></>
                             :
 
-            <Box sx={{ border: '1px solid var(--color-dark-container)', borderRadius: 5, marginRight: 1, marginTop: 1 }}>
-                {/* En-tête avec label et icône agrandir */}
-                <Box sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    borderBottom: '1px solid var(--color-dark-container)',
-                    backgroundColor: 'var(--color-dark-bg)'
-                }}><Typography
-                        variant="h6"
-                        sx={{ padding: 1, color: 'var(--color-heading)' }}>Filtres</Typography>
-                </Box>
+                            <Box sx={{ border: '1px solid var(--color-dark-container)', borderRadius: 5, marginRight: 1, marginTop: 1 }}>
+                                {/* En-tête avec label et icône agrandir */}
+                                <Box sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    borderBottom: '1px solid var(--color-dark-container)',
+                                    backgroundColor: 'var(--color-dark-bg)'
+                                }}><Typography
+                                    variant="h6"
+                                    sx={{ padding: 1, color: 'var(--color-heading)' }}>Filtres</Typography>
+                                </Box>
 
-                {/* Contenu enfant */}
-                <Box sx={{ padding: 1, }}>
-                    <AnalysesFiltres isLoading={isLoading}
-                                currentPeriode={periodeAnalyses}
-                                setPeriodeAnalyses={setPeriodeAnalyses}
-                                filters={filters}
-                                setFilters={setFilters}
-                                distinctCategories={distinctCategories}
-                                distinctSubcategories={distinctSubcategories}
-                            />
-                </Box>
-            </Box>                            
-                            
+                                {/* Contenu enfant */}
+                                <Box sx={{ padding: 1, }}>
+                                    <AnalysesFiltres isLoading={isLoading}
+                                        currentPeriode={periodeAnalyses}
+                                        setPeriodeAnalyses={setPeriodeAnalyses}
+                                        filters={filters}
+                                        setFilters={setFilters}
+                                        distinctCategories={distinctCategories}
+                                        distinctSubcategories={distinctSubcategories}
+                                    />
+                                </Box>
+                            </Box>
+
                         }
                     </Grid>
                     <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
