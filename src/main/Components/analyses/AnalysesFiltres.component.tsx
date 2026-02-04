@@ -67,11 +67,13 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
                         selectedCategories={filters.selectedCategories}
                         onChange={handleCategoriesChange}
                     />
+                    { /** 
                     <AnalysesFiltresSsCategories
                         distinctSubcategories={distinctSubcategories}
                         selectedSubcategories={filters.selectedSubcategories}
                         onChange={handleSubcategoriesChange}
                     />
+                     */}
                 <Divider flexItem sx={{padding: 5}} />
             </Stack>
         </>

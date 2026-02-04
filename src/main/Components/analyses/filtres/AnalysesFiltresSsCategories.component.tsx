@@ -23,10 +23,10 @@ export const AnalysesFiltresSsCategories: React.FC<AnalysesFiltresSsCategoriesPr
 
     /**
      * Gère le changement de sélection des sous-catégories
-     * @param {any} event - L'événement de changement
+     * @param {any} _ - L'événement de changement (non utilisé)
      * @param {SsCategorieOperationModel[]} newValue - Les nouvelles sous-catégories sélectionnées
      */
-    const handleSubcategoriesChange = (event: any, newValue: SsCategorieOperationModel[]) => {
+    const handleSubcategoriesChange = (_: any, newValue: SsCategorieOperationModel[]) => {
         onChange(newValue);
     };
 

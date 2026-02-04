@@ -50,8 +50,14 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
     )
     .then(allOperations => {
         budgetConsolide.listeOperations = allOperations.flat();
-        const distinctCategories = [...new Set(budgetConsolide.listeOperations.map(op => op.categorie.id))].map(id => budgetConsolide.listeOperations.find(op => op.categorie.id === id)?.categorie).filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
-        const distinctSubcategories = [...new Set(budgetConsolide.listeOperations.map(op => op.ssCategorie.id))].map(id => budgetConsolide.listeOperations.find(op => op.ssCategorie.id === id)?.ssCategorie).filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
+        const distinctCategories = [...new Set(budgetConsolide.listeOperations.map(op => op.categorie.id))]
+                                                                              .map(id => budgetConsolide.listeOperations
+                                                                                .find(op => op.categorie.id === id)?.categorie)
+                                                                                .filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
+        const distinctSubcategories = [...new Set(budgetConsolide.listeOperations.map(op => op.ssCategorie.id))]
+                                                                                 .map(id => budgetConsolide.listeOperations
+                                                                                    .find(op => op.ssCategorie.id === id)?.ssCategorie)
+                                                                                    .filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
         handleDataCalculationResult(budgetConsolide, distinctCategories, distinctSubcategories);
     });
 
@@ -79,7 +85,7 @@ export function applyFiltersToOperations(operations: Array<OperationModel>, filt
         const matchesEtat = filters.selectedOperationEtats.length === 0 || filters.selectedOperationEtats.includes(op.etat);
         const matchesTypeOperation = filters.selectedOperationTypes.length === 0 || filters.selectedOperationTypes.includes(op.typeOperation);
         const matchesCategorie = filters.selectedCategories.length === 0 || filters.selectedCategories.some(cat => cat.id === op.categorie.id);
-        const matchesSubcategorie = filters.selectedSubcategories.length === 0 || filters.selectedSubcategories.some(subcat => subcat.id === op.ssCategorie.id);
-        return matchesTypeCategorie && matchesEtat && matchesTypeOperation && (matchesCategorie || matchesSubcategorie);
+        // const matchesSubcategorie = filters.selectedSubcategories.length === 0 || filters.selectedSubcategories.some(subcat => subcat.id === op.ssCategorie.id);
+        return matchesTypeCategorie && matchesEtat && matchesTypeOperation && (matchesCategorie);
     });
 }
