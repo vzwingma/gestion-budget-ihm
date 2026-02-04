@@ -5,14 +5,13 @@ import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.mode
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { loadBudget } from "./Analyses.extservices.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
-import SsCategorieOperationModel from "../../Models/budgets/SSCategorieOperation.model.ts";
 import OperationModel from "../../Models/budgets/Operation.model.ts";
 import { AnalysesFiltersModel } from "../../Models/analyses/AnalysesFilters.model.ts";
 
 /**
  * Contrôleur des analyses
  */
-export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, periodeAnalyses: AnalysesPeriodeModel, handleDataCalculationResult: (budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[], distinctSubcategories: SsCategorieOperationModel[]) => void) {
+export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, periodeAnalyses: AnalysesPeriodeModel, handleDataCalculationResult: (budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[]) => void) {
     const startDate = new Date(periodeAnalyses.periodeDebut);
     const endDate = new Date(periodeAnalyses.periodeFin);
 
@@ -54,11 +53,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
                                                                               .map(id => budgetConsolide.listeOperations
                                                                                 .find(op => op.categorie.id === id)?.categorie)
                                                                                 .filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
-        const distinctSubcategories = [...new Set(budgetConsolide.listeOperations.map(op => op.ssCategorie.id))]
-                                                                                 .map(id => budgetConsolide.listeOperations
-                                                                                    .find(op => op.ssCategorie.id === id)?.ssCategorie)
-                                                                                    .filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
-        handleDataCalculationResult(budgetConsolide, distinctCategories, distinctSubcategories);
+        handleDataCalculationResult(budgetConsolide, distinctCategories);
     });
 
 }
@@ -85,7 +80,6 @@ export function applyFiltersToOperations(operations: Array<OperationModel>, filt
         const matchesEtat = filters.selectedOperationEtats.length === 0 || filters.selectedOperationEtats.includes(op.etat);
         const matchesTypeOperation = filters.selectedOperationTypes.length === 0 || filters.selectedOperationTypes.includes(op.typeOperation);
         const matchesCategorie = filters.selectedCategories.length === 0 || filters.selectedCategories.some(cat => cat.id === op.categorie.id);
-        // const matchesSubcategorie = filters.selectedSubcategories.length === 0 || filters.selectedSubcategories.some(subcat => subcat.id === op.ssCategorie.id);
         return matchesTypeCategorie && matchesEtat && matchesTypeOperation && (matchesCategorie);
     });
 }

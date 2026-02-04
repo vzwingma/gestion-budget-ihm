@@ -11,7 +11,6 @@ import { getHeightList } from "../../Utils/ListData.utils.tsx";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
-import SsCategorieOperationModel from "../../Models/budgets/SSCategorieOperation.model.ts";
 import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/analyses/AnalysesFilters.model.ts";
 import AnalyseOperationsListe from "./details/AnalyseOperationsListe.component.tsx";
 import { ExpandableDetailSection } from "../shared/ExpandableDetailSection.component.tsx";
@@ -43,7 +42,6 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
     const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
-    const [distinctSubcategories, setDistinctSubcategories] = useState<SsCategorieOperationModel[]>([]);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
      * Filtre les opérations en fonction des filtres sélectionnés
@@ -65,11 +63,10 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
      * @param {Object} param0 - Les résultats du calcul des données.
         */
 
-    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[], distinctSubcategories: SsCategorieOperationModel[]) {
+    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[]) {
         console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations");
         setBudgetConsolide(budgetConsolide);
         setDistinctCategories(distinctCategories);
-        setDistinctSubcategories(distinctSubcategories);
         setIsLoading(false);
     }
 
@@ -127,7 +124,6 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                         filters={filters}
                                         setFilters={setFilters}
                                         distinctCategories={distinctCategories}
-                                        distinctSubcategories={distinctSubcategories}
                                     />
                                 </Box>
                             </Box>
@@ -158,7 +154,6 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
 
                                 </Grid>
-
                             </Grid>
                         }
                     </Grid>

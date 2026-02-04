@@ -126,7 +126,6 @@ export interface AnalysesFiltresProps {
     filters: AnalysesFiltersModel;
     setFilters: Dispatch<SetStateAction<AnalysesFiltersModel>>;
     distinctCategories: CategorieOperationModel[];
-    distinctSubcategories: SsCategorieOperationModel[];
 }
 
 export interface AnalysesFiltrePeriodeProps {
