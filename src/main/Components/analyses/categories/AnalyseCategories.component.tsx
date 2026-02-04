@@ -12,7 +12,7 @@ import {selectEtatOperation, selectTypeOperation} from "./AnalyseCategories.cont
 import AnalyseCategoriesListe from "./listeCategories/AnalyseCategoriesListe.component.tsx";
 import AnalyseCategoriesModel from "../../../Models/analyses/categories/AnalyseCategories.model.ts";
 import {AnalyseCategoriesProps, DataCalculationResultsProps} from "../../Components.props.tsx";
-import { CenterComponent } from "../../CenterComponent.tsx";
+import { CenterComponent } from "../../shared/CenterComponent.tsx";
 
 
 

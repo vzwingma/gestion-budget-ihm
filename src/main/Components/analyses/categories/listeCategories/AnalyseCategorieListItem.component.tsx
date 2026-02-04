@@ -15,7 +15,7 @@ import {
 import OperationValue from "../../../../Utils/renderers/OperationValue.renderer.tsx";
 import {getCategorieIcon} from "../../../../Utils/renderers/CategorieItem.renderer.tsx";
 import {AnalyseCategorieListItemProps} from '../../../Components.props.tsx';
-import { CenterComponent } from '../../../CenterComponent.tsx';
+import { CenterComponent } from '../../../shared/CenterComponent.tsx';
 
 
 /**

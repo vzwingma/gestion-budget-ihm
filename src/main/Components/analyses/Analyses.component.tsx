@@ -1,6 +1,6 @@
 import React, { JSX, useEffect, useMemo, useState } from "react";
 
-import { Backdrop, Box, CircularProgress, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AnalyseProps } from "../Components.props.ts";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
@@ -14,6 +14,7 @@ import CategorieOperationModel from "../../Models/budgets/CategorieOperation.mod
 import SsCategorieOperationModel from "../../Models/budgets/SSCategorieOperation.model.ts";
 import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/analyses/AnalysesFilters.model.ts";
 import AnalyseOperationsListe from "./details/AnalyseOperationsListe.component.tsx";
+import { ExpandableDetailSection } from "../shared/ExpandableDetailSection.component.tsx";
 
 
 
@@ -50,7 +51,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     const filteredOperations = useMemo(() => {
         return applyFiltersToOperations(budgetConsolide?.listeOperations || [], filters);
     }, [budgetConsolide, filters]);
- 
+
     /** Chargement du compte **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
@@ -104,7 +105,23 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                         {selectedCompte == null ?
                             <></>
                             :
-                            <AnalysesFiltres isLoading={isLoading}
+
+            <Box sx={{ border: '1px solid var(--color-dark-container)', borderRadius: 5, marginRight: 1, marginTop: 1 }}>
+                {/* En-tête avec label et icône agrandir */}
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottom: '1px solid var(--color-dark-container)',
+                    backgroundColor: 'var(--color-dark-bg)'
+                }}><Typography
+                        variant="h6"
+                        sx={{ padding: 1, color: 'var(--color-heading)' }}>Filtres</Typography>
+                </Box>
+
+                {/* Contenu enfant */}
+                <Box sx={{ padding: 1, }}>
+                    <AnalysesFiltres isLoading={isLoading}
                                 currentPeriode={periodeAnalyses}
                                 setPeriodeAnalyses={setPeriodeAnalyses}
                                 filters={filters}
@@ -112,6 +129,9 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 distinctCategories={distinctCategories}
                                 distinctSubcategories={distinctSubcategories}
                             />
+                </Box>
+            </Box>                            
+                            
                         }
                     </Grid>
                     <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
@@ -120,20 +140,23 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                             :
                             <Grid container sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                                 <Grid size={{ md: 12, xl: 12 }} >
-                                    <Typography variant="h6" sx={{ paddingLeft: 2, paddingTop: 1, paddingBottom: 1, color: "var(--color-heading-text)" }}>Synthèse des types d'opérations</Typography>
-                                    <AnalyseSyntheseTypes operations={filteredOperations} selectedTypes={filters.selectedTypes} />
+                                    <ExpandableDetailSection label="Synthèse des types d'opérations">
+                                        <AnalyseSyntheseTypes operations={filteredOperations} selectedTypes={filters.selectedTypes} />
+                                    </ExpandableDetailSection>
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-                                    <AnalyseOperationsListe operations={filteredOperations} />
+                                    <ExpandableDetailSection label="Liste des opérations">
+                                        <AnalyseOperationsListe operations={filteredOperations} />
+                                    </ExpandableDetailSection>
                                 </Grid>
-                                <Grid size={{ md:  6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-                                    
+                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
+
                                 </Grid>
-                                <Grid size={{ md:  6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-                                    
+                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
+
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-                                    
+
                                 </Grid>
 
                             </Grid>

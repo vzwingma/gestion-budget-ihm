@@ -10,7 +10,7 @@ import OperationsListe from "../operations/OperationsListe.component.tsx";
 import OperationDetailPage from "../operations/courantes/detail/OperationDetailPage.component.tsx";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsGroupedByDateOperation, updateOperationsStatus } from "./Budget.controller.ts";
-import { CenterComponent } from "../../CenterComponent.tsx";
+import { CenterComponent } from "../../shared/CenterComponent.tsx";
 import { getLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
 import { BudgetPageProps } from "../../Components.props.tsx";
 import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";

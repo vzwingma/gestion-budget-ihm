@@ -3,7 +3,7 @@ import {CircularProgress, Grid} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import OperationFilter from "./OperationFilter.component.tsx";
 
-import {CenterComponent} from "../../CenterComponent.tsx";
+import {CenterComponent} from "../../shared/CenterComponent.tsx";
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
 import CompteTitre from "./CompteTitre.component.tsx";
 

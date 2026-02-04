@@ -1,6 +1,6 @@
 import React, {JSX} from 'react'
 import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
-import { CenterComponent } from '../../CenterComponent.tsx';
+import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { getHeightList } from '../../../Utils/ListData.utils.tsx';
 
