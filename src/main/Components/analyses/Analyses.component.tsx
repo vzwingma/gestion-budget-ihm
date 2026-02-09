@@ -14,6 +14,7 @@ import CategorieOperationModel from "../../Models/budgets/CategorieOperation.mod
 import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/analyses/AnalysesFilters.model.ts";
 import AnalyseOperationsListe from "./details/AnalyseOperationsListe.component.tsx";
 import { ExpandableDetailSection } from "../shared/ExpandableDetailSection.component.tsx";
+import AnalyseCategoriesListe from "./details/AnalyseCategoriesListe.component.tsx";
 
 
 
@@ -146,7 +147,9 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     </ExpandableDetailSection>
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-
+                                    <ExpandableDetailSection label="Liste des catégories">
+                                        <AnalyseCategoriesListe operations={filteredOperations} />
+                                    </ExpandableDetailSection>
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
 

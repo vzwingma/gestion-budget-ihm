@@ -28,12 +28,6 @@ export interface AnalyseCategorieListItemProps {
 }
 
 
-export interface AnalyseCategoriesListeProps {
-    rangSelectedCategorie: number | null,
-    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel } | null,
-    typeAnalyse: string,
-    selectCategorie: (analyseCategoriesModel: AnalyseCategoriesModel, rang?: number) => void
-}
 
 
 export interface AnalyseCategoriesProps {
@@ -181,6 +175,11 @@ export interface AnalyseTendancesTitreProps {
 export interface AnalyseOperationsListeProps {
     operations: OperationModel[]
 }
+
+export interface AnalyseCategoriesListeProps {
+    operations: OperationModel[]
+}
+
 
 
 export interface AnneeRangeProps {
