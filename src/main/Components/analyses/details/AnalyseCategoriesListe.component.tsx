@@ -14,8 +14,8 @@ import {
 } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import { AnalyseCategoriesListeProps } from '../../Components.props.ts';
-import AnalyseCategoriesModel from '../../../Models/analyses/categories/AnalyseCategories.model.ts';
 import { getHeightDetailList } from '../../../Utils/ListData.utils.tsx';
+import { COLUMN_WIDTHS, getCategoriesDataForAnalyses as getAnalyseCategoriesData, getCategoryTypeColor, getSortedSubCategories } from './AnalyseCategoriesListe.controller.ts';
 
 /**
  * Composant pour afficher une barchart simple
@@ -46,48 +46,6 @@ const PercentageBar: React.FC<{ percentage: number }> = ({ percentage }) => (
     </Box>
 );
 
-
-/**
- * Fonction pour obtenir la couleur du type de catégorie
- */
-const getCategoryTypeColor = (typeEnum: string | null | undefined): string => {
-    if (!typeEnum) return '#999999';
-    switch (typeEnum) {
-        case 'REVENUS':
-            return '#4CAF50';
-        case 'ESSENTIEL':
-            return '#2196F3';
-        case 'PLAISIR':
-            return '#FF9800';
-        case 'ECONOMIES':
-            return '#9C27B0';
-        default:
-            return '#757575';
-    }
-};
-
-/**
- * Fonction pour obtenir les sous-catégories triées
- */
-const getSortedSubCategories = (category: AnalyseCategoriesModel): AnalyseCategoriesModel[] => {
-    if (!category.resumesSsCategories) return [];
-    return Object.values(category.resumesSsCategories).sort((a, b) =>
-        a.categorie.libelle.localeCompare(b.categorie.libelle)
-    );
-};
-
-/**
- * Largeurs des colonnes (synchronisées)
- */
-const COLUMN_WIDTHS = {
-    expand: '3%',
-    type: '5%',
-    libelle: '34%',
-    somme: '15%',
-    operations: '12%',
-    pourcentage: '31%'
-};
-
 /**
  * Composant de treelist des catégories et sous-catégories d'opérations
  * @param operations liste des opérations à afficher
@@ -109,65 +67,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
     };
 
     // Grouper les opérations par catégories et sous-catégories et calculer les totaux
-    const categoriesData = useMemo(() => {
-        if (!operations || operations.length === 0) return [];
-
-        const categoriesMap: { [key: string]: AnalyseCategoriesModel } = {};
-
-        // Grouper les opérations
-        operations.forEach((operation) => {
-            const categoryId = operation.categorie.id || 'UNKNOWN';
-            const subCategoryId = operation.ssCategorie.id || 'UNKNOWN';
-
-            // Créer ou récupérer la catégorie
-            if (!categoriesMap[categoryId]) {
-                const category = new AnalyseCategoriesModel();
-                category.categorie = operation.categorie;
-                categoriesMap[categoryId] = category;
-            }
-
-            const categoryModel = categoriesMap[categoryId];
-
-            // Ajouter l'opération à la catégorie
-            categoryModel.listeOperations.push(operation);
-            categoryModel.total['MONTANT'] = (categoryModel.total['MONTANT'] || 0) + operation.valeur;
-            categoryModel.nbTransactions['MONTANT'] = (categoryModel.nbTransactions['MONTANT'] || 0) + 1;
-
-            // Créer ou récupérer la sous-catégorie
-            if (!categoryModel.resumesSsCategories[subCategoryId]) {
-                const subCategory = new AnalyseCategoriesModel();
-                subCategory.categorie = { ...operation.ssCategorie, id: subCategoryId };
-                categoryModel.resumesSsCategories[subCategoryId] = subCategory;
-            }
-
-            const subCategoryModel = categoryModel.resumesSsCategories[subCategoryId];
-            subCategoryModel.listeOperations.push(operation);
-            subCategoryModel.total['MONTANT'] = (subCategoryModel.total['MONTANT'] || 0) + operation.valeur;
-            subCategoryModel.nbTransactions['MONTANT'] = (subCategoryModel.nbTransactions['MONTANT'] || 0) + 1;
-        });
-
-        // Calculer les pourcentages
-        const totalGeneral = Object.values(categoriesMap).reduce(
-            (sum, cat) => sum + (cat.total['MONTANT'] || 0),
-            0
-        );
-
-        Object.values(categoriesMap).forEach((category) => {
-            const categoryTotal = category.total['MONTANT'] || 0;
-            category.pourcentage['MONTANT'] = totalGeneral > 0 ? (categoryTotal / totalGeneral) * 100 : 0;
-
-            Object.values(category.resumesSsCategories).forEach((subCategory) => {
-                const subCategoryTotal = subCategory.total['MONTANT'] || 0;
-                subCategory.pourcentage['MONTANT'] =
-                    categoryTotal > 0 ? (subCategoryTotal / categoryTotal) * 100 : 0;
-            });
-        });
-
-        // Trier par libellé alphabétiquement
-        return Object.values(categoriesMap).sort((a, b) =>
-            a.categorie.libelle.localeCompare(b.categorie.libelle)
-        );
-    }, [operations]);
+    const categoriesData = useMemo(() => getAnalyseCategoriesData(operations), [operations]);
 
     return (
         <Paper sx={{ marginTop: 2 }}>
@@ -193,10 +93,10 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                         <TableBody>
                     {categoriesData.map((category) => {
                         const isExpanded = expandedCategories.has(category.categorie.id || '');
-                        const subCategories = getSortedSubCategories(category);
-                        const total = category.total['MONTANT'] || 0;
-                        const nbTransactions = category.nbTransactions['MONTANT'] || 0;
-                        const percentage = category.pourcentage['MONTANT'] || 0;
+                        const analyseSubCategories = getSortedSubCategories(category);
+                        const total = category.total || 0;
+                        const nbTransactions = category.nbTransactions || 0;
+                        const percentage = category.pourcentage || 0;
 
                         return (
                             <React.Fragment key={category.categorie.id}>
@@ -208,10 +108,9 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                             backgroundColor: 'var(--color-light-hover)'
                                         },
                                         cursor: 'pointer'
-                                    }}
-                                >
+                                    }}>
                                     <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.expand }}>
-                                        {subCategories.length > 0 && (
+                                        {analyseSubCategories.length > 0 && (
                                             <IconButton
                                                 size="small"
                                                 onClick={() =>
@@ -222,18 +121,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                             </IconButton>
                                         )}
                                     </TableCell>
-                                    <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.type }}>
-                                        <Box
-                                            sx={{
-                                                width: 16,
-                                                height: 16,
-                                                borderRadius: '50%',
-                                                backgroundColor: getCategoryTypeColor(category.categorie.id),
-                                                display: 'inline-block'
-                                            }}
-                                            title={category.categorie.id}
-                                        />
-                                    </TableCell>
+                                    <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.type }}/>
                                     <TableCell sx={{ paddingY: 1, fontWeight: 600, width: COLUMN_WIDTHS.libelle }}>
                                         {category.categorie.libelle}
                                     </TableCell>
@@ -250,22 +138,33 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
 
                                 {/* Lignes sous-catégories */}
                                 {isExpanded &&
-                                    subCategories.map((subCategory) => {
-                                        const subTotal = subCategory.total['MONTANT'] || 0;
-                                        const subNbTransactions = subCategory.nbTransactions['MONTANT'] || 0;
-                                        const subPercentage = subCategory.pourcentage['MONTANT'] || 0;
+                                    analyseSubCategories.map((analyseSubCat) => {
+                                        const subTotal = analyseSubCat.total || 0;
+                                        const subNbTransactions = analyseSubCat.nbTransactions || 0;
+                                        const subPercentage = analyseSubCat.pourcentage || 0;
 
                                         return (
                                             <TableRow
-                                                key={`${category.categorie.id}-${subCategory.categorie.id}`}
+                                                key={`${category.categorie.id}-${analyseSubCat.ssCategorie.id}`}
                                                 sx={{ backgroundColor: 'var(--color-light-background)',
                                                         '&:hover': { backgroundColor: 'var(--color-very-light-hover)' }
                                                 }}>
                                                 <TableCell sx={{ paddingLeft: 4, paddingY: 1, width: COLUMN_WIDTHS.expand }} />
-                                                <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.type }} />
+                                                <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.type }} >
+                                                    <Box
+                                            sx={{
+                                                width: 16,
+                                                height: 16,
+                                                borderRadius: '50%',
+                                                backgroundColor: getCategoryTypeColor(analyseSubCat.ssCategorie.type),
+                                                display: 'inline-block'
+                                            }}
+                                            title={analyseSubCat.ssCategorie.type}
+                                        />
+                                                    </TableCell>
                                                 <TableCell sx={{ paddingY: 1, paddingLeft: 4, width: COLUMN_WIDTHS.libelle }}>
                                                     <Typography variant="body2">
-                                                        {subCategory.categorie.libelle}
+                                                        {analyseSubCat.ssCategorie.libelle}
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.somme }}>
