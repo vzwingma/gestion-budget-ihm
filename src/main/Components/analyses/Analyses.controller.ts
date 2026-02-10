@@ -76,10 +76,10 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
  */
 export function applyFiltersToOperations(operations: Array<OperationModel>, filters: AnalysesFiltersModel): Array<OperationModel> {
     return operations.filter(op => {
-        const matchesTypeCategorie = filters.selectedTypes.length === 0 || filters.selectedTypes.includes(op.ssCategorie.type);
-        const matchesEtat = filters.selectedOperationEtats.length === 0 || filters.selectedOperationEtats.includes(op.etat);
-        const matchesTypeOperation = filters.selectedOperationTypes.length === 0 || filters.selectedOperationTypes.includes(op.typeOperation);
+        const matchesTypeCategorie = filters.selectedTypes.includes(op.ssCategorie.type);
+        const matchesEtat = filters.selectedOperationEtats.includes(op.etat);
+        const matchesTypeOperation = filters.selectedOperationTypes.includes(op.typeOperation);
         const matchesCategorie = filters.selectedCategories.length === 0 || filters.selectedCategories.some(cat => cat.id === op.categorie.id);
-        return matchesTypeCategorie && matchesEtat && matchesTypeOperation && (matchesCategorie);
+        return matchesTypeCategorie && matchesEtat && matchesTypeOperation && matchesCategorie;
     });
 }
