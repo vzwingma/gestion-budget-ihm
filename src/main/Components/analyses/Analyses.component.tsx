@@ -142,12 +142,12 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     </ExpandableDetailSection>
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-                                    <ExpandableDetailSection label={`Liste des ${filteredOperations.length} opérations`}>
+                                    <ExpandableDetailSection label={`Synthèse des ${filteredOperations.length} opérations`}>
                                         <AnalyseOperationsListe operations={filteredOperations} />
                                     </ExpandableDetailSection>
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-                                    <ExpandableDetailSection label={`Liste des ${distinctCategories.length} catégories`}>
+                                    <ExpandableDetailSection label={`Synthèse par catégories`}>
                                         <AnalyseCategoriesListe operations={filteredOperations} />
                                     </ExpandableDetailSection>
                                 </Grid>
