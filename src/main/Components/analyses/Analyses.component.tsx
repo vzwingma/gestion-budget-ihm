@@ -137,17 +137,17 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                             :
                             <Grid container sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                                 <Grid size={{ md: 12, xl: 12 }} >
-                                    <ExpandableDetailSection label="Synthèse des types d'opérations">
+                                    <ExpandableDetailSection label="Synthèse par types d'opérations">
                                         <AnalyseSyntheseTypes operations={filteredOperations} selectedTypes={filters.selectedTypes} />
                                     </ExpandableDetailSection>
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-                                    <ExpandableDetailSection label="Liste des opérations">
+                                    <ExpandableDetailSection label={`Liste des ${filteredOperations.length} opérations`}>
                                         <AnalyseOperationsListe operations={filteredOperations} />
                                     </ExpandableDetailSection>
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-                                    <ExpandableDetailSection label="Liste des catégories">
+                                    <ExpandableDetailSection label={`Liste des ${distinctCategories.length} catégories`}>
                                         <AnalyseCategoriesListe operations={filteredOperations} />
                                     </ExpandableDetailSection>
                                 </Grid>
