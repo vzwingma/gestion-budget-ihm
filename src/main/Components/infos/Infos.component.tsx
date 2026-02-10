@@ -14,7 +14,7 @@ import {
 import {getInfosFromMicroServices} from "./Infos.extservices.ts";
 import MicroServicesInfos from "./MicroServicesInfos.component.tsx";
 import MsInfoModel from "../../Models/infos/MsInfo.model.ts";
-import { CenterComponent } from "../../Components/CenterComponent.tsx";
+import { CenterComponent } from "../shared/CenterComponent.tsx";
 
 
 /**

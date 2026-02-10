@@ -3,7 +3,7 @@ import { Box, Grid, Stack, Typography, useMediaQuery, useTheme } from "@mui/mate
 import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
-import { CenterComponent } from '../../CenterComponent.tsx';
+import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import { getOperationLibelle } from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import OperationStatus from '../../../Utils/renderers/OperationStatus.renderer.tsx';
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx';

@@ -11,7 +11,7 @@ import AnalyseTendancesFiltre from "./AnalyseTendancesFiltre.component.tsx";
 import {CheckCircle, RadioButtonUnchecked} from "@mui/icons-material";
 import GraphAnalyseTendances from "./graphs/GraphAnalyseTendances.component.tsx";
 import {AnalyseTendancesProps, DataCalculationTendancesResultsProps} from "../../Components.props.ts";
-import { CenterComponent } from "../../CenterComponent.tsx";
+import { CenterComponent } from "../../shared/CenterComponent.tsx";
 import {AnalyseSoldesTimelineItemModel} from "../../../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
 import {AnalyseCategorieTimelineItem} from "../../../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
 

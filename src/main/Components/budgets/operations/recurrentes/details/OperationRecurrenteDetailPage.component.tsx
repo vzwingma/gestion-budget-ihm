@@ -2,7 +2,7 @@ import React, { JSX, useContext, useEffect, useState } from 'react'
 import { Box, Button, Container, Grid, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 
-import { CenterComponent } from '../../../../CenterComponent.tsx';
+import { CenterComponent } from '../../../../shared/CenterComponent.tsx';
 import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import CompteBancaireModel from '../../../../../Models/budgets/CompteBancaire.model.ts';
 import { operationIsIntercompteFromLibelle } from '../../../../../Utils/OperationData.utils.ts';

@@ -2,7 +2,7 @@ import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx
 import {CircularProgress, Stack, Tooltip, Typography, useMediaQuery, useTheme, Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React, {JSX, useContext} from "react";
 import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
-import { CenterComponent } from '../../CenterComponent.tsx';
+import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import { getTypeCategorieRenderer } from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 

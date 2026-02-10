@@ -82,7 +82,7 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                 <TextField
                     label="Mois" type="month"
                     variant='standard' size={'small'}
-                    value={`${anneeSelectionnee}-${String(moisSelectionne + 1).padStart(2, '0')}`}
+                    value={dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : `${anneeSelectionnee}-${String(moisSelectionne + 1).padStart(2, '0')}`}
                     onChange={(e) => {
                         const [year, month] = e.target.value.split('-');
                         setAnneeSelectionnee(Number.parseInt(year));

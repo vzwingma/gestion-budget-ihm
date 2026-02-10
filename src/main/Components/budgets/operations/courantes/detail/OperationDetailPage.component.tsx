@@ -8,7 +8,7 @@ import {
     isInCreateMode,
     isInEditMode
 } from './OperationDetailPage.controller.ts';
-import { CenterComponent } from '../../../../CenterComponent.tsx';
+import { CenterComponent } from '../../../../shared/CenterComponent.tsx';
 import {
     createEmptyEditForm,
     createEmptyErrors,

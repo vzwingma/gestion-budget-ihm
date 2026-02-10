@@ -11,9 +11,10 @@ import { getHeightList } from "../../Utils/ListData.utils.tsx";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
-import SsCategorieOperationModel from "../../Models/budgets/SSCategorieOperation.model.ts";
 import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/analyses/AnalysesFilters.model.ts";
 import AnalyseOperationsListe from "./details/AnalyseOperationsListe.component.tsx";
+import { ExpandableDetailSection } from "../shared/ExpandableDetailSection.component.tsx";
+import AnalyseCategoriesListe from "./details/AnalyseCategoriesListe.component.tsx";
 
 
 
@@ -42,7 +43,6 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
     const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
-    const [distinctSubcategories, setDistinctSubcategories] = useState<SsCategorieOperationModel[]>([]);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
      * Filtre les opérations en fonction des filtres sélectionnés
@@ -50,7 +50,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     const filteredOperations = useMemo(() => {
         return applyFiltersToOperations(budgetConsolide?.listeOperations || [], filters);
     }, [budgetConsolide, filters]);
- 
+
     /** Chargement du compte **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
@@ -64,11 +64,10 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
      * @param {Object} param0 - Les résultats du calcul des données.
         */
 
-    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[], distinctSubcategories: SsCategorieOperationModel[]) {
+    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[]) {
         console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations");
         setBudgetConsolide(budgetConsolide);
         setDistinctCategories(distinctCategories);
-        setDistinctSubcategories(distinctSubcategories);
         setIsLoading(false);
     }
 
@@ -104,14 +103,32 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                         {selectedCompte == null ?
                             <></>
                             :
-                            <AnalysesFiltres isLoading={isLoading}
-                                currentPeriode={periodeAnalyses}
-                                setPeriodeAnalyses={setPeriodeAnalyses}
-                                filters={filters}
-                                setFilters={setFilters}
-                                distinctCategories={distinctCategories}
-                                distinctSubcategories={distinctSubcategories}
-                            />
+
+                            <Box sx={{ border: '1px solid var(--color-dark-container)', borderRadius: 5, marginRight: 1, marginTop: 1 }}>
+                                {/* En-tête avec label et icône agrandir */}
+                                <Box sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    borderBottom: '1px solid var(--color-dark-container)',
+                                    backgroundColor: 'var(--color-dark-bg)'
+                                }}><Typography
+                                    variant="h6"
+                                    sx={{ padding: 1, color: 'var(--color-heading)' }}>Filtres</Typography>
+                                </Box>
+
+                                {/* Contenu enfant */}
+                                <Box sx={{ padding: 1, }}>
+                                    <AnalysesFiltres isLoading={isLoading}
+                                        currentPeriode={periodeAnalyses}
+                                        setPeriodeAnalyses={setPeriodeAnalyses}
+                                        filters={filters}
+                                        setFilters={setFilters}
+                                        distinctCategories={distinctCategories}
+                                    />
+                                </Box>
+                            </Box>
+
                         }
                     </Grid>
                     <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
@@ -120,22 +137,26 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                             :
                             <Grid container sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                                 <Grid size={{ md: 12, xl: 12 }} >
-                                    <Typography variant="h6" sx={{ paddingLeft: 2, paddingTop: 1, paddingBottom: 1, color: "var(--color-heading-text)" }}>Synthèse des types d'opérations</Typography>
-                                    <AnalyseSyntheseTypes operations={filteredOperations} selectedTypes={filters.selectedTypes} />
+                                    <ExpandableDetailSection label="Synthèse des types d'opérations">
+                                        <AnalyseSyntheseTypes operations={filteredOperations} selectedTypes={filters.selectedTypes} />
+                                    </ExpandableDetailSection>
                                 </Grid>
                                 <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-                                    <AnalyseOperationsListe operations={filteredOperations} />
+                                    <ExpandableDetailSection label="Liste des opérations">
+                                        <AnalyseOperationsListe operations={filteredOperations} />
+                                    </ExpandableDetailSection>
                                 </Grid>
-                                <Grid size={{ md:  6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-                                    
+                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
+                                    <ExpandableDetailSection label="Liste des catégories">
+                                        <AnalyseCategoriesListe operations={filteredOperations} />
+                                    </ExpandableDetailSection>
                                 </Grid>
-                                <Grid size={{ md:  6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-                                    
-                                </Grid>
-                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-                                    
-                                </Grid>
+                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
 
+                                </Grid>
+                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
+
+                                </Grid>
                             </Grid>
                         }
                     </Grid>

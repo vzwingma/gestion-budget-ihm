@@ -16,7 +16,7 @@ import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextP
 import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "../../../../Utils/AppBusinessEnums.constants.ts";
 import { getEventTargetId } from '../../../../Utils/OperationData.utils.ts';
 import { userHasPermission } from '../../../../Utils/UserData.utils.ts';
-import { CenterComponent } from '../../../CenterComponent.tsx';
+import { CenterComponent } from '../../../shared/CenterComponent.tsx';
 import { BudgetActionsButtonGroupProps } from '../../../Components.props.tsx';
 import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices.ts';
 

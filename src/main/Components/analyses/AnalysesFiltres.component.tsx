@@ -5,7 +5,6 @@ import { AnalysesFiltrePeriodeComponent } from "./filtres/AnalysesFiltrePeriode.
 import { AnalysesFiltreTypesCategories } from "./filtres/AnalysesFiltreTypesCategories.component.tsx";
 import { AnalysesFiltresOperation } from "./filtres/AnalysesFiltresOperation.component.tsx";
 import { AnalysesFiltreCategories } from "./filtres/AnalysesFiltreCategories.component.tsx";
-import { AnalysesFiltresSsCategories } from "./filtres/AnalysesFiltresSsCategories.component.tsx";
 
 
 
@@ -16,7 +15,7 @@ import { AnalysesFiltresSsCategories } from "./filtres/AnalysesFiltresSsCategori
  * @param {Object} props.currentPeriode - La période courante.
  * @returns {JSX.Element} Le composant du titre de l'analyse temporelle.
  */
-const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPeriode, setPeriodeAnalyses, filters, setFilters, distinctCategories, distinctSubcategories }: AnalysesFiltresProps): JSX.Element => {
+const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPeriode, setPeriodeAnalyses, filters, setFilters, distinctCategories }: AnalysesFiltresProps): JSX.Element => {
 
     const handlePeriodeChange = useCallback((periode) => {
         setPeriodeAnalyses(periode);
@@ -35,21 +34,16 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
         setFilters(prev => ({ ...prev, selectedCategories: categories }));
     }, [setFilters]);
 
-    const handleSubcategoriesChange = useCallback((subcategories) => {
-        setFilters(prev => ({ ...prev, selectedSubcategories: subcategories }));
-    }, [setFilters]);
 
     return (
         <>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={isLoading}
-            >
+                open={isLoading}>
                 <CircularProgress color="inherit" />
             </Backdrop>
             {/* Création d'une pile pour l'affichage du titre */}
             <Stack direction={"column"} spacing={2} justifyContent="center" >
-                <Divider flexItem />
                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Périodes</Typography>
                     <AnalysesFiltrePeriodeComponent periode={currentPeriode} onChange={handlePeriodeChange} />
                 <Divider flexItem />
@@ -68,11 +62,6 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
                         distinctCategories={distinctCategories}
                         selectedCategories={filters.selectedCategories}
                         onChange={handleCategoriesChange}
-                    />
-                    <AnalysesFiltresSsCategories
-                        distinctSubcategories={distinctSubcategories}
-                        selectedSubcategories={filters.selectedSubcategories}
-                        onChange={handleSubcategoriesChange}
                     />
                 <Divider flexItem sx={{padding: 5}} />
             </Stack>

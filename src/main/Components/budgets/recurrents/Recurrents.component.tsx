@@ -7,7 +7,7 @@ import { getPreferenceUtilisateur, reloadBudget } from "./../budget/Budget.extse
 
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsRecurrentesGroupedByPeriodicity } from "./Recurrents.controller.ts";
-import { CenterComponent } from "../../CenterComponent.tsx";
+import { CenterComponent } from "../../shared/CenterComponent.tsx";
 import { RecurrentsPageProps } from "../../Components.props.ts";
 import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
