@@ -86,7 +86,7 @@ export function validateFormMontant(editOperation: OperationEditionModel, operat
     }
 
     const formValeur: string = editOperation.valeur;
-    let { valeurCalculee, error } = calculateValeur(formValeur.replace(",", "."));
+    let { valeurCalculee, error } = calculateValeur(formValeur.replaceAll(",", "."));
     if (error) {
         errors.valeur = error;
         return;
