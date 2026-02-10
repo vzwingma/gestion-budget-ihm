@@ -153,7 +153,7 @@ export function getCategorieIcon(categorieOperation: CategorieOperationModel): J
         const icon = fn(categorieOperation);
         if (icon) return icon;
     }
-
+    console.warn("La catégorie " + categorieOperation.libelle + " n'a pas d'icône définie");
     return <QuestionMarkRounded/>;
 }
 /**
@@ -201,6 +201,7 @@ function getCategorieIconDivers(categorieOperation: CategorieOperationModel): JS
  */
 function getCategorieIconRetraitsVirements(categorieOperation: CategorieOperationModel): JSX.Element | null {
     const iconMap = {
+        'c98df97e-afc0-445e-8585-28d5ab2be429': <CurrencyExchangeRounded/>, // RETRAITS ET VIREMENTS
         '504beea7-ed52-438a-aced-15e9603b82ab': <CreditScoreRounded/>, // PRELEVEMENTS
         '430a455b-e5ba-4b13-b031-bcf0e63f102e': <AtmRounded/>, // Retrait
         'ed3f6100-5dbd-4b68-860e-0c97ae1bbc63': <CurrencyExchangeRounded/>, // Virements Intercomptes ->

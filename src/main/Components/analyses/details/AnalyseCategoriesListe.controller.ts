@@ -84,7 +84,7 @@ export const getCategoriesDataForAnalyses = (operations: OperationModel[]) : Ana
             Object.values(category.resumesSsCategories).forEach((subCategory) => {
                 const subCategoryTotal = Math.abs(subCategory.total || 0);
                 subCategory.pourcentage =
-                    categoryTotal > 0 ? (subCategoryTotal / categoryTotal) * 100 : 0;
+                    categoryTotal > 0 ? (subCategoryTotal / totalGeneral) * 100 : 0;
             });
         });
 
