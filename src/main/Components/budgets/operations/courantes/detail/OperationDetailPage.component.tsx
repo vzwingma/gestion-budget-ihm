@@ -178,10 +178,12 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         operation.ssCategorie.type = ssCat.type;
 
         /** Si type Rentrée d'argent, alors type opération = Crédit **/
-        if(BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.id) {
+        if(BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.categorieParente.id) {
             editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-            editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
-            console.log("Changement type opération en fonction de la catégorie sélectionnée :", editOperation.typeOperation);
+            editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;            
+            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
+            console.log("Changement type opération en fonction de la catégorie sélectionnée :", operation.typeOperation);
         }
     }
 
