@@ -5,8 +5,8 @@ import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import { getOperationLibelle } from '../../../Utils/renderers/OperationItem.renderer.tsx';
-import OperationStatus from '../../../Utils/renderers/OperationStatus.renderer.tsx';
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx';
+import { getLabelMonthFRFromDate } from '../../../Utils/Date.utils.ts';
 /**
  * Props for the shared operation item component
  */
@@ -58,8 +58,8 @@ const AnalyseOperationItem: React.FC<SharedOperationItemProps> = ({
                     </Stack>
                 </Grid>
                 <Grid size={{ md: 1.5, xl: 1.5 }}>
-                    <Typography component="div" align={"center"}>
-                        <OperationStatus statutsOperation={operation.statuts} />
+                    <Typography variant={"caption"} component="div" align={"center"} sx={{ spacing: 2, paddingLeft: isMobile ? 1 : 2, color: "#808080" }}>    
+                        {(operation.autresInfos.dateOperation) ? getLabelMonthFRFromDate(operation.autresInfos.dateOperation) : ''}
                     </Typography>
                 </Grid>
                 <Grid size={{ md: 2.5, xl: 2.5 }}>
