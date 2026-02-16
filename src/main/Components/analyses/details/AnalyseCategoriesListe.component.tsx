@@ -8,7 +8,6 @@ import {
     TableRow,
     IconButton,
     Typography,
-    Paper,
     useMediaQuery,
     useTheme
 } from '@mui/material';
@@ -75,9 +74,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
     // Grouper les opérations par catégories et sous-catégories et calculer les totaux
     const analyseCategoriesData = useMemo(() => getAnalyseCategoriesData(operations), [operations]);
 
-    return (
-        <Paper sx={{ marginTop: 2 }}>
-            <Box sx={{ height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))), display: 'flex', flexDirection: 'column' }}>
+    return (<Box sx={{ height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))), display: 'flex', flexDirection: 'column' }}>
                 {/* En-tête fixe */}
                 <Box sx={{ overflowX: 'auto' }}>
                     <Table size="small" sx={{ tableLayout: 'fixed' }}>
@@ -214,7 +211,6 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                     </Table>
                 </Box>
             </Box>
-        </Paper>
     );
 };
 

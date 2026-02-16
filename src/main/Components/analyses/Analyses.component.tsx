@@ -80,14 +80,12 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
         <>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={isLoading}
-            >
+                open={isLoading}>
                 <CircularProgress color="inherit" />
             </Backdrop>
 
             <Box className="page-container tendances-page-container">
-                <Grid container
-                    sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                <Grid container sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex', height: 'calc(100vh - 80px)'}}>
                     <Grid size={{ md: 0.6, xl: 0.4 }}
                         sx={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}><MenuIcon
                             onClick={onOpenMenu} className={"editableField"} fontSize={"large"} /></Grid>
@@ -99,13 +97,13 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 currentPeriode={periodeAnalyses} />
                         }
                     </Grid>
-                    <Grid size={{ md: 3, xl: 3 }} direction={"column"} sx={{ overflowX: "hidden", overflowY: "auto", height: getHeightList(isMobile) }}>
+                    <Grid size={{ md: 3, xl: 3 }} direction={"column"}  sx={{ overflow: "hidden", height: "calc(100vh - 140px)" }}>
                         {selectedCompte == null ?
                             <></>
                             :
 
-                            <Box sx={{ border: '1px solid var(--color-dark-container)', borderRadius: 5, marginRight: 1, marginTop: 1 }}>
-                                {/* En-tête avec label et icône agrandir */}
+                            <Box sx={{ marginRight: 1, marginTop: 1, height: "fit-content", border: '2px solid var(--color-dark-container)', borderRadius: 2  }}>
+                                {/* En-tête avec label */}
                                 <Box sx={{
                                     display: 'flex',
                                     justifyContent: 'space-between',
@@ -117,7 +115,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     sx={{ padding: 1, color: 'var(--color-heading)' }}>Filtres</Typography>
                                 </Box>
 
-                                {/* Contenu enfant */}
+                                {/* Contenu Filtres */}
                                 <Box sx={{ padding: 1, }}>
                                     <AnalysesFiltres isLoading={isLoading}
                                         currentPeriode={periodeAnalyses}
@@ -131,33 +129,39 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
                         }
                     </Grid>
-                    <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
+                    <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: "calc(100vh - 140px)"  }}>
                         {selectedCompte == null || budgetConsolide == null ?
                             <></>
                             :
-                            <Grid container sx={{ overflow: "hidden", justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                            <>
                                 <Grid size={{ md: 12, xl: 12 }} >
                                     <ExpandableDetailSection label="Synthèse par types d'opérations">
                                         <AnalyseSyntheseTypes operations={filteredOperations} selectedTypes={filters.selectedTypes} />
                                     </ExpandableDetailSection>
                                 </Grid>
-                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-                                    <ExpandableDetailSection label={`Synthèse des ${filteredOperations.length} opérations`}>
-                                        <AnalyseOperationsListe operations={filteredOperations} />
-                                    </ExpandableDetailSection>
+                                <Grid container sx={{ overflow: "hidden", height: "calc(100vh - 288px)" }} >
+                                    <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
+                                        <ExpandableDetailSection label={`Synthèse des ${filteredOperations.length} opérations`}>
+                                            <AnalyseOperationsListe operations={filteredOperations} />
+                                        </ExpandableDetailSection>
+                                    </Grid>
+                                    <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
+                                        <ExpandableDetailSection label={`Synthèse par catégories`}>
+                                            <AnalyseCategoriesListe operations={filteredOperations} />
+                                        </ExpandableDetailSection>
+                                    </Grid>
+                                    <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
+                                        <ExpandableDetailSection label={`Autre synthèse`}>
+                                            {/* Add content here */}<></>
+                                        </ExpandableDetailSection>
+                                    </Grid>
+                                    <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
+                                        <ExpandableDetailSection label={`Synthèse par catégories`}>
+                                            <AnalyseCategoriesListe operations={filteredOperations} />
+                                        </ExpandableDetailSection>
+                                    </Grid>
                                 </Grid>
-                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-                                    <ExpandableDetailSection label={`Synthèse par catégories`}>
-                                        <AnalyseCategoriesListe operations={filteredOperations} />
-                                    </ExpandableDetailSection>
-                                </Grid>
-                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }}>
-
-                                </Grid>
-                                <Grid size={{ md: 6, xl: 6 }} direction={"row"} sx={{ overflow: "hidden" }} >
-
-                                </Grid>
-                            </Grid>
+                            </>
                         }
                     </Grid>
                 </Grid>

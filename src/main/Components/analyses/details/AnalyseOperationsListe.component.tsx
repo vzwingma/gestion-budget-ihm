@@ -1,7 +1,7 @@
 import React, { JSX } from 'react'
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { AnalyseOperationsListeProps } from '../../Components.props.ts';
-import { Stack, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { getHeightDetailList } from '../../../Utils/ListData.utils.tsx';
 import AnalyseOperationItem from './AnalyseOperationItem.component.tsx';
 
@@ -36,18 +36,16 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
         let renderList = [] as JSX.Element[];
 
         operationsGrouped.toSorted((ope1: OperationModel, ope2: OperationModel) => ((ope1.autresInfos.dateOperation ? new Date(ope1.autresInfos.dateOperation).getTime() : 0) - (ope2.autresInfos.dateOperation ? new Date(ope2.autresInfos.dateOperation).getTime() : 0)) || (ope1.libelle.localeCompare(ope2.libelle)))
-        .forEach((operation) =>
-            renderList.push(renderItem(operation))
-        );
+            .forEach((operation) =>
+                renderList.push(renderItem(operation))
+            );
 
         return renderList;
     }
 
-
-    return (
-        <Stack sx={{ overflowY: "auto", overflowX: "hidden", height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))) }} spacing={0}>
-            {iterateOperations(operations, renderItem)}
-        </Stack>
+    return (<Box sx={{ height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))), display: 'flex', flexDirection: 'column', flex: 1, overflowY: 'auto', overflowX: 'auto' }}>
+                {iterateOperations(operations, renderItem)}
+            </Box>
     );
 };
 
