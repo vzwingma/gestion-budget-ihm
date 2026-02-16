@@ -1,4 +1,4 @@
-import React, { JSX, useState, useMemo } from 'react';
+import React, { JSX, useState } from 'react';
 import {
     Box,
     Table,
@@ -12,12 +12,12 @@ import {
     useTheme
 } from '@mui/material';
 import { ExpandMore, ExpandLess, KeyboardDoubleArrowUp, KeyboardDoubleArrowDown } from '@mui/icons-material';
-import { AnalyseCategoriesListeProps } from '../../Components.props.ts';
 import { getHeightDetailList } from '../../../Utils/ListData.utils.tsx';
-import { COLUMN_WIDTHS, getCategoriesDataForAnalyses as getAnalyseCategoriesData, getCategoryTypeColor, getSortedSubCategories } from './AnalyseCategoriesListe.controller.ts';
+import { COLUMN_WIDTHS, getCategoryTypeColor, getSortedSubCategories } from './AnalyseCategoriesListe.controller.ts';
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx';
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 import { CenterComponent } from '../../shared/CenterComponent.tsx';
+import { AnalyseCategoriesListeProps } from '../../Components.props.ts';
 
 /**
  * Composant pour afficher une barchart simple
@@ -55,7 +55,7 @@ const PercentageBar: React.FC<{ percentage: number, color?: string, subcategory?
  * @returns {JSX.Element} treelist
  */
 const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
-    operations
+    analyseCategories : analyseCategoriesData
 }): JSX.Element => {
     const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
@@ -71,8 +71,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
         setExpandedCategories(newExpanded);
     };
 
-    // Grouper les opérations par catégories et sous-catégories et calculer les totaux
-    const analyseCategoriesData = useMemo(() => getAnalyseCategoriesData(operations), [operations]);
+
 
     return (<Box sx={{ height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))), display: 'flex', flexDirection: 'column' }}>
                 {/* En-tête fixe */}

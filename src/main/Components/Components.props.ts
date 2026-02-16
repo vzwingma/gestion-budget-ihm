@@ -1,4 +1,3 @@
-import AnalyseCategoriesModel from "../Models/analyses/categories/AnalyseCategories.model.ts";
 import {AnalyseSoldesTimelineItemModel} from "../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
 import {AnalyseCategorieTimelineItem} from "../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
 import AnalyseSoldesCategorie from "../Models/analyses/tendances/AnalyseSoldesCategorie.model.ts";
@@ -17,47 +16,8 @@ import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurren
 import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.ts";
 import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
 import { AnalysesFiltersModel } from "../Models/analyses/AnalysesFilters.model.ts";
+import AnalyseCategoriesModel from "../Models/analyses/details/AnalyseCategories.model.ts";
 
-/**
- * Analyse des catégories
- */
-export interface AnalyseCategorieListItemProps {
-    resumeCategorie: AnalyseCategoriesModel,
-    typeAnalyse: string,
-    selectCategorie: () => void
-}
-
-
-
-
-export interface AnalyseCategoriesProps {
-    selectedCompte: CompteBancaireModel | null,
-    selectedDate: Date,
-    onOpenMenu: () => void
-}
-
-export interface DataCalculationResultsProps {
-    currentBudget: BudgetMensuelModel,
-    totauxGroupedByEtat: { [key: string]: number },
-    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }
-}
-
-// Définition des types de propriétés pour le composant AnalyseTitre
-export interface AnalyseTitreProps {
-    currentCompte: CompteBancaireModel,
-    currentDate: Date,
-    totalOperations: number
-}
-/**
- * Graphiques des analyses
- */
-
-export interface GraphAnalysesProps {
-    typeAnalyse: string,
-    analysesGroupedByCategories: { [idCategorie: string]: AnalyseCategoriesModel },
-    resumeSelectedCategorie: AnalyseCategoriesModel | null,
-    resumeSelectedSsCategorie: AnalyseCategoriesModel | null
-}
 
 /**
  * Propriétés du composant de graphique pour l'analyse temporelle.
@@ -102,7 +62,9 @@ export interface DataCalculationTendancesResultsProps {
 }
 
 
-
+/**
+ * Propriétés du composant d'analysse
+ */
 export  interface AnalyseProps {
    selectedCompte: CompteBancaireModel | null
    onOpenMenu: () => void
@@ -177,9 +139,8 @@ export interface AnalyseOperationsListeProps {
 }
 
 export interface AnalyseCategoriesListeProps {
-    operations: OperationModel[]
+    analyseCategories: AnalyseCategoriesModel[]
 }
-
 
 
 export interface AnneeRangeProps {

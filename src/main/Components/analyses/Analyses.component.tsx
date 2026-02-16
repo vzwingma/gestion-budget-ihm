@@ -1,13 +1,12 @@
 import React, { JSX, useEffect, useMemo, useState } from "react";
 
-import { Backdrop, Box, CircularProgress, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AnalyseProps } from "../Components.props.ts";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
 import { AnalyseSyntheseTypes } from "./details/AnalyseSyntheseTypes.component.tsx";
-import { getHeightList } from "../../Utils/ListData.utils.tsx";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
@@ -15,6 +14,7 @@ import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/an
 import AnalyseOperationsListe from "./details/AnalyseOperationsListe.component.tsx";
 import { ExpandableDetailSection } from "../shared/ExpandableDetailSection.component.tsx";
 import AnalyseCategoriesListe from "./details/AnalyseCategoriesListe.component.tsx";
+import { getCategoriesDataForAnalyses } from "./details/AnalyseCategoriesListe.controller.ts";
 
 
 
@@ -43,13 +43,17 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
     const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    
     /**
      * Filtre les opérations en fonction des filtres sélectionnés
      */
     const filteredOperations = useMemo(() => {
         return applyFiltersToOperations(budgetConsolide?.listeOperations || [], filters);
     }, [budgetConsolide, filters]);
+
+
+    // Grouper les opérations par catégories et sous-catégories et calculer les totaux
+    const analyseCategoriesData = useMemo(() => getCategoriesDataForAnalyses(filteredOperations), [filteredOperations]);
 
     /** Chargement du compte **/
     useEffect(() => {
@@ -147,7 +151,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
                                         <ExpandableDetailSection label={`Synthèse par catégories`}>
-                                            <AnalyseCategoriesListe operations={filteredOperations} />
+                                            <AnalyseCategoriesListe analyseCategories={analyseCategoriesData} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
@@ -157,7 +161,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
                                         <ExpandableDetailSection label={`Synthèse par catégories`}>
-                                            <AnalyseCategoriesListe operations={filteredOperations} />
+                                            <AnalyseCategoriesListe analyseCategories={analyseCategoriesData} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                 </Grid>
