@@ -43,7 +43,7 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
         return renderList;
     }
 
-    return (<Box sx={{ height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))), display: 'flex', flexDirection: 'column', flex: 1, overflowY: 'auto', overflowX: 'auto' }}>
+    return (<Box sx={{ height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))), display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'auto' }}>
                 {iterateOperations(operations, renderItem)}
             </Box>
     );
