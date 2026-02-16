@@ -1,6 +1,6 @@
 
-import AnalyseCategoriesModel from '../../../Models/analyses/details/AnalyseCategories.model.ts';
-import AnalyseSsCategoriesModel from '../../../Models/analyses/details/AnalyseSsCategories.model.ts';
+import AnalyseCategoriesModel from '../../../Models/analyses/syntheses/AnalyseCategories.model.ts';
+import AnalyseSsCategoriesModel from '../../../Models/analyses/syntheses/AnalyseSsCategories.model.ts';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 import { getCategorieColor } from '../../../Utils/renderers/CategorieItem.renderer.tsx';

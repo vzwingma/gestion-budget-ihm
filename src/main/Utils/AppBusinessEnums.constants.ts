@@ -3,9 +3,8 @@
  */
 export enum BUSINESS_ONGLETS {
     BUDGET,
-    ANALYSES,
-    ANALYSE_TENDANCES,
-    RECURRENTS
+    RECURRENTS,
+    ANALYSES
 }
 
 

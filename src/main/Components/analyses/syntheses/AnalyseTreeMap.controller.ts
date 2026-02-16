@@ -1,4 +1,4 @@
-import AnalyseCategoriesModel from "../../../Models/analyses/details/AnalyseCategories.model.ts";
+import AnalyseCategoriesModel from "../../../Models/analyses/syntheses/AnalyseCategories.model.ts";
 import { generateDerivedColors } from "../../../Utils/renderers/DerivedColors.renderer.utils.ts";
 
 interface TreemapNode {

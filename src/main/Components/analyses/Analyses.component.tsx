@@ -16,6 +16,7 @@ import { ExpandableDetailSection } from "../shared/ExpandableDetailSection.compo
 import AnalyseCategoriesListe from "./syntheses/AnalyseCategoriesListe.component.tsx";
 import { getCategoriesDataForAnalyses } from "./syntheses/AnalyseCategoriesListe.controller.ts";
 import AnalyseTreeMap from "./syntheses/AnalyseTreeMap.component.tsx";
+import AnalyseEvolution from "./syntheses/AnalyseEvolution.component.tsx";
 
 
 
@@ -157,7 +158,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
                                         <ExpandableDetailSection label={`Autre synthèse`}>
-                                            {/* Add content here */}<></>
+                                            <AnalyseEvolution operations={filteredOperations} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>

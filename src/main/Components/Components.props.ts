@@ -1,7 +1,3 @@
-import {AnalyseSoldesTimelineItemModel} from "../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
-import {AnalyseCategorieTimelineItem} from "../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
-import AnalyseSoldesCategorie from "../Models/analyses/tendances/AnalyseSoldesCategorie.model.ts";
-import SoldesMensuelModel from "../Models/analyses/tendances/SoldeMensuel.model.ts";
 import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model.ts";
 import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
@@ -16,50 +12,9 @@ import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurren
 import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.ts";
 import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
 import { AnalysesFiltersModel } from "../Models/analyses/AnalysesFilters.model.ts";
-import AnalyseCategoriesModel from "../Models/analyses/details/AnalyseCategories.model.ts";
+import AnalyseCategoriesModel from "../Models/analyses/syntheses/AnalyseCategories.model.ts";
 
 
-/**
- * Propriétés du composant de graphique pour l'analyse temporelle.
- */
-export interface GraphAnalyseTendancesProps {
-    anneeAnalyses: number,
-    filterSoldesActive: boolean,
-    analyseSoldesCategoriesData: AnalyseSoldesCategorie[],
-    timelinesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesPrevisionnellesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
-    timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
-}
-
-/**
- * Analyse tendances
- */
-export interface TooltipAnalyseTendancesProps {
-    active?: boolean,
-    payload?: any[],
-    label?: string
-}
-
-/**
- * Interface pour les propriétés des résultats de calcul des données.
- *
- * @interface DataCalculationTendancesResultsProps
- * @property {SoldeMensuelModel[]} soldesBudgetsData - Les données des soldes budgétaires.
- * @property {SoldeCategorieModel[]} soldesCategoriesData - Les données des catégories.
- * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesGroupedByCategoriesData - Les timelines groupées par catégories.
- * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesPrevisionnellesGroupedByCategoriesData - Les timelines prévisionnelles groupées par catégories.
- * @property {SoldeMensuelModel[]} timelinesSoldesData - Les timelines des soldes.
- * @property {SoldeMensuelModel[]} timelinesPrevisionnellesSoldesData - Les timelines prévisionnelles des soldes.
- */
-export interface DataCalculationTendancesResultsProps {
-    soldesMensuelsData: SoldesMensuelModel[],
-    soldesCategoriesData: AnalyseSoldesCategorie[],
-    timelinesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesPrevisionnellesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
-    timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
-}
 
 
 /**
@@ -117,23 +72,6 @@ export interface AnalyseSyntheseTypesProps {
     selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
 }
 
-export  interface AnalyseTendancesProps {
-   selectedCompte: CompteBancaireModel | null
-   onOpenMenu: () => void
-}
-
-
-export interface AnalyseTendancesFiltreProps {
-    listeCategories: AnalyseSoldesCategorie[];
-    onFilterChange: (event: React.SyntheticEvent) => void;
-}
-
-export interface AnalyseTendancesTitreProps {
-    currentCompte: CompteBancaireModel;
-    currentAnnee: number;
-    onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
-}
-
 export interface AnalyseOperationsListeProps {
     operations: OperationModel[]
 }
@@ -143,10 +81,6 @@ export interface AnalyseCategoriesListeProps {
 }
 
 
-export interface AnneeRangeProps {
-    selectedAnnee: number;
-    onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
-}
 
 /**
  * Budget
