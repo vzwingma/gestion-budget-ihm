@@ -5,7 +5,7 @@ import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.
 import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { prepareGraphDataFromOperations, extractUniqueCategories } from './AnalyseEvolution.controller.ts';
 import { getCategorieColor } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
-
+import AnalyseEvolutionTooltip from './AnalyseEvolutionTooltip.component.tsx';
 
 
 /**
@@ -101,7 +101,7 @@ const AnalyseEvolution: React.FC<AnalyseOperationsListeProps> = ({ operations })
                         height={80}
                     />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip content={<AnalyseEvolutionTooltip />} />
                     {renderLines()}
                 </ComposedChart>
             </ResponsiveContainer>
