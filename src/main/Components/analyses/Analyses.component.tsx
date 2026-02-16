@@ -31,8 +31,8 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     /** Etats pour la page Budget **/
     const [periodeAnalyses, setPeriodeAnalyses] = useState<AnalysesPeriodeModel>({
-        vuePeriode: true,
-        periodeDebut: new Date(new Date().getFullYear(), new Date().getMonth() - 3, 1),
+        vuePeriode: false,
+        periodeDebut: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
         periodeFin: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
     });
 
