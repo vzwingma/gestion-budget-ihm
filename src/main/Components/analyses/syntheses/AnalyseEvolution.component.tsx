@@ -41,7 +41,8 @@ const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMe
      * Rend les lignes du graphique pour chaque catégorie
      */
     const renderLines = (): JSX.Element[] => {
-        return categories.map(categorie => (
+        return categories
+        .map(categorie => (
             <Line
                 key={categorie.libelle}
                 type="monotone"
@@ -55,22 +56,7 @@ const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMe
     };
 
     // Afficher un message si pas de données
-    if (!operations || operations.length === 0) {
-        return (
-            <Box sx={{
-                height: getHeightDetailList(isMobile),
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'text.secondary'
-            }}>
-                Aucune opération à afficher
-            </Box>
-        );
-    }
-
-    // Afficher un message si pas de données après regroupement
-    if (graphData.length === 0) {
+    if (!operations || operations.length === 0 || graphData.length === 0) {
         return <NoDataComponent />;
     }
 

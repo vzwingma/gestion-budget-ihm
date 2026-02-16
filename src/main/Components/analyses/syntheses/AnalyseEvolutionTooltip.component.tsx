@@ -1,5 +1,6 @@
 import React, { JSX } from "react";
 import { Box, Typography, Divider } from "@mui/material";
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
 
 interface TooltipEvolutionProps {
     active?: boolean;
@@ -68,7 +69,7 @@ const AnalyseEvolutionTooltip = ({ active, payload, label }: TooltipEvolutionPro
                         </Typography>
                     </Box>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: 'white', marginLeft: 2 }}>
-                        {entry.value.toFixed(2)} €
+                        <OperationValue valueOperation={entry.value.toFixed(2)} showSign={true} id={`${entry.dataKey}.VALUE`} />
                     </Typography>
                 </Box>
                 ))}
