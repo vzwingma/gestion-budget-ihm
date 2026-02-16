@@ -1,4 +1,4 @@
-import React, { JSX, useMemo, useState } from "react";
+import React, { JSX, useState } from "react";
 import { AnalyseCategoriesListeProps } from "../../Components.props.ts";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
