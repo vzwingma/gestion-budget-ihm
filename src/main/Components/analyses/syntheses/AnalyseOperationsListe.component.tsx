@@ -1,8 +1,7 @@
 import React, { JSX } from 'react'
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { AnalyseOperationsListeProps } from '../../Components.props.ts';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
-import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
+import { Box } from '@mui/material';
 import AnalyseOperationItem from './AnalyseOperationItem.component.tsx';
 import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
 
@@ -21,8 +20,6 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
     const renderItem = (operation: OperationModel): JSX.Element => {
         return <AnalyseOperationItem key={operation.id} operation={operation} />
     };
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-
 
     /**
      * Iterate through grouped operations and render them
@@ -49,7 +46,7 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
     }
 
 
-    return (<Box sx={{ height: getHeightDetailList(isMobile), display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'auto' }}>
+    return (<Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden' }}>
                 {iterateOperations(operations, renderItem)}
             </Box>
     );

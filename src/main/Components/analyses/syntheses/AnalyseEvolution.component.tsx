@@ -1,7 +1,6 @@
 import React, { JSX, useMemo } from 'react'
 import { AnalyseEvolutionProps } from '../../Components.props.ts';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
-import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
+import { Box } from '@mui/material';
 import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { prepareGraphDataFromOperations, extractUniqueCategories } from './AnalyseEvolution.controller.ts';
 import { getCategorieColor } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
@@ -18,7 +17,6 @@ import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
  */
 const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMensuelle }): JSX.Element => {
 
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
     /**
      * Prépare les données du graphique à partir des opérations
@@ -62,7 +60,7 @@ const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMe
 
     return (
         <Box sx={{ 
-            height: getHeightDetailList(isMobile),
+            height: '100%',
             display: 'flex',
             flexDirection: 'column',
             overflowY: 'auto',

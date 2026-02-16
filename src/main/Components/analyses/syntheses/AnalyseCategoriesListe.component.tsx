@@ -12,7 +12,6 @@ import {
     useTheme
 } from '@mui/material';
 import { ExpandMore, ExpandLess, KeyboardDoubleArrowUp, KeyboardDoubleArrowDown } from '@mui/icons-material';
-import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
 import { COLUMN_WIDTHS, getCategoryTypeColor, getSortedSubCategories } from './AnalyseCategoriesListe.controller.ts';
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx';
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
@@ -57,7 +56,7 @@ const PercentageBar: React.FC<{ percentage: number, color?: string, subcategory?
  * @returns {JSX.Element} treelist
  */
 const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
-    analyseCategories : analyseCategoriesData
+    analyseCategories: analyseCategoriesData
 }): JSX.Element => {
     const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
@@ -78,146 +77,143 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
         return <NoDataComponent />;
     }
 
-    return (<Box sx={{ height: getHeightDetailList(isMobile), display: 'flex', flexDirection: 'column' }}>
-                {/* En-tête fixe */}
-                <Box sx={{ overflowX: 'auto' }}>
-                    <Table size="small" sx={{ tableLayout: 'fixed' }}>
-                        <TableHead sx={{ position: 'sticky', top: 0, zIndex: 10 }}>
-                            <TableRow sx={{ backgroundColor: 'var(--color-dark-container)' }}>
-                                <TableCell sx={{ width: COLUMN_WIDTHS.expand }}>
-                                    <IconButton
-                                        size="small"
-                                        onClick={() => {
-                                            if (expandedCategories.size === analyseCategoriesData.length) {
-                                                setExpandedCategories(new Set());
-                                            } else {
-                                                setExpandedCategories(new Set(analyseCategoriesData.map(cat => cat.categorie.id || '')));
-                                            }
-                                        }}
-                                        title={expandedCategories.size === analyseCategoriesData.length ? 'Collapse all' : 'Expand all'}
-                                    >
-                                        {expandedCategories.size === analyseCategoriesData.length ? <KeyboardDoubleArrowUp /> : <KeyboardDoubleArrowDown />}
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell sx={{ width: COLUMN_WIDTHS.type }}>Type</TableCell>
-                                <TableCell sx={{ width: COLUMN_WIDTHS.libelle }}>Libellé</TableCell>
-                                <TableCell align="right" sx={{ width: COLUMN_WIDTHS.somme }}>Somme</TableCell>
-                                <TableCell align="right" sx={{ width: COLUMN_WIDTHS.operations }}>Opérations</TableCell>
-                                <TableCell sx={{ width: COLUMN_WIDTHS.pourcentage }}>Pourcentage</TableCell>
-                            </TableRow>
-                        </TableHead>
-                    </Table>
-                </Box>
-                {/* Corps scrollable */}
-                <Box sx={{ flex: 1, overflowY: 'auto', overflowX: 'auto' }}>
-                    <Table size="small" sx={{ tableLayout: 'fixed' }}>
-                        <TableBody>
-                            {analyseCategoriesData.map((analyseCat) => {
-                                const isExpanded = expandedCategories.has(analyseCat.categorie.id || '');
-                                const analyseSubCategories = getSortedSubCategories(analyseCat);
-                                const derivedColors = generateDerivedColors(analyseCat.couleurCategorie, analyseSubCategories.length);
-                                const total = analyseCat.total || 0;
-                                const nbTransactions = analyseCat.nbTransactions || 0;
-                                const percentage = analyseCat.pourcentage || 0;
+    return (<Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden'}}>
+        <Table size="small" sx={{ tableLayout: 'fixed' }}>
+            <TableHead sx={{ position: 'sticky', top: 0, zIndex: 10 }}>
+                <TableRow sx={{ backgroundColor: 'var(--color-dark-container)' }}>
+                    <TableCell sx={{ width: COLUMN_WIDTHS.expand }}>
+                        <IconButton
+                            size="small"
+                            onClick={() => {
+                                if (expandedCategories.size === analyseCategoriesData.length) {
+                                    setExpandedCategories(new Set());
+                                } else {
+                                    setExpandedCategories(new Set(analyseCategoriesData.map(cat => cat.categorie.id || '')));
+                                }
+                            }}
+                            title={expandedCategories.size === analyseCategoriesData.length ? 'Collapse all' : 'Expand all'}
+                        >
+                            {expandedCategories.size === analyseCategoriesData.length ? <KeyboardDoubleArrowUp /> : <KeyboardDoubleArrowDown />}
+                        </IconButton>
+                    </TableCell>
+                    <TableCell sx={{ width: COLUMN_WIDTHS.type }}>Type</TableCell>
+                    <TableCell sx={{ width: COLUMN_WIDTHS.libelle }}>Libellé</TableCell>
+                    <TableCell align="right" sx={{ width: COLUMN_WIDTHS.somme }}>Somme</TableCell>
+                    <TableCell align="right" sx={{ width: COLUMN_WIDTHS.operations }}>Opérations</TableCell>
+                    <TableCell sx={{ width: COLUMN_WIDTHS.pourcentage }}>Pourcentage</TableCell>
+                </TableRow>
+            </TableHead>
+        </Table>
+        {/* Corps scrollable */}
+        <Box sx={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
+            <Table size="small" sx={{ tableLayout: 'fixed' }}>
+                <TableBody>
+                    {analyseCategoriesData.map((analyseCat) => {
+                        const isExpanded = expandedCategories.has(analyseCat.categorie.id || '');
+                        const analyseSubCategories = getSortedSubCategories(analyseCat);
+                        const derivedColors = generateDerivedColors(analyseCat.couleurCategorie, analyseSubCategories.length);
+                        const total = analyseCat.total || 0;
+                        const nbTransactions = analyseCat.nbTransactions || 0;
+                        const percentage = analyseCat.pourcentage || 0;
 
-                                return (
-                                    <React.Fragment key={analyseCat.categorie.id}>
-                                        {/* Ligne catégorie */}
-                                        <TableRow
+                        return (
+                            <React.Fragment key={analyseCat.categorie.id}>
+                                {/* Ligne catégorie */}
+                                <TableRow
+                                    sx={{
+                                        backgroundColor: 'var(--color-dark-container)',
+                                        '&:hover': {
+                                            backgroundColor: 'var(--color-analyses-hover)'
+                                        }
+                                    }}>
+                                    <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.expand }}>
+                                        {analyseSubCategories.length > 0 && (
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => handleToggleCategory(analyseCat.categorie.id || '')}>
+                                                {isExpanded ? <ExpandLess /> : <ExpandMore />}
+                                            </IconButton>
+                                        )}
+                                    </TableCell>
+                                    <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.type }}>
+                                        <Box width={isMobile ? 24 : 38} height={isMobile ? 24 : 38}
                                             sx={{
-                                                backgroundColor: 'var(--color-dark-container)',
-                                                '&:hover': {
-                                                    backgroundColor: 'var(--color-analyses-hover)'
-                                                }
+                                                borderRadius: '50%',
+                                                backgroundColor: getCategorieColor(analyseCat.categorie.id),
+                                                border: (isMobile ? '1px' : '2px') + ' solid #252525',
+                                                padding: isMobile ? '3px' : '6px',
+                                                color: '#252525'
                                             }}>
-                                            <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.expand }}>
-                                                {analyseSubCategories.length > 0 && (
-                                                    <IconButton
-                                                        size="small"
-                                                        onClick={() => handleToggleCategory(analyseCat.categorie.id || '')}>
-                                                        {isExpanded ? <ExpandLess /> : <ExpandMore />}
-                                                    </IconButton>
-                                                )}
-                                            </TableCell>
-                                            <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.type }}>
-                                                <Box width={isMobile ? 24 : 38} height={isMobile ? 24 : 38}
-                                                    sx={{
-                                                        borderRadius: '50%',
-                                                        backgroundColor: getCategorieColor(analyseCat.categorie.id),
-                                                        border: (isMobile ? '1px' : '2px') + ' solid #252525',
-                                                        padding: isMobile ? '3px' : '6px',
-                                                        color: '#252525'
-                                                    }}>
-                                                    <CenterComponent>{getCategorieIcon(analyseCat.categorie)}</CenterComponent>
-                                                </Box>
-                                            </TableCell>
-                                            <TableCell sx={{ paddingY: 1, fontWeight: 600, width: COLUMN_WIDTHS.libelle }}>
-                                                {analyseCat.categorie.libelle}
-                                            </TableCell>
-                                            <TableCell align="right" sx={{ paddingY: 1, fontWeight: 600, width: COLUMN_WIDTHS.somme }}>
-                                                <OperationValue id={"value_" + analyseCat.categorie.id} valueOperation={total} showSign={true} />
-                                            </TableCell>
-                                            <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.operations }}>
-                                                {nbTransactions}
-                                            </TableCell>
-                                            <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.pourcentage }}>
-                                                <PercentageBar percentage={percentage} color={getCategorieColor(analyseCat.categorie.id)}/>
-                                            </TableCell>
-                                        </TableRow>
+                                            <CenterComponent>{getCategorieIcon(analyseCat.categorie)}</CenterComponent>
+                                        </Box>
+                                    </TableCell>
+                                    <TableCell sx={{ paddingY: 1, fontWeight: 600, width: COLUMN_WIDTHS.libelle }}>
+                                        {analyseCat.categorie.libelle}
+                                    </TableCell>
+                                    <TableCell align="right" sx={{ paddingY: 1, fontWeight: 600, width: COLUMN_WIDTHS.somme }}>
+                                        <OperationValue id={"value_" + analyseCat.categorie.id} valueOperation={total} showSign={true} />
+                                    </TableCell>
+                                    <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.operations }}>
+                                        {nbTransactions}
+                                    </TableCell>
+                                    <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.pourcentage }}>
+                                        <PercentageBar percentage={percentage} color={getCategorieColor(analyseCat.categorie.id)} />
+                                    </TableCell>
+                                </TableRow>
 
 
-                                        {/* Lignes sous-catégories */}
-                                        {
-                                        isExpanded &&
-                                            analyseSubCategories.map((analyseSubCat, index) => {
-                                                const subTotal = analyseSubCat.total || 0;
-                                                const subNbTransactions = analyseSubCat.nbTransactions || 0;
-                                                const subPercentage = analyseSubCat.pourcentage || 0;
+                                {/* Lignes sous-catégories */}
+                                {
+                                    isExpanded &&
+                                    analyseSubCategories.map((analyseSubCat, index) => {
+                                        const subTotal = analyseSubCat.total || 0;
+                                        const subNbTransactions = analyseSubCat.nbTransactions || 0;
+                                        const subPercentage = analyseSubCat.pourcentage || 0;
 
-                                                return (
-                                                    <TableRow
-                                                        key={`${analyseCat.categorie.id}-${analyseSubCat.ssCategorie.id}`}
-                                                        sx={{
-                                                            backgroundColor: 'var(--color-dark-bg)',
-                                                            '&:hover': { backgroundColor: 'var(--color-analyses-hover)' }
-                                                        }}>
-                                                        <TableCell sx={{ paddingLeft: 4, paddingY: 1, width: COLUMN_WIDTHS.expand }} />
-                                                        <TableCell sx={{ paddingLeft: 3, paddingY: 1, width: COLUMN_WIDTHS.type, justifyContent: 'center', alignItems: 'center'}} >
-                                                            <CenterComponent>
-                                                                <Box sx={{
-                                                                    width: 16,
-                                                                    height: 16,
-                                                                    borderRadius: '50%',
-                                                                    backgroundColor: getCategoryTypeColor(analyseSubCat.ssCategorie.type)
-                                                                }}  title={analyseSubCat.ssCategorie.type} />
-                                                                </CenterComponent>
-                                                        </TableCell>
-                                                        <TableCell sx={{ paddingY: 1, paddingLeft: 4, width: COLUMN_WIDTHS.libelle }}>
-                                                            <Typography variant="caption">
-                                                                {analyseSubCat.ssCategorie.libelle}
-                                                            </Typography>
-                                                        </TableCell>
-                                                        <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.somme }}>
-                                                            <Typography variant="caption">
-                                                                <OperationValue id={"value_" + analyseSubCat.ssCategorie.id} valueOperation={subTotal} showSign={true} />
-                                                            </Typography>
-                                                        </TableCell>
-                                                        <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.operations }}>
-                                                            <Typography variant="caption">{subNbTransactions}</Typography>
-                                                        </TableCell>
-                                                        <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.pourcentage }}>
-                                                            <PercentageBar percentage={subPercentage} color={derivedColors[index]} subcategory={true} />
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                    </React.Fragment>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </Box>
-            </Box>
+                                        return (
+                                            <TableRow
+                                                key={`${analyseCat.categorie.id}-${analyseSubCat.ssCategorie.id}`}
+                                                sx={{
+                                                    backgroundColor: 'var(--color-dark-bg)',
+                                                    '&:hover': { backgroundColor: 'var(--color-analyses-hover)' }
+                                                }}>
+                                                <TableCell sx={{ paddingLeft: 4, paddingY: 1, width: COLUMN_WIDTHS.expand }} />
+                                                <TableCell sx={{ paddingLeft: 3, paddingY: 1, width: COLUMN_WIDTHS.type, justifyContent: 'center', alignItems: 'center' }} >
+                                                    <CenterComponent>
+                                                        <Box sx={{
+                                                            width: 16,
+                                                            height: 16,
+                                                            borderRadius: '50%',
+                                                            backgroundColor: getCategoryTypeColor(analyseSubCat.ssCategorie.type)
+                                                        }} title={analyseSubCat.ssCategorie.type} />
+                                                    </CenterComponent>
+                                                </TableCell>
+                                                <TableCell sx={{ paddingY: 1, paddingLeft: 4, width: COLUMN_WIDTHS.libelle }}>
+                                                    <Typography variant="caption">
+                                                        {analyseSubCat.ssCategorie.libelle}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.somme }}>
+                                                    <Typography variant="caption">
+                                                        <OperationValue id={"value_" + analyseSubCat.ssCategorie.id} valueOperation={subTotal} showSign={true} />
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.operations }}>
+                                                    <Typography variant="caption">{subNbTransactions}</Typography>
+                                                </TableCell>
+                                                <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.pourcentage }}>
+                                                    <PercentageBar percentage={subPercentage} color={derivedColors[index]} subcategory={true} />
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                            </React.Fragment>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        </Box>
+    </Box>
     );
 };
 

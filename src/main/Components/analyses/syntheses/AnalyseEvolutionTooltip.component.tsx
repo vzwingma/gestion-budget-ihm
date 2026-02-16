@@ -38,11 +38,7 @@ const AnalyseEvolutionTooltip = ({ active, payload, label }: TooltipEvolutionPro
             }}>
             <Typography
                 variant="subtitle1"
-                sx={{
-                    fontWeight: 600,
-                    marginBottom: 1,
-                    color: 'white'
-                }}>
+                sx={{ fontWeight: 600, marginBottom: 1, color: 'white' }}>
                 {label}
             </Typography>
 
