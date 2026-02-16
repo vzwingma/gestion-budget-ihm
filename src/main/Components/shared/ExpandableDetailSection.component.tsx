@@ -25,7 +25,7 @@ export const ExpandableDetailSection: React.FC<ExpandableSectionProps> = ({ labe
     return (
         <>
             {/* Section normale */}
-            <Box sx={{ border: '2px solid var(--color-dark-container)', borderRadius: 2, height: "100%", margin: 0.5 }}>
+            <Box sx={{ border: '2px solid var(--color-dark-container)', borderRadius: 2, height: "99%", margin: 0.5 }}>
                 {/* En-tête avec label et icône agrandir */}
                 <Box sx={{
                     display: 'flex',

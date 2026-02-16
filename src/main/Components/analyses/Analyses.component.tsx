@@ -129,7 +129,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
                         }
                     </Grid>
-                    <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: "calc(100vh - 140px)"  }}>
+                    <Grid size={{ md: 9, xl: 9 }} sx={{ overflow: "hidden", height: "calc(100vh - 11%)" }}>
                         {selectedCompte == null || budgetConsolide == null ?
                             <></>
                             :
@@ -139,7 +139,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                         <AnalyseSyntheseTypes operations={filteredOperations} selectedTypes={filters.selectedTypes} />
                                     </ExpandableDetailSection>
                                 </Grid>
-                                <Grid container sx={{ overflow: "hidden", height: "calc(100vh - 288px)" }} >
+                                <Grid container sx={{ overflow: "hidden", height: "calc(100vh - 23%)"}} >
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
                                         <ExpandableDetailSection label={`Synthèse des ${filteredOperations.length} opérations`}>
                                             <AnalyseOperationsListe operations={filteredOperations} />
