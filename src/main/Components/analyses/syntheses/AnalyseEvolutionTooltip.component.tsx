@@ -52,11 +52,22 @@ const AnalyseEvolutionTooltip = ({ active, payload, label }: TooltipEvolutionPro
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                 {filteredPayload.map((entry: any) => (
-                    <Box key={entry.dataKey} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                         {entry.name} :
-                    </Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 500, color: 'white' }}>
+                    <Box key={entry.dataKey} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box 
+                            sx={{ 
+                                width: 12, 
+                                height: 12, 
+                                borderRadius: '2px', 
+                                backgroundColor: entry.color,
+                                flexShrink: 0
+                            }} 
+                        />
+                        <Typography variant="body2" sx={{ color: entry.color }}>
+                            {entry.name} :
+                        </Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: 'white', marginLeft: 2 }}>
                         {entry.value.toFixed(2)} €
                     </Typography>
                 </Box>
