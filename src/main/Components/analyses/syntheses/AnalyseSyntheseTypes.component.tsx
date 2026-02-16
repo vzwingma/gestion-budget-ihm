@@ -60,8 +60,7 @@ export const AnalyseSyntheseTypes: React.FC<AnalyseSyntheseTypesProps> = ({
     }, [operations, selectedTypes]);
 
     return (
-        <Stack direction="column" sx={{ width: "100%" }}>
-            <Box sx={{ width: "100%", height: 80 }}>
+            <Box sx={{ width: "100%", height: 80, overflow: "hidden" }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         layout="vertical"
@@ -96,8 +95,8 @@ export const AnalyseSyntheseTypes: React.FC<AnalyseSyntheseTypesProps> = ({
                             </Typography>
                         </Box>
                     ))}
-                </Stack>            </Box>
+                </Stack>            
+            </Box>
 
-        </Stack>
     );
 };

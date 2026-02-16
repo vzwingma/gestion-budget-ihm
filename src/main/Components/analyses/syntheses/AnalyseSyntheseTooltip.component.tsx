@@ -27,31 +27,20 @@ const AnalyseSyntheseTooltip = ({ active, payload, label }: TooltipSyntheseProps
                 padding: 2,
                 borderRadius: 1,
                 border: '1px solid rgba(255, 255, 255, 0.2)',
-                minWidth: '200px',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-            }}
-        >
-            <Typography 
-                variant="subtitle1" 
-                sx={{ 
-                    fontWeight: 600, 
-                    marginBottom: 1,
-                    color: getTypeCategorieRenderer(name as TYPES_CATEGORIES_OPERATION_ENUM).color
-                }}
-            >
-                {getTypeCategorieRenderer(name as TYPES_CATEGORIES_OPERATION_ENUM).text}
-            </Typography>
-            <Divider sx={{ marginBottom: 1, borderColor: 'rgba(255, 255, 255, 0.2)' }} />
-            
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2">Pourcentage :</Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 500, color: 'white' }}>
-                        {value?.toFixed(2)}%
-                    </Typography>
-                </Box>
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1 }}>
+                <Typography 
+                    variant="subtitle1" 
+                    sx={{ 
+                        fontWeight: 600,
+                        color: getTypeCategorieRenderer(name as TYPES_CATEGORIES_OPERATION_ENUM).color
+                    }}
+                >
+                    {getTypeCategorieRenderer(name as TYPES_CATEGORIES_OPERATION_ENUM).text}
+                </Typography>
+                <Typography variant="body2" sx={{ fontWeight: 500, color: 'white' }}>
+                    : {value?.toFixed(2)}%
+                </Typography>
             </Box>
-        </Box>
     );
 };
 
