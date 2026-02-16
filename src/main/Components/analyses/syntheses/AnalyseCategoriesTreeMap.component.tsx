@@ -3,8 +3,8 @@ import { AnalyseCategoriesListeProps } from "../../Components.props.ts";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
-import AnalyseTreeMap from "./AnalyseTreeMapTooltip.component.tsx";
 import AnalyseTreeMapContent from "./AnalyseTreeMapContent.component.tsx";
+import AnalyseTreeMapTooltip from "./AnalyseTreeMapTooltip.component.tsx";
 
 
 interface TreemapNode {
@@ -154,7 +154,7 @@ const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analy
                         )}
                         isAnimationActive={true}
                         animationDuration={300}>
-                        <Tooltip content={<AnalyseTreeMap />} />
+                        <Tooltip content={<AnalyseTreeMapTooltip />} />
                     </Treemap>
                 </ResponsiveContainer>
             </div>
