@@ -73,7 +73,12 @@ export interface AnalyseSyntheseTypesProps {
 }
 
 export interface AnalyseOperationsListeProps {
-    operations: OperationModel[]
+    operations: OperationModel[];
+}
+
+export interface AnalyseEvolutionProps {
+    operations: OperationModel[];
+    isVueMensuelle: boolean;
 }
 
 export interface AnalyseCategoriesListeProps {

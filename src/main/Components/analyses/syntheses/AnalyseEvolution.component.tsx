@@ -1,5 +1,5 @@
 import React, { JSX, useMemo } from 'react'
-import { AnalyseOperationsListeProps } from '../../Components.props.ts';
+import { AnalyseEvolutionProps, AnalyseOperationsListeProps } from '../../Components.props.ts';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
 import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -16,7 +16,7 @@ import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
  * @constructor constructeur
  *
  */
-const AnalyseEvolution: React.FC<AnalyseOperationsListeProps> = ({ operations }): JSX.Element => {
+const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMensuelle }): JSX.Element => {
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 

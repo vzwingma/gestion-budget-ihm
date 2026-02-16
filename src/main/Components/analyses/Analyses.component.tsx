@@ -153,7 +153,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
                                         <ExpandableDetailSection label={`Evolution`}>
-                                            <AnalyseEvolution operations={filteredOperations} />
+                                            <AnalyseEvolution operations={filteredOperations} isVueMensuelle={!periodeAnalyses.vuePeriode} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
