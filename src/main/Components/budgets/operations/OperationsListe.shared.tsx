@@ -2,7 +2,7 @@ import React, {JSX} from 'react'
 import {Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
 import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
-import { getHeightList } from '../../../Utils/ListData.utils.tsx';
+import { getHeightList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
 
 /**
  * Props for the shared operations list component

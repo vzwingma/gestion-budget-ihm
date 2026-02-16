@@ -1,8 +1,9 @@
 
-import AnalyseCategoriesModel from '../../../Models/analyses/details/AnalyseCategories.model.ts';
-import AnalyseSsCategoriesModel from '../../../Models/analyses/details/AnalyseSsCategories.model.ts';
+import AnalyseCategoriesModel from '../../../Models/analyses/syntheses/AnalyseCategories.model.ts';
+import AnalyseSsCategoriesModel from '../../../Models/analyses/syntheses/AnalyseSsCategories.model.ts';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
+import { getCategorieColor } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 
 
 /**
@@ -50,6 +51,7 @@ export const getCategoriesDataForAnalyses = (operations: OperationModel[]) : Ana
             if (!categoriesMap[categoryId]) {
                 const category = new AnalyseCategoriesModel();
                 category.categorie = operation.categorie;
+                category.couleurCategorie = getCategorieColor(category.categorie.id);
                 categoriesMap[categoryId] = category;
             }
 
@@ -63,6 +65,7 @@ export const getCategoriesDataForAnalyses = (operations: OperationModel[]) : Ana
             if (!categoryModel.resumesSsCategories[subCategoryId]) {
                 const subCategory = new AnalyseSsCategoriesModel();
                 subCategory.ssCategorie = { ...operation.ssCategorie, id: subCategoryId };
+                subCategory.couleurSsCategorie = getCategorieColor(subCategory.ssCategorie.id);
                 categoryModel.resumesSsCategories[subCategoryId] = subCategory;
             }
 

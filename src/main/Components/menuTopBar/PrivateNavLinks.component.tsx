@@ -17,10 +17,6 @@ const PrivateNavLinks: React.FC = (): JSX.Element => {
                             to="/recurrents">🔁 Abonnements & charges</NavLink>
                     <NavLink id="tendances-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
                             to="/analyses">📈 Analyses</NavLink>
-                    <NavLink id="analyses-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/analysesCategories">🍰 Par catégories</NavLink>
-                    <NavLink id="tendances-link" className={({isActive}) => isActive ? 'nav-link_selected' : 'nav-link'}
-                            to="/analysesTendances">📈 Tendances</NavLink>
                 </Stack>
     } else {
         return <Stack direction="row" spacing={1}><NavLink id="accueil-link" className='nav-link_selected' to="/infos">🏠 Accueil</NavLink></Stack>

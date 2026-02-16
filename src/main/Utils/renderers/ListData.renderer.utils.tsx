@@ -10,5 +10,5 @@ export function getHeightList(isMobile : boolean) {
  * @returns {number} calculated height in pixels
  */
 export function getHeightDetailList(isMobile : boolean) {
-    return isMobile ? window.innerHeight - 675 : window.innerHeight - 720;
+    return isMobile ? window.innerHeight - 675 : window.innerHeight * 0.35;
 }

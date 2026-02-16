@@ -1,9 +1,10 @@
 import React, { JSX } from 'react'
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { AnalyseOperationsListeProps } from '../../Components.props.ts';
-import { Stack, useMediaQuery, useTheme } from '@mui/material';
-import { getHeightDetailList } from '../../../Utils/ListData.utils.tsx';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
 import AnalyseOperationItem from './AnalyseOperationItem.component.tsx';
+import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
 
 
 /**
@@ -20,7 +21,7 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
     const renderItem = (operation: OperationModel): JSX.Element => {
         return <AnalyseOperationItem key={operation.id} operation={operation} />
     };
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
 
     /**
@@ -36,18 +37,21 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
         let renderList = [] as JSX.Element[];
 
         operationsGrouped.toSorted((ope1: OperationModel, ope2: OperationModel) => ((ope1.autresInfos.dateOperation ? new Date(ope1.autresInfos.dateOperation).getTime() : 0) - (ope2.autresInfos.dateOperation ? new Date(ope2.autresInfos.dateOperation).getTime() : 0)) || (ope1.libelle.localeCompare(ope2.libelle)))
-        .forEach((operation) =>
-            renderList.push(renderItem(operation))
-        );
+            .forEach((operation) =>
+                renderList.push(renderItem(operation))
+            );
 
         return renderList;
     }
 
+    if (!operations || operations.length === 0) {
+        return <NoDataComponent />;
+    }
 
-    return (
-        <Stack sx={{ overflowY: "auto", overflowX: "hidden", height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))) }} spacing={0}>
-            {iterateOperations(operations, renderItem)}
-        </Stack>
+
+    return (<Box sx={{ height: getHeightDetailList(isMobile), display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'auto' }}>
+                {iterateOperations(operations, renderItem)}
+            </Box>
     );
 };
 

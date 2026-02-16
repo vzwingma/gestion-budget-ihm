@@ -1,8 +1,3 @@
-import AnalyseCategoriesModel from "../Models/analyses/categories/AnalyseCategories.model.ts";
-import {AnalyseSoldesTimelineItemModel} from "../Models/analyses/tendances/AnalyseSoldesTimelineItem.model.ts";
-import {AnalyseCategorieTimelineItem} from "../Models/analyses/tendances/AnalyseCategorieTimelineItem.model.ts";
-import AnalyseSoldesCategorie from "../Models/analyses/tendances/AnalyseSoldesCategorie.model.ts";
-import SoldesMensuelModel from "../Models/analyses/tendances/SoldeMensuel.model.ts";
 import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model.ts";
 import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
@@ -17,92 +12,14 @@ import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurren
 import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.ts";
 import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
 import { AnalysesFiltersModel } from "../Models/analyses/AnalysesFilters.model.ts";
+import AnalyseCategoriesModel from "../Models/analyses/syntheses/AnalyseCategories.model.ts";
+
+
+
 
 /**
- * Analyse des catégories
+ * Propriétés du composant d'analysse
  */
-export interface AnalyseCategorieListItemProps {
-    resumeCategorie: AnalyseCategoriesModel,
-    typeAnalyse: string,
-    selectCategorie: () => void
-}
-
-
-
-
-export interface AnalyseCategoriesProps {
-    selectedCompte: CompteBancaireModel | null,
-    selectedDate: Date,
-    onOpenMenu: () => void
-}
-
-export interface DataCalculationResultsProps {
-    currentBudget: BudgetMensuelModel,
-    totauxGroupedByEtat: { [key: string]: number },
-    analysesGroupedByCategories: { [key: string]: AnalyseCategoriesModel }
-}
-
-// Définition des types de propriétés pour le composant AnalyseTitre
-export interface AnalyseTitreProps {
-    currentCompte: CompteBancaireModel,
-    currentDate: Date,
-    totalOperations: number
-}
-/**
- * Graphiques des analyses
- */
-
-export interface GraphAnalysesProps {
-    typeAnalyse: string,
-    analysesGroupedByCategories: { [idCategorie: string]: AnalyseCategoriesModel },
-    resumeSelectedCategorie: AnalyseCategoriesModel | null,
-    resumeSelectedSsCategorie: AnalyseCategoriesModel | null
-}
-
-/**
- * Propriétés du composant de graphique pour l'analyse temporelle.
- */
-export interface GraphAnalyseTendancesProps {
-    anneeAnalyses: number,
-    filterSoldesActive: boolean,
-    analyseSoldesCategoriesData: AnalyseSoldesCategorie[],
-    timelinesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesPrevisionnellesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
-    timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
-}
-
-/**
- * Analyse tendances
- */
-export interface TooltipAnalyseTendancesProps {
-    active?: boolean,
-    payload?: any[],
-    label?: string
-}
-
-/**
- * Interface pour les propriétés des résultats de calcul des données.
- *
- * @interface DataCalculationTendancesResultsProps
- * @property {SoldeMensuelModel[]} soldesBudgetsData - Les données des soldes budgétaires.
- * @property {SoldeCategorieModel[]} soldesCategoriesData - Les données des catégories.
- * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesGroupedByCategoriesData - Les timelines groupées par catégories.
- * @property {{ [key: string]: CategorieTimelineItem }[]} timelinesPrevisionnellesGroupedByCategoriesData - Les timelines prévisionnelles groupées par catégories.
- * @property {SoldeMensuelModel[]} timelinesSoldesData - Les timelines des soldes.
- * @property {SoldeMensuelModel[]} timelinesPrevisionnellesSoldesData - Les timelines prévisionnelles des soldes.
- */
-export interface DataCalculationTendancesResultsProps {
-    soldesMensuelsData: SoldesMensuelModel[],
-    soldesCategoriesData: AnalyseSoldesCategorie[],
-    timelinesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesPrevisionnellesByCategoriesData: { [idCategorie: string]: AnalyseCategorieTimelineItem }[],
-    timelinesSoldesData: AnalyseSoldesTimelineItemModel[],
-    timelinesPrevisionnellesSoldesData: AnalyseSoldesTimelineItemModel[]
-}
-
-
-
 export  interface AnalyseProps {
    selectedCompte: CompteBancaireModel | null
    onOpenMenu: () => void
@@ -155,37 +72,20 @@ export interface AnalyseSyntheseTypesProps {
     selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
 }
 
-export  interface AnalyseTendancesProps {
-   selectedCompte: CompteBancaireModel | null
-   onOpenMenu: () => void
-}
-
-
-export interface AnalyseTendancesFiltreProps {
-    listeCategories: AnalyseSoldesCategorie[];
-    onFilterChange: (event: React.SyntheticEvent) => void;
-}
-
-export interface AnalyseTendancesTitreProps {
-    currentCompte: CompteBancaireModel;
-    currentAnnee: number;
-    onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
-}
-
 export interface AnalyseOperationsListeProps {
-    operations: OperationModel[]
+    operations: OperationModel[];
+}
+
+export interface AnalyseEvolutionProps {
+    operations: OperationModel[];
+    isVueMensuelle: boolean;
 }
 
 export interface AnalyseCategoriesListeProps {
-    operations: OperationModel[]
+    analyseCategories: AnalyseCategoriesModel[]
 }
 
 
-
-export interface AnneeRangeProps {
-    selectedAnnee: number;
-    onAnneeChange: React.Dispatch<React.SetStateAction<number>>;
-}
 
 /**
  * Budget

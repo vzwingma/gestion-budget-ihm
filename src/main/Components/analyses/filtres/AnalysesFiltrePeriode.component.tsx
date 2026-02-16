@@ -20,8 +20,6 @@ import { AnalysesFiltrePeriodeProps } from '../../Components.props.ts';
 
 export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps> = ({ periode, onChange }) => {
     const [vuePeriode, setVuePeriode] = useState<boolean>(periode.vuePeriode);
-    const [moisSelectionne, setMoisSelectionne] = useState<number>(periode.periodeDebut.getMonth() || new Date().getMonth());
-    const [anneeSelectionnee, setAnneeSelectionnee] = useState<number>(periode.periodeDebut.getFullYear() || new Date().getFullYear());
     const [dateDebut, setDateDebut] = useState<Date | null>(periode.periodeDebut || new Date());
     const [dateFin, setDateFin] = useState<Date | null>(periode.periodeFin || new Date());
 
@@ -63,11 +61,11 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
     useEffect(() => {
         const nouvellePeriode: AnalysesPeriodeModel = {
             vuePeriode: vuePeriode,
-            periodeDebut: vuePeriode ? (dateDebut || new Date()) : new Date(anneeSelectionnee, moisSelectionne, 1),
-            periodeFin: vuePeriode ? (dateFin || new Date()) : new Date(anneeSelectionnee, moisSelectionne, 1)
+            periodeDebut: (dateDebut || new Date()),
+            periodeFin: (dateFin || new Date())
         };
         onChange(nouvellePeriode);
-    }, [vuePeriode, moisSelectionne, anneeSelectionnee, dateDebut, dateFin, onChange]);
+    }, [vuePeriode, dateDebut, dateFin, onChange]);
 
     return (
         <Stack direction="column" spacing={2} paddingLeft={2}>
@@ -82,11 +80,11 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                 <TextField
                     label="Mois" type="month"
                     variant='standard' size={'small'}
-                    value={dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : `${anneeSelectionnee}-${String(moisSelectionne + 1).padStart(2, '0')}`}
+                    value={dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`}
                     onChange={(e) => {
                         const [year, month] = e.target.value.split('-');
-                        setAnneeSelectionnee(Number.parseInt(year));
-                        setMoisSelectionne(Number.parseInt(month) - 1);
+                        setDateDebut(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
+                        setDateFin(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
                     }}
                     slotProps={{
                         inputLabel: { shrink: true },

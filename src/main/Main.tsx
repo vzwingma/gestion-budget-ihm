@@ -72,8 +72,6 @@ export default class Main extends Component {
                                     <Route path="/budgets" element={<MainPage fonction={BUSINESS_ONGLETS.BUDGET} />} />
                                     <Route path="/recurrents" element={<MainPage fonction={BUSINESS_ONGLETS.RECURRENTS} />} />
                                     <Route path="/analyses" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSES} />} />
-                                    <Route path="/analysesCategories" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSE_CATEGORIES} />} />
-                                    <Route path="/analysesTendances" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSE_TENDANCES} />} />
                                     <Route path="/infos" element={<Infos />} />
                                 </Routes>
                             </BudgetContextProvider>

@@ -109,9 +109,9 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                     <DialogContentText>Voulez vous supprimer l'opération ?</DialogContentText>
                 </DialogContent>
 
-                <DialogActions>
-                    <Button id="ANNULER" color="error">Annuler</Button>
-                    <Button id="SUPPRIMEE" color="success">Confirmer</Button>
+                <DialogActions sx={{ justifyContent: "center", gap: 1 }}>
+                    <Button id="ANNULER" color="error" sx={{ flex: 1 }}>Annuler</Button>
+                    <Button id="SUPPRIMEE" color="success" sx={{ flex: 1 }}>Confirmer</Button>
                 </DialogActions>
             </Dialog>
         </ButtonGroup>

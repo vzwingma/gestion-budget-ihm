@@ -7,8 +7,6 @@ import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import CompteItem from "./menuSlideBar/CompteItem.component.tsx";
 import DateRange from "./menuSlideBar/DateRange.component.tsx";
 import BudgetPage from "../budgets/budget/Budget.component.tsx";
-import {AnalyseTendances} from "../analyses/tendances/AnalyseTendances.component.tsx";
-import {AnalyseCategories} from "../analyses/categories/AnalyseCategories.component.tsx";
 import {MainPageProps} from "../Components.props.tsx";
 import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
 import {useAuth} from "react-oidc-context";
@@ -77,16 +75,6 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
             case BUSINESS_ONGLETS.ANALYSES:
                 return <Analyses selectedCompte={selectedCompte}
                     onOpenMenu={handleOpenMenuBar} />
-
-            case BUSINESS_ONGLETS.ANALYSE_CATEGORIES:
-                return <AnalyseCategories selectedCompte={selectedCompte}
-                    selectedDate={selectedDate}
-                    onOpenMenu={handleOpenMenuBar} />
-
-            case BUSINESS_ONGLETS.ANALYSE_TENDANCES:
-                return <AnalyseTendances selectedCompte={selectedCompte}
-                    onOpenMenu={handleOpenMenuBar} />
-
             default:
                 return null;
         }
@@ -99,7 +87,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @param fonction : fonction sélectionnée
      */
     function renderLeftTabDate(fonction: BUSINESS_ONGLETS): JSX.Element | null {
-        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.RECURRENTS || fonction === BUSINESS_ONGLETS.ANALYSE_CATEGORIES) {
+        if (fonction === BUSINESS_ONGLETS.BUDGET || fonction === BUSINESS_ONGLETS.RECURRENTS) {
             return <DateRange selectedDate={selectedDate} onDateChange={handleDateChange} />
         }
         else {
