@@ -67,9 +67,11 @@ export const ExpandableDetailSection: React.FC<ExpandableSectionProps> = ({ labe
                         right: 0,
                         bottom: 0,
                         backgroundColor: 'var(--color-background)',
-                        overflow: 'auto',
+                        overflow: 'hidden',
                         padding: 3,
                         border: '2px solid var(--color-dark-container)',
+                        display: 'flex',
+                        flexDirection: 'column',
                     }}
                 >
                     {/* En-tête de la modal avec bouton fermer */}
@@ -80,7 +82,8 @@ export const ExpandableDetailSection: React.FC<ExpandableSectionProps> = ({ labe
                             alignItems: 'center',
                             marginBottom: 3,
                             borderBottom: '2px solid var(--color-border)',
-                            paddingBottom: 2
+                            paddingBottom: 2,
+                            flexShrink: 0
                         }}>
                         <Typography
                             id="expanded-section-title"
@@ -97,7 +100,16 @@ export const ExpandableDetailSection: React.FC<ExpandableSectionProps> = ({ labe
                     </Box>
 
                     {/* Contenu enfant en plein écran */}
-                    <Box>
+                    <Box sx={{
+                        flex: 1,
+                        overflow: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        '& > *': {
+                            flex: 1,
+                            minHeight: 0
+                        }
+                    }}>
                         {children}
                     </Box>
                 </Box>

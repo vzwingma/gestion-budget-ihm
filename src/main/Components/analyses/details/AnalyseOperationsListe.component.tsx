@@ -35,7 +35,7 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
     function iterateOperations(operationsGrouped: OperationModel[], renderItem: (operation: OperationModel) => JSX.Element): JSX.Element[] {
         let renderList = [] as JSX.Element[];
 
-        operationsGrouped.toSorted((ope1: OperationModel, ope2: OperationModel) => ope1.libelle.localeCompare(ope2.libelle))
+        operationsGrouped.toSorted((ope1: OperationModel, ope2: OperationModel) => ((ope1.autresInfos.dateOperation ? new Date(ope1.autresInfos.dateOperation).getTime() : 0) - (ope2.autresInfos.dateOperation ? new Date(ope2.autresInfos.dateOperation).getTime() : 0)) || (ope1.libelle.localeCompare(ope2.libelle)))
         .forEach((operation) =>
             renderList.push(renderItem(operation))
         );

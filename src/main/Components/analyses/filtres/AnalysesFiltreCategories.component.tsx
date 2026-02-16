@@ -57,8 +57,7 @@ export const AnalysesFiltreCategories: React.FC<AnalysesFiltresCategoriesProps> 
                             key={key}
                             sx={{ fontSize: isMobile ? 'small' : 'medium' }}
                             component="li"
-                            {...optionProps}
-                        >
+                            {...optionProps}>
                             {option.libelle}
                         </Box>
                     );

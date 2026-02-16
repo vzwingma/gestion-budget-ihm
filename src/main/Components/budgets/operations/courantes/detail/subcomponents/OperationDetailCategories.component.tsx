@@ -57,7 +57,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
             <FormControl fullWidth required error={errorsCategories != null}>
                 <Autocomplete
                     id={OPERATION_EDITION_FORM.CATEGORIE + OPERATION_EDITION_FORM.INPUT}
-                    renderInput={(params: any) => <TextField {...params} variant={"standard"} size={"small"}/>}
+                    renderInput={(params: any) => <TextField {...params} variant={"standard"} size={"small"} placeholder={operation.ssCategorie == null ? "Sélectionnez des catégories" : ""}/>}
                     renderOption={(props, option, state, ownerState) => {
                         const {key, ...optionProps} = props;
                         return (<Box key={key}
