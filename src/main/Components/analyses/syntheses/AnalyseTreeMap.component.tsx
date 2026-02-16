@@ -6,6 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import AnalyseTreeMapContent from "./AnalyseTreeMapContent.component.tsx";
 import AnalyseTreeMapTooltip from "./AnalyseTreeMapTooltip.component.tsx";
 import { useAnalyseTreeMapData } from "./AnalyseTreeMap.controller.ts";
+import { NoDataComponent } from "../../shared/NoDataComponent.tsx";
 
 
 
@@ -38,23 +39,11 @@ const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategori
     };
 
     if (!treemapData || treemapData.length === 0) {
-        return (
-            <div style={{ 
-                width: '100%', 
-                height: '400px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                color: '#999',
-                fontSize: '14px'
-            }}>
-                Aucune donnée à afficher
-            </div>
-        );
+        return (<NoDataComponent />);
     }
 
     return (
-        <Box sx={{ width: '100%', height: '430px' }}>
+        <Box sx={{ width: '100%', height: '100%' }}>
             {/* Breadcrumb navigation */}
             <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 1, px: 1 }}>
                 <Link

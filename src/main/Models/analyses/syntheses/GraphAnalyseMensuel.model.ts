@@ -12,5 +12,6 @@ export interface GraphAnalyseTimelineItemModel {
     id: string,
     name: string,
     categories: { [idCategorie: string]: number },
+    absCategories: { [idCategorie: string]: number },
     [key: string]: any; // Add this index signature
 }

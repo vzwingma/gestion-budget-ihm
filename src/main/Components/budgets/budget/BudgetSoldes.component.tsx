@@ -1,8 +1,7 @@
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx'
-import {CircularProgress, Stack, Tooltip, Typography, useMediaQuery, useTheme, Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {Stack, Tooltip, Typography, useMediaQuery, useTheme, Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React, {JSX, useContext} from "react";
 import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
-import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import { getTypeCategorieRenderer } from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 
@@ -68,8 +67,7 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
                     <Typography variant={"h6"} width={isMobile ? 100 : 240} textAlign={"right"} sx={{cursor: "help"}}>
                         <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true}
                                         id={'soldeAtMaintenant'}/>
-                    </Typography> :
-                    <CenterComponent><CircularProgress/></CenterComponent>}
+                    </Typography> : <></>}
             </Tooltip>
             <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
             {(budget?.actif) ?

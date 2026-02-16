@@ -1,5 +1,6 @@
 import React, { JSX } from "react";
 import { Box, Typography, Divider } from "@mui/material";
+import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
 
 interface TooltipTreeMapProps {
     active?: boolean;
@@ -49,9 +50,7 @@ const AnalyseTreeMapTooltip = ({ active, payload }: TooltipTreeMapProps): JSX.El
             
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                        Pourcentage :
-                    </Typography>
+                    <Typography variant="body2">Pourcentage :</Typography>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: 'white' }}>
                         {size?.toFixed(2)}%
                     </Typography>
@@ -59,26 +58,16 @@ const AnalyseTreeMapTooltip = ({ active, payload }: TooltipTreeMapProps): JSX.El
                 
                 {total !== undefined && (
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                            Montant :
-                        </Typography>
-                        <Typography 
-                            variant="body2" 
-                            sx={{ 
-                                fontWeight: 500, 
-                                color: total >= 0 ? '#4caf50' : '#f44336'
-                            }}
-                        >
-                            {total?.toFixed(2)} €
+                        <Typography variant="body2">Montant :</Typography>
+                        <Typography variant="body2">
+                            <OperationValue valueOperation={total.toFixed(2)} showSign={true} id={`${name}.TOTAL`} />
                         </Typography>
                     </Box>
                 )}
                 
                 {nbTransactions !== undefined && (
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                            Transactions :
-                        </Typography>
+                        <Typography variant="body2">Transactions :</Typography>
                         <Typography variant="body2" sx={{ fontWeight: 500, color: 'white' }}>
                             {nbTransactions}
                         </Typography>

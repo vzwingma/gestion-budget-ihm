@@ -1,7 +1,6 @@
 import React, { JSX, useMemo } from 'react'
 import { AnalyseEvolutionProps } from '../../Components.props.ts';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
-import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
+import { Box } from '@mui/material';
 import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { prepareGraphDataFromOperations, extractUniqueCategories } from './AnalyseEvolution.controller.ts';
 import { getCategorieColor } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
@@ -18,7 +17,6 @@ import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
  */
 const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMensuelle }): JSX.Element => {
 
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
     /**
      * Prépare les données du graphique à partir des opérations
@@ -41,7 +39,8 @@ const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMe
      * Rend les lignes du graphique pour chaque catégorie
      */
     const renderLines = (): JSX.Element[] => {
-        return categories.map(categorie => (
+        return categories
+        .map(categorie => (
             <Line
                 key={categorie.libelle}
                 type="monotone"
@@ -55,28 +54,13 @@ const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMe
     };
 
     // Afficher un message si pas de données
-    if (!operations || operations.length === 0) {
-        return (
-            <Box sx={{
-                height: getHeightDetailList(isMobile),
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'text.secondary'
-            }}>
-                Aucune opération à afficher
-            </Box>
-        );
-    }
-
-    // Afficher un message si pas de données après regroupement
-    if (graphData.length === 0) {
+    if (!operations || operations.length === 0 || graphData.length === 0) {
         return <NoDataComponent />;
     }
 
     return (
         <Box sx={{ 
-            height: getHeightDetailList(isMobile),
+            height: '100%',
             display: 'flex',
             flexDirection: 'column',
             overflowY: 'auto',

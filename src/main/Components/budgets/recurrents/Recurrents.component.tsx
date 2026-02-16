@@ -1,13 +1,12 @@
 import React, { JSX, useCallback, useContext, useEffect, useState } from "react";
 
-import { Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
 import { getPreferenceUtilisateur, reloadBudget } from "./../budget/Budget.extservices.ts";
 
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsRecurrentesGroupedByPeriodicity } from "./Recurrents.controller.ts";
-import { CenterComponent } from "../../shared/CenterComponent.tsx";
 import { RecurrentsPageProps } from "../../Components.props.ts";
 import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
@@ -83,6 +82,12 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
      */
     return (
         <Box className="page-container recurrents-page-container">
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={currentBudget == null}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+
             <BudgetPageHeader
                 onOpenMenu={onOpenMenu}
                 filterOperations={filterOperations}
@@ -93,7 +98,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                 additionalHeaderContentRight={
                     <Grid size={{ md: 1, xl: 1 }}>
                         {currentBudget == null ?
-                            <CenterComponent><CircularProgress /></CenterComponent> :
+                            <></> :
                             <BudgetActionsButtonGroupComponent
                                 droits={userDroits}
                                 onActionBudgetChange={handleBudgetUpdate}
@@ -106,7 +111,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
                 <Grid size={{ md: 5, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
                     { /** Liste des opérations récurrentes **/
                         (currentBudget == null ?
-                            <CenterComponent><CircularProgress /></CenterComponent>
+                            <></>
                             :
                             <OperationsRecurrentesListe
                                 operationGroupedByPeriodicity={operationsRecurrentesGroupedByPeriodicity}

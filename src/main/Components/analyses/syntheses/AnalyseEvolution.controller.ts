@@ -40,67 +40,66 @@ function createTimelineLabel(month: number, year: number): string {
  */
 function prepareMonthlyViewData(operations: OperationModel[]): GraphAnalyseTimelineItemModel[] {
     const categoriesMap = new Map<string, boolean>();
-    
+
     // Point 1: Date courante avec opérations réalisées
     const currentDateData: GraphAnalyseTimelineItemModel = {
         id: 'current_date',
         name: 'Date courante',
-        categories: {}
+        categories: {},
+        absCategories: {}
     };
-    
+
     // Point 2: Fin du mois avec toutes les opérations
     const endOfMonthData: GraphAnalyseTimelineItemModel = {
         id: 'end_of_month',
         name: 'Fin du mois',
-        categories: {}
+        categories: {},
+        absCategories: {}
     };
-    
+
     operations.forEach(operation => {
         const categoryLabel = operation.categorie?.libelle || "Sans catégorie";
         categoriesMap.set(categoryLabel, true);
-        
+
         // Ajouter à la fin du mois (toutes les opérations)
         if (!endOfMonthData.categories[categoryLabel]) {
             endOfMonthData.categories[categoryLabel] = 0;
+            endOfMonthData.absCategories[categoryLabel] = 0;
         }
-        endOfMonthData.categories[categoryLabel] += Math.abs(operation.valeur);
-        
+        endOfMonthData.categories[categoryLabel] += operation.valeur;
+        endOfMonthData.absCategories[categoryLabel] += Math.abs(operation.valeur);
+
         // Ajouter à la date courante seulement si réalisée
         if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
             if (!currentDateData.categories[categoryLabel]) {
                 currentDateData.categories[categoryLabel] = 0;
+                currentDateData.absCategories[categoryLabel] = 0;
             }
-            currentDateData.categories[categoryLabel] += Math.abs(operation.valeur);
+            currentDateData.categories[categoryLabel] += operation.valeur;
+            currentDateData.absCategories[categoryLabel] += Math.abs(operation.valeur);
         }
     });
-    
+
     // Aplatir les données pour Recharts
     const flattenData = (data: GraphAnalyseTimelineItemModel): GraphAnalyseTimelineItemModel => {
         const flattened: any = {
             id: data.id,
             name: data.name
         };
-        
+
         categoriesMap.forEach((_, categoryLabel) => {
             flattened[categoryLabel] = data.categories[categoryLabel] || 0;
+            flattened[`abs_${categoryLabel}`] = data.absCategories[categoryLabel] || 0;
         });
-        
+
         return flattened;
     };
-    
+
     return [flattenData(currentDateData), flattenData(endOfMonthData)];
 }
 
-/**
- * Groupe les opérations par mois et catégorie et prépare les données pour le graphique
- * @param operations liste des opérations
- * @param isVueMensuelle si true, affiche la vue mensuelle (date courante vs fin du mois)
- * @returns {GraphAnalyseTimelineItemModel[]} données préparées pour le graphique
- */
-export function prepareGraphDataFromOperations(operations: OperationModel[], isVueMensuelle: boolean = false): GraphAnalyseTimelineItemModel[] {
-    if (isVueMensuelle) {
-        return prepareMonthlyViewData(operations);
-    }
+
+function preparePeriodViewData(operations: OperationModel[]): GraphAnalyseTimelineItemModel[] {
     const timelineData: GraphAnalyseTimelineModel = { dataGraphTimelineItem: {} };
     const categoriesMap = new Map<string, boolean>(); // Pour tracer les catégories actives
 
@@ -119,7 +118,8 @@ export function prepareGraphDataFromOperations(operations: OperationModel[], isV
             timelineData.dataGraphTimelineItem[key] = {
                 id: `evolution_${key}`,
                 name: label,
-                categories: {}
+                categories: {},
+                absCategories: {}
             };
         }
 
@@ -127,8 +127,10 @@ export function prepareGraphDataFromOperations(operations: OperationModel[], isV
         const entry = timelineData.dataGraphTimelineItem[key];
         if (!entry.categories[categoryLabel]) {
             entry.categories[categoryLabel] = 0;
+            entry.absCategories[categoryLabel] = 0;
         }
-        entry.categories[categoryLabel] += Math.abs(operation.valeur);
+        entry.categories[categoryLabel] += operation.valeur;
+        entry.absCategories[categoryLabel] += Math.abs(operation.valeur);   
     });
 
     // Deuxième passe: aplatir les données et ajouter les catégories à chaque mois
@@ -143,15 +145,26 @@ export function prepareGraphDataFromOperations(operations: OperationModel[], isV
             // Ajouter toutes les catégories pour chaque mois (avec 0 si pas de données)
             categoriesMap.forEach((_value, categoryLabel) => {
                 flatEntry[categoryLabel] = monthData.categories[categoryLabel] || 0;
+                flatEntry[`abs_${categoryLabel}`] = monthData.absCategories[categoryLabel] || 0;
             });
 
             delete flatEntry.categories;
+            delete flatEntry.absCategories;
             return flatEntry;
         });
 
-        
-        flatData.sort((a, b) => a.id.localeCompare(b.id));
+
+    flatData.sort((a, b) => a.id.localeCompare(b.id));
     return flatData;
+}
+/**
+ * Groupe les opérations par mois et catégorie et prépare les données pour le graphique
+ * @param operations liste des opérations
+ * @param isVueMensuelle si true, affiche la vue mensuelle (date courante vs fin du mois)
+ * @returns {GraphAnalyseTimelineItemModel[]} données préparées pour le graphique
+ */
+export function prepareGraphDataFromOperations(operations: OperationModel[], isVueMensuelle: boolean = false): GraphAnalyseTimelineItemModel[] {
+    return isVueMensuelle ? prepareMonthlyViewData(operations) : preparePeriodViewData(operations);
 }
 
 /**

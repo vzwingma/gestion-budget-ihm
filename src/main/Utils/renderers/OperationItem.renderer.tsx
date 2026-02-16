@@ -80,7 +80,6 @@ export function getOperationLibelle(operationLibelle: string, listeComptes: Comp
  * @param periodeKey : string enum période
  * */
 export function getTypeCategorieRenderer(typeCategorieKey : TYPES_CATEGORIES_OPERATION_ENUM) {
-
     switch (typeCategorieKey) {
         case TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL:
             return {value: typeCategorieKey, text: "Essentiel", color: "var(--color-type-essentiel-primary)"}

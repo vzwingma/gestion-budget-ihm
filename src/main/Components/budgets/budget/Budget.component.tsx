@@ -1,6 +1,6 @@
 import React, { JSX, useCallback, useContext, useEffect, useState } from "react";
 
-import { Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel, { createNewOperation } from "../../../Models/budgets/Operation.model.ts";
 import { getPreferenceUtilisateur, loadCategories, reloadBudget } from "./Budget.extservices.ts";
@@ -10,7 +10,6 @@ import OperationsListe from "../operations/OperationsListe.component.tsx";
 import OperationDetailPage from "../operations/courantes/detail/OperationDetailPage.component.tsx";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsGroupedByDateOperation, updateOperationsStatus } from "./Budget.controller.ts";
-import { CenterComponent } from "../../shared/CenterComponent.tsx";
 import { getLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
 import { BudgetPageProps } from "../../Components.props.tsx";
 import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
@@ -110,6 +109,14 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      */
     return (
         <Box className="page-container budget-page-container">
+
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={currentBudget == null}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+
+
             <BudgetPageHeader
                 onOpenMenu={onOpenMenu}
                 filterOperations={filterOperations}
@@ -120,16 +127,13 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                 additionalHeaderContentLeft={
                     <Grid size={{ md: 1.6, xl: 1.6 }}>
                         {selectedDate != null && selectedCompte != null ?
-                            <BudgetSoldes />
-                            :
-                            <CenterComponent><CircularProgress /></CenterComponent>
+                            <BudgetSoldes /> : <></>
                         }
                     </Grid>
                 }
                 additionalHeaderContentRight={
                     <Grid size={{ md: 1, xl: 1 }}>
-                        {currentBudget == null ?
-                            <CenterComponent><CircularProgress /></CenterComponent> :
+                        {currentBudget == null ? <></> :
                             <BudgetActionsButtonGroupComponent
                                 droits={[...userDroits, UTILISATEUR_DROITS.DROIT_CREATE_OPERATION]}
                                 onActionBudgetChange={handleBudgetUpdate}
@@ -142,8 +146,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
             <Grid container sx={{ overflow: "hidden" }}>
                 <Grid size={{ md: 4, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
                     { /** Liste des opérations **/
-                        (currentBudget == null ?
-                            <CenterComponent><CircularProgress /></CenterComponent>
+                        (currentBudget == null ? <></>
                             :
                             <OperationsListe
                                 operationGroupedByDate={operationsGroupedByDateOperation}
@@ -159,7 +162,8 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                             listeCategories={categories}
                             listeLibellesOperations={listeLibellesOperations}
                             onOperationChange={handleBudgetUpdate} />
-                    : <></>                      }
+                    : <></>                      
+                    }
                 </Grid>
             </Grid>
         </Box>
