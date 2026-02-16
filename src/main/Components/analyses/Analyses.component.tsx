@@ -6,16 +6,16 @@ import { AnalyseProps } from "../Components.props.ts";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
-import { AnalyseSyntheseTypes } from "./details/AnalyseSyntheseTypes.component.tsx";
+import { AnalyseSyntheseTypes } from "./syntheses/AnalyseSyntheseTypes.component.tsx";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/analyses/AnalysesFilters.model.ts";
-import AnalyseOperationsListe from "./details/AnalyseOperationsListe.component.tsx";
+import AnalyseOperationsListe from "./syntheses/AnalyseOperationsListe.component.tsx";
 import { ExpandableDetailSection } from "../shared/ExpandableDetailSection.component.tsx";
-import AnalyseCategoriesListe from "./details/AnalyseCategoriesListe.component.tsx";
-import { getCategoriesDataForAnalyses } from "./details/AnalyseCategoriesListe.controller.ts";
-import AnalyseTreeMap from "./details/AnalyseTreeMap.component.tsx";
+import AnalyseCategoriesListe from "./syntheses/AnalyseCategoriesListe.component.tsx";
+import { getCategoriesDataForAnalyses } from "./syntheses/AnalyseCategoriesListe.controller.ts";
+import AnalyseTreeMap from "./syntheses/AnalyseTreeMap.component.tsx";
 
 
 
