@@ -18,6 +18,7 @@ import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import { AnalyseCategoriesListeProps } from '../../Components.props.ts';
+import { generateDerivedColors } from '../../../Utils/renderers/DerivedColors.renderer.utils.ts';
 
 /**
  * Composant pour afficher une barchart simple
@@ -110,6 +111,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                             {analyseCategoriesData.map((analyseCat) => {
                                 const isExpanded = expandedCategories.has(analyseCat.categorie.id || '');
                                 const analyseSubCategories = getSortedSubCategories(analyseCat);
+                                const derivedColors = generateDerivedColors(analyseCat.couleurCategorie, analyseSubCategories.length);
                                 const total = analyseCat.total || 0;
                                 const nbTransactions = analyseCat.nbTransactions || 0;
                                 const percentage = analyseCat.pourcentage || 0;
@@ -159,9 +161,11 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                             </TableCell>
                                         </TableRow>
 
+
                                         {/* Lignes sous-catégories */}
-                                        {isExpanded &&
-                                            analyseSubCategories.map((analyseSubCat) => {
+                                        {
+                                        isExpanded &&
+                                            analyseSubCategories.map((analyseSubCat, index) => {
                                                 const subTotal = analyseSubCat.total || 0;
                                                 const subNbTransactions = analyseSubCat.nbTransactions || 0;
                                                 const subPercentage = analyseSubCat.pourcentage || 0;
@@ -198,7 +202,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                                             <Typography variant="caption">{subNbTransactions}</Typography>
                                                         </TableCell>
                                                         <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.pourcentage }}>
-                                                            <PercentageBar percentage={subPercentage} color={getCategoryTypeColor(analyseSubCat.ssCategorie.type)} subcategory={true} />
+                                                            <PercentageBar percentage={subPercentage} color={derivedColors[index]} subcategory={true} />
                                                         </TableCell>
                                                     </TableRow>
                                                 );
