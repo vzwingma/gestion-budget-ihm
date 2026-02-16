@@ -5,6 +5,7 @@ import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import AnalyseTreeMapContent from "./AnalyseTreeMapContent.component.tsx";
 import AnalyseTreeMapTooltip from "./AnalyseTreeMapTooltip.component.tsx";
+import { NoDataComponent } from "../../shared/NoDataComponent.tsx";
 
 
 interface TreemapNode {
@@ -95,19 +96,7 @@ const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analy
     };
 
     if (!treemapData || treemapData.length === 0) {
-        return (
-            <div style={{ 
-                width: '100%', 
-                height: '400px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                color: '#999',
-                fontSize: '14px'
-            }}>
-                Aucune donnée à afficher
-            </div>
-        );
+        return <NoDataComponent />;
     }
 
     return (

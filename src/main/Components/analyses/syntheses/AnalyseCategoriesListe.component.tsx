@@ -19,6 +19,7 @@ import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/Ca
 import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import { AnalyseCategoriesListeProps } from '../../Components.props.ts';
 import { generateDerivedColors } from '../../../Utils/renderers/DerivedColors.renderer.utils.ts';
+import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
 
 /**
  * Composant pour afficher une barchart simple
@@ -73,8 +74,11 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
     };
 
 
+    if (!analyseCategoriesData || analyseCategoriesData.length === 0) {
+        return <NoDataComponent />;
+    }
 
-    return (<Box sx={{ height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))), display: 'flex', flexDirection: 'column' }}>
+    return (<Box sx={{ height: getHeightDetailList(isMobile), display: 'flex', flexDirection: 'column' }}>
                 {/* En-tête fixe */}
                 <Box sx={{ overflowX: 'auto' }}>
                     <Table size="small" sx={{ tableLayout: 'fixed' }}>

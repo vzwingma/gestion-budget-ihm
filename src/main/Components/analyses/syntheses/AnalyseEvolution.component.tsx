@@ -6,6 +6,7 @@ import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis
 import { prepareGraphDataFromOperations, extractUniqueCategories } from './AnalyseEvolution.controller.ts';
 import { getCategorieColor } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 import AnalyseEvolutionTooltip from './AnalyseEvolutionTooltip.component.tsx';
+import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
 
 
 /**
@@ -70,17 +71,7 @@ const AnalyseEvolution: React.FC<AnalyseOperationsListeProps> = ({ operations })
 
     // Afficher un message si pas de données après regroupement
     if (graphData.length === 0) {
-        return (
-            <Box sx={{
-                height: getHeightDetailList(isMobile),
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'text.secondary'
-            }}>
-                Pas de données disponibles pour le graphique
-            </Box>
-        );
+        return <NoDataComponent />;
     }
 
     return (

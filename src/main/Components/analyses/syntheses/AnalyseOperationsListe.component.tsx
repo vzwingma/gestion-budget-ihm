@@ -4,6 +4,7 @@ import { AnalyseOperationsListeProps } from '../../Components.props.ts';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
 import AnalyseOperationItem from './AnalyseOperationItem.component.tsx';
+import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
 
 
 /**
@@ -20,7 +21,7 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
     const renderItem = (operation: OperationModel): JSX.Element => {
         return <AnalyseOperationItem key={operation.id} operation={operation} />
     };
-
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
 
     /**
@@ -43,7 +44,12 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
         return renderList;
     }
 
-    return (<Box sx={{ height: getHeightDetailList(useMediaQuery(useTheme().breakpoints.down('lg'))), display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'auto' }}>
+    if (!operations || operations.length === 0) {
+        return <NoDataComponent />;
+    }
+
+
+    return (<Box sx={{ height: getHeightDetailList(isMobile), display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'auto' }}>
                 {iterateOperations(operations, renderItem)}
             </Box>
     );
