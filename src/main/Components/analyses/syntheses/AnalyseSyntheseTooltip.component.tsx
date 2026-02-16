@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { Box, Typography, Divider } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { getTypeCategorieRenderer } from "../../../Utils/renderers/OperationItem.renderer.tsx";
 import { TYPES_CATEGORIES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
 
