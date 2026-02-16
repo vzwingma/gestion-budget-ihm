@@ -1,27 +1,23 @@
 import React, { JSX } from "react";
 import { Box, Typography, Divider } from "@mui/material";
-import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
+import { getTypeCategorieRenderer } from "../../../Utils/renderers/OperationItem.renderer.tsx";
+import { TYPES_CATEGORIES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
 
-interface TooltipTreeMapProps {
+interface TooltipSyntheseProps {
     active?: boolean;
     payload?: any[];
+    label?: string;
 }
 
 /**
  * Custom tooltip for TreeMap visualization
  * Displays category/subcategory name, percentage, total amount, and number of transactions
  */
-const AnalyseTreeMapTooltip = ({ active, payload }: TooltipTreeMapProps): JSX.Element => {
+const AnalyseSyntheseTooltip = ({ active, payload, label }: TooltipSyntheseProps): JSX.Element => {
     if (!active || !payload || payload.length === 0) {
         return <></>;
     }
-
-    const data = payload[0]?.payload;
-    if (!data) {
-        return <></>;
-    }
-
-    const { name, size, total, nbTransactions } = data;
+    const { name, value } = payload[0];
 
     return (
         <Box
@@ -40,42 +36,23 @@ const AnalyseTreeMapTooltip = ({ active, payload }: TooltipTreeMapProps): JSX.El
                 sx={{ 
                     fontWeight: 600, 
                     marginBottom: 1,
-                    color: 'white'
+                    color: getTypeCategorieRenderer(name as TYPES_CATEGORIES_OPERATION_ENUM).color
                 }}
             >
-                {name}
+                {getTypeCategorieRenderer(name as TYPES_CATEGORIES_OPERATION_ENUM).text}
             </Typography>
-            
             <Divider sx={{ marginBottom: 1, borderColor: 'rgba(255, 255, 255, 0.2)' }} />
             
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="body2">Pourcentage :</Typography>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: 'white' }}>
-                        {size?.toFixed(2)}%
+                        {value?.toFixed(2)}%
                     </Typography>
                 </Box>
-                
-                {total !== undefined && (
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="body2">Montant :</Typography>
-                        <Typography variant="body2">
-                            <OperationValue valueOperation={total.toFixed(2)} showSign={true} id={`${name}.TOTAL`} />
-                        </Typography>
-                    </Box>
-                )}
-                
-                {nbTransactions !== undefined && (
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="body2">Transactions :</Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 500, color: 'white' }}>
-                            {nbTransactions}
-                        </Typography>
-                    </Box>
-                )}
             </Box>
         </Box>
     );
 };
 
-export default AnalyseTreeMapTooltip;
+export default AnalyseSyntheseTooltip;

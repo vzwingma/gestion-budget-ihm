@@ -1,9 +1,10 @@
 import React, { JSX, useMemo } from "react";
 import { Box, Stack, Typography } from "@mui/material";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { TYPES_CATEGORIES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { getTypeCategorieRenderer } from "../../../Utils/renderers/OperationItem.renderer.tsx";
 import { AnalyseSyntheseTypesProps } from "../../Components.props.ts";
+import AnalyseSyntheseTooltip from "./AnalyseSyntheseTooltip.component.tsx";
 
 /**
  * Composant de synthèse des types de catégories d'opérations.
@@ -83,9 +84,9 @@ export const AnalyseSyntheseTypes: React.FC<AnalyseSyntheseTypesProps> = ({
                                 isAnimationActive={true}
                             />
                         ))}
+                        <Tooltip content={<AnalyseSyntheseTooltip />} shared={false} />
                     </BarChart>
                 </ResponsiveContainer>
-
                 <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap sx={{ marginTop: -4, paddingLeft: 3 }}>
                     {legendItems.map((item) => (
                         <Box key={item.type} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -95,8 +96,7 @@ export const AnalyseSyntheseTypes: React.FC<AnalyseSyntheseTypesProps> = ({
                             </Typography>
                         </Box>
                     ))}
-                </Stack>
-            </Box>
+                </Stack>            </Box>
 
         </Stack>
     );
