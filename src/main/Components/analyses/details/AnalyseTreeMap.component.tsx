@@ -1,20 +1,24 @@
 import React, { JSX, useMemo, useState } from "react";
 import { AnalyseCategoriesListeProps } from "../../Components.props.ts";
-import { ResponsiveContainer, Treemap } from "recharts";
+import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
-import TreeMapContent from "./AnalyseCategoriesTreeMapContent.component.tsx";
+import AnalyseTreeMapContent from "./AnalyseTreeMapContent.component.tsx";
+import AnalyseTreeMapTooltip from "./AnalyseTreeMapTooltip.component.tsx";
+
 
 interface TreemapNode {
     name: string;
     size: number;
     color: string;
+    total?: number;
+    nbTransactions?: number;
     categoryId?: string;
     children?: TreemapNode[];
     [key: string]: any; // Index signature for recharts compatibility
 }
 
-const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategories: analyseCategoriesData }): JSX.Element => {
+const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategories: analyseCategoriesData }): JSX.Element => {
 
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
@@ -34,13 +38,17 @@ const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analy
                     .map(ssCategoryData => ({
                         name: ssCategoryData.ssCategorie.libelle,
                         size: ssCategoryData.pourcentage,
-                        color: ssCategoryData.couleurSsCategorie
+                        color: ssCategoryData.couleurSsCategorie,
+                        total: ssCategoryData.total,
+                        nbTransactions: ssCategoryData.nbTransactions
                     }));
 
                 return {
                     name: categoryData.categorie.libelle,
                     size: categoryData.pourcentage,
                     color: categoryData.couleurCategorie,
+                    total: categoryData.total,
+                    nbTransactions: categoryData.nbTransactions,
                     categoryId: categoryData.categorie.id,
                     children: children.length > 0 ? children : undefined
                 };
@@ -135,7 +143,7 @@ const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analy
                         dataKey="size"
                         stroke="#fff"
                         content={(props: any) => (
-                            <TreeMapContent 
+                            <AnalyseTreeMapContent 
                                 {...props} 
                                 onClick={!selectedCategoryName && props.categoryId 
                                     ? () => handleCategoryClick(props.categoryId) 
@@ -144,12 +152,13 @@ const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analy
                             />
                         )}
                         isAnimationActive={true}
-                        animationDuration={300}
-                    />
+                        animationDuration={300}>
+                        <Tooltip content={<AnalyseTreeMapTooltip />} />
+                    </Treemap>
                 </ResponsiveContainer>
             </div>
         </Box>
     );
 };
 
-export default AnalyseCategoriesTreeMap;
+export default AnalyseTreeMap;

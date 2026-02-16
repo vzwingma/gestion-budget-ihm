@@ -15,7 +15,7 @@ import AnalyseOperationsListe from "./details/AnalyseOperationsListe.component.t
 import { ExpandableDetailSection } from "../shared/ExpandableDetailSection.component.tsx";
 import AnalyseCategoriesListe from "./details/AnalyseCategoriesListe.component.tsx";
 import { getCategoriesDataForAnalyses } from "./details/AnalyseCategoriesListe.controller.ts";
-import AnalyseCategoriesTreeMap from "./details/AnalyseCategoriesTreeMap.component.tsx";
+import AnalyseTreeMap from "./details/AnalyseTreeMap.component.tsx";
 
 
 
@@ -162,7 +162,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
                                         <ExpandableDetailSection label={`Treemap des catégories`}>
-                                            <AnalyseCategoriesTreeMap analyseCategories={analyseCategoriesData} />
+                                            <AnalyseTreeMap analyseCategories={analyseCategoriesData} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                 </Grid>

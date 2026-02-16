@@ -1,18 +1,9 @@
 import React from "react";
 
-interface TreemapNode {
-    name: string;
-    size: number;
-    color: string;
-    categoryId?: string;
-    children?: TreemapNode[];
-    [key: string]: any; // Index signature for recharts compatibility
-}
-
 /**
  * Custom content renderer for treemap cells with better text visibility
  */
-const TreeMapContent = (props: any) => {
+const AnalyseTreeMapContent = (props: any) => {
     const { x, y, width, height, name, color, size, onClick } = props;
     
     // Only show text if cell is large enough
@@ -74,4 +65,4 @@ const TreeMapContent = (props: any) => {
 };
 
 
-export default TreeMapContent;
+export default AnalyseTreeMapContent;
