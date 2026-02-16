@@ -5,18 +5,9 @@ import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import AnalyseTreeMapContent from "./AnalyseTreeMapContent.component.tsx";
 import AnalyseTreeMapTooltip from "./AnalyseTreeMapTooltip.component.tsx";
+import { useAnalyseTreeMapData } from "./AnalyseTreeMap.controller.ts";
 
 
-interface TreemapNode {
-    name: string;
-    size: number;
-    color: string;
-    total?: number;
-    nbTransactions?: number;
-    categoryId?: string;
-    children?: TreemapNode[];
-    [key: string]: any; // Index signature for recharts compatibility
-}
 
 const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategories: analyseCategoriesData }): JSX.Element => {
 
@@ -25,57 +16,10 @@ const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategori
     /**
      * Transform analyse categories data into treemap format
      */
-    const { treemapData, selectedCategoryName } = useMemo(() => {
-        if (!analyseCategoriesData || analyseCategoriesData.length === 0) {
-            return { treemapData: [], selectedCategoryName: null };
-        }
-
-        const allCategories = analyseCategoriesData
-            .filter(cat => cat.pourcentage > 0)
-            .map(categoryData => {
-                const children: TreemapNode[] = Object.values(categoryData.resumesSsCategories || {})
-                    .filter(sscat => sscat.pourcentage > 0)
-                    .map(ssCategoryData => ({
-                        name: ssCategoryData.ssCategorie.libelle,
-                        size: ssCategoryData.pourcentage,
-                        color: ssCategoryData.couleurSsCategorie,
-                        total: ssCategoryData.total,
-                        nbTransactions: ssCategoryData.nbTransactions
-                    }));
-
-                return {
-                    name: categoryData.categorie.libelle,
-                    size: categoryData.pourcentage,
-                    color: categoryData.couleurCategorie,
-                    total: categoryData.total,
-                    nbTransactions: categoryData.nbTransactions,
-                    categoryId: categoryData.categorie.id,
-                    children: children.length > 0 ? children : undefined
-                };
-            })
-            .sort((a, b) => b.size - a.size);
-
-        // If a category is selected, show only its subcategories
-        if (selectedCategoryId) {
-            const selectedCategory = allCategories.find(cat => cat.categoryId === selectedCategoryId);
-            if (selectedCategory?.children) {
-                const sortedChildren = [...selectedCategory.children].sort((a, b) => b.size - a.size);
-                return {
-                    treemapData: sortedChildren,
-                    selectedCategoryName: selectedCategory.name
-                };
-            }
-        }
-
-        // Otherwise show all categories (without children for main view)
-        return {
-            treemapData: allCategories.map(cat => ({
-                ...cat,
-                children: undefined // Remove children in main view to avoid nesting
-            })),
-            selectedCategoryName: null
-        };
-    }, [analyseCategoriesData, selectedCategoryId]);
+    const { treemapData, selectedCategoryName } = useAnalyseTreeMapData(
+        analyseCategoriesData,
+        selectedCategoryId
+    );
 
     /**
      * Handle click on a category to drill down

@@ -81,9 +81,7 @@ export const generateDerivedColors = (baseColor: string, count: number): string[
         const newH = (h + (factor - 0.5) * 30 + 360) % 360;
         // Keep saturation or slightly adjust it
         const newS = Math.max(40, Math.min(100, s + (factor - 0.5) * 20));
-        
         colors.push(hslToHex(newH, newS, newL));
     }
-    
     return colors;
 };

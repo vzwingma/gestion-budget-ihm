@@ -5,7 +5,7 @@ import React from "react";
  */
 const AnalyseTreeMapContent = (props: any) => {
     const { x, y, width, height, name, color, size, onClick } = props;
-    
+    console.log('Rendering cell:', { name, size, x, y, width, height, color });
     // Only show text if cell is large enough
     const showText = width > 60 && height > 30;
     const fontSize = Math.min(width / 8, height / 3.5, 14);

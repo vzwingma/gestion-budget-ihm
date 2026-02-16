@@ -5,7 +5,6 @@ import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import AnalyseTreeMap from "./AnalyseTreeMapTooltip.component.tsx";
 import AnalyseTreeMapContent from "./AnalyseTreeMapContent.component.tsx";
-import { generateDerivedColors } from "../../../Utils/renderers/DerivedColors.renderer.utils.ts";
 
 
 interface TreemapNode {
@@ -62,21 +61,8 @@ const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analy
             const selectedCategory = allCategories.find(cat => cat.categoryId === selectedCategoryId);
             if (selectedCategory?.children) {
                 const sortedChildren = [...selectedCategory.children].sort((a, b) => b.size - a.size);
-                
-                // Generate derived colors from the parent category color
-                const derivedColors = generateDerivedColors(
-                    selectedCategory.color, 
-                    sortedChildren.length
-                );
-                
-                // Apply derived colors to subcategories
-                const coloredChildren = sortedChildren.map((child, index) => ({
-                    ...child,
-                    color: derivedColors[index]
-                }));
-                
                 return {
-                    treemapData: coloredChildren,
+                    treemapData: sortedChildren,
                     selectedCategoryName: selectedCategory.name
                 };
             }
@@ -158,7 +144,8 @@ const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analy
                         dataKey="size"
                         stroke="#fff"
                         content={(props: any) => (
-                            <AnalyseTreeMapContent{...props} 
+                            <AnalyseTreeMapContent 
+                                {...props} 
                                 onClick={!selectedCategoryName && props.categoryId 
                                     ? () => handleCategoryClick(props.categoryId) 
                                     : undefined
