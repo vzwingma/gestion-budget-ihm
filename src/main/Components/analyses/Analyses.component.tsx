@@ -147,8 +147,13 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 </Grid>
                                 <Grid container sx={{ overflow: "hidden", height: "calc(100vh - 23%)"}} >
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
-                                        <ExpandableDetailSection label={`Synthèse des ${filteredOperations.length} opérations`}>
-                                            <AnalyseOperationsListe operations={filteredOperations} />
+                                        <ExpandableDetailSection label={`Treemap des catégories`}>
+                                            <AnalyseTreeMap analyseCategories={analyseCategoriesData} />
+                                        </ExpandableDetailSection>
+                                    </Grid>
+                                    <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
+                                        <ExpandableDetailSection label={`Evolution`}>
+                                            <AnalyseEvolution operations={filteredOperations} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
@@ -157,13 +162,8 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                         </ExpandableDetailSection>
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
-                                        <ExpandableDetailSection label={`Autre synthèse`}>
-                                            <AnalyseEvolution operations={filteredOperations} />
-                                        </ExpandableDetailSection>
-                                    </Grid>
-                                    <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "50%" }}>
-                                        <ExpandableDetailSection label={`Treemap des catégories`}>
-                                            <AnalyseTreeMap analyseCategories={analyseCategoriesData} />
+                                        <ExpandableDetailSection label={`Synthèse des ${filteredOperations.length} opérations`}>
+                                            <AnalyseOperationsListe operations={filteredOperations} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                 </Grid>

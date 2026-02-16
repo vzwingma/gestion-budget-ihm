@@ -44,7 +44,7 @@ export function prepareGraphDataFromOperations(operations: OperationModel[]): Gr
     // Première passe: regrouper les opérations par mois et catégorie
     operations.forEach(operation => {
         const [month, year] = getMonthYearFromOperation(operation);
-        const key = `${month}_${year}`;
+        const key = `${year}_${month}`;
         const label = createTimelineLabel(month, year);
         const categoryLabel = operation.categorie?.libelle || "Sans catégorie";
 
@@ -86,6 +86,8 @@ export function prepareGraphDataFromOperations(operations: OperationModel[]): Gr
             return flatEntry;
         });
 
+        
+        flatData.sort((a, b) => a.id.localeCompare(b.id));
     return flatData;
 }
 
