@@ -1,5 +1,5 @@
 import React, { JSX, useMemo } from 'react'
-import { AnalyseEvolutionProps, AnalyseOperationsListeProps } from '../../Components.props.ts';
+import { AnalyseEvolutionProps } from '../../Components.props.ts';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
 import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -23,7 +23,7 @@ const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ operations, isVueMe
     /**
      * Prépare les données du graphique à partir des opérations
      */
-    const graphData = useMemo(() => prepareGraphDataFromOperations(operations), [operations]);
+    const graphData = useMemo(() => prepareGraphDataFromOperations(operations, isVueMensuelle), [operations, isVueMensuelle]);
 
     /**
      * Extrait les catégories uniques avec leurs couleurs

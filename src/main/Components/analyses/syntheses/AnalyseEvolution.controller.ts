@@ -5,6 +5,7 @@
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
 import { GraphAnalyseTimelineItemModel } from "../../../Models/analyses/syntheses/GraphAnalyseMensuel.model.ts";
 import { GraphAnalyseTimelineModel } from "../../../Models/analyses/syntheses/GraphAnalyseTimeline.model.ts";
+import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
 
 /**
  * Extrait le mois et l'année d'une date d'opération
@@ -33,11 +34,73 @@ function createTimelineLabel(month: number, year: number): string {
 }
 
 /**
+ * Prépare les données pour la vue mensuelle (date courante vs fin du mois)
+ * @param operations liste des opérations
+ * @returns {GraphAnalyseTimelineItemModel[]} deux points de données: aujourd'hui et fin du mois
+ */
+function prepareMonthlyViewData(operations: OperationModel[]): GraphAnalyseTimelineItemModel[] {
+    const categoriesMap = new Map<string, boolean>();
+    
+    // Point 1: Date courante avec opérations réalisées
+    const currentDateData: GraphAnalyseTimelineItemModel = {
+        id: 'current_date',
+        name: 'Date courante',
+        categories: {}
+    };
+    
+    // Point 2: Fin du mois avec toutes les opérations
+    const endOfMonthData: GraphAnalyseTimelineItemModel = {
+        id: 'end_of_month',
+        name: 'Fin du mois',
+        categories: {}
+    };
+    
+    operations.forEach(operation => {
+        const categoryLabel = operation.categorie?.libelle || "Sans catégorie";
+        categoriesMap.set(categoryLabel, true);
+        
+        // Ajouter à la fin du mois (toutes les opérations)
+        if (!endOfMonthData.categories[categoryLabel]) {
+            endOfMonthData.categories[categoryLabel] = 0;
+        }
+        endOfMonthData.categories[categoryLabel] += Math.abs(operation.valeur);
+        
+        // Ajouter à la date courante seulement si réalisée
+        if (operation.etat === OPERATION_ETATS_ENUM.REALISEE) {
+            if (!currentDateData.categories[categoryLabel]) {
+                currentDateData.categories[categoryLabel] = 0;
+            }
+            currentDateData.categories[categoryLabel] += Math.abs(operation.valeur);
+        }
+    });
+    
+    // Aplatir les données pour Recharts
+    const flattenData = (data: GraphAnalyseTimelineItemModel): GraphAnalyseTimelineItemModel => {
+        const flattened: any = {
+            id: data.id,
+            name: data.name
+        };
+        
+        categoriesMap.forEach((_, categoryLabel) => {
+            flattened[categoryLabel] = data.categories[categoryLabel] || 0;
+        });
+        
+        return flattened;
+    };
+    
+    return [flattenData(currentDateData), flattenData(endOfMonthData)];
+}
+
+/**
  * Groupe les opérations par mois et catégorie et prépare les données pour le graphique
  * @param operations liste des opérations
+ * @param isVueMensuelle si true, affiche la vue mensuelle (date courante vs fin du mois)
  * @returns {GraphAnalyseTimelineItemModel[]} données préparées pour le graphique
  */
-export function prepareGraphDataFromOperations(operations: OperationModel[]): GraphAnalyseTimelineItemModel[] {
+export function prepareGraphDataFromOperations(operations: OperationModel[], isVueMensuelle: boolean = false): GraphAnalyseTimelineItemModel[] {
+    if (isVueMensuelle) {
+        return prepareMonthlyViewData(operations);
+    }
     const timelineData: GraphAnalyseTimelineModel = { dataGraphTimelineItem: {} };
     const categoriesMap = new Map<string, boolean>(); // Pour tracer les catégories actives
 
