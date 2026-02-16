@@ -12,7 +12,7 @@ import {
     useMediaQuery,
     useTheme
 } from '@mui/material';
-import { ExpandMore, ExpandLess } from '@mui/icons-material';
+import { ExpandMore, ExpandLess, KeyboardDoubleArrowUp, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import { AnalyseCategoriesListeProps } from '../../Components.props.ts';
 import { getHeightDetailList } from '../../../Utils/ListData.utils.tsx';
 import { COLUMN_WIDTHS, getCategoriesDataForAnalyses as getAnalyseCategoriesData, getCategoryTypeColor, getSortedSubCategories } from './AnalyseCategoriesListe.controller.ts';
@@ -83,7 +83,21 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                     <Table size="small" sx={{ tableLayout: 'fixed' }}>
                         <TableHead sx={{ position: 'sticky', top: 0, zIndex: 10 }}>
                             <TableRow sx={{ backgroundColor: 'var(--color-dark-container)' }}>
-                                <TableCell sx={{ width: COLUMN_WIDTHS.expand }} />
+                                <TableCell sx={{ width: COLUMN_WIDTHS.expand }}>
+                                    <IconButton
+                                        size="small"
+                                        onClick={() => {
+                                            if (expandedCategories.size === analyseCategoriesData.length) {
+                                                setExpandedCategories(new Set());
+                                            } else {
+                                                setExpandedCategories(new Set(analyseCategoriesData.map(cat => cat.categorie.id || '')));
+                                            }
+                                        }}
+                                        title={expandedCategories.size === analyseCategoriesData.length ? 'Collapse all' : 'Expand all'}
+                                    >
+                                        {expandedCategories.size === analyseCategoriesData.length ? <KeyboardDoubleArrowUp /> : <KeyboardDoubleArrowDown />}
+                                    </IconButton>
+                                </TableCell>
                                 <TableCell sx={{ width: COLUMN_WIDTHS.type }}>Type</TableCell>
                                 <TableCell sx={{ width: COLUMN_WIDTHS.libelle }}>Libellé</TableCell>
                                 <TableCell align="right" sx={{ width: COLUMN_WIDTHS.somme }}>Somme</TableCell>
@@ -164,16 +178,15 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                                             '&:hover': { backgroundColor: 'var(--color-analyses-hover)' }
                                                         }}>
                                                         <TableCell sx={{ paddingLeft: 4, paddingY: 1, width: COLUMN_WIDTHS.expand }} />
-                                                        <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.type }} >
-                                                            <Box sx={{
-                                                                width: 16,
-                                                                height: 16,
-                                                                borderRadius: '50%',
-                                                                backgroundColor: getCategoryTypeColor(analyseSubCat.ssCategorie.type),
-                                                                display: 'inline-block'
-                                                            }}
-                                                                title={analyseSubCat.ssCategorie.type}
-                                                            />
+                                                        <TableCell sx={{ paddingLeft: 3, paddingY: 1, width: COLUMN_WIDTHS.type, justifyContent: 'center', alignItems: 'center'}} >
+                                                            <CenterComponent>
+                                                                <Box sx={{
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    borderRadius: '50%',
+                                                                    backgroundColor: getCategoryTypeColor(analyseSubCat.ssCategorie.type)
+                                                                }}  title={analyseSubCat.ssCategorie.type} />
+                                                                </CenterComponent>
                                                         </TableCell>
                                                         <TableCell sx={{ paddingY: 1, paddingLeft: 4, width: COLUMN_WIDTHS.libelle }}>
                                                             <Typography variant="caption">
