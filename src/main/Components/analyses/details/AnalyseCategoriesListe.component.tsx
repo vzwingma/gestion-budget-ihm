@@ -12,7 +12,7 @@ import {
     useTheme
 } from '@mui/material';
 import { ExpandMore, ExpandLess, KeyboardDoubleArrowUp, KeyboardDoubleArrowDown } from '@mui/icons-material';
-import { getHeightDetailList } from '../../../Utils/ListData.utils.tsx';
+import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
 import { COLUMN_WIDTHS, getCategoryTypeColor, getSortedSubCategories } from './AnalyseCategoriesListe.controller.ts';
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx';
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer.tsx';

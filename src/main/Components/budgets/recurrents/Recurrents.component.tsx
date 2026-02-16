@@ -15,7 +15,7 @@ import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
 import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
 import { BudgetActionsButtonGroupComponent } from "../budget/actions/BudgetActionsButtonGroup.component.tsx";
 import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
-import { getHeightList } from "../../../Utils/ListData.utils.tsx";
+import { getHeightList } from "../../../Utils/renderers/ListData.renderer.utils.tsx";
 
 
 /**

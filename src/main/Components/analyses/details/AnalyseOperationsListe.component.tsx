@@ -2,7 +2,7 @@ import React, { JSX } from 'react'
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { AnalyseOperationsListeProps } from '../../Components.props.ts';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import { getHeightDetailList } from '../../../Utils/ListData.utils.tsx';
+import { getHeightDetailList } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
 import AnalyseOperationItem from './AnalyseOperationItem.component.tsx';
 
 
