@@ -2,7 +2,7 @@ import React, {JSX} from "react";
 import {InputBase, Paper, useMediaQuery, useTheme} from "@mui/material";
 import {CancelRounded} from "@mui/icons-material";
 
-interface OperationFilterProps {
+interface OperationsFiltreProps {
     filterValue: string | null;
     onFilterChange: (value: string) => void;
     placeholder?: string;
@@ -10,14 +10,14 @@ interface OperationFilterProps {
 
 /**
  * Composant de filtre pour les opérations
- * @param {OperationFilterProps} props - Les propriétés du composant
+ * @param {OperationsFiltreProps} props - Les propriétés du composant
  * @returns {JSX.Element} - Le composant JSX du filtre
  */
-const OperationFilter: React.FC<OperationFilterProps> = ({ 
+const OperationsFiltre: React.FC<OperationsFiltreProps> = ({ 
     filterValue, 
     onFilterChange, 
     placeholder = "Filtrage des opérations" 
-}: OperationFilterProps): JSX.Element => {
+}: OperationsFiltreProps): JSX.Element => {
     
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
@@ -60,4 +60,4 @@ const OperationFilter: React.FC<OperationFilterProps> = ({
     );
 };
 
-export default OperationFilter;
+export default OperationsFiltre;

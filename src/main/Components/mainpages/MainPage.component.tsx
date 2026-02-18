@@ -1,5 +1,5 @@
 import React, {JSX, useContext, useEffect, useState} from "react";
-import {Box, Divider, Drawer, Stack, useMediaQuery, useTheme} from "@mui/material";
+import {Box, Container, Divider, Drawer, Stack, useMediaQuery, useTheme} from "@mui/material";
 import {ToastContainer} from "react-toastify";
 import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants.ts";
 import {loadComptes} from "./MainPage.extservices.ts";
@@ -12,10 +12,35 @@ import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.
 import {useAuth} from "react-oidc-context";
 import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
 import { Analyses } from "../analyses/Analyses.component.tsx";
+import { CenterComponent } from "../shared/CenterComponent.tsx";
+import { getCompteGroupByOwner } from "../../Utils/UserData.utils.ts";
 
 
 /**
  * Page principale de gestion des budgets
+ */
+/**
+ * MainPage component - Renders the main application page with budget management functionality
+ * 
+ * @component
+ * @param {MainPageProps} props - Component props
+ * @param {BUSINESS_ONGLETS} props.fonction - The selected business tab/function to display
+ * @returns {JSX.Element} The main page layout with drawer navigation and sub-page content
+ * 
+ * @description
+ * Manages the main application layout including:
+ * - Left drawer with date range selector and account list grouped by owner
+ * - Dynamic sub-page rendering based on selected function (BUDGET, RECURRENTS, ANALYSES)
+ * - Account selection and date change handling
+ * - Responsive design for mobile devices
+ * 
+ * @requires BudgetContext - Context providing comptes, selectedCompte, selectedDate and their setters
+ * @requires useAuth - Hook for authentication and user information
+ * 
+ * @example
+ * ```tsx
+ * <MainPage fonction={BUSINESS_ONGLETS.BUDGET} />
+ * ```
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
@@ -102,24 +127,30 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                 ModalProps={{
                     keepMounted: true,
                 }}>
-                <Stack spacing={2}>
+                <Stack spacing={2} sx={{overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column'}}>
                     <Box sx={{height: isMobile ? 40 : 80}}/>
 
                     {renderLeftTabDate(fonction)}
 
-                    <Stack divider={<Divider orientation="horizontal" flexItem />}>
-                        {
-                            comptes
-                                .filter((compte) => compte.actif)
-                                .filter(compte => compte.proprietaires.flatMap(p => p.login).includes(auth?.user?.profile.email ?? ''))
-                                .map((compte) => (
+                    <Stack divider={<Divider orientation="horizontal" flexItem />} sx={{overflow: 'auto', flex: 1}}>
+                        {Object.entries(
+                            getCompteGroupByOwner(comptes, auth?.user?.profile.email ?? ''))
+                            .map(([owner, ownerComptes]) => (
+                                <Box key={owner}>
+                                    <Container key={"liste_" + owner}
+                                            className={"listeItemSeparator"}>
+                                        {String(auth?.user?.profile.email).toLocaleLowerCase().startsWith(owner.toLocaleLowerCase()) ? "Mes comptes" : "Les comptes de " + owner}
+                                    </Container>
+                                {ownerComptes.map((compte) => (
                                     <CompteItem key={compte.id}
                                         compte={compte}
                                         selectedFunction={fonction}
                                         selectedDate={selectedDate}
                                         onRefreshMenuBar={budgetMenuOpen}
                                         onClick={handleCompteChange} />
-                            ))}
+                                ))}
+                            </Box>
+                        ))}
                     </Stack>
 
                 </Stack>
