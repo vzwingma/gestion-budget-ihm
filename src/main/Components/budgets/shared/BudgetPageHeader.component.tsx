@@ -1,7 +1,7 @@
 import React, {JSX, ReactNode} from "react";
 import {Grid} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import OperationFilter from "./OperationFilter.component.tsx";
+import OperationsFiltre from "./OperationsFiltre.component.tsx";
 
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
 import CompteTitre from "./CompteTitre.component.tsx";
@@ -43,7 +43,7 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
                 />
             </Grid>
             <Grid size={{md: 2.8, xl: 2}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
-                <OperationFilter
+                <OperationsFiltre
                     filterValue={filterOperations}
                     onFilterChange={onFilterChange}
                     placeholder={filterPlaceholder}

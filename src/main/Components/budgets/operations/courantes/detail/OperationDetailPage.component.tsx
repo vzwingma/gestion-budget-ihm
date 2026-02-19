@@ -183,7 +183,15 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;            
             operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
             operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
-            console.log("Changement type opération en fonction de la catégorie sélectionnée :", operation.typeOperation);
+        }
+        /** Si type Actifs Invest, alors type opération = Crédit **/
+        else if(BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente.id) {
+            editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+            editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
+            editOperation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
+            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
+            operation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
         }
     }
 
@@ -281,7 +289,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         {/** 
                          * MENSUALITES
                          **/}
-
+                        { operation.categorie.id !== BUSINESS_GUID.CAT_ACTIFS_INVEST && 
+                        <>
                         <Grid size={{ md: 8, xl: 8 }}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
                         </Grid>
@@ -303,7 +312,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                     errorDateOperation={errors.dateFin}
                                     fillOperationForm={fillOperationForm} />}
                         </Grid>
-
+                        </>
+                    }
 
                         {/** 
                          * ETATS et Actions 
