@@ -57,7 +57,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
     // Grouper les opérations par catégories et sous-catégories et calculer les totaux
     const analyseCategoriesData = useMemo(() => getCategoriesDataForAnalyses(filteredOperations), [filteredOperations]);
 
-    /** Chargement du compte **/
+    /** Chargement du compte et de la période **/
     useEffect(() => {
         console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
         setIsLoading(true);
