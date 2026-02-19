@@ -113,7 +113,8 @@ export function getCategorieColor(idCategorieOperation: string | null): string {
         'b20a46a5-92ab-47a8-a70d-ecb64ddf02ce': "#fc5d6a", // Santé
         '84d00049-bee6-47e9-b424-5246580b020a': "#f9b68b", // Scolarité et enfants
         'c4489fe2-8613-44c3-9eec-72febe6eb2e2': "#F98B97", // Enfants
-        'ea6dcc12-3349-4047-a1e5-cd1d7254f16e': "#54de3d"  // Rentrées
+        'ea6dcc12-3349-4047-a1e5-cd1d7254f16e': "#54de3d",  // Rentrées
+        '33bef45d-9494-4a69-94ea-228a22bbc699': "#1E40AF",  // Actifs Invest
     };
 
     return idCategorieOperation && colorMap[idCategorieOperation as ColorMapKeys]
@@ -132,6 +133,7 @@ export function getCategorieIcon(categorieOperation: CategorieOperationModel): J
 
     const iconFunctions = [
         getCategorieIconRentree,
+        getCategorieIconActifsInvest,
         getCategorieIconDivers,
         getCategorieIconRetraitsVirements,
         getCategorieIconSante,
@@ -176,6 +178,23 @@ function getCategorieIconRentree(categorieOperation: CategorieOperationModel): J
         
         'ed3f6100-5dbd-4b68-860e-0c97ae1bbc74': <CurrencyExchangeRounded/>, // --> Virements internes
         
+    };
+    return (categorieOperation.id && iconMap[categorieOperation.id as keyof typeof iconMap]) || null;
+}
+
+/**
+ * Catégorie Actifs Invest
+ * @param {CategorieOperationModel} categorieOperation : catégorie d'opération
+ * @return {JSX.Element|null}
+ * 
+ */
+function getCategorieIconActifsInvest(categorieOperation: CategorieOperationModel): JSX.Element | null {
+    const iconMap = {
+        '33bef45d-9494-4a69-94ea-228a22bbc699': <SavingsRounded/>, // ACTIFS INVEST
+        '1ceb2dcd-ba4a-49df-a50f-ef85256d5032': <SavingsRounded/>, // Autres actifs
+        '0e168914-1977-482a-8d1f-9c7e4f8c2a0a': <SavingsRounded/>, // Cryptomonnaies
+        '1be7d103-0aeb-491d-b59a-51257344eebf': <SavingsRounded/>, // Actions
+        '49040170-0bb0-47ef-b502-723bf25483de': <SavingsRounded/>, // Investissements
     };
     return (categorieOperation.id && iconMap[categorieOperation.id as keyof typeof iconMap]) || null;
 }

@@ -183,7 +183,13 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;            
             operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
             operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
-            console.log("Changement type opération en fonction de la catégorie sélectionnée :", operation.typeOperation);
+        }
+        /** Si type Actifs Invest, alors type opération = Crédit **/
+        else if(BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente.id) {
+            editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+            editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
+            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
         }
     }
 

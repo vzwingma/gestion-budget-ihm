@@ -48,13 +48,15 @@ export enum UTILISATEUR_PREFERENCES {
 
 /**
  * GUID métiers
- * @type {{CAT_RENTREE_ARGENT: string, SOUS_CAT_VIREMENT_INTER_COMPTES: string}}
+ * @type {{CAT_RENTREE_ARGENT: string, CAT_ACTIFS_INVEST: string, SS_CAT_VIREMENT_INTERNE: string}}
  */
 export const BUSINESS_GUID: {
     CAT_RENTREE_ARGENT: string;
+    CAT_ACTIFS_INVEST: string;
     SS_CAT_VIREMENT_INTERNE: string;
 } = {
     CAT_RENTREE_ARGENT: "ea6dcc12-3349-4047-a1e5-cd1d7254f16e",
+    CAT_ACTIFS_INVEST: "33bef45d-9494-4a69-94ea-228a22bbc699",
     SS_CAT_VIREMENT_INTERNE: "ed3f6100-5dbd-4b68-860e-0c97ae1bbc63"
 }
 

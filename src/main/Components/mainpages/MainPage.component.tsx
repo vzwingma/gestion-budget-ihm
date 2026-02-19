@@ -12,7 +12,6 @@ import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.
 import {useAuth} from "react-oidc-context";
 import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
 import { Analyses } from "../analyses/Analyses.component.tsx";
-import { CenterComponent } from "../shared/CenterComponent.tsx";
 import { getCompteGroupByOwner } from "../../Utils/UserData.utils.ts";
 
 
