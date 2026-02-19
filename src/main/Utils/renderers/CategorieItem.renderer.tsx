@@ -14,6 +14,7 @@ import {
     BalanceRounded,
     BoyRounded,
     BrunchDiningRounded,
+    CandlestickChartOutlined,
     CardGiftcardRounded,
     CarRentalRounded,
     CheckroomRounded,
@@ -46,6 +47,7 @@ import {
     HomeRounded,
     HotelRounded,
     HouseRounded,
+    Inventory2Outlined,
     LocalBarRounded,
     LocalCafeRounded,
     LocalGasStationRounded,
@@ -81,6 +83,7 @@ import {
     TollRounded,
     TrainRounded,
     TravelExploreRounded,
+    TrendingUpOutlined,
     TvRounded,
     VaccinesRounded,
     VideogameAssetOffRounded,
@@ -190,10 +193,10 @@ function getCategorieIconRentree(categorieOperation: CategorieOperationModel): J
  */
 function getCategorieIconActifsInvest(categorieOperation: CategorieOperationModel): JSX.Element | null {
     const iconMap = {
-        '33bef45d-9494-4a69-94ea-228a22bbc699': <SavingsRounded/>, // ACTIFS INVEST
-        '1ceb2dcd-ba4a-49df-a50f-ef85256d5032': <SavingsRounded/>, // Autres actifs
-        '0e168914-1977-482a-8d1f-9c7e4f8c2a0a': <SavingsRounded/>, // Cryptomonnaies
-        '1be7d103-0aeb-491d-b59a-51257344eebf': <SavingsRounded/>, // Actions
+        '33bef45d-9494-4a69-94ea-228a22bbc699': <TrendingUpOutlined/>, // ACTIFS INVEST
+        '1ceb2dcd-ba4a-49df-a50f-ef85256d5032': <Inventory2Outlined/>, // Autres actifs
+        '0e168914-1977-482a-8d1f-9c7e4f8c2a0a': <CurrencyExchangeRounded/>, // Cryptomonnaies
+        '1be7d103-0aeb-491d-b59a-51257344eebf': <CandlestickChartOutlined/>, // Actions
         '49040170-0bb0-47ef-b502-723bf25483de': <SavingsRounded/>, // Investissements
     };
     return (categorieOperation.id && iconMap[categorieOperation.id as keyof typeof iconMap]) || null;
