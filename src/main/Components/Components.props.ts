@@ -33,6 +33,7 @@ export interface AnalysesTitreProps {
 export interface AnalysesFiltresProps {
     isLoading: boolean;
     currentPeriode: AnalysesPeriodeModel;
+    selectedCompte: CompteBancaireModel | null;
     setPeriodeAnalyses: Dispatch<SetStateAction<AnalysesPeriodeModel>>;
     filters: AnalysesFiltersModel;
     setFilters: Dispatch<SetStateAction<AnalysesFiltersModel>>;
@@ -41,6 +42,7 @@ export interface AnalysesFiltresProps {
 
 export interface AnalysesFiltrePeriodeProps {
     periode: AnalysesPeriodeModel;
+    selectedCompte: CompteBancaireModel | null;
     onChange: (periode: AnalysesPeriodeModel) => void;
 }
 

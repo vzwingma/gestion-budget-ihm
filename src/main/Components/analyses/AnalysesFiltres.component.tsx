@@ -15,7 +15,7 @@ import { AnalysesFiltreCategories } from "./filtres/AnalysesFiltreCategories.com
  * @param {Object} props.currentPeriode - La période courante.
  * @returns {JSX.Element} Le composant du titre de l'analyse temporelle.
  */
-const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPeriode, setPeriodeAnalyses, filters, setFilters, distinctCategories }: AnalysesFiltresProps): JSX.Element => {
+const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPeriode, selectedCompte, setPeriodeAnalyses, filters, setFilters, distinctCategories }: AnalysesFiltresProps): JSX.Element => {
 
     const handlePeriodeChange = useCallback((periode) => {
         setPeriodeAnalyses(periode);
@@ -35,6 +35,8 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
     }, [setFilters]);
 
 
+    
+
     return (
         <>
             <Backdrop
@@ -45,7 +47,7 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
             {/* Création d'une pile pour l'affichage du titre */}
             <Stack direction={"column"} spacing={2} justifyContent="center" >
                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Périodes</Typography>
-                    <AnalysesFiltrePeriodeComponent periode={currentPeriode} onChange={handlePeriodeChange} />
+                    <AnalysesFiltrePeriodeComponent periode={currentPeriode} selectedCompte={selectedCompte} onChange={handlePeriodeChange} />
                 <Divider flexItem />
                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Types </Typography>
                     <AnalysesFiltreTypesCategories selectedTypes={filters.selectedTypes} onChange={handleSelectedTypesChange} />

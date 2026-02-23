@@ -54,7 +54,7 @@ export const SERVICES_URL: {
         ETAT: string;
         GET_BY_COMPTE: string;
         GET_BY_COMPTE_DATES: string;
-        INTERVALLE: string;
+        INTERVALLES: string;
         REINIT: string;
         SOLDES: string;
         SOLDES_ANNEE: string;
@@ -74,7 +74,7 @@ export const SERVICES_URL: {
         ETAT: "/{{}}/etat?actif={{}}",
         GET_BY_COMPTE: "/query?idCompte={{}}",
         GET_BY_COMPTE_DATES: "/query?idCompte={{}}&annee={{}}&mois={{}}",
-        INTERVALLE: "/{{}}/intervalles",
+        INTERVALLES: "/intervalles?idCompte={{}}",
         REINIT: "/{{}}",
         SOLDES: "/soldes?idCompte={{}}&annee={{}}&mois={{}}",
         SOLDES_ANNEE: "/soldes?idCompte={{}}&annee={{}}",

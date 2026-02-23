@@ -125,6 +125,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 <Box sx={{ padding: 1, }}>
                                     <AnalysesFiltres isLoading={isLoading}
                                         currentPeriode={periodeAnalyses}
+                                        selectedCompte={selectedCompte}
                                         setPeriodeAnalyses={setPeriodeAnalyses}
                                         filters={filters}
                                         setFilters={setFilters}

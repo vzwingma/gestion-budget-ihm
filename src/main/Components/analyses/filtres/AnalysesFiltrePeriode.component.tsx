@@ -14,19 +14,35 @@ import {
 } from '@mui/material';
 import { AnalysesPeriodeModel } from '../../../Models/analyses/AnalysesPeriode.model.ts';
 import { AnalysesFiltrePeriodeProps } from '../../Components.props.ts';
+import { getValidPeriodesForCompte } from '../Analyses.extservices.ts';
 
 
 
-
-export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps> = ({ periode, onChange }) => {
+/**
+ * Composant pour le filtre de période dans les analyses.
+ * @param {Object} props - Les propriétés passées au composant.
+ * @param {AnalysesPeriodeModel} props.periode - La période actuelle.
+ * @param {CompteBancaireModel | null} props.selectedCompte - Le compte sélectionné.
+ * @param {Function} props.onChange - Fonction appelée lorsque la période change.
+ * @returns {JSX.Element} Le composant du filtre de période.
+ */
+export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps> = ({ periode, selectedCompte, onChange }) => {
     const [vuePeriode, setVuePeriode] = useState<boolean>(periode.vuePeriode);
     const [dateDebut, setDateDebut] = useState<Date | null>(periode.periodeDebut || new Date());
     const [dateFin, setDateFin] = useState<Date | null>(periode.periodeFin || new Date());
+    const [dateMinBudget, setDateMinBudget] = useState<Date | null>(null);
+    const [dateMaxBudget, setDateMaxBudget] = useState<Date | null>(null);
 
     const aujourdhui = new Date();
     const moisCourant = aujourdhui.getMonth();
     const anneeCourante = aujourdhui.getFullYear();
+    const formatMonth = (date: Date): string => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    const todayMonth = formatMonth(aujourdhui);
+    const minBudgetMonth = dateMinBudget ? formatMonth(dateMinBudget) : undefined;
+    const maxBudgetMonth = dateMaxBudget ? formatMonth(dateMaxBudget) : todayMonth;
 
+
+    /** Calcule la durée de la période en mois */
     const calculerDuree = (): number => {
         if (vuePeriode) {
             if (dateDebut && dateFin) {
@@ -40,6 +56,10 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
         return 0;
     };
 
+    /** Applique un raccourci de période 
+     * @param moisRecul nombre de mois à reculer pour le raccourci
+     * @param typeRaccourci type de raccourci (optionnel) : 'annee-courante' ou 'annee-precedente'
+     */
     const appliquerRaccourci = (moisRecul: number, typeRaccourci?: 'annee-courante' | 'annee-precedente') => {
         setVuePeriode(true);
         let debut: Date;
@@ -54,18 +74,75 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
             debut = new Date(anneeCourante, moisCourant - moisRecul + 1, 1);
         }
 
+        if (dateMinBudget && debut < dateMinBudget) {
+            debut = new Date(dateMinBudget);
+        }
+
+        if (dateMaxBudget && fin > dateMaxBudget) {
+            fin = new Date(dateMaxBudget);
+        }
+
+        if (debut > fin) {
+            if (dateMinBudget && dateMaxBudget) {
+                debut = new Date(dateMinBudget);
+                fin = new Date(dateMaxBudget);
+            } else {
+                debut = new Date(fin);
+            }
+        }
+
         setDateDebut(debut);
         setDateFin(fin);
     };
 
+    /** Effet pour notifier le parent du changement de période */
     useEffect(() => {
+        let periodeDebutNormalisee = (dateDebut || new Date());
+        let periodeFinNormalisee = (dateFin || new Date());
+
+        if (vuePeriode && dateDebut && dateFin) {
+            const diffMois = (dateFin.getFullYear() - dateDebut.getFullYear()) * 12 +
+                (dateFin.getMonth() - dateDebut.getMonth()) + 1;
+
+            if (diffMois > 12) {
+                periodeDebutNormalisee = new Date(dateFin.getFullYear(), dateFin.getMonth() - 11, 1);
+
+                if (dateDebut.getTime() !== periodeDebutNormalisee.getTime()) {
+                    setDateDebut(periodeDebutNormalisee);
+                }
+            }
+        }
+
         const nouvellePeriode: AnalysesPeriodeModel = {
             vuePeriode: vuePeriode,
-            periodeDebut: (dateDebut || new Date()),
-            periodeFin: (dateFin || new Date())
+            periodeDebut: periodeDebutNormalisee,
+            periodeFin: periodeFinNormalisee
         };
         onChange(nouvellePeriode);
     }, [vuePeriode, dateDebut, dateFin, onChange]);
+
+
+    /** Effet pour charger les intervalles de budget valides lorsque le compte sélectionné change */
+    useEffect(() => {
+        if (selectedCompte) {
+            getValidPeriodesForCompte(selectedCompte)
+                .then(intervallesBudget => {
+                    console.log("Périodes d'analyses valides pour le compte " + selectedCompte?.libelle, intervallesBudget);
+
+                    if (intervallesBudget && intervallesBudget.length > 0) {
+                        setDateMinBudget(intervallesBudget[0].debut);
+                        setDateMaxBudget(intervallesBudget[0].fin);
+                    } else {
+                        setDateMinBudget(null);
+                        setDateMaxBudget(null);
+                    }
+                })
+        } else {
+            setDateMinBudget(null);
+            setDateMaxBudget(null);
+        }
+    }, [selectedCompte]);
+
 
     return (
         <Stack direction="column" spacing={2} paddingLeft={2}>
@@ -80,7 +157,7 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                 <TextField
                     label="Mois" type="month"
                     variant='standard' size={'small'}
-                    value={dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`}
+                    value={dateFin ? formatMonth(dateFin) : todayMonth}
                     onChange={(e) => {
                         const [year, month] = e.target.value.split('-');
                         setDateDebut(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
@@ -89,7 +166,8 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                     slotProps={{
                         inputLabel: { shrink: true },
                         htmlInput: {
-                            max: `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
+                            min: minBudgetMonth,
+                            max: maxBudgetMonth
                         }
                     }}
                 />
@@ -102,7 +180,7 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                             label="Début" type="month"
                             variant='standard' size={'small'}
                             sx={{ minWidth: '45%' }}
-                            value={dateDebut ? `${dateDebut.getFullYear()}-${String(dateDebut.getMonth() + 1).padStart(2, '0')}` : ''}
+                            value={dateDebut ? formatMonth(dateDebut) : ''}
                             onChange={(e) => {
                                 const [year, month] = e.target.value.split('-');
                                 setDateDebut(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
@@ -110,7 +188,8 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                             slotProps={{
                                 inputLabel: { shrink: true },
                                 htmlInput: {
-                                    max: dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
+                                    min: minBudgetMonth,
+                                    max: dateFin ? formatMonth(dateFin) : maxBudgetMonth
                                 }
                             }}
                         />
@@ -118,7 +197,7 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                             label="Fin" type="month"
                             variant='standard' size={'small'}
                             sx={{ minWidth: '45%' }}
-                            value={dateFin ? `${dateFin.getFullYear()}-${String(dateFin.getMonth() + 1).padStart(2, '0')}` : ''}
+                            value={dateFin ? formatMonth(dateFin) : ''}
                             onChange={(e) => {
                                 const [year, month] = e.target.value.split('-');
                                 setDateFin(new Date(Number.parseInt(year), Number.parseInt(month) - 1, 1));
@@ -126,8 +205,8 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                             slotProps={{
                                 inputLabel: { shrink: true },
                                 htmlInput: {
-                                    min: dateDebut ? `${dateDebut.getFullYear()}-${String(dateDebut.getMonth() + 1).padStart(2, '0')}` : undefined,
-                                    max: `${aujourdhui.getFullYear()}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}`
+                                    min: dateDebut ? formatMonth(dateDebut) : minBudgetMonth,
+                                    max: maxBudgetMonth
                                 }
                             }}
                         />
