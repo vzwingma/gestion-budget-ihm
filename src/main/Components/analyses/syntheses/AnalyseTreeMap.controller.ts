@@ -1,4 +1,5 @@
 import AnalyseCategoriesModel from "../../../Models/analyses/syntheses/AnalyseCategories.model.ts";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 import { generateDerivedColors } from "../../../Utils/renderers/DerivedColors.renderer.utils.ts";
 
 interface TreemapNode {
@@ -13,7 +14,8 @@ interface TreemapNode {
 }
 
 
-export function useAnalyseTreeMapData(analyseCategoriesData: AnalyseCategoriesModel[], selectedCategoryId: string | null) {
+export function useAnalyseTreeMapData(analyseCategoriesData: AnalyseCategoriesModel[], selectedCategory: CategorieOperationModel[] | null) {
+
         if (!analyseCategoriesData || analyseCategoriesData.length === 0) {
             return { treemapData: [], selectedCategoryName: null };
         }
@@ -46,13 +48,13 @@ export function useAnalyseTreeMapData(analyseCategoriesData: AnalyseCategoriesMo
             .sort((a, b) => b.size - a.size);
 
         // If a category is selected, show only its subcategories
-        if (selectedCategoryId) {
-            const selectedCategory = allCategories.find(cat => cat.categoryId === selectedCategoryId);
-            if (selectedCategory?.children) {
-                const sortedChildren = [...selectedCategory.children].sort((a, b) => b.size - a.size);
+        if (selectedCategory?.length == 1) {
+            const selectedCategoryNode = allCategories.find(cat => cat.categoryId === selectedCategory[0].id);
+            if (selectedCategoryNode?.children) {
+                const sortedChildren = [...selectedCategoryNode.children].sort((a, b) => b.size - a.size);
                 return {
                     treemapData: sortedChildren,
-                    selectedCategoryName: selectedCategory.name
+                    selectedCategory: selectedCategory[0]
                 };
             }
         }
@@ -63,6 +65,6 @@ export function useAnalyseTreeMapData(analyseCategoriesData: AnalyseCategoriesMo
                 ...cat,
                 children: undefined // Remove children in main view to avoid nesting
             })),
-            selectedCategoryName: null
+            selectedCategory: null
         };
     }

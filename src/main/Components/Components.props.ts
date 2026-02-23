@@ -85,6 +85,9 @@ export interface AnalyseEvolutionProps {
 
 export interface AnalyseCategoriesListeProps {
     analyseCategories: AnalyseCategoriesModel[]
+    selectedCategories?: CategorieOperationModel[]
+    setFilters?: Dispatch<SetStateAction<AnalysesFiltersModel>>
+
 }
 
 

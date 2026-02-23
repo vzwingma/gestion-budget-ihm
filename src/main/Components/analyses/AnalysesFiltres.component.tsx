@@ -5,6 +5,7 @@ import { AnalysesFiltrePeriodeComponent } from "./filtres/AnalysesFiltrePeriode.
 import { AnalysesFiltreTypesCategories } from "./filtres/AnalysesFiltreTypesCategories.component.tsx";
 import { AnalysesFiltresOperation } from "./filtres/AnalysesFiltresOperation.component.tsx";
 import { AnalysesFiltreCategories } from "./filtres/AnalysesFiltreCategories.component.tsx";
+import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 
 
 
@@ -30,7 +31,7 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
         setFilters(prev => ({ ...prev, selectedOperationEtats: etats, selectedOperationTypes: types }));
     }, [setFilters]);
 
-    const handleCategoriesChange = useCallback((categories) => {
+    const handleCategoriesChange = useCallback((categories : CategorieOperationModel[]) => {
         setFilters(prev => ({ ...prev, selectedCategories: categories }));
     }, [setFilters]);
 

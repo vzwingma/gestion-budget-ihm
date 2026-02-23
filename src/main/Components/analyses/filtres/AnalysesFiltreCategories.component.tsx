@@ -26,7 +26,7 @@ export const AnalysesFiltreCategories: React.FC<AnalysesFiltresCategoriesProps> 
      * @param {any} event - L'événement de changement
      * @param {CategorieOperationModel[]} newValue - Les nouvelles catégories sélectionnées
      */
-    const handleCategoriesChange = (event: any, newValue: CategorieOperationModel[]) => {
+    const handleCategoriesChange = (_: any, newValue: CategorieOperationModel[]) => {
         onChange(newValue);
     };
 

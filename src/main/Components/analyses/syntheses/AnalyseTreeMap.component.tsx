@@ -1,4 +1,4 @@
-import React, { JSX, useState } from "react";
+import React, { JSX } from "react";
 import { AnalyseCategoriesListeProps } from "../../Components.props.ts";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
@@ -7,27 +7,29 @@ import AnalyseTreeMapContent from "./AnalyseTreeMapContent.component.tsx";
 import AnalyseTreeMapTooltip from "./AnalyseTreeMapTooltip.component.tsx";
 import { useAnalyseTreeMapData } from "./AnalyseTreeMap.controller.ts";
 import { NoDataComponent } from "../../shared/NoDataComponent.tsx";
+import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 
 
 
-const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategories: analyseCategoriesData }): JSX.Element => {
-
-    const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategories: analyseCategoriesData, selectedCategories, setFilters }): JSX.Element => {
 
     /**
      * Transform analyse categories data into treemap format
      */
-    const { treemapData, selectedCategoryName } = useAnalyseTreeMapData(
+    const { treemapData, selectedCategory } = useAnalyseTreeMapData(
         analyseCategoriesData,
-        selectedCategoryId
+        selectedCategories
     );
 
     /**
      * Handle click on a category to drill down
      */
-    const handleCategoryClick = (categoryId: string | undefined) => {
-        if (categoryId) {
-            setSelectedCategoryId(categoryId);
+    const handleCategoryClick = (selectedCategory: CategorieOperationModel | undefined) => {
+        if (selectedCategory) {
+            setFilters?.(prev => ({
+                ...prev,
+                selectedCategories: [selectedCategory]
+            }));
         }
     };
 
@@ -35,7 +37,10 @@ const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategori
      * Reset to show all categories
      */
     const handleBackToAll = () => {
-        setSelectedCategoryId(null);
+        setFilters?.(prev => ({
+            ...prev,
+            selectedCategories: []
+        }));
     };
 
     if (!treemapData || treemapData.length === 0) {
@@ -54,16 +59,16 @@ const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategori
                         alignItems: 'center',
                         textDecoration: 'none',
                         cursor: 'pointer',
-                        color: selectedCategoryName ? 'primary.main' : 'text.primary',
+                        color: selectedCategory ? 'primary.main' : 'text.primary',
                         '&:hover': {
                             textDecoration: 'underline',
                         },
                     }}>
                     <HomeIcon sx={{ mr: 0.5, fontSize: '1.2rem' }} />
                 </Link>
-                {selectedCategoryName && (
+                {selectedCategory && (
                     <Typography variant="body2" color="text.primary" sx={{ fontWeight: 500 }}>
-                        {selectedCategoryName}
+                        {selectedCategory.libelle}
                     </Typography>
                 )}
             </Breadcrumbs>
@@ -78,9 +83,8 @@ const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategori
                         content={(props: any) => (
                             <AnalyseTreeMapContent 
                                 {...props} 
-                                onClick={!selectedCategoryName && props.categoryId 
-                                    ? () => handleCategoryClick(props.categoryId) 
-                                    : undefined
+                                onClick={!selectedCategory && props.categoryId 
+                                    ? () => { handleCategoryClick(analyseCategoriesData.find(cat => cat.categorie.id === props.categoryId)?.categorie); } : undefined
                                 }
                             />
                         )}

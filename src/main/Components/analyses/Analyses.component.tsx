@@ -149,7 +149,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 <Grid container sx={{ overflow: "hidden", height: "calc(100vh - 23%)"}} >
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "49%" }}>
                                         <ExpandableDetailSection label={`Treemap des catégories`}>
-                                            <AnalyseTreeMap analyseCategories={analyseCategoriesData} />
+                                            <AnalyseTreeMap analyseCategories={analyseCategoriesData} selectedCategories={filters.selectedCategories} setFilters={setFilters} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "49%" }}>
