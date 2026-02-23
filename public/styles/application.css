@@ -515,7 +515,6 @@ ______          _    _
 
 .editableField--disabled {
     cursor: not-allowed;
-    color: var(--color-heading-text) !important;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {

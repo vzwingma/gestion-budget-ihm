@@ -36,8 +36,8 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
         months.map(month => 
             loadBudget(selectedCompte, month)
                 .then(budget => {
-                    console.log("Budget ", selectedCompte.libelle, " de ", (month.getMonth() + 1), "/", month.getFullYear(), " chargé avec ", budget.listeOperations.length, " opérations");
-                    return budget.listeOperations;
+                    console.log("Budget ", selectedCompte.libelle, " de ", (month.getMonth() + 1), "/", month.getFullYear(), " chargé avec ", budget?.listeOperations?.length || 0, " opérations");
+                    return budget?.listeOperations || [];
                 })
                 .catch((e) => {
                     let libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte.libelle + " du " + (month.getMonth() + 1) + "/" + month.getFullYear();
