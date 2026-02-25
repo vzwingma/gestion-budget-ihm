@@ -48,6 +48,8 @@
     "start:qua": "npm run minify-css && env-cmd -f .env.qua react-scripts start",
     "start:prod": "npm run minify-css && env-cmd -f .env.prod react-scripts start",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "sonar": "sonar-scanner",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.ts src/**/*.tsx",
     "prod": "npm run minify-css && webpack --mode production --config webpack.config.js"

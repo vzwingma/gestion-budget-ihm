@@ -48,7 +48,7 @@ export function useAnalyseTreeMapData(analyseCategoriesData: AnalyseCategoriesMo
             .sort((a, b) => b.size - a.size);
 
         // If a category is selected, show only its subcategories
-        if (selectedCategory?.length == 1) {
+        if (selectedCategory?.length === 1) {
             const selectedCategoryNode = allCategories.find(cat => cat.categoryId === selectedCategory[0].id);
             if (selectedCategoryNode?.children) {
                 const sortedChildren = [...selectedCategoryNode.children].sort((a, b) => b.size - a.size);
