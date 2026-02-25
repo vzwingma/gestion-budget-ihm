@@ -23,10 +23,6 @@ jest.mock('./OperationDetailPage.constants.ts', () => ({
     createEmptyErrors: () => mockCreateEmptyErrors()
 }));
 
-jest.mock('../../../../../Utils/OperationData.utils.ts', () => ({
-    getEventTargetId: jest.fn(() => 'OPERATION_VALUE')
-}));
-
 jest.mock('./OperationDetailPage.extservices.ts', () => ({
     saveOperation: jest.fn(),
     saveOperationIntercompte: jest.fn()

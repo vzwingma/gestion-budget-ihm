@@ -1,5 +1,5 @@
 import {getOperationsRecurrentesGroupedByPeriodicity} from './Recurrents.controller.ts';
-import {OPERATION_STATUS_ENUM, PERIODES_MENSUALITE_ENUM} from '../../../Utils/AppBusinessEnums.constants.ts';
+import {PERIODES_MENSUALITE_ENUM} from '../../../Utils/AppBusinessEnums.constants.ts';
 
 jest.mock('../../../Utils/OperationData.utils.ts', () => ({
     sortPeriodicOperations: jest.fn(() => 0)

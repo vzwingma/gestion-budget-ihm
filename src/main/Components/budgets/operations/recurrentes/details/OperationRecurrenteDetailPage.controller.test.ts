@@ -16,10 +16,6 @@ jest.mock('./OperationRecurrenteDetailPage.constants.ts', () => ({
     createEmptyErrors: () => mockCreateEmptyErrors()
 }));
 
-jest.mock('../../../../../Utils/OperationData.utils.ts', () => ({
-    getEventTargetId: jest.fn(() => 'OPERATION_DATE_FIN')
-}));
-
 jest.mock('../../courantes/detail/OperationDetailPage.extservices.ts', () => ({
     saveOperation: jest.fn()
 }));

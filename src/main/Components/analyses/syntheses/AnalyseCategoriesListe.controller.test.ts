@@ -28,7 +28,7 @@ describe('AnalyseCategoriesListe.controller', () => {
             }
         } as any;
 
-        const sorted = getSortedSubCategories(category as any);
+        const sorted = getSortedSubCategories(category);
 
         expect(sorted[0].ssCategorie.libelle).toBe('A');
         expect(sorted[1].ssCategorie.libelle).toBe('B');
