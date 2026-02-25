@@ -94,8 +94,8 @@ jobs:
       - uses: actions/upload-artifact@v6
         name: Upload coverage report
         with:
-          name: coverage-report
-          path: coverage/
+          name: lcov-report
+          path: coverage/lcov.info
           
   sonarcloud:
     runs-on: ubuntu-latest
@@ -111,8 +111,10 @@ jobs:
       - uses: actions/download-artifact@v7
         name: Download coverage report
         with:
-          name: coverage-report
-          path: .
+          name: lcov-report
+          path: coverage
+      - name: Check coverage file
+        run: test -f coverage/lcov.info
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@v7
         with:
