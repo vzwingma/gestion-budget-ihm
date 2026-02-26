@@ -45,7 +45,7 @@ jobs:
       - run: npm run build --if-present 
         name: Build Staging
       - run: zip -r app_build.zip build/*
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         name: Upload IHM app
         with:
           path: app_build.zip
@@ -91,7 +91,7 @@ jobs:
         name: CI Install
       - run: npm run test:coverage -- --runInBand
         name: Run unit tests with coverage
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         name: Upload coverage report
         with:
           name: lcov-report
@@ -108,7 +108,7 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         name: Download coverage report
         with:
           name: lcov-report
@@ -139,7 +139,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         name: Download IHM app
         with:
           name: app_build.zip
