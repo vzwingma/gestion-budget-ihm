@@ -52,6 +52,7 @@ jobs:
           name: app_build.zip
   # LINT
   lint:
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'dependabot') }}
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions:
@@ -128,6 +129,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   # Deploy sur S3
   deploy:
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'dependabot') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
