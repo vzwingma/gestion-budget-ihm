@@ -7,11 +7,12 @@ import { loadBudget } from "./Analyses.extservices.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 import OperationModel from "../../Models/budgets/Operation.model.ts";
 import { AnalysesFiltersModel } from "../../Models/analyses/AnalysesFilters.model.ts";
+import BudgetMensuelAnalyseConsolideModel from "../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
 
 /**
  * Contrôleur des analyses
  */
-export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, periodeAnalyses: AnalysesPeriodeModel, handleDataCalculationResult: (budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[]) => void) {
+export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, periodeAnalyses: AnalysesPeriodeModel, handleDataCalculationResult: (budgetConsolide: BudgetMensuelAnalyseConsolideModel, distinctCategories: CategorieOperationModel[]) => void) {
     const startDate = new Date(periodeAnalyses.periodeDebut);
     const endDate = new Date(periodeAnalyses.periodeFin);
 
@@ -21,9 +22,8 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
     }
 
     console.log("Chargement des budgets pour le compte ", selectedCompte.libelle, " de la période ", startDate.toLocaleDateString(), " à ", endDate.toLocaleDateString());
-    let budgetConsolide = new BudgetMensuelModel("analyses-consolide", "Budget Analyses Consolidé");
+    let budgetConsolide = new BudgetMensuelAnalyseConsolideModel("analyses-consolide");
     budgetConsolide.idCompteBancaire = selectedCompte.id;
-    budgetConsolide.actif = true;
     budgetConsolide.listeOperations = [];
     
     // Aggregate all budgets in parallel
@@ -33,22 +33,29 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
     }
 
     Promise.all(
-        months.map(month => 
+        months.map(month =>
             loadBudget(selectedCompte, month)
                 .then(budget => {
                     console.log("Budget ", selectedCompte.libelle, " de ", (month.getMonth() + 1), "/", month.getFullYear(), " chargé avec ", budget?.listeOperations?.length || 0, " opérations");
-                    return budget?.listeOperations || [];
+                    return { month, budget };
                 })
                 .catch((e) => {
                     let libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte.libelle + " du " + (month.getMonth() + 1) + "/" + month.getFullYear();
                     console.log(libErreur, e);
                     toast.error(libErreur, {autoClose: false, closeOnClick: true});
-                    return [];
+                    return { month, budget: null };
                 })
         )
     )
-    .then(allOperations => {
-        budgetConsolide.listeOperations = allOperations.flat();
+    .then((monthlyBudgets: { month: Date, budget: BudgetMensuelModel | null }[]) => {
+        budgetConsolide.listeOperations = monthlyBudgets.flatMap(({ budget }) => budget?.listeOperations || []);
+        budgetConsolide.soldesParMois = monthlyBudgets.reduce((acc, { month, budget }) => {
+            if (budget?.soldes) {
+                const monthKey = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}`;
+                acc[monthKey] = budget.soldes;
+            }
+            return acc;
+        }, {});
         const distinctCategories = [...new Set(budgetConsolide.listeOperations.map(op => op.categorie.id))]
                                                                               .map(id => budgetConsolide.listeOperations
                                                                                 .find(op => op.categorie.id === id)?.categorie)

@@ -6,6 +6,7 @@ import OperationModel from "../../../Models/budgets/Operation.model.ts";
 import { GraphAnalyseTimelineItemModel } from "../../../Models/analyses/syntheses/GraphAnalyseMensuel.model.ts";
 import { GraphAnalyseTimelineModel } from "../../../Models/analyses/syntheses/GraphAnalyseTimeline.model.ts";
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
+import BudgetMensuelAnalyseConsolideModel from "../../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
 
 /**
  * Extrait le mois et l'année d'une date d'opération
@@ -34,11 +35,36 @@ function createTimelineLabel(month: number, year: number): string {
 }
 
 /**
+ * Extrait la clé mois YYYY-MM depuis l'id de la timeline (format attendu: evolution_YYYY_M)
+ * @param timelineId identifiant de la timeline au format evolution_YYYY_M
+ * @returns {string | null} clé au format YYYY-MM ou null si format invalide
+ */
+function extractMonthKeyFromTimelineId(timelineId?: string): string | null {
+    if (!timelineId?.startsWith('evolution_')) {
+        return null;
+    }
+
+    const parts = timelineId.replace('evolution_', '').split('_');
+    if (parts.length !== 2) {
+        return null;
+    }
+
+    const year = Number(parts[0]);
+    const monthIndex = Number(parts[1]);
+
+    if (Number.isNaN(year) || Number.isNaN(monthIndex)) {
+        return null;
+    }
+
+    return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+}
+
+/**
  * Prépare les données pour la vue mensuelle (date courante vs fin du mois)
  * @param operations liste des opérations
  * @returns {GraphAnalyseTimelineItemModel[]} deux points de données: aujourd'hui et fin du mois
  */
-function prepareMonthlyViewData(operations: OperationModel[]): GraphAnalyseTimelineItemModel[] {
+function prepareMonthlyViewData(budgetConsolide: BudgetMensuelAnalyseConsolideModel, operations: OperationModel[]): GraphAnalyseTimelineItemModel[] {
     const categoriesMap = new Map<string, boolean>();
 
     // Point 1: Date courante avec opérations réalisées
@@ -95,13 +121,37 @@ function prepareMonthlyViewData(operations: OperationModel[]): GraphAnalyseTimel
         return flattened;
     };
 
-    return [flattenData(currentDateData), flattenData(endOfMonthData)];
+    const flattenedData = [flattenData(currentDateData), flattenData(endOfMonthData)];
+    
+    // Ajouter les soldes depuis budgetConsolide.soldesParMois
+    // Identifier le mois courant depuis les opérations
+    if (operations.length > 0 && budgetConsolide?.soldesParMois) {
+        const [month, year] = getMonthYearFromOperation(operations[0]);
+        const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+        
+        if (budgetConsolide.soldesParMois[monthKey]) {
+            const soldes = budgetConsolide.soldesParMois[monthKey] as any;
+            // currentDateData: solde actuel (soldeAtMaintenant)
+            flattenedData[0].solde = soldes.soldeAtMaintenant ?? 0;
+            // endOfMonthData: solde de fin de mois (soldeAtFinMoisCourant)
+            flattenedData[1].solde = soldes.soldeAtFinMoisCourant ?? 0;
+        }
+    }
+    
+    return flattenedData;
 }
 
 
-function preparePeriodViewData(operations: OperationModel[]): GraphAnalyseTimelineItemModel[] {
+/**
+ * Préparation des données pour la vue périodique (évolution mois par mois)
+ * @param budgetConsolide  budget consolidé pour l'analyse, contenant les soldes par mois
+ * @param operations liste des opérations à analyser
+ * @returns les données de la vue périodique
+ */
+function preparePeriodViewData(budgetConsolide: BudgetMensuelAnalyseConsolideModel, operations: OperationModel[]): GraphAnalyseTimelineItemModel[] {
     const timelineData: GraphAnalyseTimelineModel = { dataGraphTimelineItem: {} };
     const categoriesMap = new Map<string, boolean>(); // Pour tracer les catégories actives
+
 
     // Première passe: regrouper les opérations par mois et catégorie
     operations.forEach(operation => {
@@ -155,6 +205,21 @@ function preparePeriodViewData(operations: OperationModel[]): GraphAnalyseTimeli
 
 
     flatData.sort((a, b) => a.id.localeCompare(b.id));
+    
+    // Troisième passe: ajouter l'évolution du solde mois par mois depuis budgetConsolide.soldesParMois
+    // Règle: premier mois = soldeAtFinMoisPrecedent, mois suivants = soldeAtFinMois
+    const soldesParMois = budgetConsolide?.soldesParMois || {};
+    flatData.forEach((dataItem, index) => {
+        // Extraire la clé YYYY-MM depuis l'id (format: evolution_YYYY_M)
+        const monthKey = extractMonthKeyFromTimelineId(dataItem.id);
+        if (monthKey && soldesParMois[monthKey]) {
+            const soldes = soldesParMois[monthKey] as any;
+            const soldeAtFinMois = soldes.soldeAtFinMois ?? soldes.soldeAtFinMoisCourant ?? 0;
+            // Premier mois: soldeAtFinMoisPrecedent, autres mois: soldeAtFinMois
+            dataItem.solde = index === 0 ? (soldes.soldeAtFinMoisPrecedent ?? 0) : soldeAtFinMois;
+        }
+    });
+    
     return flatData;
 }
 /**
@@ -163,8 +228,8 @@ function preparePeriodViewData(operations: OperationModel[]): GraphAnalyseTimeli
  * @param isVueMensuelle si true, affiche la vue mensuelle (date courante vs fin du mois)
  * @returns {GraphAnalyseTimelineItemModel[]} données préparées pour le graphique
  */
-export function prepareGraphDataFromOperations(operations: OperationModel[], isVueMensuelle: boolean = false): GraphAnalyseTimelineItemModel[] {
-    return isVueMensuelle ? prepareMonthlyViewData(operations) : preparePeriodViewData(operations);
+export function prepareGraphDataFromOperations(budgetConsolide: BudgetMensuelAnalyseConsolideModel, operations: OperationModel[], isVueMensuelle: boolean = false): GraphAnalyseTimelineItemModel[] {
+    return isVueMensuelle ? prepareMonthlyViewData(budgetConsolide, operations) : preparePeriodViewData(budgetConsolide, operations);
 }
 
 /**
