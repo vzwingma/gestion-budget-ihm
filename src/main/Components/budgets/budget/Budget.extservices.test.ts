@@ -50,7 +50,7 @@ describe('Budget.extservices', () => {
         const handleBudgetUpdate = jest.fn();
 
         reloadBudget(handleBudgetUpdate as any, null, new Date());
-        reloadBudget(handleBudgetUpdate as any, {id: 'c1'} as any, undefined);
+        reloadBudget(handleBudgetUpdate as any, {id: 'c1'} as any);
 
         expect(call).not.toHaveBeenCalled();
         expect(handleBudgetUpdate).not.toHaveBeenCalled();

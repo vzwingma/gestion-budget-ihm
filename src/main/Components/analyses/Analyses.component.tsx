@@ -7,7 +7,6 @@ import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
 import { AnalyseSyntheseTypes } from "./syntheses/AnalyseSyntheseTypes.component.tsx";
-import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
 import { applyFiltersToOperations, loadBudgetsPeriodes } from "./Analyses.controller.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 import { AnalysesFiltersModel, getDefaultAnalysesFilters } from "../../Models/analyses/AnalysesFilters.model.ts";
@@ -17,16 +16,24 @@ import AnalyseCategoriesListe from "./syntheses/AnalyseCategoriesListe.component
 import { getCategoriesDataForAnalyses } from "./syntheses/AnalyseCategoriesListe.controller.ts";
 import AnalyseTreeMap from "./syntheses/AnalyseTreeMap.component.tsx";
 import AnalyseEvolution from "./syntheses/AnalyseEvolution.component.tsx";
-
-
+import BudgetMensuelAnalyseConsolideModel from "../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
 
 
 /**
- * Tuile  d'une liste d'opérations
- * @param operationGroupedByDate opérations groupées par date d'opérations
- * @returns {JSX.Element} tuile
- * @constructor constructeur
- *
+ * Composant Analyses - Page d'analyse budgétaire détaillée
+ * 
+ * Affiche une vue d'analyse complète du budget pour un compte sélectionné avec:
+ * - Filtrage des opérations par catégories et types
+ * - Synthèse par types d'opérations
+ * - Représentation graphique en treemap des catégories
+ * - Évolution temporelle des opérations
+ * - Synthèse détaillée par catégories et opérations
+ * 
+ * @component
+ * @param {AnalyseProps} props - Les props du composant
+ * @param {CompteModel} props.selectedCompte - Le compte sélectionné pour l'analyse
+ * @param {() => void} props.onOpenMenu - Callback pour ouvrir le menu latéral
+ * @returns {JSX.Element} Le rendu du composant d'analyse
  */
 export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }: AnalyseProps): JSX.Element => {
 
@@ -43,19 +50,11 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     const [filters, setFilters] = useState<AnalysesFiltersModel>(getDefaultAnalysesFilters());
 
-    const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelModel>(null);
+    const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelAnalyseConsolideModel>(null);
     const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
     
-    /**
-     * Filtre les opérations en fonction des filtres sélectionnés
-     */
-    const filteredOperations = useMemo(() => {
-        return applyFiltersToOperations(budgetConsolide?.listeOperations || [], filters);
-    }, [budgetConsolide, filters]);
 
 
-    // Grouper les opérations par catégories et sous-catégories et calculer les totaux
-    const analyseCategoriesData = useMemo(() => getCategoriesDataForAnalyses(filteredOperations), [filteredOperations]);
 
     /** Chargement du compte et de la période **/
     useEffect(() => {
@@ -64,18 +63,27 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
         loadBudgetsPeriodes(selectedCompte, periodeAnalyses, handleDataCalculationResult);
     }, [selectedCompte, periodeAnalyses]);
 
-
     /**
      * Gère les résultats du calcul des données.
      * @param {Object} param0 - Les résultats du calcul des données.
         */
 
-    function handleDataCalculationResult(budgetConsolide: BudgetMensuelModel, distinctCategories: CategorieOperationModel[]) {
-        console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations");
+    function handleDataCalculationResult(budgetConsolide: BudgetMensuelAnalyseConsolideModel, distinctCategories: CategorieOperationModel[]) {
+        console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations", budgetConsolide);
         setBudgetConsolide(budgetConsolide);
         setDistinctCategories(distinctCategories);
         setIsLoading(false);
     }
+    /**
+     * Filtre les opérations en fonction des filtres sélectionnés
+     */
+    const filteredOperations = useMemo(() => {
+        return applyFiltersToOperations(budgetConsolide?.listeOperations || [], filters);
+    }, [budgetConsolide, filters]);
+
+    // Grouper les opérations par catégories et sous-catégories et calculer les totaux
+    const analyseCategoriesData = useMemo(() => getCategoriesDataForAnalyses(filteredOperations), [filteredOperations]);
+
 
 
 
@@ -103,12 +111,12 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 currentPeriode={periodeAnalyses} />
                         }
                     </Grid>
-                    <Grid size={{ md: 3, xl: 3 }} direction={"column"}  sx={{ overflow: "hidden", height: "calc(100vh - 140px)" }}>
+                    <Grid size={{ md: 3, xl: 3 }} direction={"column"}  sx={{ overflow: "hidden", height: "calc(100vh - 11%)" }}>
                         {selectedCompte == null ?
                             <></>
                             :
 
-                            <Box sx={{ marginRight: 1, marginTop: 1, height: "fit-content", border: '2px solid var(--color-dark-container)', borderRadius: 2  }}>
+                            <Box sx={{ border: '2px solid var(--color-dark-container)', borderRadius: 2, height: "100%", marginRight: 1, display: 'flex', flexDirection: 'column' }}>
                                 {/* En-tête avec label */}
                                 <Box sx={{
                                     display: 'flex',
@@ -154,7 +162,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "49%" }}>
                                         <ExpandableDetailSection label={`Evolution`}>
-                                            <AnalyseEvolution operations={filteredOperations} isVueMensuelle={!periodeAnalyses.vuePeriode} />
+                                            <AnalyseEvolution budgetConsolide={budgetConsolide} operations={filteredOperations} isVueMensuelle={!periodeAnalyses.vuePeriode} />
                                         </ExpandableDetailSection>
                                     </Grid>
                                     <Grid size={{ md: 6, xl: 6 }} sx={{ overflow: "hidden", height: "49%" }}>

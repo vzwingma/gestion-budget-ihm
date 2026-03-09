@@ -30,8 +30,22 @@ describe('Analyses.controller', () => {
     test('charge les budgets de la période et consolide les opérations', async () => {
         const handleDataCalculationResult = jest.fn();
         (loadBudget as jest.Mock)
-            .mockResolvedValueOnce({listeOperations: [{categorie: {id: 'c2', libelle: 'B'}}]})
-            .mockResolvedValueOnce({listeOperations: [{categorie: {id: 'c1', libelle: 'A'}}]});
+            .mockResolvedValueOnce({
+                listeOperations: [{categorie: {id: 'c2', libelle: 'B'}}],
+                soldes: {
+                    soldeAtMaintenant: 100,
+                    soldeAtFinMoisCourant: 120,
+                    soldeAtFinMoisPrecedent: 80
+                }
+            })
+            .mockResolvedValueOnce({
+                listeOperations: [{categorie: {id: 'c1', libelle: 'A'}}],
+                soldes: {
+                    soldeAtMaintenant: 200,
+                    soldeAtFinMoisCourant: 220,
+                    soldeAtFinMoisPrecedent: 180
+                }
+            });
 
         loadBudgetsPeriodes(
             {id: 'compte-1', libelle: 'Compte 1'} as any,
@@ -44,6 +58,18 @@ describe('Analyses.controller', () => {
         expect(loadBudget).toHaveBeenCalledTimes(2);
         expect(handleDataCalculationResult).toHaveBeenCalledTimes(1);
         expect(handleDataCalculationResult.mock.calls[0][0].listeOperations).toHaveLength(2);
+        expect(handleDataCalculationResult.mock.calls[0][0].soldesParMois).toEqual({
+            '2026-01': {
+                soldeAtMaintenant: 100,
+                soldeAtFinMoisCourant: 120,
+                soldeAtFinMoisPrecedent: 80
+            },
+            '2026-02': {
+                soldeAtMaintenant: 200,
+                soldeAtFinMoisCourant: 220,
+                soldeAtFinMoisPrecedent: 180
+            }
+        });
         expect(handleDataCalculationResult.mock.calls[0][1].map((cat: { libelle: string }) => cat.libelle)).toEqual(['A', 'B']);
     });
 

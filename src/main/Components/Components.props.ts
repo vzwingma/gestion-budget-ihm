@@ -13,6 +13,7 @@ import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.t
 import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
 import { AnalysesFiltersModel } from "../Models/analyses/AnalysesFilters.model.ts";
 import AnalyseCategoriesModel from "../Models/analyses/syntheses/AnalyseCategories.model.ts";
+import BudgetMensuelAnalyseConsolideModel from "../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
 
 
 
@@ -79,6 +80,7 @@ export interface AnalyseOperationsListeProps {
 }
 
 export interface AnalyseEvolutionProps {
+    budgetConsolide: BudgetMensuelAnalyseConsolideModel;
     operations: OperationModel[];
     isVueMensuelle: boolean;
 }
