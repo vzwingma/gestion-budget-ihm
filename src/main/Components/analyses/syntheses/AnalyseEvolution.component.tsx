@@ -1,6 +1,6 @@
-import React, { JSX, useMemo } from 'react'
+import React, { JSX, useMemo, useState } from 'react'
 import { AnalyseEvolutionProps } from '../../Components.props.ts';
-import { Box, Breadcrumbs, Link, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Link, Switch, Typography } from '@mui/material';
 import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { prepareGraphDataFromOperations, extractUniqueCategories } from './AnalyseEvolution.controller.ts';
 import { getCategorieColor } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
@@ -18,6 +18,8 @@ import HomeIcon from '@mui/icons-material/Home';
  *
  */
 const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ budgetConsolide, operations, isVueMensuelle }): JSX.Element => {
+
+    const [isSoldeVisible, setIsSoldeVisible] = useState<boolean>(false);
 
     /**
      * Prépare les données du graphique à partir des opérations
@@ -99,11 +101,17 @@ const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ budgetConsolide, op
                     }}>
                     <HomeIcon sx={{ mr: 0.5, fontSize: '1.2rem' }} />
                 </Link>
-                {(
-                    <Typography variant="body2" color="text.primary" sx={{ fontWeight: 500 }}>
-                        SOLDES
+                <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ mr: 0.5 }}>
+                        Solde
                     </Typography>
-                )}
+                    <Switch
+                        size="small"
+                        checked={isSoldeVisible}
+                        onChange={(event) => setIsSoldeVisible(event.target.checked)}
+                        slotProps={{ input: { 'aria-label': 'Afficher le solde' } }}
+                    />
+                </Box>
             </Breadcrumbs>
 
             <ResponsiveContainer width="100%" height="100%">
@@ -118,7 +126,7 @@ const AnalyseEvolution: React.FC<AnalyseEvolutionProps> = ({ budgetConsolide, op
                     <YAxis />
                     <Tooltip content={<AnalyseEvolutionTooltip />} />
                     {renderEvolutionsCategories()}
-                    {renderEvolutionsSoldes()}
+                    {isSoldeVisible && renderEvolutionsSoldes()}
                 </ComposedChart>
             </ResponsiveContainer>
         </Box>

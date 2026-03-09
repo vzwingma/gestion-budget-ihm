@@ -1,7 +1,12 @@
 import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
+import AnalyseCategoriesModel from "../Models/analyses/syntheses/AnalyseCategories.model.ts";
+import AnalyseSsCategoriesModel from "../Models/analyses/syntheses/AnalyseSsCategories.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
 import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
 import * as AppConstants from "./AppBusinessEnums.constants.ts";
+
+export type AnalyseCategoriesSortColumn = 'type' | 'libelle' | 'somme' | 'operations' | 'pourcentage';
+export type SortDirection = 'asc' | 'desc';
 
 /**
  * Ajout de leading zero devant une valeur
@@ -217,4 +222,84 @@ function getRangEtatOperation(etatOperation: string): number {
         rang++;
     }
     return rang;
+}
+
+/**
+ * Récupère la valeur de tri du type de catégorie (premier type de sous-catégorie trouvé)
+ */
+export function getCategoryTypeValue(category: AnalyseCategoriesModel): string {
+    const firstType = Object.values(category.resumesSsCategories || {})
+        .find((subCat) => !!subCat.ssCategorie.type)
+        ?.ssCategorie.type;
+    return (firstType || '').toString();
+}
+
+/**
+ * Compare deux chaînes selon la direction demandée
+ */
+export function compareStringValues(a: string, b: string, direction: SortDirection): number {
+    const result = a.localeCompare(b);
+    return direction === 'asc' ? result : -result;
+}
+
+/**
+ * Compare deux nombres selon la direction demandée
+ */
+export function compareNumberValues(a: number, b: number, direction: SortDirection): number {
+    const result = a - b;
+    return direction === 'asc' ? result : -result;
+}
+
+/**
+ * Compare deux catégories d'analyse selon la colonne et la direction
+ */
+export function compareCategories(
+    a: AnalyseCategoriesModel,
+    b: AnalyseCategoriesModel,
+    column: AnalyseCategoriesSortColumn,
+    direction: SortDirection
+): number {
+    switch (column) {
+        case 'type':
+            return compareStringValues(getCategoryTypeValue(a), getCategoryTypeValue(b), direction);
+        case 'libelle':
+            return compareStringValues(a.categorie.libelle || '', b.categorie.libelle || '', direction);
+        case 'somme':
+            return compareNumberValues(a.total || 0, b.total || 0, direction);
+        case 'operations':
+            return compareNumberValues(a.nbTransactions || 0, b.nbTransactions || 0, direction);
+        case 'pourcentage':
+            return compareNumberValues(a.pourcentage || 0, b.pourcentage || 0, direction);
+        default:
+            return 0;
+    }
+}
+
+/**
+ * Compare deux sous-catégories d'analyse selon la colonne et la direction
+ */
+export function compareSubCategories(
+    a: AnalyseSsCategoriesModel,
+    b: AnalyseSsCategoriesModel,
+    column: AnalyseCategoriesSortColumn,
+    direction: SortDirection
+): number {
+    switch (column) {
+        case 'type':
+            return compareStringValues(
+                (a.ssCategorie.type || '').toString(),
+                (b.ssCategorie.type || '').toString(),
+                direction
+            );
+        case 'libelle':
+            return compareStringValues(a.ssCategorie.libelle || '', b.ssCategorie.libelle || '', direction);
+        case 'somme':
+            return compareNumberValues(a.total || 0, b.total || 0, direction);
+        case 'operations':
+            return compareNumberValues(a.nbTransactions || 0, b.nbTransactions || 0, direction);
+        case 'pourcentage':
+            return compareNumberValues(a.pourcentage || 0, b.pourcentage || 0, direction);
+        default:
+            return 0;
+    }
 }

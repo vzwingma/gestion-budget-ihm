@@ -1,7 +1,12 @@
 import {
     addEndingZeros,
     addLeadingZeros,
+    compareCategories,
+    compareNumberValues,
+    compareStringValues,
+    compareSubCategories,
     getEventTargetId,
+    getCategoryTypeValue,
     operationIsIntercompteFromLibelle,
     sortLibellesCategories,
     sortLibellesSsCategories,
@@ -151,5 +156,73 @@ describe('OperationData.utils', () => {
         expect(sortPeriodicOperations(opPeriodeDefined as any, opPeriodeNull as any)).toBe(1);
         expect(sortPeriodicOperations(opPeriodeNull as any, opPeriodeNull2 as any)).toBe(-1);
         expect(sortPeriodicOperations(opPeriodeNullNoMaj as any, opPeriodeNull as any)).toBe(0);
+    });
+
+    test('compare des chaînes selon la direction', () => {
+        expect(compareStringValues('A', 'B', 'asc')).toBeLessThan(0);
+        expect(compareStringValues('A', 'B', 'desc')).toBeGreaterThan(0);
+        expect(compareStringValues('A', 'A', 'asc')).toBe(0);
+    });
+
+    test('compare des nombres selon la direction', () => {
+        expect(compareNumberValues(1, 2, 'asc')).toBeLessThan(0);
+        expect(compareNumberValues(1, 2, 'desc')).toBeGreaterThan(0);
+        expect(compareNumberValues(3, 3, 'asc')).toBe(0);
+    });
+
+    test('extrait le type de catégorie pour le tri', () => {
+        const category = {
+            resumesSsCategories: {
+                a: {ssCategorie: {type: null}},
+                b: {ssCategorie: {type: 'ESSENTIEL'}}
+            }
+        };
+
+        expect(getCategoryTypeValue(category as any)).toBe('ESSENTIEL');
+        expect(getCategoryTypeValue({resumesSsCategories: {}} as any)).toBe('');
+    });
+
+    test('compare les catégories selon la colonne choisie', () => {
+        const catA = {
+            categorie: {libelle: 'A'},
+            total: 10,
+            nbTransactions: 2,
+            pourcentage: 20,
+            resumesSsCategories: {x: {ssCategorie: {type: 'ESSENTIEL'}}}
+        };
+        const catB = {
+            categorie: {libelle: 'B'},
+            total: 5,
+            nbTransactions: 4,
+            pourcentage: 40,
+            resumesSsCategories: {x: {ssCategorie: {type: 'PLAISIR'}}}
+        };
+
+        expect(compareCategories(catA as any, catB as any, 'libelle', 'asc')).toBeLessThan(0);
+        expect(compareCategories(catA as any, catB as any, 'somme', 'desc')).toBeLessThan(0);
+        expect(compareCategories(catA as any, catB as any, 'operations', 'asc')).toBeLessThan(0);
+        expect(compareCategories(catA as any, catB as any, 'pourcentage', 'asc')).toBeLessThan(0);
+        expect(compareCategories(catA as any, catB as any, 'type', 'asc')).toBeLessThan(0);
+    });
+
+    test('compare les sous-catégories selon la colonne choisie', () => {
+        const subA = {
+            ssCategorie: {libelle: 'A', type: 'ESSENTIEL'},
+            total: 10,
+            nbTransactions: 2,
+            pourcentage: 20
+        };
+        const subB = {
+            ssCategorie: {libelle: 'B', type: 'PLAISIR'},
+            total: 5,
+            nbTransactions: 4,
+            pourcentage: 40
+        };
+
+        expect(compareSubCategories(subA as any, subB as any, 'libelle', 'asc')).toBeLessThan(0);
+        expect(compareSubCategories(subA as any, subB as any, 'somme', 'desc')).toBeLessThan(0);
+        expect(compareSubCategories(subA as any, subB as any, 'operations', 'asc')).toBeLessThan(0);
+        expect(compareSubCategories(subA as any, subB as any, 'pourcentage', 'asc')).toBeLessThan(0);
+        expect(compareSubCategories(subA as any, subB as any, 'type', 'asc')).toBeLessThan(0);
     });
 });

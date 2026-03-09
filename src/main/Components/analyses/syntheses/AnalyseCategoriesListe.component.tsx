@@ -1,4 +1,4 @@
-import React, { JSX, useState } from 'react';
+import React, { JSX, useMemo, useState } from 'react';
 import {
     Box,
     Table,
@@ -7,6 +7,7 @@ import {
     TableHead,
     TableRow,
     IconButton,
+    TableSortLabel,
     Typography,
     useMediaQuery,
     useTheme
@@ -19,6 +20,21 @@ import { CenterComponent } from '../../shared/CenterComponent.tsx';
 import { AnalyseCategoriesListeProps } from '../../Components.props.ts';
 import { generateDerivedColors } from '../../../Utils/renderers/DerivedColors.renderer.utils.ts';
 import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
+import {
+    AnalyseCategoriesSortColumn,
+    compareCategories,
+    compareSubCategories,
+    SortDirection
+} from '../../../Utils/OperationData.utils.ts';
+
+type SortColumn = AnalyseCategoriesSortColumn;
+
+const getInitialSortDirection = (column: SortColumn): SortDirection => {
+    if (column === 'libelle' || column === 'type') {
+        return 'asc';
+    }
+    return 'desc';
+};
 
 /**
  * Composant pour afficher une barchart simple
@@ -59,6 +75,8 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
     analyseCategories: analyseCategoriesData
 }): JSX.Element => {
     const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+    const [sortColumn, setSortColumn] = useState<SortColumn>('libelle');
+    const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
 
@@ -71,6 +89,31 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
         }
         setExpandedCategories(newExpanded);
     };
+
+    const handleSortChange = (column: SortColumn) => {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+            return;
+        }
+
+        setSortColumn(column);
+        setSortDirection(getInitialSortDirection(column));
+    };
+
+    const sortedAnalyseCategories = useMemo(
+        () => [...analyseCategoriesData].sort((a, b) => compareCategories(a, b, sortColumn, sortDirection)),
+        [analyseCategoriesData, sortColumn, sortDirection]
+    );
+
+    const renderSortLabel = (column: SortColumn, label: string) => (
+        <TableSortLabel
+            active={sortColumn === column}
+            direction={sortColumn === column ? sortDirection : getInitialSortDirection(column)}
+            onClick={() => handleSortChange(column)}
+        >
+            {label}
+        </TableSortLabel>
+    );
 
 
     if (!analyseCategoriesData || analyseCategoriesData.length === 0) {
@@ -96,11 +139,11 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                             {expandedCategories.size === analyseCategoriesData.length ? <KeyboardDoubleArrowUp /> : <KeyboardDoubleArrowDown />}
                         </IconButton>
                     </TableCell>
-                    <TableCell sx={{ width: COLUMN_WIDTHS.type }}>Type</TableCell>
-                    <TableCell sx={{ width: COLUMN_WIDTHS.libelle }}>Libellé</TableCell>
-                    <TableCell align="right" sx={{ width: COLUMN_WIDTHS.somme }}>Somme</TableCell>
-                    <TableCell align="right" sx={{ width: COLUMN_WIDTHS.operations }}>Opérations</TableCell>
-                    <TableCell sx={{ width: COLUMN_WIDTHS.pourcentage }}>Pourcentage</TableCell>
+                    <TableCell sx={{ width: COLUMN_WIDTHS.type }}>{renderSortLabel('type', 'Type')}</TableCell>
+                    <TableCell sx={{ width: COLUMN_WIDTHS.libelle }}>{renderSortLabel('libelle', 'Libellé')}</TableCell>
+                    <TableCell align="right" sx={{ width: COLUMN_WIDTHS.somme }}>{renderSortLabel('somme', 'Somme')}</TableCell>
+                    <TableCell align="right" sx={{ width: COLUMN_WIDTHS.operations }}>{renderSortLabel('operations', 'Opérations')}</TableCell>
+                    <TableCell sx={{ width: COLUMN_WIDTHS.pourcentage }}>{renderSortLabel('pourcentage', 'Pourcentage')}</TableCell>
                 </TableRow>
             </TableHead>
         </Table>
@@ -108,9 +151,10 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
         <Box sx={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
             <Table size="small" sx={{ tableLayout: 'fixed' }}>
                 <TableBody>
-                    {analyseCategoriesData.map((analyseCat) => {
+                    {sortedAnalyseCategories.map((analyseCat) => {
                         const isExpanded = expandedCategories.has(analyseCat.categorie.id || '');
-                        const analyseSubCategories = getSortedSubCategories(analyseCat);
+                        const analyseSubCategories = getSortedSubCategories(analyseCat)
+                            .sort((a, b) => compareSubCategories(a, b, sortColumn, sortDirection));
                         const derivedColors = generateDerivedColors(analyseCat.couleurCategorie, analyseSubCategories.length);
                         const total = analyseCat.total || 0;
                         const nbTransactions = analyseCat.nbTransactions || 0;
