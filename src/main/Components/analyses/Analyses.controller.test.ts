@@ -31,7 +31,7 @@ describe('Analyses.controller', () => {
         const handleDataCalculationResult = jest.fn();
         (loadBudget as jest.Mock)
             .mockResolvedValueOnce({
-                listeOperations: [{categorie: {id: 'c2', libelle: 'B'}}],
+                listeOperations: [{categorie: {id: 'c2', libelle: 'B'}, autresInfos: {dateOperation: new Date('2026-01-15')}}],
                 soldes: {
                     soldeAtMaintenant: 100,
                     soldeAtFinMoisCourant: 120,
@@ -39,7 +39,7 @@ describe('Analyses.controller', () => {
                 }
             })
             .mockResolvedValueOnce({
-                listeOperations: [{categorie: {id: 'c1', libelle: 'A'}}],
+                listeOperations: [{categorie: {id: 'c1', libelle: 'A'}, autresInfos: {dateOperation: new Date('2026-02-10')}}],
                 soldes: {
                     soldeAtMaintenant: 200,
                     soldeAtFinMoisCourant: 220,
