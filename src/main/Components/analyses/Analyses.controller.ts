@@ -48,7 +48,18 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
         )
     )
     .then((monthlyBudgets: { month: Date, budget: BudgetMensuelModel | null }[]) => {
-        budgetConsolide.listeOperations = monthlyBudgets.flatMap(({ budget }) => budget?.listeOperations || []);
+        budgetConsolide.listeOperations = monthlyBudgets.flatMap(({ month, budget }) => {
+            return (budget?.listeOperations || []).map(operation => {
+            const operationDate = new Date(operation.autresInfos.dateOperation);
+            const monthStart = new Date(month.getFullYear(), month.getMonth(), 1);
+            // If operation date is before the month start, realign to the first day of the month
+            if (operationDate < monthStart) {
+                operation.autresInfos.dateOperation = monthStart;
+            }
+            
+            return operation;
+            });
+        });
         budgetConsolide.soldesParMois = monthlyBudgets.reduce((acc, { month, budget }) => {
             if (budget?.soldes) {
                 const monthKey = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}`;

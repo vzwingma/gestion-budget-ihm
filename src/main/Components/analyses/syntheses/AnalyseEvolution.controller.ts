@@ -219,7 +219,7 @@ function preparePeriodViewData(budgetConsolide: BudgetMensuelAnalyseConsolideMod
             dataItem.solde = index === 0 ? (soldes.soldeAtFinMoisPrecedent ?? 0) : soldeAtFinMois;
         }
     });
-    
+    console.log("Données préparées pour la vue périodique :", flatData);
     return flatData;
 }
 /**
