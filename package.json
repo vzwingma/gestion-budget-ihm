@@ -38,7 +38,7 @@
     "css-loader": "^7.1.2",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.4",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^7.0.0"
   },
   "scripts": {
     "minify-css": "css-minify -f public/styles/application.css -o public/styles/",
