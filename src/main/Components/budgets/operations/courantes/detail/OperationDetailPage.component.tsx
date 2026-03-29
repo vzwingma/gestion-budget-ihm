@@ -193,6 +193,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
             operation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
         }
+        else{
+            editOperation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
+            operation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
+        }
     }
 
     /**
