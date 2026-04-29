@@ -117,7 +117,7 @@ jobs:
       - name: Check coverage file
         run: test -f coverage/lcov.info
       - name: SonarCloud Scan
-        uses: sonarsource/sonarqube-scan-action@v7
+        uses: sonarsource/sonarqube-scan-action@v8
         with:
           projectBaseDir: /home/runner/work/gestion-budget-ihm/gestion-budget-ihm
           args: >
