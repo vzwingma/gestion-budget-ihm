@@ -1,23 +1,14 @@
 ---
-description: Agent Architecte – planification, orchestration et conception générale (gestion-budget-ihm)
+description: Spécificités projet gestion-budget-ihm pour l'agent ARCos (architect)
+applyTo: "**"
 ---
 
-# Agent Architecte – gestion-budget-ihm
+# Spécificités projet — gestion-budget-ihm
 
-## Rôle
+> Ce fichier est lu automatiquement par l'agent 🟠 ARCos au démarrage.
+> Il contient uniquement les spécificités du projet `gestion-budget-ihm` (frontend React/TypeScript).
 
-Tu es l'architecte technique du projet `gestion-budget-ihm` (frontend React/TypeScript). Tu es responsable de la **planification**, de l'**orchestration** et de la **conception générale**. Tu ne codes pas toi-même : tu conçois, tu décides, tu délègues.
-
-## Responsabilités
-
-- Analyser les demandes fonctionnelles et les décomposer en tâches concrètes.
-- Définir les interfaces (props TypeScript, contrats de services) avant toute implémentation.
-- Créer et prioriser les todos dans la table SQL `todos`, en assignant un `owner` parmi : `dev`, `qa`, `doc`.
-- Orchestrer les dépendances entre tâches via la table `todo_deps`.
-- Valider les choix d'architecture (routing, state management, découpage des composants) avant leur réalisation.
-- Détecter les régressions architecturales dans les PR (couplage excessif, violation des couches, duplication de logique).
-
-## Conventions architecturales de ce repo
+## Conventions architecturales
 
 - **Couches** : `Components/` (UI) → `Models/contextProvider/` (état global) → `Services/` (HTTP) → `Utils/` (constantes, helpers).
 - **État global** : uniquement via `BudgetContextProvider`. Ne pas créer de nouveau Context sans validation.
@@ -26,23 +17,34 @@ Tu es l'architecte technique du projet `gestion-budget-ihm` (frontend React/Type
 - **Pas de bibliothèque de state management externe** (pas de Redux, Zustand, etc.) sans décision architecturale explicite.
 - **UI** : Material-UI uniquement (`@mui/material`). Ne pas introduire d'autre bibliothèque UI.
 
-## Protocole de handoff
+## Protocole de handoff SQL
 
-Quand une tâche est prête à être réalisée, insère un todo SQL avec ce format :
+Quand une tâche est prête à être réalisée, insère les todos dans la table SQL avec ce format :
 
 ```sql
 INSERT INTO todos (id, title, description, status) VALUES
-  ('feat-xxx-dev',  'Titre dev',  'Description précise : fichiers à créer/modifier, interfaces à respecter', 'pending'),
-  ('feat-xxx-qa',   'Titre QA',   'Tests à écrire : cas nominaux, cas d''erreur, composants à tester',       'pending'),
-  ('feat-xxx-doc',  'Titre Doc',  'Documentation à mettre à jour : README, Wiki, copilot-instructions.md',   'pending');
+  ('feat-xxx-dev', 'Titre dev',  'Description précise : fichiers à créer/modifier, interfaces à respecter', 'pending'),
+  ('feat-xxx-qa',  'Titre QA',   'Tests à écrire : cas nominaux, cas d''erreur, composants à tester',       'pending'),
+  ('feat-xxx-doc', 'Titre Doc',  'Documentation à mettre à jour : README, Wiki, copilot-instructions.md',   'pending');
 
 INSERT INTO todo_deps (todo_id, depends_on) VALUES
   ('feat-xxx-qa',  'feat-xxx-dev'),
   ('feat-xxx-doc', 'feat-xxx-dev');
 ```
 
+Convention de nommage des IDs : `feat-<nom>-dev` / `feat-<nom>-qa` / `feat-<nom>-doc`.
+
 ## Interactions avec l'agent partenaire (gestion-budget-serverless)
 
 - Les contrats d'API (URL, paramètres, codes retour) sont définis en coordination avec l'Architecte backend.
 - Les URLs des µServices sont configurées dans `AppTechEnums.constants.ts` et les fichiers `.env.*`.
 - Tout nouveau endpoint backend doit être reflété dans `ClientHTTP.service.ts` avant que l'agent Dev frontend puisse l'utiliser.
+
+## Agents du projet
+
+| Icône | Nom      | Fichier agent          | Rôle                          |
+|-------|----------|------------------------|-------------------------------|
+| 🔵    | DEVon    | `dev.agent.md`         | Implémentation React/TypeScript |
+| 🟢    | QUALvin  | `qa.agent.md`          | Tests unitaires (Jest + RTL)  |
+| 🟣    | DOCly    | `doc.agent.md`         | Documentation (README, Wiki)  |
+

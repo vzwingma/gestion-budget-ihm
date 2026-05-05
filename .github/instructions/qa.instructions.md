@@ -1,12 +1,12 @@
 ---
-description: Agent QA – tests unitaires et exécution (gestion-budget-ihm)
+description: Spécificités projet gestion-budget-ihm pour l'agent 🟢 QUALvin (qa)
+applyTo: "**"
 ---
 
-# Agent QA – gestion-budget-ihm
+# Spécificités projet — gestion-budget-ihm (QA)
 
-## Rôle
-
-Tu es le responsable qualité du projet `gestion-budget-ihm`. Tu écris et exécutes les **tests unitaires** des composants React et des services. Tu interviens **après** l'agent Dev (dépendance sur les todos `*-dev`).
+> Ce fichier est lu automatiquement par l'agent 🟢 QUALvin au démarrage.
+> Il contient uniquement les spécificités du projet `gestion-budget-ihm` (frontend React/TypeScript).
 
 ## Workflow
 
@@ -42,6 +42,7 @@ Le rapport de couverture est généré dans `coverage/lcov.info` (lu par SonarCl
 ## Ce qu'il faut tester
 
 ### Composants React
+
 ```typescript
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -50,7 +51,7 @@ import { BudgetContext } from '../../Models/contextProvider/BudgetContextProvide
 // Toujours mocker le Context si le composant l'utilise
 const mockContext = { currentBudget: ..., setCurrentBudget: jest.fn(), ... };
 
-test('doit afficher le libellé de l'opération', () => {
+test('doit afficher le libellé de l\'opération', () => {
   render(
     <BudgetContext.Provider value={mockContext}>
       <MonComposant ... />
@@ -61,12 +62,14 @@ test('doit afficher le libellé de l'opération', () => {
 ```
 
 ### Services
+
 ```typescript
 // Mocker fetch pour ClientHTTP.service.ts
 global.fetch = jest.fn(() => Promise.resolve({ status: 200, json: () => Promise.resolve(data) }));
 ```
 
 ## Cas à couvrir systématiquement
+
 - **Cas nominal** : rendu correct avec données valides.
 - **Cas vide / null** : comportement quand les données sont absentes.
 - **Cas d'erreur HTTP** : 403 (logout), 404, 500.
@@ -74,6 +77,8 @@ global.fetch = jest.fn(() => Promise.resolve({ status: 200, json: () => Promise.
 - **Responsive** : si `useMediaQuery` est utilisé, mocker `useTheme`.
 
 ## Ce que tu ne fais PAS
+
 - Ne modifie pas les fichiers de production (`*.tsx`, `*.ts` hors `*.test.*`).
-- Ne mets pas à jour la documentation (rôle de l'agent Doc).
-- Ne prends pas de décisions sur l'architecture des tests sans validation de l'Architecte.
+- Ne mets pas à jour la documentation (rôle de 🟣 DOCly).
+- Ne prends pas de décisions sur l'architecture des tests sans validation de 🟠 ARCos.
+

@@ -1,12 +1,12 @@
 ---
-description: Agent Dev – implémentation du code React/TypeScript (gestion-budget-ihm)
+description: Spécificités projet gestion-budget-ihm pour l'agent 🔵 DEVon (dev)
+applyTo: "**"
 ---
 
-# Agent Dev – gestion-budget-ihm
+# Spécificités projet — gestion-budget-ihm (Dev)
 
-## Rôle
-
-Tu es le développeur frontend du projet `gestion-budget-ihm`. Tu implémentes les fonctionnalités définies par l'**Agent Architecte**. Tu ne conçois pas l'architecture globale, ne modifies pas les tests, et ne mets pas à jour la documentation.
+> Ce fichier est lu automatiquement par l'agent 🔵 DEVon au démarrage.
+> Il contient uniquement les spécificités du projet `gestion-budget-ihm` (frontend React/TypeScript).
 
 ## Workflow
 
@@ -38,18 +38,21 @@ AND NOT EXISTS (
 ## Conventions de code
 
 ### Composants
+
 ```typescript
 // Toujours : composant fonctionnel typé
 export const MonComposant: React.FC<MonComposantProps> = ({ prop1, prop2 }): JSX.Element => {
   // ...
 };
 ```
+
 - Props interfaces dans `Components.props.ts`.
 - Sous-composants d'une page dans `subcomponents/`, boutons d'action dans `actions/`.
 - Utiliser `useMemo` pour les calculs dérivés coûteux, `useCallback` pour les handlers passés en props.
 - Responsive via `useMediaQuery(useTheme().breakpoints.down('lg'))`.
 
 ### Appels HTTP
+
 ```typescript
 // Toujours passer par ClientHTTP.service.ts
 import { call } from '../Services/ClientHTTP.service.ts';
@@ -57,17 +60,21 @@ import { call } from '../Services/ClientHTTP.service.ts';
 call('GET', REACT_APP_CONFIG_URL_OPERATIONS, '/budgets/v2/{{}}/operations', [idBudget]);
 ```
 
-### Modèles
+### Modèles et état
+
 - Les classes TypeScript de données vont dans `src/main/Models/`.
 - L'état global (compte, budget, opération courants) via `useContext(BudgetContext)`.
 - L'état local UI via `useState`.
 
 ### Enums et constantes
+
 - Constantes techniques dans `AppTechEnums.constants.ts`.
 - Enums métier dans `AppBusinessEnums.constants.ts`.
 - Ne pas hardcoder les URLs ou les clés API dans les composants.
 
 ## Ce que tu ne fais PAS
-- Ne modifie pas les fichiers `*.test.tsx` ni `*.test.ts` (rôle de l'agent QA).
-- Ne mets pas à jour `README.md`, les wikis, ni `copilot-instructions.md` (rôle de l'agent Doc).
-- Ne prends pas de décisions architecturales (nouveau Context, nouvelle lib) sans todo venant de l'Architecte.
+
+- Ne modifie pas les fichiers `*.test.tsx` ni `*.test.ts` (rôle de 🟢 QUALvin).
+- Ne mets pas à jour `README.md`, les wikis, ni `copilot-instructions.md` (rôle de 🟣 DOCly).
+- Ne prends pas de décisions architecturales (nouveau Context, nouvelle lib) sans todo venant de 🟠 ARCos.
+

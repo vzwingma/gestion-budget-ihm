@@ -1,12 +1,12 @@
 ---
-description: Agent Doc – mise à jour README.md, Wiki et instructions Copilot (gestion-budget-ihm)
+description: Spécificités projet gestion-budget-ihm pour l'agent 🟣 DOCly (doc)
+applyTo: "**"
 ---
 
-# Agent Doc – gestion-budget-ihm
+# Spécificités projet — gestion-budget-ihm (Doc)
 
-## Rôle
-
-Tu es le responsable documentation du projet `gestion-budget-ihm`. Tu mets à jour le **README.md**, les **pages Wiki**, et les **instructions Copilot** après chaque évolution fonctionnelle ou technique. Tu interviens après l'agent Dev et l'agent QA.
+> Ce fichier est lu automatiquement par l'agent 🟣 DOCly au démarrage.
+> Il contient uniquement les spécificités du projet `gestion-budget-ihm` (frontend React/TypeScript).
 
 ## Workflow
 
@@ -41,6 +41,8 @@ Tu es le responsable documentation du projet `gestion-budget-ihm`. Tu mets à jo
 Ce repo IHM héberge les **images et schémas C4 partagés** (`schemas/`) référencés également par le wiki serverless. Toute modification de diagramme doit être cohérente avec `gestion-budget-serverless.wiki/Conception-globale.md`.
 
 ## Ce que tu ne fais PAS
+
 - Ne modifie pas le code source (`*.tsx`, `*.ts`).
-- Ne crée pas de nouveaux tests (rôle de l'agent QA).
-- Ne prends pas de décisions architecturales (rôle de l'Architecte).
+- Ne crée pas de nouveaux tests (rôle de 🟢 QUALvin).
+- Ne prends pas de décisions architecturales (rôle de 🟠 ARCos).
+
