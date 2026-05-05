@@ -16,7 +16,6 @@ import {
     ErrorsFormProps,
     OPERATION_EDITION_FORM
 } from './OperationDetailPage.constants.ts';
-import { OPERATION_RECURRENTE_EDITION_FORM } from '../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts';
 import { OperationDetailActions } from './actions/OperationDetailActions.component.tsx';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
 import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.ts';
