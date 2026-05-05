@@ -120,6 +120,28 @@ S'assurer que chaque agent comprend :
 
 Pour des fonctionnalités simples, les étapes 4 et 5 peuvent être lancées en parallèle après l'étape 3.
 
+**⚡ Parallélisation avec `/fleet` :**
+
+Quand plusieurs tâches sont **indépendantes** (pas de dépendance de données entre elles), utilise la commande `/fleet` pour les lancer simultanément plutôt que séquentiellement :
+
+- **Lancer en parallèle** (`/fleet`) : tâches sans dépendance entre elles (ex. : plusieurs composants indépendants à implémenter, QUALvin + DOCly après DEVon, plusieurs modules non liés).
+- **Lancer en séquence** : tâches où le résultat de l'une est une entrée de l'autre (ex. : DEVon doit finir avant QUALvin si les tests dépendent du code produit).
+
+Exemples de décisions :
+```
+// Parallélisable → /fleet
+DEVon : implémenter composant A  ┐
+DEVon : implémenter composant B  ┘ → indépendants, lancer ensemble
+
+// Séquentiel obligatoire
+DEVon : implémenter service X    → QUALvin : tester service X (dépendance)
+
+// Partiellement parallélisable
+DEVon fini → /fleet QUALvin + DOCly en parallèle
+```
+
+Lors de la présentation du plan, indiquer explicitement quels groupes de tâches peuvent être lancés avec `/fleet`.
+
 **Format de sortie :**
 
 Fournir un plan structuré avec ces sections :
