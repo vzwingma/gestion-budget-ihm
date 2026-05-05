@@ -16,6 +16,7 @@ import {
     ErrorsFormProps,
     OPERATION_EDITION_FORM
 } from './OperationDetailPage.constants.ts';
+import { OPERATION_RECURRENTE_EDITION_FORM } from '../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts';
 import { OperationDetailActions } from './actions/OperationDetailActions.component.tsx';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
 import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.ts';
@@ -72,9 +73,11 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
      */
     useEffect(() => {
-        setEditOperation(cloneOperation(operation));
-        setEditForm(createEmptyEditForm(operation.id === "-1"));
-        setErrors(createEmptyErrors());
+        if (operation) {
+            setEditOperation(cloneOperation(operation));
+            setEditForm(createEmptyEditForm(operation.id === "-1"));
+            setErrors(createEmptyErrors());
+        }
     }, [operation]);
 
 
@@ -120,7 +123,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                 editOperation.valeur = value;
                 break;
             case OPERATION_EDITION_FORM.MENSUALITE:
-                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value);
+                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value) || Object.values(PERIODES_MENSUALITE_ENUM)[0];
                 break;
             case OPERATION_EDITION_FORM.DATE_FIN:
                 if (value !== null && value !== undefined && value !== "") {
@@ -169,33 +172,41 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         editOperation.ssCategorie.type = ssCat.type;
 
         /** Adaptation sur la sélection de catégorie **/
-        if (ssCat.categorieParente) {
+        if (operation && ssCat.categorieParente) {
             operation.categorie.id = ssCat.categorieParente.id;
             operation.categorie.libelle = ssCat.categorieParente.libelle;
         }
-        operation.ssCategorie.id = ssCat.id;
-        operation.ssCategorie.libelle = ssCat.libelle;
-        operation.ssCategorie.type = ssCat.type;
+        if (operation) {
+            operation.ssCategorie.id = ssCat.id;
+            operation.ssCategorie.libelle = ssCat.libelle;
+            operation.ssCategorie.type = ssCat.type;
+        }
 
         /** Si type Rentrée d'argent, alors type opération = Crédit **/
-        if(BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.categorieParente.id) {
+        if(ssCat.categorieParente && BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.categorieParente.id) {
             editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
             editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;            
-            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
+            if (operation) {
+                operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+                operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
+            }
         }
         /** Si type Actifs Invest, alors type opération = Crédit **/
-        else if(BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente.id) {
+        else if(ssCat.categorieParente && BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente.id) {
             editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
             editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
             editOperation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
-            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
-            operation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
+            if (operation) {
+                operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+                operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
+                operation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
+            }
         }
         else{
             editOperation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
-            operation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
+            if (operation) {
+                operation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
+            }
         }
     }
 
@@ -206,18 +217,19 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     return (
         <Container id={OPERATION_EDITION_FORM.FORM}
             component="div" fixed
-            onClick={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
-            onKeyUp={(event: any) => handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
+            onClick={(event: any) => operation && budget && handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
+            onKeyUp={(event: any) => operation && budget && handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
             <Stack direction={"column"} sx={{ justifyContent: isMobile ? "none" : "center", paddingTop: isMobile ? "15px" : "10vh" }}>
                 <Stack direction={"column"} spacing={isMobile ? 1 : 4} className="budget-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
-                    <Grid container width={"90%"}>
+                    <Grid container sx={{ width: "90%" }}>
                         <Grid size={{ md: 4, xl: 4 }} />
                         <Grid size={{ md: 4, xl: 4 }}>
                             <CenterComponent>
-                                <Box width={56} height={56}
-                                    sx={{
+                                <Box sx={{
+                                        width: 56,
+                                        height: 56,
                                         borderRadius: "50%",
                                         backgroundColor: getCategorieColor(operation.categorie.id),
                                         color: 'var(--color-white)',
@@ -234,13 +246,13 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             }
                         </Grid>
                     </Grid>
-                    <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
+                    <Grid container sx={{ width: "90%", alignItems: "center", justifyContent: "center" }}>
                         { /** VALEUR **/}
                         <OperationDetailValeur formValueInEdition={editForm.value}
                             errorValeur={errors.valeur}
                             fillOperationForm={fillOperationForm} />
                     </Grid>
-                    <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
+                    <Grid container sx={{ width: "90%", alignItems: "center", justifyContent: "center" }}>
 
                         { /** LIBELLE **/}
                         <OperationDetailLibelle
@@ -254,7 +266,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                      * CATEGORIES 
                      **/}
 
-                    <Grid container width={"90%"} columnSpacing={2} rowSpacing={isMobile ? 1 : 2} sx={{ borderTop: isInCreateMode(editForm) ? 'none' : '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
+                    <Grid container columnSpacing={2} rowSpacing={isMobile ? 1 : 2} sx={{ width: "90%", borderTop: isInCreateMode(editForm) ? 'none' : '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
                         <Grid size={{ md: 8, xl: 8 }}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                             {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
@@ -346,13 +358,13 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
                     </Grid>
 
-                    <Grid container width={"90%"} sx={{ alignItems: "center", justifyContent: "center" }}>
+                    <Grid container sx={{ width: "90%", alignItems: "center", justifyContent: "center" }}>
                         {currentBudget?.actif &&
                             <>
                                 <Grid size={{ md: 2, xl: 2 }}>
                                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Actions</Typography>
                                 </Grid>
-                                <Grid size={{ md: 8, xl: 8 }} paddingBottom={2}>
+                                <Grid size={{ md: 8, xl: 8 }} sx={{ paddingBottom: 2 }}>
                                     <Stack direction={"column"} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
                                         { /** ACTIONS **/}
                                         {currentOperation?.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ?

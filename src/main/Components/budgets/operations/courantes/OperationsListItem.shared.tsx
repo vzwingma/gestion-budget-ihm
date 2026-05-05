@@ -68,7 +68,8 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     isOneSelected
 }: SharedOperationItemProps): JSX.Element => {
 
-    const { comptes } = useContext(BudgetContext);
+    const budgetContext = useContext(BudgetContext);
+    const comptes = budgetContext?.comptes;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
     return (
@@ -81,16 +82,20 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                      backgroundColor: getOperationsColor || '#1F3D2B'
                  }
              }}>
-            <Grid container height={isMobile ? 60 : 90} alignItems="center">
+            <Grid container sx={{height: isMobile ? 60 : 90, alignItems: 'center'}}>
                 <Grid size={{md: 1.5, xl: 1.5}} sx={{paddingLeft: isMobile ? '4px' : '10px'}}>
-                    <Box width={isMobile ? 38 : 50} height={isMobile ? 38 : 50}
+                    <Box 
                          sx={{
+                             width: isMobile ? 38 : 50, 
+                             height: isMobile ? 38 : 50,
                              borderRadius: '50%',
                              border: (isMobile ? '2px' : '3px') + ' solid ' + getBorderColor(operation),
                          }}>
 
-                        <Box width={isMobile ? 34 : 44} height={isMobile ? 34 : 44}
+                        <Box 
                              sx={{
+                                 width: isMobile ? 34 : 44, 
+                                 height: isMobile ? 34 : 44,
                                  borderRadius: '50%',
                                  backgroundColor: getCategorieColor(operation.categorie.id),
                                  border: (isMobile ? '2px' : '3px') + ' solid black',
@@ -103,23 +108,23 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                 </Grid>
                 <Grid size={{md: 6.5, xl: 6.5}}>
                     <Stack direction={"column"}>
-                        <Typography variant={"subtitle1"} component="div" align={"left"}
-                                    sx={{spacing: 2, paddingLeft: isMobile ? 1 : 2}}>
-                            {getOperationLibelle(operation.libelle, comptes, false, isMobile)}
+                        <Typography variant={"subtitle1"} component="div"
+                                    sx={{textAlign: "left", spacing: 2, paddingLeft: isMobile ? 1 : 2}}>
+                            {getOperationLibelle(operation.libelle, comptes || [], false, isMobile)}
                         </Typography>
-                        <Typography variant={"caption"} component="div" align={"left"}
-                                    sx={{spacing: 2, paddingLeft: isMobile ? 1 : 2, color: "#808080"}}>
+                        <Typography variant={"caption"} component="div"
+                                    sx={{textAlign: "left", spacing: 2, paddingLeft: isMobile ? 1 : 2, color: "#808080"}}>
                             {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                         </Typography>
                     </Stack>
                 </Grid>
                 <Grid size={{md: 1.5, xl: 1.5}}>
-                    <Typography component="div" align={"center"}>
-                        <OperationStatus statutsOperation={operation.statuts} />
+                    <Typography component="div" sx={{ textAlign: "center" }}>
+                        <OperationStatus statutsOperation={operation.statuts || []} />
                     </Typography>
                 </Grid>
                 <Grid  size={{md: 2.5, xl: 2.5}}>
-                    <Typography variant={"subtitle1"} component="div" align={"right"} paddingRight={isMobile ? 1 : 2}>
+                    <Typography variant={"subtitle1"} component="div" sx={{textAlign: "right", paddingRight: isMobile ? 1 : 2}}>
                         <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true}/>
                     </Typography>
                 </Grid>

@@ -26,8 +26,8 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{ color: 'white', fontWeight: 'bold' }}> </TableCell>
-                            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Au {dateCourante.getDate()} {dateCourante.toLocaleString('default', {month: 'long'})} {dateCourante.getFullYear()}</TableCell>
-                            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Fin du mois</TableCell>
+                            <TableCell sx={{ textAlign: "right", color: 'white', fontWeight: 'bold' }}>Au {dateCourante.getDate()} {dateCourante.toLocaleString('default', {month: 'long'})} {dateCourante.getFullYear()}</TableCell>
+                            <TableCell sx={{ textAlign: "right", color: 'white', fontWeight: 'bold' }}>Fin du mois</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -37,20 +37,20 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
                                 <TableCell sx={{ color: getTypeCategorieRenderer(total.libelleCategorie as TYPES_CATEGORIES_OPERATION_ENUM).color , fontSize: '1.1em' }}>
                                     {getTypeCategorieRenderer(total.libelleCategorie as TYPES_CATEGORIES_OPERATION_ENUM).text}
                                 </TableCell>
-                                <TableCell align="right" sx={{ color: 'white', fontSize: '1.1em' }}>
+                                <TableCell sx={{ textAlign: "right", color: 'white', fontSize: '1.1em' }}>
                                     <OperationValue valueOperation={total.totalAtMaintenant} showSign={true} id={`total-now-${total.libelleCategorie}`}/>
                                 </TableCell>
-                                <TableCell align="right" sx={{ color: 'white', fontSize: '1.1em' }}>
+                                <TableCell sx={{ textAlign: "right", color: 'white', fontSize: '1.1em' }}>
                                     <OperationValue valueOperation={total.totalAtFinMoisCourant} showSign={true} id={`total-end-${total.libelleCategorie}`}/>
                                 </TableCell>
                             </TableRow>
                         ))}
                         <TableRow>
                             <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Soldes</TableCell>
-                            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>
+                            <TableCell sx={{ textAlign: "right", color: 'white', fontWeight: 'bold' }}>
                                 <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true} id={'tooltip-solde-now'}/>
                             </TableCell>
-                            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold', fontSize: '1.1em' }}>
+                            <TableCell sx={{ textAlign: "right", color: 'white', fontWeight: 'bold', fontSize: '1.1em' }}>
                                 <OperationValue valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true} id={'tooltip-solde-end'}/>
                             </TableCell>
                         </TableRow>
@@ -64,15 +64,15 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
         <Stack direction={"column"} justifyContent="left" alignContent={"center"} alignItems="center">
             <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
                 {budget ?
-                    <Typography variant={"h6"} width={isMobile ? 100 : 240} textAlign={"right"} sx={{cursor: "help"}}>
+                    <Typography variant={"h6"} sx={{ textAlign: "right", width: isMobile ? 100 : 240, cursor: "help" }}>
                         <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true}
                                         id={'soldeAtMaintenant'}/>
                     </Typography> : <></>}
             </Tooltip>
             <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
             {(budget?.actif) ?
-                    <Typography variant={"caption"} width={isMobile ? 100 : 240} textAlign={"right"}
-                                sx={{cursor: "help"}}>
+                    <Typography variant={"caption"}
+                                sx={{ textAlign: "right", width: isMobile ? 100 : 240, cursor: "help" }}>
                         <span style={{color: "#808080"}}>(</span> <OperationValue
                         valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true}
                         id={'soldeAtFinMoisCourant'}/> <span style={{color: "#808080"}}>)</span>

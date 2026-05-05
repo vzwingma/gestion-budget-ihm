@@ -30,7 +30,7 @@ AND NOT EXISTS (
 ## Stack technique
 
 - **React 19.1** – TypeScript strict, composants fonctionnels uniquement
-- **Material-UI 7** (`@mui/material`) – seule bibliothèque UI autorisée
+- **Material-UI 9** (`@mui/material`) – seule bibliothèque UI autorisée
 - **React Router 7** – `HashRouter`, routes dans `Main.tsx`
 - **react-oidc-context 3** – ne pas manipuler les tokens OAuth directement
 - **Recharts 3** – pour les visualisations (TreeMap, AreaChart)

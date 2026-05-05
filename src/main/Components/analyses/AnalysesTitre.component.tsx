@@ -20,8 +20,8 @@ const AnalysesTitre: React.FC<AnalysesTitreProps> = ({ currentCompte, currentPer
         <Stack direction={"row"} spacing={2} justifyContent="center" alignItems="center" alignContent={"center"}>
             <img src={"/img/banques/" + currentCompte.itemIcon} className={"compteIcon"}
                 alt={currentCompte.libelle} />
-            <Typography variant={"h6"} component="div" textAlign={"center"}
-                justifyContent={"center"} alignContent={"center"}>
+            <Typography variant={"h6"} component="div"
+                sx={{ textAlign: "center", justifyContent: "center", alignContent: "center" }}>
                 {currentCompte.libelle}
             </Typography>
             <Typography variant={"caption"} component="div" sx={{color: "grey"}}>

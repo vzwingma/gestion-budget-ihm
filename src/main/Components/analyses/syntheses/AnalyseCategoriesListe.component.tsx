@@ -141,8 +141,8 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                     </TableCell>
                     <TableCell sx={{ width: COLUMN_WIDTHS.type }}>{renderSortLabel('type', 'Type')}</TableCell>
                     <TableCell sx={{ width: COLUMN_WIDTHS.libelle }}>{renderSortLabel('libelle', 'Libellé')}</TableCell>
-                    <TableCell align="right" sx={{ width: COLUMN_WIDTHS.somme }}>{renderSortLabel('somme', 'Somme')}</TableCell>
-                    <TableCell align="right" sx={{ width: COLUMN_WIDTHS.operations }}>{renderSortLabel('operations', 'Opérations')}</TableCell>
+                    <TableCell sx={{ textAlign: "right", width: COLUMN_WIDTHS.somme }}>{renderSortLabel('somme', 'Somme')}</TableCell>
+                    <TableCell sx={{ textAlign: "right", width: COLUMN_WIDTHS.operations }}>{renderSortLabel('operations', 'Opérations')}</TableCell>
                     <TableCell sx={{ width: COLUMN_WIDTHS.pourcentage }}>{renderSortLabel('pourcentage', 'Pourcentage')}</TableCell>
                 </TableRow>
             </TableHead>
@@ -180,8 +180,9 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                         )}
                                     </TableCell>
                                     <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.type }}>
-                                        <Box width={isMobile ? 24 : 38} height={isMobile ? 24 : 38}
-                                            sx={{
+                                        <Box sx={{
+                                                width: isMobile ? 24 : 38,
+                                                height: isMobile ? 24 : 38,
                                                 borderRadius: '50%',
                                                 backgroundColor: getCategorieColor(analyseCat.categorie.id),
                                                 border: (isMobile ? '1px' : '2px') + ' solid #252525',
@@ -194,10 +195,10 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                     <TableCell sx={{ paddingY: 1, fontWeight: 600, width: COLUMN_WIDTHS.libelle }}>
                                         {analyseCat.categorie.libelle}
                                     </TableCell>
-                                    <TableCell align="right" sx={{ paddingY: 1, fontWeight: 600, width: COLUMN_WIDTHS.somme }}>
+                                    <TableCell sx={{ textAlign: "right", paddingY: 1, fontWeight: 600, width: COLUMN_WIDTHS.somme }}>
                                         <OperationValue id={"value_" + analyseCat.categorie.id} valueOperation={total} showSign={true} />
                                     </TableCell>
-                                    <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.operations }}>
+                                    <TableCell sx={{ textAlign: "right", paddingY: 1, width: COLUMN_WIDTHS.operations }}>
                                         {nbTransactions}
                                     </TableCell>
                                     <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.pourcentage }}>
@@ -237,12 +238,12 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                                         {analyseSubCat.ssCategorie.libelle}
                                                     </Typography>
                                                 </TableCell>
-                                                <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.somme }}>
+                                                <TableCell sx={{ textAlign: "right", paddingY: 1, width: COLUMN_WIDTHS.somme }}>
                                                     <Typography variant="caption">
                                                         <OperationValue id={"value_" + analyseSubCat.ssCategorie.id} valueOperation={subTotal} showSign={true} />
                                                     </Typography>
                                                 </TableCell>
-                                                <TableCell align="right" sx={{ paddingY: 1, width: COLUMN_WIDTHS.operations }}>
+                                                <TableCell sx={{ textAlign: "right", paddingY: 1, width: COLUMN_WIDTHS.operations }}>
                                                     <Typography variant="caption">{subNbTransactions}</Typography>
                                                 </TableCell>
                                                 <TableCell sx={{ paddingY: 1, width: COLUMN_WIDTHS.pourcentage }}>

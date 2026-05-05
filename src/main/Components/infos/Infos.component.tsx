@@ -86,7 +86,7 @@ export const Infos: React.FC = () => {
                 <TableFooter>
                     <TableRow>
                         <TableCell style={{ color: "#114b65" }}>© 2025</TableCell>
-                        <TableCell align={"right"} style={{ color: "#114b65" }}>by Zed.corp</TableCell>
+                        <TableCell sx={{ textAlign: "right", color: "#114b65" }}>by Zed.corp</TableCell>
                     </TableRow>
                 </TableFooter>
             </Table>

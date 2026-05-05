@@ -41,18 +41,18 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedF
             return <CircularProgress size={20} />
         }
         else if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
-            return <Typography variant={"subtitle1"} width={120} sx={{ cursor: "help" }}>
+            return <Typography variant={"subtitle1"} sx={{ width: 120, cursor: "help" }}>
                 <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id} />
             </Typography>
         }
         else if (selectedFunction === BUSINESS_ONGLETS.RECURRENTS) {
-            return <Typography variant={"subtitle1"} width={120} sx={{ cursor: "help" }}>
+            return <Typography variant={"subtitle1"} sx={{ width: 120, cursor: "help" }}>
                 { (soldes === null) && <span style={{color: "var( --color-heading-text)"}}>Non initialisé</span> }
                 { (soldes !== null) && <span style={{color: 'var(--color-realisee)'}}>Actif</span> }
             </Typography>
 
         } else {
-            return <Typography variant={"subtitle1"} width={120} sx={{ cursor: "help" }}>
+            return <Typography variant={"subtitle1"} sx={{ width: 120, cursor: "help" }}>
                 { (!compte.actif) && <span style={{color: "var( --color-heading-text)"}}>Inactif</span> }
                 { (compte.actif) && <span style={{color: 'var(--color-realisee)'}}>Actif</span> }
             </Typography>

@@ -56,7 +56,7 @@ src/main/
 - Props interfaces are co-located in `Components.props.ts`.
 - Feature folders mirror domain names: `analyses/`, `budgets/`, `operations/`.
 - Sub-components for a page live in a `subcomponents/` sub-folder; action buttons go in `actions/`.
-- Material-UI (`@mui/material`) is the sole UI library. Use `Box`/`Grid` for layout; `useMediaQuery`/`useTheme` for responsive behaviour.
+- Material-UI 9 (`@mui/material`) is the sole UI library. Use `Box`/`Grid` for layout; `useMediaQuery`/`useTheme` for responsive behaviour.
 
 ### Key enums & constants
 - `AppTechEnums.constants.ts` – `API_GW_ENUM` (API gateway key, env var references)

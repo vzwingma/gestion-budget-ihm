@@ -30,11 +30,12 @@ const AnalyseOperationItem: React.FC<SharedOperationItemProps> = ({
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     return (
         <Box key={"liste_" + operation.id}>
-            <Grid container height={isMobile ? 40 : 60} alignItems="center">
+            <Grid container sx={{ height: isMobile ? 40 : 60, alignItems: "center" }}>
                 <Grid size={{ md: 1.5, xl: 1.5 }} sx={{ paddingLeft: isMobile ? '4px' : '10px' }}>
-                    <Box width={isMobile ? 38 : 50} height={isMobile ? 38 : 50}>
-                        <Box width={isMobile ? 34 : 44} height={isMobile ? 34 : 44}
-                            sx={{
+                    <Box sx={{ width: isMobile ? 38 : 50, height: isMobile ? 38 : 50 }}>
+                        <Box sx={{
+                                width: isMobile ? 34 : 44,
+                                height: isMobile ? 34 : 44,
                                 borderRadius: '50%',
                                 backgroundColor: getCategorieColor(operation.categorie.id),
                                 border: (isMobile ? '2px' : '3px') + ' solid black',
@@ -47,23 +48,23 @@ const AnalyseOperationItem: React.FC<SharedOperationItemProps> = ({
                 </Grid>
                 <Grid size={{ md: 6.5, xl: 6.5 }}>
                     <Stack direction={"column"}>
-                        <Typography variant={"subtitle1"} component="div" align={"left"}
-                            sx={{ spacing: 2, paddingLeft: isMobile ? 1 : 2 }}>
+                        <Typography variant={"subtitle1"} component="div"
+                            sx={{ textAlign: "left", spacing: 2, paddingLeft: isMobile ? 1 : 2 }}>
                             {getOperationLibelle(operation.libelle, comptes, false, isMobile)}
                         </Typography>
-                        <Typography variant={"caption"} component="div" align={"left"}
-                            sx={{ spacing: 2, paddingLeft: isMobile ? 1 : 2, color: "#808080" }}>
+                        <Typography variant={"caption"} component="div"
+                            sx={{ textAlign: "left", spacing: 2, paddingLeft: isMobile ? 1 : 2, color: "#808080" }}>
                             {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                         </Typography>
                     </Stack>
                 </Grid>
                 <Grid size={{ md: 1.5, xl: 1.5 }}>
-                    <Typography variant={"caption"} component="div" align={"center"} sx={{ spacing: 2, paddingLeft: isMobile ? 1 : 2, color: "#808080" }}>    
+                    <Typography variant={"caption"} component="div" sx={{ textAlign: "center", spacing: 2, paddingLeft: isMobile ? 1 : 2, color: "#808080" }}>    
                         {(operation.autresInfos.dateOperation) ? getLabelMonthFRFromDate(operation.autresInfos.dateOperation) : ''}
                     </Typography>
                 </Grid>
                 <Grid size={{ md: 2.5, xl: 2.5 }}>
-                    <Typography variant={"subtitle1"} component="div" align={"right"} paddingRight={isMobile ? 1 : 2}>
+                    <Typography variant={"subtitle1"} component="div" sx={{ textAlign: "right", paddingRight: isMobile ? 1 : 2 }}>
                         <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true} />
                     </Typography>
                 </Grid>

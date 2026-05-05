@@ -34,9 +34,9 @@ export const AnalysesFiltresOperation: React.FC<AnalysesFiltresOperationProps> =
 	};
 
 	return (
-		<Stack direction={"column"} spacing={1} alignItems={"flex-start"} paddingLeft={2}>
+		<Stack direction={"column"} spacing={1} alignItems={"flex-start"} sx={{ paddingLeft: 2 }}>
 
-			<Grid container width={"90%"} columnSpacing={2} alignItems={"center"}>
+			<Grid container columnSpacing={2} alignItems={"center"} sx={{ width: "90%" }}>
 				<Grid size={{ md: 4, xl: 4 }}>
 					<Typography variant={"subtitle2"} sx={{ color: 'var(--color-operations-secondary)' }}>État</Typography>
 				</Grid>
