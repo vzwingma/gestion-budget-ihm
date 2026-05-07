@@ -171,9 +171,9 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         editOperation.ssCategorie.type = ssCat.type;
 
         /** Adaptation sur la sélection de catégorie **/
-        if (operation && ssCat.categorieParente) {
-            operation.categorie.id = ssCat.categorieParente.id;
-            operation.categorie.libelle = ssCat.categorieParente.libelle;
+        if (ssCat.categorieParente?.id) {
+            operation?.categorie && (operation.categorie.id = ssCat.categorieParente.id);
+            operation?.categorie && (operation.categorie.libelle = ssCat.categorieParente.libelle);
         }
         if (operation) {
             operation.ssCategorie.id = ssCat.id;
@@ -182,7 +182,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         }
 
         /** Si type Rentrée d'argent, alors type opération = Crédit **/
-        if(ssCat.categorieParente && BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.categorieParente.id) {
+        if(BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.categorieParente?.id) {
             editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
             editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;            
             if (operation) {
@@ -191,7 +191,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
             }
         }
         /** Si type Actifs Invest, alors type opération = Crédit **/
-        else if(ssCat.categorieParente && BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente.id) {
+        else if(BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente?.id) {
             editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
             editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
             editOperation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
@@ -342,7 +342,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
 
                         <Grid size={{ md: 8, xl: 8 }}>
-                            <Typography variant={"overline"} color={getOperationStateColor(operation.etat)} style={{ border: '1px solid ' + getOperationStateColor(operation.etat), padding: '8px', paddingRight: '10px', borderRadius: '4px' }}>
+                            <Typography variant={"overline"} style={{ border: '1px solid ' + getOperationStateColor(operation.etat), padding: '8px', paddingRight: '10px', borderRadius: '4px', color: getOperationStateColor(operation.etat) }}>
                                 {operation.etat}
                             </Typography>
                         </Grid>

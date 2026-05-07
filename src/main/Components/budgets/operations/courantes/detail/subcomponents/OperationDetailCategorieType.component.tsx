@@ -50,7 +50,7 @@ export const OperationDetailCategorieType: React.FC<OperationDetailCategorieType
                 variant="standard" size={"small"}>
                 {Object.values(TYPES_CATEGORIES_OPERATION_ENUM).map((option) => (
                     <MenuItem key={option} value={option}
-                        color={getTypeCategorieRenderer(option).color}>
+                        sx={{ color: getTypeCategorieRenderer(option).color }}>
                         {getTypeCategorieRenderer(option).text}
                     </MenuItem>
                 ))}
@@ -59,8 +59,7 @@ export const OperationDetailCategorieType: React.FC<OperationDetailCategorieType
             
             <Typography id={OPERATION_EDITION_FORM.CATEGORIE_TYPE} variant={"overline"}
                 className={budgetActif ? "editableField" : "editableField--disabled"}
-                style={{border: '1px solid ' + getTypeCategorieRenderer(operation.ssCategorie.type).color, padding: '8px', paddingRight: '10px', borderRadius: '4px'}}
-                color={getTypeCategorieRenderer(operation.ssCategorie.type).color}>
+                style={{border: '1px solid ' + getTypeCategorieRenderer(operation.ssCategorie.type).color, padding: '8px', paddingRight: '10px', borderRadius: '4px', color: getTypeCategorieRenderer(operation.ssCategorie.type).color}}>
                 {getTypeCategorieRenderer(operation.ssCategorie.type).text}
             </Typography>
     )

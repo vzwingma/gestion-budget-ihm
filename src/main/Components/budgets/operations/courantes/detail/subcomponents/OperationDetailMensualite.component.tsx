@@ -51,7 +51,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
                 variant="standard" size={"small"}>
                 {Object.values(PERIODES_MENSUALITE_ENUM).map((option) => (
                     <MenuItem key={option} value={option}
-                        color={getPeriodeRenderer(option).color}>
+                        sx={{ color: getPeriodeRenderer(option).color }}>
                         {getPeriodeRenderer(option).text}
                     </MenuItem>
                 ))}
@@ -60,8 +60,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
             
             <Typography id={OPERATION_EDITION_FORM.MENSUALITE} variant={"overline"}
                 className={budgetActif ? "editableField" : "editableField--disabled"}
-                style={{border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '8px', paddingRight: '10px', borderRadius: '4px'}}
-                color={getPeriodeRenderer(operation.mensualite.periode).color}>
+                style={{border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '8px', paddingRight: '10px', borderRadius: '4px', color: getPeriodeRenderer(operation.mensualite.periode).color}}>
                 {getPeriodeRenderer(operation.mensualite.periode).text}
             </Typography>
     )
