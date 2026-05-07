@@ -172,8 +172,8 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
 
                         <Grid size={{ md: 5, xl: 5 }}>
                             { /** PERIODE **/}
-                            <Typography id={"OPERATION_EDITION_FORM.MENSUALITE"} variant={"overline"} color={getPeriodeRenderer(operation.mensualite.periode).color}
-                                style={{ border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '10px', paddingRight: '10px', borderRadius: '4px' }}>
+                            <Typography id={"OPERATION_EDITION_FORM.MENSUALITE"} variant={"overline"}
+                                style={{ border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '10px', paddingRight: '10px', borderRadius: '4px', color: getPeriodeRenderer(operation.mensualite.periode).color }}>
                                 {getPeriodeRenderer(operation.mensualite.periode).text}
                             </Typography>
                         </Grid>

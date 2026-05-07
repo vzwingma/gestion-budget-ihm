@@ -46,7 +46,7 @@ const OperationDetailStatus: React.FC<OperationStatusProps> = ({ statutsOperatio
                             height: getIconSize() + "px",
                             marginRight: "4px"
                         }} />
-                    <Typography variant={"overline"} color="#FB923C">EN RETARD</Typography>
+                    <Typography variant={"overline"} sx={{ color: "#FB923C" }}>EN RETARD</Typography>
                 </Stack>
             </Tooltip>
         )
@@ -61,7 +61,7 @@ const OperationDetailStatus: React.FC<OperationStatusProps> = ({ statutsOperatio
                         height: getIconSize() + "px",
                         marginRight: "4px"
                     }} />
-                    <Typography variant={"overline"} color="#60A5FA">DERNIÈRE ÉCHÉANCE</Typography>
+                    <Typography variant={"overline"} sx={{ color: "#60A5FA" }}>DERNIÈRE ÉCHÉANCE</Typography>
                 </Stack>                
                 
             </Tooltip>
