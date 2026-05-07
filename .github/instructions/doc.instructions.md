@@ -40,6 +40,24 @@ applyTo: "**"
 
 Ce repo IHM héberge les **images et schémas C4 partagés** (`schemas/`) référencés également par le wiki serverless. Toute modification de diagramme doit être cohérente avec `gestion-budget-serverless.wiki/Conception-globale.md`.
 
+## Checklist de conformité wiki + C4 (obligatoire)
+
+### Trigger de MAJ docs/wiki/C4
+- Déclencher la checklist dès qu'un changement touche l'architecture IHM, un flux API consommé, ou un diagramme C4 partagé.
+
+### Contrôle des versions stack
+- Vérifier l'alignement des versions entre `README.md`, `docs/ARCHITECTURE.md`, pages wiki IHM et `schemas/*.puml`.
+- En cas de divergence, la version de référence est celle de `docs/ARCHITECTURE.md`.
+
+### Contrôle des endpoints (méthode / chemin / rôle)
+- Vérifier que les endpoints backend consommés par l'IHM (méthode + chemin + rôle attendu) sont alignés entre wiki IHM et wiki serverless.
+- En cas d'écart, remonter à la source de vérité serverless (`*APIEnum` + annotations JAX-RS / `@RolesAllowed`).
+
+### Contrôle des liens wiki et rendus C4
+- Vérifier les liens des pages IHM vers les schémas C4.
+- Vérifier que chaque rendu référencé existe et correspond à la source `*.puml` courante.
+- Aucun lien C4 cassé avant clôture de tâche.
+
 ## Ce que tu ne fais PAS
 
 - Ne modifie pas le code source (`*.tsx`, `*.ts`).
