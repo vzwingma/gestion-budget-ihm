@@ -103,7 +103,7 @@ Lire les 4 fichiers suivants dans `.github/instructions/` :
 Pour chaque fichier, vérifier sa cohérence avec le code source :
 - `dev.instructions.md` : versions des librairies, noms des fichiers de constantes, chemins des dossiers
 - `qa.instructions.md` : versions des packages de test, commandes CI, chemins de rapport de couverture
-- `doc.instructions.md` : chemins wiki locaux, noms des fichiers de doc, versions pour les diagrammes `.puml`
+- `doc.instructions.md` : chemins docs/ locaux, noms des fichiers de doc, versions pour les diagrammes `.puml`
 - `architect.instructions.md` : noms des couches, providers d'état, service HTTP, stratégie de routing
 
 En complément :

@@ -78,7 +78,7 @@ Pour chaque fichier, remplir les placeholders avec les valeurs identifiées lors
 - `[DESCRIPTION_COURTE_DU_PROJET]` → description courte (ex: frontend React/TypeScript)
 - Pour `dev.instructions.md` : stack, versions, fichiers de constantes, service HTTP, dossiers conventions
 - Pour `qa.instructions.md` : framework de test, commandes CI, chemins de rapport de couverture, noms des contexts
-- Pour `doc.instructions.md` : chemin wiki local, noms des fichiers wiki, frameworks + versions pour les `.puml`
+- Pour `doc.instructions.md` : chemin docs/ local, noms des fichiers de documentation, frameworks + versions pour les `.puml`
 - Pour `architect.instructions.md` : couches du projet, noms des providers d'état, service HTTP, routing
 
 Créer les 4 fichiers dans `.github/instructions/` du projet cible (ou les mettre à jour s'ils existent déjà).
@@ -103,7 +103,8 @@ Si le projet dispose d'autres fichiers de référence (CONTRIBUTING.md, ARCHITEC
 - [ ] Fichier lisible et bien formaté (Markdown)
 - [ ] `.github/agents/` contient 4 fichiers (`Arcos.agent.md`, `Devon.agent.md`, `Qalvin.agent.md`, `Docly.agent.md`)
 - [ ] `.github/PLANS.md` est accessible
-- [ ] `.github/plans/README.md` existe (créer si absent : `mkdir -p .github/plans && echo "# Plans d'Action" > .github/plans/README.md`)
+- [ ] `docs/ARCHITECTURE.md` existe (créer depuis le template : `cp docs/ARCHITECTURE.template.md docs/ARCHITECTURE.md`)
+- [ ] `docs/adr/` existe (créer si absent : `mkdir -p docs/adr`)
 
 ## 💡 Conseils
 
