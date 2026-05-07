@@ -8,7 +8,9 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 ## 📂 Plans Actifs / En Cours
 
-_(Aucun plan en cours pour l'instant)_
+| # | Plan | Statut | Agent | Phase courante |
+|---|---|---|---|---|
+| 002 | [Documentation Architecture](./002_documentation_architecture.plan.md) | ✅ Complété | Docly (🟣 DOC) | Phase 1/1 |
 
 ---
 
