@@ -32,7 +32,7 @@ applyTo: "**"
 ## Conventions de documentation
 
 - **Langue** : français pour le contenu, anglais pour les blocs de code.
-- **Versions à maintenir à jour** dans les `.puml` : React (actuellement **19.1**), Quarkus (actuellement **3.32**).
+- **Versions à maintenir à jour** dans les `.puml` : React (actuellement **19.1**), Quarkus (actuellement **3.35**).
 - **Ne jamais** mentionner l'ancien nom de repo `gestion-budget-services` – c'est désormais `gestion-budget-serverless`.
 - Quand une nouvelle version de l'application est livrée, ajouter une entrée dans `Historique-de-l'Architecture.md` **en tête** de fichier.
 

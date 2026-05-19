@@ -25,3 +25,72 @@ Application Web de gestion du budget permettant de suivre et d'analyser les dép
 fonctionnalités telles que la création et la gestion de budgets, la catégorisation des opérations, et la génération de
 rapports financiers. L'application est construite avec React et utilise divers composants pour offrir une interface
 utilisateur interactive et réactive.
+
+---
+
+## Prérequis
+
+- **Node.js 20+** et **npm 10+**
+- Un fichier `.env.dev` (ou `.env.qua` / `.env.prod`) créé à partir du template `.env.model`
+
+---
+
+## Installation
+
+```bash
+npm ci --ignore-scripts
+```
+
+---
+
+## Démarrage local
+
+```bash
+npm run start:dev     # utilise .env.dev (http://localhost:3000)
+npm run start:qua     # utilise .env.qua
+npm run start:prod    # utilise .env.prod
+```
+
+---
+
+## Commandes
+
+```bash
+# Lancer tous les tests (mode watch)
+npm run test
+
+# Tests en CI (sans watch, avec coverage)
+npm run test:coverage
+
+# Lancer le linter
+npm run lint
+
+# Build de production
+npm run build
+```
+
+---
+
+## Variables d'environnement
+
+Le template de référence est `.env.model`. Chaque fichier `.env.*` doit définir :
+
+| Variable | Description |
+|---|---|
+| `REACT_APP_CONFIG_URL_COMPTES` | URL µService comptes |
+| `REACT_APP_CONFIG_URL_OPERATIONS` | URL µService opérations |
+| `REACT_APP_CONFIG_URL_PARAMS` | URL µService paramètres |
+| `REACT_APP_CONFIG_URL_UTILISATEURS` | URL µService utilisateurs |
+| `REACT_APP_CONFIG_OIDC_AUTHORITY` | URL autorité OIDC (Google) |
+| `REACT_APP_CONFIG_OIDC_CLIENT_ID` | Client ID Google OAuth |
+| `REACT_APP_CONFIG_OIDC_CLIENT_SECRET` | Secret Google OAuth |
+| `REACT_APP_CONFIG_API_KEY` | Clé API Gateway AWS (`X-Api-Key`) |
+
+---
+
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [Instructions Copilot](.github/copilot-instructions.md)
+- [Wiki du projet](https://github.com/vzwingma/gestion-budget-ihm/wiki)
+- [Backend (gestion-budget-serverless)](https://github.com/vzwingma/gestion-budget-serverless)
