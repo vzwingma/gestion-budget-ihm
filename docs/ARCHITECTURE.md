@@ -4,12 +4,13 @@
 
 ## 🎯 Vue d'ensemble
 
-**gestion-budget-ihm** est une application web frontend de gestion budgétaire personnelle. Permet de visualiser et gérer les comptes bancaires, opérations financières et analyses budgétaires.
+**gestion-budget-ihm** est une application web frontend de gestion budgetaire personnelle. Elle permet de visualiser et
+gerer les comptes bancaires, les operations financieres et les analyses budgetaires.
 
 | Propriété | Valeur |
 |---|---|
 | **Type** | frontend |
-| **Stack principale** | React 19.1 + TypeScript |
+| **Stack principale** | React 19.1.1 + TypeScript |
 | **Plateforme cible** | web |
 | **Langue UI** | Français |
 | **Statut** | En développement |
@@ -31,7 +32,7 @@ gestion-budget-ihm
 ```
 Utilisateur (navigateur)
     → Composant React UI (Components/)
-    → ClientHTTP.service.ts (attach X-Api-Key + Bearer token)
+    → ClientHTTP.service.ts (attache X-Api-Key + Bearer token)
     → Microservices AWS Lambda (gestion-budget-serverless)
     ← Réponse JSON → BudgetContext → re-render
 ```

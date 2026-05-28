@@ -21,10 +21,9 @@
 
 ### Description
 
-Application Web de gestion du budget permettant de suivre et d'analyser les dépenses et les revenus. Elle offre des
-fonctionnalités telles que la création et la gestion de budgets, la catégorisation des opérations, et la génération de
-rapports financiers. L'application est construite avec React et utilise divers composants pour offrir une interface
-utilisateur interactive et réactive.
+Frontend React/TypeScript strict de gestion du budget personnel. L'application permet de consulter les comptes,
+analyser les operations, gerer les budgets et naviguer via `HashRouter`. Les echanges HTTP passent par
+`ClientHTTP.service.ts`, avec etat global centralise dans `BudgetContextProvider.tsx`.
 
 ---
 
