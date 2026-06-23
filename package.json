@@ -28,7 +28,7 @@
     "uuid": "14.0.1"
   },
   "overrides": {
-    "autoprefixer": "10.5.0"
+    "autoprefixer": "10.5.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.21.11",
