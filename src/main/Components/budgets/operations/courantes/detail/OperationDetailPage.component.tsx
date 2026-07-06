@@ -268,9 +268,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                     <Grid container columnSpacing={2} rowSpacing={isMobile ? 1 : 2} sx={{ width: "90%", borderTop: isInCreateMode(editForm) ? 'none' : '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
                         <Grid size={{ md: 8, xl: 8 }}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
-                            {isInCreateMode(editForm) && editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
-                                <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography> : <></>}
-
                         </Grid>
                         <Grid size={{ md: 4, xl: 4 }}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Type Catégorie</Typography>
@@ -283,15 +280,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 formCatgoriesInEdition={editForm.categories}
                                 errorsCategories={errors.categorie}
                                 fillOperationForm={fillOperationForm} />
-                            { /** COMPTE DE TRANSFERT  **/}
-                            {isInCreateMode(editForm) && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) ?
-                                <OperationDetailIntercompte intercompte={editOperation.intercompte}
-                                    listeAutresComptes={
-                                        comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
-                                    errorIntercompte={errors.intercompte}
-                                    fillOperationForm={fillOperationForm} />
-                                : getAffichageIntercompteRO(editOperation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
-
                         </Grid>
                         <Grid size={{ md: 4, xl: 4 }} >
                             { /** Détail catégorie **/}
@@ -300,6 +288,24 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                                 editOperation={editOperation}
                                 fillOperationForm={fillOperationForm} />
                         </Grid>
+
+                        { /** COMPTE DE TRANSFERT **/}
+                        {editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) &&
+                            <>
+                                <Grid size={{ md: 12, xl: 12 }}>
+                                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography>
+                                </Grid>
+                                <Grid size={{ md: 12, xl: 12 }}>
+                                    {isInCreateMode(editForm) ?
+                                        <OperationDetailIntercompte intercompte={editOperation.intercompte}
+                                            listeAutresComptes={
+                                                comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
+                                            errorIntercompte={errors.intercompte}
+                                            fillOperationForm={fillOperationForm} />
+                                        : getAffichageIntercompteRO(editOperation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
+                                </Grid>
+                            </>
+                        }
 
                         {/** 
                          * MENSUALITES

@@ -142,22 +142,25 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
 
 
                     <Grid container columnSpacing={10} sx={{ width: "100%" }}>
-                        <Grid size={{ md: 6, xl: 5 }} sx={{ paddingTop: 3, paddingBottom: 1 }}>
+                        <Grid size={{ md: 12, xl: 12 }} sx={{ paddingTop: 3, paddingBottom: 1 }}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
                         </Grid>
-                        <Grid size={{ md: 6, xl: 7 }} sx={{ paddingTop: 3, paddingBottom: 1 }}>
-                            {(operation.libelle != null && operationIsIntercompteFromLibelle(operation.libelle)) ?
-                                <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography> : <></>
-                            }
-                        </Grid>
-                        <Grid size={{ md: 6, xl: 5 }}>
+                        <Grid size={{ md: 12, xl: 12 }}>
                             {  /** CATEGORIES **/}
                             <Typography variant={"overline"}>{operation.categorie.libelle} / {operation.ssCategorie.libelle}</Typography>
                         </Grid>
-                        <Grid size={{ md: 6, xl: 7 }}>
-                            { /** COMPTE DE TRANSFERT  **/}
-                            {getAffichageIntercompteRO(operation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
-                        </Grid>
+
+                        { /** COMPTE DE TRANSFERT **/}
+                        {(operation.libelle != null && operationIsIntercompteFromLibelle(operation.libelle)) &&
+                            <>
+                                <Grid size={{ md: 12, xl: 12 }} sx={{ paddingTop: 3, paddingBottom: 1 }}>
+                                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography>
+                                </Grid>
+                                <Grid size={{ md: 12, xl: 12 }}>
+                                    {getAffichageIntercompteRO(operation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
+                                </Grid>
+                            </>
+                        }
 
                         <Grid size={{ md: 5, xl: 5 }} sx={{ paddingTop: 3, paddingBottom: 1 }}>
                             <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
