@@ -21,7 +21,7 @@
     ],
     "types": [
       "node",
-      "jest"
+      "vitest/globals"
     ],
     "jsx": "react",
     "allowImportingTsExtensions": true,

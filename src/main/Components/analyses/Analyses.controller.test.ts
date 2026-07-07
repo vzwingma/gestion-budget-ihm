@@ -1,14 +1,15 @@
+import type { Mock } from 'vitest';
 import {applyFiltersToOperations, loadBudgetsPeriodes} from './Analyses.controller.ts';
 import {loadBudget} from './Analyses.extservices.ts';
 import {toast} from 'react-toastify';
 
-jest.mock('./Analyses.extservices.ts', () => ({
-    loadBudget: jest.fn()
+vi.mock('./Analyses.extservices.ts', () => ({
+    loadBudget: vi.fn()
 }));
 
-jest.mock('react-toastify', () => ({
+vi.mock('react-toastify', () => ({
     toast: {
-        error: jest.fn()
+        error: vi.fn()
     }
 }));
 
@@ -17,19 +18,19 @@ const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 describe('Analyses.controller', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('retourne une erreur si aucun compte n est sélectionné', () => {
-        loadBudgetsPeriodes(null, {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-02-01')} as any, jest.fn());
+        loadBudgetsPeriodes(null, {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-02-01')} as any, vi.fn());
 
         expect(toast.error).toHaveBeenCalledTimes(1);
         expect(loadBudget).not.toHaveBeenCalled();
     });
 
     test('charge les budgets de la période et consolide les opérations', async () => {
-        const handleDataCalculationResult = jest.fn();
-        (loadBudget as jest.Mock)
+        const handleDataCalculationResult = vi.fn();
+        (loadBudget as Mock)
             .mockResolvedValueOnce({
                 listeOperations: [{categorie: {id: 'c2', libelle: 'B'}, autresInfos: {dateOperation: new Date('2026-01-15')}}],
                 soldes: {

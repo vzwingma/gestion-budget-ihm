@@ -1,14 +1,15 @@
+import type { Mock } from 'vitest';
 import {comptesLoaded, loadComptes} from './MainPage.extservices.ts';
 import * as ClientHTTP from '../../Services/ClientHTTP.service.ts';
 import {toast} from 'react-toastify';
 
-jest.mock('../../Services/ClientHTTP.service.ts', () => ({
-    call: jest.fn()
+vi.mock('../../Services/ClientHTTP.service.ts', () => ({
+    call: vi.fn()
 }));
 
-jest.mock('react-toastify', () => ({
+vi.mock('react-toastify', () => ({
     toast: {
-        error: jest.fn()
+        error: vi.fn()
     }
 }));
 
@@ -17,11 +18,11 @@ const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 describe('MainPage.extservices', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('trie les comptes par ordre croissant', () => {
-        const setComptes = jest.fn();
+        const setComptes = vi.fn();
         const comptes = [{id: '2', ordre: 2}, {id: '1', ordre: 1}] as any[];
 
         comptesLoaded(comptes as any, setComptes);
@@ -30,8 +31,8 @@ describe('MainPage.extservices', () => {
     });
 
     test('charge les comptes puis applique le tri', async () => {
-        const setComptes = jest.fn();
-        (ClientHTTP.call as jest.Mock).mockResolvedValue([{id: '2', ordre: 2}, {id: '1', ordre: 1}]);
+        const setComptes = vi.fn();
+        (ClientHTTP.call as Mock).mockResolvedValue([{id: '2', ordre: 2}, {id: '1', ordre: 1}]);
 
         loadComptes(setComptes as any);
         await flushPromises();
@@ -41,8 +42,8 @@ describe('MainPage.extservices', () => {
     });
 
     test('affiche un toast en cas d erreur de chargement', async () => {
-        const setComptes = jest.fn();
-        (ClientHTTP.call as jest.Mock).mockRejectedValue(new Error('ko'));
+        const setComptes = vi.fn();
+        (ClientHTTP.call as Mock).mockRejectedValue(new Error('ko'));
 
         loadComptes(setComptes as any);
         await flushPromises();

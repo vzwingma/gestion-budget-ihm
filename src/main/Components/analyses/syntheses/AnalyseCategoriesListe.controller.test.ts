@@ -6,8 +6,8 @@ import {
 } from './AnalyseCategoriesListe.controller.ts';
 import {TYPES_CATEGORIES_OPERATION_ENUM} from '../../../Utils/AppBusinessEnums.constants.ts';
 
-jest.mock('../../../Utils/renderers/CategorieItem.renderer.tsx', () => ({
-    getCategorieColor: jest.fn((id: string) => `color-${id}`)
+vi.mock('../../../Utils/renderers/CategorieItem.renderer.tsx', () => ({
+    getCategorieColor: vi.fn((id: string) => `color-${id}`)
 }));
 
 describe('AnalyseCategoriesListe.controller', () => {

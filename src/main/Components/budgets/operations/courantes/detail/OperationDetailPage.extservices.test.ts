@@ -1,21 +1,22 @@
+import type { Mock } from 'vitest';
 import {saveOperation, saveOperationIntercompte, getLibellesOperationsCompte} from './OperationDetailPage.extservices.ts';
 import {call} from '../../../../../Services/ClientHTTP.service.ts';
 import {toast} from 'react-toastify';
 import {v7 as uuid} from 'uuid';
 
-jest.mock('../../../../../Services/ClientHTTP.service.ts', () => ({
-    call: jest.fn()
+vi.mock('../../../../../Services/ClientHTTP.service.ts', () => ({
+    call: vi.fn()
 }));
 
-jest.mock('uuid', () => ({
-    v7: jest.fn()
+vi.mock('uuid', () => ({
+    v7: vi.fn()
 }));
 
-jest.mock('react-toastify', () => ({
+vi.mock('react-toastify', () => ({
     toast: {
-        success: jest.fn(),
-        error: jest.fn(),
-        warn: jest.fn()
+        success: vi.fn(),
+        error: vi.fn(),
+        warn: vi.fn()
     }
 }));
 
@@ -24,15 +25,15 @@ const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 describe('OperationDetailPage.extservices', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
-        (uuid as jest.Mock).mockReturnValue('op-created-id');
+        vi.clearAllMocks();
+        (uuid as Mock).mockReturnValue('op-created-id');
     });
 
     test('crée une opération sur budget actif', async () => {
-        const onOperationUpdate = jest.fn();
+        const onOperationUpdate = vi.fn();
         const operation = {id: '-1', etat: 'REALISEE'} as any;
         const budget = {id: 'b1', actif: true} as any;
-        (call as jest.Mock).mockResolvedValue({id: 'b1-updated'});
+        (call as Mock).mockResolvedValue({id: 'b1-updated'});
 
         saveOperation(operation, budget, onOperationUpdate);
         await flushPromises();
@@ -44,23 +45,23 @@ describe('OperationDetailPage.extservices', () => {
     });
 
     test('refuse la sauvegarde sur budget clos', () => {
-        saveOperation({id: 'op-1', etat: 'REALISEE'} as any, {id: 'b1', actif: false} as any, jest.fn());
+        saveOperation({id: 'op-1', etat: 'REALISEE'} as any, {id: 'b1', actif: false} as any, vi.fn());
 
         expect(call).not.toHaveBeenCalled();
         expect(toast.warn).toHaveBeenCalledTimes(1);
     });
 
     test('retourne une erreur si compte cible absent pour intercompte', () => {
-        saveOperationIntercompte({id: 'op-1'} as any, {id: 'b1', actif: true} as any, null, jest.fn());
+        saveOperationIntercompte({id: 'op-1'} as any, {id: 'b1', actif: true} as any, null, vi.fn());
 
         expect(call).not.toHaveBeenCalled();
         expect(toast.error).toHaveBeenCalledTimes(1);
     });
 
     test('charge, trie et déduplique les libellés d opérations', async () => {
-        const setListeLibellesOperation = jest.fn();
+        const setListeLibellesOperation = vi.fn();
         const duplicate = {libelle: 'Alpha'};
-        (call as jest.Mock).mockResolvedValue([
+        (call as Mock).mockResolvedValue([
             {libelle: 'Zulu'},
             duplicate,
             duplicate,

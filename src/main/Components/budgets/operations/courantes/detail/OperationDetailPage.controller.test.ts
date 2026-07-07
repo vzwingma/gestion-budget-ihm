@@ -8,9 +8,9 @@ import {
 import {BUSINESS_GUID} from '../../../../../Utils/AppBusinessEnums.constants.ts';
 import {saveOperation, saveOperationIntercompte} from './OperationDetailPage.extservices.ts';
 
-const mockCreateEmptyErrors = jest.fn();
+const mockCreateEmptyErrors = vi.fn();
 
-jest.mock('./OperationDetailPage.constants.ts', () => ({
+vi.mock('./OperationDetailPage.constants.ts', () => ({
     OPERATION_EDITION_FORM: {
         INPUT: '_INPUT',
         VALUE: 'OPERATION_VALUE',
@@ -23,35 +23,35 @@ jest.mock('./OperationDetailPage.constants.ts', () => ({
     createEmptyErrors: () => mockCreateEmptyErrors()
 }));
 
-jest.mock('./OperationDetailPage.extservices.ts', () => ({
-    saveOperation: jest.fn(),
-    saveOperationIntercompte: jest.fn()
+vi.mock('./OperationDetailPage.extservices.ts', () => ({
+    saveOperation: vi.fn(),
+    saveOperationIntercompte: vi.fn()
 }));
 
-jest.mock('../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx', () => ({
-    validateFormDateFinPeriode: jest.fn()
+vi.mock('../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx', () => ({
+    validateFormDateFinPeriode: vi.fn()
 }));
 
-jest.mock('./subcomponents/OperationDetailLibelle.controller.ts', () => ({
-    validateDescription: jest.fn()
+vi.mock('./subcomponents/OperationDetailLibelle.controller.ts', () => ({
+    validateDescription: vi.fn()
 }));
 
-jest.mock('./subcomponents/OperationDetailCategories.component.tsx', () => ({
-    validateFormCategories: jest.fn()
+vi.mock('./subcomponents/OperationDetailCategories.component.tsx', () => ({
+    validateFormCategories: vi.fn()
 }));
 
-jest.mock('./subcomponents/OperationDetailIntercompte.component.tsx', () => ({
-    validateFormTransfertIntercompte: jest.fn()
+vi.mock('./subcomponents/OperationDetailIntercompte.component.tsx', () => ({
+    validateFormTransfertIntercompte: vi.fn()
 }));
 
-jest.mock('./subcomponents/OperationDetailValeur.component.tsx', () => ({
-    validateFormMontant: jest.fn()
+vi.mock('./subcomponents/OperationDetailValeur.component.tsx', () => ({
+    validateFormMontant: vi.fn()
 }));
 
 describe('OperationDetailPage.controller', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('ouvre le formulaire en click sur VALUE', () => {
@@ -64,7 +64,7 @@ describe('OperationDetailPage.controller', () => {
             categorieType: false,
             formValidationEnabled: false
         };
-        const openEditForm = jest.fn();
+        const openEditForm = vi.fn();
 
         handleOperationEditionClick(
             {target: {id: 'OPERATION_VALUE'}, type: 'click'},
@@ -72,15 +72,15 @@ describe('OperationDetailPage.controller', () => {
             {} as any,
             editForm as any,
             openEditForm,
-            jest.fn() as any,
-            jest.fn()
+            vi.fn() as any,
+            vi.fn()
         );
 
         expect(openEditForm).toHaveBeenCalledTimes(1);
     });
 
     test('met à jour la date via action', () => {
-        const setEditOperation = jest.fn();
+        const setEditOperation = vi.fn();
         const editOperation = {id: 'op1'};
 
         handleDateOperationFromAction(editOperation as any, setEditOperation as any);
@@ -103,8 +103,8 @@ describe('OperationDetailPage.controller', () => {
                 dateFin: false,
                 categorieType: true
             } as any,
-            jest.fn() as any,
-            jest.fn()
+            vi.fn() as any,
+            vi.fn()
         );
 
         expect(saveOperation).toHaveBeenCalledTimes(1);
@@ -126,8 +126,8 @@ describe('OperationDetailPage.controller', () => {
                 dateFin: false,
                 categorieType: true
             } as any,
-            jest.fn() as any,
-            jest.fn()
+            vi.fn() as any,
+            vi.fn()
         );
 
         expect(saveOperationIntercompte).toHaveBeenCalledTimes(1);

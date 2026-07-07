@@ -2,9 +2,9 @@
  Enum de la config OIDC
  */
 export const OIDC_ENUM = {
-    AUTHORITY: process.env.REACT_APP_CONFIG_OIDC_AUTHORITY,
-    CLIENT_ID: process.env.REACT_APP_CONFIG_OIDC_CLIENT_ID,
-    CLIENT_SECRET: process.env.REACT_APP_CONFIG_OIDC_CLIENT_SECRET,
+    AUTHORITY: import.meta.env.VITE_CONFIG_OIDC_AUTHORITY,
+    CLIENT_ID: import.meta.env.VITE_CONFIG_OIDC_CLIENT_ID,
+    CLIENT_SECRET: import.meta.env.VITE_CONFIG_OIDC_CLIENT_SECRET,
     URL: globalThis.location.href
 }
 
@@ -13,7 +13,7 @@ export const OIDC_ENUM = {
  * @type {{API_KEY: *}}
  */
 export const API_GW_ENUM: { API_KEY: string } = {
-    API_KEY: process.env.REACT_APP_CONFIG_API_KEY || "MUST_BE_DEFINED"
+    API_KEY: import.meta.env.VITE_CONFIG_API_KEY || "MUST_BE_DEFINED"
 }
 
 /**
@@ -26,10 +26,10 @@ export const BACKEND_ENUM: {
     URL_UTILISATEURS: string;
     URL_OPERATIONS: string
 } = {
-    URL_COMPTES: process.env.REACT_APP_CONFIG_URL_COMPTES + "/comptes/v2",
-    URL_PARAMS: process.env.REACT_APP_CONFIG_URL_PARAMS + "/parametres/v2",
-    URL_UTILISATEURS: process.env.REACT_APP_CONFIG_URL_UTILISATEURS + "/utilisateurs/v2",
-    URL_OPERATIONS: process.env.REACT_APP_CONFIG_URL_OPERATIONS + "/budgets/v2"
+    URL_COMPTES: import.meta.env.VITE_CONFIG_URL_COMPTES + "/comptes/v2",
+    URL_PARAMS: import.meta.env.VITE_CONFIG_URL_PARAMS + "/parametres/v2",
+    URL_UTILISATEURS: import.meta.env.VITE_CONFIG_URL_UTILISATEURS + "/utilisateurs/v2",
+    URL_OPERATIONS: import.meta.env.VITE_CONFIG_URL_OPERATIONS + "/budgets/v2"
 }
 
 

@@ -1,8 +1,9 @@
+import type { Mock } from 'vitest';
 import {getLastAccessDateUtilisateur} from './ProfileInfos.extservices.ts';
 import {call} from '../../Services/ClientHTTP.service.ts';
 
-jest.mock('../../Services/ClientHTTP.service.ts', () => ({
-    call: jest.fn()
+vi.mock('../../Services/ClientHTTP.service.ts', () => ({
+    call: vi.fn()
 }));
 
 const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
@@ -10,12 +11,12 @@ const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 describe('ProfileInfos.extservices', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('met à jour la date de dernière connexion', async () => {
-        const setState = jest.fn();
-        (call as jest.Mock).mockResolvedValue({lastAccessTime: 1700000000});
+        const setState = vi.fn();
+        (call as Mock).mockResolvedValue({lastAccessTime: 1700000000});
 
         getLastAccessDateUtilisateur(setState);
         await flushPromises();
