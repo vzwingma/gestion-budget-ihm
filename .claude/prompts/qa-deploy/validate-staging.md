@@ -11,7 +11,7 @@ Tu vas valider le dernier déploiement sur l'environnement à l'aide du navigate
 - Environnements : 
   - QUA : https://d3to0u2plor2c.cloudfront.net
   - PROD : https://d3txnz1gxk5lrd.cloudfront.net
-- Checklist de référence : @qa/visual-checklist.md
+- Checklist de référence : @visual-checklist.md
 - Si le navigateur Chrome n'est pas connecté, demande-moi de lancer `/chrome` avant de continuer.
 
 ## Déroulé
@@ -30,7 +30,7 @@ Tu vas valider le dernier déploiement sur l'environnement à l'aide du navigate
 
 ## Rapport final
 
-À la fin, rédige un rapport dans `plans/qa_reports/validation-{date du jour au format YYYY-MM-DD}.md` avec :
+À la fin, rédige un rapport dans `.claude/plans/qa_reports/validation-{env}-{date du jour au format YYYY-MM-DD}.md` (`{env}` = `qua` ou `prod`) avec :
 
 - **Résumé** : nombre de scénarios OK / KO / BLOQUÉ
 - **Tableau par scénario** : nom, statut, observations
