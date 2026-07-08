@@ -8,17 +8,17 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 ## 📂 Plans Actifs / En Cours
 
-| # | Plan | Statut | Emplacement |
-|---|---|---|---|
-| 001 | Migration CRA → Vite | 🟡 Phases 1-5+8 complétées, 6-7 (déploiement QUA/PROD) en attente d'action humaine | [`001_migration_cra_vers_vite.plan.md`](./001_migration_cra_vers_vite.plan.md) |
-
-ADR associé : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
+_(Aucun plan actif pour l'instant dans `.claude/plans/`)_
 
 ---
 
 ## 📋 Plans Archivés / Complétés
 
-_(Aucun plan complété pour l'instant dans `.claude/plans/`)_
+| # | Plan | Statut | Emplacement |
+|---|---|---|---|
+| 001 | Migration CRA → Vite | ✅ Complété (validé QUA + PROD) | [`001_migration_cra_vers_vite.plan.md`](./001_migration_cra_vers_vite.plan.md) |
+
+ADR associé : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
 
 ---
 
