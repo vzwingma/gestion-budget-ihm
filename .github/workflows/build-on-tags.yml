@@ -9,6 +9,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -16,16 +20,11 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache@v6
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       - run: npm ci --ignore-scripts
         name: CI Install
       - run: npm run test:coverage
@@ -41,16 +40,11 @@ jobs:
       actions: write
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache@v6
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       # Update version
       - name: Get tag Version
         id: get_version
@@ -61,16 +55,17 @@ jobs:
         name: CI Install
       - name: Update config in .env.production
         env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
           OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
           OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
           CONFIG_URL_BACKENDS: ${{ vars.CONFIG_URL_BACKENDS }}
           API_GW_API_KEY: ${{ secrets.API_GW_API_KEY }}
         run: |
-          sed -i 's#__BUDGET_IHM_VERSION__#${{ steps.get_version.outputs.VERSION }}#g' external-ressources/conf/.env.production;
-          sed -i 's#__OIDC_CLIENT_ID__#${{ secrets.OIDC_CLIENT_ID }}#g' external-ressources/conf/.env.production;
-          sed -i 's#__OIDC_CLIENT_SECRET__#${{ secrets.OIDC_CLIENT_SECRET }}#g' external-ressources/conf/.env.production;
-          sed -i 's#__CONFIG_URL_BACKENDS__#${{ vars.CONFIG_URL_BACKENDS }}#g' external-ressources/conf/.env.production;
-          sed -i 's#__API_GW_API_KEY__#${{ secrets.API_GW_API_KEY }}#g' external-ressources/conf/.env.production;
+          sed -i "s#__BUDGET_IHM_VERSION__#$VERSION#g" external-ressources/conf/.env.production
+          sed -i "s#__OIDC_CLIENT_ID__#$OIDC_CLIENT_ID#g" external-ressources/conf/.env.production
+          sed -i "s#__OIDC_CLIENT_SECRET__#$OIDC_CLIENT_SECRET#g" external-ressources/conf/.env.production
+          sed -i "s#__CONFIG_URL_BACKENDS__#$CONFIG_URL_BACKENDS#g" external-ressources/conf/.env.production
+          sed -i "s#__API_GW_API_KEY__#$API_GW_API_KEY#g" external-ressources/conf/.env.production
       - run: mv external-ressources/conf/.env.production .env
         name: Set env PRODUCTION
       - run: npm run build --if-present
@@ -92,7 +87,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     name: deploy to S3 PROD
-    needs: [build-ihm]
+    needs: [ build-ihm, tests ]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8

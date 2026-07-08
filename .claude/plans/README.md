@@ -8,7 +8,8 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 ## 📂 Plans Actifs / En Cours
 
-_(Aucun plan actif pour l'instant dans `.claude/plans/`)_
+| # | Plan | Statut | Agent | Phase courante |
+|---|---|---|---|---|
 
 ---
 
@@ -28,7 +29,10 @@ ADR associé : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-mi
 
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
+| 001 | Migration CRA → Vite | ✅ Complété | [`001_migration_cra_vers_vite.plan.md`](./001_migration_cra_vers_vite.plan.md) |
 | 002 | Documentation Architecture | ✅ Complété | [`.github/plans/002_documentation_architecture.plan.md`](../../.github/plans/002_documentation_architecture.plan.md) |
+
+ADR associé : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
 
 Guide historique associé : [`.github/PLANS.md`](../../.github/PLANS.md).
 
