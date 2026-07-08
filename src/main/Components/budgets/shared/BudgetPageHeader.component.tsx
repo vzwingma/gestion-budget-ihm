@@ -34,7 +34,7 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
 }: BudgetPageHeaderProps): JSX.Element => {
 
     return (
-        <Grid container marginTop={1} sx={{overflow: "hidden"}}>
+        <Grid container sx={{overflow: "hidden", marginTop: 1}}>
             <Grid size={{md: 0.6, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                 <MenuIcon 
                     onClick={onOpenMenu}

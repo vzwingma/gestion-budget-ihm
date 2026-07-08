@@ -61,7 +61,7 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
     }
 
     return (
-        <Stack direction={"column"} justifyContent="left" alignContent={"center"} alignItems="center">
+        <Stack direction={"column"} sx={{ justifyContent: "left", alignContent: "center", alignItems: "center" }}>
             <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
                 {budget ?
                     <Typography variant={"h6"} sx={{ textAlign: "right", width: isMobile ? 100 : 240, cursor: "help" }}>

@@ -2,7 +2,7 @@ import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.
 import AnalyseCategoriesModel from "../Models/analyses/syntheses/AnalyseCategories.model.ts";
 import AnalyseSsCategoriesModel from "../Models/analyses/syntheses/AnalyseSsCategories.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
-import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
+import SsCategorieOperationModel from "../Models/budgets/SsCategorieOperation.model.ts";
 import * as AppConstants from "./AppBusinessEnums.constants.ts";
 
 export type AnalyseCategoriesSortColumn = 'type' | 'libelle' | 'somme' | 'operations' | 'pourcentage';

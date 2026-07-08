@@ -33,11 +33,11 @@ const OperationDetailStatus: React.FC<OperationStatusProps> = ({ statutsOperatio
         // définition du libellé
         return (
             <Tooltip title="En retard">
-                <Stack 
-                    direction="row" 
-                    spacing={1} 
-                    alignItems="center" 
+                <Stack
+                    direction="row"
+                    spacing={1}
                     className="operation-status-badge operation-status-en-retard"
+                    sx={{ alignItems: "center" }}
                 >
                     <WatchLaterRounded
                         sx={{
@@ -54,7 +54,7 @@ const OperationDetailStatus: React.FC<OperationStatusProps> = ({ statutsOperatio
         // définition du libellé
         return (
             <Tooltip title="Dernière échéance ce mois">
-                <Stack direction="row" spacing={1} alignItems="center" className="operation-status-badge operation-status-derniere-echeance">
+                <Stack direction="row" spacing={1} className="operation-status-badge operation-status-derniere-echeance" sx={{ alignItems: "center" }}>
                     <FlagCircleRounded sx={{
                         color: "#60A5FA",
                         width: getIconSize() + "px",

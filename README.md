@@ -29,8 +29,8 @@ analyser les operations, gerer les budgets et naviguer via `HashRouter`. Les ech
 
 ## Prérequis
 
-- **Node.js 20+** et **npm 10+**
-- Un fichier `.env.dev` (ou `.env.qua` / `.env.prod`) créé à partir du template `.env.model`
+- **Node.js** version épinglée dans `.nvmrc` et **npm 10+**
+- Un fichier `.env.dev` (ou `.env.qua` / `.env.prod`) sous `external-ressources/conf/`
 
 ---
 
@@ -72,18 +72,18 @@ npm run build
 
 ## Variables d'environnement
 
-Le template de référence est `.env.model`. Chaque fichier `.env.*` doit définir :
+Préfixe `VITE_*` (migré depuis `REACT_APP_*`, voir [ADR 001](docs/adr/001-migration-cra-vers-vite.md)). Chaque fichier `.env.*` doit définir :
 
 | Variable | Description |
 |---|---|
-| `REACT_APP_CONFIG_URL_COMPTES` | URL µService comptes |
-| `REACT_APP_CONFIG_URL_OPERATIONS` | URL µService opérations |
-| `REACT_APP_CONFIG_URL_PARAMS` | URL µService paramètres |
-| `REACT_APP_CONFIG_URL_UTILISATEURS` | URL µService utilisateurs |
-| `REACT_APP_CONFIG_OIDC_AUTHORITY` | URL autorité OIDC (Google) |
-| `REACT_APP_CONFIG_OIDC_CLIENT_ID` | Client ID Google OAuth |
-| `REACT_APP_CONFIG_OIDC_CLIENT_SECRET` | Secret Google OAuth |
-| `REACT_APP_CONFIG_API_KEY` | Clé API Gateway AWS (`X-Api-Key`) |
+| `VITE_CONFIG_URL_COMPTES` | URL µService comptes |
+| `VITE_CONFIG_URL_OPERATIONS` | URL µService opérations |
+| `VITE_CONFIG_URL_PARAMS` | URL µService paramètres |
+| `VITE_CONFIG_URL_UTILISATEURS` | URL µService utilisateurs |
+| `VITE_CONFIG_OIDC_AUTHORITY` | URL autorité OIDC (Google) |
+| `VITE_CONFIG_OIDC_CLIENT_ID` | Client ID Google OAuth |
+| `VITE_CONFIG_OIDC_CLIENT_SECRET` | Secret Google OAuth |
+| `VITE_CONFIG_API_KEY` | Clé API Gateway AWS (`X-Api-Key`) |
 
 ---
 

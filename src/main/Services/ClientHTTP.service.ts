@@ -41,7 +41,7 @@ function evaluateBody(body?: any): string|null {
     let jsonBody = null
     if (body !== undefined && body !== null) {
         jsonBody = JSON.stringify(body)
-        if (process.env.REACT_APP_CONFIG_DEBUG) {
+        if (import.meta.env.VITE_CONFIG_DEBUG) {
             console.log("[WS] > Body: ", jsonBody);
         }
     }
@@ -52,7 +52,7 @@ function evaluateBody(body?: any): string|null {
  * Log de l'authentification
  */
 function logAuth(): void {
-    if (process.env.REACT_APP_CONFIG_DEBUG && !alreadyTraced) {
+    if (import.meta.env.VITE_CONFIG_DEBUG && !alreadyTraced) {
         console.log("[WS] > [X-Api-Key] : " + API_GW_ENUM.API_KEY);
         console.log("[WS] > [Bearer] : " + getOAuthToken());
         if (getOAuthToken() !== undefined && getOAuthToken() !== null) {

@@ -3,30 +3,30 @@ import {OPERATION_ETATS_ENUM} from '../../../../../../Utils/AppBusinessEnums.con
 import {saveOperation} from '../OperationDetailPage.extservices.ts';
 import {toast} from 'react-toastify';
 
-jest.mock('../OperationDetailPage.extservices.ts', () => ({
-    saveOperation: jest.fn()
+vi.mock('../OperationDetailPage.extservices.ts', () => ({
+    saveOperation: vi.fn()
 }));
 
-jest.mock('react-toastify', () => ({
+vi.mock('react-toastify', () => ({
     toast: {
-        warn: jest.fn()
+        warn: vi.fn()
     }
 }));
 
 describe('OperationDetailActions.controller', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('ignore le click si target absent', () => {
-        handleOperationAction({target: null}, {} as any, {} as any, false, {} as any, jest.fn(), jest.fn(), jest.fn() as any);
+        handleOperationAction({target: null}, {} as any, {} as any, false, {} as any, vi.fn(), vi.fn(), vi.fn() as any);
 
         expect(saveOperation).not.toHaveBeenCalled();
     });
 
     test('ouvre la modale en suppression à confirmer', () => {
-        const setShowModale = jest.fn();
+        const setShowModale = vi.fn();
 
         handleOperationAction(
             {target: {id: 'SUPPRIMEE_A_CONFIRMER'}},
@@ -34,8 +34,8 @@ describe('OperationDetailActions.controller', () => {
             {} as any,
             false,
             {} as any,
-            jest.fn(),
-            jest.fn(),
+            vi.fn(),
+            vi.fn(),
             setShowModale as any
         );
 
@@ -43,7 +43,7 @@ describe('OperationDetailActions.controller', () => {
     });
 
     test('ferme la modale sur ANNULER', () => {
-        const setShowModale = jest.fn();
+        const setShowModale = vi.fn();
 
         handleOperationAction(
             {target: {id: 'ANNULER'}},
@@ -51,8 +51,8 @@ describe('OperationDetailActions.controller', () => {
             {} as any,
             false,
             {} as any,
-            jest.fn(),
-            jest.fn(),
+            vi.fn(),
+            vi.fn(),
             setShowModale as any
         );
 
@@ -62,7 +62,7 @@ describe('OperationDetailActions.controller', () => {
     test('en mode création, met à jour la date et l état', () => {
         const operation = {etat: OPERATION_ETATS_ENUM.PREVUE, autresInfos: {dateOperation: null}} as any;
         const editOperation = {autresInfos: {dateOperation: new Date('2026-02-01')}} as any;
-        const handleDateOperationFromAction = jest.fn();
+        const handleDateOperationFromAction = vi.fn();
 
         handleOperationAction(
             {target: {id: OPERATION_ETATS_ENUM.REALISEE}},
@@ -71,8 +71,8 @@ describe('OperationDetailActions.controller', () => {
             true,
             editOperation,
             handleDateOperationFromAction,
-            jest.fn(),
-            jest.fn() as any
+            vi.fn(),
+            vi.fn() as any
         );
 
         expect(operation.etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
@@ -88,9 +88,9 @@ describe('OperationDetailActions.controller', () => {
             {id: 'b1', actif: true} as any,
             false,
             {} as any,
-            jest.fn(),
-            jest.fn(),
-            jest.fn() as any
+            vi.fn(),
+            vi.fn(),
+            vi.fn() as any
         );
 
         expect(saveOperation).toHaveBeenCalledTimes(1);
@@ -105,9 +105,9 @@ describe('OperationDetailActions.controller', () => {
             {id: 'b1', actif: false} as any,
             false,
             {} as any,
-            jest.fn(),
-            jest.fn(),
-            jest.fn() as any
+            vi.fn(),
+            vi.fn(),
+            vi.fn() as any
         );
 
         expect(saveOperation).not.toHaveBeenCalled();

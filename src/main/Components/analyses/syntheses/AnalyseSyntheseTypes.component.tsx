@@ -86,7 +86,7 @@ export const AnalyseSyntheseTypes: React.FC<AnalyseSyntheseTypesProps> = ({
                         <Tooltip content={<AnalyseSyntheseTooltip />} shared={false} />
                     </BarChart>
                 </ResponsiveContainer>
-                <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap sx={{ marginTop: -4, paddingLeft: 3 }}>
+                <Stack direction="row" spacing={2} useFlexGap sx={{ marginTop: -4, paddingLeft: 3, flexWrap: "wrap" }}>
                     {legendItems.map((item) => (
                         <Box key={item.type} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                             <Box sx={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: item.color }} />

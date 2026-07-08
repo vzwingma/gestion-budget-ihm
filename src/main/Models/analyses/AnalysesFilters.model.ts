@@ -1,6 +1,6 @@
 import { OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM } from "../../Utils/AppBusinessEnums.constants.ts";
 import CategorieOperationModel from "../budgets/CategorieOperation.model.ts";
-import SsCategorieOperationModel from "../budgets/SSCategorieOperation.model.ts";
+import SsCategorieOperationModel from "../budgets/SsCategorieOperation.model.ts";
 
 export interface AnalysesFiltersModel {
     selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];

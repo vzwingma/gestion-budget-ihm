@@ -6,7 +6,7 @@ import {
 } from "../../Utils/AppBusinessEnums.constants.ts";
 import CategorieOperationModel from "./CategorieOperation.model.ts";
 import OperationModel, {AutresInfos, createNewOperation} from "./Operation.model.ts";
-import SsCategorieOperationModel from "./SSCategorieOperation.model.ts";
+import SsCategorieOperationModel from "./SsCategorieOperation.model.ts";
 
 /**
  * Opérations Edition model

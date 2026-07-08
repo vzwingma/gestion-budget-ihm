@@ -47,7 +47,7 @@ export default class Main extends Component {
                     <ThemeProvider theme={darkTheme}>
                         <CssBaseline />
                         <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
-                            <Stack direction="row" alignItems="flex-start" spacing={1}>
+                            <Stack direction="row" spacing={1} sx={{ alignItems: "flex-start" }}>
                                 <img src="/img/favicon64.webp" className="favicon" alt="Gestion de budgets"/>
                                 <Typography variant="h6" component="div" noWrap
                                     sx={{ flexGrow: 1}}>

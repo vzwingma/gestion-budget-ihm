@@ -108,7 +108,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
             />
             <Divider variant="middle" sx={{ marginTop: isMobile ? 0 : 1 }} />
             <Grid container sx={{ overflow: "hidden" }}>
-                <Grid size={{ md: 5, xl: 4 }} direction={"column"} sx={{ overflow: "hidden" }} maxHeight={'true'}>
+                <Grid size={{ md: 5, xl: 4 }} sx={{ overflow: "hidden", flexDirection: "column", maxHeight: 'true' }}>
                     { /** Liste des opérations récurrentes **/
                         (currentBudget == null ?
                             <></>

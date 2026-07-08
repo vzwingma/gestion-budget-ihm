@@ -88,30 +88,32 @@ gestion-budget-ihm/
 | Visualisation | recharts | 3.2.1 | Graphiques (AreaChart, TreeMap) |
 | Notifications | react-toastify | 11.0.5 | Toasts utilisateur |
 | UUID | uuid | 14.0.0 | Génération identifiants |
-| Tests | Jest + @testing-library/react | 16.3 | Tests unitaires + composants |
+| Tests | Vitest + @testing-library/react | 16.3 | Tests unitaires + composants |
 | Jest DOM | @testing-library/jest-dom | 6.8 | Assertions DOM |
 | User events | @testing-library/user-event | 14.6 | Simulation interactions |
-| Build | react-scripts | 5.0.1 | CRA bundler |
+| Build | Vite | 6.x | Bundler (esbuild dev, Rollup prod) |
 | CSS minify | css-minify | 2.x | Minification CSS pré-build |
 
 > ⚠️ Maintenir ce tableau à jour à chaque montée de version majeure.
 
 ### Variables d'environnement
 
+> Préfixe `VITE_*` (migré depuis `REACT_APP_*` lors de la migration Vite — voir `docs/adr/001-migration-cra-vers-vite.md`). Accès via `import.meta.env.VITE_*`.
+
 | Variable | Description | Exemple |
 |---|---|---|
-| `REACT_APP_BUDGET_VERSION` | Version de l'application affichée | `24.0-SNAPSHOT` |
-| `REACT_APP_CONFIG_API_KEY` | Clé API Gateway AWS (header `X-Api-Key`) | `AWS_API_KEY` |
-| `REACT_APP_CONFIG_DEBUG` | Mode debug activé | `true` |
-| `REACT_APP_CONFIG_OIDC_AUTHORITY` | URL autorité OIDC Google | `https://accounts.google.com/` |
-| `REACT_APP_CONFIG_OIDC_CLIENT_ID` | Client ID Google OAuth | `0000.apps.googleusercontent.com` |
-| `REACT_APP_CONFIG_OIDC_CLIENT_SECRET` | Secret Google OAuth | `FFFF` |
-| `REACT_APP_CONFIG_URL_COMPTES` | URL µService gestion des comptes | `http://localhost:8092` |
-| `REACT_APP_CONFIG_URL_OPERATIONS` | URL µService gestion des opérations | `http://localhost:8094` |
-| `REACT_APP_CONFIG_URL_PARAMS` | URL µService paramètres | `http://localhost:8091` |
-| `REACT_APP_CONFIG_URL_UTILISATEURS` | URL µService utilisateurs | `http://localhost:8093` |
+| `VITE_BUDGET_VERSION` | Version de l'application affichée | `24.0-SNAPSHOT` |
+| `VITE_CONFIG_API_KEY` | Clé API Gateway AWS (header `X-Api-Key`) | `AWS_API_KEY` |
+| `VITE_CONFIG_DEBUG` | Mode debug activé | `true` |
+| `VITE_CONFIG_OIDC_AUTHORITY` | URL autorité OIDC Google | `https://accounts.google.com/` |
+| `VITE_CONFIG_OIDC_CLIENT_ID` | Client ID Google OAuth | `0000.apps.googleusercontent.com` |
+| `VITE_CONFIG_OIDC_CLIENT_SECRET` | Secret Google OAuth | `FFFF` |
+| `VITE_CONFIG_URL_COMPTES` | URL µService gestion des comptes | `http://localhost:8092` |
+| `VITE_CONFIG_URL_OPERATIONS` | URL µService gestion des opérations | `http://localhost:8094` |
+| `VITE_CONFIG_URL_PARAMS` | URL µService paramètres | `http://localhost:8091` |
+| `VITE_CONFIG_URL_UTILISATEURS` | URL µService utilisateurs | `http://localhost:8093` |
 
-Template de référence : `.env.model`
+Fichiers d'environnement : `external-ressources/conf/.env.{dev,staging,production,oidc}`
 
 ---
 
@@ -119,10 +121,10 @@ Template de référence : `.env.model`
 
 | Système | Type | URL / Endpoint | Authentification |
 |---|---|---|---|
-| µService Comptes | REST (AWS Lambda) | `REACT_APP_CONFIG_URL_COMPTES` | JWT Bearer + `X-Api-Key` |
-| µService Opérations | REST (AWS Lambda) | `REACT_APP_CONFIG_URL_OPERATIONS` | JWT Bearer + `X-Api-Key` |
-| µService Paramètres | REST (AWS Lambda) | `REACT_APP_CONFIG_URL_PARAMS` | JWT Bearer + `X-Api-Key` |
-| µService Utilisateurs | REST (AWS Lambda) | `REACT_APP_CONFIG_URL_UTILISATEURS` | JWT Bearer + `X-Api-Key` |
+| µService Comptes | REST (AWS Lambda) | `VITE_CONFIG_URL_COMPTES` | JWT Bearer + `X-Api-Key` |
+| µService Opérations | REST (AWS Lambda) | `VITE_CONFIG_URL_OPERATIONS` | JWT Bearer + `X-Api-Key` |
+| µService Paramètres | REST (AWS Lambda) | `VITE_CONFIG_URL_PARAMS` | JWT Bearer + `X-Api-Key` |
+| µService Utilisateurs | REST (AWS Lambda) | `VITE_CONFIG_URL_UTILISATEURS` | JWT Bearer + `X-Api-Key` |
 | Google OAuth2 | OIDC | `https://accounts.google.com/` | Client ID + Secret |
 
 Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma/gestion-budget-serverless) (Quarkus microservices sur AWS Lambda).
@@ -143,7 +145,7 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
 
 | Type | Framework | Emplacement | Couverture cible |
 |---|---|---|---|
-| Unitaires | Jest + React Testing Library | `src/**/*.test.tsx` / `*.test.ts` | ≥80% |
+| Unitaires | Vitest + React Testing Library | `src/**/*.test.tsx` / `*.test.ts` | ≥80% |
 
 Commande pour lancer les tests : `npm run test:coverage`  
 Rapport de couverture : `coverage/lcov.info`  
@@ -174,6 +176,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 
 | # | Décision | Statut | Date |
 |---|---|---|---|
+| 001 | [Migration du socle build Create React App vers Vite](./adr/001-migration-cra-vers-vite.md) | ✅ Acceptée | 2026-07-07 |
 
 > 💡 Chaque nouvelle décision architecturale majeure doit faire l'objet d'un ADR. Voir `docs/adr/` pour les détails.
 
@@ -209,7 +212,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
-| v24.0-SNAPSHOT | En cours | Version courante en développement |
+| v24.0-SNAPSHOT | En cours | Migration socle build CRA → Vite + Vitest + TypeScript 5.9.3 (voir [ADR 001](./adr/001-migration-cra-vers-vite.md)) |
 
 ---
 

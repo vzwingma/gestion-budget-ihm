@@ -1,4 +1,4 @@
-import SsCategorieOperationModel from "../../budgets/SSCategorieOperation.model.ts";
+import SsCategorieOperationModel from "../../budgets/SsCategorieOperation.model.ts";
 
 
 /**

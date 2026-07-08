@@ -10,7 +10,7 @@ import OperationEditionModel from "../Models/budgets/OperationEdition.model.ts";
 import {Dispatch, SetStateAction} from "react";
 import { OPERATION_RECURRENTE_EDITION_FORM } from "./budgets/operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
 import { AnalysesPeriodeModel } from "../Models/analyses/AnalysesPeriode.model.ts";
-import SsCategorieOperationModel from "../Models/budgets/SSCategorieOperation.model.ts";
+import SsCategorieOperationModel from "../Models/budgets/SsCategorieOperation.model.ts";
 import { AnalysesFiltersModel } from "../Models/analyses/AnalysesFilters.model.ts";
 import AnalyseCategoriesModel from "../Models/analyses/syntheses/AnalyseCategories.model.ts";
 import BudgetMensuelAnalyseConsolideModel from "../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
