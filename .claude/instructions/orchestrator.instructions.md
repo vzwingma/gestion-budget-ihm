@@ -40,7 +40,8 @@ Responsabilités spécifiques :
 8. **QA** : déléguer à QALvin avec comportements, cas limites (nominal, vide/null, erreurs HTTP 403/404/500, interactions utilisateur, responsive) et commandes de test attendues.
 9. **Validation tests** : obtenir validation humaine avant documentation.
 10. **Documentation** : déléguer à DOCly pour synchroniser README, docs/ARCHITECTURE.md, wiki IHM, ADR ou changelog selon impact.
-11. **Clôture** : résumer livrables et validations.
+11. **Post-déploiement** : dès que le merge et le déploiement (CI → S3/CloudFront) sont effectifs, proposer au développeur humain de déclencher la validation visuelle (`.claude/prompts/qa-deploy/validate-staging.md` + `visual-checklist.md`, via Claude Chrome). Demander explicitement quel(s) environnement(s) valider : **QUA**, **PROD**, ou **les deux**. Ne jamais lancer la validation sans confirmation.
+12. **Clôture** : résumer livrables, validations et résultat de la validation visuelle (GO/NO-GO) si déclenchée.
 
 ## Protocole de handoff (Plan d'Action)
 
