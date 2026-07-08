@@ -1,59 +1,48 @@
 # 📋 Plans d'Action (Action Plans)
 
-Bienvenue dans le répertoire des Plans d'Action (AP) du projet `gestion-budget-ihm`.
+Bienvenue dans le répertoire des Plans d'Action (AP) du projet . 
 
-Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs agents (DEVon 🔵, QALvin 🟢, ARCos 🟠, DOCly 🟣, MAINa ⚫) et produit des rapports de suivi documentant l'exécution.
+Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs agents (Devon (🔵 DEV), Qalvin (🟢 QUAL), Arkos (🟠 ARC), Docly (🟣 DOC)) et produit des rapports de suivi documentant l'exécution.
 
 ---
 
 ## 📂 Plans Actifs / En Cours
 
-_(Aucun plan actif pour l'instant dans `.claude/plans/`)_
+| # | Plan | Statut | Agent | Phase courante |
+|---|---|---|---|---|
+| 002 | [Documentation Architecture](./002_documentation_architecture.plan.md) | ✅ Complété | Docly (🟣 DOC) | Phase 1/1 |
 
 ---
 
 ## 📋 Plans Archivés / Complétés
 
-_(Aucun plan complété pour l'instant dans `.claude/plans/`)_
-
----
-
-## 📜 Plan historique (ancienne structure `.github/`)
-
-> Non migré dans le cadre de cette initiative (Plan d'Action `005_migration_claude_sous_projets`). Conservé tel quel, en lecture seule, dans l'ancienne arborescence.
-
-| # | Plan | Statut | Emplacement |
-|---|---|---|---|
-| 002 | Documentation Architecture | ✅ Complété | [`.github/plans/002_documentation_architecture.plan.md`](../../.github/plans/002_documentation_architecture.plan.md) |
-
-Guide historique associé : [`.github/PLANS.md`](../../.github/PLANS.md).
+_(Aucun plan archivé pour l'instant)_
 
 ---
 
 ## 🚀 Comment Créer un Nouveau Plan
 
-1. **Créer le fichier plan** : `.claude/plans/<NO>_<nom>.plan.md`
-   - Utiliser le numéro séquentiel suivant
-   - Suivre le format défini dans [`.claude/PLANS.md`](../PLANS.md)
+1. **Créer le fichier plan** : `.github/plans/<NO>_<nom>.plan.md`
+   - Utiliser le numéro séquentiel suivant (ex: 002 après 001)
+   - Suivre le format défini dans [`.github/PLANS.md`](../PLANS.md)
 
-2. **Créer le dossier reporting** : `.claude/plans/<NO>_reports/`
+2. **Créer le dossier reporting** : `.github/plans/<NO>_reports/`
    - Contiendra les rapports de phase complétées
 
-3. **Soumettre pour validation** au 👤 Développeur humain
+3. **Soumettre pour validation** au 👤 Développeur humain ou lead du projet
 
-**Guide complet :** 📖 [`.claude/PLANS.md`](../PLANS.md)
+**Guide complet :** 📖 [`.github/PLANS.md`](../PLANS.md)
 
 ---
 
 ## 📚 Documentation Associée
 
-- **Guide complet des Plans d'Action** : [`.claude/PLANS.md`](../PLANS.md)
-- **Instructions agent DEVon (🔵)** : [`.claude/agents/Devon.agent.md`](../agents/Devon.agent.md)
-- **Instructions agent QALvin (🟢)** : [`.claude/agents/Qalvin.agent.md`](../agents/Qalvin.agent.md)
-- **Instructions agent DOCly (🟣)** : [`.claude/agents/Docly.agent.md`](../agents/Docly.agent.md)
-- **Instructions agent ARCos (🟠)** : [`.claude/agents/Arcos.agent.md`](../agents/Arcos.agent.md)
-- **Instructions agent MAINa (⚫)** : [`.claude/agents/Maina.agent.md`](../agents/Maina.agent.md)
-- **Instructions Claude globales** : [`.claude/CLAUDE.md`](../CLAUDE.md)
+- **Guide complet des Plans d'Action** : [`.github/PLANS.md`](../PLANS.md)
+- **Instructions agent Devon (🔵 DEV)** : [`.github/agents/Devon (🔵 DEV).agent.md`](../agents/Devon (🔵 DEV).agent.md)
+- **Instructions agent Qalvin (🟢 QUAL)** : [`.github/agents/Qalvin (🟢 QUAL).agent.md`](../agents/Qalvin (🟢 QUAL).agent.md)
+- **Instructions agent Docly (🟣 DOC)** : [`.github/agents/Docly (🟣 DOC).agent.md`](../agents/Docly (🟣 DOC).agent.md)
+- **Instructions agent Arkos (🟠 ARC)** : [`.github/agents/Arkos (🟠 ARC).agent.md`](../agents/Arkos (🟠 ARC).agent.md)
+- **Instructions Copilot globales** : [`.github/copilot-instructions.md`](../copilot-instructions.md)
 
 ---
 
@@ -87,5 +76,9 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-07-06
-**Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain
+**Dernière mise à jour :** 2026-04-24  
+**Gestionnaire des Plans :** Arkos (🟠 ARC) & 👤 Développeur humain
+
+
+
+
