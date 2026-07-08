@@ -14,25 +14,25 @@ npm run start:qua     # uses .env.qua
 npm run start:prod    # uses .env.prod
 
 # Build for production
-npm run build         # minifies CSS then runs react-scripts build
+npm run build         # minifies CSS then runs vite build (outputs to dist/)
 
-# Run all tests
+# Run all tests (Vitest watch mode)
 npm run test
 
 # Run tests with coverage (CI mode, no watch)
-npm run test:coverage
+npm run test:coverage   # vitest run --coverage
 
 # Run a single test file
-npx react-scripts test --watchAll=false src/path/to/Component.test.tsx
+npx vitest run src/path/to/Component.test.tsx
 
 # Lint
 npm run lint
 ```
 
-Environment files follow `.env.model` as a template. Each `.env.*` file defines:
-- `REACT_APP_CONFIG_URL_COMPTES`, `_OPERATIONS`, `_PARAMS`, `_UTILISATEURS` – microservice URLs
-- `REACT_APP_CONFIG_OIDC_*` – Google OIDC credentials
-- `REACT_APP_CONFIG_API_KEY` – AWS API Gateway key sent as `X-Api-Key` on every request
+Node version pinned via `.nvmrc`. Environment files live under `external-ressources/conf/.env.*` and use the `VITE_*` prefix (migrated from `REACT_APP_*`, see `docs/adr/001-migration-cra-vers-vite.md`):
+- `VITE_CONFIG_URL_COMPTES`, `_OPERATIONS`, `_PARAMS`, `_UTILISATEURS` – microservice URLs
+- `VITE_CONFIG_OIDC_*` – Google OIDC credentials
+- `VITE_CONFIG_API_KEY` – AWS API Gateway key sent as `X-Api-Key` on every request
 
 ## Architecture
 

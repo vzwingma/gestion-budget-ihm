@@ -57,7 +57,7 @@ export const MonComposant: React.FC<MonComposantProps> = ({ prop1, prop2 }): JSX
 // Toujours passer par ClientHTTP.service.ts
 import { call } from '../Services/ClientHTTP.service.ts';
 // URL avec {{}} comme marqueur positionnel
-call('GET', REACT_APP_CONFIG_URL_OPERATIONS, '/budgets/v2/{{}}/operations', [idBudget]);
+call('GET', import.meta.env.VITE_CONFIG_URL_OPERATIONS, '/budgets/v2/{{}}/operations', [idBudget]);
 ```
 
 ### Modèles et état

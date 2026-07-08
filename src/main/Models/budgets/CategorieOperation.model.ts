@@ -1,4 +1,4 @@
-import SsCategorieOperationModel from "./SSCategorieOperation.model.ts";
+import SsCategorieOperationModel from "./SsCategorieOperation.model.ts";
 
 /**
  * Catégorie Opérations model

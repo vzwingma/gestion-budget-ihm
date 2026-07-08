@@ -10,20 +10,16 @@
       "ES2019",
       "ES2020",
       "ES2021",
-      "ES2022",
-      "ESNEXT"
+      "ES2022"
     ],
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
+    "moduleResolution": "bundler",
+    "module": "esnext",
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "types": [
       "node",
       "vitest/globals"
     ],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowImportingTsExtensions": true,
     "noEmit": true
   },

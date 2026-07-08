@@ -69,7 +69,7 @@ Attendu : code focalisé, liste fichiers modifiés, hypothèses, vérifications 
 
 ### Vers QALvin
 
-Inclure : changements DEVon, cas nominaux, erreurs, limites, composants/services à couvrir, commande de test ciblée si possible (`npx react-scripts test --watchAll=false <fichier>`).
+Inclure : changements DEVon, cas nominaux, erreurs, limites, composants/services à couvrir, commande de test ciblée si possible (`npx vitest run <fichier>`).
 
 Attendu : tests créés/modifiés, résultats, couverture si mesurée, points bloquants.
 

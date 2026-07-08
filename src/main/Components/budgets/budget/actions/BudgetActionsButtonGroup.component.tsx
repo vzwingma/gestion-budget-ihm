@@ -114,7 +114,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
      */
     /** Groupe d'actions sur le budget **/
     return (
-        <Stack direction={"row-reverse"} alignItems={"end"} onClick={handleButtonsBudgetClick}>
+        <Stack direction={"row-reverse"} onClick={handleButtonsBudgetClick} sx={{ alignItems: "end" }}>
             {userHasPermission(droits, UTILISATEUR_DROITS.DROIT_CLOTURE_BUDGET) &&
                 <Tooltip title={(budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}>
 

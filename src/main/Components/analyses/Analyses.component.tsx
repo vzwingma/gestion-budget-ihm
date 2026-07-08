@@ -111,7 +111,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
                                 currentPeriode={periodeAnalyses} />
                         }
                     </Grid>
-                    <Grid size={{ md: 3, xl: 3 }} direction={"column"}  sx={{ overflow: "hidden", height: "calc(100vh - 11%)" }}>
+                    <Grid size={{ md: 3, xl: 3 }} sx={{ overflow: "hidden", height: "calc(100vh - 11%)", flexDirection: "column" }}>
                         {selectedCompte == null ?
                             <></>
                             :

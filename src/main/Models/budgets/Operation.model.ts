@@ -6,7 +6,7 @@ import {
     TYPES_OPERATION_ENUM
 } from "../../Utils/AppBusinessEnums.constants.ts";
 import CategorieOperationModel from "./CategorieOperation.model.ts";
-import SsCategorieOperationModel from "./SSCategorieOperation.model.ts";
+import SsCategorieOperationModel from "./SsCategorieOperation.model.ts";
 
 /**
  * Opérations model

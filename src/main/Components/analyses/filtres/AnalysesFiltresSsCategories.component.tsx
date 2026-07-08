@@ -1,6 +1,6 @@
 import React, { JSX } from "react";
 import { Autocomplete, Box, TextField, useMediaQuery, useTheme } from "@mui/material";
-import SsCategorieOperationModel from "../../../Models/budgets/SSCategorieOperation.model.ts";
+import SsCategorieOperationModel from "../../../Models/budgets/SsCategorieOperation.model.ts";
 import { AnalysesFiltresSsCategoriesProps } from "../../Components.props.ts";
 
 /**

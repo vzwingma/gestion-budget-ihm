@@ -36,10 +36,10 @@ npm run test
 npm run test:coverage
 
 # Un seul fichier de test
-npx react-scripts test --watchAll=false src/main/Components/budgets/Budget.test.tsx
+npx vitest run src/main/Components/budgets/Budget.test.tsx
 
 # Un seul test par nom
-npx react-scripts test --watchAll=false --testNamePattern="doit afficher le solde"
+npx vitest run --testNamePattern="doit afficher le solde"
 ```
 
 Le rapport de couverture est généré dans `coverage/lcov.info` (lu par SonarCloud).

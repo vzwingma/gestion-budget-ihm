@@ -46,7 +46,7 @@ const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPer
                 <CircularProgress color="inherit" />
             </Backdrop>
             {/* Création d'une pile pour l'affichage du titre */}
-            <Stack direction={"column"} spacing={2} justifyContent="center" >
+            <Stack direction={"column"} spacing={2} sx={{ justifyContent: "center" }}>
                     <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Périodes</Typography>
                     <AnalysesFiltrePeriodeComponent periode={currentPeriode} selectedCompte={selectedCompte} onChange={handlePeriodeChange} />
                 <Divider flexItem />
