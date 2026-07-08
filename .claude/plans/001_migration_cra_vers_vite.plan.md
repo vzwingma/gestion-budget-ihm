@@ -1,6 +1,6 @@
 # Plan d'Action 001 — Migration technique modernisation frontend `gestion-budget-ihm`
 
-**Statut :** 🟡 En cours — Phases 1-5 + 8 complétées, Phases 6-7 (déploiement QUA/PROD) en attente d'action humaine
+**Statut :** ✅ Complété — toutes phases (1-8) terminées, validé QUA + PROD
 **Date de création :** 2026-07-08
 **ADR associé :** [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
 
@@ -57,11 +57,11 @@ Jest → Vitest, `coverage-v8` configuré (`lcov` pour SonarCloud), 17 fichiers 
 ### Phase 5 — CI/CD ✅
 `node-version: latest` → `node-version-file: '.nvmrc'` dans les 3 workflows. **Bug critique corrigé** : job `tests` de `build-on-tags.yml` n'exécutait jamais réellement les tests, maintenant `npm run test:coverage`. Chemins `build/` → `dist/` (zip + `s3-deploy`). Flag `--runInBand` (Jest, incompatible Vitest) retiré. `external-ressources/conf/.env.*` migrés vers préfixe `VITE_*`.
 
-### Phase 6 — Validation QUA ⏳ En attente d'action humaine
-Merge sur `master` → déploiement auto bucket QUA (`budget-app-ihm-qua`) → recette fonctionnelle manuelle (login OIDC, appels API, routing, écrans clés). **Action nécessitant une décision/exécution humaine** (merge Git + déploiement réel AWS), non automatisable par les agents.
+### Phase 6 — Validation QUA ✅
+Merge sur `master` → déploiement bucket QUA (`budget-app-ihm-qua`) → recette fonctionnelle manuelle validée par le développeur.
 
-### Phase 7 — Release PROD ⏳ En attente d'action humaine
-Tag → déploiement bucket PROD (`budget-app-ihm`) → smoke test. Dépend de la validation Phase 6.
+### Phase 7 — Release PROD ✅
+Tag → déploiement bucket PROD (`budget-app-ihm`) → validation développeur ok.
 
 ### Phase 8 — Documentation + clôture ✅
 `.claude/CLAUDE.md`, `docs/ARCHITECTURE.md`, `README.md`, instructions agents mis à jour (commandes Vite/Vitest, préfixe env `VITE_*`, `.nvmrc`). Ce plan et son index créés.
@@ -81,4 +81,4 @@ Tag → déploiement bucket PROD (`budget-app-ihm`) → smoke test. Dépend de l
 4. ✅ `tsc --noEmit` — 0 erreur.
 5. ✅ `npm audit` — 0 vulnérabilité.
 6. ✅ YAML des 3 workflows validé syntaxiquement.
-7. ⏳ CI branche réelle, déploiement QUA + recette manuelle, déploiement PROD + smoke test — à exécuter par le développeur humain.
+7. ✅ CI branche réelle, déploiement QUA + recette manuelle, déploiement PROD — validés par le développeur.
