@@ -1,12 +1,12 @@
 import {getOperationsRecurrentesGroupedByPeriodicity} from './Recurrents.controller.ts';
 import {PERIODES_MENSUALITE_ENUM} from '../../../Utils/AppBusinessEnums.constants.ts';
 
-jest.mock('../../../Utils/OperationData.utils.ts', () => ({
-    sortPeriodicOperations: jest.fn(() => 0)
+vi.mock('../../../Utils/OperationData.utils.ts', () => ({
+    sortPeriodicOperations: vi.fn(() => 0)
 }));
 
-jest.mock('../operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts', () => ({
-    isDerniereEcheanceRO: jest.fn((operation: { id: string }) => operation.id === 'op-last')
+vi.mock('../operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts', () => ({
+    isDerniereEcheanceRO: vi.fn((operation: { id: string }) => operation.id === 'op-last')
 }));
 
 describe('Recurrents.controller', () => {

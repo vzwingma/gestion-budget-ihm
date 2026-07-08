@@ -75,7 +75,7 @@ export const Infos: React.FC = () => {
                     {infoVersion &&
                     <MicroServicesInfos
                         key='ihm' nom='IHM'
-                        version={process.env.REACT_APP_BUDGET_VERSION}/>}
+                        version={import.meta.env.VITE_BUDGET_VERSION}/>}
 
                     {infoVersion && infos.map((msInfos) => (
                         <MicroServicesInfos

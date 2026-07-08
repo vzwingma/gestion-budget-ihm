@@ -4,7 +4,7 @@ describe('Auth.service', () => {
 
     beforeEach(() => {
         localStorage.clear();
-        jest.restoreAllMocks();
+        vi.restoreAllMocks();
     });
 
     test('retourne null si le token est absent', () => {
@@ -19,7 +19,7 @@ describe('Auth.service', () => {
     });
 
     test('ne stocke pas de token quand la valeur est undefined', () => {
-        const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 
         putTokenInStorage(undefined);
 

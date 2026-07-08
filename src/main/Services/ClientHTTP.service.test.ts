@@ -1,14 +1,15 @@
+import type { Mock } from 'vitest';
 import {v7} from 'uuid';
 import {call} from './ClientHTTP.service.ts';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts';
 
-jest.mock('uuid', () => ({
-    v7: jest.fn()
+vi.mock('uuid', () => ({
+    v7: vi.fn()
 }));
 
-jest.mock('./Auth.service.ts', () => ({
-    getOAuthToken: jest.fn(),
-    removeTokenFromStorage: jest.fn()
+vi.mock('./Auth.service.ts', () => ({
+    getOAuthToken: vi.fn(),
+    removeTokenFromStorage: vi.fn()
 }));
 
 describe('ClientHTTP.service', () => {
@@ -32,15 +33,15 @@ describe('ClientHTTP.service', () => {
     });
 
     beforeEach(() => {
-        jest.clearAllMocks();
-        (v7 as jest.Mock).mockReturnValue('12345678-abcd-4ef0-9012-3456789abcde');
-        (getOAuthToken as jest.Mock).mockReturnValue('token-test');
-        globalThis.fetch = jest.fn();
+        vi.clearAllMocks();
+        (v7 as Mock).mockReturnValue('12345678-abcd-4ef0-9012-3456789abcde');
+        (getOAuthToken as Mock).mockReturnValue('token-test');
+        globalThis.fetch = vi.fn();
     });
 
     test('retourne le JSON en cas de succès 2xx', async () => {
-        const json = jest.fn().mockResolvedValue({ok: true});
-        (globalThis.fetch as jest.Mock).mockResolvedValue({
+        const json = vi.fn().mockResolvedValue({ok: true});
+        (globalThis.fetch as Mock).mockResolvedValue({
             status: 200,
             json
         });
@@ -58,7 +59,7 @@ describe('ClientHTTP.service', () => {
             })
         );
 
-        const options = (globalThis.fetch as jest.Mock).mock.calls[0][1];
+        const options = (globalThis.fetch as Mock).mock.calls[0][1];
         const headers = options.headers as Headers;
         expect(headers.get('Content-Type')).toBe('application/json');
         expect(headers.get('X-Api-Key')).toBeTruthy();
@@ -66,7 +67,7 @@ describe('ClientHTTP.service', () => {
     });
 
     test('jette une erreur sur un statut non 2xx et différent de 403', async () => {
-        (globalThis.fetch as jest.Mock).mockResolvedValue({
+        (globalThis.fetch as Mock).mockResolvedValue({
             status: 500,
             statusText: 'Erreur serveur'
         });
@@ -79,7 +80,7 @@ describe('ClientHTTP.service', () => {
     });
 
     test('déconnecte sur un statut 403', async () => {
-        (globalThis.fetch as jest.Mock).mockResolvedValue({
+        (globalThis.fetch as Mock).mockResolvedValue({
             status: 403,
             statusText: 'Forbidden'
         });

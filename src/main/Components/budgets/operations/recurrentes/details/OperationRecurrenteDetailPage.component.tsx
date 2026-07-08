@@ -100,8 +100,8 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
             onClick={(event: any) => handleOperationRecurrenteEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
             onKeyUp={(event: any) => handleOperationRecurrenteEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
 
-            <Stack direction={"column"} minHeight={"90vh"}
-                sx={{ alignItems: "center", justifyContent: "center" }}>
+            <Stack direction={"column"}
+                sx={{ alignItems: "center", justifyContent: "center", minHeight: "90vh" }}>
                 <Stack direction={"column"} spacing={isMobile ? 3 : 4} className="recurrents-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
 

@@ -15,8 +15,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/cache@v5
+      - uses: actions/checkout@v7
+      - uses: actions/cache@v6
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -25,9 +25,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: latest
+          node-version-file: '.nvmrc'
       - run: npm ci --ignore-scripts
         name: CI Install
+      - run: npm run test:coverage
+        name: Run unit tests with coverage
 
   # BUILD
   build-ihm:
@@ -38,17 +40,17 @@ jobs:
       contents: read
       actions: write
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/cache@v5
+      - uses: actions/checkout@v7
+      - uses: actions/cache@v6
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node.js 
+      - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: latest
+          node-version-file: '.nvmrc'
       # Update version
       - name: Get tag Version
         id: get_version
@@ -73,7 +75,7 @@ jobs:
         name: Set env PRODUCTION
       - run: npm run build --if-present
         name: Build
-      - run: zip -r app_build.zip build/*
+      - run: zip -r app_build.zip dist/*
       # Upload RELEASE
       - uses: actions/upload-artifact@v7
         name: Upload IHM app
@@ -92,7 +94,7 @@ jobs:
     name: deploy to S3 PROD
     needs: [build-ihm]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         name: Download IHM app
         with:
@@ -102,7 +104,7 @@ jobs:
       - name: Deploy
         uses: reggionick/s3-deploy@v4
         with:
-          folder: build
+          folder: dist
           bucket: budget-app-ihm
           bucket-region: eu-west-3
           invalidation: /

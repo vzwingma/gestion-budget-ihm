@@ -1,15 +1,16 @@
+import type { Mock } from 'vitest';
 import {callReinitBudget, callReopenCloseBudget} from './BudgetActionsButtonGroup.extservices.ts';
 import {call} from './../../../../Services/ClientHTTP.service.ts';
 import {toast} from 'react-toastify';
 
-jest.mock('./../../../../Services/ClientHTTP.service.ts', () => ({
-    call: jest.fn()
+vi.mock('./../../../../Services/ClientHTTP.service.ts', () => ({
+    call: vi.fn()
 }));
 
-jest.mock('react-toastify', () => ({
+vi.mock('react-toastify', () => ({
     toast: {
-        error: jest.fn(),
-        success: jest.fn()
+        error: vi.fn(),
+        success: vi.fn()
     }
 }));
 
@@ -18,12 +19,12 @@ const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 describe('BudgetActionsButtonGroup.extservices', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('réinitialise un budget et propage la mise à jour', async () => {
-        const onActionBudgetChange = jest.fn();
-        (call as jest.Mock).mockResolvedValue({id: 'b1'});
+        const onActionBudgetChange = vi.fn();
+        (call as Mock).mockResolvedValue({id: 'b1'});
 
         callReinitBudget({id: 'b1'} as any, onActionBudgetChange);
         await flushPromises();
@@ -33,17 +34,17 @@ describe('BudgetActionsButtonGroup.extservices', () => {
     });
 
     test('affiche une erreur si la réinitialisation échoue', async () => {
-        (call as jest.Mock).mockRejectedValue(new Error('ko'));
+        (call as Mock).mockRejectedValue(new Error('ko'));
 
-        callReinitBudget({id: 'b1'} as any, jest.fn());
+        callReinitBudget({id: 'b1'} as any, vi.fn());
         await flushPromises();
 
         expect(toast.error).toHaveBeenCalledTimes(1);
     });
 
     test('réouvre ou clôture un budget et affiche un succès', async () => {
-        const onActionBudgetChange = jest.fn();
-        (call as jest.Mock).mockResolvedValue({id: 'b1'});
+        const onActionBudgetChange = vi.fn();
+        (call as Mock).mockResolvedValue({id: 'b1'});
 
         callReopenCloseBudget('b1', true, onActionBudgetChange);
         await flushPromises();

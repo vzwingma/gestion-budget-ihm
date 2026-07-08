@@ -3,7 +3,7 @@ import {handleModalClick, handleSelect} from './DateRange.controller.ts';
 describe('DateRange.controller', () => {
 
     test('confirme via la modale et met à jour les mois', () => {
-        const updateMonths = jest.fn();
+        const updateMonths = vi.fn();
 
         handleModalClick({target: {id: 'CONFIRMER'}}, new Date('2026-01-01'), new Date('2026-02-01'), updateMonths);
 
@@ -11,8 +11,8 @@ describe('DateRange.controller', () => {
     });
 
     test('sélection previous met à jour les dates', () => {
-        const updateMonths = jest.fn();
-        const setShowModale = jest.fn();
+        const updateMonths = vi.fn();
+        const setShowModale = vi.fn();
 
         handleSelect(
             {target: {id: 'previous'}},
@@ -27,8 +27,8 @@ describe('DateRange.controller', () => {
     });
 
     test('sélection next ouvre la modale si mois courant atteint', () => {
-        const updateMonths = jest.fn();
-        const setShowModale = jest.fn();
+        const updateMonths = vi.fn();
+        const setShowModale = vi.fn();
 
         handleSelect(
             {target: {id: 'next'}},
@@ -43,8 +43,8 @@ describe('DateRange.controller', () => {
     });
 
     test('sélection next confirme directement pour un ancien mois', () => {
-        const updateMonths = jest.fn();
-        const setShowModale = jest.fn();
+        const updateMonths = vi.fn();
+        const setShowModale = vi.fn();
 
         handleSelect(
             {target: {id: 'next'}},

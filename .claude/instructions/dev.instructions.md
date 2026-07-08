@@ -52,16 +52,16 @@ npm run start:qua     # uses .env.qua
 npm run start:prod    # uses .env.prod
 
 # Build for production
-npm run build         # minifies CSS then runs react-scripts build
+npm run build         # minifies CSS then runs vite build (outputs to dist/)
 
 # Lint
 npm run lint
 ```
 
-Fichiers d'environnement suivent `.env.model` comme template. Chaque `.env.*` définit :
-- `REACT_APP_CONFIG_URL_COMPTES`, `_OPERATIONS`, `_PARAMS`, `_UTILISATEURS` – URLs microservices
-- `REACT_APP_CONFIG_OIDC_*` – credentials Google OIDC
-- `REACT_APP_CONFIG_API_KEY` – clé AWS API Gateway envoyée en `X-Api-Key` sur chaque requête
+Node version pinée via `.nvmrc`. Fichiers d'environnement sous `external-ressources/conf/.env.*`, préfixe `VITE_*` (migré depuis `REACT_APP_*`, voir `docs/adr/001-migration-cra-vers-vite.md`) :
+- `VITE_CONFIG_URL_COMPTES`, `_OPERATIONS`, `_PARAMS`, `_UTILISATEURS` – URLs microservices
+- `VITE_CONFIG_OIDC_*` – credentials Google OIDC
+- `VITE_CONFIG_API_KEY` – clé AWS API Gateway envoyée en `X-Api-Key` sur chaque requête
 
 ## Conventions de code
 
@@ -86,7 +86,7 @@ export const MonComposant: React.FC<MonComposantProps> = ({ prop1, prop2 }): JSX
 // Toujours passer par ClientHTTP.service.ts
 import { call } from '../Services/ClientHTTP.service.ts';
 // URL avec {{}} comme marqueur positionnel
-call('GET', REACT_APP_CONFIG_URL_OPERATIONS, '/budgets/v2/{{}}/operations', [idBudget]);
+call('GET', import.meta.env.VITE_CONFIG_URL_OPERATIONS, '/budgets/v2/{{}}/operations', [idBudget]);
 ```
 
 Toutes les requêtes backend passent par `ClientHTTP.service.ts`, qui attache les headers `X-Api-Key` et `Authorization: Bearer <token>`.

@@ -1,8 +1,9 @@
+import type { Mock } from 'vitest';
 import {getInfosFromMicroServices} from './Infos.extservices.ts';
 import {call} from '../../Services/ClientHTTP.service.ts';
 
-jest.mock('../../Services/ClientHTTP.service.ts', () => ({
-    call: jest.fn()
+vi.mock('../../Services/ClientHTTP.service.ts', () => ({
+    call: vi.fn()
 }));
 
 const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
@@ -10,12 +11,12 @@ const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 describe('Infos.extservices', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('agrège les infos des microservices', async () => {
-        const setInfos = jest.fn();
-        (call as jest.Mock).mockResolvedValue({nom: 'MS', version: '1.0.0'});
+        const setInfos = vi.fn();
+        (call as Mock).mockResolvedValue({nom: 'MS', version: '1.0.0'});
 
         getInfosFromMicroServices(setInfos);
         await flushPromises();
@@ -26,8 +27,8 @@ describe('Infos.extservices', () => {
     });
 
     test('ajoute une entrée N/A en cas d erreur', async () => {
-        const setInfos = jest.fn();
-        (call as jest.Mock).mockRejectedValue(new Error('down'));
+        const setInfos = vi.fn();
+        (call as Mock).mockRejectedValue(new Error('down'));
 
         getInfosFromMicroServices(setInfos);
         await flushPromises();

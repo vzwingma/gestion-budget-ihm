@@ -98,7 +98,7 @@ const AnalyseOperationsListe: React.FC<AnalyseOperationsListeProps> = ({ operati
                 borderBottom: '1px solid var(--color-border)'
             }}
         >
-            <Grid container alignItems="center" sx={{ height: isMobile ? 36 : 42 }}>
+            <Grid container sx={{ alignItems: "center", height: isMobile ? 36 : 42 }}>
                 <Grid
                     size={{ md: 1.5, xl: 1.5 }}
                     sx={{

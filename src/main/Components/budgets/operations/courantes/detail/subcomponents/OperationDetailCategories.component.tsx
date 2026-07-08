@@ -16,7 +16,7 @@ import {OperationDetailCategoriesProps} from '../../../../../Components.props.ts
 import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
-import SsCategorieOperationModel from '../../../../../../Models/budgets/SSCategorieOperation.model.ts'
+import SsCategorieOperationModel from '../../../../../../Models/budgets/SsCategorieOperation.model.ts'
 
 
 /**
