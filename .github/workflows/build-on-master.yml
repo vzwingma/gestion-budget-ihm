@@ -21,16 +21,11 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache@v6
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       - run: npm ci --ignore-scripts
         name: CI Install
       - name: Update config in .env.staging
@@ -64,16 +59,11 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache@v6
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       - run: npm install eslint --save --ignore-scripts
       - run: npm run lint
   # TESTS
@@ -83,16 +73,11 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache@v6
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       - run: npm ci --ignore-scripts
         name: CI Install
       - run: npm run test:coverage
