@@ -1,4 +1,3 @@
-No matching file on disk — this is inline text, not a file path. Returning fixed compressed content directly, per instructions.
 
 ---
 name: DEVon
