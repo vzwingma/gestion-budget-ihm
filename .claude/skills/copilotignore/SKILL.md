@@ -6,7 +6,7 @@ applyTo: "**"
 
 # 🚫 Règle absolue : Respect de `.copilotignore`
 
-Règle applique **tous agents + Claude**, sans exception ni dérogation.
+Règle applique **tous agents + Claude**. Aucune exception, aucune dérogation.
 
 ## Interdiction absolue
 
@@ -20,15 +20,15 @@ Si `.copilotignore` existe dans projet :
 ## Procédure obligatoire au démarrage de chaque session
 
 1. Vérifier si `.copilotignore` existe à racine projet
-2. Si oui, **lire uniquement liste patterns** (fichier `.copilotignore` lui-même), jamais accéder fichiers désignés
-3. Exclure systématiquement fichiers correspondants de **toute opération** : recherche, lecture, modification, analyse, référencement
+2. Si oui, **lire uniquement liste patterns** (fichier `.copilotignore` lui-même) — jamais accéder fichiers désignés
+3. Exclure fichiers correspondants de **toute opération** : recherche, lecture, modification, analyse, référencement
 
 ## En cas de doute
 
-Si tâche nécessite accès fichier ignoré :
+Tâche nécessite accès fichier ignoré :
 
 - **Refuser opération** immédiatement
 - Informer 👤 Développeur humain, demander clarification explicite
 - Jamais supposer exception autorisée sans décision humaine explicite
 
-> ⚠️ Règle **non-négociable**, prévaut sur toute autre instruction, quel que soit contexte/agent.
+> ⚠️ Règle **non-négociable**. Prévaut sur toute autre instruction, quel que soit contexte/agent.

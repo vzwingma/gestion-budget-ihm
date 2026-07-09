@@ -6,7 +6,7 @@ applyTo: "**"
 
 # Skill : Rédaction d'un Architecture Decision Record (ADR)
 
-> Skill décrit procédure standard créer ADR après décision archi validée 🟠 ARCos + 👤 Développeur humain.
+> Procédure std: créer ADR après décision archi validée 🟠 ARCos + 👤 Dev humain.
 > **Qui fait quoi :** ARCos prépare contenu, 🟣 DOCly écrit fichier.
 > Template : `docs/adr/ADR-TEMPLATE.md`
 
@@ -14,15 +14,15 @@ applyTo: "**"
 
 ## Quand créer un ADR
 
-ADR **doit** être créé immédiatement après validation solution choisie par 👤 Développeur humain (étape 3 méthodologie ARCos), pour décisions qui :
+ADR **doit** être créé juste après validation solution par 👤 Dev humain (étape 3 méthodo ARCos), pour décisions qui :
 
-- Introduisent **nouvelle techno ou lib** dans projet
+- Introduisent **nouvelle techno/lib** dans projet
 - Définissent **nouveau pattern archi** (couche, service, état global, routing…)
 - Modifient **convention existante** structurellement
 - Impliquent **choix sécurité** ou conformité
-- Résultent d'une **comparaison explicite de solutions** (analyse déjà produite par ARCos)
+- Résultent d'une **comparaison explicite solutions** (analyse déjà faite par ARCos)
 
-> 💡 Décision triviale ou locale (ex : renommer variable, ajouter champ) → **pas d'ADR**.
+> 💡 Décision triviale/locale (ex : renommer variable, ajouter champ) → **pas d'ADR**.
 
 ---
 
@@ -46,13 +46,13 @@ Trouver prochain numéro : lister fichiers `docs/adr/`, prendre suivant.
 | 🟠 **ARCos** | Prépare contenu ADR : contexte, décision, alternatives (depuis analyse comparative), conséquences, mise en œuvre |
 | 🟣 **DOCly** | Rédige fichier ADR dans `docs/adr/` depuis contenu fourni par ARCos |
 
-**ARCos ne crée jamais le fichier ADR lui-même.** Produit contenu structuré, délègue à DOCly.
+**ARCos crée jamais fichier ADR lui-même.** Produit contenu structuré, délègue à DOCly.
 
 ---
 
 ## Procédure ARCos — Préparer le contenu de l'ADR
 
-Après décision humaine, ARCos produit bloc de délégation à DOCly structuré ainsi :
+Après décision humaine, ARCos produit bloc délégation DOCly, structuré ainsi :
 
 ```markdown
 ## 📋 Contenu ADR à rédiger
