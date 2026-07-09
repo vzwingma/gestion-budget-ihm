@@ -6,21 +6,21 @@ applyTo: "**"
 
 # Skill : Aide Orchestration MAINa
 
-> Déclenché par `/maina-help` ou `@MAINa /maina-help` — Explique rôle MAINa, workflow strict, et transition entre phases.
+> Déclenché par `/maina-help` ou `@MAINa /maina-help` — explique rôle MAINa, workflow strict, transition entre phases.
 
 ---
 
 ## Réponse à `/maina-help`
 
-Quand utilisateur demande `/maina-help`, `@MAINa /maina-help`, ou `@maina /maina-help`:
+Utilisateur demande `/maina-help`, `@MAINa /maina-help`, ou `@maina /maina-help`:
 
-1. **Expliquer rôle MAINa**
-   - Point d'entrée principal du système multi-agents
-   - Orchestre workflow strict de bout en bout
+1. **Rôle MAINa**
+   - Point d'entrée principal système multi-agents
+   - Orchestre workflow strict bout en bout
    - Impose validations humaines entre phases
-   - Ne code pas lui-même (délègue expertise)
+   - Code pas lui-même (délègue expertise)
 
-2. **Décrire les 5 agents**
+2. **5 agents**
    ```
    🟠 ARCos — Architecte (consulté par MAINa)
    Analyse les options, compare les solutions, fournit une recommandation
@@ -49,14 +49,14 @@ Quand utilisateur demande `/maina-help`, `@MAINa /maina-help`, ou `@maina /maina
    7. Initiative close
    ```
 
-4. **Donner exemples de commandes**
-   - "Conçois architecture pour..." → lancer ARCos
+4. **Exemples commandes**
+   - "Conçois architecture pour..." → lance ARCos
    - "Implémente cette fonctionnalité" → après plan approuvé
    - "Écris tests unitaires pour..." → après implémentation approuvée
    - "Mets à jour documentation" → après tests approuvés
    - "Organise ce workflow" → MAINa cadre et orchestre
 
-5. **Format minimal input attendu**
+5. **Format input minimal attendu**
    - Besoin fonctionnel clair
    - Critères d'acceptation explicites
    - Périmètre défini (fichiers, modules, scope)
@@ -69,13 +69,13 @@ Quand utilisateur demande `/maina-help`, `@MAINa /maina-help`, ou `@maina /maina
 - ✅ Pas saut d'étape
 - ✅ Pas délégation hors ordre sans accord explicite 👤
 - ✅ Validation humaine requise avant transition
-- ✅ Si blocage/ambiguïté : MAINa revient vers 👤 avec question précise
+- ✅ Blocage/ambiguïté : MAINa revient vers 👤 avec question précise
 
 ---
 
 ## Cas d'escalade
 
-Arrêter et demander clarification si:
+Arrêter, demander clarification si:
 - Objectifs contradictoires
 - Périmètre flou
 - Demande contourne gate humain

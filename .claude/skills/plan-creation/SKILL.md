@@ -6,8 +6,8 @@ applyTo: "**"
 
 # Skill : Création d'un Plan d'Action (AP)
 
-> Skill décrit procédure standard créer, valider, lancer Plan d'Action.
-> Réservé à ⚫ MAINa — responsable création et orchestration des Plans d'Action.
+> Skill = procédure standard créer, valider, lancer Plan d'Action.
+> Réservé à ⚫ MAINa — responsable création + orchestration Plans d'Action.
 > Référence complète format AP : `.claude/PLANS.md`
 
 ---
@@ -15,20 +15,20 @@ applyTo: "**"
 ## Avant de créer un plan
 
 1. **Clarifier problème / objectif**
-   - Quel besoin utilisateur ou technique ?
-   - Quels critères succès mesurables ?
-   - Contraintes temps, ressources ou technologie ?
+   - Besoin utilisateur ou technique ?
+   - Critères succès mesurables ?
+   - Contraintes temps, ressources, technologie ?
 
 2. **Structurer approche**
-   - Quelles phases logiques nécessaires ?
-   - Comment phases dépendent entre elles ?
+   - Phases logiques nécessaires ?
+   - Dépendances entre phases ?
    - Quel agent (DEVon, QALvin, DOCly, ARCos) fait quoi ?
 
 ---
 
 ## Créer le fichier plan
 
-Créer fichier `.claude/plans/<NO>_<nom>.plan.md` contenant :
+Créer fichier `.claude/plans/<NO>_<nom>.plan.md` avec :
 
 1. **En-tête** : Titre, date, statut (`⏳ Planifié`), lien document
 2. **Objectif Global** : 1-2 paragraphes problème + outcomes attendus
@@ -39,24 +39,24 @@ Créer fichier `.claude/plans/<NO>_<nom>.plan.md` contenant :
 4. **Résumé par Agent** : Qui fait quoi, livrables, durée estimée
 5. **Dépendances** : Diagramme ordre exécution
 6. **Critères Succès Globaux** : Mesures finales projet
-7. **Plan d'Exécution** : Quand démarrer chaque phase, triggers
+7. **Plan d'Exécution** : Démarrage chaque phase, triggers
 
 **Référence complète format** : `.claude/PLANS.md` (section "Format du Fichier Plan")
 
 ## Règle de persistance obligatoire
 
-Le livrable du skill est un ensemble de fichiers persistés dans le dépôt :
+Livrable skill = fichiers persistés dans dépôt :
 - `.claude/plans/<NO>_<nom>.plan.md`
 - `.claude/plans/<NO>_reports/`
 - `.claude/plans/README.md` mis à jour
 
-Si les outils d'édition sont interdits ou si le prompt demande de ne modifier aucun fichier, ne pas produire un faux plan "créé" dans la réponse finale. Demander au développeur humain s'il souhaite :
-1. autoriser la création des fichiers ;
-2. ou recevoir uniquement un brouillon non formalisé.
+Outils édition interdits ou prompt demande ne modifier aucun fichier → pas de faux plan "créé" dans réponse finale. Demander au développeur humain :
+1. autoriser création fichiers ;
+2. ou recevoir juste brouillon non formalisé.
 
 ### Structurer les tâches
 
-Chaque tâche doit avoir :
+Chaque tâche a :
 - **Numéro unique** : `T<PHASE>.<NUM>` (ex: T1.1, T2.3)
 - **Agent assigné** : DEVon, QALvin, DOCly, ARCos
 - **Scope explicite** : Fichiers créer/modifier, quoi couvrir
@@ -80,7 +80,7 @@ Chaque tâche doit avoir :
 .claude/plans/<NO>_reports/
 ```
 
-Dossier contiendra rapport par phase :
+Dossier contient rapport par phase :
 - `PHASE_1_COMPLETION_REPORT.md`
 - `PHASE_2_COMPLETION_REPORT.md`
 - etc.
@@ -99,15 +99,15 @@ Avant lancer phases :
    - Agents assignés appropriés ?
 3. **Ajuster** selon feedback
 
-> 💡 **Compact recommandé** après validation plan : `/compact` avec instruction — _"Garde uniquement : titre plan, phases + statut, tâches ouvertes assignées. Supprime détails procédure création."_ Économise ~4.5KB de contexte skill pour tous les tours suivants.
+> 💡 **Compact recommandé** après validation plan : `/compact` avec instruction — _"Garde uniquement : titre plan, phases + statut, tâches ouvertes assignées. Supprime détails procédure création."_ Économise ~4.5KB contexte skill pour tours suivants.
 
 ---
 
 ## Lancer une phase
 
-Quand plan validé + dépendances satisfaites :
+Plan validé + dépendances satisfaites :
 
-1. **Vérifier dépendances** : Toutes phases précédentes sont ✅
+1. **Vérifier dépendances** : Toutes phases précédentes ✅
 2. **Identifier agent responsable** phase
 3. **Créer rapport vide** : `.claude/plans/<NO>_reports/PHASE_N_COMPLETION_REPORT.md`
 4. **Déléguer à agent** avec prompt structuré incluant :
@@ -132,7 +132,7 @@ Critères de réussite :
 
 ## Valider et progresser
 
-Après phase signalée complétée :
+Phase signalée complétée :
 
 1. **Lire rapport** : `.claude/plans/<NO>_reports/PHASE_N_...md`
 2. **Vérifier** : Tous critères ✅, aucun bloqueur, livrables présents
@@ -144,7 +144,7 @@ Après phase signalée complétée :
 ## Règle obligatoire — Synchronisation de l'index des plans
 
 - `.claude/plans/README.md` doit contenir **uniquement** liste plans + **statut global**.
-- À chaque création plan ou changement statut global, mettre à jour `.claude/plans/README.md` dans **même changement**.
+- Chaque création plan ou changement statut global → mettre à jour `.claude/plans/README.md` dans **même changement**.
 
 ---
 

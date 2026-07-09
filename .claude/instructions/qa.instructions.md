@@ -6,25 +6,25 @@ applyTo: "**"
 # Spécificités projet — gestion-budget-ihm (QA)
 
 > Fichier auto-lu par 🟢 QALvin au démarrage.
-> Contient specs projet `gestion-budget-ihm` (frontend React/TypeScript).
+> Specs projet `gestion-budget-ihm` (frontend React/TypeScript).
 
 ## Workflow
 
-1. Récupère tes tâches (`🟢 QALvin` / `Agent: QALvin`) dans le **Plan d'Action** actif, une fois le code livré.
+1. Récupère tâches (`🟢 QALvin` / `Agent: QALvin`) dans **Plan d'Action** actif, une fois code livré.
 2. Écris tests, exécute, vérifie couverture.
-3. Signale la complétion (rapport `PHASE_N_*.md`) ; si échec bloquant, remonte vers `🔵 DEVon`.
+3. Signale complétion (rapport `PHASE_N_*.md`) ; échec bloquant → remonte `🔵 DEVon`.
 
 Procédure détaillée : skill `plan-phase-execution`.
 
 ### Workflow hérité (SQL todos, historique)
 
-> Ancien protocole `.github/` : consulter table SQL `todos` pour tâches `*-qa` dont dépendances sont `done`, passer en `in_progress` puis `done` (ou `blocked` si échec). Conservé pour référence ; le Plan d'Action prime désormais.
+> Ancien protocole `.github/` : table SQL `todos`, tâches `*-qa` dépendances `done` → `in_progress` → `done` (ou `blocked` si échec). Gardé pour référence ; Plan d'Action prime désormais.
 
 ## Stack de test
 
 - **Jest** + **React Testing Library** (`@testing-library/react@16`, `@testing-library/user-event@14`)
 - **jest-dom** pour assertions DOM (`@testing-library/jest-dom@6`)
-- Fichiers de test : `*.test.tsx` ou `*.test.ts` co-localisés avec le fichier testé
+- Fichiers de test : `*.test.tsx` ou `*.test.ts` co-localisés avec fichier testé
 
 ## Commandes
 
@@ -42,7 +42,7 @@ npx vitest run src/main/Components/budgets/Budget.test.tsx
 npx vitest run --testNamePattern="doit afficher le solde"
 ```
 
-Le rapport de couverture est généré dans `coverage/lcov.info` (lu par SonarCloud).
+Rapport couverture généré dans `coverage/lcov.info` (lu par SonarCloud).
 
 ## Ce qu'il faut tester
 
@@ -75,8 +75,8 @@ global.fetch = jest.fn(() => Promise.resolve({ status: 200, json: () => Promise.
 
 ## Cas à couvrir systématiquement
 
-- **Cas nominal** : rendu correct avec données valides.
-- **Cas vide / null** : comportement quand données absentes.
+- **Cas nominal** : rendu correct, données valides.
+- **Cas vide / null** : comportement si données absentes.
 - **Cas d'erreur HTTP** : 403 (logout), 404, 500.
 - **Interactions utilisateur** : clics, saisies (via `userEvent`).
 - **Responsive** : si `useMediaQuery` utilisé, mocker `useTheme`.
@@ -84,10 +84,10 @@ global.fetch = jest.fn(() => Promise.resolve({ status: 200, json: () => Promise.
 ## Ce que tu ne fais PAS
 
 - Pas modifier fichiers de production (`*.tsx`, `*.ts` hors `*.test.*`).
-- Pas mettre à jour la documentation (rôle 🟣 DOCly).
-- Pas décisions sur architecture des tests sans validation 🟠 ARCos.
+- Pas mettre à jour documentation (rôle 🟣 DOCly).
+- Pas décisions architecture tests sans validation 🟠 ARCos.
 
 ## Règle d'index des plans (obligatoire)
 
-- `.claude/plans/README.md` est index **plans + statut global** uniquement (pas phases).
-- Si phase QA livrée change statut global plan, synchronise `.claude/plans/README.md` dans même changement.
+- `.claude/plans/README.md` = index **plans + statut global** uniquement (pas phases).
+- Phase QA livrée change statut global plan → synchronise `.claude/plans/README.md` même changement.
