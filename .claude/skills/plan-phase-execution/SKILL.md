@@ -96,14 +96,6 @@ Puis **signaler à agent suivant** selon tes instructions délégation.
 
 ---
 
-## Post-déploiement — proposer validation visuelle
-
-Si phase clôturée inclut **merge** + **déploiement** (CI → S3/CloudFront QUA ou tag release PROD) : proposer au développeur humain de déclencher la validation visuelle via `.claude/prompts/qa-deploy/validate-staging.md` (Claude Chrome).
-
-Demander quel(s) environnement(s) valider : **QUA**, **PROD**, ou **les deux**. Ne jamais lancer sans confirmation explicite.
-
----
-
 ## Règle obligatoire — Synchronisation de l'index des plans
 
 - `.claude/plans/README.md` est index **plans + statut global uniquement** (jamais détails phases).
