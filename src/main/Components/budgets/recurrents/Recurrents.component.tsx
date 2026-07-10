@@ -49,7 +49,6 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
 
     /** Callback de mise à jour du budget **/
     const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
-        console.log("(Re)Chargement du budget", budget.id, ":", budget.listeOperations.length + " opérations");
         setCurrentBudget(budget);
         setOperationsRecurrentesGroupedByPeriodicity(getOperationsRecurrentesGroupedByPeriodicity(budget.listeOperations, budget.id));
         console.log("Chargement du budget correctement effectué");

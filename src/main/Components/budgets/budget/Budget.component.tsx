@@ -52,7 +52,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Callback de chargement des catégories **/
     const handleLoadCategories = useCallback((categories: CategorieOperationModel[]) => {
-        console.log("Chargement de " + categories.length + " catégories");
         setCategories(categories);
     }, [setCategories]);
 
@@ -64,7 +63,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Callback de mise à jour du budget **/
     const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
-        console.log("(Re)Chargement du budget", budget.id, ":", budget.listeOperations.length + " opérations");
         setCurrentBudget(budget);
 
         // Compatibilité des opérations sur le statut en retard

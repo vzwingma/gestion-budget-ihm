@@ -8,7 +8,28 @@ import AnalyseTreeMapTooltip from "./AnalyseTreeMapTooltip.component.tsx";
 import { useAnalyseTreeMapData } from "./AnalyseTreeMap.controller.ts";
 import { NoDataComponent } from "../../shared/NoDataComponent.tsx";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
+import AnalyseCategoriesModel from "../../../Models/analyses/syntheses/AnalyseCategories.model.ts";
 
+
+interface TreemapContentRendererProps {
+    selectedCategory: CategorieOperationModel | undefined;
+    analyseCategoriesData: AnalyseCategoriesModel[];
+    onCategoryClick: (selectedCategory: CategorieOperationModel | undefined) => void;
+    [key: string]: any; // Props transmises par Treemap (categoryId, x, y, width, height, ...)
+}
+
+/**
+ * Rendu du contenu d'une cellule de la Treemap.
+ * Composant top-level (hors du composant parent) pour éviter la recréation à chaque render.
+ */
+const TreemapContentRenderer: React.FC<TreemapContentRendererProps> = ({ selectedCategory, analyseCategoriesData, onCategoryClick, ...props }) => (
+    <AnalyseTreeMapContent
+        {...props}
+        onClick={!selectedCategory && props.categoryId
+            ? () => onCategoryClick(analyseCategoriesData.find(cat => cat.categorie.id === props.categoryId)?.categorie)
+            : undefined}
+    />
+);
 
 
 const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategories: analyseCategoriesData, selectedCategories, setFilters }): JSX.Element => {
@@ -81,11 +102,11 @@ const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategori
                         dataKey="size"
                         stroke="#fff"
                         content={(props: any) => (
-                            <AnalyseTreeMapContent 
-                                {...props} 
-                                onClick={!selectedCategory && props.categoryId 
-                                    ? () => { handleCategoryClick(analyseCategoriesData.find(cat => cat.categorie.id === props.categoryId)?.categorie); } : undefined
-                                }
+                            <TreemapContentRenderer
+                                {...props}
+                                selectedCategory={selectedCategory}
+                                analyseCategoriesData={analyseCategoriesData}
+                                onCategoryClick={handleCategoryClick}
                             />
                         )}
                         isAnimationActive={true}
