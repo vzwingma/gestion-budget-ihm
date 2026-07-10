@@ -1,4 +1,4 @@
-import React, { JSX, useCallback, useContext, useEffect, useState } from "react";
+import React, { JSX, useCallback, useEffect, useState } from "react";
 
 import { Backdrop, Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
@@ -8,7 +8,7 @@ import { getPreferenceUtilisateur, reloadBudget } from "./../budget/Budget.extse
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsRecurrentesGroupedByPeriodicity } from "./Recurrents.controller.ts";
 import { RecurrentsPageProps } from "../../Components.props.ts";
-import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
+import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
 import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
 import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
@@ -38,7 +38,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
 
     /** Etats pour la page Recurrents **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useContext(BudgetContext);
+    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useBudgetContext();
 
     const [operationsRecurrentesGroupedByPeriodicity, setOperationsRecurrentesGroupedByPeriodicity] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);

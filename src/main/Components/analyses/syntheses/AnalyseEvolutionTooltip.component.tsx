@@ -23,7 +23,7 @@ const AnalyseEvolutionTooltip = ({ active, payload, label }: TooltipEvolutionPro
         .sort((a: any, b: any) => a.name.localeCompare(b.name));
 
     if (filteredPayload.length === 0) {
-        return null;
+        return <></>;
     }
 
     return (

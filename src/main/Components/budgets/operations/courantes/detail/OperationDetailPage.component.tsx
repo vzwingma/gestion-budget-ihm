@@ -1,4 +1,4 @@
-import React, { JSX, useContext, useEffect, useState } from 'react'
+import React, { JSX, useEffect, useState } from 'react'
 import { Box, Button, Container, Grid, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 import {
@@ -39,11 +39,12 @@ import OperationEditionModel, {
     createNewOperationEdition
 } from '../../../../../Models/budgets/OperationEdition.model.ts';
 import { OperationDetailPageProps } from '../../../../Components.props.ts';
-import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import { OperationDetailDate } from './subcomponents/OperationDetailDateOperation.component.tsx';
 import OperationDetailStatus from '../../../../../Utils/renderers/OperationDetailStatus.renderer.tsx';
 import { OperationDetailDateFin } from '../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
 import { OperationDetailCategorieType } from './subcomponents/OperationDetailCategorieType.component.tsx';
+import { OPERATION_RECURRENTE_EDITION_FORM } from '../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts';
 
 
 /**
@@ -63,7 +64,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
-    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext);
+    const { currentBudget, currentOperation, comptes } = useBudgetContext();
     const operation = currentOperation;
     const budget = currentBudget;
 
@@ -81,6 +82,10 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 
 
     useEffect(() => { }, [refresh]);
+
+    if (!operation || !budget) {
+        return <></>;
+    }
 
     /**
      * Ouverture du formulaire d'édition
@@ -105,7 +110,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param field champ du formulaire à mettre à jour
      * @param value valeur du champ
      */
-    function fillOperationForm(field: OPERATION_EDITION_FORM, value: string) {
+    function fillOperationForm(field: OPERATION_EDITION_FORM | OPERATION_RECURRENTE_EDITION_FORM, value: string) {
         switch (field) {
             case OPERATION_EDITION_FORM.LIBELLE:
                 editOperation.libelle = value;
@@ -240,7 +245,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                         </Grid>
                         <Grid size={{ md: 4, xl: 4 }} sx={{ display: "flex", justifyContent: "flex-end" }}>
                             { /** STATUT **/}
-                            {currentOperation?.statuts !== null && currentOperation?.statuts !== undefined ?
+                            {operation.statuts !== null && operation.statuts !== undefined ?
                                 <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>
                             }
                         </Grid>

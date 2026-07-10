@@ -1,10 +1,10 @@
-import React, {JSX, useContext} from 'react'
+import React, {JSX} from 'react'
 import {MenuItem, TextField, Typography} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {getPeriodeRenderer} from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
 import {PERIODES_MENSUALITE_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
 import {OperationDetailMensualiteProps} from '../../../../../Components.props.ts'
-import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
@@ -20,8 +20,13 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     fillOperationForm
 }: OperationDetailMensualiteProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const { currentBudget, currentOperation } = useBudgetContext();
     const operation = currentOperation;
+
+    if (!currentBudget || !operation) {
+        return <></>;
+    }
+
     const budgetActif = currentBudget.actif;
     /**
  * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur

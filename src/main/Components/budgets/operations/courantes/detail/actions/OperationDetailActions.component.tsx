@@ -1,4 +1,4 @@
-import React, {JSX, useContext, useState} from "react";
+import React, {JSX, useState} from "react";
 
 import {
     Button,
@@ -21,7 +21,7 @@ import {
 import {OPERATION_ETATS_ENUM} from "../../../../../../Utils/AppBusinessEnums.constants.ts";
 import { CenterComponent } from "../../../../../shared/CenterComponent.tsx";
 import {OperationDetailActionsProps} from "../../../../../Components.props.ts";
-import {BudgetContext} from "../../../../../../Models/contextProvider/BudgetContextProvider.tsx";
+import {useBudgetContext} from "../../../../../../Models/contextProvider/BudgetContextProvider.tsx";
 import { handleOperationAction } from "./OperationDetailActions.controller.ts";
 
 
@@ -39,9 +39,14 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                                                                               }: OperationDetailActionsProps): JSX.Element => {
 
     const [showModale, setShowModale] = useState<boolean>(false);
-    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const { currentBudget, currentOperation } = useBudgetContext();
     const operation = currentOperation;
     const budget = currentBudget;
+
+    if (!operation || !budget) {
+        return <></>;
+    }
+
     return (
         <ButtonGroup
             variant="contained"

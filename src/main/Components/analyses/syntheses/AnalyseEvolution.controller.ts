@@ -245,7 +245,7 @@ export function extractUniqueCategories(operations: OperationModel[]): Array<{ i
         if (!categoriesMap.has(categoryLabel)) {
             categoriesMap.set(categoryLabel, {
                 libelle: categoryLabel,
-                id: operation.categorie?.id || null
+                id: operation.categorie?.id || ""
             });
         }
     });

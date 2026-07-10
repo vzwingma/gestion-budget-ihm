@@ -1,4 +1,4 @@
-import React, {JSX, useContext, useEffect, useState} from "react";
+import React, {JSX, useEffect, useState} from "react";
 import {Box, Container, Divider, Drawer, Stack, useMediaQuery, useTheme} from "@mui/material";
 import {ToastContainer} from "react-toastify";
 import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants.ts";
@@ -8,7 +8,7 @@ import CompteItem from "./menuSlideBar/CompteItem.component.tsx";
 import DateRange from "./menuSlideBar/DateRange.component.tsx";
 import BudgetPage from "../budgets/budget/Budget.component.tsx";
 import {MainPageProps} from "../Components.props.tsx";
-import {BudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
+import {useBudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
 import {useAuth} from "react-oidc-context";
 import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
 import { Analyses } from "../analyses/Analyses.component.tsx";
@@ -43,7 +43,7 @@ import { getCompteGroupByOwner } from "../../Utils/UserData.utils.ts";
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useContext(BudgetContext);
+    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useBudgetContext();
     const auth = useAuth();
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));

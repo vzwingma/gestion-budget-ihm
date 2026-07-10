@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
-import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
+import BudgetMensuelModel, { Soldes } from "../../Models/budgets/BudgetMensuel.model.ts";
 import { loadBudget } from "./Analyses.extservices.ts";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 import OperationModel from "../../Models/budgets/Operation.model.ts";
@@ -47,7 +47,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
                 })
         )
     )
-    .then((monthlyBudgets: { month: Date, budget: BudgetMensuelModel | null }[]) => {
+    .then((monthlyBudgets: { month: Date, budget: BudgetMensuelModel | null | undefined }[]) => {
         budgetConsolide.listeOperations = monthlyBudgets.flatMap(({ month, budget }) => {
             return (budget?.listeOperations || []).map(operation => {
             if (operation.autresInfos?.dateOperation) {
@@ -61,7 +61,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
             return operation;
             });
         });
-        budgetConsolide.soldesParMois = monthlyBudgets.reduce((acc, { month, budget }) => {
+        budgetConsolide.soldesParMois = monthlyBudgets.reduce((acc: { [key: string]: Soldes }, { month, budget }) => {
             if (budget?.soldes) {
                 const monthKey = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}`;
                 acc[monthKey] = budget.soldes;
@@ -71,7 +71,8 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
         const distinctCategories = [...new Set(budgetConsolide.listeOperations.map(op => op.categorie.id))]
                                                                               .map(id => budgetConsolide.listeOperations
                                                                                 .find(op => op.categorie.id === id)?.categorie)
-                                                                                .filter(Boolean).sort((a, b) => a.libelle.localeCompare(b.libelle));
+                                                                                .filter((categorie): categorie is CategorieOperationModel => categorie != null)
+                                                                                .sort((a, b) => a.libelle.localeCompare(b.libelle));
         handleDataCalculationResult(budgetConsolide, distinctCategories);
     });
 
@@ -95,7 +96,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
  */
 export function applyFiltersToOperations(operations: Array<OperationModel>, filters: AnalysesFiltersModel): Array<OperationModel> {
     return operations.filter(op => {
-        const matchesTypeCategorie = filters.selectedTypes.includes(op.ssCategorie.type);
+        const matchesTypeCategorie = op.ssCategorie.type != null && filters.selectedTypes.includes(op.ssCategorie.type);
         const matchesEtat = filters.selectedOperationEtats.includes(op.etat);
         const matchesTypeOperation = filters.selectedOperationTypes.includes(op.typeOperation);
         const matchesCategorie = filters.selectedCategories.length === 0 || filters.selectedCategories.some(cat => cat.id === op.categorie.id);

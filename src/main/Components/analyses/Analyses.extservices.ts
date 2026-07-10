@@ -16,19 +16,21 @@ import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
  * @returns {Promise} Une promesse qui se résout avec les données du budget chargées.
  * @throws Lancera une erreur si le chargement du budget échoue.
  **/
-export function loadBudget(selectedCompte: CompteBancaireModel | null, selectedDate: Date): Promise<BudgetMensuelModel> {
+export function loadBudget(selectedCompte: CompteBancaireModel | null, selectedDate: Date): Promise<BudgetMensuelModel | undefined> {
 
-    if (selectedCompte != null && selectedDate != null) {
-
-        return call(METHODE_HTTP.GET,
-            BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
-            [selectedCompte.id, String(selectedDate.getFullYear()), String(selectedDate.getMonth() + 1)])
-            .catch(e => {
-                let libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte?.libelle + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
-                console.log(libErreur, e)
-                toast.error(libErreur, { autoClose: false, closeOnClick: true })
-            })
+    if (selectedCompte == null || selectedDate == null) {
+        return Promise.resolve(undefined);
     }
+
+    return call(METHODE_HTTP.GET,
+        BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
+        [selectedCompte.id, String(selectedDate.getFullYear()), String(selectedDate.getMonth() + 1)])
+        .catch(e => {
+            let libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte?.libelle + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
+            console.log(libErreur, e)
+            toast.error(libErreur, { autoClose: false, closeOnClick: true })
+            return undefined;
+        })
 }
 
 

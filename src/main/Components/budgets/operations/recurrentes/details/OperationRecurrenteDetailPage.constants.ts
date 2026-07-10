@@ -53,7 +53,7 @@ export function createEmptyErrors(): ErrorsRFormProps {
  * @param prochaineEcheance 
  * @returns 
  */
-export function getProchaineEcheance(dateOperation: Date, prochaineEcheance: number): string {
+export function getProchaineEcheance(dateOperation: Date | null, prochaineEcheance: number): string {
     if (prochaineEcheance < 0) {
         return "Aucune"
     } else {

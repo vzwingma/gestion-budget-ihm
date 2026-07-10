@@ -1,6 +1,6 @@
 import {Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
-import React, {JSX, useContext} from "react";
-import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
+import React, {JSX} from "react";
+import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 
 /**
  * Composant réutilisable pour afficher le titre avec compte et date
@@ -9,10 +9,14 @@ import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProv
  */
 const CompteTitre: React.FC = (): JSX.Element => {
 
-    const {selectedCompte, selectedDate} = useContext(BudgetContext);
+    const {selectedCompte, selectedDate} = useBudgetContext();
     const currentCompte = selectedCompte;
     const currentDate = selectedDate;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+
+    if (!currentCompte) {
+        return <></>;
+    }
 
     return (
         <Stack direction={"row"} spacing={1} sx={{ justifyContent: "center", alignContent: "center", alignItems: "center" }}>

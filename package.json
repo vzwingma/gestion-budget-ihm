@@ -55,7 +55,8 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "sonar": "sonar-scanner",
-    "lint": "eslint src/**/*.ts src/**/*.tsx"
+    "lint": "eslint src/**/*.ts src/**/*.tsx",
+    "typecheck": "tsc --noEmit"
   },
   "browserslist": {
     "production": [

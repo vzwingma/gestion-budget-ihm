@@ -1,9 +1,9 @@
-import React, { JSX, useContext, useEffect, useState } from 'react'
+import React, { JSX, useEffect, useState } from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants.ts"
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { getOperationLibelle } from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
 import { OperationDetailLibelleProps } from '../../../../../Components.props.ts'
-import { BudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import { useBudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 import { INTERCOMPTE_LIBELLE_REGEX } from "../../../../../../Utils/OperationData.utils.ts";
 import LibelleCategorieOperationModel from "../../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import { evaluatePendingLibelle, getOperationLibelleInEdition, prioritySort } from "./OperationDetailLibelle.controller.ts";
@@ -23,14 +23,12 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
 }: OperationDetailLibelleProps): JSX.Element => {
 
 
-    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext);
+    const { currentBudget, currentOperation, comptes } = useBudgetContext();
 
     const [listeLibellesOperationsFiltered, setListeLibellesOperationsFiltered] = useState<LibelleCategorieOperationModel[]>([...listeLibellesOperations]);
     const [pendingLibelle, setPendingLibelle] = useState<string>("");
 
     const operation = currentOperation;
-    const budgetActif = currentBudget.actif;
-    const rawLibelleIntercompteParts = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle);
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /**
@@ -48,11 +46,19 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
         setListeLibellesOperationsFiltered([...listeLibellesOperations]);
     }, [listeLibellesOperations]);
 
+    if (!currentBudget || !operation) {
+        return <></>;
+    }
+
+    const budgetActif = currentBudget.actif;
+    const rawLibelleIntercompteParts = INTERCOMPTE_LIBELLE_REGEX.exec(operation.libelle);
+
     /**
      * Remplit le champ "libelle" de l'état à partir de la saisie de l'utilisateur
      * @param event - L'événement de saisie
      */
     function fillLibelleForm(event: any) {
+        if (!operation) return;
         let newLibelle: string = event.target.value;
         if (!Number.isNaN(Number(event.target.value))) {
             newLibelle = event.target.textContent;

@@ -1,8 +1,8 @@
-import React, { JSX, useContext } from 'react'
+import React, { JSX } from 'react'
 import { EditFormProps, ErrorsFormProps } from "../../../courantes/detail/OperationDetailPage.constants.ts"
 import { TextField, Typography } from '@mui/material'
 import { OperationDetailDateProps } from '../../../../../Components.props.ts'
-import { BudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import { useBudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 import { getLabelISOFromDate, getLabelMonthFRFromDate } from '../../../../../../Utils/Date.utils.ts'
 import { EditRFormProps, ErrorsRFormProps, isDerniereEcheanceRO, OPERATION_RECURRENTE_EDITION_FORM } from '../OperationRecurrenteDetailPage.constants.ts'
 import BudgetMensuelModel from '../../../../../../Models/budgets/BudgetMensuel.model.ts'
@@ -26,8 +26,13 @@ export const OperationDetailDateFin: React.FC<OperationDetailDateProps> = ({ for
     fillOperationForm: fillOperationRecurrenteForm
 }: OperationDetailDateProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const { currentBudget, currentOperation } = useBudgetContext();
     const operation = currentOperation;
+
+    if (!currentBudget || !operation) {
+        return <></>;
+    }
+
     const budgetActif = currentBudget.actif;
 
 

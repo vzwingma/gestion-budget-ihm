@@ -50,7 +50,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     const [filters, setFilters] = useState<AnalysesFiltersModel>(getDefaultAnalysesFilters());
 
-    const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelAnalyseConsolideModel>(null);
+    const [budgetConsolide, setBudgetConsolide] = useState<BudgetMensuelAnalyseConsolideModel | null>(null);
     const [distinctCategories, setDistinctCategories] = useState<CategorieOperationModel[]>([]);
     
 

@@ -1,9 +1,9 @@
-import React, { JSX, useContext, useEffect, useState } from 'react'
+import React, { JSX, useEffect, useState } from 'react'
 import { Box, Button, Container, Grid, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 
 import { CenterComponent } from '../../../../shared/CenterComponent.tsx';
-import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import CompteBancaireModel from '../../../../../Models/budgets/CompteBancaire.model.ts';
 import { operationIsIntercompteFromLibelle } from '../../../../../Utils/OperationData.utils.ts';
 import { getOperationLibelle, getPeriodeRenderer } from '../../../../../Utils/renderers/OperationItem.renderer.tsx';
@@ -12,6 +12,7 @@ import OperationValue from '../../../../../Utils/renderers/OperationValue.render
 import { OperationDetailDateFin } from './subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
 import OperationEditionModel, { createNewOperationEdition } from '../../../../../Models/budgets/OperationEdition.model.ts';
 import { createEmptyEditForm, createEmptyErrors, EditRFormProps, ErrorsRFormProps, getProchaineEcheance, OPERATION_RECURRENTE_EDITION_FORM } from './OperationRecurrenteDetailPage.constants.ts';
+import { OPERATION_EDITION_FORM } from '../../courantes/detail/OperationDetailPage.constants.ts';
 import { handleOperationRecurrenteEditionClick, handleValidateOperationForm, isInEditMode } from './OperationRecurrenteDetailPage.controller.ts';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
 import { OperationRecurrenteDetailPageProps } from '../../../../Components.props.ts';
@@ -36,7 +37,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
     const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsRFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
-    const { currentBudget, currentOperation, comptes } = useContext(BudgetContext);
+    const { currentBudget, currentOperation, comptes } = useBudgetContext();
     const operation = currentOperation;
     const budget = currentBudget;
 
@@ -52,6 +53,10 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
         setEditForm(createEmptyEditForm());
         setErrors(createEmptyErrors());
     }, [operation]);
+
+    if (!operation || !budget) {
+        return <></>;
+    }
 
     /**
      * Ouverture du formulaire d'édition
@@ -77,7 +82,7 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
      * @param field champ du formulaire à mettre à jour
      * @param value valeur du champ
      */
-    function fillOperationRecurrenteForm(field: OPERATION_RECURRENTE_EDITION_FORM, value: string) {
+    function fillOperationRecurrenteForm(field: OPERATION_RECURRENTE_EDITION_FORM | OPERATION_EDITION_FORM, value: string) {
         const editOperationUpdated = { ...editOperation };
         if (field === OPERATION_RECURRENTE_EDITION_FORM.DATE_FIN) {
             if (value !== null && value !== undefined && value !== "") {
@@ -124,9 +129,9 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
                         </Grid>
                         <Grid size={{ md: 3, xl: 3 }} sx={{display:"flex", justifyContent:"flex-end", alignItems:"center"}}>
                             { /** STATUT **/}
-                            {currentOperation?.statuts !== null && currentOperation?.statuts !== undefined ?
+                            {operation.statuts !== null && operation.statuts !== undefined ?
                                 <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>
-                            }             
+                            }
                             </Grid>
                     </Grid>
 

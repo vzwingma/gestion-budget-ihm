@@ -1,4 +1,4 @@
-import React, { JSX, useCallback, useContext, useEffect, useState } from "react";
+import React, { JSX, useCallback, useEffect, useState } from "react";
 
 import { Backdrop, Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
@@ -12,7 +12,7 @@ import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsGroupedByDateOperation, updateOperationsStatus } from "./Budget.controller.ts";
 import { getLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
 import { BudgetPageProps } from "../../Components.props.tsx";
-import { BudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
+import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import BudgetSoldes from "./BudgetSoldes.component.tsx";
@@ -41,7 +41,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Etats pour la page Budget **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories } = useContext(BudgetContext);
+    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories } = useBudgetContext();
 
     const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
