@@ -2,7 +2,13 @@
 
 **Document :** `.claude/plans/003_migration_dependances_ts_vite.plan.md`
 **Date de création :** 2026-07-10
-**Statut :** 🟡 En cours
+**Statut :** ✅ Lot clos (Phase 0/3/4/5/6 faites — Phase 1/2 reportées, voir note)
+
+> ⚠️ **Blocage Phase 1/2 (2026-07-10)** : `typescript-eslint` v9/v10 n'existent pas sur npm (dernier stable `8.63.0`, canary `8.63.1-alpha.8` au moment du check). TypeScript v7 (`^7.0.2`) a été testé (commit `ab7e062`) puis **reverté** (commit `daa9df6`) car `typescript-eslint@8.63.0` crashe avec TS7 (`TypeError: Cannot read properties of undefined (reading 'Cjs')`, internals TS renommés) et aucun palier 9/10 n'est disponible pour absorber ce changement. Repo reste sur `typescript ^6.0.0` + `typescript-eslint ^8.63.0`, lint/build/tests verts (109/109). **Phases 1 et 2 reportées** — à reprendre quand `typescript-eslint` publie une release stable compatible TS7.
+>
+> ✅ **Phase 3 partielle (2026-07-10)** : Vite v6→v7 réussi (commit `c205be6`), build/lint/tests verts. Vite v7→v8 **bloqué** : `@vitejs/plugin-react@4.7.0` déclare peerDep `vite: "^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"` (pas `^8`), confirmé par warning runtime esbuild/oxc au démarrage dev. Palier Vite v8 à retenter **en même temps que** Phase 4 (bump plugin-react), pas isolément.
+>
+> ✅ **Phase 4 terminée (2026-07-10)** : `@vitejs/plugin-react` v4→v5 réussi (commit `f733966`, résolu `5.2.0`, peerDep `vite: "^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"`). Palier v5→v6 initialement **bloqué** au moment de la tentative : `@vitejs/plugin-react@6.0.0-6.0.3` exigent tous `vite: "^8.0.0"` strict (pas de plage `^7`), incompatible avec Vite 7.3.6 encore installé à ce stade. Vite v7→v8 **retenté avec succès** (commit `47dd829`, `vite@8.1.4`) grâce à la plage `^8.0.0` déjà couverte par plugin-react v5.2.0 ; `vitest@4.1.10` supporte nativement `vite ^8.0.0`, Node `24.18.0` (`.nvmrc`) couvre l'engine requis `^20.19.0 || >=22.12.0`. **Décision humaine (2026-07-10)** : Vite étant désormais v8, palier v5→v6 retenté et **réussi** (commit `4ce1961`, `@vitejs/plugin-react@6.0.3`). Build/dev/tests(109/109)/lint(312 warnings/0 erreur) verts sur Vite v8.1.4 + plugin-react v6.0.3. **Phase 4 complète : v4→v5→v6 atteint intégralement.**
 **Objectif Prioritaire :** MEDIUM
 
 ---
@@ -193,6 +199,8 @@ Décisions validées avec 👤 développeur :
 - **Fichier :** `CHANGELOG.md` (ou équivalent projet)
 - **Implémenter :** entrée décrivant montée 5 (ou 4) deps + décision Babel ; si arrêt anticipé Vite/vitest, ajouter note limitation connue dans `docs/ARCHITECTURE.md`
 - **Acceptation :** entrée changelog présente, cohérente avec versions réellement installées
+
+**✅ Phase 6 terminée (2026-07-10, DOCly 🟣)** : Aucun `CHANGELOG.md` à la racine `gestion-budget-ihm/` (seul `.claude/CHANGELOG.md` existe, dédié à l'historique des instructions agents — pas une convention changelog applicatif). Pas de convention changelog projet identifiée ailleurs → décision : pas de création d'un nouveau fichier, entrée versionnée ajoutée dans `docs/ARCHITECTURE.md` § « Historique des Versions » à la place (voir T6.1). `docs/ARCHITECTURE.md` mis à jour : versions Vite (8.1.4), `@vitejs/plugin-react` (6.0.3) ajouté au tableau stack, TypeScript clarifié (`^6.0.0`, mot « strict » désambiguïsé de l'option compilateur), note limitation TS7/typescript-eslint 9-10 reportée ajoutée, entrée historique 2026-07-10 ajoutée. `README.md`/`README-react.md` vérifiés — aucune mention de version Vite/TypeScript/plugin-react obsolète trouvée (seule mention générique "TypeScript strict" dans la description, hors scope table de versions).
 
 Pas d'ADR formel requis — pas une décision d'architecture, déjà couvert par `docs/adr/001-migration-cra-vers-vite.md`. Sauf si blocage Vite8/vitest force un arrêt : note courte limitation suffit, pas d'ADR complet.
 
