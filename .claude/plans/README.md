@@ -10,6 +10,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 | # | Plan | Statut | Agent | Phase courante |
 |---|---|---|---|---|
+| 003 | Migration dépendances TypeScript/Vite (5 majors) | 🟡 En cours | DEVon 🔵 | Phase 1 — TypeScript v7 (Phase 0 ✅ commit 97b1c63) |
 
 ---
 
@@ -95,5 +96,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-07-06
+**Dernière mise à jour :** 2026-07-10
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain
