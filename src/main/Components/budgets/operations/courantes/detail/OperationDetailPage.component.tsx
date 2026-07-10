@@ -157,6 +157,66 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     }
 
     /**
+     * Applique la catégorie parente (et la sous-catégorie) sur l'opération en édition et l'opération courante
+     * @param ssCat sous catégorie sélectionnée
+     */
+    function applyCategorieParente(ssCat: CategorieOperationModel) {
+        if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
+            editOperation.categorie.id = ssCat.categorieParente.id;
+            editOperation.categorie.libelle = ssCat.categorieParente.libelle;
+        }
+        editOperation.ssCategorie.id = ssCat.id;
+        editOperation.ssCategorie.libelle = ssCat.libelle;
+        editOperation.ssCategorie.type = ssCat.type;
+
+        if (ssCat.categorieParente?.id && operation?.categorie) {
+            operation.categorie.id = ssCat.categorieParente.id;
+            operation.categorie.libelle = ssCat.categorieParente.libelle;
+        }
+        if (operation) {
+            operation.ssCategorie.id = ssCat.id;
+            operation.ssCategorie.libelle = ssCat.libelle;
+            operation.ssCategorie.type = ssCat.type;
+        }
+    }
+
+    /**
+     * Si type Rentrée d'argent, alors type opération = Crédit
+     */
+    function applyRentreeArgent() {
+        editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+        editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
+        if (operation) {
+            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
+        }
+    }
+
+    /**
+     * Si type Actifs Invest, alors type opération = Crédit
+     */
+    function applyActifInvest() {
+        editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+        editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
+        editOperation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
+        if (operation) {
+            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
+            operation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
+        }
+    }
+
+    /**
+     * Cas par défaut : type opération = Dépense
+     */
+    function applyDefaut() {
+        editOperation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
+        if (operation) {
+            operation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
+        }
+    }
+
+    /**
      * Validation d'une catégorie dans le formulaire
      * @param ssCatId  id de la sous catégorie
      */
@@ -167,50 +227,17 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         if (ssCat === undefined) {
             return;
         }
-        if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
-            editOperation.categorie.id = ssCat.categorieParente.id;
-            editOperation.categorie.libelle = ssCat.categorieParente.libelle;
-        }
-        editOperation.ssCategorie.id = ssCat.id;
-        editOperation.ssCategorie.libelle = ssCat.libelle;
-        editOperation.ssCategorie.type = ssCat.type;
+        applyCategorieParente(ssCat);
 
-        /** Adaptation sur la sélection de catégorie **/
-        if (ssCat.categorieParente?.id) {
-            operation?.categorie && (operation.categorie.id = ssCat.categorieParente.id);
-            operation?.categorie && (operation.categorie.libelle = ssCat.categorieParente.libelle);
+        /** Adaptation sur la sélection de catégorie selon le type de catégorie parente **/
+        if (BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.categorieParente?.id) {
+            applyRentreeArgent();
         }
-        if (operation) {
-            operation.ssCategorie.id = ssCat.id;
-            operation.ssCategorie.libelle = ssCat.libelle;
-            operation.ssCategorie.type = ssCat.type;
+        else if (BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente?.id) {
+            applyActifInvest();
         }
-
-        /** Si type Rentrée d'argent, alors type opération = Crédit **/
-        if(BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.categorieParente?.id) {
-            editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-            editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;            
-            if (operation) {
-                operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-                operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
-            }
-        }
-        /** Si type Actifs Invest, alors type opération = Crédit **/
-        else if(BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente?.id) {
-            editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-            editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
-            editOperation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
-            if (operation) {
-                operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-                operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
-                operation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
-            }
-        }
-        else{
-            editOperation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
-            if (operation) {
-                operation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
-            }
+        else {
+            applyDefaut();
         }
     }
 

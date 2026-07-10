@@ -24,8 +24,6 @@ export function loadComptes(setComptes: (comptes : CompteBancaireModel[]) => voi
  * @param setComptes setter de la liste des comptes
  */
 export function comptesLoaded(comptesLabelIcons : CompteBancaireModel[], setComptes: (comptes : CompteBancaireModel[]) => void) : void {
-    console.log("Chargement de " + comptesLabelIcons.length + " comptes");
-
     comptesLabelIcons.sort((c1 : CompteBancaireModel, c2 : CompteBancaireModel) => (c1.ordre > c2.ordre) ? 1 : -1);
     setComptes(comptesLabelIcons);
 }

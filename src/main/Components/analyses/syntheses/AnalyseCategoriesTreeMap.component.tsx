@@ -19,6 +19,25 @@ interface TreemapNode {
     [key: string]: any; // Index signature for recharts compatibility
 }
 
+interface TreemapContentRendererProps {
+    selectedCategoryName: string | null;
+    onCategoryClick: (categoryId: string | undefined) => void;
+    [key: string]: any; // Props transmises par Treemap (categoryId, x, y, width, height, ...)
+}
+
+/**
+ * Rendu du contenu d'une cellule de la Treemap des catégories.
+ * Composant top-level (hors du composant parent) pour éviter la recréation à chaque render.
+ */
+const TreemapContentRenderer: React.FC<TreemapContentRendererProps> = ({ selectedCategoryName, onCategoryClick, ...props }) => (
+    <AnalyseTreeMapContent
+        {...props}
+        onClick={!selectedCategoryName && props.categoryId
+            ? () => onCategoryClick(props.categoryId)
+            : undefined}
+    />
+);
+
 
 const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategories: analyseCategoriesData }): JSX.Element => {
 
@@ -133,12 +152,10 @@ const AnalyseCategoriesTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analy
                         dataKey="size"
                         stroke="#fff"
                         content={(props: any) => (
-                            <AnalyseTreeMapContent 
-                                {...props} 
-                                onClick={!selectedCategoryName && props.categoryId 
-                                    ? () => handleCategoryClick(props.categoryId) 
-                                    : undefined
-                                }
+                            <TreemapContentRenderer
+                                {...props}
+                                selectedCategoryName={selectedCategoryName}
+                                onCategoryClick={handleCategoryClick}
                             />
                         )}
                         isAnimationActive={true}
