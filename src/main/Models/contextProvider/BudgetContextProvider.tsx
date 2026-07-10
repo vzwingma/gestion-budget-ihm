@@ -1,4 +1,4 @@
-import React, {JSX, useMemo, useState} from "react";
+import React, {JSX, useContext, useMemo, useState} from "react";
 import BudgetMensuelModel from "../budgets/BudgetMensuel.model.ts";
 import OperationModel from "../budgets/Operation.model.ts";
 import CompteBancaireModel from "../budgets/CompteBancaire.model.ts";
@@ -28,6 +28,17 @@ type BudgetContextType = {
 
 
 export const BudgetContext = React.createContext<BudgetContextType | null>(null);
+
+/**
+ * Accès typé (non nul) au contexte budget. Lève si utilisé hors provider.
+ */
+export function useBudgetContext(): BudgetContextType {
+    const context = useContext(BudgetContext);
+    if (context === null) {
+        throw new Error("useBudgetContext doit être utilisé dans un BudgetContextProvider");
+    }
+    return context;
+}
 
 /**
  * Budget context provider

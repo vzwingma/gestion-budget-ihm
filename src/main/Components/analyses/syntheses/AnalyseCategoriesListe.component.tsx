@@ -230,7 +230,7 @@ const AnalyseCategoriesListe: React.FC<AnalyseCategoriesListeProps> = ({
                                                             height: 16,
                                                             borderRadius: '50%',
                                                             backgroundColor: getCategoryTypeColor(analyseSubCat.ssCategorie.type)
-                                                        }} title={analyseSubCat.ssCategorie.type} />
+                                                        }} title={analyseSubCat.ssCategorie.type ?? undefined} />
                                                     </CenterComponent>
                                                 </TableCell>
                                                 <TableCell sx={{ paddingY: 1, paddingLeft: 4, width: COLUMN_WIDTHS.libelle }}>

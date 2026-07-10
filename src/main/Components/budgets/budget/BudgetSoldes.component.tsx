@@ -1,7 +1,7 @@
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx'
 import {Stack, Tooltip, Typography, useMediaQuery, useTheme, Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import React, {JSX, useContext} from "react";
-import {BudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
+import React, {JSX} from "react";
+import {useBudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
 import { getTypeCategorieRenderer } from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 
@@ -12,7 +12,7 @@ import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums
  */
 const BudgetSoldes: React.FC = (): JSX.Element => {
 
-    const {currentBudget} = useContext(BudgetContext);
+    const {currentBudget} = useBudgetContext();
     const budget = currentBudget;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     // définition de la date courante

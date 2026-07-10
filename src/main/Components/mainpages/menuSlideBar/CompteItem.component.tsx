@@ -42,7 +42,7 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedF
         }
         else if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {
             return <Typography variant={"subtitle1"} sx={{ width: 120, cursor: "help" }}>
-                <OperationValue valueOperation={soldes} showSign={true} id={'value' + compte.id} />
+                <OperationValue valueOperation={soldes ?? null} showSign={true} id={'value' + compte.id} />
             </Typography>
         }
         else if (selectedFunction === BUSINESS_ONGLETS.RECURRENTS) {

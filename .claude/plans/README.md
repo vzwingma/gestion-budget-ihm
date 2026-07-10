@@ -8,8 +8,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 ## 📂 Plans Actifs / En Cours
 
-| # | Plan | Statut | Agent | Phase courante |
-|---|---|---|---|---|
+_Aucun plan actif en cours actuellement._
 
 ---
 
@@ -18,6 +17,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
 | 001 | Migration CRA → Vite | ✅ Complété (validé QUA + PROD) | [`001_migration_cra_vers_vite.plan.md`](./001_migration_cra_vers_vite.plan.md) |
+| 003 | Migration dépendances TypeScript/Vite (5 majors) | ✅ Lot clos (Phase 0/3/4/5/6 faites ; Phase 1/2 reportées — TS v7/typescript-eslint v9-10 bloqués npm) | [`003_migration_dependances_ts_vite.plan.md`](./003_migration_dependances_ts_vite.plan.md) |
 
 ADR associé : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
 
@@ -95,5 +95,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-07-06
+**Dernière mise à jour :** 2026-07-10 (clôture lot plan 003)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain

@@ -1,11 +1,11 @@
-import React, {JSX, useContext} from 'react'
+import React, {JSX} from 'react'
 import {InputAdornment, TextField, Typography, useMediaQuery, useTheme} from "@mui/material"
 import {EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import OperationValue from "../../../../../../Utils/renderers/OperationValue.renderer.tsx"
 import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material'
 import {TYPES_OPERATION_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
 import {OperationDetailValeurProps} from '../../../../../Components.props.ts'
-import {BudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
 
@@ -21,11 +21,15 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
                                                                                 fillOperationForm
                                                                             }: OperationDetailValeurProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useContext(BudgetContext);
+    const { currentBudget, currentOperation } = useBudgetContext();
     const operation = currentOperation;
     const budgetActif = currentBudget;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+
+    if (!operation) {
+        return <></>;
+    }
     /**
  * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur
  * @param {Event} e - L'événement de saisie

@@ -14,10 +14,10 @@ interface TreemapNode {
 }
 
 
-export function useAnalyseTreeMapData(analyseCategoriesData: AnalyseCategoriesModel[], selectedCategory: CategorieOperationModel[] | null) {
+export function useAnalyseTreeMapData(analyseCategoriesData: AnalyseCategoriesModel[], selectedCategory: CategorieOperationModel[] | null | undefined) {
 
         if (!analyseCategoriesData || analyseCategoriesData.length === 0) {
-            return { treemapData: [], selectedCategoryName: null };
+            return { treemapData: [], selectedCategory: null };
         }
 
         const allCategories = analyseCategoriesData

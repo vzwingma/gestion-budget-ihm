@@ -80,7 +80,7 @@ gestion-budget-ihm/
 | Catégorie | Librairie / Framework | Version | Rôle |
 |---|---|---|---|
 | Framework UI | React | 19.1.1 | Rendu composants |
-| Langage | TypeScript | strict | Typage statique |
+| Langage | TypeScript | ^6.0.0 | Typage statique — « strict » fait ici référence à la rigueur générale du typage, pas à l'option compilateur `strict` (non activée explicitement dans `tsconfig.json`) |
 | Composants UI | @mui/material | 9.x | Bibliothèque UI (seule autorisée) |
 | Icônes | @mui/icons-material | 9.x | Icônes Material |
 | Routage | react-router-dom | 7.9.1 | HashRouter, navigation SPA |
@@ -91,10 +91,13 @@ gestion-budget-ihm/
 | Tests | Vitest + @testing-library/react | 16.3 | Tests unitaires + composants |
 | Jest DOM | @testing-library/jest-dom | 6.8 | Assertions DOM |
 | User events | @testing-library/user-event | 14.6 | Simulation interactions |
-| Build | Vite | 6.x | Bundler (esbuild dev, Rollup prod) |
+| Build | Vite | 8.1.4 | Bundler (esbuild dev, Rollup prod) |
+| Build | @vitejs/plugin-react | 6.0.3 | Plugin React (JSX, Fast Refresh) pour Vite |
 | CSS minify | css-minify | 2.x | Minification CSS pré-build |
 
 > ⚠️ Maintenir ce tableau à jour à chaque montée de version majeure.
+>
+> 📌 **Montée de version reportée (2026-07-10)** : `typescript` v7 et `typescript-eslint` v9/v10 **non montés** — `typescript-eslint` n'a, au moment du chantier, publié aucune release stable compatible TS7 (v9/v10 absents de npm ; TS7 fait crasher `typescript-eslint@8.63.0` avec `TypeError: Cannot read properties of undefined (reading 'Cjs')`). Repo reste sur `typescript ^6.0.0` + `typescript-eslint ^8.63.0`. À surveiller/reprendre dès publication d'une release `typescript-eslint` compatible TS7 (voir `.claude/plans/003_migration_dependances_ts_vite.plan.md`).
 
 ### Variables d'environnement
 
@@ -212,7 +215,8 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
-| v24.0-SNAPSHOT | En cours | Migration socle build CRA → Vite + Vitest + TypeScript 5.9.3 (voir [ADR 001](./adr/001-migration-cra-vers-vite.md)) |
+| v24.0-SNAPSHOT | 2026-07-10 | Montée deps : Vite 6→8.1.4, `@vitejs/plugin-react` 4→6.0.3, suppression `@babel/plugin-transform-private-property-in-object` (résidu CRA, sans usage réel). TypeScript v7 et `typescript-eslint` v9/v10 **reportés** (bloqueur npm — voir note Stack Technique ci-dessus). Voir `.claude/plans/003_migration_dependances_ts_vite.plan.md` |
+| v24.0-SNAPSHOT | En cours | Migration socle build CRA → Vite + Vitest + TypeScript ^6.0.0 (voir [ADR 001](./adr/001-migration-cra-vers-vite.md)) |
 
 ---
 

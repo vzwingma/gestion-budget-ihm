@@ -9,10 +9,10 @@ import {
     Stack,
     Tooltip
 } from '@mui/material';
-import React, { JSX, useContext, useState } from 'react';
+import React, { JSX, useState } from 'react';
 
 import { AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded } from "@mui/icons-material";
-import { BudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useBudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "../../../../Utils/AppBusinessEnums.constants.ts";
 import { getEventTargetId } from '../../../../Utils/OperationData.utils.ts';
 import { userHasPermission } from '../../../../Utils/UserData.utils.ts';
@@ -31,13 +31,15 @@ import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGr
 
 export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGroupProps> = ({ droits, onActionBudgetChange, onActionOperationCreate }: BudgetActionsButtonGroupProps): JSX.Element => {
 
-    const { currentBudget } = useContext(BudgetContext);
+    const { currentBudget } = useBudgetContext();
     const budget = currentBudget;
     const [showModale, setShowModale] = useState<boolean>(false);
     const [modaleContent, setModaleContent] = useState<{ title: string, question: string }>();
     const [actionEnCours, setActionEnCours] = useState<string>();
 
-
+    if (!budget) {
+        return <></>;
+    }
 
     /**
      * Action sur le bouton ou sur la modale
@@ -62,6 +64,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
      * @param action - The action identifier string to determine the action to be performed.
      */
     function handleAction(action: string) {
+        if (!budget) return;
         let titrePopup = "";
         let questionPopup = "";
         let affichagePopup;
@@ -99,6 +102,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
      * confirmée par l'utilisateur.
      */
     function confirmAction() {
+        if (!budget) return;
         if (actionEnCours === ACTIONS_BUDGET_ENUM.CLOSE_A_CONFIRMER) {
             callReopenCloseBudget(budget.id, !budget.actif, onActionBudgetChange);
         } else if (actionEnCours === ACTIONS_BUDGET_ENUM.REINIT_A_CONFIRMER) {

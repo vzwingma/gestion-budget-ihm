@@ -3,7 +3,7 @@ import {useAnalyseTreeMapData} from './AnalyseTreeMap.controller.ts';
 describe('AnalyseTreeMap.controller', () => {
 
     test('retourne vide sans données', () => {
-        expect(useAnalyseTreeMapData([], null)).toEqual({treemapData: [], selectedCategoryName: null});
+        expect(useAnalyseTreeMapData([], null)).toEqual({treemapData: [], selectedCategory: null});
     });
 
     test('retourne la vue globale triée par pourcentage', () => {
@@ -52,6 +52,6 @@ describe('AnalyseTreeMap.controller', () => {
 
         expect(result.treemapData).toHaveLength(2);
         expect(result.treemapData[0].name).toBe('Alpha');
-        expect(result.selectedCategory.id).toBe('c1');
+        expect(result.selectedCategory?.id).toBe('c1');
     });
 });

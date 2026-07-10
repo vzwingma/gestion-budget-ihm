@@ -45,6 +45,6 @@ describe('Budget.controller', () => {
 
         const result = populateAllCategories(categories as any);
 
-        expect(result[0].listeSSCategories[0].categorieParente).toBe(result[0]);
+        expect(result[0]?.listeSSCategories?.[0]?.categorieParente).toBe(result[0]);
     });
 });

@@ -6,6 +6,8 @@ import { AnalysesFiltreTypesCategories } from "./filtres/AnalysesFiltreTypesCate
 import { AnalysesFiltresOperation } from "./filtres/AnalysesFiltresOperation.component.tsx";
 import { AnalysesFiltreCategories } from "./filtres/AnalysesFiltreCategories.component.tsx";
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
+import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
+import { OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM } from "../../Utils/AppBusinessEnums.constants.ts";
 
 
 
@@ -18,16 +20,16 @@ import CategorieOperationModel from "../../Models/budgets/CategorieOperation.mod
  */
 const AnalysesFiltres: React.FC<AnalysesFiltresProps> = ({ isLoading, currentPeriode, selectedCompte, setPeriodeAnalyses, filters, setFilters, distinctCategories }: AnalysesFiltresProps): JSX.Element => {
 
-    const handlePeriodeChange = useCallback((periode) => {
+    const handlePeriodeChange = useCallback((periode: AnalysesPeriodeModel) => {
         setPeriodeAnalyses(periode);
     }, [setPeriodeAnalyses]);
 
 
-    const handleSelectedTypesChange = useCallback((selectedTypes) => {
+    const handleSelectedTypesChange = useCallback((selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[]) => {
         setFilters(prev => ({ ...prev, selectedTypes }));
     }, [setFilters]);
 
-    const handleOperationFiltersChange = useCallback((etats, types) => {
+    const handleOperationFiltersChange = useCallback((etats: OPERATION_ETATS_ENUM[], types: TYPES_OPERATION_ENUM[]) => {
         setFilters(prev => ({ ...prev, selectedOperationEtats: etats, selectedOperationTypes: types }));
     }, [setFilters]);
 
