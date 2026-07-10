@@ -23,10 +23,8 @@ export default defineConfig({
         },
         // Node 22+ exposes an experimental global `localStorage`/`sessionStorage` which shadows
         // jsdom's own implementation (missing `.clear()` etc). Disable it so jsdom's Storage wins.
-        poolOptions: {
-            forks: {
-                execArgv: ['--no-experimental-webstorage'],
-            },
-        },
+        // Vitest 4 removed the nested `poolOptions.forks.*` shape: pool-specific options are now
+        // top-level (see https://vitest.dev/guide/migration#pool-rework).
+        execArgv: ['--no-experimental-webstorage'],
     },
 });
