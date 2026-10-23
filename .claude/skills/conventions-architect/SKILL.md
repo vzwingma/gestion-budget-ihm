@@ -1,29 +1,33 @@
 ---
 name: conventions-architect
-description: "Conventions architecturales du projet [NOM_DU_PROJET] pour 🟠 ARCos : couches, état, accès réseau, routage, bibliothèques autorisées, intégrations externes. Prioritaire sur le générique."
+description: "Conventions architecturales du projet gestion-budget-ihm pour 🟠 ARCos : couches, état, accès réseau, routage, bibliothèques autorisées, intégrations externes. Prioritaire sur le générique."
 user-invocable: false
 ---
 
-# Conventions projet — [NOM_DU_PROJET] (architecture)
+# Conventions projet — gestion-budget-ihm (architecture)
 
-> **Template** — placeholders `[...]` à remplir via skill `init-harness`. Tant qu'un placeholder subsiste,
-> appliquer le comportement générique de l'agent pour la valeur concernée.
-> Projet : `[NOM_DU_PROJET]` — [DESCRIPTION_COURTE_DU_PROJET].
+> Projet : `gestion-budget-ihm` — frontend React 19 / TypeScript / Vite de l'application de gestion de budget
+> personnel (comptes, budgets mensuels, opérations, analyses). Backend : `gestion-budget-serverless`.
 
 ## Document d'architecture
 
-Lire `docs/ARCHITECTURE.md` (si présent) : stack, couches, composants clés. Toute proposition doit rester
-cohérente avec l'existant. Absent → le signaler et suggérer à 🟣 DOCly de le créer en fin d'initiative.
+Lire `docs/ARCHITECTURE.md` : stack, couches, composants clés (source de vérité des versions). Toute
+proposition doit rester cohérente avec l'existant et les ADR de `docs/adr/`.
 
 ## Conventions architecturales
 
-- **Couches** : `[COUCHE_PRÉSENTATION]` → `[COUCHE_MÉTIER]` → `[COUCHE_ACCÈS_DONNÉES]` → `[COUCHE_UTILITAIRES]`.
-- **État partagé** : uniquement via `[MÉCANISME_ÉTAT_PARTAGÉ]` ; pas de nouveau conteneur d'état global
-  sans décision explicite.
-- **Accès réseau / données** : toujours via `[SERVICE_ACCÈS]` ; pas d'appel direct depuis la présentation.
-- **Routage / points d'entrée** : `[STRATÉGIE_ROUTAGE]`, déclarés dans `[FICHIER_ROUTES]`.
-- **Bibliothèques autorisées** : `[BIBLIOTHÈQUES_AUTORISÉES]` ; toute nouvelle dépendance structurante =
-  décision d'architecture (ADR).
+- **Couches** : `src/main/Components/` (UI) → `src/main/Models/contextProvider/` (état global) →
+  `src/main/Services/` (HTTP + auth) → `src/main/Utils/` (constantes, enums, helpers).
+- **État partagé** : uniquement via `BudgetContextProvider.tsx` (React Context) ; pas de nouveau Context ni de
+  state manager externe (Redux, Zustand…) sans décision explicite (ADR).
+- **Accès réseau / données** : toujours via `call()` de `src/main/Services/ClientHTTP.service.ts` (headers
+  `X-Api-Key` + `Authorization: Bearer`), appelé depuis les `*.extservices.ts` de chaque feature ; chemins dans
+  `SERVICES_URL` (`AppTechEnums.constants.ts`) ; pas de `fetch` direct depuis un composant.
+- **Routage / points d'entrée** : `HashRouter` (`react-router-dom` 7), routes déclarées dans `src/main/Main.tsx`.
+- **Bibliothèques autorisées** : React 19, Material-UI 9 (`@mui/material`, `@mui/icons-material`, seule lib UI),
+  `react-router-dom` 7, `react-oidc-context` 3 (auth Google OIDC), Recharts 3 (graphiques), `react-toastify`
+  (notifications), `uuid`. Toute nouvelle dépendance structurante = décision d'architecture (ADR).
+  Mises à jour de dépendances pilotées par Renovate (`renovate.json`).
 
 ## Décisions d'architecture (ADR)
 
@@ -33,9 +37,13 @@ cohérente avec l'existant. Absent → le signaler et suggérer à 🟣 DOCly de
 
 ## Intégrations externes
 
-- [SYSTÈME_EXTERNE, ex. API back-end, service tiers] : contrat (URL, paramètres, codes retour) défini avec
-  [RESPONSABLE_CONTRAT].
-- Configuration des URLs / clés : `[FICHIER_CONFIGURATION]` et variables d'environnement `[FICHIERS_ENV]`.
+- **API backend `gestion-budget-serverless`** (microservices Quarkus sur AWS Lambda, via AWS API Gateway) :
+  contrat (URL, paramètres, codes retour, rôles) défini en coordination avec l'architecte backend ; toute
+  évolution de modèle → vérifier côté backend.
+- **Google OIDC** via `react-oidc-context` ; jeton stocké/récupéré par `Auth.service.ts`.
+- Configuration des URLs / clés : `src/main/Utils/AppTechEnums.constants.ts` et variables `VITE_*` des fichiers
+  `external-ressources/conf/.env.{dev,staging,production}` (copiés en `.env` racine par la CI).
+- Hébergement : statique S3 + CloudFront (CI GitHub Actions, `.github/workflows/`).
 
 ## Handoff vers ⚫ MAINa
 

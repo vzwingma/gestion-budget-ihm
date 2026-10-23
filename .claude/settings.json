@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Bash(rm *)",
+      "Bash(rmdir *)",
+      "Bash(git clean *)",
+      "Bash(git reset --hard *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git branch -D *)",
+      "Bash(git stash drop *)",
+      "Bash(git stash clear *)",
+      "Bash(git checkout -- *)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(git clean *)",
+      "PowerShell(git reset --hard *)",
+      "PowerShell(git push --force *)",
+      "PowerShell(git push -f *)",
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.*.local)",
+      "Edit(./.env)",
+      "Edit(./.env.local)",
+      "Edit(./.env.*.local)",
+      "Read(./.env.dev)",
+      "Read(./.env.qua)",
+      "Read(./.env.prod)",
+      "Read(./.env.oidc)",
+      "Read(./external-ressources/conf/.env.oidc)",
+      "Edit(./.env.oidc)",
+      "Edit(./external-ressources/conf/.env.oidc)"
+    ],
+    "ask": [
+      "Bash(git rm *)",
+      "PowerShell(git rm *)"
+    ]
+  }
+}

@@ -1,14 +1,13 @@
 ---
 name: conventions-doc
-description: "Conventions documentaires du projet [NOM_DU_PROJET] pour 🟣 DOCly : fichiers sous sa responsabilité, langue, ADR, changelog, diagrammes. Prioritaire sur le générique."
+description: "Conventions documentaires du projet gestion-budget-ihm pour 🟣 DOCly : fichiers sous sa responsabilité, langue, ADR, changelog, diagrammes. Prioritaire sur le générique."
 user-invocable: false
 ---
 
-# Conventions projet — [NOM_DU_PROJET] (documentation)
+# Conventions projet — gestion-budget-ihm (documentation)
 
-> **Template** — placeholders `[...]` à remplir via skill `init-harness`. Tant qu'un placeholder subsiste,
-> appliquer le comportement générique de l'agent pour la valeur concernée.
-> Projet : `[NOM_DU_PROJET]` — [DESCRIPTION_COURTE_DU_PROJET].
+> Projet : `gestion-budget-ihm` — frontend React 19 / TypeScript / Vite de l'application de gestion de budget
+> personnel (comptes, budgets mensuels, opérations, analyses). Backend : `gestion-budget-serverless`.
 
 ## Fichiers sous la responsabilité de DOCly
 
@@ -17,11 +16,15 @@ user-invocable: false
 - `.claude/CLAUDE.md` — contexte des futures sessions (sections projet uniquement)
 
 ### `docs/`
-- `docs/ARCHITECTURE.md` (**obligatoire**) — stack, structure, couches, flux de données
-- `docs/adr/` — ADR rédigés sur contenu 🟠 ARCos (skill `adr-writing`)
-- `[FICHIER_CHANGELOG]` — nouvelle version ajoutée **en tête**
-- `[AUTRES_DOCS, ex. déploiement, exploitation]`
-- `[DIAGRAMMES, ex. docs/diagrams/*.puml]` — versions des frameworks à maintenir : [LISTE_VERSIONS]
+- `docs/ARCHITECTURE.md` (**obligatoire**, déjà présent) — stack, structure, couches, flux de données ;
+  **source de vérité des versions** de stack
+- `docs/adr/` — ADR rédigés sur contenu 🟠 ARCos (skill `adr-writing`, modèle `docs/adr/ADR-TEMPLATE.md`)
+
+### Wiki `gestion-budget-ihm.wiki/` (dépôt séparé, `C:\Users\vzwingma\IdeaProjects\gestion-budget-ihm.wiki\`)
+- `Home.md`, `ConceptionIHM.md` (architecture React), `Opérations-sur-AWS.md` (déploiement S3/CloudFront)
+- `Historique-de-l'Architecture.md` — changelog : nouvelle version ajoutée **en tête**
+- `schemas/*.puml` — diagrammes C4 (C2/C3) PlantUML, partagés avec le wiki serverless ; versions à maintenir :
+  React (**19.1**), Quarkus (**3.35**) — référence = `docs/ARCHITECTURE.md`
 
 ### `.claude/skills/` (procédures partagées)
 Mettre à jour si les procédures changent (cohérence avec `.claude/PLANS.md`) :
@@ -29,13 +32,17 @@ Mettre à jour si les procédures changent (cohérence avec `.claude/PLANS.md`) 
 
 ## Conventions
 
-- **Langue** : [LANGUE_DOC, ex. français] pour le texte, anglais pour les blocs de code.
+- **Langue** : français pour le texte, anglais pour les blocs de code.
 - **`docs/ARCHITECTURE.md` obligatoire** dans tout projet.
 - **ADR** : un fichier `docs/adr/NNN-titre.md` par décision majeure.
 - **Index des plans** `.claude/plans/README.md` : plans + statut global uniquement.
-- [CONVENTION_PROJET_SUPPLÉMENTAIRE, ex. terminologie imposée]
+- **Terminologie** : ne jamais mentionner l'ancien nom de dépôt `gestion-budget-services` → `gestion-budget-serverless`.
+- **Cohérence wiki + C4** (dès qu'un changement touche l'archi IHM, un flux API consommé ou un diagramme partagé) :
+  versions alignées entre `README.md`, `docs/ARCHITECTURE.md`, wiki IHM et `schemas/*.puml` ; endpoints
+  (méthode + chemin + rôle) alignés avec `gestion-budget-serverless.wiki/Conception-globale.md` (source de vérité
+  côté serverless : `*APIEnum` + annotations JAX-RS / `@RolesAllowed`) ; aucun lien C4 cassé avant clôture.
 
 ## Ce que DOCly ne fait PAS
 
-- Modifier le code source ou les tests.
+- Modifier le code source (`*.ts`, `*.tsx`) ou les tests.
 - Prendre des décisions d'architecture (rôle 🟠 ARCos).

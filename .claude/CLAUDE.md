@@ -84,14 +84,12 @@ de chargement.
 
 ## 📐 Conventions par rôle
 
-Conventions détaillées projet (stack, commandes, nommage, tests, doc) : **`.claude/instructions/<rôle>.instructions.md`**
-(`orchestrator`, `architect`, `dev`, `qa`, `doc`) — remplis pour `gestion-budget-ihm`, **source de vérité actuelle**.
+Conventions détaillées projet (stack, commandes, nommage, tests, doc) : skills **`conventions-<rôle>`**
+(`.claude/skills/conventions-{orchestrator,architect,dev,qa,doc}/SKILL.md`), préchargés par chaque agent —
+remplis pour `gestion-budget-ihm` (`/init-harness`, 2026-10-23), **source de vérité**.
 
-<!-- claude-only -->
-Skills `conventions-<rôle>` (`.claude/skills/conventions-{orchestrator,architect,dev,qa,doc}/SKILL.md`), préchargés
-par chaque agent, encore à l'état **template** (placeholders `[...]`) → à remplir via `/init-harness` à partir des
-fichiers `instructions/`. Tant que placeholder subsiste : appliquer `instructions/<rôle>.instructions.md`.
-<!-- /claude-only -->
+Anciens fichiers `.claude/instructions/<rôle>.instructions.md` : repris dans les skills (ancien format, retrait
+possible sur décision 👤). En cas d'écart, les skills `conventions-<rôle>` priment.
 
 Ce fichier ne garde que le contexte global.
 
@@ -222,8 +220,8 @@ En cas de doute → demander confirmation au 👤 Développeur humain. Opératio
 - `.claude/settings.json` → `permissions.deny` (commandes destructives Bash/PowerShell, fichiers sensibles, chemins `.copilotignore` en `Read()`/`Edit()`) ; `ask` pour `git rm`.
 - Hook `PreToolUse` `.claude/hooks/guard.sh` → bloque les formes que les règles ne voient pas (`sh -c "rm …"`, `/bin/rm`, `git -C . reset --hard`, SQL), les écritures dans `.copilotignore`, et les **frontières de rôle** (`.claude/hooks/role-boundaries.conf`).
 
-> ⚠️ État actuel : `.claude/hooks/` présent mais **`.claude/settings.json` absent** (seul `settings.local.json`, MCP sonarqube)
-> → deny + hook non câblés tant que `settings.json` non créé (`/init-harness`).
+> État : `.claude/settings.json` créé (`/init-harness`, 2026-10-23) — deny (commandes destructives + fichiers
+> `.env*` sensibles, dont `external-ressources/conf/.env.oidc`) + hook `guard.sh` câblés. Pas de `.copilotignore` à date.
 <!-- /claude-only -->
 
 ---

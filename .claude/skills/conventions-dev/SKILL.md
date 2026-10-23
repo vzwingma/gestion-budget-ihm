@@ -1,52 +1,58 @@
 ---
 name: conventions-dev
-description: "Conventions de développement du projet [NOM_DU_PROJET] pour 🔵 DEVon : stack et versions, structure, conventions de code, accès réseau, modèles, commandes de vérification. Prioritaire sur le générique."
+description: "Conventions de développement du projet gestion-budget-ihm pour 🔵 DEVon : stack et versions, structure, conventions de code, accès réseau, modèles, commandes de vérification. Prioritaire sur le générique."
 user-invocable: false
 ---
 
-# Conventions projet — [NOM_DU_PROJET] (développement)
+# Conventions projet — gestion-budget-ihm (développement)
 
-> **Template** — placeholders `[...]` à remplir via skill `init-harness`. Tant qu'un placeholder subsiste,
-> appliquer le comportement générique de l'agent pour la valeur concernée.
-> Projet : `[NOM_DU_PROJET]` — [DESCRIPTION_COURTE_DU_PROJET].
+> Projet : `gestion-budget-ihm` — frontend React 19 / TypeScript / Vite de l'application de gestion de budget
+> personnel (comptes, budgets mensuels, opérations, analyses). Backend : `gestion-budget-serverless`.
 
 ## Stack technique
 
-- **[LANGAGE] [VERSION]** — [PARADIGME, ex. typage strict]
-- **[FRAMEWORK_PRINCIPAL] [VERSION]** — [CONSIGNE, ex. composants fonctionnels uniquement]
-- **[BIBLIOTHÈQUE_UI] [VERSION]** — seule bibliothèque UI autorisée (si applicable)
-- **[BIBLIOTHÈQUE_AUTH] [VERSION]** — [CONSIGNE_AUTH, ex. ne jamais manipuler les jetons directement]
+- **TypeScript 6** — `tsconfig.json` sans `strict` activé : typer explicitement props et retours ; `npm run typecheck` (`tsc --noEmit`)
+- **React 19.1** + **Vite 8** — composants fonctionnels uniquement
+- **Material-UI 9** (`@mui/material`) — seule bibliothèque UI autorisée
+- **react-oidc-context 3** — ne jamais manipuler les jetons OAuth directement (passer par `Auth.service.ts`)
+- **React Router 7** (`HashRouter`, routes dans `src/main/Main.tsx`) ; **Recharts 3** pour les graphiques
+- Node : version épinglée dans `.nvmrc` (`nvm use`)
 
 ## Commandes de vérification (preuves avant handoff)
 
 ```bash
-[COMMANDE_BUILD]   # build / compilation
-[COMMANDE_LINT]    # lint / format
-[COMMANDE_TEST]    # tests existants (non-régression)
+npm run build       # minify CSS + vite build (dist/)
+npm run lint        # eslint src/**/*.ts src/**/*.tsx
+npm run typecheck   # tsc --noEmit
+npx vitest run      # tests existants (non-régression)
 ```
 
 ## Structure et nommage
 
-- Code source : `[DOSSIER_SOURCE]` ; organisation : [ORGANISATION, ex. par fonctionnalité, par couche]
-- Nommage fichiers : `[CONVENTION_NOMMAGE_FICHIERS]` ; identifiants : `[CONVENTION_NOMMAGE_CODE]`
+- Code source : `src/main/` ; organisation par couche (`Components/`, `Models/`, `Services/`, `Utils/`) puis par
+  domaine (`analyses/`, `budgets/`, `infos/`, `mainpages/`…), sous-composants dans `subcomponents/`, boutons
+  d'action dans `actions/`.
+- Nommage fichiers : `PascalCase.component.tsx` (composants), `*.extservices.ts` (appels backend d'une feature),
+  `*.controller.ts` (logique de page), `*.service.ts`, `*.utils.ts`, `*.constants.ts`, `*.props.ts` ; identifiants : `PascalCase` composants/classes, `camelCase` fonctions/variables,
+  `UPPER_SNAKE_CASE` enums de constantes.
 
 ## Conventions de code
 
-- [CONVENTION_COMPOSANTS_OU_MODULES]
-- Gestion d'erreurs : [PATTERN_ERREURS]
-- Accès réseau / données : toujours via `[SERVICE_ACCÈS]` ([EXEMPLE_APPEL])
-- Modèles / types de données : `[DOSSIER_MODÈLES]`
-- Constantes techniques : `[FICHIER_CONSTANTES]` ; énumérations métier : `[FICHIER_ENUMS]`
-- Jamais d'URL, clé ou secret en dur dans le code.
-
-<!-- Exemple illustratif (à remplacer par le code réel du projet) :
-```typescript
-export const MonComposant = ({ prop1 }: MonComposantProps): JSX.Element => { ... };
-```
--->
+- Composants fonctionnels typés `React.FC<Props>` ; interfaces de props dans `src/main/Components/Components.props.ts`.
+- `useMemo` pour calculs dérivés coûteux, `useCallback` pour handlers passés en props ; responsive via
+  `useMediaQuery(useTheme().breakpoints.down('lg'))`.
+- Gestion d'erreurs : `ClientHTTP.service.ts` lève une `Error` sur statut non 2xx (403 → `logOut()`) ; les
+  `*.extservices.ts` traitent la promesse rejetée (`.catch`) et notifient via `toast.error(...)` (`react-toastify`).
+- Accès réseau / données : toujours via `call()` de `src/main/Services/ClientHTTP.service.ts`, depuis un
+  `*.extservices.ts` (`call(METHODE_HTTP.GET, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.ETAT, [idBudget, 'true'])`
+  — `{{}}` dans le chemin = paramètre positionnel ; URLs dans `SERVICES_URL`).
+- Modèles / types de données : `src/main/Models/` ; état global via `useContext(BudgetContext)`.
+- Constantes techniques : `src/main/Utils/AppTechEnums.constants.ts` ; énumérations métier :
+  `src/main/Utils/AppBusinessEnums.constants.ts`.
+- Jamais d'URL, clé ou secret en dur dans le code (variables `VITE_*`).
 
 ## Ce que DEVon ne fait PAS
 
-- Modifier les fichiers de test `[MOTIF_FICHIERS_TEST]` (rôle 🟢 QALvin).
+- Modifier les fichiers de test `*.test.ts`, `*.test.tsx` ni `src/setupTests.ts` (rôle 🟢 QALvin).
 - Mettre à jour `README.md`, `docs/` ou les instructions d'agents (rôle 🟣 DOCly).
 - Introduire une dépendance ou un pattern structurant sans tâche 🟠 ARCos dans le Plan d'Action.
