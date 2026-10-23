@@ -1,12 +1,12 @@
 ---
-name: "adr-writing"
-description: "Skill — Procédure de rédaction d'un Architecture Decision Record (ADR) après accord ARCos + humain. Appliqué automatiquement."
-applyTo: "**"
+name: adr-writing
+description: "Procédure de rédaction d'un Architecture Decision Record (ADR) dans docs/adr/ après une décision validée par 👤 : 🟠 ARCos prépare le contenu, 🟣 DOCly écrit le fichier. Préchargée par ARCos et DOCly."
+user-invocable: false
 ---
 
 # Skill : Rédaction d'un Architecture Decision Record (ADR)
 
-> Procédure std: créer ADR après décision archi validée 🟠 ARCos + 👤 Dev humain.
+> Skill décrit procédure standard créer ADR après décision archi validée 🟠 ARCos + 👤 Développeur humain.
 > **Qui fait quoi :** ARCos prépare contenu, 🟣 DOCly écrit fichier.
 > Template : `docs/adr/ADR-TEMPLATE.md`
 
@@ -14,15 +14,16 @@ applyTo: "**"
 
 ## Quand créer un ADR
 
-ADR **doit** être créé juste après validation solution par 👤 Dev humain (étape 3 méthodo ARCos), pour décisions qui :
+ADR **doit** être rédigé entre **Gate #0** (solution choisie par 👤) et **Gate #1** (validation du plan), dans le
+même lot que le Plan d'Action, pour décisions qui :
 
-- Introduisent **nouvelle techno/lib** dans projet
+- Introduisent **nouvelle techno ou lib** dans projet
 - Définissent **nouveau pattern archi** (couche, service, état global, routing…)
 - Modifient **convention existante** structurellement
 - Impliquent **choix sécurité** ou conformité
-- Résultent d'une **comparaison explicite solutions** (analyse déjà faite par ARCos)
+- Résultent d'une **comparaison explicite de solutions** (analyse déjà produite par ARCos)
 
-> 💡 Décision triviale/locale (ex : renommer variable, ajouter champ) → **pas d'ADR**.
+> 💡 Décision triviale ou locale (ex : renommer variable, ajouter champ) → **pas d'ADR**.
 
 ---
 
@@ -46,20 +47,20 @@ Trouver prochain numéro : lister fichiers `docs/adr/`, prendre suivant.
 | 🟠 **ARCos** | Prépare contenu ADR : contexte, décision, alternatives (depuis analyse comparative), conséquences, mise en œuvre |
 | 🟣 **DOCly** | Rédige fichier ADR dans `docs/adr/` depuis contenu fourni par ARCos |
 
-**ARCos crée jamais fichier ADR lui-même.** Produit contenu structuré, délègue à DOCly.
+**ARCos ne crée jamais le fichier ADR lui-même.** Produit contenu structuré, délègue à DOCly.
 
 ---
 
 ## Procédure ARCos — Préparer le contenu de l'ADR
 
-Après décision humaine, ARCos produit bloc délégation DOCly, structuré ainsi :
+Après décision humaine, ARCos produit bloc de délégation à DOCly structuré ainsi :
 
 ```markdown
 ## 📋 Contenu ADR à rédiger
 
 **Fichier cible :** `docs/adr/NNN-titre-court.md`
 **Date :** [AAAA-MM-JJ]
-**Statut :** Acceptée
+**Statut :** Proposée
 
 ### Contexte
 [Reprendre le problème posé au départ : situation actuelle, contraintes,
@@ -91,8 +92,21 @@ Nous avons décidé de [DÉCISION RETENUE, en une phrase directe].
 - Date d'effet : [ex: à partir de la Phase N du plan]
 
 ### Références
-- Plan d'Action associé : `.claude/plans/NNN_nom.plan.md` (si applicable)
+- Plan d'Action associé : `docs/plans/NNN_nom.plan.md` (si applicable)
 ```
+
+---
+
+## Cycle de vie du statut
+
+| Moment | Statut | Qui |
+|---|---|---|
+| Rédaction (entre Gate #0 et Gate #1) | `Proposée` | 🟣 DOCly, sur contenu 🟠 ARCos |
+| Gate #1 `GO` | `Acceptée` | ⚫ MAINa |
+| Gate `STOP` | `Rejetée` | ⚫ MAINa |
+| Décision remplacée plus tard | `Remplacée par ADR-NNN` | 🟣 DOCly |
+
+Exception d'ordre assumée : DOCly intervient **avant Gate #3** uniquement pour rédiger l'ADR.
 
 ---
 
@@ -115,7 +129,7 @@ Quand ARCos délègue rédaction ADR :
 - [ ] Au moins **2 alternatives** documentées avec raison rejet
 - [ ] Conséquences incluent **points négatifs** (pas seulement positifs)
 - [ ] Mise en œuvre liste **fichiers et tâches de suivi** concrètes
-- [ ] Statut est `Acceptée` (jamais vide ou `Proposée` sauf exception)
+- [ ] Statut `Proposée` à la rédaction, `Acceptée` après Gate #1 (jamais vide)
 - [ ] Numéro séquentiel et nom kebab-case
 
 ---

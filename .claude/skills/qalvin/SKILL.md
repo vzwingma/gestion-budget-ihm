@@ -1,18 +1,18 @@
 ---
-name: "qalvin"
-description: "Skill — Activates QALvin agent (QA/tests) on user prompt. Triggered by `/qalvin`, `/QALvin`, `/QALvin : [prompt]`."
-applyTo: "**"
+name: qalvin
+description: "Lance 🟢 QALvin (QA / tests) en sous-agent sur la demande passée en argument. Usage : /qalvin <composant, service ou phase à tester>."
+argument-hint: "<composant, service ou phase à tester>"
+disable-model-invocation: true
+context: fork
+agent: QALvin
+background: false
 ---
 
-# Skill : Activation QALvin
+Demande transmise par 👤 via `/qalvin` :
 
-Triggered by `/qalvin`, `/QALvin` ou `/QALvin : [prompt]`.
+$ARGUMENTS
 
-## Action
-
-1. Extract `[prompt]`: text after `:` (or after skill name if no `:`). Empty → ask which component/service to test.
-2. Invoke agent **QALvin** (Agent tool, `subagent_type: "QALvin"`) with prompt as-is.
-3. Don't write tests yourself — QALvin covers nominal + errors + edges, target ≥80% coverage.
-4. Relay results (tests, coverage, failures) to user.
-
-Full role ref: [`.claude/agents/Qalvin.agent.md`](../../agents/Qalvin.agent.md)
+- Ignorer un éventuel `:` initial dans la demande.
+- Demande vide → répondre uniquement : « Quel composant, service ou phase tester ? »
+- Attendu : couvrir nominal + erreurs + limites, exécuter les tests, livrer résultats + couverture.
+- Questions ou blocages → section finale `❓ Questions pour 👤`.

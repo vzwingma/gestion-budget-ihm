@@ -1,14 +1,49 @@
 # 🤖 Agents Claude — Architecture Multi-Agents
 
-Système orchestré 5 agents spécialisés, structure dev via Claude Code.
+Système orchestré de 5 agents spécialisés pour structurer développement via Claude Code.
+
+<!-- claude-only -->
+## ⚙️ Configuration (frontmatter)
+
+| Agent | Modèle | Outils | Skills préchargés |
+|---|---|---|---|
+| ⚫ MAINa | `opus` | AskUserQuestion, Agent, SendMessage, Read, Grep, Glob, Edit, Write, Bash, TodoWrite, Skill | `conventions-orchestrator`, `plan-creation`, `gate-protocol` |
+| 🟠 ARCos | `opus` (`effort: high`) | Read, Grep, Glob, WebFetch, WebSearch, Skill — **lecture seule** | `conventions-architect`, `adr-writing`, `plan-phase-execution` |
+| 🔵 DEVon | `sonnet` | Read, Edit, Write, Bash, Grep, Glob, TodoWrite, Skill | `conventions-dev`, `plan-phase-execution` |
+| 🟢 QALvin | `sonnet` | Read, Edit, Write, Bash, Grep, Glob, TodoWrite, Skill | `conventions-qa`, `plan-phase-execution` |
+| 🟣 DOCly | `sonnet` | Read, Edit, Write, Grep, Glob, Skill | `conventions-doc`, `plan-phase-execution`, `adr-writing` |
+
+Sous-agents (ARCos, DEVon, QALvin, DOCly) : pas d'accès direct au 👤 → questions remontées dans une section `❓ Questions pour 👤`, relayées par MAINa au gate.
+
+**Frontières de rôle appliquées** par le hook `.claude/hooks/guard.sh` (config `role-boundaries.conf`) : DEVon n'écrit ni tests ni docs, QALvin n'écrit que des tests et rapports, DOCly que de la documentation, MAINa que les plans et le statut des ADR ; ARCos est en lecture seule par ses outils.
+<!-- /claude-only -->
+<!-- copilot-only
+## ⚙️ Configuration
+
+Modèle, outils et sous-agents autorisés : voir le frontmatter de chaque `*.agent.md`.
+
+### Périmètre vérifié
+
+Cette projection vise uniquement GitHub Copilot CLI. Versions observées : `1.0.99-0`, puis `1.0.99-1`.
+VS Code et cloud agent sont hors périmètre ; aucune affirmation de support ou de parité ne s'applique à ces
+surfaces.
+
+Les cinq profils sont générés depuis `.claude/`. Les outils sont dérivés par
+`scripts/copilot-mapping.psd1` ; ARCos reçoit `[read, search, web]`. Les alias source sont `opus` →
+`claude-opus-5.5` et `sonnet` → `claude-sonnet-5.5`. Le champ `agents` de MAINa est informatif et non vérifié.
+
+La CLI lit `.github/skills/` et `.claude/skills/` ; `.github/` gagne à nom identique. Le chargement est fait
+selon pertinence, non de façon déterministe : chaque profil porte une consigne explicite de chargement.
+Les conventions sont projetées en `.github/instructions/<rôle>.instructions.template.md`.
+-->
 
 ## 🎯 Agents
 
 ### ⚫ [MAINa](./Maina.agent.md) — Maître Orchestrateur
 
-**Quand** : Point d'entrée tout travail complexe
+**Quand** : Point d'entrée pour tout travail complexe
 
-Rôle : Comprend besoin, crée Plan d'Action, orchestre workflow strict, impose validations humaines entre phases.
+Rôle : Comprendre besoin, créer le Plan d'Action, orchestrer workflow strict, imposer validations humaines entre phases.
 
 **Workflow strict** :
 1. Intake → Clarifier besoin
@@ -29,20 +64,20 @@ Rôle : Comprend besoin, crée Plan d'Action, orchestre workflow strict, impose 
 
 **Quand** : "Conçois une architecture pour", "Analyse les options pour"
 
-Rôle : Analyse solutions, conception, décisions archi. **MAINa** crée Plan d'Action.
+Rôle : Analyse de solutions, conception, décisions architecturales. **MAINa** crée le Plan d'Action.
 
 **Responsabilités** :
-- Pose clarifications nécessaires
-- Présente ≥2 solutions alternatives + comparaison
-- Fournit reco motivée à MAINa
-- Conçoit solution retenue + prépare contenu ADR
-- Fournit découpage candidat comme entrée au Plan d'Action de MAINa
+- Poser clarifications nécessaires
+- Présenter ≥2 solutions alternatives + comparaison
+- Fournir une recommandation motivée à MAINa
+- Concevoir solution retenue + préparer contenu ADR
+- Fournir le découpage candidat comme entrée au Plan d'Action de MAINa
 
 **Points clés** :
-- ✅ Pas coder — réfléchir stratégiquement
-- ✅ Propose options, choix reste au développeur
-- ✅ Specs claires pour MAINa + agents aval
-- ❌ Pas créer Plan d'Action (rôle MAINa)
+- ✅ Pas coder — Réfléchir stratégiquement
+- ✅ Proposer options, laisser choix au développeur
+- ✅ Specs claires pour MAINa et agents en aval
+- ❌ Pas créer le Plan d'Action (rôle MAINa)
 - ❌ Pas présupposer détails implémentation
 
 ---
@@ -54,16 +89,16 @@ Rôle : Analyse solutions, conception, décisions archi. **MAINa** crée Plan d'
 Rôle : Implémentation code production.
 
 **Responsabilités** :
-- Traduit exigences en code qualité production
-- Respecte patterns archi + conventions projet
-- Assure code propre, testé, maintenable
-- Identifie + gère cas limites
+- Traduire exigences en code qualité production
+- Respecter patterns architecturaux + conventions projet
+- Assurer code propre, testé, maintenable
+- Identifier et gérer cas limites
 
 **Points clés** :
-- ✅ Implémente exactement ce qui demandé, pas plus
-- ✅ Étudie patterns existants
+- ✅ Implémenter exactement ce qui demandé, pas plus
+- ✅ Étudier patterns existants
 - ✅ Code compile, s'exécute, s'intègre correctement
-- ❌ Pas dérive périmètre
+- ❌ Pas de dérive périmètre
 - ❌ Pas concevoir architecture
 - ❌ Pas écrire tests
 
@@ -76,10 +111,10 @@ Rôle : Implémentation code production.
 Rôle : Tests unitaires, couverture qualité.
 
 **Responsabilités** :
-- Écrit tests unitaires complets (composants, services)
-- Exécute + vérifie passage, couverture ≥80%
-- Identifie cas limites, erreurs, scénarios frontières
-- Mocke dépendances externes
+- Écrire tests unitaires complets (composants, services)
+- Exécuter + vérifier passage avec couverture ≥80%
+- Identifier cas limites, conditions erreur, scénarios frontières
+- Mocker dépendances externes
 
 **Points clés** :
 - ✅ Minimum 80% couverture code
@@ -97,17 +132,17 @@ Rôle : Tests unitaires, couverture qualité.
 Rôle : Documentation après code + tests validés.
 
 **Responsabilités** :
-- Met à jour README.md, `docs/ARCHITECTURE.md`
-- Crée/maintient ADRs dans `docs/adr/`
-- Assure cohérence terminologie, structure, qualité
-- Identifie + corrige infos obsolètes
+- Mettre à jour README.md, `docs/ARCHITECTURE.md`
+- Créer/maintenir ADRs dans `docs/adr/`
+- Assurer cohérence terminologie, structure, qualité
+- Identifier + corriger infos obsolètes
 
 **Hiérarchie priorité** :
 1. README.md (plus visible)
 2. `docs/ARCHITECTURE.md` (**obligatoire**)
 3. `docs/adr/` (décisions archi)
 4. `docs/` guides détaillés
-5. Instructions Copilot
+5. Instructions agents
 
 **Points clés** :
 - ✅ Tous exemples code testés
@@ -138,20 +173,20 @@ Rôle : Documentation après code + tests validés.
 ✅ Clôture initiative
 ```
 
-**Validation humaine obligatoire** chaque étape avant progression.
+**Validation humaine obligatoire** à chaque étape avant progression.
 
 ---
 
 ## 🔐 Règles absolues
 
 Tous agents respectent :
-- ⛔ Jamais supprimer fichiers/répertoires
-- ⛔ Jamais commandes SQL destructives
-- ⛔ Jamais `git clean`, `git reset --hard`
-- ⛔ Jamais modifier fichiers hors périmètre
+- ⛔ Ne JAMAIS supprimer fichiers/répertoires
+- ⛔ Ne JAMAIS commandes SQL destructives
+- ⛔ Ne JAMAIS `git clean`, `git reset --hard`
+- ⛔ Ne JAMAIS modifier fichiers hors périmètre
 - ⛔ Respect ABSOLU `.copilotignore`
 
-Doute → demander confirmation développeur.
+En cas doute → demander confirmation développeur.
 
 ---
 
@@ -160,9 +195,25 @@ Doute → demander confirmation développeur.
 ```bash
 # Pour projet simple ou décision rapide
 @ARCos "Conçois architecture pour..."
-
-# Pour initiative complète
-@MAINa "Voici besoin : ..."
 ```
 
-Chaque agent lit automatiquement instructions projet au démarrage si présentes.
+<!-- claude-only -->
+```bash
+# Pour initiative complète : MAINa en agent principal (gates interactifs)
+claude --agent MAINa
+```
+<!-- /claude-only -->
+<!-- copilot-only
+```bash
+# Pour initiative complète : sélectionner l'agent MAINa dans le chat
+@MAINa "Voici besoin : ..."
+```
+-->
+
+<!-- claude-only -->
+Chaque agent Claude lit ses instructions projet au démarrage si présentes.
+<!-- /claude-only -->
+<!-- copilot-only
+Chaque profil Copilot suit les instructions projet générées et charge explicitement les skills demandées ;
+la sélection finale des skills reste déterminée par la pertinence de la CLI.
+<!-- /copilot-only -->
