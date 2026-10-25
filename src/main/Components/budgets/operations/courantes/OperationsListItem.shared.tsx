@@ -15,10 +15,6 @@ interface SharedOperationItemProps {
     operation: OperationModel;
     onClick: (operation: OperationModel) => void;
     getBorderColor: (operation: OperationModel) => string;
-    /** @deprecated couleurs désormais pilotées par CSS (`.operation-list-item*`), conservé pour compatibilité des appelants */
-    getOperationsColor?: string;
-    /** @deprecated idem : la sélection utilise le bleu accent du thème */
-    getSelectedOperationColor?: string;
     isSelected?: boolean;
     isOneSelected?: boolean;
 }
