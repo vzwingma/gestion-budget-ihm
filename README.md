@@ -84,6 +84,9 @@ Préfixe `VITE_*` (migré depuis `REACT_APP_*`, voir [ADR 001](docs/adr/001-migr
 | `VITE_CONFIG_OIDC_CLIENT_ID` | Client ID Google OAuth |
 | `VITE_CONFIG_OIDC_CLIENT_SECRET` | Secret Google OAuth |
 | `VITE_CONFIG_API_KEY` | Clé API Gateway AWS (`X-Api-Key`) |
+| `VITE_CONFIG_DEBUG` | *(optionnel)* Mode debug : si renseigné, active les logs `debug()` (voir `Utils/Debug.utils.ts`). Actif dans `.env.dev` |
+
+> Hors mode debug, seuls `console.warn` / `console.error` sont émis (règle ESLint `no-console`).
 
 ---
 

@@ -7,6 +7,7 @@ import { GraphAnalyseTimelineItemModel } from "../../../Models/analyses/synthese
 import { GraphAnalyseTimelineModel } from "../../../Models/analyses/syntheses/GraphAnalyseTimeline.model.ts";
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
 import BudgetMensuelAnalyseConsolideModel from "../../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
+import { debug } from "../../../Utils/Debug.utils.ts";
 
 /**
  * Extrait le mois et l'année d'une date d'opération
@@ -219,7 +220,7 @@ function preparePeriodViewData(budgetConsolide: BudgetMensuelAnalyseConsolideMod
             dataItem.solde = index === 0 ? (soldes.soldeAtFinMoisPrecedent ?? 0) : soldeAtFinMois;
         }
     });
-    console.log("Données préparées pour la vue périodique :", flatData);
+    debug("Données préparées pour la vue périodique :", flatData);
     return flatData;
 }
 /**

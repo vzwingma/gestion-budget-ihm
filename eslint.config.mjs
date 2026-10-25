@@ -55,6 +55,16 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
       // Stylistique (apostrophes non échappées en JSX) : absente de react-app CRA, non bloquante
       'react/no-unescaped-entities': 'warn',
+      // Interdit console.log direct (utiliser debug() de Utils/Debug.utils.ts, cf. AP 005 - T15) ;
+      // console.warn/error restent autorisés pour tracer les cas d'erreur réels.
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+    },
+  },
+  {
+    // Seul endroit autorisé à utiliser console.log : le wrapper debug() (mode VITE_CONFIG_DEBUG)
+    files: ['src/main/Utils/Debug.utils.ts'],
+    rules: {
+      'no-console': 'off',
     },
   },
   {

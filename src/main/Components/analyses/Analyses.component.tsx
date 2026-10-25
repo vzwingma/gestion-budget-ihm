@@ -17,6 +17,7 @@ import { getCategoriesDataForAnalyses } from "./syntheses/AnalyseCategoriesListe
 import AnalyseTreeMap from "./syntheses/AnalyseTreeMap.component.tsx";
 import AnalyseEvolution from "./syntheses/AnalyseEvolution.component.tsx";
 import BudgetMensuelAnalyseConsolideModel from "../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
+import { debug } from "../../Utils/Debug.utils.ts";
 
 
 /**
@@ -58,7 +59,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
 
     /** Chargement du compte et de la période **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
+        debug("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedPeriode :", formatPeriode(periodeAnalyses));
         setIsLoading(true);
         loadBudgetsPeriodes(selectedCompte, periodeAnalyses, handleDataCalculationResult);
     }, [selectedCompte, periodeAnalyses]);
@@ -69,7 +70,7 @@ export const Analyses: React.FC<AnalyseProps> = ({ selectedCompte, onOpenMenu }:
         */
 
     function handleDataCalculationResult(budgetConsolide: BudgetMensuelAnalyseConsolideModel, distinctCategories: CategorieOperationModel[]) {
-        console.log("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations", budgetConsolide);
+        debug("Budget consolidé avec ", budgetConsolide.listeOperations.length, " opérations", budgetConsolide);
         setBudgetConsolide(budgetConsolide);
         setDistinctCategories(distinctCategories);
         setIsLoading(false);
