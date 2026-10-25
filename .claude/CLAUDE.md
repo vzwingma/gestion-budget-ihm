@@ -147,13 +147,14 @@ Détail : `docs/ARCHITECTURE.md`.
 ```
 src/main/
 ├── Components/      # React UI components (TSX)
+├── hooks/           # Custom hooks (useAuthTokenSync, useBudgetContext, useFetch)
 ├── Models/          # TypeScript data models + React Context
-├── Services/        # HTTP client + auth token management
-└── Utils/           # Constants, enums, utility functions
+├── Services/        # HTTP client + auth token management + CallAndNotify
+└── Utils/           # Constants, enums, utility functions, Debug.utils (debug())
 ```
 
 ### Data flow
-1. **Auth** – `react-oidc-context` gère Google OAuth. `Auth.service.ts` stocke/récupère token.
+1. **Auth** – `react-oidc-context` gère Google OAuth. `Auth.service.ts` stocke/récupère token. `AuthTokenSync` (monté à la racine dans `Main.tsx`) synchronise token OIDC → localStorage via `useAuthTokenSync`.
 2. **HTTP** – Tous appels backend via `ClientHTTP.service.ts`, attache headers `X-Api-Key` + `Authorization: Bearer <token>`. URLs utilisent `{{}}` placeholders positionnels, remplacés via argument array `params`.
 3. **State** – État global dans `BudgetContextProvider.tsx` (React Context). État local UI: `useState`/`useMemo`/`useCallback` composants fonctionnels.
 4. **Routing** – `HashRouter` de `react-router-dom@7`.
@@ -163,6 +164,9 @@ src/main/
 - Interfaces props co-localisées dans `Components.props.ts`.
 - Feature folders miroir noms domaine: `analyses/`, `budgets/`, `operations/`.
 - Sub-composants page dans sous-dossier `subcomponents/`; boutons action dans `actions/`.
+- Hooks custom dans `src/main/hooks/`. Appels extservices : `callAndNotify` (`Services/CallAndNotify.service.ts`).
+- Pas de `console.log` (ESLint `no-console`, `warn`/`error` OK) : logs debug via `debug()` (`Utils/Debug.utils.ts`, actif si `VITE_CONFIG_DEBUG` défini).
+- Items de liste en `React.memo` + handlers `useCallback`. Routes `MainPage`/`Infos` en `React.lazy` + `Suspense`.
 - Material-UI 9 (`@mui/material`) seule lib UI. `Box`/`Grid` layout; `useMediaQuery`/`useTheme` responsive.
 
 ### Key enums & constants
@@ -191,6 +195,7 @@ Uniquement ce qui concerne **tous** les agents :
 - Projet en évolution, migré CRA → Vite (AP 001, ADR-001) ; migration dépendances TS/Vite partiellement reportée (AP 003 : TS v7 / typescript-eslint bloqués npm).
 - Contrats API couplés au backend `gestion-budget-serverless` : toute évolution modèle → vérifier côté backend.
 - Ancienne structure `.github/` (agents v2.x, plans) conservée pour référence historique.
+- AP 006 (revue architecture React) : lot 1 livré ; dette restante (T2, T6, T11 : infra `useFetch` livrée / adoption restante, T16, T20, ADR 002 Proposée) listée dans `.claude/plans/006_revue_architecture_react.plan.md`.
 
 ---
 

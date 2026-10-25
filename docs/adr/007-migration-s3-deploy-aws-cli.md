@@ -1,4 +1,4 @@
-# ADR 006 — Migration déploiement S3 de `reggionick/s3-deploy` vers AWS CLI natif
+# ADR 007 — Migration déploiement S3 de `reggionick/s3-deploy` vers AWS CLI natif
 
 **Date :** 2026-10-25
 **Statut :** Acceptée
@@ -82,4 +82,4 @@ runners GitHub (pas de date officielle annoncée à ce jour).
 
 - Changelog GitHub : https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
 - Action retenue : https://github.com/aws-actions/configure-aws-credentials
-- Plan d'Action associé : [`.claude/plans/006_migration_s3_deploy_aws_cli.plan.md`](../../.claude/plans/006_migration_s3_deploy_aws_cli.plan.md)
+- Plan d'Action associé : [`.claude/plans/007_migration_s3_deploy_aws_cli.plan.md`](../../.claude/plans/007_migration_s3_deploy_aws_cli.plan.md)

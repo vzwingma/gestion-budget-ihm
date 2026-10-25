@@ -17,7 +17,7 @@ export function getLastAccessDateUtilisateur(setState: Dispatch<SetStateAction<s
             setState(date.toLocaleDateString() + " - " + date.toLocaleTimeString());
         })
         .catch((e) => {
-            console.log("Erreur lors de la recherche de la dernière connexion", e);
+            console.error("Erreur lors de la recherche de la dernière connexion", e);
         })
 
 }

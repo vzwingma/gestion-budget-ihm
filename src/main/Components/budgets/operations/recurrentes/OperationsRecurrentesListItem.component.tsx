@@ -25,4 +25,6 @@ const OperationRecurrenteItem: React.FC<OperationItemProps> = ({operation, onCli
             isOneSelected={isOneSelected} />
     );
 };
-export default OperationRecurrenteItem
+
+// AP 006 - T8 : composant rendu en boucle (une tuile par opération récurrente).
+export default React.memo(OperationRecurrenteItem)

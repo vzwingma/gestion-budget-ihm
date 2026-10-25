@@ -1,4 +1,4 @@
-# Plan d'Action 006 — Migration déploiement S3 vers AWS CLI natif
+# Plan d'Action 007 — Migration déploiement S3 vers AWS CLI natif
 
 **Statut :** ✅ Complété
 **Date :** 2026-10-25
@@ -21,7 +21,7 @@ compatible Node 24. Utilisé dans `build-on-master.yml` (déploiement QUA) et `b
 Remplacer `reggionick/s3-deploy@v4` par `aws-actions/configure-aws-credentials@v4` +
 commandes `aws s3 sync` / `aws cloudfront create-invalidation` natives (AWS CLI préinstallé sur
 les runners `ubuntu-latest`). Détail comparatif options : voir ADR
-[`006-migration-s3-deploy-aws-cli.md`](../../docs/adr/006-migration-s3-deploy-aws-cli.md).
+[`007-migration-s3-deploy-aws-cli.md`](../../docs/adr/007-migration-s3-deploy-aws-cli.md).
 
 ## Périmètre
 

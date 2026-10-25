@@ -6,6 +6,7 @@ import BudgetMensuelModel from "../../../../../../Models/budgets/BudgetMensuel.m
 import {OPERATION_ETATS_ENUM} from "../../../../../../Utils/AppBusinessEnums.constants.ts";
 import {Dispatch, SetStateAction} from "react";
 import OperationEditionModel from "../../../../../../Models/budgets/OperationEdition.model.ts";
+import { debug } from "../../../../../../Utils/Debug.utils.ts";
 
 
 /**
@@ -82,7 +83,7 @@ function updateOperation(operation : OperationModel, action : OPERATION_ETATS_EN
 
     if (budget.actif) {
         if (operation.etat !== action) {
-            console.log("[" + budget.id + "] Modification de l'opération " + operation.id + " : " + operation.etat + " -> " + action);
+            debug("[" + budget.id + "] Modification de l'opération " + operation.id + " : " + operation.etat + " -> " + action);
             operation.etat = action;
             if (action === OPERATION_ETATS_ENUM.REALISEE) {
                 const existingDate = operation.autresInfos.dateOperation;
@@ -95,7 +96,7 @@ function updateOperation(operation : OperationModel, action : OPERATION_ETATS_EN
             saveOperation(operation, budget, onOperationChange);
         }
     } else {
-        console.log("Impossible de modifier l'opération " + operation.id + " sur un budget clos");
+        console.warn("Impossible de modifier l'opération " + operation.id + " sur un budget clos");
         toast.warn("Impossible de modifier une opération sur un budget clos")
     }
 }

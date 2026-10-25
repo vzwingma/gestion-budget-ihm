@@ -21,7 +21,7 @@ export function getSoldesBudget(compte: CompteBancaireModel, selectedDate: Date,
             })
             .catch(e => {
                 let libErreur = "Erreur lors du chargement du budget du compte " + compte?.libelle + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
-                console.log(libErreur, e)
+                console.error(libErreur, e)
                 setSoldes(undefined);
             });
     }

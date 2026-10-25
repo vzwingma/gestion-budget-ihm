@@ -10,7 +10,7 @@ gerer les comptes bancaires, les operations financieres et les analyses budgetai
 | Propriété | Valeur |
 |---|---|
 | **Type** | frontend |
-| **Stack principale** | React 19.1.1 + TypeScript |
+| **Stack principale** | React 19.3.1 + TypeScript |
 | **Plateforme cible** | web |
 | **Langue UI** | Français |
 | **Statut** | En développement |
@@ -22,9 +22,10 @@ gerer les comptes bancaires, les operations financieres et les analyses budgetai
 ```
 gestion-budget-ihm
 ├── Components/      # Composants React UI (TSX) — analyses/, budgets/, operations/, shared/
+├── hooks/           # Hooks custom : useAuthTokenSync, useBudgetContext, useFetch
 ├── Models/          # Modèles TypeScript + React Context (BudgetContextProvider)
-├── Services/        # ClientHTTP.service.ts, Auth.service.ts
-└── Utils/           # Constantes, enums (AppTechEnums, AppBusinessEnums)
+├── Services/        # ClientHTTP.service.ts, Auth.service.ts, CallAndNotify.service.ts
+└── Utils/           # Constantes, enums (AppTechEnums, AppBusinessEnums), Debug.utils.ts
 ```
 
 ### Flux de données principal
@@ -37,6 +38,8 @@ Utilisateur (navigateur)
     ← Réponse JSON → BudgetContext → re-render
 ```
 
+Les appels des `*.extservices.ts` passent par `callAndNotify` (`Services/CallAndNotify.service.ts`) : `then` / `catch` + log `console.error` + toast d'erreur centralisés.
+
 ---
 
 ## 📂 Structure des Dossiers
@@ -46,23 +49,25 @@ gestion-budget-ihm/
 ├── src/
 │   ├── index.tsx                         # Point d'entrée React
 │   └── main/
-│       ├── Main.tsx                      # Router principal (HashRouter)
+│       ├── Main.tsx                      # Router principal (HashRouter), routes lazy + AuthTokenSync
 │       ├── Components/                   # Composants React UI
-│       │   ├── Components.props.ts       # Toutes les interfaces de props
-│       │   ├── analyses/                 # Composants analyses budgétaires
+│       │   ├── Components.props.ts       # Interfaces de props (les nouvelles interfaces sont co-localisées)
+│       │   ├── analyses/                 # Composants analyses budgétaires (syntheses/AnalyseTooltip = tooltip recharts générique)
 │       │   ├── budgets/                  # Composants gestion budgets
+│       │   │   └── shared/               # BudgetPageShell.component.tsx (squelette commun Budget / Recurrents)
 │       │   ├── infos/                    # Composants informatifs
 │       │   ├── mainpages/                # Pages principales
 │       │   ├── menuTopBar/               # Barre de navigation
-│       │   └── shared/                   # Composants partagés
+│       │   └── shared/                   # Composants partagés (dont AuthTokenSync.component.tsx)
+│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext, useFetch)
 │       ├── Models/                       # Modèles TypeScript + Context
-│       │   ├── contextProvider/          # BudgetContextProvider.tsx
+│       │   ├── contextProvider/          # BudgetContextProvider.tsx (ré-exporte BudgetContext / useBudgetContext)
 │       │   ├── analyses/                 # Modèles analyses
 │       │   ├── budgets/                  # Modèles budgets
 │       │   ├── infos/                    # Modèles infos
 │       │   └── profiles/                 # Modèles profils utilisateur
-│       ├── Services/                     # Couche HTTP et Auth
-│       └── Utils/                        # Constantes et utilitaires
+│       ├── Services/                     # Couche HTTP, Auth, CallAndNotify
+│       └── Utils/                        # Constantes et utilitaires (Debug.utils.ts)
 ├── docs/                                 # Documentation versionnée
 │   ├── ARCHITECTURE.md                   # Ce fichier
 │   └── adr/                              # Architecture Decision Records
@@ -79,7 +84,7 @@ gestion-budget-ihm/
 
 | Catégorie | Librairie / Framework | Version | Rôle |
 |---|---|---|---|
-| Framework UI | React | 19.1.1 | Rendu composants |
+| Framework UI | React | 19.3.1 | Rendu composants |
 | Langage | TypeScript | ^6.0.0 | Typage statique — « strict » fait ici référence à la rigueur générale du typage, pas à l'option compilateur `strict` (non activée explicitement dans `tsconfig.json`) |
 | Composants UI | @mui/material | 9.x | Bibliothèque UI (seule autorisée) |
 | Icônes | @mui/icons-material | 9.x | Icônes Material |
@@ -88,8 +93,9 @@ gestion-budget-ihm/
 | Visualisation | recharts | 3.2.1 | Graphiques (AreaChart, TreeMap) |
 | Notifications | react-toastify | 11.0.5 | Toasts utilisateur |
 | UUID | uuid | 14.0.0 | Génération identifiants |
-| Tests | Vitest + @testing-library/react | 16.3 | Tests unitaires + composants |
-| Jest DOM | @testing-library/jest-dom | 6.8 | Assertions DOM |
+| Tests | Vitest (+ `@vitest/coverage-v8`) | ^5.0.0 | Test runner + couverture |
+| Tests | @testing-library/react | ^16.3.0 | Tests de composants |
+| Jest DOM | @testing-library/jest-dom | ^7.0.0 | Assertions DOM |
 | User events | @testing-library/user-event | 14.6 | Simulation interactions |
 | Build | Vite | 8.1.4 | Bundler (esbuild dev, Rollup prod) |
 | Build | @vitejs/plugin-react | 6.0.3 | Plugin React (JSX, Fast Refresh) pour Vite |
@@ -107,7 +113,7 @@ gestion-budget-ihm/
 |---|---|---|
 | `VITE_BUDGET_VERSION` | Version de l'application affichée | `24.0-SNAPSHOT` |
 | `VITE_CONFIG_API_KEY` | Clé API Gateway AWS (header `X-Api-Key`) | `AWS_API_KEY` |
-| `VITE_CONFIG_DEBUG` | Mode debug activé | `true` |
+| `VITE_CONFIG_DEBUG` | Mode debug : si renseigné, active les logs `debug()` (voir [Mode debug](#-mode-debug)) ; absent en QUA/PROD | `true` |
 | `VITE_CONFIG_OIDC_AUTHORITY` | URL autorité OIDC Google | `https://accounts.google.com/` |
 | `VITE_CONFIG_OIDC_CLIENT_ID` | Client ID Google OAuth | `0000.apps.googleusercontent.com` |
 | `VITE_CONFIG_OIDC_CLIENT_SECRET` | Secret Google OAuth | `FFFF` |
@@ -137,6 +143,7 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
 ## 🔐 Sécurité
 
 - **Authentification** : Google OAuth2 via `react-oidc-context`. Tokens gérés par `Auth.service.ts`
+- **Synchronisation du token** : le composant `AuthTokenSync` (`Components/shared/AuthTokenSync.component.tsx`), monté une fois à la racine dans `Main.tsx` (dans `AuthProvider`), utilise le hook `useAuthTokenSync`. Le hook écoute les événements `addUserLoaded` / `addUserUnloaded` d'oidc-client et recopie le token dans le `localStorage` via `Auth.service.ts` (y compris lors de l'`automaticSilentRenew`). Ce pont ne dépend donc plus du montage de `Profile.component.tsx`.
 - **Autorisation** : Token Bearer attaché à chaque requête HTTP sortante
 - **API Key AWS** : Header `X-Api-Key` injecté automatiquement par `ClientHTTP.service.ts`
 - **Données sensibles** : Jamais de secrets dans le code source. Toujours dans les fichiers `.env.*` (gitignorés). En CI, via GitHub Secrets/Variables.
@@ -164,11 +171,13 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 - **Nommage variables** : camelCase pour variables/fonctions, PascalCase pour composants et interfaces
 - **Composants** : Toujours `React.FC<Props>`, fonctionnels uniquement. Props interfaces dans `Components.props.ts`
 - **Sous-composants** : Dans `subcomponents/`, boutons d'action dans `actions/`
-- **Gestion d'état** : BudgetContext pour l'état global, `useState` pour l'état UI local
-- **Appels HTTP** : Toujours via `ClientHTTP.service.ts`. URLs avec `{{}}` comme marqueur positionnel. Jamais `fetch` directement dans un composant
+- **Gestion d'état** : BudgetContext pour l'état global (hook `useBudgetContext` dans `hooks/`), `useState` pour l'état UI local ; les regroupements dérivés (opérations par date / périodicité) sont calculés via `useMemo`, pas stockés en state
+- **Hooks custom** : dans `src/main/hooks/`. `useFetch(fetcher, deps)` retourne `{ data, loading, error, refetch }` (T11 : infra livrée, adoption par les 7 composants restante — reste de T11, voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
+- **Appels HTTP** : Toujours via `ClientHTTP.service.ts`. URLs avec `{{}}` comme marqueur positionnel. Jamais `fetch` directement dans un composant. Les erreurs sont relancées avec `cause` (stack d'origine conservée). Dans les `*.extservices.ts`, utiliser `callAndNotify(promise, onSuccess, errorMessage, toastOptions?)`
 - **Layout** : `Box`/`Grid` MUI pour la mise en page, `useMediaQuery`/`useTheme` pour le responsive
-- **Optimisation** : `useMemo` pour les calculs dérivés coûteux, `useCallback` pour les handlers passés en props
+- **Optimisation** : `useMemo` pour les calculs dérivés coûteux, `useCallback` pour les handlers passés en props, `React.memo` pour les items de liste (voir [Performance](#-performance))
 - **Gestion erreurs** : Codes HTTP 403 → logout, autres erreurs → toast via react-toastify
+- **Logs** : pas de `console.log` direct (règle ESLint `no-console`, `warn` et `error` autorisés). Logs de debug via `debug()` de `Utils/Debug.utils.ts` (voir [Mode debug](#-mode-debug))
 
 ---
 
@@ -180,6 +189,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 | # | Décision | Statut | Date |
 |---|---|---|---|
 | 001 | [Migration du socle build Create React App vers Vite](./adr/001-migration-cra-vers-vite.md) | ✅ Acceptée | 2026-07-07 |
+| 002 | [Introduction conditionnelle de TanStack Query (data-fetching)](./adr/002-tanstack-query-data-fetching.md) | 🟡 Proposée | 2026-10-23 |
 
 > 💡 Chaque nouvelle décision architecturale majeure doit faire l'objet d'un ADR. Voir `docs/adr/` pour les détails.
 
@@ -187,10 +197,22 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 
 ## 📈 Performance
 
-- `useMemo` pour les calculs dérivés coûteux dans les composants (ex : totaux budgétaires, agrégations)
+- **Code splitting** : dans `Main.tsx`, les routes `MainPage` et `Infos` sont chargées via `React.lazy` et enveloppées dans `Suspense` (chunks séparés au build Vite)
+- **Mémoïsation** : `React.memo` sur les items de liste `OperationItem`, `OperationRecurrenteItem` et `CompteItem` ; handlers de sélection passés à ces items stabilisés via `useCallback` (prérequis pour que `memo` soit effectif)
+- `useMemo` pour les calculs dérivés coûteux dans les composants (ex : totaux budgétaires, agrégations, regroupements d'opérations)
 - `useCallback` pour les handlers passés en props afin d'éviter les re-renders inutiles
+- **Limite connue** : `BudgetContext` reste un contexte unique (nombreux consumers) ; tout changement de sa valeur re-rend tous les consumers (scission prévue, voir dette du [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
 - Minification CSS pré-build via `css-minify` sur `public/styles/application.css`
 - Pagination des listes volumineuses côté API (gérée par les µServices)
+
+---
+
+## 🐞 Mode debug
+
+- `Utils/Debug.utils.ts` expose `debug(...)` (équivalent `console.log`) et `isDebugEnabled()`.
+- Les logs ne sont émis que si `VITE_CONFIG_DEBUG` est défini (non vide) ; actif dans `.env.dev`.
+- ESLint : règle `no-console` (autorise `console.warn` / `console.error`) ; seul `Debug.utils.ts` est dérogataire pour `console.log`.
+- Erreurs et alertes : `console.error` / `console.warn` (toujours émis).
 
 ---
 
@@ -215,6 +237,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
+| v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 1) : dossier `hooks/` (`useAuthTokenSync`, `useBudgetContext`, `useFetch`), `AuthTokenSync` à la racine, `callAndNotify`, mode debug `VITE_CONFIG_DEBUG` + règle `no-console`, code splitting des routes (`React.lazy`), `React.memo` sur items de liste, `BudgetPageShell`, `AnalyseTooltip` générique, erreurs HTTP avec `cause`. Dette restante : voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-07-10 | Montée deps : Vite 6→8.1.4, `@vitejs/plugin-react` 4→6.0.3, suppression `@babel/plugin-transform-private-property-in-object` (résidu CRA, sans usage réel). TypeScript v7 et `typescript-eslint` v9/v10 **reportés** (bloqueur npm — voir note Stack Technique ci-dessus). Voir `.claude/plans/003_migration_dependances_ts_vite.plan.md` |
 | v24.0-SNAPSHOT | En cours | Migration socle build CRA → Vite + Vitest + TypeScript ^6.0.0 (voir [ADR 001](./adr/001-migration-cra-vers-vite.md)) |
 

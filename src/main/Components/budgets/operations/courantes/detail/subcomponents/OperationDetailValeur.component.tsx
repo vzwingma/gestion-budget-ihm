@@ -8,6 +8,7 @@ import {OperationDetailValeurProps} from '../../../../../Components.props.ts'
 import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
+import { debug } from "../../../../../../Utils/Debug.utils.ts";
 
 
 /**
@@ -81,7 +82,7 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
  * @returns opération mise à jour ou erreurs
  */
 export function validateFormMontant(editOperation: OperationEditionModel, operation: OperationModel, editForm: EditFormProps, errors: ErrorsFormProps) {
-    console.log("Validation du montant de l'opération :", editOperation.valeur, editOperation.typeOperation);
+    debug("Validation du montant de l'opération :", editOperation.valeur, editOperation.typeOperation);
     if (!editForm.value) return;
 
     if (!editOperation.valeur) {
@@ -116,7 +117,7 @@ function calculateValeur(formValue: string): { valeurCalculee: string | null, er
     try {
         // eslint-disable-next-line no-eval
         const calculee = Number(processEquation(formValue)).toFixed(2);
-        console.log("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
+        debug("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
         return { valeurCalculee: calculee, error: null };
     } catch (e) {
         console.error("Erreur dans la valeur saisie ", formValue, e)

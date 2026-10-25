@@ -1,48 +1,109 @@
-import {beforeEach, describe, expect, test, vi} from 'vitest';
-import {render, screen} from '@testing-library/react';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
 import CompteItem from './CompteItem.component.tsx';
-import {BUSINESS_ONGLETS} from '../../../Utils/AppBusinessEnums.constants.ts';
-import CompteBancaireModel from '../../../Models/budgets/CompteBancaire.model.ts';
+import { getSoldesBudget } from './CompteItem.controller.ts';
+import { BUSINESS_ONGLETS } from '../../../Utils/AppBusinessEnums.constants.ts';
 
-// Évite les appels HTTP de chargement des soldes
-vi.mock('./CompteItem.controller.ts', () => ({getSoldesBudget: vi.fn()}));
+// Contrôleur mocké : évite tout appel réseau, le solde est injecté via le setter fourni
+vi.mock('./CompteItem.controller.ts', () => ({ getSoldesBudget: vi.fn() }));
 
-const compte = {id: 'c1', libelle: 'Compte 1', itemIcon: 'a.png', actif: true} as unknown as CompteBancaireModel;
-const autre = {id: 'c2', libelle: 'Compte 2', itemIcon: 'b.png', actif: true} as unknown as CompteBancaireModel;
+const compte: any = { id: 'c1', libelle: 'Compte courant', itemIcon: 'banque.png', actif: true };
+const selectedDate = new Date(2026, 0, 1);
 
-function renderItem(selected: CompteBancaireModel | null) {
+function renderItem(props: any = {}) {
     const onClick = vi.fn();
-    const {container} = render(<CompteItem compte={compte} selectedCompte={selected} selectedDate={new Date('2026-01-10')}
-                                 selectedFunction={BUSINESS_ONGLETS.ANALYSES} onRefreshMenuBar={false}
-                                 onClick={onClick}/>);
-    // Tuile sans rôle : on vérifie les classes de la tuile racine via le HTML rendu
-    const classes = /class="([^"]*)"/.exec(container.innerHTML)?.[1].split(/\s+/) ?? [];
-    return {onClick, classes};
+    const base = { compte, selectedCompte: null, selectedDate, selectedFunction: BUSINESS_ONGLETS.BUDGET, onRefreshMenuBar: false, onClick, ...props };
+    const utils = render(<CompteItem {...base} />);
+    return { onClick, base, ...utils };
 }
 
-describe('CompteItem', () => {
-    beforeEach(() => vi.clearAllMocks());
+describe('CompteItem (React.memo)', () => {
+
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    test('affiche un spinner tant que le solde est inconnu (BUDGET)', () => {
+        renderItem();
+        expect(screen.getByText('Compte courant')).toBeInTheDocument();
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+        expect(getSoldesBudget).toHaveBeenCalledWith(compte, selectedDate, expect.any(Function));
+    });
+
+    test('affiche le solde une fois chargé (BUDGET)', () => {
+        (getSoldesBudget as any).mockImplementation((_c: any, _d: any, setSoldes: any) => setSoldes(125.5));
+        renderItem();
+        expect(screen.getByText(/125[.,]50/)).toBeInTheDocument();
+    });
+
+    test('RECURRENTS : "Non initialisé" si solde null, "Actif" sinon', () => {
+        (getSoldesBudget as any).mockImplementation((_c: any, _d: any, setSoldes: any) => setSoldes(null));
+        const { unmount } = renderItem({ selectedFunction: BUSINESS_ONGLETS.RECURRENTS });
+        expect(screen.getByText('Non initialisé')).toBeInTheDocument();
+        unmount();
+
+        (getSoldesBudget as any).mockImplementation((_c: any, _d: any, setSoldes: any) => setSoldes(10));
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.RECURRENTS });
+        expect(screen.getByText('Actif')).toBeInTheDocument();
+    });
+
+    test('autre onglet (ANALYSES) : Actif / Inactif selon le compte, sans chargement des soldes', () => {
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES });
+        expect(screen.getByText('Actif')).toBeInTheDocument();
+        expect(getSoldesBudget).not.toHaveBeenCalled();
+    });
+
+    test('compte inactif affiché "Inactif" hors BUDGET/RECURRENTS', () => {
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES, compte: { ...compte, actif: false } });
+        expect(screen.getByText('Inactif')).toBeInTheDocument();
+    });
+
+    test('clic sur la tuile : appelle onClick avec le compte', async () => {
+        const { onClick } = renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES });
+        await userEvent.click(screen.getByText('Compte courant'));
+        expect(onClick).toHaveBeenCalledWith(compte);
+    });
+
+    test('re-render avec mêmes props : pas de rechargement ; changement de date : rechargement', () => {
+        const { base, rerender } = renderItem();
+        expect(getSoldesBudget).toHaveBeenCalledTimes(1);
+
+        rerender(<CompteItem {...base} />);
+        expect(getSoldesBudget).toHaveBeenCalledTimes(1);
+
+        rerender(<CompteItem {...base} selectedDate={new Date(2026, 1, 1)} />);
+        expect(getSoldesBudget).toHaveBeenCalledTimes(2);
+    });
+});
+
+describe('CompteItem (sélection)', () => {
+
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    // Tuile racine (Container MUI portant la classe listeItem), sans rôle ni testid accessible
+    function getTuile(libelle: string): HTMLElement | null {
+        // eslint-disable-next-line testing-library/no-node-access
+        return screen.getByText(libelle).closest('.listeItem');
+    }
 
     test('classe listeItem--selected si compte sélectionné', () => {
-        const {classes} = renderItem(compte);
-        expect(classes).toEqual(expect.arrayContaining(['listeItem', 'listeItem--selected']));
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES, selectedCompte: compte });
+        expect(getTuile('Compte courant')).toHaveClass('listeItem', 'listeItem--selected');
     });
 
     test('pas de classe selected si autre compte sélectionné', () => {
-        const {classes} = renderItem(autre);
-        expect(classes).toContain('listeItem');
-        expect(classes).not.toContain('listeItem--selected');
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES, selectedCompte: { ...compte, id: 'c2' } });
+        const tuile = getTuile('Compte courant');
+        expect(tuile).toHaveClass('listeItem');
+        expect(tuile).not.toHaveClass('listeItem--selected');
     });
 
     test('pas de classe selected si selectedCompte null', () => {
-        const {classes} = renderItem(null);
-        expect(classes).not.toContain('listeItem--selected');
-    });
-
-    test('clic appelle onClick avec le compte', async () => {
-        const {onClick} = renderItem(null);
-        await userEvent.click(screen.getByText('Compte 1'));
-        expect(onClick).toHaveBeenCalledWith(compte);
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES, selectedCompte: null });
+        expect(getTuile('Compte courant')).not.toHaveClass('listeItem--selected');
     });
 });

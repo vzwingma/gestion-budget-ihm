@@ -1,6 +1,7 @@
 /** Client HTTP **/
 import {v7} from 'uuid';
 import {API_GW_ENUM} from '../Utils/AppTechEnums.constants.ts';
+import {debug, isDebugEnabled} from '../Utils/Debug.utils.ts';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts'
 
 let alreadyTraced: boolean = false;
@@ -41,8 +42,8 @@ function evaluateBody(body?: any): string|null {
     let jsonBody = null
     if (body !== undefined && body !== null) {
         jsonBody = JSON.stringify(body)
-        if (import.meta.env.VITE_CONFIG_DEBUG) {
-            console.log("[WS] > Body: ", jsonBody);
+        if (isDebugEnabled()) {
+            debug("[WS] > Body: ", jsonBody);
         }
     }
     return jsonBody;
@@ -52,9 +53,9 @@ function evaluateBody(body?: any): string|null {
  * Log de l'authentification
  */
 function logAuth(): void {
-    if (import.meta.env.VITE_CONFIG_DEBUG && !alreadyTraced) {
-        console.log("[WS] > [X-Api-Key] : " + API_GW_ENUM.API_KEY);
-        console.log("[WS] > [Bearer] : " + getOAuthToken());
+    if (isDebugEnabled() && !alreadyTraced) {
+        debug("[WS] > [X-Api-Key] : " + API_GW_ENUM.API_KEY);
+        debug("[WS] > [Bearer] : " + getOAuthToken());
         if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
             alreadyTraced = true;
         }
@@ -75,7 +76,9 @@ export async function call(httpMethod: string, uri: string, path: string, params
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
     const uuid = v7().slice(0, 8);
-    console.log("[WS-"+uuid+"] > [" + httpMethod + " -> " + fullURL + "]")
+    if (isDebugEnabled()) {
+        debug("[WS-"+uuid+"] > [" + httpMethod + " -> " + fullURL + "]")
+    }
     const jsonBody = evaluateBody(body);
 
     logAuth();
@@ -104,7 +107,9 @@ export async function call(httpMethod: string, uri: string, path: string, params
             }
         })
         .catch(e => {
-            console.log("Erreur lors de l'appel HTTP [" + fullURL + "]", e)
-            throw new Error(e);
+            console.error("Erreur lors de l'appel HTTP [" + fullURL + "]", e)
+            // Conserve l'erreur d'origine (stack, type) via `cause`, tout en gardant le message
+            // existant (préfixe "Error: " issu de la coercition historique en chaîne).
+            throw new Error(String(e), { cause: e });
         })
 }

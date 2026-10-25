@@ -8,6 +8,7 @@ import CategorieOperationModel from "../../Models/budgets/CategorieOperation.mod
 import OperationModel from "../../Models/budgets/Operation.model.ts";
 import { AnalysesFiltersModel } from "../../Models/analyses/AnalysesFilters.model.ts";
 import BudgetMensuelAnalyseConsolideModel from "../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
+import { debug } from "../../Utils/Debug.utils.ts";
 
 /**
  * Contrôleur des analyses
@@ -21,7 +22,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
         return;
     }
 
-    console.log("Chargement des budgets pour le compte ", selectedCompte.libelle, " de la période ", startDate.toLocaleDateString(), " à ", endDate.toLocaleDateString());
+    debug("Chargement des budgets pour le compte ", selectedCompte.libelle, " de la période ", startDate.toLocaleDateString(), " à ", endDate.toLocaleDateString());
     const budgetConsolide = new BudgetMensuelAnalyseConsolideModel("analyses-consolide");
     budgetConsolide.idCompteBancaire = selectedCompte.id;
     budgetConsolide.listeOperations = [];
@@ -40,7 +41,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
                 })
                 .catch((e) => {
                     const libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte.libelle + " du " + (month.getMonth() + 1) + "/" + month.getFullYear();
-                    console.log(libErreur, e);
+                    console.error(libErreur, e);
                     toast.error(libErreur, {autoClose: false, closeOnClick: true});
                     return { month, budget: null };
                 })
