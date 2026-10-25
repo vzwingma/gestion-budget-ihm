@@ -81,4 +81,5 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedF
     )
 };
 
-export default CompteItem
+// AP 005 - T8 : composant rendu en boucle (une tuile par compte dans la menubar).
+export default React.memo(CompteItem)

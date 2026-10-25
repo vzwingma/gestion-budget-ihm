@@ -1,7 +1,9 @@
 import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model.ts";
 import { call } from "./../../../../Services/ClientHTTP.service.ts";
+import { callAndNotify } from "./../../../../Services/CallAndNotify.service.ts";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "./../../../../Utils/AppTechEnums.constants.ts";
 import {toast} from "react-toastify";
+import { debug } from "./../../../../Utils/Debug.utils.ts";
 
 
 /**
@@ -21,15 +23,12 @@ import {toast} from "react-toastify";
  */
 export function callReinitBudget(budget : BudgetMensuelModel, onActionBudgetChange : (budget : BudgetMensuelModel) => void): void {
     const idBudget = budget.id;
-    console.log("Reinitialisation du budget [" + idBudget + "]");
-    call(METHODE_HTTP.DELETE, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.REINIT, [idBudget])
-        .then((data : BudgetMensuelModel) => {
-            onActionBudgetChange(data)
-        })
-        .catch((e) => {
-            console.log("Erreur lors de la réinitialisation du budget", e)
-            toast.error("Erreur lors de la réinitialisation du budget " + idBudget)
-        })
+    debug("Reinitialisation du budget [" + idBudget + "]");
+    callAndNotify(
+        call(METHODE_HTTP.DELETE, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.REINIT, [idBudget]),
+        onActionBudgetChange,
+        "Erreur lors de la réinitialisation du budget " + idBudget
+    );
 }
 
 /**
@@ -47,15 +46,13 @@ export function callReinitBudget(budget : BudgetMensuelModel, onActionBudgetChan
  * });
  */
 export function callReopenCloseBudget(idBudget : string, newEtatBudget : boolean, onActionBudgetChange : (budget : BudgetMensuelModel) => void): void {
-    console.log((newEtatBudget ? "Réouverture" : "Clôture") + " du budget " + idBudget)
-
-    call(METHODE_HTTP.POST, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.ETAT, [idBudget, newEtatBudget.toString()])
-        .then((data : BudgetMensuelModel) => {
+    debug((newEtatBudget ? "Réouverture" : "Clôture") + " du budget " + idBudget);
+    callAndNotify(
+        call(METHODE_HTTP.POST, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.ETAT, [idBudget, newEtatBudget.toString()]),
+        (data: BudgetMensuelModel) => {
             toast.success((newEtatBudget ? "Réouverture" : "Clôture") + "du budget " + idBudget + " effectuée")
             onActionBudgetChange(data)
-        })
-        .catch((e) => {
-            console.log("Erreur lors de la Réouverture/Clôture du budget", e)
-            toast.error("Erreur lors de la " + (newEtatBudget ? "réouverture" : "clôture") + "du budget " + idBudget)
-        })
+        },
+        "Erreur lors de la " + (newEtatBudget ? "réouverture" : "clôture") + "du budget " + idBudget
+    );
 }

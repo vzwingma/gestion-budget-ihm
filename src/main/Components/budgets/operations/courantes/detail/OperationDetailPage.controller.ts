@@ -146,7 +146,7 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
         }
 
         if (hasErrors) {
-            console.log("Erreurs présentes dans le formulaire", errors)
+            console.error("Erreurs présentes dans le formulaire", errors)
             setErrors(errors);
         } else if (editOperation.ssCategorie.id === BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE && isInCreateMode(editForm)) {
             // Create Update Opération Intercomptes

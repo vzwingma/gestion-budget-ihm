@@ -1,5 +1,5 @@
 import * as ClientHTTP from "../../Services/ClientHTTP.service.ts";
-import {toast} from "react-toastify";
+import {callAndNotify} from "../../Services/CallAndNotify.service.ts";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants.ts";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 
@@ -7,15 +7,11 @@ import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
  * Appels WS vers pour charger la liste des comptes
  */
 export function loadComptes(setComptes: (comptes : CompteBancaireModel[]) => void) : void {
-    ClientHTTP
-        .call(METHODE_HTTP.GET, BACKEND_ENUM.URL_COMPTES, SERVICES_URL.COMPTES.GET_ALL)
-        .then((listeComptes : CompteBancaireModel[]) => {
-            comptesLoaded(listeComptes, setComptes)
-        })
-        .catch(e => {
-            console.log("Erreur lors du chargement des comptes ", e)
-            toast.error("Erreur lors du chargement des comptes")
-        })
+    callAndNotify(
+        ClientHTTP.call(METHODE_HTTP.GET, BACKEND_ENUM.URL_COMPTES, SERVICES_URL.COMPTES.GET_ALL),
+        (listeComptes: CompteBancaireModel[]) => comptesLoaded(listeComptes, setComptes),
+        "Erreur lors du chargement des comptes"
+    );
 }
 
 /**

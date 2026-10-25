@@ -90,4 +90,18 @@ describe('ClientHTTP.service', () => {
         expect(removeTokenFromStorage).toHaveBeenCalledTimes(1);
         expect(globalThis.location.href).toBe('/');
     });
+
+    test("préserve l'erreur d'origine dans cause (erreur réseau)", async () => {
+        const original = new TypeError('Failed to fetch');
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        (globalThis.fetch as Mock).mockRejectedValue(original);
+
+        const error = await call('GET', 'https://api.exemple.fr', '/resource').catch(e => e);
+
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toBe('TypeError: Failed to fetch');
+        expect(error.cause).toBe(original);
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
+    });
 });

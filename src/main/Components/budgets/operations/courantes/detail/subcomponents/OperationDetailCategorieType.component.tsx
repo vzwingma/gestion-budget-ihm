@@ -5,6 +5,7 @@ import {getTypeCategorieRenderer} from '../../../../../../Utils/renderers/Operat
 import {TYPES_CATEGORIES_OPERATION_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
 import {OperationDetailCategorieTypeProps} from '../../../../../Components.props.ts'
 import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import { debug } from "../../../../../../Utils/Debug.utils.ts";
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
@@ -31,7 +32,7 @@ export const OperationDetailCategorieType: React.FC<OperationDetailCategorieType
  * @param {Event} e - L'événement de saisie
  */
     function fillCategorieTypeForm(e: any) {
-        console.log("Changement type catégorie : " + e.target.value);
+        debug("Changement type catégorie : " + e.target.value);
         fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE_TYPE, e.target.value);
     }
     /**

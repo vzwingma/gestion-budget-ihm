@@ -42,7 +42,7 @@ export function handleSelect(event : any, datePreviousBudget : Date, dateCurrent
         let moisEnCours = new Date();
         moisEnCours.setMonth(new Date().getMonth() - 1);
         if (moisEnCours <= dateCurrentBudget) {
-            console.log("Attention cela va initier un nouveau mois et fermer le mois courant");
+            console.warn("Attention cela va initier un nouveau mois et fermer le mois courant");
             setShowModale(true);
         } else {
             confirmInitNextMonth(dateCurrentBudget, dateNextBudget, updateMonths);

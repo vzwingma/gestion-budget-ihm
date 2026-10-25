@@ -1,8 +1,9 @@
-import React, {JSX, useEffect} from "react";
+import React, {JSX} from "react";
 import {useAuth} from "react-oidc-context";
 import {Avatar, CircularProgress, Tooltip, Typography} from "@mui/material";
-import {putTokenInStorage, removeTokenFromStorage} from '../../Services/Auth.service.ts'
+import {removeTokenFromStorage} from '../../Services/Auth.service.ts'
 import ProfileInfos from "./ProfileInfos.component.tsx";
+import { debug } from "../../Utils/Debug.utils.ts";
 
 /**
  *   Page de Gestion du profile
@@ -12,27 +13,17 @@ const Profile: React.FC = (): JSX.Element => {
     const auth = useAuth();
     // LogOut et redirect pour nettoyer l'URL
     function logOut() {
-        auth.removeUser().then(() => {console.log("Déconnexion de l'utilisateur")});
+        auth.removeUser().then(() => { debug("Déconnexion de l'utilisateur"); });
         removeTokenFromStorage();
         globalThis.location.href = "/";
     }
-
-    useEffect(() => {
-        // the `return` is important - addAccessTokenExpiring() returns a cleanup function
-        return auth.events.addAccessTokenExpiring(() => {
-            auth.signinSilent().then(r => { console.log("Renouvellement du token") });
-        })
-    }, [auth, auth.events, auth.signinSilent]);
-
-
-
 
     if (auth.isLoading) {
         return <CircularProgress/>;
     }
 
     if (auth.error) {
-        console.log("Erreur lors de l'authentification : " + auth.error.message)
+        console.error("Erreur lors de l'authentification : " + auth.error.message)
         removeTokenFromStorage();
     }
 
@@ -40,9 +31,6 @@ const Profile: React.FC = (): JSX.Element => {
     // Si l'utilisateur est connecté
     // referrerPolicy="no-referrer"
     if (auth.isAuthenticated) {
-        putTokenInStorage(auth.user?.id_token)
-
-
         return (
             <>
                 <Typography variant={"caption"} component="div"

@@ -6,6 +6,7 @@ import {Dispatch, SetStateAction} from "react";
 import { createEmptyErrors, EditRFormProps, ErrorsRFormProps, OPERATION_RECURRENTE_EDITION_FORM } from "./OperationRecurrenteDetailPage.constants.ts";
 import { saveOperation } from "../../courantes/detail/OperationDetailPage.extservices.ts";
 import { validateFormDateFinPeriode } from "./subcomponents/OperationRecurrenteDetailDateFin.component.tsx";
+import { debug } from "../../../../../Utils/Debug.utils.ts";
 
 
 interface OperationBudgetProps {
@@ -98,12 +99,12 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
         }
 
         if (hasErrors) {
-            console.log("Erreurs présentes dans le formulaire", errors)
+            console.error("Erreurs présentes dans le formulaire", errors)
             setErrors(errors);
         } else {
         // Create Update Opération
         saveOperation(operation, budget, onOperationUpdate);
-        console.log("Opération sauvegardée", operation);
+        debug("Opération sauvegardée", operation);
         }
     }
 }

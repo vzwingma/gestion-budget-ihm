@@ -61,7 +61,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
 }: OperationDetailPageProps): JSX.Element => {
 
     const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm(false));
-    const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
     const { currentBudget, currentOperation, comptes } = useBudgetContext();
@@ -80,9 +79,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
         }
     }, [operation]);
 
-
-    useEffect(() => { }, [refresh]);
-
     if (!operation || !budget) {
         return <></>;
     }
@@ -93,7 +89,6 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      */
     function openEditForm(editForm: EditFormProps) {
         setEditForm(editForm)
-        setRefresh(new Date())
     }
 
     /**

@@ -8,7 +8,11 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 ## 📂 Plans Actifs / En Cours
 
-_Aucun plan actif en cours actuellement._
+| # | Plan | Statut | Emplacement |
+|---|---|---|---|
+| 005 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (reste T2/T6/T11-adoption/T16/T20/T12) — Gate #4 validé 👤 | [`005_revue_architecture_react.plan.md`](./005_revue_architecture_react.plan.md) |
+
+ADR associé : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Proposée — item T12 uniquement)
 
 ---
 
@@ -96,5 +100,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-07-21 (clôture plan 004)
+**Dernière mise à jour :** 2026-10-25 (plan 005 : lot 1 livré, Gate #4 validé)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain

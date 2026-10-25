@@ -1,16 +1,41 @@
-import React, {Component} from "react";
+import React, {Component, Suspense} from "react";
 import {HashRouter, Route, Routes} from 'react-router-dom';
 import {AuthProvider} from 'react-oidc-context';
 import {removeTokenFromStorage} from "./Services/Auth.service.ts";
 
-import {AppBar, createTheme, CssBaseline, responsiveFontSizes, Stack, ThemeProvider, Typography} from "@mui/material";
+import {
+    AppBar,
+    Backdrop,
+    CircularProgress,
+    createTheme,
+    CssBaseline,
+    responsiveFontSizes,
+    Stack,
+    ThemeProvider,
+    Typography
+} from "@mui/material";
 import {OIDC_ENUM} from "./Utils/AppTechEnums.constants.ts";
 import {BUSINESS_ONGLETS} from "./Utils/AppBusinessEnums.constants.ts";
-import MainPage from "./Components/mainpages/MainPage.component.tsx";
 import PrivateNavLinks from "./Components/menuTopBar/PrivateNavLinks.component.tsx";
 import Profile from "./Components/menuTopBar/Profile.component.tsx";
-import {Infos} from "./Components/infos/Infos.component.tsx";
 import {BudgetContextProvider} from "./Models/contextProvider/BudgetContextProvider.tsx";
+import AuthTokenSync from "./Components/shared/AuthTokenSync.component.tsx";
+
+// Chargement différé des pages de routes (code-splitting) : chaque page n'est téléchargée
+// qu'à la navigation vers son chemin, au lieu d'alourdir le bundle initial.
+const MainPage = React.lazy(() => import("./Components/mainpages/MainPage.component.tsx"));
+const Infos = React.lazy(() =>
+    import("./Components/infos/Infos.component.tsx").then(module => ({default: module.Infos}))
+);
+
+/** Fallback affiché pendant le chargement différé d'une page de route **/
+function RouteLoadingFallback() {
+    return (
+        <Backdrop sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}} open={true}>
+            <CircularProgress color="inherit" />
+        </Backdrop>
+    );
+}
 
 
 /** Page principale avec le routeur **/
@@ -44,6 +69,7 @@ export default class Main extends Component {
         return (
             <HashRouter>
                 <AuthProvider {...this.oidcConfig}>
+                    <AuthTokenSync />
                     <ThemeProvider theme={darkTheme}>
                         <CssBaseline />
                         <AppBar position={"fixed"} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
@@ -67,13 +93,15 @@ export default class Main extends Component {
                         </AppBar>
                         <div className="App">
                             <BudgetContextProvider>
-                                <Routes>
-                                    <Route path="/" element={<Infos />} />
-                                    <Route path="/budgets" element={<MainPage fonction={BUSINESS_ONGLETS.BUDGET} />} />
-                                    <Route path="/recurrents" element={<MainPage fonction={BUSINESS_ONGLETS.RECURRENTS} />} />
-                                    <Route path="/analyses" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSES} />} />
-                                    <Route path="/infos" element={<Infos />} />
-                                </Routes>
+                                <Suspense fallback={<RouteLoadingFallback />}>
+                                    <Routes>
+                                        <Route path="/" element={<Infos />} />
+                                        <Route path="/budgets" element={<MainPage fonction={BUSINESS_ONGLETS.BUDGET} />} />
+                                        <Route path="/recurrents" element={<MainPage fonction={BUSINESS_ONGLETS.RECURRENTS} />} />
+                                        <Route path="/analyses" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSES} />} />
+                                        <Route path="/infos" element={<Infos />} />
+                                    </Routes>
+                                </Suspense>
                             </BudgetContextProvider>
                         </div>
                     </ThemeProvider>

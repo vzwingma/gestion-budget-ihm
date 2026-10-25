@@ -28,4 +28,8 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
         />
     );
 };
-export default OperationItem
+
+// AP 005 - T8 : composant rendu en boucle (une tuile par opération) ; évite le re-render de
+// chaque tuile quand seules d'autres opérations de la liste changent (cf. T9 pour la
+// stabilisation du callback `onClick` associé).
+export default React.memo(OperationItem)

@@ -1,20 +1,20 @@
-import React, { JSX, useCallback, useEffect, useState } from "react";
+import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
 
-import { Backdrop, Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Grid } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
 import { getPreferenceUtilisateur, reloadBudget } from "./../budget/Budget.extservices.ts";
 
-import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsRecurrentesGroupedByPeriodicity } from "./Recurrents.controller.ts";
 import { RecurrentsPageProps } from "../../Components.props.ts";
 import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
-import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
+import BudgetPageShell from "../shared/BudgetPageShell.component.tsx";
 import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
 import { BudgetActionsButtonGroupComponent } from "../budget/actions/BudgetActionsButtonGroup.component.tsx";
 import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
-import { getHeightList } from "../../../Utils/renderers/ListData.renderer.utils.tsx";
+import { debug } from "../../../Utils/Debug.utils.ts";
+import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 
 
 /**
@@ -40,19 +40,22 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
 
     const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useBudgetContext();
 
-    const [operationsRecurrentesGroupedByPeriodicity, setOperationsRecurrentesGroupedByPeriodicity] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
 
 
     /** Callback de mise à jour du budget **/
     const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
         setCurrentBudget(budget);
-        setOperationsRecurrentesGroupedByPeriodicity(getOperationsRecurrentesGroupedByPeriodicity(budget.listeOperations, budget.id));
-        console.log("Chargement du budget correctement effectué");
-    }, [setCurrentBudget, setOperationsRecurrentesGroupedByPeriodicity]);
+        debug("Chargement du budget correctement effectué");
+    }, [setCurrentBudget]);
+
+    /** Regroupement des opérations récurrentes par périodicité, dérivé du budget courant **/
+    const operationsRecurrentesGroupedByPeriodicity = useMemo(
+        () => currentBudget == null ? {} : getOperationsRecurrentesGroupedByPeriodicity(currentBudget.listeOperations, currentBudget.id),
+        [currentBudget]
+    );
 
     useEffect(() => {
         getPreferenceUtilisateur(setUserDroits);
@@ -60,7 +63,7 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
 
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate))
+        debug("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate));
         setCurrentBudget(undefined);
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
         setCurrentOperation(null);
@@ -70,65 +73,55 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
      * Sélection d'une opération
      * @param operation opération
      */
-    function handleOperationSelect(operation: OperationModel) {
+    const handleOperationSelect = useCallback((operation: OperationModel) => {
         setCurrentOperation(operation);
-        console.log("Opération sélectionnée :", operation.id, operation);
-    }
+        debug("Opération sélectionnée :", operation.id, operation);
+    }, [setCurrentOperation]);
 
 
     /**
      * Render du budget
      */
     return (
-        <Box className="page-container recurrents-page-container">
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={currentBudget == null}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
-
-            <BudgetPageHeader
-                onOpenMenu={onOpenMenu}
-                filterOperations={filterOperations}
-                onFilterChange={setFilterOperations}
-                selectedCompte={selectedCompte}
-                selectedDate={selectedDate}
-                filterPlaceholder="Filtrage des opérations récurrentes"
-                additionalHeaderContentRight={
-                    <Grid size={{ md: 1, xl: 1 }}>
-                        {currentBudget == null ?
-                            <></> :
-                            <BudgetActionsButtonGroupComponent
-                                droits={userDroits}
-                                onActionBudgetChange={handleBudgetUpdate}
-                                onActionOperationCreate={() => { }} />
-                        }
-                    </Grid>}
-            />
-            <Divider variant="middle" sx={{ marginTop: isMobile ? 0 : 1 }} />
-            <Grid container sx={{ overflow: "hidden" }}>
-                <Grid size={{ md: 5, xl: 4 }} sx={{ overflow: "hidden", flexDirection: "column", maxHeight: 'true' }}>
-                    { /** Liste des opérations récurrentes **/
-                        (currentBudget == null ?
-                            <></>
-                            :
-                            <OperationsRecurrentesListe
-                                operationGroupedByPeriodicity={operationsRecurrentesGroupedByPeriodicity}
-                                filterOperations={filterOperations}
-                                onClick={handleOperationSelect}
-                                selectedOperationId={currentOperation?.id} />
-                        )
+        <BudgetPageShell
+            className="page-container recurrents-page-container"
+            isLoading={currentBudget == null}
+            onOpenMenu={onOpenMenu}
+            filterOperations={filterOperations}
+            onFilterChange={setFilterOperations}
+            selectedCompte={selectedCompte}
+            selectedDate={selectedDate}
+            filterPlaceholder="Filtrage des opérations récurrentes"
+            additionalHeaderContentRight={
+                <Grid size={{ md: 1, xl: 1 }}>
+                    {currentBudget == null ?
+                        <></> :
+                        <BudgetActionsButtonGroupComponent
+                            droits={userDroits}
+                            onActionBudgetChange={handleBudgetUpdate}
+                            onActionOperationCreate={() => { }} />
                     }
-                </Grid>
-                <Grid size={{ md: 7, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
-                    {currentBudget != null && currentOperation != null ?
-                        /** Affichage d'une opération **/
-                        <OperationRecurrenteDetailPage onOperationChange={handleBudgetUpdate} />
-                        : <></>
-                    }
-                </Grid>
-            </Grid>
-        </Box>
+                </Grid>}
+            leftColumnSize={{ md: 5, xl: 4 }}
+            rightColumnSize={{ md: 7, xl: 8 }}
+            leftContent={
+                /** Liste des opérations récurrentes **/
+                currentBudget == null ?
+                    <></>
+                    :
+                    <OperationsRecurrentesListe
+                        operationGroupedByPeriodicity={operationsRecurrentesGroupedByPeriodicity}
+                        filterOperations={filterOperations}
+                        onClick={handleOperationSelect}
+                        selectedOperationId={currentOperation?.id} />
+            }
+            rightContent={
+                currentBudget != null && currentOperation != null ?
+                    /** Affichage d'une opération **/
+                    <OperationRecurrenteDetailPage onOperationChange={handleBudgetUpdate} />
+                    : <></>
+            }
+        />
     )
 }
 export default RecurrentsPage;

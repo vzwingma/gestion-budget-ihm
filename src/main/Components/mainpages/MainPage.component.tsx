@@ -1,4 +1,4 @@
-import React, {JSX, useEffect, useState} from "react";
+import React, {JSX, useCallback, useEffect, useState} from "react";
 import {Box, Container, Divider, Drawer, Stack, useMediaQuery, useTheme} from "@mui/material";
 import {ToastContainer} from "react-toastify";
 import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants.ts";
@@ -13,6 +13,7 @@ import {useAuth} from "react-oidc-context";
 import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
 import { Analyses } from "../analyses/Analyses.component.tsx";
 import { getCompteGroupByOwner } from "../../Utils/UserData.utils.ts";
+import { debug } from "../../Utils/Debug.utils.ts";
 
 
 /**
@@ -57,11 +58,11 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * Notification lorsque le compte change
      * @param selectedCompteFromComponent : compte sélectionnée
      */
-    function handleCompteChange(selectedCompteFromComponent: CompteBancaireModel) {
-        console.log("[TRIGGER-MENU] Context compte", selectedCompteFromComponent.id)
+    const handleCompteChange = useCallback((selectedCompteFromComponent: CompteBancaireModel) => {
+        debug("[TRIGGER-MENU] Context compte", selectedCompteFromComponent.id);
         setSelectedCompte(selectedCompteFromComponent);
         setBudgetMenuOpen(false);
-    }
+    }, [setSelectedCompte]);
 
 
     /**
@@ -77,7 +78,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
      * @param selectedDateFromComponent : date sélectionnée
      */
     function handleDateChange(selectedDateFromComponent: Date) {
-        console.log("[TRIGGER-MENU] Context date", selectedDateFromComponent)
+        debug("[TRIGGER-MENU] Context date", selectedDateFromComponent);
         setSelectedDate(selectedDateFromComponent);
     }
 

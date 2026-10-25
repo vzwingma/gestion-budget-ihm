@@ -1,44 +1,16 @@
-import React, {JSX, useContext, useMemo, useState} from "react";
+import React, {JSX, useMemo, useState} from "react";
 import BudgetMensuelModel from "../budgets/BudgetMensuel.model.ts";
 import OperationModel from "../budgets/Operation.model.ts";
 import CompteBancaireModel from "../budgets/CompteBancaire.model.ts";
 import CategorieOperationModel from "../budgets/CategorieOperation.model.ts";
+import { BudgetContext, useBudgetContext } from "../../hooks/useBudgetContext.ts";
 
 /**
- * Contexte de la partie budget
+ * `BudgetContext` et `useBudgetContext` sont désormais définis dans `src/main/hooks/useBudgetContext.ts`
+ * (AP 005 - T11). Ré-exportés ici pour conserver la compatibilité avec tous les imports existants
+ * (`from ".../BudgetContextProvider.tsx"`).
  */
-type BudgetContextType = {
-    currentBudget: BudgetMensuelModel | undefined;
-    setCurrentBudget: React.Dispatch<React.SetStateAction<BudgetMensuelModel | undefined>>;
-
-    currentOperation: OperationModel | null;
-    setCurrentOperation: React.Dispatch<React.SetStateAction<OperationModel | null>>;
-
-    comptes: CompteBancaireModel[];
-    setListeComptes: React.Dispatch<React.SetStateAction<CompteBancaireModel[]>>;
-    selectedCompte: CompteBancaireModel | null;
-    setSelectedCompte: React.Dispatch<React.SetStateAction<CompteBancaireModel | null>>;
-
-    selectedDate: Date;
-    setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
-
-    categories: CategorieOperationModel[];
-    setCategories: React.Dispatch<React.SetStateAction<CategorieOperationModel[]>>
-};
-
-
-export const BudgetContext = React.createContext<BudgetContextType | null>(null);
-
-/**
- * Accès typé (non nul) au contexte budget. Lève si utilisé hors provider.
- */
-export function useBudgetContext(): BudgetContextType {
-    const context = useContext(BudgetContext);
-    if (context === null) {
-        throw new Error("useBudgetContext doit être utilisé dans un BudgetContextProvider");
-    }
-    return context;
-}
+export { BudgetContext, useBudgetContext };
 
 /**
  * Budget context provider
@@ -51,7 +23,9 @@ export function BudgetContextProvider({ children }: Readonly<{ children: React.R
     const [currentOperation, setCurrentOperation] = useState<OperationModel | null>(null);
 
     const [listeComptes, setListeComptes] = useState<CompteBancaireModel[]>([]);
-    const comptes : CompteBancaireModel[] = useMemo(() => listeComptes, [listeComptes]);
+    // `comptes` est un simple alias de `listeComptes` (même référence, pas de calcul dérivé) :
+    // pas besoin de useMemo ici (AP 005 - T6, portée réduite : cf. rapport de phase).
+    const comptes : CompteBancaireModel[] = listeComptes;
     const [selectedCompte, setSelectedCompte] = useState<CompteBancaireModel | null>(null);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date(Date.now()).getFullYear(), new Date(Date.now()).getMonth(), 1, 0, 0, 0));
 

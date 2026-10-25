@@ -5,8 +5,10 @@ import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.mode
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../../../Utils/AppTechEnums.constants.ts";
 import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants.ts";
 import {call} from "../../../../../Services/ClientHTTP.service.ts";
+import {callAndNotify} from "../../../../../Services/CallAndNotify.service.ts";
 import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import {Dispatch, SetStateAction} from "react";
+import { debug } from "../../../../../Utils/Debug.utils.ts";
 
 
 /**
@@ -19,27 +21,24 @@ export function saveOperation(operation: OperationModel, budget: BudgetMensuelMo
 
     if (budget.actif) {
         const isCreation: boolean = operation.id === "-1"
-        console.log((isCreation ? "Création" : "Mise à jour") + " d'une opération sur le budget : " + budget.id)
+        debug((isCreation ? "Création" : "Mise à jour") + " d'une opération sur le budget : " + budget.id)
         if (isCreation) {
             operation.id = uuid();
         }
 
-        call(operation.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ? METHODE_HTTP.DELETE : METHODE_HTTP.POST,
-            BACKEND_ENUM.URL_OPERATIONS, isCreation ? SERVICES_URL.OPERATIONS.CREATE : SERVICES_URL.OPERATIONS.UPDATE,
-            [budget.id, isCreation ? "" : operation.id], operation)
-            .then((data: BudgetMensuelModel) => {
-
+        callAndNotify(
+            call(operation.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ? METHODE_HTTP.DELETE : METHODE_HTTP.POST,
+                BACKEND_ENUM.URL_OPERATIONS, isCreation ? SERVICES_URL.OPERATIONS.CREATE : SERVICES_URL.OPERATIONS.UPDATE,
+                [budget.id, isCreation ? "" : operation.id], operation),
+            (data: BudgetMensuelModel) => {
                 // Update du budget global (parent)
                 onOperationUpdate(data);
                 toast.success((isCreation ? "Création" : "Mise à jour") + " de l'opération correctement effectuée")
-
-            })
-            .catch((e) => {
-                console.log("Erreur lors de la mise à jour de l'opération " + operation.id, e);
-                toast.error("Erreur lors de la mise à jour de l'opération")
-            })
+            },
+            "Erreur lors de la mise à jour de l'opération"
+        );
     } else {
-        console.log("Impossible de modifier l'opération " + operation.id + " sur un budget clos");
+        console.warn("Impossible de modifier l'opération " + operation.id + " sur un budget clos");
         toast.warn("Impossible de sauvegarder une opération sur un budget clos")
     }
 
@@ -59,20 +58,19 @@ export function saveOperationIntercompte(operation: OperationModel, budget: Budg
         return;
     }
 
-    console.log("Création d'une opération intercompte sur le budget [" + budget.id + "] vers le compte [" + idCompteCible + "]")
+    debug("Création d'une opération intercompte sur le budget [" + budget.id + "] vers le compte [" + idCompteCible + "]")
 
-    call(METHODE_HTTP.POST,
-        BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.INTERCOMPTE,
-        [budget.id, idCompteCible],
-        operation)
-        .then(budgetUpdated => {
+    callAndNotify(
+        call(METHODE_HTTP.POST,
+            BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.INTERCOMPTE,
+            [budget.id, idCompteCible],
+            operation),
+        (budgetUpdated: BudgetMensuelModel) => {
             onOperationUpdate(budgetUpdated);
             toast.success("Création de l'opération inter-comptes correctement effectuée")
-        })
-        .catch(e => {
-            console.log("Erreur lors de l'enregistrement de l'opération intercomptes", e)
-            toast.error("Erreur lors de l'enregistrement de l'opération intercomptes")
-        })
+        },
+        "Erreur lors de l'enregistrement de l'opération intercomptes"
+    );
 }
 
 /**
@@ -91,6 +89,6 @@ export function getLibellesOperationsCompte(idCompte: string, setListeLibellesOp
                 .sort((libelle1, libelle2) => libelle1.libelle.localeCompare(libelle2.libelle)));
         })
         .catch(e => {
-            console.error("Erreur lors de la recherche des libellés d'opérations ", e);
+            console.error("Erreur lors de la recherche des libellés d'opérations", e);
         })
 }
