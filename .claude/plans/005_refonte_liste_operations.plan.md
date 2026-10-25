@@ -17,7 +17,7 @@
 | #4 | Doc + clôture Phase 2 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK, PR #688 mergée ; recette : lignes écrasées corrigées `a138bc2`, fond du ☰ assombri 0.3→0.65 `8b019a4`, props mortes Sonar retirées `58ecf08`) |
 | #2 | Code Phase 3 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 3 | 2026-10-25 | ✅ GO |
-| #4 | Doc + clôture Phase 3 | — | ⏳ En attente 👤 |
+| #4 | Doc + clôture Phase 3 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK ; backlog B1 ajouté) |
 
 ## Context
 
@@ -131,7 +131,7 @@ Phase 1 → 2 → 3 → 4 → 5, strictement séquentiel (chaque phase = 1 branc
 
 ---
 
-## Phase 3 — Repérage des prévues « À valider » ✅ (code + tests validés 2026-10-25, Gate #4 en attente 👤)
+## Phase 3 — Repérage des prévues « À valider » ✅ (terminée 2026-10-25, Gate #4 validé)
 
 Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
