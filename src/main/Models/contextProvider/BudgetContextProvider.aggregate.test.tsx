@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, test, expect } from 'vitest';
+import { FILTRE_OPERATIONS_VIDE } from '../../Utils/OperationsFilter.utils.ts';
 
 import {
     BudgetContextProvider,
@@ -12,11 +13,11 @@ import {
 
 /**
  * Agrégat `useBudgetContext()` vs sous-contextes `useBudgetSelection()` / `useCurrentBudget()`
- * (AP 006 - T6 / T20) : l'agrégat doit contenir les 12 champs, avec les mêmes valeurs que les deux moitiés.
+ * (AP 006 - T6 / T20) : l'agrégat doit contenir les 14 champs, avec les mêmes valeurs que les deux moitiés.
  */
 
 const CHAMPS_SELECTION = ['categories', 'comptes', 'selectedCompte', 'selectedDate', 'setCategories', 'setListeComptes', 'setSelectedCompte', 'setSelectedDate'];
-const CHAMPS_COURANT = ['currentBudget', 'currentOperation', 'setCurrentBudget', 'setCurrentOperation'];
+const CHAMPS_COURANT = ['currentBudget', 'currentOperation', 'filtreOperations', 'setCurrentBudget', 'setCurrentOperation', 'setFiltreOperations'];
 
 type Captured = { agregat?: Record<string, unknown>, selection?: Record<string, unknown>, courant?: Record<string, unknown> };
 
@@ -29,7 +30,7 @@ function Capture({ captured }: Readonly<{ captured: Captured }>) {
 
 describe('BudgetContextProvider - agrégat et sous-contextes', () => {
 
-    test('l agrégat expose exactement les 12 champs, identiques à ceux des deux sous-contextes', () => {
+    test('l agrégat expose exactement les 14 champs, identiques à ceux des deux sous-contextes', () => {
         const captured: Captured = {};
         render(<BudgetContextProvider><Capture captured={captured} /></BudgetContextProvider>);
 
@@ -70,5 +71,30 @@ describe('BudgetContextProvider - agrégat et sous-contextes', () => {
         await user.click(screen.getByTestId('pick'));
 
         expect((captured.selection!.selectedCompte as { id: string }).id).toBe('c9');
+    });
+
+    test('filtreOperations vaut FILTRE_OPERATIONS_VIDE au départ ; le changer ne re-rend pas un consumer de useBudgetSelection seul', () => {
+        let compteurSelection = 0;
+        const api: { setFiltre?: (f: unknown) => void, filtre?: unknown } = {};
+        function SelectionSeule() {
+            useBudgetSelection();
+            compteurSelection++;
+            return <></>;
+        }
+        function FiltreConsumer() {
+            const { filtreOperations, setFiltreOperations } = useCurrentBudget();
+            api.filtre = filtreOperations;
+            api.setFiltre = setFiltreOperations as (f: unknown) => void;
+            return <></>;
+        }
+        render(<BudgetContextProvider><SelectionSeule /><FiltreConsumer /></BudgetContextProvider>);
+        expect(api.filtre).toEqual(FILTRE_OPERATIONS_VIDE);
+        const nbRendusAvant = compteurSelection;
+
+        const nouveau = { texte: 'loy', etats: [], sens: [] };
+        act(() => api.setFiltre!(nouveau));
+
+        expect(api.filtre).toEqual(nouveau);
+        expect(compteurSelection).toBe(nbRendusAvant);
     });
 });

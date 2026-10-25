@@ -17,6 +17,8 @@ import BudgetSoldes from "./BudgetSoldes.component.tsx";
 import BudgetPageShell from "../shared/BudgetPageShell.component.tsx";
 import { debug } from "../../../Utils/Debug.utils.ts";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
+import OperationsFilterBar from "../shared/OperationsFilterBar.component.tsx";
+import { filterOperationsList } from "../operations/OperationsListe.shared.tsx";
 
 
 /**
@@ -40,9 +42,8 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Etats pour la page Budget **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories } = useBudgetContext();
+    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories, filtreOperations, setFiltreOperations } = useBudgetContext();
 
-    const [filterOperations, setFilterOperations] = useState<string | null>(null);
 
     /** Chargement des catégories et des préférences utilisateurs au 1er démarrage **/
     const { data: categoriesChargees } = useFetch(() => fetchCategories(), []);
@@ -70,6 +71,16 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
         [currentBudget]
     );
 
+    /** Opérations de la liste après filtrage texte + puces (compteur et net de la barre de résultat) **/
+    const operationsFiltrees = useMemo(
+        () => filterOperationsList(Object.values(operationsGroupedByDateOperation).flat(), filtreOperations.texte, filtreOperations),
+        [operationsGroupedByDateOperation, filtreOperations]
+    );
+
+    /** Mise à jour du filtre texte (le filtre est conservé dans le Context : changement d'onglet) **/
+    const handleFilterTexteChange = useCallback((texte: string) => {
+        setFiltreOperations((filtre) => ({ ...filtre, texte }));
+    }, [setFiltreOperations]);
 
 
     /** Rechargement du budget et des libellés si changement de compte ou de date **/
@@ -118,11 +129,17 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
             className="page-container budget-page-container"
             isLoading={currentBudget == null}
             onOpenMenu={onOpenMenu}
-            filterOperations={filterOperations}
-            onFilterChange={setFilterOperations}
+            filterOperations={filtreOperations.texte}
+            onFilterChange={handleFilterTexteChange}
             selectedCompte={selectedCompte}
             selectedDate={selectedDate}
             filterPlaceholder="Filtrage des opérations"
+            filterBar={
+                <OperationsFilterBar
+                    filtre={filtreOperations}
+                    onFiltreChange={setFiltreOperations}
+                    operationsFiltrees={operationsFiltrees} />
+            }
             additionalHeaderContentLeft={
                 <Grid size={{ md: 1.6, xl: 1.6 }}>
                     {selectedDate != null && selectedCompte != null ?
@@ -148,7 +165,8 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                     :
                     <OperationsListe
                         operationGroupedByDate={operationsGroupedByDateOperation}
-                        filterOperations={filterOperations}
+                        filterOperations={filtreOperations.texte}
+                        filterPuces={filtreOperations}
                         onClick={handleOperationSelect}
                         selectedOperationId={currentOperation?.id} />
             }

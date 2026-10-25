@@ -15,6 +15,8 @@ interface BudgetPageHeaderProps {
     filterPlaceholder?: string;
     additionalHeaderContentLeft?: ReactNode;
     additionalHeaderContentRight?: ReactNode;
+    /** Barre de filtres (puces + résultat) affichée sous le champ de filtrage, hauteur `FILTER_BAR_HEIGHT` */
+    filterBar?: ReactNode;
 }
 
 /**
@@ -30,7 +32,8 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
     selectedDate,
     filterPlaceholder = "Filtrage des opérations",
     additionalHeaderContentLeft,
-    additionalHeaderContentRight
+    additionalHeaderContentRight,
+    filterBar
 }: BudgetPageHeaderProps): JSX.Element => {
 
     return (
@@ -59,6 +62,14 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
                 }
             </Grid>
             {additionalHeaderContentRight}
+            {filterBar &&
+                <>
+                    <Grid size={{md: 0.6, xl: 0.4}}/>
+                    <Grid size={{md: 11.4, xl: 11.6}}>
+                        {filterBar}
+                    </Grid>
+                </>
+            }
         </Grid>
     );
 };

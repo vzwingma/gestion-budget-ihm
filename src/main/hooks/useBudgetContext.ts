@@ -3,6 +3,7 @@ import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
 import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
+import { FiltreOperations } from "../Utils/OperationsFilter.utils.ts";
 
 /**
  * Contexte de la partie budget (AP 006 - T11 : extraction hors de `BudgetContextProvider.tsx`,
@@ -10,7 +11,7 @@ import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.
  *
  * AP 006 - T6 : le contexte est scindé en deux sous-contextes pour limiter les re-renders :
  * - **sélection / référentiels** (`BudgetSelectionContext`) : comptes, compte et date sélectionnés, catégories ;
- * - **budget courant** (`CurrentBudgetContext`) : budget et opération courants (changent à chaque action utilisateur).
+ * - **budget courant** (`CurrentBudgetContext`) : budget et opération courants, filtre des opérations (changent à chaque action utilisateur ; le filtre est ici pour ne pas re-rendre les lignes de liste qui lisent la sélection).
  *
  * `BudgetContext` / `useBudgetContext()` restent l'agrégat des deux (compatibilité, mêmes valeurs) : un consumer
  * de l'agrégat se re-rend si l'un OU l'autre sous-contexte change. Les consumers qui ne lisent qu'une moitié
@@ -38,6 +39,10 @@ export type CurrentBudgetContextType = {
 
     currentOperation: OperationModel | null;
     setCurrentOperation: React.Dispatch<React.SetStateAction<OperationModel | null>>;
+
+    /** Filtre (texte + puces) de la liste des opérations : conservé au changement d'onglet (AP 005 - Phase 4, T4.1/T4.5) */
+    filtreOperations: FiltreOperations;
+    setFiltreOperations: React.Dispatch<React.SetStateAction<FiltreOperations>>;
 };
 
 export type BudgetContextType = BudgetSelectionContextType & CurrentBudgetContextType;
