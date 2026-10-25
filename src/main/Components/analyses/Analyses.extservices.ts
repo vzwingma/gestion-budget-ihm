@@ -27,7 +27,7 @@ export function loadBudget(selectedCompte: CompteBancaireModel | null, selectedD
         [selectedCompte.id, String(selectedDate.getFullYear()), String(selectedDate.getMonth() + 1)])
         .catch(e => {
             let libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte?.libelle + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
-            console.log(libErreur, e)
+            console.error(libErreur, e)
             toast.error(libErreur, { autoClose: false, closeOnClick: true })
             return undefined;
         })
@@ -63,7 +63,7 @@ export function getValidPeriodesForCompte(selectedCompte: CompteBancaireModel | 
             })
             .catch(e => {
                 let libErreur = "Erreur lors du chargement des périodes d'analyses disponibles pour le compte " + selectedCompte?.libelle;
-                console.log(libErreur, e)
+                console.error(libErreur, e)
                 toast.error(libErreur, { autoClose: false, closeOnClick: true })
             }
             )

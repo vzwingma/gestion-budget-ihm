@@ -1,6 +1,6 @@
-import React, { JSX, useCallback, useEffect, useState } from "react";
+import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
 
-import { Backdrop, Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Grid } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel, { createNewOperation } from "../../../Models/budgets/Operation.model.ts";
 import { getPreferenceUtilisateur, loadCategories, reloadBudget } from "./Budget.extservices.ts";
@@ -8,7 +8,6 @@ import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from "../../../Utils/App
 import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButtonGroup.component.tsx";
 import OperationsListe from "../operations/OperationsListe.component.tsx";
 import OperationDetailPage from "../operations/courantes/detail/OperationDetailPage.component.tsx";
-import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { getOperationsGroupedByDateOperation, updateOperationsStatus } from "./Budget.controller.ts";
 import { getLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
 import { BudgetPageProps } from "../../Components.props.tsx";
@@ -16,8 +15,9 @@ import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextP
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 import LibelleCategorieOperationModel from "../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import BudgetSoldes from "./BudgetSoldes.component.tsx";
-import BudgetPageHeader from "../shared/BudgetPageHeader.component.tsx";
-import { getHeightList } from "../../../Utils/renderers/ListData.renderer.utils.tsx";
+import BudgetPageShell from "../shared/BudgetPageShell.component.tsx";
+import { debug } from "../../../Utils/Debug.utils.ts";
+import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 
 
 /**
@@ -43,12 +43,9 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories } = useBudgetContext();
 
-    const [operationsGroupedByDateOperation, setOperationsGroupedByDateOperation] = useState<{ [key: string]: OperationModel[] }>({});
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
     const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
     const [listeLibellesOperations, setListeLibellesOperations] = useState<LibelleCategorieOperationModel[]>([]);
-
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
     /** Callback de chargement des catégories **/
     const handleLoadCategories = useCallback((categories: CategorieOperationModel[]) => {
@@ -63,20 +60,23 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Callback de mise à jour du budget **/
     const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
-        setCurrentBudget(budget);
-
         // Compatibilité des opérations sur le statut en retard
         updateOperationsStatus(budget.listeOperations);
+        setCurrentBudget(budget);
+        debug("Chargement du budget correctement effectué");
+    }, [setCurrentBudget]);
 
-        setOperationsGroupedByDateOperation(getOperationsGroupedByDateOperation(budget.listeOperations));
-        console.log("Chargement du budget correctement effectué");
-    }, [setCurrentBudget, setOperationsGroupedByDateOperation]);
+    /** Regroupement des opérations par date, dérivé du budget courant **/
+    const operationsGroupedByDateOperation = useMemo(
+        () => currentBudget == null ? {} : getOperationsGroupedByDateOperation(currentBudget.listeOperations),
+        [currentBudget]
+    );
 
 
 
     /** Mise à jour du budget si changement de compte ou de date **/
     useEffect(() => {
-        console.log("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate))
+        debug("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate));
         setCurrentBudget(undefined);
         reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
         if (selectedCompte != null) {
@@ -89,10 +89,10 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      * Sélection d'une opération
      * @param operation opération
      */
-    function handleOperationSelect(operation: OperationModel) {
+    const handleOperationSelect = useCallback((operation: OperationModel) => {
         operation.mensualite ??= { periode: PERIODES_MENSUALITE_ENUM.PONCTUELLE, prochaineEcheance: -1 };
         setCurrentOperation(operation);
-    }
+    }, [setCurrentOperation]);
 
 
     /**
@@ -106,65 +106,53 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
      * Render du budget
      */
     return (
-        <Box className="page-container budget-page-container">
-
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={currentBudget == null}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
-
-
-            <BudgetPageHeader
-                onOpenMenu={onOpenMenu}
-                filterOperations={filterOperations}
-                onFilterChange={setFilterOperations}
-                selectedCompte={selectedCompte}
-                selectedDate={selectedDate}
-                filterPlaceholder="Filtrage des opérations"
-                additionalHeaderContentLeft={
-                    <Grid size={{ md: 1.6, xl: 1.6 }}>
-                        {selectedDate != null && selectedCompte != null ?
-                            <BudgetSoldes /> : <></>
-                        }
-                    </Grid>
-                }
-                additionalHeaderContentRight={
-                    <Grid size={{ md: 1, xl: 1 }}>
-                        {currentBudget == null ? <></> :
-                            <BudgetActionsButtonGroupComponent
-                                droits={[...userDroits, UTILISATEUR_DROITS.DROIT_CREATE_OPERATION]}
-                                onActionBudgetChange={handleBudgetUpdate}
-                                onActionOperationCreate={handleButtonCreateClick} />
-                        }
-                    </Grid>
-                }
-            />
-            <Divider variant="middle" sx={{ marginTop: isMobile ? 0 : 1 }} />
-            <Grid container sx={{ overflow: "hidden" }}>
-                <Grid size={{ md: 4, xl: 4 }} sx={{ overflow: "hidden", flexDirection: "column", maxHeight: 'true' }}>
-                    { /** Liste des opérations **/
-                        (currentBudget == null ? <></>
-                            :
-                            <OperationsListe
-                                operationGroupedByDate={operationsGroupedByDateOperation}
-                                filterOperations={filterOperations}
-                                onClick={handleOperationSelect} 
-                                selectedOperationId={currentOperation?.id}/>
-                        )
+        <BudgetPageShell
+            className="page-container budget-page-container"
+            isLoading={currentBudget == null}
+            onOpenMenu={onOpenMenu}
+            filterOperations={filterOperations}
+            onFilterChange={setFilterOperations}
+            selectedCompte={selectedCompte}
+            selectedDate={selectedDate}
+            filterPlaceholder="Filtrage des opérations"
+            additionalHeaderContentLeft={
+                <Grid size={{ md: 1.6, xl: 1.6 }}>
+                    {selectedDate != null && selectedCompte != null ?
+                        <BudgetSoldes /> : <></>
                     }
                 </Grid>
-                <Grid size={{ md: 8, xl: 8 }} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
-                    {currentBudget != null && currentOperation != null ?
-                        <OperationDetailPage
-                            listeCategories={categories}
-                            listeLibellesOperations={listeLibellesOperations}
-                            onOperationChange={handleBudgetUpdate} />
-                    : <></>                      
+            }
+            additionalHeaderContentRight={
+                <Grid size={{ md: 1, xl: 1 }}>
+                    {currentBudget == null ? <></> :
+                        <BudgetActionsButtonGroupComponent
+                            droits={[...userDroits, UTILISATEUR_DROITS.DROIT_CREATE_OPERATION]}
+                            onActionBudgetChange={handleBudgetUpdate}
+                            onActionOperationCreate={handleButtonCreateClick} />
                     }
                 </Grid>
-            </Grid>
-        </Box>
+            }
+            leftColumnSize={{ md: 4, xl: 4 }}
+            rightColumnSize={{ md: 8, xl: 8 }}
+            leftContent={
+                /** Liste des opérations **/
+                currentBudget == null ? <></>
+                    :
+                    <OperationsListe
+                        operationGroupedByDate={operationsGroupedByDateOperation}
+                        filterOperations={filterOperations}
+                        onClick={handleOperationSelect}
+                        selectedOperationId={currentOperation?.id} />
+            }
+            rightContent={
+                currentBudget != null && currentOperation != null ?
+                    <OperationDetailPage
+                        listeCategories={categories}
+                        listeLibellesOperations={listeLibellesOperations}
+                        onOperationChange={handleBudgetUpdate} />
+                    : <></>
+            }
+        />
     )
 }
 export default BudgetPage;

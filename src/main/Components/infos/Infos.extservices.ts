@@ -23,7 +23,7 @@ export function getInfosFromMicroServices(setInfos: React.Dispatch<React.SetStat
         promisesGetInfos.push(call(METHODE_HTTP.GET, backEnd.url, SERVICES_URL.INFOS.GET_INFO)
             .then((msInfo : MsInfoModel) => { msInfos.push(msInfo); })
             .catch((e) => {
-                console.log("Erreur pour " + backEnd.idMS, e)
+                console.error("Erreur pour " + backEnd.idMS, e)
                 const errData : MsInfoModel = {
                     nom: backEnd.idMS,
                     version: 'N/A'

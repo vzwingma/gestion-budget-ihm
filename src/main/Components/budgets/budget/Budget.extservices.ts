@@ -1,12 +1,13 @@
-import {toast} from "react-toastify";
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
 import {UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants.ts";
 import {call} from "../../../Services/ClientHTTP.service.ts";
+import {callAndNotify} from "../../../Services/CallAndNotify.service.ts";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants.ts";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import {populateAllCategories} from "./Budget.controller.ts";
 import React from "react";
+import { debug } from "../../../Utils/Debug.utils.ts";
 
 /*
  * Services back-end des budgets
@@ -17,18 +18,13 @@ import React from "react";
  *
  * @param handleLoadCategories
  */
-
 export function loadCategories(handleLoadCategories: (categories: CategorieOperationModel[]) => void) {
-    console.log("Chargement des catégories");
-    call(METHODE_HTTP.GET, BACKEND_ENUM.URL_PARAMS, SERVICES_URL.PARAMETRES.CATEGORIES)
-        .then((data : CategorieOperationModel[])=> {
-            const categories = populateAllCategories(data);
-            handleLoadCategories(categories);
-        } )
-        .catch((e) => {
-            console.log("Erreur lors du chargement des catégories", e)
-            toast.error("Erreur lors du chargement des catégories")
-        })
+    debug("Chargement des catégories");
+    callAndNotify(
+        call(METHODE_HTTP.GET, BACKEND_ENUM.URL_PARAMS, SERVICES_URL.PARAMETRES.CATEGORIES),
+        (data: CategorieOperationModel[]) => handleLoadCategories(populateAllCategories(data)),
+        "Erreur lors du chargement des catégories"
+    );
 }
 
 
@@ -41,14 +37,13 @@ export function loadCategories(handleLoadCategories: (categories: CategorieOpera
  */
 export function reloadBudget(handleBudgetUpdate: (budget: BudgetMensuelModel) => void, selectedCompte: CompteBancaireModel | null, selectedDate?: Date) {
     if (selectedCompte != null && selectedDate != null) {
-        call(METHODE_HTTP.GET, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
-                    [selectedCompte.id, selectedDate.getFullYear().toString(), (selectedDate.getMonth() + 1).toString()])
-            .then((data: BudgetMensuelModel) => handleBudgetUpdate(data))
-            .catch(e => {
-                let libErreur = "Erreur lors du chargement du budget " + selectedCompte?.id + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
-                console.log(libErreur, e)
-                toast.error(libErreur, { autoClose: false, closeOnClick: true })
-            })
+        callAndNotify(
+            call(METHODE_HTTP.GET, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
+                [selectedCompte.id, selectedDate.getFullYear().toString(), (selectedDate.getMonth() + 1).toString()]),
+            handleBudgetUpdate,
+            "Erreur lors du chargement du budget " + selectedCompte?.id + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear(),
+            { autoClose: false, closeOnClick: true }
+        );
     }
 }
 
@@ -75,7 +70,7 @@ export function getPreferenceUtilisateur(setUserDroits: React.Dispatch<React.Set
             setUserDroits(userDroits);
         })
         .catch((e) => {
-            console.log("Erreur lors de la recherche de la dernière connexion", e);
+            console.error("Erreur lors de la recherche des préférences utilisateur", e);
         })
 
 }

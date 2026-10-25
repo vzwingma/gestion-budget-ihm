@@ -34,7 +34,6 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
 }: OperationRecurrenteDetailPageProps): JSX.Element => {
 
     const [editForm, setEditForm] = useState<EditRFormProps>(createEmptyEditForm());
-    const [refresh, setRefresh] = useState<Date>(new Date());
     const [errors, setErrors] = useState<ErrorsRFormProps>(createEmptyErrors());
     const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
     const { currentBudget, currentOperation, comptes } = useBudgetContext();
@@ -42,8 +41,6 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
     const budget = currentBudget;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-
-    useEffect(() => { }, [refresh]);
 
     /**
      * Init de l'opération du formulaire à la sélection d'une nouvelle opération
@@ -64,7 +61,6 @@ export const OperationRecurrenteDetailPage: React.FC<OperationRecurrenteDetailPa
      */
     function openEditForm(editForm: EditRFormProps) {
         setEditForm(editForm)
-        setRefresh(new Date())
     }
 
     /**

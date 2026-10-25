@@ -15,6 +15,7 @@ import {
 import { AnalysesPeriodeModel } from '../../../Models/analyses/AnalysesPeriode.model.ts';
 import { AnalysesFiltrePeriodeProps } from '../../Components.props.ts';
 import { getValidPeriodesForCompte } from '../Analyses.extservices.ts';
+import { debug } from "../../../Utils/Debug.utils.ts";
 
 
 
@@ -127,8 +128,7 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
         if (selectedCompte) {
             getValidPeriodesForCompte(selectedCompte)
                 .then(intervallesBudget => {
-                    console.log("Périodes d'analyses valides pour le compte " + selectedCompte?.libelle, intervallesBudget);
-
+                    debug("Périodes d'analyses valides pour le compte " + selectedCompte?.libelle, intervallesBudget);
                     if (intervallesBudget && intervallesBudget.length > 0) {
                         setDateMinBudget(intervallesBudget[0].debut);
                         setDateMaxBudget(intervallesBudget[0].fin);
