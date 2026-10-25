@@ -1,6 +1,6 @@
 # Plan d'Action 005 — Refonte panneau gauche écran « Opérations »
 
-**Statut** : 🟡 En cours — Phases 1–4 terminées, 5 à venir
+**Statut** : 🟡 En cours — Phases 1–5 terminées (reste recette tablette réelle)
 **Date** : 2026-10-23 (dernière mise à jour : 2026-10-25)
 
 ## Journal des gates
@@ -20,7 +20,10 @@
 | #4 | Doc + clôture Phase 3 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK ; backlog B1 ajouté) |
 | #2 | Code Phase 4 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 4 | 2026-10-25 | ✅ GO |
-| #4 | Doc + clôture Phase 4 | — | ⏳ En attente 👤 |
+| #4 | Doc + clôture Phase 4 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK, PR #697 mergée, CI 13/13 verte ; filtre conservé dans le Context tel quel, pas d'ADR) |
+| #2 | Code Phase 5 | 2026-10-25 | ✅ GO |
+| #3 | Tests Phase 5 | 2026-10-25 | ✅ GO |
+| #4 | Doc + clôture Phase 5 | — | ⏳ En attente 👤 |
 
 ## Context
 
@@ -177,7 +180,7 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 ---
 
-## Phase 4 — Filtre orienté validation ✅ (code + tests terminés 2026-10-25, Gate #4 en attente 👤)
+## Phase 4 — Filtre orienté validation ✅ (terminée 2026-10-25, Gate #4 validé)
 
 **Critères de réussite** : recherche "pharma" + puce "À valider" ne montre que les prévues/reportées correspondantes ; net juste ; "Réinitialiser" vide texte + puces.
 
@@ -218,7 +221,7 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 **Décisions d'architecture** :
 - `BudgetPage` est démonté au changement d'onglet (vérifié T4.1) → filtre (texte + puces) remonté dans `BudgetContextProvider` (`filtreOperations` + `setFiltreOperations`) ; il survit aussi aux changements de compte/mois. Portée du Context **ACCEPTÉE** par le 👤.
-- **ADR reporté** : à valider en recette si le filtre doit perdurer au-delà de l'affichage du mois courant ; si oui, ADR court à rédiger par DOCly.
+- **ADR non requis** : recette 👤 OK (2026-10-25) avec le filtre conservé dans le Context, y compris au changement de compte/mois. À rouvrir si l'usage réel demande une autre durée de vie.
 
 **Points ouverts (recette 👤)** :
 - Couleur puce « À valider » `#90a4ae` (constante `COULEUR_PUCE_A_VALIDER`, contraste ≈ 7:1 calculé à la main) à valider visuellement.
@@ -231,25 +234,58 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 ---
 
-## Phase 5 — En-tête
+## Phase 5 — En-tête ✅ (terminée 2026-10-25, Gate #4 en attente 👤)
 
 **Critères de réussite** : libellés soldes corrects et lisibles sur les deux formats ; détail par type accessible au tap sur tablette, fermeture par second tap/tap ailleurs ; description intercompte accessible sans survol sur tablette.
 
-- **T5.1** — Soldes libellés « Aujourd'hui »/« Fin de mois », vérifier espace dispo (`width:isMobile?100:240`). Fichier : `src/main/Components/budgets/budget/BudgetSoldes.component.tsx`. **Agent : DEVon.**
-- **T5.2** — Détail par type : survol desktop inchangé, tap contrôlé + `ClickAwayListener` sur tablette. Fichier : `BudgetSoldes.component.tsx`. **Agent : DEVon.**
-- **T5.3** — Tooltip intercompte accessible par tap/clic dédié sur la ligne (reste dans le périmètre liste). Fichier : `src/main/Utils/renderers/OperationItem.renderer.tsx`. **Agent : DEVon.**
-- **T5.4** — Tests non-régression (libellés, tap soldes, tap intercompte). **Agent : QALvin.**
+- **T5.1** ✅ — Soldes libellés « Aujourd'hui »/« Fin de mois », vérifier espace dispo (`width:isMobile?100:240`). Fichier : `src/main/Components/budgets/budget/BudgetSoldes.component.tsx`. **Agent : DEVon.**
+- **T5.2** ✅ — Détail par type : survol desktop inchangé, tap contrôlé + `ClickAwayListener` sur tablette. Fichier : `BudgetSoldes.component.tsx`. **Agent : DEVon.**
+- **T5.3** ✅ — Tooltip intercompte accessible par tap/clic dédié sur la ligne (reste dans le périmètre liste). Fichier : `src/main/Utils/renderers/OperationItem.renderer.tsx`. **Agent : DEVon.**
+- **T5.4** ✅ — Tests non-régression (libellés, tap soldes, tap intercompte). **Agent : QALvin.**
+
+### Résultats Phase 5
+
+**Fichiers créés** :
+- `src/main/hooks/useIsTouchDevice.ts` — `useMediaQuery('(hover: none) and (pointer: coarse)')`
+- `src/main/Components/shared/TapTooltip.component.tsx` — desktop : `Tooltip` MUI inchangé avec `followCursor` ; tactile : `Tooltip` contrôlé, ouverture/fermeture au tap, `ClickAwayListener` pour le tap extérieur, clic jamais stoppé (le `onClick` parent reste appelé) ; wrapper `span` `display:contents`
+
+**Fichiers modifiés** :
+- `src/main/Components/budgets/budget/BudgetSoldes.component.tsx` — deux lignes « Aujourd'hui » / « Fin de mois », un seul `TapTooltip` avec cible ≥ 44 px, largeur `width:100%; maxWidth:240; minWidth:0` ; « Fin de mois » masqué si budget non actif ; garde « budget absent » issue de master (AP 006)
+- `src/main/Utils/renderers/OperationItem.renderer.tsx` — `getOperationIntercompteLibelleWithIconAndComment` utilise `TapTooltip`
+
+**Tests (22 nouveaux, 4 fichiers)** : `useIsTouchDevice.test.tsx`, `TapTooltip.component.test.tsx`, `BudgetSoldes.component.test.tsx` (fusionné avec celui de master/AP 006 : fournisseur `CurrentBudgetContext`, ids `parId`), `OperationItem.renderer.tactile.test.tsx` (mock `useBudgetSelection` — contexte scindé AP 006).
+
+**Preuves** :
+- Suite : 498/503 après fusion master ; 4 échecs locaux préexistants (`Auth.service.test.ts`, localStorage, absents en CI).
+- `npm run lint` : 0 erreur.
+- Mutations de régression détectées : détection tactile inversée, `stopPropagation`, « Fin de mois » sans budget actif.
+
+**Décisions / choix** :
+- Détection tactile par capacité appareil, pas par breakpoint : une fenêtre desktop étroite avec souris garde le survol. Limite : portable tactile avec souris garde le survol.
+- Description intercompte accessible au tap **dans la liste** (décision 👤 : pas de renvoi au panneau détail).
+- Deux lignes de soldes empilées plutôt qu'une ligne « Aujourd'hui … · Fin de mois … » du plan source : tient mieux dans la colonne ≈ 170 px à 1024 px.
+- Effets de bord : l'infobulle intercompte devient aussi tap-activée sur tablette à l'écran détail, la fiche récurrente et l'analyse (fonction partagée) ; une seule infobulle intercompte ouverte à la fois (click-away).
+- Pas d'ADR.
+
+**Points ouverts (recette 👤, non testables en jsdom)** :
+- Mise en page des soldes à 1024 px (serré ; sous 900 px de fenêtre, colonne ≈ 120 px, risque de débordement).
+- Cibles tactiles 44 px réelles ; `display:contents` du wrapper.
+- Comportement réel sur tablette : événements tactiles natifs, second tap.
+- Couverture % non mesurée.
+
+**Rappel** : 3 fichiers `*.bak_qal` et stash `devon-t1-wip-check` à supprimer par le 👤 (aucun agent ne supprime). Backlog B1 inchangé.
 
 ---
 
 ## Critères de succès globaux
 
-- Aucune régression sur montants, dates, états, soldes affichés (tous lots).
-- Utilisable au doigt en 1024×768 tablette paysage (seule orientation visée).
-- Captures avant/après systématiques par phase : desktop 1280px + tablette 1024×768 paysage.
-- `npm run lint` et `npm run test:coverage` verts après chaque phase.
-- Pas de modification d'API/modèle de données.
-- Couleurs anneaux d'état (orange/violet/vert/blanc) inchangées sur toutes les phases.
+- [x] Aucune régression sur montants, dates, états, soldes affichés (tests verts toutes phases ; recettes visuelles 1–4 OK, Phase 5 à valider en recette).
+- [ ] Utilisable au doigt en 1024×768 tablette paysage (seule orientation visée) — **à valider en recette** (cibles 44 px, soldes à 1024 px, taps réels).
+- [ ] ≥ 10 lignes visibles à 881 px de haut — **à valider en recette** (calcul, non mesuré).
+- [ ] Captures avant/après systématiques par phase : desktop 1280px + tablette 1024×768 paysage — **à valider en recette** (tablette réelle).
+- [x] `npm run lint` vert après chaque phase ; tests verts (4 échecs locaux préexistants `Auth.service.test.ts`, absents en CI) ; couverture % non mesurée en Phase 5.
+- [x] Pas de modification d'API/modèle de données.
+- [x] Couleurs anneaux d'état (orange/violet/vert/blanc) inchangées sur toutes les phases.
 
 ## Plan d'exécution (triggers)
 

@@ -1,5 +1,6 @@
 import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_CATEGORIES_OPERATION_ENUM} from "../AppBusinessEnums.constants.ts";
-import {Box, Tooltip} from "@mui/material";
+import {Box} from "@mui/material";
+import TapTooltip from "../../Components/shared/TapTooltip.component.tsx";
 import React, {JSX} from "react";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import {INTERCOMPTE_LIBELLE_REGEX, operationIsIntercompteFromLibelle} from "../OperationData.utils.ts";
@@ -199,7 +200,7 @@ function getOperationIntercompteLibelleWithIconAndComment(compte: CompteBancaire
     const label = direction + " " + compte.libelle;
     // Vue détail : taille fixe ; liste : logo relatif à la ligne de texte (em), centré, sans agrandir la ligne
     const iconSize = maxVue ? 40 : "1.4em";
-    return <Tooltip title={"Transfert intercompte " + label}>
+    return <TapTooltip title={"Transfert intercompte " + label}>
             <Box component="span" sx={{display: "inline"}}>
                 <img src={"/img/banques/" + compte.itemIcon}
                     width={iconSize} height={iconSize}
@@ -210,7 +211,7 @@ function getOperationIntercompteLibelleWithIconAndComment(compte: CompteBancaire
                 {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3], isMobile) :
                     <span style={{fontSize: isMobile ? "small" : "medium"}}>{label}</span>}
             </Box>
-        </Tooltip>
+        </TapTooltip>
 }
 
 /**

@@ -22,7 +22,7 @@ gerer les comptes bancaires, les operations financieres et les analyses budgetai
 ```
 gestion-budget-ihm
 ├── Components/      # Composants React UI (TSX) — analyses/, budgets/, operations/, shared/
-├── hooks/           # Hooks custom : useAuthTokenSync, useBudgetContext, useFetch
+├── hooks/           # Hooks custom : useAuthTokenSync, useBudgetContext, useFetch, useIsTouchDevice
 ├── Models/          # Modèles TypeScript + React Context (BudgetContextProvider)
 ├── Services/        # ClientHTTP.service.ts, Auth.service.ts, CallAndNotify.service.ts
 └── Utils/           # Constantes, enums (AppTechEnums, AppBusinessEnums), Debug.utils.ts
@@ -68,8 +68,8 @@ gestion-budget-ihm/
 │       │   ├── infos/                    # Composants informatifs
 │       │   ├── mainpages/                # Pages principales
 │       │   ├── menuTopBar/               # Barre de navigation
-│       │   └── shared/                   # Composants partagés (dont AuthTokenSync.component.tsx)
-│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext [+ useBudgetSelection, useCurrentBudget], useFetch)
+│       │   └── shared/                   # Composants partagés (dont AuthTokenSync.component.tsx, TapTooltip.component.tsx : infobulle survol desktop / tap tactile)
+│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext [+ useBudgetSelection, useCurrentBudget], useFetch, useIsTouchDevice)
 │       ├── Models/                       # Modèles TypeScript + Context
 │       │   ├── contextProvider/          # BudgetContextProvider.tsx (3 providers imbriqués ; ré-exporte les contextes et hooks de hooks/useBudgetContext.ts)
 │       │   ├── analyses/                 # Modèles analyses
