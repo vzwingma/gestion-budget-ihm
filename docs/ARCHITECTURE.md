@@ -172,7 +172,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 - **Composants** : Toujours `React.FC<Props>`, fonctionnels uniquement. Props interfaces dans `Components.props.ts`
 - **Sous-composants** : Dans `subcomponents/`, boutons d'action dans `actions/`
 - **Gestion d'état** : BudgetContext pour l'état global (hook `useBudgetContext` dans `hooks/`), `useState` pour l'état UI local ; les regroupements dérivés (opérations par date / périodicité) sont calculés via `useMemo`, pas stockés en state
-- **Hooks custom** : dans `src/main/hooks/`. `useFetch(fetcher, deps)` retourne `{ data, loading, error, refetch }` (T11 : infra livrée, adoption par les 7 composants restante — reste de T11, voir [plan 005](../.claude/plans/005_revue_architecture_react.plan.md))
+- **Hooks custom** : dans `src/main/hooks/`. `useFetch(fetcher, deps)` retourne `{ data, loading, error, refetch }` (T11 : infra livrée, adoption par les 7 composants restante — reste de T11, voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
 - **Appels HTTP** : Toujours via `ClientHTTP.service.ts`. URLs avec `{{}}` comme marqueur positionnel. Jamais `fetch` directement dans un composant. Les erreurs sont relancées avec `cause` (stack d'origine conservée). Dans les `*.extservices.ts`, utiliser `callAndNotify(promise, onSuccess, errorMessage, toastOptions?)`
 - **Layout** : `Box`/`Grid` MUI pour la mise en page, `useMediaQuery`/`useTheme` pour le responsive
 - **Optimisation** : `useMemo` pour les calculs dérivés coûteux, `useCallback` pour les handlers passés en props, `React.memo` pour les items de liste (voir [Performance](#-performance))
@@ -201,7 +201,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 - **Mémoïsation** : `React.memo` sur les items de liste `OperationItem`, `OperationRecurrenteItem` et `CompteItem` ; handlers de sélection passés à ces items stabilisés via `useCallback` (prérequis pour que `memo` soit effectif)
 - `useMemo` pour les calculs dérivés coûteux dans les composants (ex : totaux budgétaires, agrégations, regroupements d'opérations)
 - `useCallback` pour les handlers passés en props afin d'éviter les re-renders inutiles
-- **Limite connue** : `BudgetContext` reste un contexte unique (nombreux consumers) ; tout changement de sa valeur re-rend tous les consumers (scission prévue, voir dette du [plan 005](../.claude/plans/005_revue_architecture_react.plan.md))
+- **Limite connue** : `BudgetContext` reste un contexte unique (nombreux consumers) ; tout changement de sa valeur re-rend tous les consumers (scission prévue, voir dette du [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
 - Minification CSS pré-build via `css-minify` sur `public/styles/application.css`
 - Pagination des listes volumineuses côté API (gérée par les µServices)
 
@@ -237,7 +237,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
-| v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 005, lot 1) : dossier `hooks/` (`useAuthTokenSync`, `useBudgetContext`, `useFetch`), `AuthTokenSync` à la racine, `callAndNotify`, mode debug `VITE_CONFIG_DEBUG` + règle `no-console`, code splitting des routes (`React.lazy`), `React.memo` sur items de liste, `BudgetPageShell`, `AnalyseTooltip` générique, erreurs HTTP avec `cause`. Dette restante : voir [plan 005](../.claude/plans/005_revue_architecture_react.plan.md) |
+| v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 1) : dossier `hooks/` (`useAuthTokenSync`, `useBudgetContext`, `useFetch`), `AuthTokenSync` à la racine, `callAndNotify`, mode debug `VITE_CONFIG_DEBUG` + règle `no-console`, code splitting des routes (`React.lazy`), `React.memo` sur items de liste, `BudgetPageShell`, `AnalyseTooltip` générique, erreurs HTTP avec `cause`. Dette restante : voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-07-10 | Montée deps : Vite 6→8.1.4, `@vitejs/plugin-react` 4→6.0.3, suppression `@babel/plugin-transform-private-property-in-object` (résidu CRA, sans usage réel). TypeScript v7 et `typescript-eslint` v9/v10 **reportés** (bloqueur npm — voir note Stack Technique ci-dessus). Voir `.claude/plans/003_migration_dependances_ts_vite.plan.md` |
 | v24.0-SNAPSHOT | En cours | Migration socle build CRA → Vite + Vitest + TypeScript ^6.0.0 (voir [ADR 001](./adr/001-migration-cra-vers-vite.md)) |
 

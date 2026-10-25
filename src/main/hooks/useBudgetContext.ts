@@ -5,7 +5,7 @@ import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
 import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
 
 /**
- * Contexte de la partie budget (AP 005 - T11 : extraction hors de `BudgetContextProvider.tsx`,
+ * Contexte de la partie budget (AP 006 - T11 : extraction hors de `BudgetContextProvider.tsx`,
  * co-localisée avec les autres hooks custom de `src/main/hooks/`).
  *
  * `BudgetContextProvider.tsx` ré-exporte `BudgetContext` et `useBudgetContext` pour conserver

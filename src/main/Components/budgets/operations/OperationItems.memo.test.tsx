@@ -7,7 +7,7 @@ import OperationRecurrenteItem from './recurrentes/OperationsRecurrentesListItem
 import { createNewOperation } from '../../../Models/budgets/Operation.model.ts';
 
 /**
- * AP 005 - T8 : React.memo sur OperationItem / OperationRecurrenteItem.
+ * AP 006 - T8 : React.memo sur OperationItem / OperationRecurrenteItem.
  * `SharedOperationItem` est mocké (compteur de rendus) : on vérifie que le rendu reste correct
  * et que memo évite le re-render à props identiques, mais re-rend si une prop change.
  */

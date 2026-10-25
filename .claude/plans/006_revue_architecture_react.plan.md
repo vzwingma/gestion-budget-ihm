@@ -1,4 +1,4 @@
-# Plan d'Action 005 — Revue qualité/architecture React IHM
+# Plan d'Action 006 — Revue qualité/architecture React IHM
 
 **Statut** : ✅ Lot 1 livré (reste T2/T6/T11-adoption/T16/T20/T12) — Gate #4 validé 👤 (2026-10-25)
 **Date** : 2026-10-23
@@ -181,7 +181,7 @@ Deux explorations factuelles (structure composants + data flow/hooks/optimisatio
 | #1 | 2026-10-25 | GO | Plan validé 👤, DEVon lancé |
 | #2 | 2026-10-25 | GO 👤 (logs debug conservés via `debug()`) | DEVon livré : T18,T19,T15,T4,T7,T13,T5,T10,T14,T3,T17,T11(infra),T8,T9 faits ; T1,T6 portée réduite ; T2,T16,T20 reportés ; T12 exclu. 135 tests verts, lint 0 erreur, build OK |
 | #3 | 2026-10-25 | GO 👤 | QALvin : +60 tests (197 verts), couverture 87.3% stmt / 73.7% branch, 0 bug prod. Non couverts : Main.tsx lazy/Suspense, branche isMobile BudgetPageShell |
-| #4 | 2026-10-25 | GO 👤 | DOCly : `docs/ARCHITECTURE.md`, `README.md`, `.claude/CLAUDE.md`, plan 005 + index + wiki (ConceptionIHM, Historique, schémas C2/C3, label React 19.3.1) mis à jour ; ADR 002 laissé `Proposée` |
+| #4 | 2026-10-25 | GO 👤 | DOCly : `docs/ARCHITECTURE.md`, `README.md`, `.claude/CLAUDE.md`, plan 006 + index + wiki (ConceptionIHM, Historique, schémas C2/C3, label React 19.3.1) mis à jour ; ADR 002 laissé `Proposée` |
 
 ## Résultats (lot 1)
 

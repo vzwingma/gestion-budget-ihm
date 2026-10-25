@@ -14,7 +14,7 @@ const selectedDate = new Date(2026, 0, 1);
 
 function renderItem(props: any = {}) {
     const onClick = vi.fn();
-    const base = { compte, selectedDate, selectedFunction: BUSINESS_ONGLETS.BUDGET, onRefreshMenuBar: false, onClick, ...props };
+    const base = { compte, selectedCompte: null, selectedDate, selectedFunction: BUSINESS_ONGLETS.BUDGET, onRefreshMenuBar: false, onClick, ...props };
     const utils = render(<CompteItem {...base} />);
     return { onClick, base, ...utils };
 }
@@ -75,5 +75,35 @@ describe('CompteItem (React.memo)', () => {
 
         rerender(<CompteItem {...base} selectedDate={new Date(2026, 1, 1)} />);
         expect(getSoldesBudget).toHaveBeenCalledTimes(2);
+    });
+});
+
+describe('CompteItem (sélection)', () => {
+
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    // Tuile racine (Container MUI portant la classe listeItem), sans rôle ni testid accessible
+    function getTuile(libelle: string): HTMLElement | null {
+        // eslint-disable-next-line testing-library/no-node-access
+        return screen.getByText(libelle).closest('.listeItem');
+    }
+
+    test('classe listeItem--selected si compte sélectionné', () => {
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES, selectedCompte: compte });
+        expect(getTuile('Compte courant')).toHaveClass('listeItem', 'listeItem--selected');
+    });
+
+    test('pas de classe selected si autre compte sélectionné', () => {
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES, selectedCompte: { ...compte, id: 'c2' } });
+        const tuile = getTuile('Compte courant');
+        expect(tuile).toHaveClass('listeItem');
+        expect(tuile).not.toHaveClass('listeItem--selected');
+    });
+
+    test('pas de classe selected si selectedCompte null', () => {
+        renderItem({ selectedFunction: BUSINESS_ONGLETS.ANALYSES, selectedCompte: null });
+        expect(getTuile('Compte courant')).not.toHaveClass('listeItem--selected');
     });
 });

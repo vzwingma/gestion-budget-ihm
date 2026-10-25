@@ -16,7 +16,9 @@ import { CompteItemProps } from '../../Components.props.ts';
  * @returns {JSX.Element}
  * @constructor
  */
-const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedFunction, onRefreshMenuBar, onClick: handleCompteChange }: CompteItemProps): JSX.Element => {
+const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedCompte, selectedDate, selectedFunction, onRefreshMenuBar, onClick: handleCompteChange }: CompteItemProps): JSX.Element => {
+
+    const isCompteCourant = selectedCompte?.id === compte.id;
 
     const [soldes, setSoldes] = useState<number | null | undefined>();
 
@@ -64,7 +66,7 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedF
      * @constructor
      */
     return (
-        <Container className={"listeItem"}
+        <Container className={"listeItem" + (isCompteCourant ? " listeItem--selected" : "")}
             onClick={() => handleCompteChange(compte)}>
             <Stack direction={"row"} spacing={5}>
                 <img src={"/img/banques/" + compte.itemIcon} className={"compteListIcon"} alt={compte.libelle}
@@ -81,5 +83,5 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedDate, selectedF
     )
 };
 
-// AP 005 - T8 : composant rendu en boucle (une tuile par compte dans la menubar).
+// AP 006 - T8 : composant rendu en boucle (une tuile par compte dans la menubar).
 export default React.memo(CompteItem)

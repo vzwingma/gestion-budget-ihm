@@ -206,6 +206,7 @@ export interface OperationRecurrenteDetailPageProps {
  */
 export interface CompteItemProps {
     compte: CompteBancaireModel;
+    selectedCompte: CompteBancaireModel | null;
     selectedDate: Date;
     selectedFunction: BUSINESS_ONGLETS;
     onRefreshMenuBar: boolean;

@@ -22,7 +22,7 @@ interface BudgetPageShellProps {
 }
 
 /**
- * Structure de page partagée par `BudgetPage` et `RecurrentsPage` (AP 005 - T1) : Backdrop de
+ * Structure de page partagée par `BudgetPage` et `RecurrentsPage` (AP 006 - T1) : Backdrop de
  * chargement, en-tête (`BudgetPageHeader`), Divider, et les 2 colonnes (liste / détail).
  *
  * Chaque page reste responsable de ses propres données (chargement, regroupement,

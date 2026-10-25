@@ -10,7 +10,7 @@ import { createNewOperation } from '../../../Models/budgets/Operation.model.ts';
 import { PERIODES_MENSUALITE_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 
 /**
- * Tests de rendu de RecurrentsPage (filet de sécurité AP 005 - T19, posé avant T1 :
+ * Tests de rendu de RecurrentsPage (filet de sécurité AP 006 - T19, posé avant T1 :
  * fusion avec BudgetPage).
  *
  * Même stratégie que Budget.component.test.tsx : enfants mockés, services réseau mockés,

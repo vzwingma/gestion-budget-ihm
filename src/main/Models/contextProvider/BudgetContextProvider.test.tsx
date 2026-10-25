@@ -6,7 +6,7 @@ import { describe, test, expect } from 'vitest';
 import { BudgetContextProvider, useBudgetContext } from './BudgetContextProvider.tsx';
 
 /**
- * Tests de rendu de BudgetContextProvider (filet de sécurité AP 005 - T19, posé avant T6 :
+ * Tests de rendu de BudgetContextProvider (filet de sécurité AP 006 - T19, posé avant T6 :
  * scission éventuelle du contexte en contextes plus fins).
  *
  * Un composant de test consomme le contexte via `useBudgetContext` et expose les valeurs

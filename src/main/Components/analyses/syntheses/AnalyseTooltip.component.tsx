@@ -2,7 +2,7 @@ import React, { JSX, ReactNode } from "react";
 import { Box, Divider, Typography } from "@mui/material";
 
 /**
- * Une ligne de données affichée dans le tooltip (AP 005 - T3).
+ * Une ligne de données affichée dans le tooltip (AP 006 - T3).
  */
 export interface AnalyseTooltipRow {
     key: string;
@@ -34,7 +34,7 @@ const containerSx = {
 };
 
 /**
- * Tooltip générique recharts (AP 005 - T3), factorisant la structure commune auparavant
+ * Tooltip générique recharts (AP 006 - T3), factorisant la structure commune auparavant
  * dupliquée entre `AnalyseEvolutionTooltip`, `AnalyseSyntheseTooltip` et `AnalyseTreeMapTooltip` :
  * garde `active`/données vides, style du conteneur, titre + séparateur, lignes libellé/valeur.
  *

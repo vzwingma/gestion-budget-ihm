@@ -9,7 +9,7 @@ interface UseFetchResult<T> {
 }
 
 /**
- * Hook générique de data-fetching (AP 005 - T11), factorisant le triplet `useState`
+ * Hook générique de data-fetching (AP 006 - T11), factorisant le triplet `useState`
  * (données/chargement/erreur) + `useEffect` + callback répété dans plusieurs composants
  * (Budget, Recurrents, AnalysesFiltrePeriode, Infos, MainPage, ProfileInfos, CompteItem).
  *

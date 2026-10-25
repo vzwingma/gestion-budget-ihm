@@ -90,7 +90,13 @@ const SharedOperationsListe: React.FC<SharedOperationsListeProps> = ({
 
     return (
         <Stack divider={<Divider orientation="horizontal"/>}
-               sx={{overflowY: "auto", overflowX: "hidden", height: getHeightList(useMediaQuery(useTheme().breakpoints.down('lg')))}}>
+               className="operationsListeScrollable"
+               sx={{
+                   overflowY: "auto",
+                   overflowX: "hidden",
+                   scrollbarGutter: "stable",
+                   height: getHeightList(useMediaQuery(useTheme().breakpoints.down('lg')))
+               }}>
             {iterateOperations(operationsGrouped, filterOperations, handleOperationSelect, renderItem, getSeparatorStyle)}
         </Stack>
     );

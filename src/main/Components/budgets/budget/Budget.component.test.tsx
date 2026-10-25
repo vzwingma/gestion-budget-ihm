@@ -10,7 +10,7 @@ import { createNewOperation } from '../../../Models/budgets/Operation.model.ts';
 import { OPERATION_ETATS_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 
 /**
- * Tests de rendu de BudgetPage (filet de sécurité AP 005 - T19, posé avant T1/T5 :
+ * Tests de rendu de BudgetPage (filet de sécurité AP 006 - T19, posé avant T1/T5 :
  * fusion avec RecurrentsPage et dérivation du regroupement via useMemo).
  *
  * Stratégie : composants enfants mockés (header, soldes, actions, liste, détail), services

@@ -10,12 +10,12 @@
 
 ## Contexte
 
-La revue d'architecture React (Plan d'Action `005_revue_architecture_react.plan.md`, item T12) a constaté :
+La revue d'architecture React (Plan d'Action `006_revue_architecture_react.plan.md`, item T12) a constaté :
 
 - `ClientHTTP.service.ts` est un wrapper `fetch` natif minimal : pas de retry, pas de cache, pas de déduplication de requêtes, pas d'`AbortController`/timeout, pas d'intercepteur centralisé de refresh de token.
 - 7 composants (`Budget`, `Recurrents`, `AnalysesFiltrePeriode`, `Infos`, `MainPage`, `ProfileInfos`, `CompteItem`) répètent le même triplet `useState` + `useEffect` + callback `*.extservices.ts`, chacun gérant manuellement ses propres états loading/error/data.
-- Aucun dossier `hooks/` custom n'existait lors de la revue (créé depuis, lot 1 du plan 005).
-- Le Plan d'Action 005 (item T11) prévoit déjà un hook custom `useFetch` pour factoriser ce triplet répété — une extension du pattern existant, pas une décision d'architecture majeure.
+- Aucun dossier `hooks/` custom n'existait lors de la revue (créé depuis, lot 1 du plan 006).
+- Le Plan d'Action 006 (item T11) prévoit déjà un hook custom `useFetch` pour factoriser ce triplet répété — une extension du pattern existant, pas une décision d'architecture majeure.
 
 La question posée par cet ADR est distincte de T11 : faut-il, au-delà de la factorisation du triplet, introduire une librairie de data-fetching dédiée (cache, déduplication, retry, invalidation) ?
 
@@ -68,10 +68,10 @@ La question posée par cet ADR est distincte de T11 : faut-il, au-delà de la fa
 - **Fichiers impactés si Option 2 retenue ultérieurement** : `package.json` (ajout dépendance), `ClientHTTP.service.ts`, les 7 fichiers `*.extservices.ts`, les 7 composants consommateurs (Budget, Recurrents, AnalysesFiltrePeriode, Infos, MainPage, ProfileInfos, CompteItem).
 - **État d'avancement T11 (2026-10-25)** : le hook `useFetch` (`src/main/hooks/useFetch.ts`) est fourni mais **non adopté** par les 7 composants (T11 : infra livrée, adoption restante — reste de T11, reportée au prochain lot). Le signal « après T11 » n'est donc pas encore exploitable : la réévaluation reste conditionnée à l'adoption effective et à une observation en usage réel. Statut inchangé : `Proposée`.
 - **Condition de déclenchement** : réévaluation par 👤/ARCos après exécution de T11, sur signal concret de besoin cache/dedup.
-- **Tâche de suivi** : aucune tant que le statut reste `Proposée`. Si validé : ARCos formalise le passage à `Acceptée` et MAINa planifie T12 dans un nouveau lot du Plan d'Action 005.
+- **Tâche de suivi** : aucune tant que le statut reste `Proposée`. Si validé : ARCos formalise le passage à `Acceptée` et MAINa planifie T12 dans un nouveau lot du Plan d'Action 006.
 
 ---
 
 ## Références
 
-- Plan d'Action associé : [`005_revue_architecture_react.plan.md`](../../.claude/plans/005_revue_architecture_react.plan.md) (item T12, et T11 pour l'alternative immédiate)
+- Plan d'Action associé : [`006_revue_architecture_react.plan.md`](../../.claude/plans/006_revue_architecture_react.plan.md) (item T12, et T11 pour l'alternative immédiate)

@@ -195,7 +195,7 @@ Uniquement ce qui concerne **tous** les agents :
 - Projet en évolution, migré CRA → Vite (AP 001, ADR-001) ; migration dépendances TS/Vite partiellement reportée (AP 003 : TS v7 / typescript-eslint bloqués npm).
 - Contrats API couplés au backend `gestion-budget-serverless` : toute évolution modèle → vérifier côté backend.
 - Ancienne structure `.github/` (agents v2.x, plans) conservée pour référence historique.
-- AP 005 (revue architecture React) : lot 1 livré ; dette restante (T2, T6, T11 : infra `useFetch` livrée / adoption restante, T16, T20, ADR 002 Proposée) listée dans `.claude/plans/005_revue_architecture_react.plan.md`.
+- AP 006 (revue architecture React) : lot 1 livré ; dette restante (T2, T6, T11 : infra `useFetch` livrée / adoption restante, T16, T20, ADR 002 Proposée) listée dans `.claude/plans/006_revue_architecture_react.plan.md`.
 
 ---
 
