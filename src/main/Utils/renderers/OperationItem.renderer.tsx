@@ -32,6 +32,31 @@ export function getOperationStateColor(operationState : OPERATION_ETATS_ENUM) : 
 }
 
 
+/**
+ * Libellé textuel de l'état d'une opération (alternative non colorimétrique, ex. aria-label)
+ * @param operationState état de l'opération
+ * @returns {string} libellé de l'état
+ */
+export function getOperationStateLabel(operationState : OPERATION_ETATS_ENUM) : string {
+    switch (operationState) {
+        case OPERATION_ETATS_ENUM.PREVUE:
+            return "Prévue"
+        case OPERATION_ETATS_ENUM.REPORTEE:
+            return "Reportée"
+        case OPERATION_ETATS_ENUM.REALISEE:
+            return "Réalisée"
+        case OPERATION_ETATS_ENUM.ANNULEE:
+            return "Annulée"
+        case OPERATION_ETATS_ENUM.SUPPRIMEE:
+            return "Supprimée"
+        case OPERATION_ETATS_ENUM.PLANIFIEE:
+            return "Planifiée"
+        default:
+            return "État inconnu"
+    }
+}
+
+
 /** Libellé & Couleur du background de l'attribut Mensualité
  * @param periodeKey : string enum période
  * */
@@ -112,8 +137,10 @@ function getOperationLibelleWithComment(operationLibelle: string, isMobile?: boo
         for (let i = 1; i < operationLibelleParts.length; i++) {
             libelle += operationLibelleParts[i] + " ";
         }
-        return <><span>{operationLibelleParts[0]}</span><span
-            style={{color: "grey", fontSize: isMobile ? "small" : "medium", fontStyle: "italic"}}>{libelle}</span></>
+        // Libellé et commentaire : même taille ; le commentaire se distingue par la couleur + l'italique
+        const fontSize = isMobile ? "small" : "medium";
+        return <><span style={{fontSize}}>{operationLibelleParts[0]}</span><span
+            style={{color: "var(--color-operation-subtext, #a8a8a8)", fontSize, fontStyle: "italic"}}>{libelle}</span></>
     } else {
         return <span style={{fontSize: isMobile ? "small" : "medium"}}>{operationLibelle}</span>;
     }
@@ -170,12 +197,15 @@ function getOperationIntercompteLabel(operationLibelle: string, isLabelOperation
 function getOperationIntercompteLibelleWithIconAndComment(compte: CompteBancaireModel, operationLibelleParts: string[], isLabelOperation: boolean, maxVue: boolean, isMobile?: boolean): JSX.Element {
     const direction = operationLibelleParts[1]
     const label = direction + " " + compte.libelle;
+    // Vue détail : taille fixe ; liste : logo relatif à la ligne de texte (em), centré, sans agrandir la ligne
+    const iconSize = maxVue ? 40 : "1.4em";
     return <Tooltip title={"Transfert intercompte " + label}>
-            <Box>
+            <Box component="span" sx={{display: "inline"}}>
                 <img src={"/img/banques/" + compte.itemIcon}
-                    width={maxVue ? 40 : 30} height={maxVue ? 40 : 30}
+                    width={iconSize} height={iconSize}
                     alt={compte.libelle}
-                    style={{marginRight: "5px", display: "inline", verticalAlign: "middle"}}/>
+                    style={{marginRight: "5px", display: "inline", verticalAlign: "middle", objectFit: "contain",
+                        width: iconSize, height: iconSize}}/>
 
                 {isLabelOperation ? getOperationLibelleWithComment(operationLibelleParts[3], isMobile) :
                     <span style={{fontSize: isMobile ? "small" : "medium"}}>{label}</span>}

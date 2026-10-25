@@ -1,6 +1,6 @@
 # Plan d'Action 005 — Refonte panneau gauche écran « Opérations »
 
-**Statut** : 🟡 En cours — Phase 1 terminée, Phases 2–5 à venir
+**Statut** : 🟡 En cours — Phases 1–2 terminées, 3–5 à venir
 **Date** : 2026-10-23 (dernière mise à jour : 2026-10-25)
 
 ## Journal des gates
@@ -12,6 +12,9 @@
 | #2 | Code Phase 1 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 1 | 2026-10-25 | ✅ GO |
 | #4 | Doc + clôture Phase 1 | 2026-10-25 | ✅ Validé 👤 (2026-10-25) |
+| #2 | Code Phase 2 | 2026-10-25 | ✅ GO |
+| #3 | Tests Phase 2 | 2026-10-25 | ✅ GO |
+| #4 | Doc + clôture Phase 2 | — | ⏳ En attente 👤 |
 
 ## Context
 
@@ -70,18 +73,58 @@ Phase 1 → 2 → 3 → 4 → 5, strictement séquentiel (chaque phase = 1 branc
 
 ---
 
-## Phase 2 — Lisibilité des lignes
+## Phase 2 — Lisibilité des lignes ✅ (terminée 2026-10-25, Gate #4 en attente)
 
 **Critères de réussite** : toutes les lignes même hauteur (avec/sans commentaire) ; montants alignés à la virgule ; ≥11 lignes visibles sur 881px de haut ; sélection visuellement plus marquée que survol.
 
-- **T2.1** — Hauteur de ligne fixe ≈64px homogène (remplace `isMobile?60:90`), ajuster `Divider` pour atteindre ≥11 lignes/881px. Fichier : `src/main/Components/budgets/operations/courantes/OperationsListItem.shared.tsx`. **Agent : DEVon.**
-- **T2.2** — Libellé taille/graisse fixes (bug : commentaire a `fontSize` explicite, libellé non), ellipse une ligne. Fichier : `src/main/Utils/renderers/OperationItem.renderer.tsx`. **Agent : DEVon.**
-- **T2.3** — Sous-texte catégorie : contraste AA (éclaircir `#808080` si <4.5:1), ellipse. Fichier : `OperationsListItem.shared.tsx`. **Agent : DEVon.**
-- **T2.4** — Montants : `tabular-nums`, éclaircir `--color-credit`/`--color-depense` pour AA. Fichiers : `src/main/Utils/renderers/OperationValue.renderer.tsx`, `application.css`. **Agent : DEVon.**
-- **T2.5** — Anneau d'état : épaisseur ≈3px uniforme, `aria-label` via nouvelle fonction `getOperationStateLabel(etat)` — **sans changer les couleurs**. Fichier : `OperationItem.renderer.tsx`. **Agent : DEVon.**
-- **T2.6** — Logo banque : taille relative (`em`), centrage vertical fiable, jamais de retour à la ligne du commentaire. Fichier : `OperationItem.renderer.tsx`. **Agent : DEVon.**
-- **T2.7** — Sélection/survol : barre verticale bleu accent MUI + fond teinté > survol ; neutraliser survol tactile (`@media (hover:hover)`). Fichier : `OperationsListItem.shared.tsx`. **Agent : DEVon.**
-- **T2.8** — Tests non-régression (hauteur ligne, troncature, contraste, sélection/survol). **Agent : QALvin.**
+- **T2.1** ✅ — Hauteur de ligne fixe ≈64px homogène (remplace `isMobile?60:90`), ajuster `Divider` pour atteindre ≥11 lignes/881px. Fichier : `src/main/Components/budgets/operations/courantes/OperationsListItem.shared.tsx`. **Agent : DEVon.**
+- **T2.2** ✅ — Libellé taille/graisse fixes (bug : commentaire a `fontSize` explicite, libellé non), ellipse une ligne. Fichier : `src/main/Utils/renderers/OperationItem.renderer.tsx`. **Agent : DEVon.**
+- **T2.3** ✅ — Sous-texte catégorie : contraste AA (éclaircir `#808080` si <4.5:1), ellipse. Fichier : `OperationsListItem.shared.tsx`. **Agent : DEVon.**
+- **T2.4** ✅ — Montants : `tabular-nums`, éclaircir `--color-credit`/`--color-depense` pour AA. Fichiers : `src/main/Utils/renderers/OperationValue.renderer.tsx`, `application.css`. **Agent : DEVon.**
+- **T2.5** ✅ — Anneau d'état : épaisseur ≈3px uniforme, `aria-label` via nouvelle fonction `getOperationStateLabel(etat)` — **sans changer les couleurs**. Fichier : `OperationItem.renderer.tsx`. **Agent : DEVon.**
+- **T2.6** ✅ — Logo banque : taille relative (`em`), centrage vertical fiable, jamais de retour à la ligne du commentaire. Fichier : `OperationItem.renderer.tsx`. **Agent : DEVon.**
+- **T2.7** ✅ — Sélection/survol : barre verticale bleu accent MUI + fond teinté > survol ; neutraliser survol tactile (`@media (hover:hover)`). Fichier : `OperationsListItem.shared.tsx`. **Agent : DEVon.**
+- **T2.8** ✅ — Tests non-régression (hauteur ligne, troncature, contraste, sélection/survol). **Agent : QALvin.**
+
+### Résultats Phase 2
+
+**Fichiers source modifiés (4)** :
+- `src/main/Components/budgets/operations/courantes/OperationsListItem.shared.tsx`
+- `src/main/Utils/renderers/OperationItem.renderer.tsx`
+- `src/main/Utils/renderers/OperationValue.renderer.tsx`
+- `public/styles/application.css`
+
+**Tests ajoutés (3 fichiers, 56 tests)** : `OperationItem.renderer.test.tsx` (23), `OperationValue.renderer.test.tsx` (9), `OperationsListItem.shared.test.tsx` (24).
+
+**Correctif Phase 1** : lint des tests Phase 1 corrigé (commit `2dd5e85`, PR #687).
+
+**Preuves** :
+- `npm run lint` : 0 erreur.
+- Tests renderers + opérations : 86/86 verts.
+
+**Comportements publics nouveaux** :
+- `OPERATION_ROW_HEIGHT` (64px) : hauteur de ligne fixe.
+- `explicitPlus` : prop de `OperationValue`.
+- `getOperationStateLabel(etat)` : Prévue / Reportée / Réalisée / Annulée / Supprimée / Planifiée / « État inconnu ».
+- Anneau d'état : `role="img"` + `aria-label`.
+- Classes CSS `.operation-list-item` / `.operation-list-item--selected`.
+- Variable CSS `--color-operation-subtext`.
+
+**Incident** : bug `} else {` perdu dans `getOperationLibelleWithComment` (`OperationItem.renderer.tsx`), détecté par QALvin (T2.8), corrigé avant Gate #3.
+
+**Décisions** :
+- Libellé d'état REALISEE = « Réalisée » (harmonisé avec le filtre d'analyses).
+- Signe moins resté ASCII « - » (formatage partagé `addEndingZeros`).
+- Séparateur de milliers de `addEndingZeros` : hors périmètre.
+- Props `getOperationsColor` / `getSelectedOperationColor` de `SharedOperationItem` dépréciées : sélection bleue partout, y compris liste récurrente.
+
+**Points ouverts** :
+- Effets de bord visuels à contrôler à l'œil : écran détail, fiche récurrente, analyse, soldes/tooltips (nouvelles couleurs montants + `tabular-nums`).
+- « 11 lignes visibles sur 881px » = calcul (11×65px ≤ 741px), non mesuré.
+- Contrastes calculés à la main, non mesurés.
+- Recette visuelle desktop 1280 / tablette 1024×768 à faire.
+- 3 fichiers `*.bak_qal` à supprimer par le 👤 (aucun agent ne supprime).
+- Stash `devon-t1-wip-check` toujours à supprimer par le 👤.
 
 ---
 
@@ -104,7 +147,7 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 **Critères de réussite** : recherche "pharma" + puce "À valider" ne montre que les prévues/reportées correspondantes ; net juste ; "Réinitialiser" vide texte + puces.
 
 - **T4.1** — Vérifier si `Budget.component.tsx` est démonté/remonté au changement d'onglet → décider état local vs `BudgetContextProvider.tsx`. **Agent : DEVon.**
-- **T4.2** — Nouveau composant `FilterChips` (État : À valider/Validée/Annulée ; Sens : Dépenses/Rentrées), hauteur ≥40px, combinables. Fichier : nouveau `src/main/Components/budgets/shared/FilterChips.component.tsx`. **Agent : DEVon.**
+- **T4.2** — Nouveau composant `FilterChips` (État : À valider/Réalisée/Annulée ; Sens : Dépenses/Rentrées), hauteur ≥40px, combinables. Fichier : nouveau `src/main/Components/budgets/shared/FilterChips.component.tsx`. **Agent : DEVon.**
 - **T4.3** — Étendre `filterOperationsList` pour combiner texte + puces (ET texte/puces, OR intra-groupe). Fichier : `OperationsListe.shared.tsx`. **Agent : DEVon.**
 - **T4.4** — Barre de résultat « N opérations · net X,XX € · Réinitialiser ». Fichier : `BudgetPageHeader.component.tsx` ou nouveau sous-composant. **Agent : DEVon.**
 - **T4.5** — Persistance filtres au changement d'onglet (selon T4.1). **Agent : DEVon.**

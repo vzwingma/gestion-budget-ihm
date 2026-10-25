@@ -21,8 +21,6 @@ const OperationItem: React.FC<OperationItemProps> = ({operation, onClick : handl
             operation={operation}
             onClick={handleOperationSelect}
             getBorderColor={getBorderColor}
-            getOperationsColor={"#1F3D2B"}
-            getSelectedOperationColor={"#4ADE80"}
             isSelected={isSelected}
             isOneSelected={isOneSelected}
         />

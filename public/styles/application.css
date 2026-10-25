@@ -36,8 +36,13 @@
     --color-item-hover-text: #ebebeb;
 
     /* Operation states */
-    --color-credit: #2e7d32;
-    --color-depense: #e74c3c;
+    /* Textes montants : contraste >= 4.5:1 sur fond sombre (liste, y compris ligne sélectionnée) */
+    --color-credit: #66bb6a;
+    --color-depense: #ff7a6b;
+    /* Liste opérations : sélection (bleu accent) > survol, sous-texte lisible */
+    --color-operation-selected-bg: rgba(77, 163, 255, 0.14);
+    --color-operation-hover-bg: rgba(255, 255, 255, 0.05);
+    --color-operation-subtext: #a8a8a8;
     --color-annulee-bg: #ebebeb;
     --color-planifiee: #0288d1;
     --color-prevue: #ed6c02;
@@ -198,6 +203,25 @@ a#tendances-link.nav-link_selected:hover {
 .listeItemSeparator {
     background-color: var(--color-separator-bg) !important;
     color: var(--color-separator-text);
+}
+
+/* Ligne d'opération : survol léger (souris uniquement) < sélection (barre gauche + fond teinté bleu accent) */
+.operation-list-item {
+    cursor: pointer;
+    box-sizing: border-box;
+    box-shadow: inset 4px 0 0 transparent;
+}
+
+@media (hover: hover) {
+    .operation-list-item:hover {
+        background-color: var(--color-operation-hover-bg);
+    }
+}
+
+.operation-list-item--selected,
+.operation-list-item--selected:hover {
+    background-color: var(--color-operation-selected-bg);
+    box-shadow: inset 4px 0 0 var(--color-accueil-primary);
 }
 
 .filtercategorie {
@@ -473,6 +497,11 @@ ______          _    _
 .text-ANNULEE {
     font-style: italic;
     text-decoration-line: line-through;
+}
+
+.text-CREDIT,
+.text-DEPENSE {
+    font-variant-numeric: tabular-nums;
 }
 
 .text-CREDIT {
