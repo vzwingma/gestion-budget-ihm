@@ -4,14 +4,14 @@ import SharedOperationsListe from './OperationsListe.shared.tsx';
 
 describe('SharedOperationsListe', () => {
     test('conteneur scrollable : classe operationsListeScrollable + scrollbar-gutter stable', () => {
-        const {container} = render(
+        render(
             <SharedOperationsListe operationsGrouped={{}} filterOperations={null} onClick={() => {
             }} renderItem={() => <div/>}/>);
-        const el = container.querySelector('.operationsListeScrollable') as HTMLElement;
-        expect(el).not.toBeNull();
+        // Stack sans rôle ni texte propre : requête TL par sélecteur CSS (texte propre vide)
+        const el = screen.getByText('', {selector: '.operationsListeScrollable'});
         expect(getComputedStyle(el).overflowY).toBe('auto');
         // jsdom ne gère pas toujours scrollbar-gutter en computed style : on vérifie la règle emotion injectée
-        const css = Array.from(document.querySelectorAll('style')).map(s => s.textContent).join('');
+        const css = document.head.textContent ?? '';
         expect(getComputedStyle(el).getPropertyValue('scrollbar-gutter') || css).toMatch(/stable/);
     });
 

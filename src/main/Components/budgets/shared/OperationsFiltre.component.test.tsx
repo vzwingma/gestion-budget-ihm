@@ -38,7 +38,7 @@ describe('OperationsFiltre', () => {
         await userEvent.click(screen.getByRole('button', {name: 'Effacer le filtre'}));
         expect(onFilterChange).toHaveBeenCalledTimes(1);
         expect(onFilterChange).toHaveBeenCalledWith('');
-        expect(document.activeElement).toBe(screen.getByLabelText('Filtrage des opérations'));
+        expect(screen.getByLabelText('Filtrage des opérations')).toHaveFocus();
     });
 
     test('clic effacer : pas de bubbling vers le parent', async () => {
@@ -50,9 +50,14 @@ describe('OperationsFiltre', () => {
 
     test('clic effacer ne soumet pas le formulaire', async () => {
         const onSubmit = vi.fn((e: Event) => e.preventDefault());
-        const {container} = render(<OperationsFiltre filterValue="abc" onFilterChange={onFilterChange}/>);
-        container.querySelector('form')!.addEventListener('submit', onSubmit);
-        await userEvent.click(screen.getByRole('button', {name: 'Effacer le filtre'}));
+        render(<OperationsFiltre filterValue="abc" onFilterChange={onFilterChange}/>);
+        // submit bubble jusqu'au document : écoute globale (le form n'a pas de rôle accessible)
+        document.addEventListener('submit', onSubmit);
+        try {
+            await userEvent.click(screen.getByRole('button', {name: 'Effacer le filtre'}));
+        } finally {
+            document.removeEventListener('submit', onSubmit);
+        }
         expect(onSubmit).not.toHaveBeenCalled();
     });
 });

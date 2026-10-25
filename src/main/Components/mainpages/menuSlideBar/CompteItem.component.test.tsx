@@ -13,29 +13,31 @@ const autre = {id: 'c2', libelle: 'Compte 2', itemIcon: 'b.png', actif: true} as
 
 function renderItem(selected: CompteBancaireModel | null) {
     const onClick = vi.fn();
-    const r = render(<CompteItem compte={compte} selectedCompte={selected} selectedDate={new Date('2026-01-10')}
+    const {container} = render(<CompteItem compte={compte} selectedCompte={selected} selectedDate={new Date('2026-01-10')}
                                  selectedFunction={BUSINESS_ONGLETS.ANALYSES} onRefreshMenuBar={false}
                                  onClick={onClick}/>);
-    return {onClick, item: r.container.querySelector('.listeItem') as HTMLElement};
+    // Tuile sans rôle : on vérifie les classes de la tuile racine via le HTML rendu
+    const classes = /class="([^"]*)"/.exec(container.innerHTML)?.[1].split(/\s+/) ?? [];
+    return {onClick, classes};
 }
 
 describe('CompteItem', () => {
     beforeEach(() => vi.clearAllMocks());
 
     test('classe listeItem--selected si compte sélectionné', () => {
-        const {item} = renderItem(compte);
-        expect(item).toHaveClass('listeItem', 'listeItem--selected');
+        const {classes} = renderItem(compte);
+        expect(classes).toEqual(expect.arrayContaining(['listeItem', 'listeItem--selected']));
     });
 
     test('pas de classe selected si autre compte sélectionné', () => {
-        const {item} = renderItem(autre);
-        expect(item).toHaveClass('listeItem');
-        expect(item).not.toHaveClass('listeItem--selected');
+        const {classes} = renderItem(autre);
+        expect(classes).toContain('listeItem');
+        expect(classes).not.toContain('listeItem--selected');
     });
 
     test('pas de classe selected si selectedCompte null', () => {
-        const {item} = renderItem(null);
-        expect(item).not.toHaveClass('listeItem--selected');
+        const {classes} = renderItem(null);
+        expect(classes).not.toContain('listeItem--selected');
     });
 
     test('clic appelle onClick avec le compte', async () => {
