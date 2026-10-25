@@ -138,7 +138,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                 }}
                 slotProps={{
                     backdrop: {
-                        sx: {backgroundColor: "rgba(0,0,0,0.3)"}
+                        sx: {backgroundColor: "rgba(0,0,0,0.65)"}
                     }
                 }}>
                 <Stack spacing={2} sx={{overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column'}}>

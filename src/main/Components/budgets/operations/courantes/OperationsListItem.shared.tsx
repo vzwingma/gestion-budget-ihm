@@ -4,7 +4,7 @@ import OperationValue from "../../../../Utils/renderers/OperationValue.renderer.
 import { CenterComponent } from '../../../shared/CenterComponent.tsx';
 import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer.tsx';
 import {useBudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
-import {getOperationLibelle} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
+import {getOperationLibelle, getOperationStateLabel} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
 import OperationModel from '../../../../Models/budgets/Operation.model.ts';
 import OperationStatus from '../../../../Utils/renderers/OperationStatus.renderer.tsx';
 
@@ -15,40 +15,14 @@ interface SharedOperationItemProps {
     operation: OperationModel;
     onClick: (operation: OperationModel) => void;
     getBorderColor: (operation: OperationModel) => string;
-    getOperationsColor?: string;
-    getSelectedOperationColor?: string;
     isSelected?: boolean;
     isOneSelected?: boolean;
 }
-/**
- * 
- * @param getSelectedOperationColor couleur
- * @returns  style
- */
-function getSelectedBoxBorderStyle(getSelectedOperationColor: string | undefined) {
-    return {
-        borderTop: '1px solid ' + getSelectedOperationColor,
-        borderBottom: '1px solid ' + getSelectedOperationColor,
-    };
-}
+/** Hauteur fixe d'une ligne (px), identique mobile/desktop, avec ou sans commentaire.
+ * Calcul : liste = innerHeight - 140 (881px -> 741px) ; ligne 64 + séparateur 1 = 65 -> 11 lignes (715px). */
+export const OPERATION_ROW_HEIGHT = 64;
 
-/**
- * Get the box style based on selection state
- * @param isSelected whether the operation is selected
- * @param isOneSelected whether any operation is selected
- * @param getSelectedOperationColor color for selected operation
- * @returns style object
- */
-function getBoxStyle(isSelected: boolean | undefined, isOneSelected: boolean | undefined, getSelectedOperationColor: string | undefined) {
-    if (isSelected) {
-        return getSelectedBoxBorderStyle(getSelectedOperationColor);
-    }
-    if (isOneSelected) {
-        return { opacity: 0.75 };
-    }
-    return {};
-}
-
+const ELLIPSIS_STYLE = {overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"} as const;
 
 /**
  * Shared operation item component
@@ -62,8 +36,6 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     operation,
     onClick: handleOperationSelect,
     getBorderColor,
-    getOperationsColor,
-    getSelectedOperationColor,
     isSelected,
     isOneSelected
 }: SharedOperationItemProps): JSX.Element => {
@@ -71,49 +43,57 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     const budgetContext = useBudgetContext();
     const comptes = budgetContext?.comptes;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const ringColor = getBorderColor(operation);
 
     return (
         <Box key={"liste_" + operation.id}
              onClick={() => handleOperationSelect(operation)}
-             className="operation-list-item"
+             className={"operation-list-item" + (isSelected ? " operation-list-item--selected" : "")}
              sx={{
-                 ...getBoxStyle(isSelected, isOneSelected, getSelectedOperationColor),
-                 '&:hover': {
-                     backgroundColor: getOperationsColor || '#1F3D2B'
-                 }
+                 height: OPERATION_ROW_HEIGHT,
+                 minHeight: OPERATION_ROW_HEIGHT,
+                 flexShrink: 0,
+                 boxSizing: "border-box",
+                 overflow: "hidden",
+                 ...(isOneSelected && !isSelected ? {opacity: 0.75} : {})
              }}>
-            <Grid container sx={{height: isMobile ? 60 : 90, alignItems: 'center'}}>
-                <Grid size={{md: 1.5, xl: 1.5}} sx={{paddingLeft: isMobile ? '4px' : '10px'}}>
-                    <Box 
+            <Grid container sx={{height: "100%", alignItems: 'center'}}>
+                <Grid size={{md: 1.5, xl: 1.5}} sx={{paddingLeft: isMobile ? '8px' : '14px'}}>
+                    <Box role={operation.etat != null ? "img" : undefined}
+                         aria-label={operation.etat != null ? getOperationStateLabel(operation.etat) : undefined}
                          sx={{
-                             width: isMobile ? 38 : 50, 
-                             height: isMobile ? 38 : 50,
+                             boxSizing: "border-box",
+                             width: 46,
+                             height: 46,
                              borderRadius: '50%',
-                             border: (isMobile ? '2px' : '3px') + ' solid ' + getBorderColor(operation),
+                             border: '3px solid ' + ringColor,
                          }}>
 
-                        <Box 
+                        <Box
                              sx={{
-                                 width: isMobile ? 34 : 44, 
-                                 height: isMobile ? 34 : 44,
+                                 boxSizing: "border-box",
+                                 width: 40,
+                                 height: 40,
                                  borderRadius: '50%',
                                  backgroundColor: getCategorieColor(operation.categorie.id),
-                                 border: (isMobile ? '2px' : '3px') + ' solid black',
-                                 padding: isMobile ? '3px' : '6px',
+                                 border: '3px solid black',
+                                 padding: '4px',
                                  color: '#252525'
                              }}>
                             <CenterComponent>{getCategorieIcon(operation.ssCategorie)}</CenterComponent>
                         </Box>
                     </Box>
                 </Grid>
-                <Grid size={{md: 6.5, xl: 6.5}}>
-                    <Stack direction={"column"}>
+                <Grid size={{md: 6.5, xl: 6.5}} sx={{minWidth: 0}}>
+                    <Stack direction={"column"} sx={{minWidth: 0}}>
                         <Typography variant={"subtitle1"} component="div"
-                                    sx={{textAlign: "left", spacing: 2, paddingLeft: isMobile ? 1 : 2}}>
+                                    sx={{textAlign: "left", paddingLeft: isMobile ? 1 : 2, lineHeight: 1.5,
+                                        fontSize: isMobile ? "0.9375rem" : "1rem", ...ELLIPSIS_STYLE}}>
                             {getOperationLibelle(operation.libelle, comptes || [], false, isMobile)}
                         </Typography>
                         <Typography variant={"caption"} component="div"
-                                    sx={{textAlign: "left", spacing: 2, paddingLeft: isMobile ? 1 : 2, color: "#808080"}}>
+                                    sx={{textAlign: "left", paddingLeft: isMobile ? 1 : 2, fontSize: "0.75rem", lineHeight: 1.4,
+                                        color: "var(--color-operation-subtext, #a8a8a8)", ...ELLIPSIS_STYLE}}>
                             {operation.categorie.libelle} / {operation.ssCategorie.libelle}
                         </Typography>
                     </Stack>
@@ -124,8 +104,8 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
                     </Typography>
                 </Grid>
                 <Grid  size={{md: 2.5, xl: 2.5}}>
-                    <Typography variant={"subtitle1"} component="div" sx={{textAlign: "right", paddingRight: isMobile ? 1 : 2}}>
-                        <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true}/>
+                    <Typography variant={"subtitle1"} component="div" sx={{textAlign: "right", paddingRight: isMobile ? 1 : 2, whiteSpace: "nowrap"}}>
+                        <OperationValue id={operation.id} operation={operation} valueOperation={operation.valeur} showSign={true} explicitPlus={true}/>
                     </Typography>
                 </Grid>
             </Grid>

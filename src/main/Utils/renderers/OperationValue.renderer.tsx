@@ -33,6 +33,8 @@ interface OperationValueProps {
     valueOperation: number | null;
     showSign: boolean;
     operation?: OperationModel;
+    /** Préfixe « + » explicite devant une valeur strictement positive (le signe n'est alors plus porté par la seule couleur) */
+    explicitPlus?: boolean;
 }
 
 /**
@@ -41,21 +43,25 @@ interface OperationValueProps {
  * @param valueOperation : number valeur de l'opération
  * @param showSign : boolean affichage du signe
  * @param operation : OperationModel opération
+ * @param explicitPlus : boolean préfixe « + » devant les valeurs positives
  * @returns {JSX.Element} JSX
  * @constructor
  */
 const OperationValue: React.FC<OperationValueProps> = ({   id,
                                                            valueOperation,
                                                            showSign,
-                                                           operation
+                                                           operation,
+                                                           explicitPlus
                                                        }: OperationValueProps): JSX.Element => {
     if (valueOperation === null) {
         return <span style={{color: "#808080"}}>Non initialisé</span>
     } else {
         // définition du libellé
+        const plus = explicitPlus && showSign && valueOperation > 0 ? "+" : "";
         return (
-            <span id={id} className={getStyleOperation(valueOperation, operation)}>
-                {addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €
+            <span id={id} className={getStyleOperation(valueOperation, operation)}
+                  style={{fontVariantNumeric: "tabular-nums"}}>
+                {plus}{addEndingZeros(showSign ? valueOperation : Math.abs(valueOperation))} €
             </span>
         )
     }
