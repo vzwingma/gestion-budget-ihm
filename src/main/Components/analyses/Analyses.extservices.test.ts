@@ -1,6 +1,7 @@
 import type { Mock } from 'vitest';
 import {getValidPeriodesForCompte, loadBudget} from './Analyses.extservices.ts';
 import {call} from '../../Services/ClientHTTP.service.ts';
+import CompteBancaireModel from '../../Models/budgets/CompteBancaire.model.ts';
 
 vi.mock('../../Services/ClientHTTP.service.ts', () => ({
     call: vi.fn()
@@ -15,7 +16,7 @@ describe('Analyses.extservices', () => {
     test('charge le budget pour un compte et une date', async () => {
         (call as Mock).mockResolvedValue({id: 'b1'});
 
-        await expect(loadBudget({id: 'c1', libelle: 'Compte'} as any, new Date('2026-01-10')))
+        await expect(loadBudget({id: 'c1', libelle: 'Compte'} as CompteBancaireModel, new Date('2026-01-10')))
             .resolves.toEqual({id: 'b1'});
         expect(call).toHaveBeenCalledTimes(1);
     });
@@ -23,7 +24,7 @@ describe('Analyses.extservices', () => {
     test('retourne une période valide quand la réponse contient 2 dates', async () => {
         (call as Mock).mockResolvedValue(['2026-01-01T00:00:00.000Z', '2026-01-31T00:00:00.000Z']);
 
-        const result = await getValidPeriodesForCompte({id: 'c1', libelle: 'Compte'} as any);
+        const result = await getValidPeriodesForCompte({id: 'c1', libelle: 'Compte'} as CompteBancaireModel);
 
         expect(result).toHaveLength(1);
         expect(result?.[0].debut).toEqual(new Date('2026-01-01T00:00:00.000Z'));

@@ -10,8 +10,8 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
-| 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | 🟡 En cours — Phases 1–2/5 terminées, 3–5 à venir | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
-| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (Gate #4 validé 👤) · 🟡 Lot 2 livré (T11 adoption, T6, T2 partiel), Gate #4 en attente 👤 — reste : découpage `OperationDetailPage`, T16, T20, T12 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
+| 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | 🟡 En cours — Phases 1–3/5 clôturées, 4–5 à venir | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
+| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (Gate #4 validé 👤) · 🟡 Lot 2 livré (T11 adoption, T6, T2 partiel), Gate #4 validé 👤 — reste : découpage `OperationDetailPage`, T16, T20, T12 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Proposée — item T12 uniquement)
 
@@ -24,8 +24,10 @@ ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../..
 | 001 | Migration CRA → Vite | ✅ Complété (validé QUA + PROD) | [`001_migration_cra_vers_vite.plan.md`](./001_migration_cra_vers_vite.plan.md) |
 | 003 | Migration dépendances TypeScript/Vite (5 majors) | ✅ Lot clos (Phase 0/3/4/5/6 faites ; Phase 1/2 reportées — TS v7/typescript-eslint v9-10 bloqués npm) | [`003_migration_dependances_ts_vite.plan.md`](./003_migration_dependances_ts_vite.plan.md) |
 | 004 | Remédiation SonarCloud (8 issues : S3776, S5145 x5, S6478 x2) | ✅ Complété (DEVon+QALvin, pushé `feat/qa_deploy`) | [`004_remediation_sonarcloud.plan.md`](./004_remediation_sonarcloud.plan.md) |
+| 007 | Migration déploiement S3 `reggionick/s3-deploy` → AWS CLI natif (warning Node 20 déprécié) | ✅ Complété | [`007_migration_s3_deploy_aws_cli.plan.md`](./007_migration_s3_deploy_aws_cli.plan.md) |
 
-ADR associé : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
+ADR associé (001) : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
+ADR associé (007) : [`docs/adr/007-migration-s3-deploy-aws-cli.md`](../../docs/adr/007-migration-s3-deploy-aws-cli.md)
 
 ---
 
@@ -101,5 +103,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-10-25 (plan 005 : Phases 1–2 terminées ; plan 006 : lot 1 livré Gate #4 validé ; lot 2 livré, Gate #4 en attente)
+**Dernière mise à jour :** 2026-10-25 (plan 005 : Phases 1–3/5 clôturées ; plan 006 : lots 1 et 2 livrés, Gate #4 validé)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain

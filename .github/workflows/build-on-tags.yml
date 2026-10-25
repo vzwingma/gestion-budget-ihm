@@ -83,9 +83,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     name: deploy to S3 PROD
     needs: [ build-ihm, tests ]
     steps:
@@ -96,14 +93,13 @@ jobs:
           name: app_build.zip
       - name: Unzip app archive
         run: unzip app_build.zip
-      - name: Deploy
-        uses: reggionick/s3-deploy@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
         with:
-          folder: dist
-          bucket: budget-app-ihm
-          bucket-region: eu-west-3
-          invalidation: /
-          dist-id: ECVOXDF9144XV
-          delete-removed: true
-          no-cache: true
-          private: true
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-3
+      - name: Deploy to S3
+        run: aws s3 sync dist s3://budget-app-ihm --delete --cache-control no-cache
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id ECVOXDF9144XV --paths "/*"
