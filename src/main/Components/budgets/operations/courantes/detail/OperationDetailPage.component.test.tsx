@@ -52,7 +52,7 @@ vi.mock('./subcomponents/OperationDetailDateOperation.component.tsx', () => ({
 vi.mock('./subcomponents/OperationDetailCategorieType.component.tsx', () => ({
     OperationDetailCategorieType: () => <div data-testid="mock-categorie-type" />
 }));
-vi.mock('../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx', () => ({
+vi.mock('../../shared/OperationRecurrenteDetailDateFin.component.tsx', () => ({
     OperationDetailDateFin: () => <div data-testid="mock-date-fin" />,
     validateFormDateFinPeriode: vi.fn()
 }));

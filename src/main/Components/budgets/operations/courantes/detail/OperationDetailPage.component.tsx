@@ -42,7 +42,7 @@ import { OperationDetailPageProps } from '../../../../Components.props.ts';
 import { useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import { OperationDetailDate } from './subcomponents/OperationDetailDateOperation.component.tsx';
 import OperationDetailStatus from '../../../../../Utils/renderers/OperationDetailStatus.renderer.tsx';
-import { OperationDetailDateFin } from '../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
+import { OperationDetailDateFin } from '../../shared/OperationRecurrenteDetailDateFin.component.tsx';
 import { OperationDetailCategorieType } from './subcomponents/OperationDetailCategorieType.component.tsx';
 import { OPERATION_RECURRENTE_EDITION_FORM } from '../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts';
 

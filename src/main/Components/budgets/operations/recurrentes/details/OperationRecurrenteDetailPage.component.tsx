@@ -9,7 +9,7 @@ import { operationIsIntercompteFromLibelle } from '../../../../../Utils/Operatio
 import { getOperationLibelle, getPeriodeRenderer } from '../../../../../Utils/renderers/OperationItem.renderer.tsx';
 import { getCategorieColor, getCategorieIcon } from '../../../../../Utils/renderers/CategorieItem.renderer.tsx';
 import OperationValue from '../../../../../Utils/renderers/OperationValue.renderer.tsx';
-import { OperationDetailDateFin } from './subcomponents/OperationRecurrenteDetailDateFin.component.tsx';
+import { OperationDetailDateFin } from '../../shared/OperationRecurrenteDetailDateFin.component.tsx';
 import OperationEditionModel, { createNewOperationEdition } from '../../../../../Models/budgets/OperationEdition.model.ts';
 import { createEmptyEditForm, createEmptyErrors, EditRFormProps, ErrorsRFormProps, getProchaineEcheance, OPERATION_RECURRENTE_EDITION_FORM } from './OperationRecurrenteDetailPage.constants.ts';
 import { OPERATION_EDITION_FORM } from '../../courantes/detail/OperationDetailPage.constants.ts';

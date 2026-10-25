@@ -1,12 +1,11 @@
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
 import {UTILISATEUR_DROITS} from "../../../Utils/AppBusinessEnums.constants.ts";
 import {call} from "../../../Services/ClientHTTP.service.ts";
-import {callAndNotify} from "../../../Services/CallAndNotify.service.ts";
+import {callWithNotify} from "../../../Services/CallAndNotify.service.ts";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../Utils/AppTechEnums.constants.ts";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import {populateAllCategories} from "./Budget.controller.ts";
-import React from "react";
 import { debug } from "../../../Utils/Debug.utils.ts";
 
 /*
@@ -14,63 +13,60 @@ import { debug } from "../../../Utils/Debug.utils.ts";
  */
 
 /**
- * Charge les catégories depuis le back-end.
- *
- * @param handleLoadCategories
+ * Charge les catégories depuis le back-end (version Promise, pour `useFetch` - AP 006 T11).
  */
-export function loadCategories(handleLoadCategories: (categories: CategorieOperationModel[]) => void) {
+export function fetchCategories(): Promise<CategorieOperationModel[]> {
     debug("Chargement des catégories");
-    callAndNotify(
+    return callWithNotify(
         call(METHODE_HTTP.GET, BACKEND_ENUM.URL_PARAMS, SERVICES_URL.PARAMETRES.CATEGORIES),
-        (data: CategorieOperationModel[]) => handleLoadCategories(populateAllCategories(data)),
         "Erreur lors du chargement des catégories"
+    ).then((data: CategorieOperationModel[]) => populateAllCategories(data));
+}
+
+
+
+/**
+ * Charge le budget d'un compte/mois depuis le back-end (version Promise, pour `useFetch` - AP 006 T11).
+ * Résolue avec `undefined` si compte ou date non renseignés.
+ */
+export function fetchBudget(selectedCompte: CompteBancaireModel | null, selectedDate?: Date): Promise<BudgetMensuelModel | undefined> {
+    if (selectedCompte == null || selectedDate == null) {
+        return Promise.resolve(undefined);
+    }
+    return callWithNotify(
+        call(METHODE_HTTP.GET, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
+            [selectedCompte.id, selectedDate.getFullYear().toString(), (selectedDate.getMonth() + 1).toString()]),
+        "Erreur lors du chargement du budget " + selectedCompte.id + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear(),
+        { autoClose: false, closeOnClick: true }
     );
 }
 
-
-
 /**
- * Recharge le budget depuis le back-end.
- * @param handleBudgetUpdate - La fonction de mise à jour du budget.
- * @param selectedCompte - Le compte bancaire sélectionné.
- * @param selectedDate - La date sélectionnée (optionnelle).
+ * Mapping des droits utilisateur (objet `droits` du back-end) vers l'enum
  */
-export function reloadBudget(handleBudgetUpdate: (budget: BudgetMensuelModel) => void, selectedCompte: CompteBancaireModel | null, selectedDate?: Date) {
-    if (selectedCompte != null && selectedDate != null) {
-        callAndNotify(
-            call(METHODE_HTTP.GET, BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.BUDGETS.GET_BY_COMPTE_DATES,
-                [selectedCompte.id, selectedDate.getFullYear().toString(), (selectedDate.getMonth() + 1).toString()]),
-            handleBudgetUpdate,
-            "Erreur lors du chargement du budget " + selectedCompte?.id + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear(),
-            { autoClose: false, closeOnClick: true }
-        );
+function mapDroitsUtilisateur(droits: Record<string, boolean>): UTILISATEUR_DROITS[] {
+    const userDroits: UTILISATEUR_DROITS[] = [];
+    for (const droit in droits) {
+        if (droits[droit]) {
+            Object.values(UTILISATEUR_DROITS).forEach((key, index) => {
+                if (key === droit) {
+                    userDroits.push(index);
+                }
+            })
+        }
     }
+    return userDroits;
 }
 
-
 /**
- * Récupère les préférences de l'utilisateur.
- *
- * @param setUserDroits - Fonction pour définir les droits de l'utilisateur.
+ * Récupère les préférences de l'utilisateur (version Promise, pour `useFetch` - AP 006 T11).
+ * Erreur loggée (sans toast) puis relancée.
  */
-export function getPreferenceUtilisateur(setUserDroits: React.Dispatch<React.SetStateAction<UTILISATEUR_DROITS[]>>) {
-    call(METHODE_HTTP.GET, BACKEND_ENUM.URL_UTILISATEURS, SERVICES_URL.UTILISATEURS.USERS_PREFS)
-        .then((data) => {
-            let userDroits: UTILISATEUR_DROITS[] = [];
-            // Mapping des droits de l'utilisateur en enum
-            for (let droit in data.droits) {
-                if (data.droits[droit]) {
-                    Object.values(UTILISATEUR_DROITS).forEach((key, index) => {
-                        if (key === droit) {
-                            userDroits.push(index);
-                        }
-                    })
-                }
-            }
-            setUserDroits(userDroits);
-        })
+export function fetchPreferenceUtilisateur(): Promise<UTILISATEUR_DROITS[]> {
+    return call(METHODE_HTTP.GET, BACKEND_ENUM.URL_UTILISATEURS, SERVICES_URL.UTILISATEURS.USERS_PREFS)
+        .then((data) => mapDroitsUtilisateur(data.droits))
         .catch((e) => {
             console.error("Erreur lors de la recherche des préférences utilisateur", e);
-        })
-
+            throw e;
+        });
 }

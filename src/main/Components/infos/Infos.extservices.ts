@@ -1,13 +1,13 @@
-import React from "react";
 import MsInfoModel from "../../Models/infos/MsInfo.model.ts";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants.ts";
 import {call} from "../../Services/ClientHTTP.service.ts";
 
 
 /**
- * Chargement des infos des µS
+ * Chargement des infos des µS (version Promise, pour `useFetch` - AP 006 T11).
+ * Ne rejette jamais : un µS en erreur est remonté avec la version `N/A`.
  */
-export function getInfosFromMicroServices(setInfos: React.Dispatch<React.SetStateAction<MsInfoModel[]>>) {
+export function fetchInfosFromMicroServices(): Promise<MsInfoModel[]> {
 
     /** Config Backend **/
     const backEnds = [
@@ -31,8 +31,5 @@ export function getInfosFromMicroServices(setInfos: React.Dispatch<React.SetStat
                 msInfos.push(errData);
             }));
     }
-    Promise.all(promisesGetInfos).then(() => {
-        setInfos(msInfos);
-    });
+    return Promise.all(promisesGetInfos).then(() => msInfos);
 }
-

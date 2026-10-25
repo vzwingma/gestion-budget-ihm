@@ -32,3 +32,25 @@ export function callAndNotify<T>(
             toast.error(errorMessage, toastOptions);
         });
 }
+
+/**
+ * Variante "Promise" de {@link callAndNotify}, destinée à `useFetch` (AP 006 - T11, adoption) :
+ * logue + notifie par toast en cas d'échec, puis **relance** l'erreur pour que `useFetch`
+ * l'expose dans son état `error`.
+ *
+ * @param promise promesse de l'appel backend
+ * @param errorMessage message loggé en erreur et affiché en toast en cas d'échec
+ * @param toastOptions options optionnelles du toast d'erreur
+ * @returns la promesse d'origine, avec notification en cas d'échec
+ */
+export function callWithNotify<T>(
+    promise: Promise<T>,
+    errorMessage: string,
+    toastOptions?: ToastOptions
+): Promise<T> {
+    return promise.catch((e) => {
+        console.error(errorMessage, e);
+        toast.error(errorMessage, toastOptions);
+        throw e;
+    });
+}

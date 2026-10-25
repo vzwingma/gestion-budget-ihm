@@ -1,6 +1,6 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lot 1 livré (reste T2/T6/T11-adoption/T16/T20/T12) — Gate #4 validé 👤 (2026-10-25)
+**Statut** : ✅ Lot 1 livré (Gate #4 validé 👤, 2026-10-25) · 🟡 Lot 2 livré, Gate #4 en attente 👤 (reste : découpage `OperationDetailPage`, T16, T20 partiel, T12)
 **Date** : 2026-10-23
 
 ## Context
@@ -210,16 +210,46 @@ T2, T6 (scission), T11 (adoption), T16, T20, T12 (voir ci-dessous).
 - Tests : 197 verts (135 à Gate #2, +60 QALvin à Gate #3). Couverture 87.3 % stmt / 73.7 % branch (cible ≥ 80 % stmt atteinte).
 - Non couverts : `Main.tsx` lazy/Suspense, branche `isMobile` de `BudgetPageShell`.
 
-## Dette restante / prochain lot
+## Lot 2 (2026-10-25) — branche `claude/react-ui-architecture-lot2`
+
+Périmètre validé 👤 ("go pour le lot suivant") : **T2, T11 (adoption `useFetch`), T6, T20 (composants touchés)**. Hors lot : T12 (décision ADR 👤), T16 (migration massive des Props).
+
+Ordre : T11 (adoption, composant par composant, tests de rendu avant) → T2 (déplacement `OperationRecurrenteDetailDateFin` vers `shared/`, découpage `OperationDetailPage` si sûr ; QALvin met à jour les `vi.mock` de chemins) → T6 (scission `BudgetContext`, après T11/T2) → T20 (tests des composants touchés).
+
+### Journal des gates lot 2
+
+| Gate | Date | Décision | Détail |
+|---|---|---|---|
+| #1 | 2026-10-25 | GO | Périmètre lot 2 validé 👤 |
+| #2 | 2026-10-25 | GO 👤 | DEVon : T11 adoption, T2 partiel, T6, correctifs UX/bug |
+| #3 | 2026-10-25 | GO 👤 | QALvin : 365 tests verts (58 fichiers), lint 0 erreur, ~91 % stmt |
+| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, ADR 002 (note), wiki (ConceptionIHM, Historique, C3) mis à jour |
+
+### Résultats (lot 2)
+
+#### Fait
+- **T11 (adoption)** : 7 composants (`Budget`, `Recurrents`, `AnalysesFiltrePeriode`, `Infos`, `MainPage`, `ProfileInfos`, `CompteItem`) utilisent `useFetch`. Les `*.extservices.ts` exposent des variantes Promise `fetch*` (`fetchCategories`, `fetchBudget`, `fetchPreferenceUtilisateur`, `fetchLibellesOperationsCompte`, `fetchInfosFromMicroServices`, `fetchLastAccessDateUtilisateur`, `fetchComptes`, `fetchSoldesBudget`) ; anciennes fonctions callback supprimées. `callWithNotify` (`Services/CallAndNotify.service.ts`) : log + toast + relance l'erreur (pour `useFetch`) ; `callAndNotify` conservé (`BudgetActionsButtonGroup`, `saveOperation*`). Reset du contexte Budget/Recurrents dans un effet sur `[selectedCompte, selectedDate]` ; `useFetch` ignore les réponses périmées.
+- **T2 (partiel)** : `OperationRecurrenteDetailDateFin.component.tsx` déplacé vers `Components/budgets/operations/shared/`. Enum `OPERATION_RECURRENTE_EDITION_FORM` conservée dans `recurrentes/details/`.
+- **T6** : `hooks/useBudgetContext.ts` expose `BudgetSelectionContext` (comptes, compte/date sélectionnés, catégories + setters) et `CurrentBudgetContext` (budget/opération courants + setters), hooks `useBudgetSelection()` / `useCurrentBudget()` (lèvent hors provider) ; `useBudgetContext()` = agrégat des 12 champs. 12 consumers migrés vers les hooks ciblés ; `Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage` restent sur l'agrégat.
+- **T20 (partiel)** : tests ajoutés/mis à jour sur les composants touchés.
+- **UX/bug** : spinner dans `CompteItem` à chaque rechargement du solde ; spinner + bornes périmées ignorées dans `AnalysesFiltrePeriode` pendant le chargement des périodes ; bug de prod corrigé dans `BudgetSoldes` (Fragment comme enfant de `Tooltip` MUI → `TypeError`).
+
+#### Preuves
+- Tests : 365 verts (58 fichiers). Lint : 0 erreur. Couverture ~91 % stmt (QALvin).
+
+#### Point connu
+- Sans compte sélectionné, le spinner de `AnalysesFiltrePeriode` apparaît brièvement (`useFetch` en `loading` avec `Promise.resolve(undefined)`) ; ajustement possible plus tard.
+
+## Dette restante / prochain lot (après lot 2)
 
 | Tâche | Reste à faire | Prérequis / blocage |
 |---|---|---|
-| T2 | Déplacer `OperationRecurrenteDetailDateFin` vers `shared/` et découper `OperationDetailPage` | 🟢 QALvin doit d'abord mettre à jour les `vi.mock` de chemins dans 3 tests |
-| T6 | Scinder `BudgetContext` en plusieurs contextes | Risque élevé ; tests de rendu (T19) en place |
-| T11 (adoption) — reste de T11 | T11 : infra livrée, adoption restante. Migrer les 7 composants (Budget, Recurrents, AnalysesFiltrePeriode, Infos, MainPage, ProfileInfos, CompteItem) vers `useFetch` (hors T20) | Les extservices passent un callback `setState` ; `useFetch` attend une `Promise<T>` |
-| T16 | Co-location des Props hors nouvelles interfaces (`Components.props.ts` reste centralisé) | Par lots |
-| T20 | Couverture des composants restants non testés | Au fil des refactos |
-| T12 | ADR 002 TanStack Query : statut `Proposée`, décision 👤 après adoption `useFetch` | Besoin cache/dedup à confirmer |
+| T2 (reste) | Découper `OperationDetailPage` en sous-composants | État mutable partagé : nécessite un hook `useOperationEditForm` ; déplacer aussi `OPERATION_RECURRENTE_EDITION_FORM` si le découpage le justifie |
+| T6 (reste) | Migrer vers les hooks ciblés les 6 consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) | Ils lisent des champs des deux moitiés ; à traiter avec le découpage d'`OperationDetailPage` |
+| T16 | Co-location des Props (`Components.props.ts` reste centralisé) | Par lots |
+| T20 (reste) | Couverture `OperationDetailPage` (~69 %) ; composants sans test : `AnalyseOperationItem`, `BudgetActionsButtonGroup`, `OperationDetailActions`, sous-composants `OperationDetail*` | Au fil des refactos |
+| T12 | ADR 002 TanStack Query : statut `Proposée`, décision 👤 | `useFetch` adopté → réévaluation cache/dedup possible (voir note de l'ADR) |
+| Ajustement | Spinner `AnalysesFiltrePeriode` sans compte sélectionné | Mineur |
 
 ## Fichiers critiques
 - `src/main/Components/budgets/budget/Budget.component.tsx`

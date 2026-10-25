@@ -1,9 +1,10 @@
-import React, { JSX, useEffect, useState } from 'react'
+import React, { JSX } from 'react'
 import { CircularProgress, Container, Stack, Typography } from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
 import { BUSINESS_ONGLETS } from "../../../Utils/AppBusinessEnums.constants.ts";
-import { getSoldesBudget } from './CompteItem.controller.ts';
+import { fetchSoldesBudget } from './CompteItem.controller.ts';
 import { CompteItemProps } from '../../Components.props.ts';
+import { useFetch } from '../../../hooks/useFetch.ts';
 
 
 /**
@@ -20,17 +21,17 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedCompte, selecte
 
     const isCompteCourant = selectedCompte?.id === compte.id;
 
-    const [soldes, setSoldes] = useState<number | null | undefined>();
-
     /**
      * Chargement des soldes du budget
      * Rechargement à chaque changement de compte ou de date
      */
-    useEffect(() => {
-        if (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS) {
-            getSoldesBudget(compte, selectedDate, setSoldes)
-        }
-    }, [compte, selectedDate, selectedFunction, onRefreshMenuBar]);
+    const { data: soldesCharges, loading: chargementSoldes, error: erreurSoldes } = useFetch(
+        () => (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS)
+            ? fetchSoldesBudget(compte, selectedDate)
+            : Promise.resolve(undefined),
+        [compte, selectedDate, selectedFunction, onRefreshMenuBar]);
+    /** En cas d'erreur, le solde repasse à `undefined` (indicateur de chargement) **/
+    const soldes: number | null | undefined = erreurSoldes ? undefined : soldesCharges;
 
 
     /**
@@ -39,7 +40,7 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedCompte, selecte
      * @constructor
      */
     function renderValueCompte(): JSX.Element {
-        if ( (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS) && (soldes === undefined) ) {
+        if ( (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS) && (chargementSoldes || soldes === undefined) ) {
             return <CircularProgress size={20} />
         }
         else if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {

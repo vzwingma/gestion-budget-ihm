@@ -15,13 +15,12 @@ interface UseFetchResult<T> {
  *
  * Usage :
  * ```ts
- * const { data: comptes, loading, error } = useFetch(() => loadComptesPromise(), [selectedDate]);
+ * const { data: comptes, loading, error } = useFetch(fetchComptes, [selectedDate]);
  * ```
  *
- * Nécessite un `fetcher` qui retourne une `Promise<T>` résolue avec la donnée (contrairement
- * à la majorité des `*.extservices.ts` actuels qui prennent un callback `setState` en paramètre).
- * T11 : infra livrée ; adoption par les 7 composants listés ci-dessus restante (reste de T11),
- * hors T20.
+ * Nécessite un `fetcher` qui retourne une `Promise<T>` résolue avec la donnée : variantes `fetch*`
+ * des `*.extservices.ts`. Les réponses périmées (démontage, changement de dépendances) sont ignorées ;
+ * `data` conserve la valeur précédente pendant un rechargement, utiliser `loading` pour l'indiquer.
  *
  * @param fetcher fonction retournant la promesse de la donnée à charger
  * @param deps dépendances déclenchant un nouveau chargement (comme un `useEffect` classique)

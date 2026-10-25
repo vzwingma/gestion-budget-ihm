@@ -5,7 +5,7 @@ import OperationValue from "../../../../../../Utils/renderers/OperationValue.ren
 import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material'
 import {TYPES_OPERATION_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
 import {OperationDetailValeurProps} from '../../../../../Components.props.ts'
-import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
 import { debug } from "../../../../../../Utils/Debug.utils.ts";
@@ -22,7 +22,7 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
                                                                                 fillOperationForm
                                                                             }: OperationDetailValeurProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useBudgetContext();
+    const { currentBudget, currentOperation } = useCurrentBudget();
     const operation = currentOperation;
     const budgetActif = currentBudget;
 

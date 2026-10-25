@@ -14,19 +14,19 @@ import { OPERATION_ETATS_ENUM } from '../../../Utils/AppBusinessEnums.constants.
  * fusion avec RecurrentsPage et dérivation du regroupement via useMemo).
  *
  * Stratégie : composants enfants mockés (header, soldes, actions, liste, détail), services
- * réseau mockés (pas d'appel HTTP réel). Le `reloadBudget` mocké invoque directement
- * `handleBudgetUpdate` pour simuler la résolution de l'appel back-end et vérifier le
+ * réseau mockés (pas d'appel HTTP réel). Le `fetchBudget` mocké résout le budget
+ * (consommé par `useFetch`) pour simuler la réponse du back-end et vérifier le
  * regroupement des opérations par date.
  */
 
 vi.mock('./Budget.extservices.ts', () => ({
-    loadCategories: vi.fn(),
-    getPreferenceUtilisateur: vi.fn(),
-    reloadBudget: vi.fn()
+    fetchCategories: vi.fn(),
+    fetchPreferenceUtilisateur: vi.fn(),
+    fetchBudget: vi.fn()
 }));
 
 vi.mock('../operations/courantes/detail/OperationDetailPage.extservices.ts', () => ({
-    getLibellesOperationsCompte: vi.fn()
+    fetchLibellesOperationsCompte: vi.fn()
 }));
 
 vi.mock('../shared/BudgetPageHeader.component.tsx', () => ({
@@ -66,7 +66,8 @@ vi.mock('../operations/courantes/detail/OperationDetailPage.component.tsx', () =
     default: () => <div data-testid="mock-detail" />
 }));
 
-import { reloadBudget } from './Budget.extservices.ts';
+import { fetchBudget, fetchCategories, fetchPreferenceUtilisateur } from './Budget.extservices.ts';
+import { fetchLibellesOperationsCompte } from '../operations/courantes/detail/OperationDetailPage.extservices.ts';
 
 function buildOperation(id: string, dateOperation: Date | null) {
     const operation = createNewOperation();
@@ -110,6 +111,11 @@ describe('BudgetPage', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        // Variantes Promise consommées par useFetch : toujours une promesse résolue par défaut
+        (fetchCategories as any).mockResolvedValue([]);
+        (fetchPreferenceUtilisateur as any).mockResolvedValue([]);
+        (fetchLibellesOperationsCompte as any).mockResolvedValue([]);
+        (fetchBudget as any).mockResolvedValue(undefined);
     });
 
     test('affiche le Backdrop de chargement quand aucun budget courant', () => {
@@ -124,9 +130,7 @@ describe('BudgetPage', () => {
         const dateOperation = new Date(2026, 0, 15);
         budget.listeOperations = [buildOperation('op-1', dateOperation)];
 
-        (reloadBudget as any).mockImplementation((handleBudgetUpdate: (b: BudgetMensuelModel) => void) => {
-            handleBudgetUpdate(budget);
-        });
+        (fetchBudget as any).mockResolvedValue(budget);
 
         renderBudgetPage({ currentBudget: budget });
 
@@ -140,9 +144,7 @@ describe('BudgetPage', () => {
         const operation = buildOperation('op-1', new Date(2026, 0, 15));
         budget.listeOperations = [operation];
 
-        (reloadBudget as any).mockImplementation((handleBudgetUpdate: (b: BudgetMensuelModel) => void) => {
-            handleBudgetUpdate(budget);
-        });
+        (fetchBudget as any).mockResolvedValue(budget);
 
         const { contextValue } = renderBudgetPage({ currentBudget: budget });
 

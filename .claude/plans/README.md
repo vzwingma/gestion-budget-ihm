@@ -11,7 +11,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
 | 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | 🟡 En cours — Phases 1–2/5 terminées, 3–5 à venir | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
-| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (reste T2/T6/T11-adoption/T16/T20/T12) — Gate #4 validé 👤 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
+| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (Gate #4 validé 👤) · 🟡 Lot 2 livré (T11 adoption, T6, T2 partiel), Gate #4 en attente 👤 — reste : découpage `OperationDetailPage`, T16, T20, T12 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Proposée — item T12 uniquement)
 
@@ -101,5 +101,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-10-25 (plan 005 : Phases 1–2 terminées ; plan 006 : lot 1 livré, Gate #4 validé)
+**Dernière mise à jour :** 2026-10-25 (plan 005 : Phases 1–2 terminées ; plan 006 : lot 1 livré Gate #4 validé ; lot 2 livré, Gate #4 en attente)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain

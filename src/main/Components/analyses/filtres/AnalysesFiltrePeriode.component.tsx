@@ -10,12 +10,14 @@ import {
     ButtonGroup,
     Typography,
     Box,
+    CircularProgress,
     TextField
 } from '@mui/material';
 import { AnalysesPeriodeModel } from '../../../Models/analyses/AnalysesPeriode.model.ts';
 import { AnalysesFiltrePeriodeProps } from '../../Components.props.ts';
 import { getValidPeriodesForCompte } from '../Analyses.extservices.ts';
 import { debug } from "../../../Utils/Debug.utils.ts";
+import { useFetch } from '../../../hooks/useFetch.ts';
 
 
 
@@ -31,8 +33,20 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
     const [vuePeriode, setVuePeriode] = useState<boolean>(periode.vuePeriode);
     const [dateDebut, setDateDebut] = useState<Date | null>(periode.periodeDebut || new Date());
     const [dateFin, setDateFin] = useState<Date | null>(periode.periodeFin || new Date());
-    const [dateMinBudget, setDateMinBudget] = useState<Date | null>(null);
-    const [dateMaxBudget, setDateMaxBudget] = useState<Date | null>(null);
+
+    /** Chargement des intervalles de budget valides lorsque le compte sélectionné change **/
+    const { data: intervallesCharges, loading: chargementIntervalles } = useFetch(
+        () => selectedCompte
+            ? getValidPeriodesForCompte(selectedCompte).then(intervallesBudget => {
+                debug("Périodes d'analyses valides pour le compte " + selectedCompte?.libelle, intervallesBudget);
+                return intervallesBudget;
+            })
+            : Promise.resolve(undefined),
+        [selectedCompte]);
+    /** Pendant le rechargement, les bornes de l'ancien compte sont périmées : non exploitées **/
+    const intervalleBudget = !chargementIntervalles && selectedCompte && Array.isArray(intervallesCharges) ? intervallesCharges[0] : undefined;
+    const dateMinBudget: Date | null = intervalleBudget?.debut ?? null;
+    const dateMaxBudget: Date | null = intervalleBudget?.fin ?? null;
 
     const aujourdhui = new Date();
     const moisCourant = aujourdhui.getMonth();
@@ -123,35 +137,17 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
     }, [vuePeriode, dateDebut, dateFin, onChange]);
 
 
-    /** Effet pour charger les intervalles de budget valides lorsque le compte sélectionné change */
-    useEffect(() => {
-        if (selectedCompte) {
-            getValidPeriodesForCompte(selectedCompte)
-                .then(intervallesBudget => {
-                    debug("Périodes d'analyses valides pour le compte " + selectedCompte?.libelle, intervallesBudget);
-                    if (intervallesBudget && intervallesBudget.length > 0) {
-                        setDateMinBudget(intervallesBudget[0].debut);
-                        setDateMaxBudget(intervallesBudget[0].fin);
-                    } else {
-                        setDateMinBudget(null);
-                        setDateMaxBudget(null);
-                    }
-                })
-        } else {
-            setDateMinBudget(null);
-            setDateMaxBudget(null);
-        }
-    }, [selectedCompte]);
-
-
     return (
         <Stack direction="column" spacing={2} sx={{ paddingLeft: 2 }}>
-            <FormControl>
-                <RadioGroup row value={vuePeriode} onChange={(e) => setVuePeriode(e.target.value === 'true')}>
-                    <FormControlLabel value="false" control={<Radio />} label="Mois" />
-                    <FormControlLabel value="true" control={<Radio />} label="Période" />
-                </RadioGroup>
-            </FormControl>
+            <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+                <FormControl>
+                    <RadioGroup row value={vuePeriode} onChange={(e) => setVuePeriode(e.target.value === 'true')}>
+                        <FormControlLabel value="false" control={<Radio />} label="Mois" />
+                        <FormControlLabel value="true" control={<Radio />} label="Période" />
+                    </RadioGroup>
+                </FormControl>
+                {chargementIntervalles && <CircularProgress size={20} aria-label="Chargement des périodes valides" />}
+            </Stack>
 
             {!vuePeriode && (
                 <TextField

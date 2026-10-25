@@ -21,7 +21,7 @@ import {
 import {OPERATION_ETATS_ENUM} from "../../../../../../Utils/AppBusinessEnums.constants.ts";
 import { CenterComponent } from "../../../../../shared/CenterComponent.tsx";
 import {OperationDetailActionsProps} from "../../../../../Components.props.ts";
-import {useBudgetContext} from "../../../../../../Models/contextProvider/BudgetContextProvider.tsx";
+import { useCurrentBudget } from "../../../../../../hooks/useBudgetContext.ts";
 import { handleOperationAction } from "./OperationDetailActions.controller.ts";
 
 
@@ -39,7 +39,7 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                                                                               }: OperationDetailActionsProps): JSX.Element => {
 
     const [showModale, setShowModale] = useState<boolean>(false);
-    const { currentBudget, currentOperation } = useBudgetContext();
+    const { currentBudget, currentOperation } = useCurrentBudget();
     const operation = currentOperation;
     const budget = currentBudget;
 

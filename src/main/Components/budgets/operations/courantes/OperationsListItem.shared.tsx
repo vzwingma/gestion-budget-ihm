@@ -3,7 +3,7 @@ import {Box, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/materi
 import OperationValue from "../../../../Utils/renderers/OperationValue.renderer.tsx";
 import { CenterComponent } from '../../../shared/CenterComponent.tsx';
 import {getCategorieColor, getCategorieIcon} from '../../../../Utils/renderers/CategorieItem.renderer.tsx';
-import {useBudgetContext} from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useBudgetSelection } from '../../../../hooks/useBudgetContext.ts';
 import {getOperationLibelle, getOperationStateLabel} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
 import OperationModel from '../../../../Models/budgets/Operation.model.ts';
 import OperationStatus from '../../../../Utils/renderers/OperationStatus.renderer.tsx';
@@ -40,7 +40,7 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     isOneSelected
 }: SharedOperationItemProps): JSX.Element => {
 
-    const budgetContext = useBudgetContext();
+    const budgetContext = useBudgetSelection();
     const comptes = budgetContext?.comptes;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     const ringColor = getBorderColor(operation);

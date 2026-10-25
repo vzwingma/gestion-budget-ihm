@@ -12,7 +12,7 @@ import {
 import React, { JSX, useState } from 'react';
 
 import { AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded } from "@mui/icons-material";
-import { useBudgetContext } from '../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useCurrentBudget } from '../../../../hooks/useBudgetContext.ts';
 import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "../../../../Utils/AppBusinessEnums.constants.ts";
 import { getEventTargetId } from '../../../../Utils/OperationData.utils.ts';
 import { userHasPermission } from '../../../../Utils/UserData.utils.ts';
@@ -31,7 +31,7 @@ import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGr
 
 export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGroupProps> = ({ droits, onActionBudgetChange, onActionOperationCreate }: BudgetActionsButtonGroupProps): JSX.Element => {
 
-    const { currentBudget } = useBudgetContext();
+    const { currentBudget } = useCurrentBudget();
     const budget = currentBudget;
     const [showModale, setShowModale] = useState<boolean>(false);
     const [modaleContent, setModaleContent] = useState<{ title: string, question: string }>();

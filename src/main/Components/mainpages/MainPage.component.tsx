@@ -3,18 +3,19 @@ import {Box, Container, Divider, Drawer, IconButton, Stack, useMediaQuery, useTh
 import CloseIcon from '@mui/icons-material/Close';
 import {ToastContainer} from "react-toastify";
 import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants.ts";
-import {loadComptes} from "./MainPage.extservices.ts";
+import {fetchComptes} from "./MainPage.extservices.ts";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import CompteItem from "./menuSlideBar/CompteItem.component.tsx";
 import DateRange from "./menuSlideBar/DateRange.component.tsx";
 import BudgetPage from "../budgets/budget/Budget.component.tsx";
 import {MainPageProps} from "../Components.props.tsx";
-import {useBudgetContext} from "../../Models/contextProvider/BudgetContextProvider.tsx";
+import { useBudgetSelection } from "../../hooks/useBudgetContext.ts";
 import {useAuth} from "react-oidc-context";
 import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
 import { Analyses } from "../analyses/Analyses.component.tsx";
 import { getCompteGroupByOwner } from "../../Utils/UserData.utils.ts";
 import { debug } from "../../Utils/Debug.utils.ts";
+import { useFetch } from "../../hooks/useFetch.ts";
 
 
 /**
@@ -45,14 +46,17 @@ import { debug } from "../../Utils/Debug.utils.ts";
  */
 export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): JSX.Element => {
     /** Etats pour la page Budget/Analyse **/
-    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useBudgetContext();
+    const { comptes, setListeComptes, selectedCompte, setSelectedCompte, selectedDate, setSelectedDate } = useBudgetSelection();
     const auth = useAuth();
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     /** Appels WS vers pour charger la liste des comptes **/
+    const { data: comptesCharges } = useFetch(() => fetchComptes(), [selectedDate]);
     useEffect(() => {
-        loadComptes(setListeComptes);
-    }, [selectedDate, setListeComptes])
+        if (comptesCharges !== undefined) {
+            setListeComptes(comptesCharges);
+        }
+    }, [comptesCharges, setListeComptes]);
 
 
     /**

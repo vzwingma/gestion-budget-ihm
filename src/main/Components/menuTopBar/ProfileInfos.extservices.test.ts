@@ -1,12 +1,10 @@
 import type { Mock } from 'vitest';
-import {getLastAccessDateUtilisateur} from './ProfileInfos.extservices.ts';
+import {fetchLastAccessDateUtilisateur} from './ProfileInfos.extservices.ts';
 import {call} from '../../Services/ClientHTTP.service.ts';
 
 vi.mock('../../Services/ClientHTTP.service.ts', () => ({
     call: vi.fn()
 }));
-
-const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 
 describe('ProfileInfos.extservices', () => {
 
@@ -14,14 +12,21 @@ describe('ProfileInfos.extservices', () => {
         vi.clearAllMocks();
     });
 
-    test('met à jour la date de dernière connexion', async () => {
-        const setState = vi.fn();
+    test('résout avec la date de dernière connexion formatée (date - heure)', async () => {
         (call as Mock).mockResolvedValue({lastAccessTime: 1700000000});
+        const date = new Date(1700000000 * 1000);
 
-        getLastAccessDateUtilisateur(setState);
-        await flushPromises();
-
+        await expect(fetchLastAccessDateUtilisateur())
+            .resolves.toBe(date.toLocaleDateString() + " - " + date.toLocaleTimeString());
         expect(call).toHaveBeenCalledTimes(1);
-        expect(setState).toHaveBeenCalledTimes(1);
+    });
+
+    test('log puis rejette en cas d erreur', async () => {
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        (call as Mock).mockRejectedValue(new Error('ko'));
+
+        await expect(fetchLastAccessDateUtilisateur()).rejects.toThrow('ko');
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
     });
 });

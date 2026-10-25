@@ -5,7 +5,7 @@ import {getEventTargetId} from "../../../../../Utils/OperationData.utils.ts";
 import {Dispatch, SetStateAction} from "react";
 import { createEmptyErrors, EditRFormProps, ErrorsRFormProps, OPERATION_RECURRENTE_EDITION_FORM } from "./OperationRecurrenteDetailPage.constants.ts";
 import { saveOperation } from "../../courantes/detail/OperationDetailPage.extservices.ts";
-import { validateFormDateFinPeriode } from "./subcomponents/OperationRecurrenteDetailDateFin.component.tsx";
+import { validateFormDateFinPeriode } from "../../shared/OperationRecurrenteDetailDateFin.component.tsx";
 import { debug } from "../../../../../Utils/Debug.utils.ts";
 
 
