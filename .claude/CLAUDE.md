@@ -156,7 +156,8 @@ src/main/
 ### Data flow
 1. **Auth** – `react-oidc-context` gère Google OAuth. `Auth.service.ts` stocke/récupère token. `AuthTokenSync` (monté à la racine dans `Main.tsx`) synchronise token OIDC → localStorage via `useAuthTokenSync`.
 2. **HTTP** – Tous appels backend via `ClientHTTP.service.ts`, attache headers `X-Api-Key` + `Authorization: Bearer <token>`. URLs utilisent `{{}}` placeholders positionnels, remplacés via argument array `params`.
-3. **State** – État global dans `BudgetContextProvider.tsx` (React Context). État local UI: `useState`/`useMemo`/`useCallback` composants fonctionnels.
+3. **State** – État global dans `BudgetContextProvider.tsx` (React Context), scindé en `BudgetSelectionContext` (comptes, compte/date, catégories) et `CurrentBudgetContext` (budget/opération courants) ; hooks ciblés `useBudgetSelection()` / `useCurrentBudget()`, agrégat `useBudgetContext()`. État local UI: `useState`/`useMemo`/`useCallback` composants fonctionnels.
+   **Data-fetching** – `useFetch(fetcher, deps)` + variantes Promise `fetch*` des `*.extservices.ts` (enveloppées par `callWithNotify` : log + toast + relance). `callAndNotify` (callback) reste pour les actions/sauvegardes.
 4. **Routing** – `HashRouter` de `react-router-dom@7`.
 
 ### Component conventions
@@ -164,7 +165,7 @@ src/main/
 - Interfaces props co-localisées dans `Components.props.ts`.
 - Feature folders miroir noms domaine: `analyses/`, `budgets/`, `operations/`.
 - Sub-composants page dans sous-dossier `subcomponents/`; boutons action dans `actions/`.
-- Hooks custom dans `src/main/hooks/`. Appels extservices : `callAndNotify` (`Services/CallAndNotify.service.ts`).
+- Hooks custom dans `src/main/hooks/`. Lecture de données : `useFetch` + `fetch*` (`callWithNotify`) ; actions/sauvegardes : `callAndNotify` (`Services/CallAndNotify.service.ts`). Contexte budget : préférer `useBudgetSelection()` / `useCurrentBudget()` à `useBudgetContext()` si une seule moitié est lue.
 - Pas de `console.log` (ESLint `no-console`, `warn`/`error` OK) : logs debug via `debug()` (`Utils/Debug.utils.ts`, actif si `VITE_CONFIG_DEBUG` défini).
 - Items de liste en `React.memo` + handlers `useCallback`. Routes `MainPage`/`Infos` en `React.lazy` + `Suspense`.
 - Material-UI 9 (`@mui/material`) seule lib UI. `Box`/`Grid` layout; `useMediaQuery`/`useTheme` responsive.
@@ -195,7 +196,7 @@ Uniquement ce qui concerne **tous** les agents :
 - Projet en évolution, migré CRA → Vite (AP 001, ADR-001) ; migration dépendances TS/Vite partiellement reportée (AP 003 : TS v7 / typescript-eslint bloqués npm).
 - Contrats API couplés au backend `gestion-budget-serverless` : toute évolution modèle → vérifier côté backend.
 - Ancienne structure `.github/` (agents v2.x, plans) conservée pour référence historique.
-- AP 006 (revue architecture React) : lot 1 livré ; dette restante (T2, T6, T11 : infra `useFetch` livrée / adoption restante, T16, T20, ADR 002 Proposée) listée dans `.claude/plans/006_revue_architecture_react.plan.md`.
+- AP 006 (revue architecture React) : lots 1 et 2 livrés (lot 2 : Gate #4 en attente 👤) ; `useFetch` adopté, contexte budget scindé. Dette restante (découpage `OperationDetailPage`, T16, T20, ADR 002 Proposée) listée dans `.claude/plans/006_revue_architecture_react.plan.md`.
 
 ---
 

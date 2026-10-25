@@ -1,7 +1,7 @@
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx'
 import {Stack, Tooltip, Typography, useMediaQuery, useTheme, Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React, {JSX} from "react";
-import {useBudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useCurrentBudget } from '../../../hooks/useBudgetContext.ts';
 import { getTypeCategorieRenderer } from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 
@@ -12,7 +12,7 @@ import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums
  */
 const BudgetSoldes: React.FC = (): JSX.Element => {
 
-    const {currentBudget} = useBudgetContext();
+    const {currentBudget} = useCurrentBudget();
     const budget = currentBudget;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     // définition de la date courante
@@ -60,27 +60,27 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
         );
     }
 
+    // Budget absent (chargement en cours) : rien à afficher (un Tooltip MUI exige un enfant élément DOM)
+    if (!budget) return <Stack direction={"column"} sx={{ justifyContent: "left", alignContent: "center", alignItems: "center" }} />;
+
     return (
         <Stack direction={"column"} sx={{ justifyContent: "left", alignContent: "center", alignItems: "center" }}>
             <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
-                {budget ?
-                    <Typography variant={"h6"} sx={{ textAlign: "right", width: isMobile ? 100 : 240, cursor: "help" }}>
-                        <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true}
-                                        id={'soldeAtMaintenant'}/>
-                    </Typography> : <></>}
+                <Typography variant={"h6"} sx={{ textAlign: "right", width: isMobile ? 100 : 240, cursor: "help" }}>
+                    <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true}
+                                    id={'soldeAtMaintenant'}/>
+                </Typography>
             </Tooltip>
-            <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
-            {(budget?.actif) ?
+            {budget.actif &&
+                <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
                     <Typography variant={"caption"}
                                 sx={{ textAlign: "right", width: isMobile ? 100 : 240, cursor: "help" }}>
                         <span style={{color: "#808080"}}>(</span> <OperationValue
                         valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true}
                         id={'soldeAtFinMoisCourant'}/> <span style={{color: "#808080"}}>)</span>
                     </Typography>
-
-                : <></>
+                </Tooltip>
             }
-            </Tooltip>
         </Stack>
     )
 };

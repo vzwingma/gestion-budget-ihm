@@ -6,8 +6,8 @@ import {OPERATION_ETATS_ENUM} from '../../../Utils/AppBusinessEnums.constants.ts
 import {getOperationsGroupedByDateOperation} from '../budget/Budget.controller.ts';
 
 // Contexte budget : seule la liste des comptes est utilisée par les lignes
-vi.mock('../../../Models/contextProvider/BudgetContextProvider.tsx', () => ({
-    useBudgetContext: () => ({comptes: []}),
+vi.mock('../../../hooks/useBudgetContext.ts', () => ({
+    useBudgetSelection: () => ({comptes: []}),
 }));
 
 // Normalise les espaces (insécables) des séparateurs de milliers / avant « € »

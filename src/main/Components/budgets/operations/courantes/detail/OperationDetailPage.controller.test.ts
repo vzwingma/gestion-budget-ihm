@@ -28,7 +28,7 @@ vi.mock('./OperationDetailPage.extservices.ts', () => ({
     saveOperationIntercompte: vi.fn()
 }));
 
-vi.mock('../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx', () => ({
+vi.mock('../../shared/OperationRecurrenteDetailDateFin.component.tsx', () => ({
     validateFormDateFinPeriode: vi.fn()
 }));
 

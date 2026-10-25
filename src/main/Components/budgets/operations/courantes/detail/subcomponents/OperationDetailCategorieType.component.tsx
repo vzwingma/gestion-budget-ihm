@@ -4,7 +4,7 @@ import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {getTypeCategorieRenderer} from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
 import {TYPES_CATEGORIES_OPERATION_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
 import {OperationDetailCategorieTypeProps} from '../../../../../Components.props.ts'
-import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
 import { debug } from "../../../../../../Utils/Debug.utils.ts";
 
 /**
@@ -19,7 +19,7 @@ import { debug } from "../../../../../../Utils/Debug.utils.ts";
  */
 export const OperationDetailCategorieType: React.FC<OperationDetailCategorieTypeProps> = ({ formCategorieTypeInEdition, editOperation, fillOperationForm }: OperationDetailCategorieTypeProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useBudgetContext();
+    const { currentBudget, currentOperation } = useCurrentBudget();
     const operation = formCategorieTypeInEdition ? editOperation : currentOperation;
 
     if (!currentBudget || !operation) {

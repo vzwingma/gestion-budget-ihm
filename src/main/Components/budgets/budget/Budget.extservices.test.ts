@@ -1,7 +1,8 @@
 import type { Mock } from 'vitest';
-import {getPreferenceUtilisateur, loadCategories, reloadBudget} from './Budget.extservices.ts';
+import {fetchBudget, fetchCategories, fetchPreferenceUtilisateur} from './Budget.extservices.ts';
 import {call} from '../../../Services/ClientHTTP.service.ts';
 import {toast} from 'react-toastify';
+import {UTILISATEUR_DROITS} from '../../../Utils/AppBusinessEnums.constants.ts';
 
 vi.mock('../../../Services/ClientHTTP.service.ts', () => ({
     call: vi.fn()
@@ -17,68 +18,84 @@ vi.mock('react-toastify', () => ({
     }
 }));
 
-const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
-
-describe('Budget.extservices', () => {
+describe('Budget.extservices (variantes Promise pour useFetch)', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
     });
 
-    test('charge les catégories et appelle le callback', async () => {
-        const handleLoadCategories = vi.fn();
-        (call as Mock).mockResolvedValue([{id: 'cat-1'}]);
+    describe('fetchCategories', () => {
+        test('résout avec les catégories peuplées', async () => {
+            (call as Mock).mockResolvedValue([{id: 'cat-1'}]);
 
-        loadCategories(handleLoadCategories as any);
-        await flushPromises();
-
-        expect(call).toHaveBeenCalledTimes(1);
-        expect(handleLoadCategories).toHaveBeenCalledTimes(1);
-    });
-
-    test('recharge le budget pour compte/date renseignés', async () => {
-        const handleBudgetUpdate = vi.fn();
-        (call as Mock).mockResolvedValue({id: 'budget-1'});
-
-        reloadBudget(handleBudgetUpdate as any, {id: 'c1'} as any, new Date('2026-01-20'));
-        await flushPromises();
-
-        expect(call).toHaveBeenCalledTimes(1);
-        expect(handleBudgetUpdate).toHaveBeenCalledWith({id: 'budget-1'});
-    });
-
-    test('ne recharge pas le budget si compte ou date absent', () => {
-        const handleBudgetUpdate = vi.fn();
-
-        reloadBudget(handleBudgetUpdate as any, null, new Date());
-        reloadBudget(handleBudgetUpdate as any, {id: 'c1'} as any);
-
-        expect(call).not.toHaveBeenCalled();
-        expect(handleBudgetUpdate).not.toHaveBeenCalled();
-    });
-
-    test('mappe les droits utilisateur et met à jour le state', async () => {
-        const setUserDroits = vi.fn();
-        (call as Mock).mockResolvedValue({
-            droits: {
-                DROIT_CLOTURE_BUDGET: true,
-                DROIT_RAZ_BUDGET: false
-            }
+            await expect(fetchCategories()).resolves.toEqual([{id: 'cat-1'}]);
+            expect(call).toHaveBeenCalledTimes(1);
+            expect(toast.error).not.toHaveBeenCalled();
         });
 
-        getPreferenceUtilisateur(setUserDroits as any);
-        await flushPromises();
+        test('en erreur : toast + rejet', async () => {
+            const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            (call as Mock).mockRejectedValue(new Error('ko'));
 
-        expect(setUserDroits).toHaveBeenCalledTimes(1);
-        expect(setUserDroits.mock.calls[0][0].length).toBeGreaterThan(0);
+            await expect(fetchCategories()).rejects.toThrow('ko');
+            expect(toast.error).toHaveBeenCalledTimes(1);
+            expect(toast.error).toHaveBeenCalledWith('Erreur lors du chargement des catégories', undefined);
+            spy.mockRestore();
+        });
     });
 
-    test('affiche un toast si chargement catégories en erreur', async () => {
-        (call as Mock).mockRejectedValue(new Error('ko'));
+    describe('fetchBudget', () => {
+        test('résout avec le budget et passe compte/année/mois (mois 1-based) à call()', async () => {
+            (call as Mock).mockResolvedValue({id: 'budget-1'});
 
-        loadCategories(vi.fn());
-        await flushPromises();
+            await expect(fetchBudget({id: 'c1'} as any, new Date(2026, 0, 20))).resolves.toEqual({id: 'budget-1'});
+            expect((call as Mock).mock.calls[0][3]).toEqual(['c1', '2026', '1']);
+        });
 
-        expect(toast.error).toHaveBeenCalledTimes(1);
+        test.each([
+            ['compte null', null, new Date(2026, 0, 20)],
+            ['date absente', {id: 'c1'}, undefined],
+        ])('résout avec undefined sans appel réseau : %s', async (_nom, compte, date) => {
+            await expect(fetchBudget(compte as any, date)).resolves.toBeUndefined();
+            expect(call).not.toHaveBeenCalled();
+        });
+
+        test('en erreur : toast persistant (autoClose false) + rejet', async () => {
+            const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            (call as Mock).mockRejectedValue(new Error('500'));
+
+            await expect(fetchBudget({id: 'c1'} as any, new Date(2026, 2, 5))).rejects.toThrow('500');
+            expect(toast.error).toHaveBeenCalledWith(
+                'Erreur lors du chargement du budget c1 du 3/2026', {autoClose: false, closeOnClick: true});
+            spy.mockRestore();
+        });
+    });
+
+    describe('fetchPreferenceUtilisateur', () => {
+        test('mappe les droits à true vers l enum, ignore les droits à false ou inconnus', async () => {
+            (call as Mock).mockResolvedValue({
+                droits: {
+                    DROIT_CLOTURE_BUDGET: true,
+                    DROIT_RAZ_BUDGET: false,
+                    DROIT_CREATE_OPERATION: true,
+                    DROIT_INCONNU: true
+                }
+            });
+
+            await expect(fetchPreferenceUtilisateur()).resolves.toEqual([
+                UTILISATEUR_DROITS.DROIT_CLOTURE_BUDGET,
+                UTILISATEUR_DROITS.DROIT_CREATE_OPERATION
+            ]);
+        });
+
+        test('en erreur : log + rejet, sans toast', async () => {
+            const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            (call as Mock).mockRejectedValue(new Error('403'));
+
+            await expect(fetchPreferenceUtilisateur()).rejects.toThrow('403');
+            expect(spy).toHaveBeenCalled();
+            expect(toast.error).not.toHaveBeenCalled();
+            spy.mockRestore();
+        });
     });
 });

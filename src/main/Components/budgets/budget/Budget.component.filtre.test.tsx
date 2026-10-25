@@ -16,18 +16,19 @@ import {OPERATION_ETATS_ENUM} from '../../../Utils/AppBusinessEnums.constants.ts
  */
 
 vi.mock('./Budget.extservices.ts', () => ({
-    loadCategories: vi.fn(),
-    getPreferenceUtilisateur: vi.fn(),
-    reloadBudget: vi.fn()
+    fetchCategories: vi.fn(),
+    fetchPreferenceUtilisateur: vi.fn(),
+    fetchBudget: vi.fn()
 }));
 vi.mock('../operations/courantes/detail/OperationDetailPage.extservices.ts', () => ({
-    getLibellesOperationsCompte: vi.fn()
+    fetchLibellesOperationsCompte: vi.fn()
 }));
 vi.mock('./BudgetSoldes.component.tsx', () => ({default: () => <div/>}));
 vi.mock('./actions/BudgetActionsButtonGroup.component.tsx', () => ({BudgetActionsButtonGroupComponent: () => <div/>}));
 vi.mock('../operations/courantes/detail/OperationDetailPage.component.tsx', () => ({default: () => <div/>}));
 
-import {reloadBudget} from './Budget.extservices.ts';
+import {fetchBudget, fetchCategories, fetchPreferenceUtilisateur} from './Budget.extservices.ts';
+import {fetchLibellesOperationsCompte} from '../operations/courantes/detail/OperationDetailPage.extservices.ts';
 
 // Normalise les espaces (insécables) des séparateurs de milliers / avant « € »
 const norm = (t: string | null) => (t ?? '').replace(/\s/g, ' ');
@@ -72,20 +73,27 @@ describe('BudgetPage - filtre par puces', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        (reloadBudget as any).mockImplementation((handleBudgetUpdate: (b: BudgetMensuelModel) => void) => {
-            handleBudgetUpdate(budgetDeTest());
-        });
+        (fetchCategories as any).mockResolvedValue([]);
+        (fetchPreferenceUtilisateur as any).mockResolvedValue([]);
+        (fetchBudget as any).mockResolvedValue(budgetDeTest());
+        (fetchLibellesOperationsCompte as any).mockResolvedValue([]);
     });
 
-    test('sans filtre : 5 opérations, pas de barre de résultat, en-têtes de groupe Phase 3', () => {
+    /** Rend l'appli et attend la fin du chargement asynchrone du budget (useFetch) */
+    const renderAppli = async () => {
         render(<Appli/>);
+        await screen.findByText('Loyer');
+    };
+
+    test('sans filtre : 5 opérations, pas de barre de résultat, en-têtes de groupe Phase 3', async () => {
+        await renderAppli();
         expect(libelles()).toEqual(['Loyer', 'Courses', 'Salaire', 'Cafe', 'Annule']);
         expect(screen.queryByRole('status')).not.toBeInTheDocument();
         expect(titres()).toEqual(['À valider · 2 · -530,00 €', expect.stringMatching(/^Lun\. 02\/11 · \+1.995,65 €$/)]);
     });
 
     test('puce « À valider » : seules PREVUE + REPORTEE ; compteur, net et en-têtes cohérents', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.click(puce('À valider'));
         expect(libelles()).toEqual(['Loyer', 'Courses']);
         expect(resultat()).toBe('2 opérations · net -530,00 € · Réinitialiser');
@@ -93,7 +101,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('puce « Réalisée » : en-tête de date recalculé sur les opérations visibles', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.click(puce('Réalisée'));
         expect(libelles()).toEqual(['Salaire', 'Cafe']);
         expect(resultat()).toMatch(/^2 opérations · net \+1.995,65 €/);
@@ -101,7 +109,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('puce « Annulée » seule : opération visible mais net 0,00 € (annulées exclues du net et du sous-total)', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.click(puce('Annulée'));
         expect(libelles()).toEqual(['Annule']);
         expect(resultat()).toMatch(/^1 opération · net 0,00 €/);
@@ -109,7 +117,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('puce « Dépenses » : sous-totaux de chaque groupe sur les dépenses visibles', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.click(puce('Dépenses'));
         expect(libelles()).toEqual(['Loyer', 'Courses', 'Cafe', 'Annule']);
         // 4 visibles (dont Annule), net = -500 -30 -4,35 (Annule exclue)
@@ -118,7 +126,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('puce « Rentrées » : seul le salaire', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.click(puce('Rentrées'));
         expect(libelles()).toEqual(['Salaire']);
         // Séparateur de milliers dépendant de la locale (addEndingZeros) : on ne fige que le chiffre significatif
@@ -126,7 +134,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('combinaison État × Sens (ET) et OU intra-groupe', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.click(puce('Réalisée'));
         await userEvent.click(puce('Dépenses'));
         expect(libelles()).toEqual(['Cafe']);
@@ -135,7 +143,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('texte + puce (ET) : « loy » + « À valider » ; texte + puce incompatibles = 0 opération', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.type(screen.getByLabelText('Filtrage des opérations'), 'loy');
         expect(resultat()).toMatch(/^1 opération · net -500,00 €/);
         await userEvent.click(puce('À valider'));
@@ -147,7 +155,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('« Réinitialiser » vide texte ET puces et masque la barre de résultat', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.type(screen.getByLabelText('Filtrage des opérations'), 'loy');
         await userEvent.click(puce('Dépenses'));
         await userEvent.click(screen.getByRole('button', {name: 'Réinitialiser'}));
@@ -158,7 +166,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('croix ⊗ du champ texte : vide le texte, conserve les puces, refocus', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.click(puce('Dépenses'));
         await userEvent.type(screen.getByLabelText('Filtrage des opérations'), 'loy');
         await userEvent.click(screen.getByRole('button', {name: 'Effacer le filtre'}));
@@ -169,7 +177,7 @@ describe('BudgetPage - filtre par puces', () => {
     });
 
     test('persistance : démonter puis remonter BudgetPage (même Provider) conserve texte et puces', async () => {
-        render(<Appli/>);
+        await renderAppli();
         await userEvent.type(screen.getByLabelText('Filtrage des opérations'), 'o');
         await userEvent.click(puce('Dépenses'));
         const avant = libelles();
@@ -178,6 +186,7 @@ describe('BudgetPage - filtre par puces', () => {
         await userEvent.click(screen.getByRole('button', {name: 'bascule'})); // démonte
         expect(screen.queryByLabelText('Filtrage des opérations')).not.toBeInTheDocument();
         await userEvent.click(screen.getByRole('button', {name: 'bascule'})); // remonte
+        await screen.findByText('Loyer'); // le budget est rechargé (useFetch) au remontage
 
         expect(screen.getByLabelText('Filtrage des opérations')).toHaveValue('o');
         expect(puce('Dépenses')).toHaveAttribute('aria-pressed', 'true');

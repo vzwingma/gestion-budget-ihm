@@ -7,7 +7,6 @@ import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.consta
 import {call} from "../../../../../Services/ClientHTTP.service.ts";
 import {callAndNotify} from "../../../../../Services/CallAndNotify.service.ts";
 import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
-import {Dispatch, SetStateAction} from "react";
 import { debug } from "../../../../../Utils/Debug.utils.ts";
 
 
@@ -74,21 +73,18 @@ export function saveOperationIntercompte(operation: OperationModel, budget: Budg
 }
 
 /**
- * Recherche des libellés des opérations sur le compte
+ * Recherche des libellés des opérations sur le compte (version Promise, pour `useFetch` - AP 006 T11)
  * @param idCompte identifiant du compte
- * @param setListeLibellesOperation
  */
-export function getLibellesOperationsCompte(idCompte: string, setListeLibellesOperation: Dispatch<SetStateAction<LibelleCategorieOperationModel[]>>) {
-
-    call(METHODE_HTTP.GET,
+export function fetchLibellesOperationsCompte(idCompte: string): Promise<LibelleCategorieOperationModel[]> {
+    return call(METHODE_HTTP.GET,
         BACKEND_ENUM.URL_OPERATIONS, SERVICES_URL.OPERATIONS.LIBELLES,
         [idCompte])
-        .then((listeLibelles: LibelleCategorieOperationModel[]) => {
-            setListeLibellesOperation(listeLibelles
-                .filter((value, index, current_value) => current_value.indexOf(value) === index)
-                .sort((libelle1, libelle2) => libelle1.libelle.localeCompare(libelle2.libelle)));
-        })
+        .then((listeLibelles: LibelleCategorieOperationModel[]) => listeLibelles
+            .filter((value, index, current_value) => current_value.indexOf(value) === index)
+            .sort((libelle1, libelle2) => libelle1.libelle.localeCompare(libelle2.libelle)))
         .catch(e => {
             console.error("Erreur lors de la recherche des libellés d'opérations", e);
-        })
+            throw e;
+        });
 }

@@ -11,7 +11,7 @@ import {
 } from "./OperationDetailPage.constants.ts";
 import { saveOperation, saveOperationIntercompte } from "./OperationDetailPage.extservices.ts";
 import { Dispatch, SetStateAction } from "react";
-import { validateFormDateFinPeriode } from "../../recurrentes/details/subcomponents/OperationRecurrenteDetailDateFin.component.tsx";
+import { validateFormDateFinPeriode } from "../../shared/OperationRecurrenteDetailDateFin.component.tsx";
 import { validateDescription } from "./subcomponents/OperationDetailLibelle.controller.ts";
 import { validateFormCategories } from "./subcomponents/OperationDetailCategories.component.tsx";
 import { validateFormTransfertIntercompte } from "./subcomponents/OperationDetailIntercompte.component.tsx";

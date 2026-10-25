@@ -3,7 +3,7 @@ import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import { Grid } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
-import { getPreferenceUtilisateur, reloadBudget } from "./../budget/Budget.extservices.ts";
+import { fetchBudget, fetchPreferenceUtilisateur } from "./../budget/Budget.extservices.ts";
 
 import { getOperationsRecurrentesGroupedByPeriodicity } from "./Recurrents.controller.ts";
 import { RecurrentsPageProps } from "../../Components.props.ts";
@@ -15,6 +15,7 @@ import { BudgetActionsButtonGroupComponent } from "../budget/actions/BudgetActio
 import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { debug } from "../../../Utils/Debug.utils.ts";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
+import { useFetch } from "../../../hooks/useFetch.ts";
 
 
 /**
@@ -41,7 +42,10 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
     const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useBudgetContext();
 
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
-    const [userDroits, setUserDroits] = useState<UTILISATEUR_DROITS[]>([]);
+
+    /** Préférences utilisateur au 1er démarrage **/
+    const { data: userDroitsCharges } = useFetch(() => fetchPreferenceUtilisateur(), []);
+    const userDroits: UTILISATEUR_DROITS[] = userDroitsCharges ?? [];
 
 
 
@@ -57,17 +61,22 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
         [currentBudget]
     );
 
-    useEffect(() => {
-        getPreferenceUtilisateur(setUserDroits);
-    }, []);
+    /** Rechargement du budget si changement de compte ou de date **/
+    const { data: budgetCharge } = useFetch(() => fetchBudget(selectedCompte, selectedDate), [selectedCompte, selectedDate]);
 
-    /** Mise à jour du budget si changement de compte ou de date **/
+    /** Réinitialisation du contexte si changement de compte ou de date **/
     useEffect(() => {
         debug("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate));
         setCurrentBudget(undefined);
-        reloadBudget(handleBudgetUpdate, selectedCompte, selectedDate);
         setCurrentOperation(null);
-    }, [selectedCompte, selectedDate, handleBudgetUpdate, setCurrentOperation, setCurrentBudget]);
+    }, [selectedCompte, selectedDate, setCurrentOperation, setCurrentBudget]);
+
+    /** Le budget chargé alimente le contexte **/
+    useEffect(() => {
+        if (budgetCharge !== undefined) {
+            handleBudgetUpdate(budgetCharge);
+        }
+    }, [budgetCharge, handleBudgetUpdate]);
 
     /**
      * Sélection d'une opération
