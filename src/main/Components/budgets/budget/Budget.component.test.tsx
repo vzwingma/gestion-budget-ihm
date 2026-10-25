@@ -8,6 +8,7 @@ import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProv
 import BudgetMensuelModel from '../../../Models/budgets/BudgetMensuel.model.ts';
 import { createNewOperation } from '../../../Models/budgets/Operation.model.ts';
 import { OPERATION_ETATS_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
+import { FILTRE_OPERATIONS_VIDE } from '../../../Utils/OperationsFilter.utils.ts';
 
 /**
  * Tests de rendu de BudgetPage (filet de sécurité AP 006 - T19, posé avant T1/T5 :
@@ -91,6 +92,8 @@ function buildContextValue(overrides: any = {}) {
         setSelectedDate: vi.fn(),
         categories: [],
         setCategories: vi.fn(),
+        filtreOperations: FILTRE_OPERATIONS_VIDE,
+        setFiltreOperations: vi.fn(),
         ...overrides
     };
 }

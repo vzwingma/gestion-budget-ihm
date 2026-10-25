@@ -20,6 +20,16 @@ describe('useBudgetContext', () => {
         expect(result.current).toBe(value);
     });
 
+    test('expose filtreOperations et setFiltreOperations tels que fournis par le provider', () => {
+        const setFiltreOperations = vi.fn();
+        const filtreOperations = { texte: 'a', etats: [], sens: [] };
+        const value: any = { filtreOperations, setFiltreOperations };
+        const wrapper = ({ children }: any) => <BudgetContext.Provider value={value}>{children}</BudgetContext.Provider>;
+        const { result } = renderHook(() => useBudgetContext(), { wrapper });
+        expect(result.current.filtreOperations).toBe(filtreOperations);
+        expect(result.current.setFiltreOperations).toBe(setFiltreOperations);
+    });
+
     test('BudgetContextProvider ré-exporte le même contexte et le même hook', () => {
         expect(Provider.BudgetContext).toBe(BudgetContext);
         expect(Provider.useBudgetContext).toBe(useBudgetContext);

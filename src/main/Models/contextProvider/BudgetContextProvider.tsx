@@ -4,6 +4,7 @@ import OperationModel from "../budgets/Operation.model.ts";
 import CompteBancaireModel from "../budgets/CompteBancaire.model.ts";
 import CategorieOperationModel from "../budgets/CategorieOperation.model.ts";
 import { BudgetContext } from "../../hooks/useBudgetContext.ts";
+import { FILTRE_OPERATIONS_VIDE, FiltreOperations } from "../../Utils/OperationsFilter.utils.ts";
 
 /**
  * `BudgetContext` et `useBudgetContext` sont désormais définis dans `src/main/hooks/useBudgetContext.ts`
@@ -31,6 +32,9 @@ export function BudgetContextProvider({ children }: Readonly<{ children: React.R
 
     const [categories, setCategories] = useState<CategorieOperationModel[]>([]);
 
+    // Filtre des opérations : remonté ici car BudgetPage est démonté au changement d'onglet (AP 005 - T4.1)
+    const [filtreOperations, setFiltreOperations] = useState<FiltreOperations>(FILTRE_OPERATIONS_VIDE);
+
     const contextValue = useMemo(() => ({
         currentBudget,
         setCurrentBudget,
@@ -43,8 +47,10 @@ export function BudgetContextProvider({ children }: Readonly<{ children: React.R
         selectedDate,
         setSelectedDate,
         categories,
-        setCategories
-    }), [currentBudget, currentOperation, selectedCompte, comptes, selectedDate, categories]);
+        setCategories,
+        filtreOperations,
+        setFiltreOperations
+    }), [currentBudget, currentOperation, selectedCompte, comptes, selectedDate, categories, filtreOperations]);
 
     return (
         <BudgetContext.Provider value={contextValue}>

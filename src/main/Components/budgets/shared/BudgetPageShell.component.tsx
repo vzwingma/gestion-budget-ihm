@@ -2,7 +2,7 @@ import React, { JSX, ReactNode } from "react";
 import { Backdrop, Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
 import BudgetPageHeader from "./BudgetPageHeader.component.tsx";
-import { getHeightList } from "../../../Utils/renderers/ListData.renderer.utils.tsx";
+import { FILTER_BAR_HEIGHT, getHeightList } from "../../../Utils/renderers/ListData.renderer.utils.tsx";
 
 interface BudgetPageShellProps {
     className: string;
@@ -15,6 +15,8 @@ interface BudgetPageShellProps {
     filterPlaceholder: string;
     additionalHeaderContentLeft?: ReactNode;
     additionalHeaderContentRight?: ReactNode;
+    /** Barre de filtres de l'en-tête (réserve `FILTER_BAR_HEIGHT` px sur la hauteur des colonnes) */
+    filterBar?: ReactNode;
     leftColumnSize: { md: number; xl: number };
     rightColumnSize: { md: number; xl: number };
     leftContent: ReactNode;
@@ -39,6 +41,7 @@ const BudgetPageShell: React.FC<BudgetPageShellProps> = ({
     filterPlaceholder,
     additionalHeaderContentLeft,
     additionalHeaderContentRight,
+    filterBar,
     leftColumnSize,
     rightColumnSize,
     leftContent,
@@ -65,13 +68,14 @@ const BudgetPageShell: React.FC<BudgetPageShellProps> = ({
                 filterPlaceholder={filterPlaceholder}
                 additionalHeaderContentLeft={additionalHeaderContentLeft}
                 additionalHeaderContentRight={additionalHeaderContentRight}
+                filterBar={filterBar}
             />
             <Divider variant="middle" sx={{ marginTop: isMobile ? 0 : 1 }} />
             <Grid container sx={{ overflow: "hidden" }}>
                 <Grid size={leftColumnSize} sx={{ overflow: "hidden", flexDirection: "column", maxHeight: 'true' }}>
                     {leftContent}
                 </Grid>
-                <Grid size={rightColumnSize} sx={{ overflow: "hidden", height: getHeightList(isMobile) }}>
+                <Grid size={rightColumnSize} sx={{ overflow: "hidden", height: getHeightList(isMobile, filterBar ? FILTER_BAR_HEIGHT : 0) }}>
                     {rightContent}
                 </Grid>
             </Grid>
