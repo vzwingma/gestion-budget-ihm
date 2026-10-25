@@ -1,4 +1,4 @@
-import {getLabelFRFromDate, getLabelISOFromDate, getLabelMonthFRFromDate, getMonthFromString} from './Date.utils.ts';
+import {getLabelJourSemaineFRFromDate, getLabelFRFromDate, getLabelISOFromDate, getLabelMonthFRFromDate, getMonthFromString} from './Date.utils.ts';
 
 describe('Date.utils', () => {
 
@@ -23,5 +23,19 @@ describe('Date.utils', () => {
     test('convertit un nom de mois en numéro', () => {
         expect(getMonthFromString('February')).toBe(2);
         expect(getMonthFromString('August')).toBe(8);
+    });
+
+    test.each([
+        [2026, 10, 2, 'Lun.'],   // lundi 02/11/2026
+        [2026, 10, 3, 'Mar.'],
+        [2026, 10, 4, 'Mer.'],
+        [2026, 10, 5, 'Jeu.'],
+        [2026, 10, 6, 'Ven.'],
+        [2026, 10, 7, 'Sam.'],
+        [2026, 10, 1, 'Dim.'],
+    ])('jour de semaine abrégé FR (date locale %i-%i-%i) : %s', (y, m, d, attendu) => {
+        // Dates locales (heure 0 et 23) : pas de dérive UTC
+        expect(getLabelJourSemaineFRFromDate(new Date(y, m, d, 0, 0))).toBe(attendu);
+        expect(getLabelJourSemaineFRFromDate(new Date(y, m, d, 23, 30))).toBe(attendu);
     });
 });

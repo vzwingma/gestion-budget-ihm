@@ -10,6 +10,17 @@ export function getLabelFRFromDate(dateOperation: Date): string {
 }
 
 
+/**
+ * Jour de la semaine abrégé (fuseau local), capitalisé : « Lun. », « Mar. »…
+ * @param dateOperation date
+ * @returns {string} jour de semaine abrégé FR
+ */
+export function getLabelJourSemaineFRFromDate(dateOperation: Date): string {
+    const jour = new Date(dateOperation).toLocaleDateString(LOCALE_FR, {weekday: "short"});
+    return jour.charAt(0).toUpperCase() + jour.slice(1);
+}
+
+
 export function getLabelMonthFRFromDate(dateOperation: Date): string {
     const options : Intl.DateTimeFormatOptions = {
         year: "numeric",
