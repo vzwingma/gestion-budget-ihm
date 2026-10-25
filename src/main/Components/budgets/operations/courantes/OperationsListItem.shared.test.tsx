@@ -69,6 +69,11 @@ describe('OperationsListItem - hauteur de ligne', () => {
         renderItem(buildOperation({libelle}));
         expect(getRow()).toHaveStyle({height: '64px', overflow: 'hidden'});
     });
+
+    test('la ligne ne rétrécit pas dans la liste flex (min-height + flex-shrink 0)', () => {
+        renderItem(buildOperation());
+        expect(getRow()).toHaveStyle({minHeight: '64px', flexShrink: '0'});
+    });
 });
 
 describe('OperationsListItem - libellé et sous-texte sur une ligne', () => {

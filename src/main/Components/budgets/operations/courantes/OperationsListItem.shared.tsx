@@ -51,6 +51,8 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
              className={"operation-list-item" + (isSelected ? " operation-list-item--selected" : "")}
              sx={{
                  height: OPERATION_ROW_HEIGHT,
+                 minHeight: OPERATION_ROW_HEIGHT,
+                 flexShrink: 0,
                  boxSizing: "border-box",
                  overflow: "hidden",
                  ...(isOneSelected && !isSelected ? {opacity: 0.75} : {})
