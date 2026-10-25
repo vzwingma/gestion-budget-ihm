@@ -1,8 +1,9 @@
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx'
-import {Stack, Tooltip, Typography, useMediaQuery, useTheme, Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {Stack, Typography, useMediaQuery, useTheme, Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React, {JSX} from "react";
 import {useBudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
 import { getTypeCategorieRenderer } from '../../../Utils/renderers/OperationItem.renderer.tsx';
+import TapTooltip from '../../shared/TapTooltip.component.tsx';
 import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
 
 /**
@@ -60,28 +61,32 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
         );
     }
 
-    return (
-        <Stack direction={"column"} sx={{ justifyContent: "left", alignContent: "center", alignItems: "center" }}>
-            <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
-                {budget ?
-                    <Typography variant={"h6"} sx={{ textAlign: "right", width: isMobile ? 100 : 240, cursor: "help" }}>
-                        <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true}
-                                        id={'soldeAtMaintenant'}/>
-                    </Typography> : <></>}
-            </Tooltip>
-            <Tooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
-            {(budget?.actif) ?
-                    <Typography variant={"caption"}
-                                sx={{ textAlign: "right", width: isMobile ? 100 : 240, cursor: "help" }}>
-                        <span style={{color: "#808080"}}>(</span> <OperationValue
-                        valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true}
-                        id={'soldeAtFinMoisCourant'}/> <span style={{color: "#808080"}}>)</span>
-                    </Typography>
+    const labelSx = {color: "var(--color-operation-subtext, #a8a8a8)", whiteSpace: "nowrap", flexShrink: 0};
+    const rowSx = {display: "flex", alignItems: "baseline", justifyContent: "space-between", columnGap: 1, width: "100%", minWidth: 0, whiteSpace: "nowrap"};
 
-                : <></>
-            }
-            </Tooltip>
-        </Stack>
+    // Un seul déclencheur pour les 2 soldes : survol (desktop) ou tap (tablette), cible tactile >= 44 px
+    return (
+        <TapTooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
+            {budget ?
+                <Stack direction={"column"} sx={{width: "100%", maxWidth: 240, minWidth: 0, minHeight: 44, justifyContent: "center", cursor: "help"}}>
+                    <Box sx={rowSx}>
+                        <Typography variant={"caption"} sx={labelSx}>Aujourd'hui</Typography>
+                        <Typography variant={"h6"} component="span" sx={{textAlign: "right", fontSize: isMobile ? "1.05rem" : undefined}}>
+                            <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true}
+                                            id={'soldeAtMaintenant'}/>
+                        </Typography>
+                    </Box>
+                    {budget.actif ?
+                        <Box sx={rowSx}>
+                            <Typography variant={"caption"} sx={labelSx}>Fin de mois</Typography>
+                            <Typography variant={"caption"} component="span" sx={{textAlign: "right"}}>
+                                <OperationValue valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true}
+                                                id={'soldeAtFinMoisCourant'}/>
+                            </Typography>
+                        </Box>
+                        : <></>}
+                </Stack> : <></>}
+        </TapTooltip>
     )
 };
 
