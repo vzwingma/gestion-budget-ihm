@@ -532,6 +532,12 @@ input[type="month"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
 }
 
+/* Compte actuellement sélectionné dans le menu ☰ (distinct de l'indicateur métier Actif/Inactif) */
+.listeItem--selected {
+    background-color: #1a3a4a;
+    border-left: 4px solid var(--color-accueil-primary);
+}
+
 
 a.nav-link:hover {
     color: var(--color-nav-hover);
@@ -590,4 +596,27 @@ a.nav-link_selected:hover {
 
 .operation-status-error {
     color: #f70505;
+}
+
+/* Scrollbar stable pour la liste d'opérations (évite les sauts de layout au filtrage) */
+.operationsListeScrollable {
+    scrollbar-color: #4a4a4a #1E1E1E;
+    scrollbar-width: thin;
+}
+
+.operationsListeScrollable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.operationsListeScrollable::-webkit-scrollbar-track {
+    background-color: var(--color-dark-container);
+}
+
+.operationsListeScrollable::-webkit-scrollbar-thumb {
+    background-color: #4a4a4a;
+    border-radius: 4px;
+}
+
+.operationsListeScrollable::-webkit-scrollbar-thumb:hover {
+    background-color: #6a6a6a;
 }

@@ -8,7 +8,9 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 ## 📂 Plans Actifs / En Cours
 
-_Aucun plan actif en cours actuellement._
+| # | Plan | Statut | Emplacement |
+|---|---|---|---|
+| 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | 🟡 En cours — Phase 1/5 clôturée (Gate #4 validé), Phases 2–5 à venir | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
 
 ---
 
@@ -96,5 +98,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-07-21 (clôture plan 004)
+**Dernière mise à jour :** 2026-10-25 (plan 005 : Phase 1 clôturée, Gate #4 validé)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain

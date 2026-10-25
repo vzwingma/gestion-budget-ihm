@@ -1,5 +1,6 @@
 import React, {JSX, useEffect, useState} from "react";
-import {Box, Container, Divider, Drawer, Stack, useMediaQuery, useTheme} from "@mui/material";
+import {Box, Container, Divider, Drawer, IconButton, Stack, useMediaQuery, useTheme} from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import {ToastContainer} from "react-toastify";
 import {BUSINESS_ONGLETS} from "../../Utils/AppBusinessEnums.constants.ts";
 import {loadComptes} from "./MainPage.extservices.ts";
@@ -66,10 +67,17 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
 
     /**
      * Affichage de la menubar des comptes
+     * Le compte actuellement sélectionné reste visible derrière le menu transparent.
      */
     function handleOpenMenuBar() {
-        setSelectedCompte(null);
         setBudgetMenuOpen(true);
+    }
+
+    /**
+     * Fermeture de la menubar des comptes (Échap, clic hors-zone ou bouton de fermeture)
+     */
+    function handleCloseMenuBar() {
+        setBudgetMenuOpen(false);
     }
 
     /**
@@ -123,11 +131,25 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
     return (
         <>
             <Drawer variant={"temporary"} anchor="left" open={budgetMenuOpen}
+                onClose={handleCloseMenuBar}
                 ModalProps={{
                     keepMounted: true,
+                }}
+                slotProps={{
+                    backdrop: {
+                        sx: {backgroundColor: "rgba(0,0,0,0.3)"}
+                    }
                 }}>
                 <Stack spacing={2} sx={{overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column'}}>
-                    <Box sx={{height: isMobile ? 40 : 80}}/>
+                    <Box sx={{height: isMobile ? 40 : 80, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 1}}>
+                        <IconButton
+                            aria-label="Fermer le menu"
+                            onClick={handleCloseMenuBar}
+                            sx={{width: 44, height: 44, color: 'var(--color-white)'}}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                    </Box>
 
                     {renderLeftTabDate(fonction)}
 
@@ -143,6 +165,7 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
                                 {ownerComptes.map((compte) => (
                                     <CompteItem key={compte.id}
                                         compte={compte}
+                                        selectedCompte={selectedCompte}
                                         selectedFunction={fonction}
                                         selectedDate={selectedDate}
                                         onRefreshMenuBar={budgetMenuOpen}
