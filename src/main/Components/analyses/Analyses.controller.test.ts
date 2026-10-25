@@ -2,6 +2,10 @@ import type { Mock } from 'vitest';
 import {applyFiltersToOperations, loadBudgetsPeriodes} from './Analyses.controller.ts';
 import {loadBudget} from './Analyses.extservices.ts';
 import {toast} from 'react-toastify';
+import { AnalysesPeriodeModel } from '../../Models/analyses/AnalysesPeriode.model.ts';
+import { AnalysesFiltersModel } from '../../Models/analyses/AnalysesFilters.model.ts';
+import CompteBancaireModel from '../../Models/budgets/CompteBancaire.model.ts';
+import OperationModel from '../../Models/budgets/Operation.model.ts';
 
 vi.mock('./Analyses.extservices.ts', () => ({
     loadBudget: vi.fn()
@@ -22,7 +26,7 @@ describe('Analyses.controller', () => {
     });
 
     test('retourne une erreur si aucun compte n est sélectionné', () => {
-        loadBudgetsPeriodes(null, {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-02-01')} as any, vi.fn());
+        loadBudgetsPeriodes(null, {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-02-01')} as unknown as AnalysesPeriodeModel, vi.fn());
 
         expect(toast.error).toHaveBeenCalledTimes(1);
         expect(loadBudget).not.toHaveBeenCalled();
@@ -49,8 +53,8 @@ describe('Analyses.controller', () => {
             });
 
         loadBudgetsPeriodes(
-            {id: 'compte-1', libelle: 'Compte 1'} as any,
-            {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-02-01')} as any,
+            {id: 'compte-1', libelle: 'Compte 1'} as unknown as CompteBancaireModel,
+            {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-02-01')} as unknown as AnalysesPeriodeModel,
             handleDataCalculationResult
         );
         await flushPromises();
@@ -88,16 +92,16 @@ describe('Analyses.controller', () => {
                 typeOperation: 'CREDIT',
                 categorie: {id: 'cat-2'}
             }
-        ] as any[];
+        ] as unknown as OperationModel[];
 
         const filters = {
             selectedTypes: ['ESSENTIEL'],
             selectedOperationEtats: ['REALISEE'],
             selectedOperationTypes: ['DEPENSE'],
             selectedCategories: [{id: 'cat-1'}]
-        } as any;
+        } as unknown as AnalysesFiltersModel;
 
-        const filtered = applyFiltersToOperations(operations as any, filters);
+        const filtered = applyFiltersToOperations(operations, filters);
 
         expect(filtered).toHaveLength(1);
         expect(filtered[0].categorie.id).toBe('cat-1');

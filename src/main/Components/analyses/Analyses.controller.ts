@@ -23,7 +23,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
     }
 
     debug("Chargement des budgets pour le compte ", selectedCompte.libelle, " de la période ", startDate.toLocaleDateString(), " à ", endDate.toLocaleDateString());
-    let budgetConsolide = new BudgetMensuelAnalyseConsolideModel("analyses-consolide");
+    const budgetConsolide = new BudgetMensuelAnalyseConsolideModel("analyses-consolide");
     budgetConsolide.idCompteBancaire = selectedCompte.id;
     budgetConsolide.listeOperations = [];
     
@@ -40,7 +40,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
                     return { month, budget };
                 })
                 .catch((e) => {
-                    let libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte.libelle + " du " + (month.getMonth() + 1) + "/" + month.getFullYear();
+                    const libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte.libelle + " du " + (month.getMonth() + 1) + "/" + month.getFullYear();
                     console.error(libErreur, e);
                     toast.error(libErreur, {autoClose: false, closeOnClick: true});
                     return { month, budget: null };
