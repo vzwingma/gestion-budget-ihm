@@ -121,7 +121,8 @@ describe('BudgetPage - filtre par puces', () => {
         render(<Appli/>);
         await userEvent.click(puce('Rentrées'));
         expect(libelles()).toEqual(['Salaire']);
-        expect(resultat()).toMatch(/^1 opération · net \+2.000,00 €/);
+        // Séparateur de milliers dépendant de la locale (addEndingZeros) : on ne fige que le chiffre significatif
+        expect(resultat()).toMatch(/^1 opération · net \+2\D?000/);
     });
 
     test('combinaison État × Sens (ET) et OU intra-groupe', async () => {
