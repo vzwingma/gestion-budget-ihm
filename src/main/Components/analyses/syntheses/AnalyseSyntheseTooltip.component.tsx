@@ -6,7 +6,6 @@ import AnalyseTooltip, { AnalyseTooltipRow } from "./AnalyseTooltip.component.ts
 interface TooltipSyntheseProps {
     active?: boolean;
     payload?: any[];
-    label?: string;
 }
 
 /**

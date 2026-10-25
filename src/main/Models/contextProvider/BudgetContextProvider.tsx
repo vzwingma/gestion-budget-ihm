@@ -3,14 +3,14 @@ import BudgetMensuelModel from "../budgets/BudgetMensuel.model.ts";
 import OperationModel from "../budgets/Operation.model.ts";
 import CompteBancaireModel from "../budgets/CompteBancaire.model.ts";
 import CategorieOperationModel from "../budgets/CategorieOperation.model.ts";
-import { BudgetContext, useBudgetContext } from "../../hooks/useBudgetContext.ts";
+import { BudgetContext } from "../../hooks/useBudgetContext.ts";
 
 /**
  * `BudgetContext` et `useBudgetContext` sont désormais définis dans `src/main/hooks/useBudgetContext.ts`
  * (AP 006 - T11). Ré-exportés ici pour conserver la compatibilité avec tous les imports existants
  * (`from ".../BudgetContextProvider.tsx"`).
  */
-export { BudgetContext, useBudgetContext };
+export { BudgetContext, useBudgetContext } from "../../hooks/useBudgetContext.ts";
 
 /**
  * Budget context provider
