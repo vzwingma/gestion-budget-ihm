@@ -1,6 +1,6 @@
 # Plan d'Action 005 — Refonte panneau gauche écran « Opérations »
 
-**Statut** : 🟡 En cours — Phases 1–3 terminées, 4–5 à venir
+**Statut** : 🟡 En cours — Phases 1–4 terminées, 5 à venir
 **Date** : 2026-10-23 (dernière mise à jour : 2026-10-25)
 
 ## Journal des gates
@@ -18,6 +18,9 @@
 | #2 | Code Phase 3 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 3 | 2026-10-25 | ✅ GO |
 | #4 | Doc + clôture Phase 3 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK ; backlog B1 ajouté) |
+| #2 | Code Phase 4 | 2026-10-25 | ✅ GO |
+| #3 | Tests Phase 4 | 2026-10-25 | ✅ GO |
+| #4 | Doc + clôture Phase 4 | — | ⏳ En attente 👤 |
 
 ## Context
 
@@ -174,18 +177,57 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 ---
 
-## Phase 4 — Filtre orienté validation
+## Phase 4 — Filtre orienté validation ✅ (code + tests terminés 2026-10-25, Gate #4 en attente 👤)
 
 **Critères de réussite** : recherche "pharma" + puce "À valider" ne montre que les prévues/reportées correspondantes ; net juste ; "Réinitialiser" vide texte + puces.
 
-**Point ouvert à trancher avant implémentation** : la puce « À valider » (prévues + reportées, tel que décrit dans le plan source) ne recouvre plus exactement le groupe « À valider » de la liste (Phase 3), qui exclut les `PREVUE`/`REPORTEE` ayant une date. Décider : puce filtrant par **état seul** (`PREVUE`+`REPORTEE`) ou **réutilisant la règle du groupe** (état + date nulle).
+**Point ouvert résolu (DÉCISION 👤)** : la puce « À valider » filtre **par état seul** (`PREVUE` + `REPORTEE`, avec ou sans date). Elle ne suit pas la règle du groupe « À valider » de la liste (Phase 3 : prévue/reportée sans date).
 
-- **T4.1** — Vérifier si `Budget.component.tsx` est démonté/remonté au changement d'onglet → décider état local vs `BudgetContextProvider.tsx`. **Agent : DEVon.**
-- **T4.2** — Nouveau composant `FilterChips` (État : À valider/Réalisée/Annulée ; Sens : Dépenses/Rentrées), hauteur ≥40px, combinables. Fichier : nouveau `src/main/Components/budgets/shared/FilterChips.component.tsx`. **Agent : DEVon.**
-- **T4.3** — Étendre `filterOperationsList` pour combiner texte + puces (ET texte/puces, OR intra-groupe). Fichier : `OperationsListe.shared.tsx`. **Agent : DEVon.**
-- **T4.4** — Barre de résultat « N opérations · net X,XX € · Réinitialiser ». Fichier : `BudgetPageHeader.component.tsx` ou nouveau sous-composant. **Agent : DEVon.**
-- **T4.5** — Persistance filtres au changement d'onglet (selon T4.1). **Agent : DEVon.**
-- **T4.6** — Tests non-régression (combinaison texte+puces, net, réinitialisation, persistance onglet). **Agent : QALvin.**
+- **T4.1** ✅ — Vérifier si `Budget.component.tsx` est démonté/remonté au changement d'onglet → décider état local vs `BudgetContextProvider.tsx`. **Agent : DEVon.**
+- **T4.2** ✅ — Nouveau composant `FilterChips` (État : À valider/Réalisée/Annulée ; Sens : Dépenses/Rentrées), hauteur ≥40px, combinables. Fichier : nouveau `src/main/Components/budgets/shared/FilterChips.component.tsx`. **Agent : DEVon.**
+- **T4.3** ✅ — Étendre `filterOperationsList` pour combiner texte + puces (ET texte/puces, OR intra-groupe). Fichier : `OperationsListe.shared.tsx`. **Agent : DEVon.**
+- **T4.4** ✅ — Barre de résultat « N opérations · net X,XX € · Réinitialiser ». Fichier : `BudgetPageHeader.component.tsx` ou nouveau sous-composant. **Agent : DEVon.**
+- **T4.5** ✅ — Persistance filtres au changement d'onglet (selon T4.1). **Agent : DEVon.**
+- **T4.6** ✅ — Tests non-régression (combinaison texte+puces, net, réinitialisation, persistance onglet). **Agent : QALvin.**
+
+### Résultats Phase 4
+
+**Fichiers créés** :
+- `src/main/Utils/OperationsFilter.utils.ts` — enums `PUCE_ETAT_ENUM` / `PUCE_SENS_ENUM`, `FILTRE_OPERATIONS_VIDE`, `isFiltreActif`, `togglePuce`, `matchesPuces`, `ETATS_PAR_PUCE`
+- `src/main/Components/budgets/shared/FilterChips.component.tsx` — `FilterChips`
+- `src/main/Components/budgets/operations/OperationsFilterBar.component.tsx` — `OperationsFilterBar` (barre de résultat)
+
+**Fichiers modifiés** :
+- `hooks/useBudgetContext.ts`, `BudgetContextProvider.tsx` — champ `filtreOperations` + `setFiltreOperations`
+- `Budget.component.tsx`, `BudgetPageHeader`, `BudgetPageShell`
+- `OperationsListe.shared.tsx` — `filterOperationsList(ops, texte, puces?)`, props `filterPuces` / `reservedHeight`
+- `OperationsListe.component.tsx`, `Components.props.ts`
+- `ListData.renderer.utils.tsx` — `FILTER_BAR_HEIGHT` (48), `getHeightList(isMobile, reservedHeight = 0)`
+
+**Tests** : 11 fichiers créés/complétés ; 386 tests dont 382 verts ; 4 échecs locaux préexistants (`Auth.service.test.ts`), hors périmètre. `npm run lint` : 0 erreur.
+
+**Comportements** :
+- Combinaison : ET texte × groupe État × groupe Sens ; OU intra-groupe.
+- « Réalisée » = `REALISEE` seul ; « Annulée » = `ANNULEE` seul (pas `SUPPRIMEE`).
+- Sens par signe de `valeur` : Dépenses < 0, Rentrées > 0 ; 0 n'est ni l'un ni l'autre.
+- Barre de résultat « N opérations · net ±X,XX € · Réinitialiser » : singulier si ≤ 1, `role="status"`, affichée si texte OU puce actif.
+- Net exclut `ANNULEE`/`SUPPRIMEE` (décision 👤 : conservé, y compris « net 0,00 € » avec la seule puce Annulée).
+- Accessibilité : `aria-pressed`, `role="group"`, coche en plus de la couleur.
+- Texte d'espaces seuls = filtre actif, pas de trim (décision 👤 : on laisse).
+- Liste récurrente inchangée (filtre texte local, pas de puces).
+
+**Décisions d'architecture** :
+- `BudgetPage` est démonté au changement d'onglet (vérifié T4.1) → filtre (texte + puces) remonté dans `BudgetContextProvider` (`filtreOperations` + `setFiltreOperations`) ; il survit aussi aux changements de compte/mois. Portée du Context **ACCEPTÉE** par le 👤.
+- **ADR reporté** : à valider en recette si le filtre doit perdurer au-delà de l'affichage du mois courant ; si oui, ADR court à rédiger par DOCly.
+
+**Points ouverts (recette 👤)** :
+- Couleur puce « À valider » `#90a4ae` (constante `COULEUR_PUCE_A_VALIDER`, contraste ≈ 7:1 calculé à la main) à valider visuellement.
+- Non-écrasement des puces (hauteur 40 px, `flexShrink`) et barre fixe 48 px sans saut de layout.
+- Zones tactiles 44 px réelles (`::after` des puces).
+- ≈ 10 lignes complètes visibles à 881 px (881−140−48 = 693 px ; calcul non mesuré).
+- Durée de vie du filtre (ADR, voir ci-dessus).
+
+**Rappel** : 3 fichiers `*.bak_qal` et stash `devon-t1-wip-check` à supprimer par le 👤 (aucun agent ne supprime).
 
 ---
 
@@ -215,7 +257,7 @@ Une phase démarre seulement après Gate humain GO sur la phase précédente. Ch
 
 ## ADR
 
-Pas d'ADR requis : refonte UI/UX réutilisant les patterns existants (MUI, Context, state local), aucune décision architecturale majeure (pas de nouvelle lib, pas de changement de couche). À réévaluer si T4.1 impose de remonter l'état filtre dans `BudgetContextProvider.tsx` (changement de portée du Context) — dans ce cas, ADR court à rédiger par DOCly avant Phase 4.
+Pas d'ADR requis : refonte UI/UX réutilisant les patterns existants (MUI, Context, state local), aucune décision architecturale majeure (pas de nouvelle lib, pas de changement de couche). T4.1 a imposé de remonter l'état filtre dans `BudgetContextProvider.tsx` (portée du Context acceptée par le 👤) : **ADR reporté** à la recette Phase 4 — si le filtre doit perdurer au-delà du mois courant, ADR court à rédiger par DOCly.
 
 ## Backlog (évolutions hors phases 1–5, à planifier)
 
