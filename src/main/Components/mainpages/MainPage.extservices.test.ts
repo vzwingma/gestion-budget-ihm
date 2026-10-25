@@ -1,5 +1,5 @@
 import type { Mock } from 'vitest';
-import {comptesLoaded, loadComptes} from './MainPage.extservices.ts';
+import {comptesLoaded, fetchComptes} from './MainPage.extservices.ts';
 import * as ClientHTTP from '../../Services/ClientHTTP.service.ts';
 import {toast} from 'react-toastify';
 
@@ -12,8 +12,6 @@ vi.mock('react-toastify', () => ({
         error: vi.fn()
     }
 }));
-
-const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 
 describe('MainPage.extservices', () => {
 
@@ -30,24 +28,26 @@ describe('MainPage.extservices', () => {
         expect(setComptes).toHaveBeenCalledWith([{id: '1', ordre: 1}, {id: '2', ordre: 2}]);
     });
 
-    test('charge les comptes puis applique le tri', async () => {
-        const setComptes = vi.fn();
+    test('fetchComptes résout avec les comptes triés', async () => {
         (ClientHTTP.call as Mock).mockResolvedValue([{id: '2', ordre: 2}, {id: '1', ordre: 1}]);
 
-        loadComptes(setComptes as any);
-        await flushPromises();
-
+        await expect(fetchComptes()).resolves.toEqual([{id: '1', ordre: 1}, {id: '2', ordre: 2}]);
         expect(ClientHTTP.call).toHaveBeenCalledTimes(1);
-        expect(setComptes).toHaveBeenCalledWith([{id: '1', ordre: 1}, {id: '2', ordre: 2}]);
+        expect(toast.error).not.toHaveBeenCalled();
     });
 
-    test('affiche un toast en cas d erreur de chargement', async () => {
-        const setComptes = vi.fn();
+    test('fetchComptes résout avec une liste vide si le back renvoie []', async () => {
+        (ClientHTTP.call as Mock).mockResolvedValue([]);
+
+        await expect(fetchComptes()).resolves.toEqual([]);
+    });
+
+    test('fetchComptes en erreur : toast + rejet', async () => {
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
         (ClientHTTP.call as Mock).mockRejectedValue(new Error('ko'));
 
-        loadComptes(setComptes as any);
-        await flushPromises();
-
+        await expect(fetchComptes()).rejects.toThrow('ko');
         expect(toast.error).toHaveBeenCalledTimes(1);
+        spy.mockRestore();
     });
 });

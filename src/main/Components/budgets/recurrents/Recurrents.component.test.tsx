@@ -14,13 +14,13 @@ import { PERIODES_MENSUALITE_ENUM } from '../../../Utils/AppBusinessEnums.consta
  * fusion avec BudgetPage).
  *
  * Même stratégie que Budget.component.test.tsx : enfants mockés, services réseau mockés,
- * `reloadBudget` mocké invoque directement `handleBudgetUpdate` pour vérifier le
+ * `fetchBudget` mocké résout le budget (useFetch) pour vérifier le
  * regroupement des opérations récurrentes par périodicité.
  */
 
 vi.mock('./../budget/Budget.extservices.ts', () => ({
-    getPreferenceUtilisateur: vi.fn(),
-    reloadBudget: vi.fn()
+    fetchPreferenceUtilisateur: vi.fn(),
+    fetchBudget: vi.fn()
 }));
 
 vi.mock('../shared/BudgetPageHeader.component.tsx', () => ({
@@ -51,7 +51,7 @@ vi.mock('../operations/recurrentes/details/OperationRecurrenteDetailPage.compone
     default: () => <div data-testid="mock-detail" />
 }));
 
-import { reloadBudget } from './../budget/Budget.extservices.ts';
+import { fetchBudget, fetchPreferenceUtilisateur } from './../budget/Budget.extservices.ts';
 
 function buildOperationRecurrente(id: string) {
     const operation = createNewOperation();
@@ -94,6 +94,9 @@ describe('RecurrentsPage', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        // Variantes Promise consommées par useFetch : toujours une promesse résolue par défaut
+        (fetchPreferenceUtilisateur as any).mockResolvedValue([]);
+        (fetchBudget as any).mockResolvedValue(undefined);
     });
 
     test('affiche le Backdrop de chargement quand aucun budget courant', () => {
@@ -107,9 +110,7 @@ describe('RecurrentsPage', () => {
         const budget = new BudgetMensuelModel('budget-1', 'Budget test');
         budget.listeOperations = [buildOperationRecurrente('op-1')];
 
-        (reloadBudget as any).mockImplementation((handleBudgetUpdate: (b: BudgetMensuelModel) => void) => {
-            handleBudgetUpdate(budget);
-        });
+        (fetchBudget as any).mockResolvedValue(budget);
 
         renderRecurrentsPage({ currentBudget: budget });
 
@@ -124,9 +125,7 @@ describe('RecurrentsPage', () => {
         const operation = buildOperationRecurrente('op-1');
         budget.listeOperations = [operation];
 
-        (reloadBudget as any).mockImplementation((handleBudgetUpdate: (b: BudgetMensuelModel) => void) => {
-            handleBudgetUpdate(budget);
-        });
+        (fetchBudget as any).mockResolvedValue(budget);
 
         const { contextValue } = renderRecurrentsPage({ currentBudget: budget });
 

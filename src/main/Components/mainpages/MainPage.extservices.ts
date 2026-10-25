@@ -1,17 +1,20 @@
 import * as ClientHTTP from "../../Services/ClientHTTP.service.ts";
-import {callAndNotify} from "../../Services/CallAndNotify.service.ts";
+import {callWithNotify} from "../../Services/CallAndNotify.service.ts";
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../Utils/AppTechEnums.constants.ts";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 
 /**
- * Appels WS vers pour charger la liste des comptes
+ * Appel WS pour charger la liste des comptes, triée (version Promise, pour `useFetch` - AP 006 T11)
  */
-export function loadComptes(setComptes: (comptes : CompteBancaireModel[]) => void) : void {
-    callAndNotify(
+export function fetchComptes(): Promise<CompteBancaireModel[]> {
+    return callWithNotify(
         ClientHTTP.call(METHODE_HTTP.GET, BACKEND_ENUM.URL_COMPTES, SERVICES_URL.COMPTES.GET_ALL),
-        (listeComptes: CompteBancaireModel[]) => comptesLoaded(listeComptes, setComptes),
         "Erreur lors du chargement des comptes"
-    );
+    ).then((listeComptes: CompteBancaireModel[]) => {
+        let comptesTries: CompteBancaireModel[] = [];
+        comptesLoaded(listeComptes, (comptes) => { comptesTries = comptes; });
+        return comptesTries;
+    });
 }
 
 /**

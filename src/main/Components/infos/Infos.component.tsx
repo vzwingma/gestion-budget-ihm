@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
     Box,
     Table,
@@ -11,9 +11,10 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material";
-import {getInfosFromMicroServices} from "./Infos.extservices.ts";
+import {fetchInfosFromMicroServices} from "./Infos.extservices.ts";
 import MicroServicesInfos from "./MicroServicesInfos.component.tsx";
 import MsInfoModel from "../../Models/infos/MsInfo.model.ts";
+import { useFetch } from "../../hooks/useFetch.ts";
 import { CenterComponent } from "../shared/CenterComponent.tsx";
 
 
@@ -22,14 +23,11 @@ import { CenterComponent } from "../shared/CenterComponent.tsx";
  */
 export const Infos: React.FC = () => {
 
-    const [infos, setInfos] = useState<MsInfoModel[]>([]);
     const [infoVersion, setInfoVersion] = useState<boolean>(false);
 
-
     /** Appels WS vers /actuator/info pour tous les µS **/
-    useEffect(() => {
-        getInfosFromMicroServices(setInfos);
-    }, []);
+    const { data: infosChargees } = useFetch<MsInfoModel[]>(() => fetchInfosFromMicroServices(), []);
+    const infos: MsInfoModel[] = infosChargees ?? [];
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 

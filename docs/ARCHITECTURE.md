@@ -38,7 +38,17 @@ Utilisateur (navigateur)
     ← Réponse JSON → BudgetContext → re-render
 ```
 
-Les appels des `*.extservices.ts` passent par `callAndNotify` (`Services/CallAndNotify.service.ts`) : `then` / `catch` + log `console.error` + toast d'erreur centralisés.
+### Data-fetching
+
+- **Lecture de données** : les `*.extservices.ts` exposent des variantes Promise `fetch*` (`fetchCategories`, `fetchBudget`, `fetchPreferenceUtilisateur`, `fetchLibellesOperationsCompte`, `fetchInfosFromMicroServices`, `fetchLastAccessDateUtilisateur`, `fetchComptes`, `fetchSoldesBudget`), enveloppées par `callWithNotify` (`Services/CallAndNotify.service.ts`) : log `console.error` + toast d'erreur, puis relance de l'erreur. Les composants les consomment via `useFetch(fetcher, deps)` → `{ data, loading, error, refetch }` (les réponses périmées d'un chargement précédent sont ignorées). `useFetch` est adopté par `Budget`, `Recurrents`, `AnalysesFiltrePeriode`, `Infos`, `MainPage`, `ProfileInfos` et `CompteItem`.
+- **Actions / sauvegardes** : `callAndNotify(promise, onSuccess, errorMessage, toastOptions?)` (même fichier) reste utilisé en mode callback (`BudgetActionsButtonGroup`, `saveOperation*`).
+- `Budget` et `Recurrents` réinitialisent le contexte (budget courant) dans un effet sur `[selectedCompte, selectedDate]`.
+
+```
+Composant → useFetch(() => fetchX(...), [deps])
+          → fetchX (extservices) → callWithNotify(call(...))
+          → ClientHTTP.service.ts → µService
+```
 
 ---
 
@@ -54,14 +64,14 @@ gestion-budget-ihm/
 │       │   ├── Components.props.ts       # Interfaces de props (les nouvelles interfaces sont co-localisées)
 │       │   ├── analyses/                 # Composants analyses budgétaires (syntheses/AnalyseTooltip = tooltip recharts générique)
 │       │   ├── budgets/                  # Composants gestion budgets
-│       │   │   └── shared/               # BudgetPageShell.component.tsx (squelette commun Budget / Recurrents)
+│       │   │   └── shared/               # BudgetPageShell.component.tsx (squelette commun Budget / Recurrents) ; operations/shared/ : OperationRecurrenteDetailDateFin.component.tsx (partagé courantes / récurrentes)
 │       │   ├── infos/                    # Composants informatifs
 │       │   ├── mainpages/                # Pages principales
 │       │   ├── menuTopBar/               # Barre de navigation
 │       │   └── shared/                   # Composants partagés (dont AuthTokenSync.component.tsx)
-│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext, useFetch)
+│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext [+ useBudgetSelection, useCurrentBudget], useFetch)
 │       ├── Models/                       # Modèles TypeScript + Context
-│       │   ├── contextProvider/          # BudgetContextProvider.tsx (ré-exporte BudgetContext / useBudgetContext)
+│       │   ├── contextProvider/          # BudgetContextProvider.tsx (3 providers imbriqués ; ré-exporte les contextes et hooks de hooks/useBudgetContext.ts)
 │       │   ├── analyses/                 # Modèles analyses
 │       │   ├── budgets/                  # Modèles budgets
 │       │   ├── infos/                    # Modèles infos
@@ -171,9 +181,9 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 - **Nommage variables** : camelCase pour variables/fonctions, PascalCase pour composants et interfaces
 - **Composants** : Toujours `React.FC<Props>`, fonctionnels uniquement. Props interfaces dans `Components.props.ts`
 - **Sous-composants** : Dans `subcomponents/`, boutons d'action dans `actions/`
-- **Gestion d'état** : BudgetContext pour l'état global (hook `useBudgetContext` dans `hooks/`), `useState` pour l'état UI local ; les regroupements dérivés (opérations par date / périodicité) sont calculés via `useMemo`, pas stockés en state
-- **Hooks custom** : dans `src/main/hooks/`. `useFetch(fetcher, deps)` retourne `{ data, loading, error, refetch }` (T11 : infra livrée, adoption par les 7 composants restante — reste de T11, voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
-- **Appels HTTP** : Toujours via `ClientHTTP.service.ts`. URLs avec `{{}}` comme marqueur positionnel. Jamais `fetch` directement dans un composant. Les erreurs sont relancées avec `cause` (stack d'origine conservée). Dans les `*.extservices.ts`, utiliser `callAndNotify(promise, onSuccess, errorMessage, toastOptions?)`
+- **Gestion d'état** : état global scindé en deux contextes (`hooks/useBudgetContext.ts`) : `BudgetSelectionContext` (comptes, compte/date sélectionnés, catégories) lu via `useBudgetSelection()`, et `CurrentBudgetContext` (budget et opération courants) lu via `useCurrentBudget()`. `useBudgetContext()` reste l'agrégat des deux (12 champs) pour les composants qui lisent les deux moitiés. Les trois hooks lèvent une erreur hors `BudgetContextProvider`. `useState` pour l'état UI local ; les regroupements dérivés (opérations par date / périodicité) sont calculés via `useMemo`, pas stockés en state
+- **Hooks custom** : dans `src/main/hooks/`. `useFetch(fetcher, deps)` retourne `{ data, loading, error, refetch }` ; adopté par les 7 composants de lecture de données (voir [Data-fetching](#data-fetching))
+- **Appels HTTP** : Toujours via `ClientHTTP.service.ts`. URLs avec `{{}}` comme marqueur positionnel. Jamais `fetch` directement dans un composant. Les erreurs sont relancées avec `cause` (stack d'origine conservée). Dans les `*.extservices.ts` : variantes Promise `fetch*` via `callWithNotify(promise, errorMessage, toastOptions?)` pour les lectures (consommées par `useFetch`) ; `callAndNotify(promise, onSuccess, errorMessage, toastOptions?)` pour les actions/sauvegardes
 - **Layout** : `Box`/`Grid` MUI pour la mise en page, `useMediaQuery`/`useTheme` pour le responsive
 - **Optimisation** : `useMemo` pour les calculs dérivés coûteux, `useCallback` pour les handlers passés en props, `React.memo` pour les items de liste (voir [Performance](#-performance))
 - **Gestion erreurs** : Codes HTTP 403 → logout, autres erreurs → toast via react-toastify
@@ -201,7 +211,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 - **Mémoïsation** : `React.memo` sur les items de liste `OperationItem`, `OperationRecurrenteItem` et `CompteItem` ; handlers de sélection passés à ces items stabilisés via `useCallback` (prérequis pour que `memo` soit effectif)
 - `useMemo` pour les calculs dérivés coûteux dans les composants (ex : totaux budgétaires, agrégations, regroupements d'opérations)
 - `useCallback` pour les handlers passés en props afin d'éviter les re-renders inutiles
-- **Limite connue** : `BudgetContext` reste un contexte unique (nombreux consumers) ; tout changement de sa valeur re-rend tous les consumers (scission prévue, voir dette du [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
+- **Contexte scindé** : `BudgetSelectionContext` et `CurrentBudgetContext` limitent les re-renders (un changement de budget/opération courants ne re-rend plus les consumers de la sélection, et inversement). 12 consumers utilisent les hooks ciblés. **Limite connue** : 6 composants (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) restent sur l'agrégat `useBudgetContext()` et se re-rendent à tout changement (voir dette du [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
 - Minification CSS pré-build via `css-minify` sur `public/styles/application.css`
 - Pagination des listes volumineuses côté API (gérée par les µServices)
 
@@ -237,6 +247,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
+| v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 2) : `useFetch` adopté par 7 composants (variantes Promise `fetch*` des extservices + `callWithNotify`, `callAndNotify` conservé pour les actions), `BudgetContext` scindé (`BudgetSelectionContext` / `CurrentBudgetContext`, hooks `useBudgetSelection` / `useCurrentBudget`, agrégat `useBudgetContext`), `OperationRecurrenteDetailDateFin` déplacé vers `operations/shared/`, spinners `CompteItem` / `AnalysesFiltrePeriode`, correctif `BudgetSoldes` (Fragment sous `Tooltip` MUI). Dette restante : découpage `OperationDetailPage`, T16, T20, ADR 002 — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 1) : dossier `hooks/` (`useAuthTokenSync`, `useBudgetContext`, `useFetch`), `AuthTokenSync` à la racine, `callAndNotify`, mode debug `VITE_CONFIG_DEBUG` + règle `no-console`, code splitting des routes (`React.lazy`), `React.memo` sur items de liste, `BudgetPageShell`, `AnalyseTooltip` générique, erreurs HTTP avec `cause`. Dette restante : voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-07-10 | Montée deps : Vite 6→8.1.4, `@vitejs/plugin-react` 4→6.0.3, suppression `@babel/plugin-transform-private-property-in-object` (résidu CRA, sans usage réel). TypeScript v7 et `typescript-eslint` v9/v10 **reportés** (bloqueur npm — voir note Stack Technique ci-dessus). Voir `.claude/plans/003_migration_dependances_ts_vite.plan.md` |
 | v24.0-SNAPSHOT | En cours | Migration socle build CRA → Vite + Vitest + TypeScript ^6.0.0 (voir [ADR 001](./adr/001-migration-cra-vers-vite.md)) |

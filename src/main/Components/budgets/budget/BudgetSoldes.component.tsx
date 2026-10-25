@@ -1,7 +1,7 @@
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx'
 import {Stack, Typography, useMediaQuery, useTheme, Box, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React, {JSX} from "react";
-import {useBudgetContext} from '../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useCurrentBudget } from '../../../hooks/useBudgetContext.ts';
 import { getTypeCategorieRenderer } from '../../../Utils/renderers/OperationItem.renderer.tsx';
 import TapTooltip from '../../shared/TapTooltip.component.tsx';
 import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
@@ -13,7 +13,7 @@ import { TYPES_CATEGORIES_OPERATION_ENUM } from '../../../Utils/AppBusinessEnums
  */
 const BudgetSoldes: React.FC = (): JSX.Element => {
 
-    const {currentBudget} = useBudgetContext();
+    const {currentBudget} = useCurrentBudget();
     const budget = currentBudget;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     // définition de la date courante
@@ -64,28 +64,29 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
     const labelSx = {color: "var(--color-operation-subtext, #a8a8a8)", whiteSpace: "nowrap", flexShrink: 0};
     const rowSx = {display: "flex", alignItems: "baseline", justifyContent: "space-between", columnGap: 1, width: "100%", minWidth: 0, whiteSpace: "nowrap"};
 
+    // Budget absent (chargement en cours) : rien à afficher (un Tooltip MUI exige un enfant élément DOM)
+    if (!budget) return <Stack direction={"column"} sx={{ justifyContent: "left", alignContent: "center", alignItems: "center" }} />;
+
     // Un seul déclencheur pour les 2 soldes : survol (desktop) ou tap (tablette), cible tactile >= 44 px
     return (
         <TapTooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
-            {budget ?
-                <Stack direction={"column"} sx={{width: "100%", maxWidth: 240, minWidth: 0, minHeight: 44, justifyContent: "center", cursor: "help"}}>
+            <Stack direction={"column"} sx={{width: "100%", maxWidth: 240, minWidth: 0, minHeight: 44, justifyContent: "center", cursor: "help"}}>
+                <Box sx={rowSx}>
+                    <Typography variant={"caption"} sx={labelSx}>Aujourd'hui</Typography>
+                    <Typography variant={"h6"} component="span" sx={{textAlign: "right", fontSize: isMobile ? "1.05rem" : undefined}}>
+                        <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true}
+                                        id={'soldeAtMaintenant'}/>
+                    </Typography>
+                </Box>
+                {budget.actif &&
                     <Box sx={rowSx}>
-                        <Typography variant={"caption"} sx={labelSx}>Aujourd'hui</Typography>
-                        <Typography variant={"h6"} component="span" sx={{textAlign: "right", fontSize: isMobile ? "1.05rem" : undefined}}>
-                            <OperationValue valueOperation={budget.soldes.soldeAtMaintenant} showSign={true}
-                                            id={'soldeAtMaintenant'}/>
+                        <Typography variant={"caption"} sx={labelSx}>Fin de mois</Typography>
+                        <Typography variant={"caption"} component="span" sx={{textAlign: "right"}}>
+                            <OperationValue valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true}
+                                            id={'soldeAtFinMoisCourant'}/>
                         </Typography>
-                    </Box>
-                    {budget.actif ?
-                        <Box sx={rowSx}>
-                            <Typography variant={"caption"} sx={labelSx}>Fin de mois</Typography>
-                            <Typography variant={"caption"} component="span" sx={{textAlign: "right"}}>
-                                <OperationValue valueOperation={budget.soldes.soldeAtFinMoisCourant} showSign={true}
-                                                id={'soldeAtFinMoisCourant'}/>
-                            </Typography>
-                        </Box>
-                        : <></>}
-                </Stack> : <></>}
+                    </Box>}
+            </Stack>
         </TapTooltip>
     )
 };

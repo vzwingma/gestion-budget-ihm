@@ -11,9 +11,9 @@ const TOUCH_QUERY = '(hover: none) and (pointer: coarse)';
 
 const comptes = [{id: 'cpt1', libelle: 'Livret A', itemIcon: 'livret.png'}] as unknown as CompteBancaireModel[];
 
-// Contexte budget : seule la liste des comptes est utilisée par la ligne
-vi.mock('../../Models/contextProvider/BudgetContextProvider.tsx', () => ({
-    useBudgetContext: () => ({
+// Contexte budget : seule la liste des comptes (moitié "sélection") est utilisée par la ligne
+vi.mock('../../hooks/useBudgetContext.ts', () => ({
+    useBudgetSelection: () => ({
         comptes: [{id: 'cpt1', libelle: 'Livret A', itemIcon: 'livret.png'}],
     }),
 }));

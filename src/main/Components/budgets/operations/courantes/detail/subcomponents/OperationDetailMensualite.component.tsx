@@ -4,7 +4,7 @@ import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {getPeriodeRenderer} from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
 import {PERIODES_MENSUALITE_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
 import {OperationDetailMensualiteProps} from '../../../../../Components.props.ts'
-import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.
@@ -20,7 +20,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     fillOperationForm
 }: OperationDetailMensualiteProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useBudgetContext();
+    const { currentBudget, currentOperation } = useCurrentBudget();
     const operation = currentOperation;
 
     if (!currentBudget || !operation) {

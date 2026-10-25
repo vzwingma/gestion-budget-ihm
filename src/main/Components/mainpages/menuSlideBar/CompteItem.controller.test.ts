@@ -1,12 +1,10 @@
 import type { Mock } from 'vitest';
-import {getSoldesBudget} from './CompteItem.controller.ts';
+import {fetchSoldesBudget} from './CompteItem.controller.ts';
 import * as ClientHTTP from '../../../Services/ClientHTTP.service.ts';
 
 vi.mock('../../../Services/ClientHTTP.service.ts', () => ({
     call: vi.fn()
 }));
-
-const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 
 describe('CompteItem.controller', () => {
 
@@ -14,41 +12,31 @@ describe('CompteItem.controller', () => {
         vi.clearAllMocks();
     });
 
-    test('met à jour les soldes avec la valeur backend', async () => {
-        const setSoldes = vi.fn();
+    test('résout avec le solde à maintenant du backend (mois 1-based dans l appel)', async () => {
         (ClientHTTP.call as Mock).mockResolvedValue([{soldes: {soldeAtMaintenant: 123.45}}]);
 
-        getSoldesBudget({id: 'c1', libelle: 'Compte 1'} as any, new Date('2026-02-01'), setSoldes as any);
-        await flushPromises();
-
-        expect(setSoldes).toHaveBeenCalledWith(123.45);
+        await expect(fetchSoldesBudget({id: 'c1', libelle: 'Compte 1'} as any, new Date(2026, 1, 1))).resolves.toBe(123.45);
+        expect((ClientHTTP.call as Mock).mock.calls[0][3]).toEqual(['c1', '2026', '2']);
     });
 
-    test('met les soldes à null si backend vide', async () => {
-        const setSoldes = vi.fn();
+    test('résout avec null si le backend renvoie une liste vide', async () => {
         (ClientHTTP.call as Mock).mockResolvedValue([]);
 
-        getSoldesBudget({id: 'c1', libelle: 'Compte 1'} as any, new Date('2026-02-01'), setSoldes as any);
-        await flushPromises();
-
-        expect(setSoldes).toHaveBeenCalledWith(null);
+        await expect(fetchSoldesBudget({id: 'c1', libelle: 'Compte 1'} as any, new Date(2026, 1, 1))).resolves.toBeNull();
     });
 
-    test('met les soldes à undefined en cas d erreur', async () => {
-        const setSoldes = vi.fn();
+    test('log puis rejette en cas d erreur backend', async () => {
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
         (ClientHTTP.call as Mock).mockRejectedValue(new Error('ko'));
 
-        getSoldesBudget({id: 'c1', libelle: 'Compte 1'} as any, new Date('2026-02-01'), setSoldes as any);
-        await flushPromises();
-
-        expect(setSoldes).toHaveBeenCalledWith(undefined);
+        await expect(fetchSoldesBudget({id: 'c1', libelle: 'Compte 1'} as any, new Date(2026, 1, 1))).rejects.toThrow('ko');
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
     });
 
-    test('ne fait rien si compte ou date manquant', () => {
-        const setSoldes = vi.fn();
-
-        getSoldesBudget(null as any, new Date('2026-02-01'), setSoldes as any);
-        getSoldesBudget({id: 'c1'} as any, null as any, setSoldes as any);
+    test('résout avec undefined sans appel réseau si compte ou date manquant', async () => {
+        await expect(fetchSoldesBudget(null as any, new Date(2026, 1, 1))).resolves.toBeUndefined();
+        await expect(fetchSoldesBudget({id: 'c1'} as any, null as any)).resolves.toBeUndefined();
 
         expect(ClientHTTP.call).not.toHaveBeenCalled();
     });

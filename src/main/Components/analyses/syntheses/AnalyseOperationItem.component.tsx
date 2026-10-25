@@ -1,6 +1,6 @@
 import React, { JSX } from 'react'
 import { Box, Grid, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { useBudgetContext } from '../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useBudgetSelection } from '../../../hooks/useBudgetContext.ts';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 import { CenterComponent } from '../../shared/CenterComponent.tsx';
@@ -26,7 +26,7 @@ const AnalyseOperationItem: React.FC<SharedOperationItemProps> = ({
     operation
 }: SharedOperationItemProps): JSX.Element => {
 
-    const { comptes } = useBudgetContext();
+    const { comptes } = useBudgetSelection();
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     return (
         <Box key={"liste_" + operation.id}>

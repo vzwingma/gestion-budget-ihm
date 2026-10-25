@@ -1,5 +1,5 @@
 import type { Mock } from 'vitest';
-import {saveOperation, saveOperationIntercompte, getLibellesOperationsCompte} from './OperationDetailPage.extservices.ts';
+import {saveOperation, saveOperationIntercompte, fetchLibellesOperationsCompte} from './OperationDetailPage.extservices.ts';
 import {call} from '../../../../../Services/ClientHTTP.service.ts';
 import {toast} from 'react-toastify';
 import {v7 as uuid} from 'uuid';
@@ -59,7 +59,6 @@ describe('OperationDetailPage.extservices', () => {
     });
 
     test('charge, trie et déduplique les libellés d opérations', async () => {
-        const setListeLibellesOperation = vi.fn();
         const duplicate = {libelle: 'Alpha'};
         (call as Mock).mockResolvedValue([
             {libelle: 'Zulu'},
@@ -68,14 +67,20 @@ describe('OperationDetailPage.extservices', () => {
             {libelle: 'Beta'}
         ]);
 
-        getLibellesOperationsCompte('c1', setListeLibellesOperation as any);
-        await flushPromises();
-
-        expect(setListeLibellesOperation).toHaveBeenCalledTimes(1);
-        expect(setListeLibellesOperation).toHaveBeenCalledWith([
+        await expect(fetchLibellesOperationsCompte('c1')).resolves.toEqual([
             {libelle: 'Alpha'},
             {libelle: 'Beta'},
             {libelle: 'Zulu'}
         ]);
+        expect((call as Mock).mock.calls[0][3]).toEqual(['c1']);
+    });
+
+    test('libellés : log puis rejet en cas d erreur', async () => {
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        (call as Mock).mockRejectedValue(new Error('ko'));
+
+        await expect(fetchLibellesOperationsCompte('c1')).rejects.toThrow('ko');
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
     });
 });

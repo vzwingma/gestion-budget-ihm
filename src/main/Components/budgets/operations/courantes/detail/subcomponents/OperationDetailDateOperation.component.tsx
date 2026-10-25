@@ -2,7 +2,7 @@ import React, {JSX} from 'react'
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {TextField, Typography} from '@mui/material'
 import {OperationDetailDateProps} from '../../../../../Components.props.ts'
-import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
 import {getLabelFRFromDate, getLabelISOFromDate} from '../../../../../../Utils/Date.utils.ts'
 
 
@@ -21,7 +21,7 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   form
                                                                             fillOperationForm
                                                                         }: OperationDetailDateProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useBudgetContext();
+    const { currentBudget, currentOperation } = useCurrentBudget();
     const operation = currentOperation;
 
     if (!currentBudget || !operation) {
