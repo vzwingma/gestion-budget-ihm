@@ -49,14 +49,14 @@ describe('getOperationStateLabel', () => {
 describe('getOperationLibelle - libellé et commentaire', () => {
     test('libellé et commentaire ont le même fontSize (desktop)', () => {
         render(getOperationLibelle('Loyer-janvier', [], false, false));
-        expect(screen.getByText('Loyer')).toHaveStyle({fontSize: 'medium'});
-        expect(screen.getByText(/janvier/)).toHaveStyle({fontSize: 'medium'});
+        expect(screen.getByText('Loyer').style.fontSize).toBe('medium');
+        expect(screen.getByText(/janvier/).style.fontSize).toBe('medium');
     });
 
     test('libellé et commentaire ont le même fontSize (mobile)', () => {
         render(getOperationLibelle('Loyer-janvier', [], false, true));
-        expect(screen.getByText('Loyer')).toHaveStyle({fontSize: 'small'});
-        expect(screen.getByText(/janvier/)).toHaveStyle({fontSize: 'small'});
+        expect(screen.getByText('Loyer').style.fontSize).toBe('small');
+        expect(screen.getByText(/janvier/).style.fontSize).toBe('small');
     });
 
     test('commentaire distingué par italique + couleur sous-texte', () => {
