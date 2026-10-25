@@ -20,7 +20,7 @@
 | #4 | Doc + clôture Phase 3 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK ; backlog B1 ajouté) |
 | #2 | Code Phase 4 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 4 | 2026-10-25 | ✅ GO |
-| #4 | Doc + clôture Phase 4 | — | ⏳ En attente 👤 |
+| #4 | Doc + clôture Phase 4 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK, PR #697 mergée, CI 13/13 verte ; filtre conservé dans le Context tel quel, pas d'ADR) |
 
 ## Context
 
@@ -177,7 +177,7 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 ---
 
-## Phase 4 — Filtre orienté validation ✅ (code + tests terminés 2026-10-25, Gate #4 en attente 👤)
+## Phase 4 — Filtre orienté validation ✅ (terminée 2026-10-25, Gate #4 validé)
 
 **Critères de réussite** : recherche "pharma" + puce "À valider" ne montre que les prévues/reportées correspondantes ; net juste ; "Réinitialiser" vide texte + puces.
 
@@ -218,7 +218,7 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 **Décisions d'architecture** :
 - `BudgetPage` est démonté au changement d'onglet (vérifié T4.1) → filtre (texte + puces) remonté dans `BudgetContextProvider` (`filtreOperations` + `setFiltreOperations`) ; il survit aussi aux changements de compte/mois. Portée du Context **ACCEPTÉE** par le 👤.
-- **ADR reporté** : à valider en recette si le filtre doit perdurer au-delà de l'affichage du mois courant ; si oui, ADR court à rédiger par DOCly.
+- **ADR non requis** : recette 👤 OK (2026-10-25) avec le filtre conservé dans le Context, y compris au changement de compte/mois. À rouvrir si l'usage réel demande une autre durée de vie.
 
 **Points ouverts (recette 👤)** :
 - Couleur puce « À valider » `#90a4ae` (constante `COULEUR_PUCE_A_VALIDER`, contraste ≈ 7:1 calculé à la main) à valider visuellement.
