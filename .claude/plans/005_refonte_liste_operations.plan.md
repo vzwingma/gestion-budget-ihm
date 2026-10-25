@@ -1,6 +1,6 @@
 # Plan d'Action 005 — Refonte panneau gauche écran « Opérations »
 
-**Statut** : 🟡 En cours — Phases 1–2 terminées, 3–5 à venir
+**Statut** : 🟡 En cours — Phases 1–3 terminées, 4–5 à venir
 **Date** : 2026-10-23 (dernière mise à jour : 2026-10-25)
 
 ## Journal des gates
@@ -15,6 +15,9 @@
 | #2 | Code Phase 2 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 2 | 2026-10-25 | ✅ GO |
 | #4 | Doc + clôture Phase 2 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK, PR #688 mergée ; recette : lignes écrasées corrigées `a138bc2`, fond du ☰ assombri 0.3→0.65 `8b019a4`, props mortes Sonar retirées `58ecf08`) |
+| #2 | Code Phase 3 | 2026-10-25 | ✅ GO |
+| #3 | Tests Phase 3 | 2026-10-25 | ✅ GO |
+| #4 | Doc + clôture Phase 3 | — | ⏳ En attente 👤 |
 
 ## Context
 
@@ -25,7 +28,7 @@ Analyse Claude Chrome de l'écran **Opérations** a identifié des défauts d'er
 **Décisions validées (Gate #0/#1, via AskUserQuestion)** :
 1. Couleur de sélection de ligne (Phase 2) = bleu accent thème MUI, distinct des 4 couleurs d'état.
 2. Ouverture ☰ (Phase 1) : ne plus réinitialiser `selectedCompte` à `null` — budget reste visible derrière le menu transparent.
-3. Groupe « À valider » (Phase 3+4) défini **par état** (`PREVUE` + `REPORTEE`), pas par absence de date (`REPORTEE` peut avoir une date non nulle).
+3. Groupe « À valider » (Phase 3) = opérations `PREVUE` ou `REPORTEE` **sans date** (`autresInfos.dateOperation == null`). Une `PREVUE`/`REPORTEE` **avec** date reste dans son groupe de date ; `PLANIFIEE` exclue ; `REALISEE`/`ANNULEE`/`SUPPRIMEE` sans date restent sous la clé `"null"` sans en-tête. Une opération validée qui redevient prévue (date remise à `null`) rejoint « À valider » ; si on lui remet une date, elle retourne dans son groupe de date. (Formulation initiale « par état, indépendamment de la date » caduque.)
 4. Tooltip description ligne intercompte (Phase 5) : tap/clic dédié sur la ligne, reste dans le périmètre liste.
 
 ## Dépendances entre phases
@@ -33,7 +36,7 @@ Analyse Claude Chrome de l'écran **Opérations** a identifié des défauts d'er
 Phase 1 → 2 → 3 → 4 → 5, strictement séquentiel (chaque phase = 1 branche/1 PR livrable seule) :
 - Phase 1 d'abord : bugs isolés, base propre avant refactors de ligne/liste.
 - Phase 2 avant 3 : fige la hauteur de ligne avant d'ajouter des en-têtes de groupe.
-- Phase 3 avant 4 : Phase 4 réutilise la notion « à valider » introduite en Phase 3.
+- Phase 3 avant 4 : Phase 4 réutilise la notion « à valider » introduite en Phase 3 (règle à re-trancher, voir point ouvert Phase 4).
 - Phase 4 avant 5 : les deux touchent `BudgetPageHeader`.
 
 ---
@@ -128,23 +131,54 @@ Phase 1 → 2 → 3 → 4 → 5, strictement séquentiel (chaque phase = 1 branc
 
 ---
 
-## Phase 3 — Repérage des prévues « À valider »
+## Phase 3 — Repérage des prévues « À valider » ✅ (code + tests validés 2026-10-25, Gate #4 en attente 👤)
 
 Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
+**Règle « À valider »** : opérations `PREVUE` ou `REPORTEE` **sans date** (`autresInfos.dateOperation == null`), regroupées en tête. `PREVUE`/`REPORTEE` avec date → groupe de date. `PLANIFIEE` exclue. `REALISEE`/`ANNULEE`/`SUPPRIMEE` sans date → clé `"null"`, sans en-tête.
+
 **Critères de réussite** : titre/compteur/total justes et à jour après validation/report/annulation ; sous-totaux par date justes.
 
-- **T3.1** — Revoir `getOperationsGroupedByDateOperation` : extraire `PREVUE`+`REPORTEE` en tête de liste indépendamment de la date, grouper le reste par date. Fichier : `src/main/Components/budgets/budget/Budget.controller.ts`. **Agent : DEVon.**
-- **T3.2** — Nouveau composant `OperationsListHeader` : titre « À valider · N · total » ou « jour date · sous-total ». Fichiers : nouveau `src/main/Components/budgets/operations/OperationsListHeader.component.tsx`, `OperationsListe.shared.tsx`, `OperationsListe.component.tsx`. **Agent : DEVon.**
-- **T3.3** — Total/compteur dérivés des opérations filtrées, recalcul automatique via `handleBudgetUpdate` existant (pas de nouveau state). **Agent : DEVon.**
-- **T3.4** — Vérification manuelle sélection après validation (comportement natif attendu, pas de dev supplémentaire) — capture avant/après. **Agent : QALvin.**
-- **T3.5** — Tests non-régression (titre/compteur/total, sous-totaux, mise à jour après action). **Agent : QALvin.**
+- **T3.1** ✅ — Revoir `getOperationsGroupedByDateOperation` : extraire en tête de liste les `PREVUE`+`REPORTEE` **sans date**, grouper le reste par date. Fichier : `src/main/Components/budgets/budget/Budget.controller.ts`. **Agent : DEVon.**
+- **T3.2** ✅ — Nouveau composant `OperationsListHeader` : titre « À valider · N · total » ou « jour date · sous-total ». Fichiers : nouveau `src/main/Components/budgets/operations/OperationsListHeader.component.tsx`, `OperationsListe.shared.tsx`, `OperationsListe.component.tsx`. **Agent : DEVon.**
+- **T3.3** ✅ — Total/compteur dérivés des opérations filtrées, recalcul automatique via `handleBudgetUpdate` existant (pas de nouveau state). **Agent : DEVon.**
+- **T3.4** ✅ — Vérification manuelle sélection après validation (comportement natif attendu, pas de dev supplémentaire) — capture avant/après. **Agent : QALvin.**
+- **T3.5** ✅ — Tests non-régression (titre/compteur/total, sous-totaux, mise à jour après action). **Agent : QALvin.**
+
+### Résultats Phase 3
+
+**Fichiers source** :
+- `src/main/Components/budgets/budget/Budget.controller.ts` — constante `GROUPE_A_VALIDER` + `getOperationsGroupedByDateOperation` (règle ci-dessus)
+- `src/main/Components/budgets/operations/OperationsListHeader.component.tsx` (nouveau) — `OPERATIONS_HEADER_HEIGHT` (40px) et `getTotalLabel`
+- `src/main/Components/budgets/operations/OperationsListe.shared.tsx` — prop optionnelle `renderGroupHeader`
+- `src/main/Components/budgets/operations/OperationsListe.component.tsx` — branchement des en-têtes
+- `src/main/Utils/Date.utils.ts` — `getLabelJourSemaineFRFromDate`
+
+**Tests** : `Budget.controller.test.ts` (mis à jour), `OperationsListHeader.component.test.tsx` (nouveau), `OperationsListe.component.test.tsx` (nouveau), `OperationsListe.shared.test.tsx` (mis à jour), `Date.utils.test.ts` (mis à jour).
+
+**Preuves** :
+- `npm run lint` : 0 erreur.
+- Suite budgets + utils : 166/166 verts ; 4 échecs préexistants locaux (`Auth.service.test.ts`), hors périmètre.
+
+**Décisions** :
+- Sous-totaux par date : excluent `ANNULEE`/`SUPPRIMEE` (validé 👤). Total « À valider » : n'exclut rien.
+- En-têtes 40px : ≈10 lignes complètes visibles avec l'en-tête « À valider » (acceptable, validé 👤).
+- Jour de semaine calculé localement (`getLabelJourSemaineFRFromDate`), `getLabelFRFromDate` inchangée.
+- Liste récurrente inchangée.
+- Signe moins resté ASCII « - ».
+
+**Points ouverts** :
+- Recette visuelle à faire : en-tête non écrasé (`flexShrink:0`) non testable en jsdom ; contraste ≈5,9:1 calculé à la main, non mesuré.
+- Appel réel de `handleBudgetUpdate` après validation depuis le détail non testé (test de rerender uniquement).
+- 3 fichiers `*.bak_qal` et stash `devon-t1-wip-check` à supprimer par le 👤 (aucun agent ne supprime).
 
 ---
 
 ## Phase 4 — Filtre orienté validation
 
 **Critères de réussite** : recherche "pharma" + puce "À valider" ne montre que les prévues/reportées correspondantes ; net juste ; "Réinitialiser" vide texte + puces.
+
+**Point ouvert à trancher avant implémentation** : la puce « À valider » (prévues + reportées, tel que décrit dans le plan source) ne recouvre plus exactement le groupe « À valider » de la liste (Phase 3), qui exclut les `PREVUE`/`REPORTEE` ayant une date. Décider : puce filtrant par **état seul** (`PREVUE`+`REPORTEE`) ou **réutilisant la règle du groupe** (état + date nulle).
 
 - **T4.1** — Vérifier si `Budget.component.tsx` est démonté/remonté au changement d'onglet → décider état local vs `BudgetContextProvider.tsx`. **Agent : DEVon.**
 - **T4.2** — Nouveau composant `FilterChips` (État : À valider/Réalisée/Annulée ; Sens : Dépenses/Rentrées), hauteur ≥40px, combinables. Fichier : nouveau `src/main/Components/budgets/shared/FilterChips.component.tsx`. **Agent : DEVon.**

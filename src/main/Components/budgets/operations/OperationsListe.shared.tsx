@@ -13,6 +13,8 @@ interface SharedOperationsListeProps {
     onClick: (operation: OperationModel) => void;
     renderItem: (operation: OperationModel, onClick: (operation: OperationModel) => void) => JSX.Element;
     getSeparatorStyle?: (key: string) => { color?: string };
+    /** En-tête de groupe personnalisé (opérations filtrées du groupe) ; null = aucun en-tête. Absent = séparateur par défaut. */
+    renderGroupHeader?: (groupKey: string, operationsFiltered: OperationModel[]) => JSX.Element | null;
 }
 
 /**
@@ -38,6 +40,7 @@ export function filterOperationsList(operations: OperationModel[], filterOperati
  * @param handleOperationSelect callback for operation selection
  * @param renderItem function to render individual operation items
  * @param getSeparatorStyle optional function to get separator styling
+ * @param renderGroupHeader optional custom group header renderer
  * @returns array of JSX elements
  */
 function iterateOperations(
@@ -45,14 +48,20 @@ function iterateOperations(
     filterOperations: string | null,
     handleOperationSelect: (operation: OperationModel) => void,
     renderItem: (operation: OperationModel, onClick: (operation: OperationModel) => void) => JSX.Element,
-    getSeparatorStyle?: (key: string) => { color?: string }
+    getSeparatorStyle?: (key: string) => { color?: string },
+    renderGroupHeader?: (groupKey: string, operationsFiltered: OperationModel[]) => JSX.Element | null
 ): JSX.Element[] {
     let renderList = [] as JSX.Element[];
-    
+
     for (let groupKey in operationsGrouped) {
         const operationsFiltered = filterOperationsList(operationsGrouped[groupKey], filterOperations);
 
-        if (groupKey !== null && groupKey !== "null" && operationsFiltered.length > 0) {
+        if (renderGroupHeader) {
+            const header = operationsFiltered.length > 0 ? renderGroupHeader(groupKey, operationsFiltered) : null;
+            if (header) {
+                renderList.push(<React.Fragment key={"liste_" + groupKey}>{header}</React.Fragment>);
+            }
+        } else if (groupKey !== null && groupKey !== "null" && operationsFiltered.length > 0) {
             const style = getSeparatorStyle ? getSeparatorStyle(groupKey) : {};
             renderList.push(
                 <Container key={"liste_" + groupKey}
@@ -78,6 +87,7 @@ function iterateOperations(
  * @param onClick callback for operation selection
  * @param renderItem function to render individual operation items
  * @param getSeparatorStyle optional function to get separator styling
+ * @param renderGroupHeader optional custom group header renderer
  * @returns JSX.Element
  */
 const SharedOperationsListe: React.FC<SharedOperationsListeProps> = ({
@@ -85,7 +95,8 @@ const SharedOperationsListe: React.FC<SharedOperationsListeProps> = ({
     filterOperations,
     onClick: handleOperationSelect,
     renderItem,
-    getSeparatorStyle
+    getSeparatorStyle,
+    renderGroupHeader
 }: SharedOperationsListeProps): JSX.Element => {
 
     return (
@@ -97,7 +108,7 @@ const SharedOperationsListe: React.FC<SharedOperationsListeProps> = ({
                    scrollbarGutter: "stable",
                    height: getHeightList(useMediaQuery(useTheme().breakpoints.down('lg')))
                }}>
-            {iterateOperations(operationsGrouped, filterOperations, handleOperationSelect, renderItem, getSeparatorStyle)}
+            {iterateOperations(operationsGrouped, filterOperations, handleOperationSelect, renderItem, getSeparatorStyle, renderGroupHeader)}
         </Stack>
     );
 };

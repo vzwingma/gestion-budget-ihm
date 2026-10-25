@@ -3,6 +3,7 @@ import OperationItem from './courantes/OperationsListItem.component.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
 import { OperationsListeProps } from '../../Components.props.tsx';
 import SharedOperationsListe from './OperationsListe.shared.tsx';
+import OperationsListHeader from './OperationsListHeader.component.tsx';
 
 
 /**
@@ -24,12 +25,17 @@ const OperationsListe: React.FC<OperationsListeProps> = ({ operationGroupedByDat
             isOneSelected={selectedOperationId !== null && selectedOperationId !== undefined} />
     };
 
+    // Groupe sans date (clé "null") : aucun en-tête, comme avant
+    const renderGroupHeader = (groupKey: string, operationsFiltered: OperationModel[]): JSX.Element | null =>
+        groupKey === "null" ? null : <OperationsListHeader groupKey={groupKey} operations={operationsFiltered} />;
+
     return (
         <SharedOperationsListe
             operationsGrouped={operationGroupedByDate}
             filterOperations={filterOperations}
             onClick={handleOperationSelect}
             renderItem={renderItem}
+            renderGroupHeader={renderGroupHeader}
         />
     );
 };

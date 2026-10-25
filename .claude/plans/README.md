@@ -10,7 +10,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
-| 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | 🟡 En cours — Phases 1–2/5 clôturées (PR #687, #688 mergées), 3–5 à venir | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
+| 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | 🟡 En cours — Phases 1–3/5 terminées, 4–5 à venir | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
 
 ---
 
@@ -98,5 +98,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-10-25 (plan 005 : Phases 1–2 clôturées (PR #687, #688 mergées))
+**Dernière mise à jour :** 2026-10-25 (plan 005 : Phases 1–3/5 terminées)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain
