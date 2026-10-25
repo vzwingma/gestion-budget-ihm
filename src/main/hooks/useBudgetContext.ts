@@ -3,6 +3,7 @@ import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
 import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
+import { FiltreOperations } from "../Utils/OperationsFilter.utils.ts";
 
 /**
  * Contexte de la partie budget (AP 006 - T11 : extraction hors de `BudgetContextProvider.tsx`,
@@ -28,6 +29,10 @@ type BudgetContextType = {
 
     categories: CategorieOperationModel[];
     setCategories: React.Dispatch<React.SetStateAction<CategorieOperationModel[]>>
+
+    /** Filtre (texte + puces) de la liste des opérations : conservé au changement d'onglet (AP 005 - Phase 4, T4.1/T4.5) */
+    filtreOperations: FiltreOperations;
+    setFiltreOperations: React.Dispatch<React.SetStateAction<FiltreOperations>>;
 };
 
 export const BudgetContext = React.createContext<BudgetContextType | null>(null);

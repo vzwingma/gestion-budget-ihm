@@ -14,6 +14,7 @@ import SsCategorieOperationModel from "../Models/budgets/SsCategorieOperation.mo
 import { AnalysesFiltersModel } from "../Models/analyses/AnalysesFilters.model.ts";
 import AnalyseCategoriesModel from "../Models/analyses/syntheses/AnalyseCategories.model.ts";
 import BudgetMensuelAnalyseConsolideModel from "../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
+import { PucesFiltre } from "../Utils/OperationsFilter.utils.ts";
 
 
 
@@ -180,6 +181,8 @@ export interface OperationDetailPageProps {
 export interface OperationsListeProps {
     operationGroupedByDate: {[key: string]: OperationModel[]}
     filterOperations: string | null
+    /** Puces de filtre actives (état / sens) */
+    filterPuces?: PucesFiltre
     onClick: (operation : OperationModel) => void
     selectedOperationId?: string | null
 }

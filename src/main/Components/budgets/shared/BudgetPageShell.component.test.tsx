@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import BudgetPageShell from './BudgetPageShell.component.tsx';
 
 // Header mocké : on vérifie uniquement la transmission des props (le header a sa propre responsabilité)
@@ -75,5 +75,36 @@ describe('BudgetPageShell', () => {
     test('masque le spinner quand isLoading=false', () => {
         renderShell({ isLoading: false });
         expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+    });
+
+    test('transmet filterBar au header (AP 005 - Phase 4) ; absent par défaut', () => {
+        renderShell();
+        expect(headerProps.mock.calls[0][0].filterBar).toBeUndefined();
+
+        headerProps.mockClear();
+        const barre = <span>barre</span>;
+        renderShell({ filterBar: barre });
+        expect(headerProps.mock.calls.at(-1)?.[0].filterBar).toBe(barre);
+    });
+
+    describe('hauteur de la colonne droite', () => {
+        beforeEach(() => {
+            vi.stubGlobal('innerHeight', 1000);
+        });
+        afterEach(() => {
+            vi.unstubAllGlobals();
+        });
+
+        // Grid sans rôle ni testid : la hauteur est vérifiée via la règle emotion injectée dans <head>
+        test('sans filterBar : innerHeight - 140 (inchangé)', () => {
+            renderShell();
+            expect(document.head.textContent).toContain('height:860px');
+            expect(document.head.textContent).not.toContain('height:812px');
+        });
+
+        test('avec filterBar : réduite de FILTER_BAR_HEIGHT (48 px)', () => {
+            renderShell({ filterBar: <span>barre</span> });
+            expect(document.head.textContent).toContain('height:812px');
+        });
     });
 });
