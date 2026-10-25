@@ -14,7 +14,7 @@
 | #4 | Doc + clôture Phase 1 | 2026-10-25 | ✅ Validé 👤 (2026-10-25) |
 | #2 | Code Phase 2 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 2 | 2026-10-25 | ✅ GO |
-| #4 | Doc + clôture Phase 2 | — | ⏳ En attente 👤 |
+| #4 | Doc + clôture Phase 2 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK, PR #688 mergée ; recette : lignes écrasées corrigées `a138bc2`, fond du ☰ assombri 0.3→0.65 `8b019a4`, props mortes Sonar retirées `58ecf08`) |
 
 ## Context
 
@@ -73,7 +73,7 @@ Phase 1 → 2 → 3 → 4 → 5, strictement séquentiel (chaque phase = 1 branc
 
 ---
 
-## Phase 2 — Lisibilité des lignes ✅ (terminée 2026-10-25, Gate #4 en attente)
+## Phase 2 — Lisibilité des lignes ✅ (terminée 2026-10-25, Gate #4 validé)
 
 **Critères de réussite** : toutes les lignes même hauteur (avec/sans commentaire) ; montants alignés à la virgule ; ≥11 lignes visibles sur 881px de haut ; sélection visuellement plus marquée que survol.
 
