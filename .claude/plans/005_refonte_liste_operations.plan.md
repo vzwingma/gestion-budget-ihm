@@ -17,7 +17,7 @@
 | #4 | Doc + clôture Phase 2 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK, PR #688 mergée ; recette : lignes écrasées corrigées `a138bc2`, fond du ☰ assombri 0.3→0.65 `8b019a4`, props mortes Sonar retirées `58ecf08`) |
 | #2 | Code Phase 3 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 3 | 2026-10-25 | ✅ GO |
-| #4 | Doc + clôture Phase 3 | — | ⏳ En attente 👤 |
+| #4 | Doc + clôture Phase 3 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK ; backlog B1 ajouté) |
 
 ## Context
 
@@ -131,7 +131,7 @@ Phase 1 → 2 → 3 → 4 → 5, strictement séquentiel (chaque phase = 1 branc
 
 ---
 
-## Phase 3 — Repérage des prévues « À valider » ✅ (code + tests validés 2026-10-25, Gate #4 en attente 👤)
+## Phase 3 — Repérage des prévues « À valider » ✅ (terminée 2026-10-25, Gate #4 validé)
 
 Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
@@ -216,6 +216,10 @@ Une phase démarre seulement après Gate humain GO sur la phase précédente. Ch
 ## ADR
 
 Pas d'ADR requis : refonte UI/UX réutilisant les patterns existants (MUI, Context, state local), aucune décision architecturale majeure (pas de nouvelle lib, pas de changement de couche). À réévaluer si T4.1 impose de remonter l'état filtre dans `BudgetContextProvider.tsx` (changement de portée du Context) — dans ce cas, ADR court à rédiger par DOCly avant Phase 4.
+
+## Backlog (évolutions hors phases 1–5, à planifier)
+
+- **B1 — Infobulle sur l'icône d'opération (colonne gauche de la liste)** (idée 👤, 2026-10-25, issue de la recette Phase 3) : au survol/tap de l'icône, afficher catégorie, sous-catégorie et statut de l'opération, et expliquer l'icône et les couleurs (anneau d'état : orange = prévue, violet = reportée, vert = réalisée, blanc = annulée). Contraintes : aucune info uniquement au survol sur tablette → déclenchement au tap (même pattern que Phase 5, tooltip contrôlé + `ClickAwayListener`) ; `aria-label` de l'anneau (`getOperationStateLabel`) déjà en place ; cibles tactiles ≥ 44 px ; couleurs d'état inchangées. Point à cadrer : l'icône (≈ 46 px) devient une cible interactive distincte du clic de sélection de la ligne (ne pas déclencher la sélection au tap de l'infobulle, ou l'assumer). À instruire par ARCos/MAINa avant plan (non planifié).
 
 ## Fichiers impactés (vue d'ensemble)
 
