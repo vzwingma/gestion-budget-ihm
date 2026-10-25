@@ -12,6 +12,9 @@ import BudgetMensuelModel from '../../../Models/budgets/BudgetMensuel.model.ts';
  * il suffit de fournir CurrentBudgetContext (pas de BudgetSelectionContext).
  */
 
+// Le format des montants dépend de la locale du runtime (ICU) : on cible les soldes par leur id plutôt que par leur texte
+const parId = (id: string) => (_contenu: string, element: Element | null) => element?.id === id;
+
 function renderSoldes(currentBudget: BudgetMensuelModel | undefined) {
     const value: any = { currentBudget, currentOperation: null };
     return render(
@@ -48,8 +51,8 @@ describe('BudgetSoldes', () => {
     test('budget actif : solde actuel et solde de fin de mois affichés', () => {
         renderSoldes(buildBudget(true));
 
-        expect(screen.getByText(/1\s?234[.,]50/)).toBeInTheDocument();
-        expect(screen.getByText(/2\s?000[.,]00/)).toBeInTheDocument();
+        expect(screen.getByText(parId('soldeAtMaintenant'))).toBeInTheDocument();
+        expect(screen.getByText(parId('soldeAtFinMoisCourant'))).toBeInTheDocument();
         expect(consoleError).not.toHaveBeenCalled();
     });
 
@@ -58,7 +61,7 @@ describe('BudgetSoldes', () => {
         renderSoldes(buildBudget(true));
 
         expect(screen.queryByText('Fin du mois')).not.toBeInTheDocument();
-        await user.hover(screen.getByText(/1\s?234[.,]50/));
+        await user.hover(screen.getByText(parId('soldeAtMaintenant')));
 
         expect(await screen.findByText('Fin du mois')).toBeVisible();
         expect(screen.getByText('Soldes')).toBeVisible();
@@ -68,7 +71,7 @@ describe('BudgetSoldes', () => {
         const user = userEvent.setup();
         renderSoldes(buildBudget(true));
 
-        await user.hover(screen.getByText(/2\s?000[.,]00/));
+        await user.hover(screen.getByText(parId('soldeAtFinMoisCourant')));
 
         expect(await screen.findByText('Fin du mois')).toBeVisible();
     });
@@ -76,8 +79,8 @@ describe('BudgetSoldes', () => {
     test('budget clos : solde actuel affiché, pas de solde de fin de mois, aucune erreur console', () => {
         renderSoldes(buildBudget(false));
 
-        expect(screen.getByText(/1\s?234[.,]50/)).toBeInTheDocument();
-        expect(screen.queryByText(/2\s?000[.,]00/)).not.toBeInTheDocument();
+        expect(screen.getByText(parId('soldeAtMaintenant'))).toBeInTheDocument();
+        expect(screen.queryByText(parId('soldeAtFinMoisCourant'))).not.toBeInTheDocument();
         expect(consoleError).not.toHaveBeenCalled();
         expect(consoleWarn).not.toHaveBeenCalled();
     });
@@ -86,7 +89,7 @@ describe('BudgetSoldes', () => {
         const user = userEvent.setup();
         renderSoldes(buildBudget(false));
 
-        await user.hover(screen.getByText(/1\s?234[.,]50/));
+        await user.hover(screen.getByText(parId('soldeAtMaintenant')));
 
         expect(await screen.findByText('Fin du mois')).toBeVisible();
     });
