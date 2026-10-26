@@ -5,6 +5,8 @@ import {
     getSortedSubCategories
 } from './AnalyseCategoriesListe.controller.ts';
 import {TYPES_CATEGORIES_OPERATION_ENUM} from '../../../Utils/AppBusinessEnums.constants.ts';
+import AnalyseCategoriesModel from '../../../Models/analyses/syntheses/AnalyseCategories.model.ts';
+import OperationModel from '../../../Models/budgets/Operation.model.ts';
 
 vi.mock('../../../Utils/renderers/CategorieItem.renderer.tsx', () => ({
     getCategorieColor: vi.fn((id: string) => `color-${id}`)
@@ -26,7 +28,7 @@ describe('AnalyseCategoriesListe.controller', () => {
                 b: {ssCategorie: {libelle: 'B'}},
                 a: {ssCategorie: {libelle: 'A'}}
             }
-        } as any;
+        } as unknown as AnalyseCategoriesModel;
 
         const sorted = getSortedSubCategories(category);
 
@@ -39,9 +41,9 @@ describe('AnalyseCategoriesListe.controller', () => {
             {categorie: {id: 'c1', libelle: 'Alim'}, ssCategorie: {id: 's1', libelle: 'Courses'}, valeur: 10},
             {categorie: {id: 'c1', libelle: 'Alim'}, ssCategorie: {id: 's1', libelle: 'Courses'}, valeur: 20},
             {categorie: {id: 'c2', libelle: 'Loisir'}, ssCategorie: {id: 's2', libelle: 'Cinéma'}, valeur: -5}
-        ] as any[];
+        ] as unknown as OperationModel[];
 
-        const result = getCategoriesDataForAnalyses(operations as any);
+        const result = getCategoriesDataForAnalyses(operations);
 
         expect(result).toHaveLength(2);
         expect(result[0].categorie.libelle).toBe('Alim');

@@ -1,11 +1,12 @@
 import {extractUniqueCategories, getMonthYearFromOperation, prepareGraphDataFromOperations} from './AnalyseEvolution.controller.ts';
 import {OPERATION_ETATS_ENUM} from '../../../Utils/AppBusinessEnums.constants.ts';
 import BudgetMensuelAnalyseConsolideModel from "../../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
+import OperationModel from "../../../Models/budgets/Operation.model.ts";
 
 describe('AnalyseEvolution.controller', () => {
 
     test('retourne mois/année courant si date absente', () => {
-        const [month, year] = getMonthYearFromOperation({autresInfos: {dateOperation: null}} as any);
+        const [month, year] = getMonthYearFromOperation({autresInfos: {dateOperation: null}} as unknown as OperationModel);
 
         expect(month).toBeGreaterThanOrEqual(0);
         expect(year).toBeGreaterThan(2000);
@@ -15,7 +16,7 @@ describe('AnalyseEvolution.controller', () => {
         const operations = [
             {categorie: {libelle: 'Courses'}, valeur: 100, etat: OPERATION_ETATS_ENUM.REALISEE, autresInfos: {dateOperation: '2026-01-15'}},
             {categorie: {libelle: 'Courses'}, valeur: 50, etat: OPERATION_ETATS_ENUM.PREVUE, autresInfos: {dateOperation: '2026-01-20'}}
-        ] as any[];
+                    ] as unknown as OperationModel[];
 
         const budgetConsolide = new BudgetMensuelAnalyseConsolideModel('test-budget');
         budgetConsolide.soldesParMois = {
@@ -26,7 +27,7 @@ describe('AnalyseEvolution.controller', () => {
             }
         };
         
-        const result = prepareGraphDataFromOperations(budgetConsolide, operations as any, true);
+        const result = prepareGraphDataFromOperations(budgetConsolide, operations, true);
 
         expect(result).toHaveLength(2);
         expect(result[0].Courses).toBe(100);
@@ -41,10 +42,10 @@ describe('AnalyseEvolution.controller', () => {
             {categorie: {libelle: 'Achat'}, valeur: 10, autresInfos: {dateOperation: '2026-01-10'}},
             {categorie: {libelle: 'Achat'}, valeur: 15, autresInfos: {dateOperation: '2026-01-20'}},
             {categorie: {libelle: 'Salaire'}, valeur: 1000, autresInfos: {dateOperation: '2026-02-05'}}
-        ] as any[];
+                    ] as unknown as OperationModel[];
 
         const budgetConsolide = new BudgetMensuelAnalyseConsolideModel('test-budget');
-        const result = prepareGraphDataFromOperations(budgetConsolide, operations as any, false);
+                    const result = prepareGraphDataFromOperations(budgetConsolide, operations, false);
 
         expect(result.length).toBeGreaterThanOrEqual(2);
         expect(result.some(item => item.Achat === 25)).toBeTruthy();
@@ -54,7 +55,7 @@ describe('AnalyseEvolution.controller', () => {
         const operations = [
             {categorie: {libelle: 'Achat'}, valeur: 10, autresInfos: {dateOperation: '2026-01-10'}},
             {categorie: {libelle: 'Salaire'}, valeur: 1000, autresInfos: {dateOperation: '2026-02-05'}}
-        ] as any[];
+                    ] as unknown as OperationModel[];
 
         const budgetConsolide = new BudgetMensuelAnalyseConsolideModel('test-budget');
         budgetConsolide.soldesParMois = {
@@ -70,7 +71,7 @@ describe('AnalyseEvolution.controller', () => {
             }
         };
 
-        const result = prepareGraphDataFromOperations(budgetConsolide, operations as any, false);
+        const result = prepareGraphDataFromOperations(budgetConsolide,         operations, false);
 
         expect(result.length).toBe(2);
         // Premier mois: utilise soldeAtFinMoisPrecedent
@@ -84,9 +85,9 @@ describe('AnalyseEvolution.controller', () => {
             {categorie: {id: 'c1', libelle: 'Achat'}},
             {categorie: {id: 'c1', libelle: 'Achat'}},
             {categorie: {id: 'c2', libelle: 'Salaire'}}
-        ] as any[];
+        ] as unknown as OperationModel[];
 
-        const result = extractUniqueCategories(operations as any);
+        const result = extractUniqueCategories(operations);
 
         expect(result).toHaveLength(2);
     });
