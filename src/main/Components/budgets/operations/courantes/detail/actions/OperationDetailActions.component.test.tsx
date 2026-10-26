@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 
 import { OperationDetailActions } from './OperationDetailActions.component.tsx';
 import { saveOperation } from '../OperationDetailPage.extservices.ts';
@@ -13,13 +13,15 @@ vi.mock('../OperationDetailPage.extservices.ts', () => ({ saveOperation: vi.fn()
 describe('OperationDetailActions - composant', () => {
 
     const onOperationChange = vi.fn();
+    const onOperationCommit = vi.fn();
     const onClickRealise = vi.fn();
 
     function rendre(contexte: Parameters<typeof renderWithContexts>[1] = {}, enCreation = false) {
         const operation = contexte.operation ?? buildOperation();
         return renderWithContexts(
             <OperationDetailActions isInCreateMode={enCreation} editOperation={cloneOperation(operation)}
-                onClickRealiseInCreateMode={onClickRealise} onOperationChange={onOperationChange} />, contexte);
+                onClickRealiseInCreateMode={onClickRealise} onOperationChange={onOperationChange}
+                onOperationCommit={onOperationCommit} />, contexte);
     }
 
     const actionsVisibles = () => screen.queryAllByRole('button').map((bouton) => bouton.getAttribute('aria-label'));
@@ -52,7 +54,7 @@ describe('OperationDetailActions - composant', () => {
         expect(actionsVisibles()).toEqual(['Valider l\'opération', 'Reporter l\'opération']);
     });
 
-    test('édition : Valider l\'opération -> saveOperation(REALISEE) avec le callback du parent', async () => {
+    test('édition : Valider l\'opération -> saveOperation(copie REALISEE), opération du contexte inchangée', async () => {
         const user = userEvent.setup();
         const operation = buildOperation();
         const budget = buildBudget();
@@ -60,8 +62,36 @@ describe('OperationDetailActions - composant', () => {
 
         await user.click(screen.getByRole('button', { name: 'Valider l\'opération' }));
 
-        expect(saveOperation).toHaveBeenCalledWith(operation, budget, onOperationChange);
-        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
+        expect(saveOperation).toHaveBeenCalledWith(expect.objectContaining({ id: operation.id, etat: OPERATION_ETATS_ENUM.REALISEE }), budget, expect.any(Function));
+        expect((saveOperation as Mock).mock.calls[0][0]).not.toBe(operation);
+        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.PREVUE);
+    });
+
+    test('édition : succès de la sauvegarde -> budget notifié à la page puis copie propagée (commit)', async () => {
+        const user = userEvent.setup();
+        rendre();
+        await user.click(screen.getByRole('button', { name: 'Valider l\'opération' }));
+        const [copie, , callback] = (saveOperation as Mock).mock.calls[0];
+        const budgetMaj = buildBudget();
+
+        callback(budgetMaj);
+
+        expect(onOperationChange).toHaveBeenCalledWith(budgetMaj);
+        expect(onOperationCommit).toHaveBeenCalledWith(copie);
+    });
+
+    test('édition : échec de la sauvegarde (callback jamais appelé) -> ni commit ni changement d\'écran', async () => {
+        const user = userEvent.setup();
+        const operation = buildOperation();
+        rendre({ operation });
+
+        await user.click(screen.getByRole('button', { name: 'Valider l\'opération' }));
+
+        // saveOperation (mocké) n'invoque jamais son callback, comme en cas d'erreur HTTP
+        expect(saveOperation).toHaveBeenCalledTimes(1);
+        expect(onOperationCommit).not.toHaveBeenCalled();
+        expect(onOperationChange).not.toHaveBeenCalled();
+        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.PREVUE);
     });
 
     test('budget clos : aucune sauvegarde (avertissement)', async () => {
@@ -73,15 +103,18 @@ describe('OperationDetailActions - composant', () => {
         expect(saveOperation).not.toHaveBeenCalled();
     });
 
-    test('création : Valider l\'opération renseigne l\'état et notifie la page, sans sauvegarde', async () => {
+    test('création : Valider l\'opération transmet date du jour + état à la page, sans sauvegarde ni mutation du contexte', async () => {
         const user = userEvent.setup();
         const operation = buildOperation();
         rendre({ operation }, true);
 
         await user.click(screen.getByRole('button', { name: 'Valider l\'opération' }));
 
-        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
         expect(onClickRealise).toHaveBeenCalledTimes(1);
+        const [date, etat] = onClickRealise.mock.calls[0];
+        expect(date).toBeInstanceOf(Date);
+        expect(etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
+        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.PREVUE);
         expect(saveOperation).not.toHaveBeenCalled();
     });
 
@@ -99,7 +132,7 @@ describe('OperationDetailActions - composant', () => {
         expect(saveOperation).not.toHaveBeenCalled();
     });
 
-    test('Supprimer puis Confirmer : sauvegarde de l\'opération SUPPRIMEE et fermeture de la confirmation', async () => {
+    test('Supprimer puis Confirmer : sauvegarde de la copie SUPPRIMEE et fermeture de la confirmation', async () => {
         const user = userEvent.setup();
         const operation = buildOperation();
         rendre({ operation });
@@ -107,8 +140,9 @@ describe('OperationDetailActions - composant', () => {
         await user.click(screen.getByRole('button', { name: 'Supprimer l\'opération' }));
         await user.click(await screen.findByRole('button', { name: 'Confirmer' }));
 
-        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.SUPPRIMEE);
         expect(saveOperation).toHaveBeenCalledTimes(1);
+        expect((saveOperation as Mock).mock.calls[0][0].etat).toBe(OPERATION_ETATS_ENUM.SUPPRIMEE);
+        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.PREVUE);
         await waitFor(() => expect(screen.queryByText('Voulez vous supprimer l\'opération ?')).not.toBeInTheDocument());
     });
 });

@@ -9,6 +9,7 @@ import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
 import { debug } from "../../../../../../Utils/Debug.utils.ts";
+import { evaluateEquation } from "../../../../../../Utils/Equation.utils.ts";
 
 
 /**
@@ -18,13 +19,14 @@ import { debug } from "../../../../../../Utils/Debug.utils.ts";
  * @param {OperationDetailValeurProps} props - Les propriétés du composant.
  */
 export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   formValueInEdition,
+                                                                                typeOperation,
                                                                                 errorValeur,
                                                                                 fillOperationForm
                                                                             }: OperationDetailValeurProps): JSX.Element => {
 
     const { currentBudget, currentOperation } = useCurrentBudget();
     const operation = currentOperation;
-    const budgetActif = currentBudget;
+    const budgetActif = currentBudget?.actif ?? false;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
@@ -47,7 +49,7 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
                     slotProps={{
                         input: {
                             startAdornment: (
-                                <InputAdornment position="start"> {operation.typeOperation === TYPES_OPERATION_ENUM.CREDIT?
+                                <InputAdornment position="start"> {(typeOperation ?? operation.typeOperation) === TYPES_OPERATION_ENUM.CREDIT?
                                     <AddRounded /> : <RemoveRounded />}</InputAdornment>
                             ),
                             endAdornment: (
@@ -115,8 +117,8 @@ export function validateFormMontant(editOperation: OperationEditionModel, operat
 function calculateValeur(formValue: string): { valeurCalculee: string | null, error: string | null } {
 
     try {
-        // eslint-disable-next-line no-eval
-        const calculee = Number(processEquation(formValue)).toFixed(2);
+        // Évaluateur dédié (sans eval) : toute expression invalide lève une erreur
+        const calculee = evaluateEquation(formValue).toFixed(2);
         debug("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
         return { valeurCalculee: calculee, error: null };
     } catch (e) {
@@ -136,24 +138,3 @@ function validateValue(valeur: string): boolean {
     return /(^\d*(.\d{1,2})?$)/.test(valeurATester);
 }
 
-
-
-/**
- * Calcul de l'équation mathématique (sans eval) depuis une chaine de caractères
- * @param valueToCalculate : string : chaine de caractères à calculer à saisie
- * @returns {string} résultat
- *
- */
-function processEquation(valueToCalculate: string): string {
-    if (valueToCalculate.length <= 1000) {
-        try {
-            // eslint-disable-next-line no-new-func
-            const result = new Function(`return ${valueToCalculate}`)();
-            return result.toString();
-        } catch (error) {
-            console.error("Erreur lors du traitement de l'équation : ", valueToCalculate, error);
-            return "0";
-        }
-    }
-    return valueToCalculate
-}

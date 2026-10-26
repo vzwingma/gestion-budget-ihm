@@ -33,9 +33,8 @@ describe('OperationDetailValeur - composant', () => {
         expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
     });
 
-    // DÉFAUT CONNU : `budgetActif = currentBudget` (l'objet, toujours truthy) au lieu de `currentBudget.actif`
-    // -> le montant reste marqué éditable même sur un budget clos.
-    test.fails('lecture sur budget clos : le montant est marqué désactivé', () => {
+    // Défaut corrigé (lot 3) : `budgetActif = currentBudget` (objet toujours truthy) au lieu de `currentBudget?.actif`
+    test('lecture sur budget clos : le montant est marqué désactivé', () => {
         renderWithContexts(<OperationDetailValeur formValueInEdition={false} errorValeur={null} fillOperationForm={fill} />, { budget: buildBudget(false) });
 
         expect(screen.getByRole('heading', { level: 4 })).toHaveClass('editableField--disabled');
@@ -46,6 +45,14 @@ describe('OperationDetailValeur - composant', () => {
 
         expect(screen.getByRole('textbox', { name: /montant/i })).toHaveValue('50');
         expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    });
+
+    test('édition : le type de l\'opération en édition (prop) prime sur celui de l\'opération du contexte', () => {
+        renderWithContexts(<OperationDetailValeur formValueInEdition={true} typeOperation={TYPES_OPERATION_ENUM.CREDIT} errorValeur={null} fillOperationForm={fill} />,
+            { operation: buildOperation({ typeOperation: TYPES_OPERATION_ENUM.DEPENSE }) });
+
+        expect(screen.getByTestId('AddRoundedIcon')).toBeInTheDocument();
+        expect(screen.queryByTestId('RemoveRoundedIcon')).not.toBeInTheDocument();
     });
 
     test.each([
@@ -133,17 +140,30 @@ describe('OperationDetailValeur - validateFormMontant', () => {
         expect(operation.valeur).toBe(attendu);
     });
 
-    test.each(['-5', '1/0'])('saisie "%s" : erreur de format et valeur inchangée', (saisie) => {
-        const { operation, errors } = valider(saisie);
+    test('saisie "-5" : résultat négatif rejeté au format, valeur inchangée', () => {
+        const { operation, errors } = valider('-5');
 
         expect(errors.valeur).toBe('Le format est incorrect : 0000.00 €');
         expect(operation.valeur).toBe(-50);
     });
 
-    test('saisie de plus de 1000 caractères : non évaluée comme équation, rejetée au format', () => {
-        const { operation, errors } = valider('9'.repeat(1001));
+    test.each([
+        ['division par zéro', '1/0'],
+        ['expression de 101 caractères', '9'.repeat(101)],
+        ['expression de plus de 1000 caractères', '9'.repeat(1001)],
+        ['caractère interdit', '2**3'],
+        ['injection de code', '1);alert(1);(']
+    ])('saisie invalide (%s) : "Le champ Montant est incorrect" et valeur inchangée', (_libelle, saisie) => {
+        const { operation, errors } = valider(saisie);
 
-        expect(errors.valeur).toBe('Le format est incorrect : 0000.00 €');
+        expect(errors.valeur).toBe('Le champ Montant est incorrect');
         expect(operation.valeur).toBe(-50);
+    });
+
+    test('saisie de 100 caractères valide : acceptée (limite incluse)', () => {
+        const { operation, errors } = valider('1' + ' '.repeat(99));
+
+        expect(errors.valeur).toBeNull();
+        expect(operation.valeur).toBe(-1);
     });
 });

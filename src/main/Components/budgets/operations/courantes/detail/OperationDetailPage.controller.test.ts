@@ -5,7 +5,8 @@ import {
     isInCreateMode,
     isInEditMode
 } from './OperationDetailPage.controller.ts';
-import {BUSINESS_GUID} from '../../../../../Utils/AppBusinessEnums.constants.ts';
+import {BUSINESS_GUID, OPERATION_ETATS_ENUM} from '../../../../../Utils/AppBusinessEnums.constants.ts';
+import {createNewOperationEdition} from '../../../../../Models/budgets/OperationEdition.model.ts';
 import {saveOperation, saveOperationIntercompte} from './OperationDetailPage.extservices.ts';
 
 const mockCreateEmptyErrors = vi.fn();
@@ -71,21 +72,29 @@ describe('OperationDetailPage.controller', () => {
             {operation: {}, budget: {actif: true}} as any,
             {} as any,
             editForm as any,
-            openEditForm,
-            vi.fn() as any,
-            vi.fn()
+            {openEditForm, setErrors: vi.fn() as any, onOperationUpdate: vi.fn()}
         );
 
         expect(openEditForm).toHaveBeenCalledTimes(1);
     });
 
-    test('met à jour la date via action', () => {
+    test('met à jour la date et l\'état via action : fonction de mise à jour produisant une copie', () => {
         const setEditOperation = vi.fn();
-        const editOperation = {id: 'op1'};
+        const date = new Date('2026-03-04');
+        const editOperation = createNewOperationEdition();
 
-        handleDateOperationFromAction(editOperation as any, setEditOperation as any);
+        handleDateOperationFromAction(date, OPERATION_ETATS_ENUM.REALISEE, setEditOperation as any);
 
-        expect(setEditOperation).toHaveBeenCalledWith(editOperation);
+        expect(setEditOperation).toHaveBeenCalledTimes(1);
+        const miseAJour = setEditOperation.mock.calls[0][0];
+        expect(miseAJour).toBeInstanceOf(Function);
+        const resultat = miseAJour(editOperation);
+        expect(resultat).not.toBe(editOperation);
+        expect(resultat.etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
+        expect(resultat.autresInfos.dateOperation).toBe(date);
+        // L'original n'est pas muté
+        expect(editOperation.etat).not.toBe(OPERATION_ETATS_ENUM.REALISEE);
+        expect(editOperation.autresInfos.dateOperation).toBeNull();
     });
 
     test('sauvegarde une opération classique sans erreurs', () => {

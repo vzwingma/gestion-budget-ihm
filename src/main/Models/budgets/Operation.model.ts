@@ -88,3 +88,19 @@ export function createNewOperation(): OperationModel {
         }
     };
 }
+
+/**
+ * Copie d'une opération (brouillon à valider/sauvegarder) : l'opération du contexte n'est jamais modifiée.
+ * Les dates (`Date`) sont partagées par référence : elles sont remplacées, jamais modifiées en place.
+ * @param operation opération à copier
+ */
+export function cloneOperationModel(operation: OperationModel): OperationModel {
+    return {
+        ...operation,
+        categorie: {...operation.categorie},
+        ssCategorie: {...operation.ssCategorie},
+        mensualite: {...operation.mensualite},
+        autresInfos: {...operation.autresInfos},
+        statuts: operation.statuts ? [...operation.statuts] : operation.statuts
+    };
+}

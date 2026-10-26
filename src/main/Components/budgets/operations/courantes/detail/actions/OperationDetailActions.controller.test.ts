@@ -59,9 +59,10 @@ describe('OperationDetailActions.controller', () => {
         expect(setShowModale).toHaveBeenCalledWith(false);
     });
 
-    test('en mode création, met à jour la date et l état', () => {
+    test('en mode création, transmet la date et l\'état sans modifier l\'opération du contexte', () => {
         const operation = {etat: OPERATION_ETATS_ENUM.PREVUE, autresInfos: {dateOperation: null}} as any;
-        const editOperation = {autresInfos: {dateOperation: new Date('2026-02-01')}} as any;
+        const date = new Date('2026-02-01');
+        const editOperation = {autresInfos: {dateOperation: date}} as any;
         const handleDateOperationFromAction = vi.fn();
 
         handleOperationAction(
@@ -75,8 +76,10 @@ describe('OperationDetailActions.controller', () => {
             vi.fn() as any
         );
 
-        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
         expect(handleDateOperationFromAction).toHaveBeenCalledTimes(1);
+        expect(handleDateOperationFromAction).toHaveBeenCalledWith(date, OPERATION_ETATS_ENUM.REALISEE);
+        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.PREVUE);
+        expect(saveOperation).not.toHaveBeenCalled();
     });
 
     test('en mode édition sauvegarde si budget actif et état différent', () => {
