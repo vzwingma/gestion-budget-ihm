@@ -2,7 +2,7 @@
 
 **Document :** `.claude/plans/008_versioning_ihm_ci.plan.md`
 **Date de création :** 2026-10-26
-**Statut :** ⏳ Planifié
+**Statut :** ✅ Complété
 **Objectif Prioritaire :** MEDIUM
 **ADR associé :** aucun (changement CI mineur, aligné sur le mécanisme PROD existant)
 
@@ -69,7 +69,7 @@ sans impact sur `build-on-tags.yml` ni sur le dev local (`vite --mode dev` lit `
 - **Couvrir :** nominal DEV + QUA ; régression si placeholder absent (aucun `__BUDGET_IHM_VERSION__` résiduel) ; fuseau
 - **Acceptation :** 2/2 formats conformes, 0 placeholder résiduel, tests existants verts
 
-### Phase 3 — Documentation — 🔄 En cours
+### Phase 3 — Documentation — ✅ Complété
 #### T3.1 - Synchroniser la documentation
 - **Agent :** 🟣 DOCly
 - **Fichier(s) :** `docs/ARCHITECTURE.md` (exemple `VITE_BUDGET_VERSION` l.124 + entrée historique v27.0.0), `README.md` (table des variables si concernée), `.claude/plans/README.md`
@@ -118,3 +118,4 @@ Phase 3 (docs)  → Gate #4
 | #1 | 2026-10-26 | Validation plan | ✅ GO | Pas d'ADR ; lancement Phase 1 |
 | #2 | 2026-10-26 | Validation code Phase 1 | ✅ GO | lint/build ✅ ; typecheck (12 erreurs) et 5 tests tooltip rouges jugés préexistants (hors scope, non prouvé faute de git) ; revue auto indisponible ; DEVon exécuté via agent généraliste (modèle `sonnet` non résolu) |
 | #3 | 2026-10-26 | Validation tests Phase 2 | ✅ GO | Format DEV/QUA conforme, Paris OK ; à la demande 👤 : tests périmés de `OperationsListItem.shared.tooltip.test.tsx` corrigés (légende supprimée en prod par commit f1bfa8c) → vitest 2102 OK / 0 échec |
+| #4 | 2026-10-26 | Clôture (docs) | ✅ GO | ARCHITECTURE.md, README.md, index des plans à jour ; points ouverts hors scope : typecheck 12 erreurs TS, warnings lint `LEGEND_ETATS`, exclusion vitest `.claude/worktrees`, champ `model` des agents |

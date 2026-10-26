@@ -11,7 +11,6 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
 | 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (Gate #4 validé 👤) · 🟡 Lot 2 livré (T11 adoption, T6, T2 partiel), Gate #4 validé 👤 — reste : découpage `OperationDetailPage`, T16, T20, T12 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
-| 008 | Versioning IHM 27.0.0 + version horodatée DEV/QUA calculée en CI | 🔄 Phase 3 livrée, Gate #4 en attente | [`008_versioning_ihm_ci.plan.md`](./008_versioning_ihm_ci.plan.md) |
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Proposée — item T12 uniquement)
 
@@ -26,6 +25,7 @@ ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../..
 | 004 | Remédiation SonarCloud (8 issues : S3776, S5145 x5, S6478 x2) | ✅ Complété (DEVon+QALvin, pushé `feat/qa_deploy`) | [`004_remediation_sonarcloud.plan.md`](./004_remediation_sonarcloud.plan.md) |
 | 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | ✅ Complété (5 phases, Gate #4 validé 👤 ; backlog B1 non planifié) | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
 | 007 | Migration déploiement S3 `reggionick/s3-deploy` → AWS CLI natif (warning Node 20 déprécié) | ✅ Complété | [`007_migration_s3_deploy_aws_cli.plan.md`](./007_migration_s3_deploy_aws_cli.plan.md) |
+| 008 | Versioning IHM 27.0.0 + version horodatée DEV/QUA calculée en CI | ✅ Complété (3 phases, Gate #4 validé 👤) | [`008_versioning_ihm_ci.plan.md`](./008_versioning_ihm_ci.plan.md) |
 
 ADR associé (001) : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
 ADR associé (007) : [`docs/adr/007-migration-s3-deploy-aws-cli.md`](../../docs/adr/007-migration-s3-deploy-aws-cli.md)
@@ -104,5 +104,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-10-26 (plan 008 : Phase 3 documentation livrée, Gate #4 en attente) — 2026-10-25 (plan 005 : clôturé (5 phases, Gate #4 validé) ; plan 006 : lots 1 et 2 livrés, Gate #4 validé)
+**Dernière mise à jour :** 2026-10-26 (plan 008 : clôturé, Gate #4 validé) — 2026-10-25 (plan 005 : clôturé (5 phases, Gate #4 validé) ; plan 006 : lots 1 et 2 livrés, Gate #4 validé)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain
