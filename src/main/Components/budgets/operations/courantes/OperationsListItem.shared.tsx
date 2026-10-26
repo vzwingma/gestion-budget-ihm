@@ -7,6 +7,8 @@ import { useBudgetSelection } from '../../../../hooks/useBudgetContext.ts';
 import {getOperationLibelle, getOperationStateLabel} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
 import OperationModel from '../../../../Models/budgets/Operation.model.ts';
 import OperationStatus from '../../../../Utils/renderers/OperationStatus.renderer.tsx';
+import TapTooltip from '../../../shared/TapTooltip.component.tsx';
+import OperationIconTooltipContent, {OperationRingMeaning} from './OperationIconTooltipContent.component.tsx';
 
 /**
  * Props for the shared operation item component
@@ -17,6 +19,8 @@ interface SharedOperationItemProps {
     getBorderColor: (operation: OperationModel) => string;
     isSelected?: boolean;
     isOneSelected?: boolean;
+    /** Signification de l'anneau dans l'infobulle de l'icône (défaut : état de l'opération) */
+    ringMeaning?: OperationRingMeaning;
 }
 /** Hauteur fixe d'une ligne (px), identique mobile/desktop, avec ou sans commentaire.
  * Calcul : liste = innerHeight - 140 (881px -> 741px) ; ligne 64 + séparateur 1 = 65 -> 11 lignes (715px). */
@@ -37,13 +41,15 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
     onClick: handleOperationSelect,
     getBorderColor,
     isSelected,
-    isOneSelected
+    isOneSelected,
+    ringMeaning = 'etat'
 }: SharedOperationItemProps): JSX.Element => {
 
     const budgetContext = useBudgetSelection();
     const comptes = budgetContext?.comptes;
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
     const ringColor = getBorderColor(operation);
+    const categorieColor = getCategorieColor(operation.categorie.id);
 
     return (
         <Box key={"liste_" + operation.id}
@@ -59,30 +65,36 @@ const SharedOperationItem: React.FC<SharedOperationItemProps> = ({
              }}>
             <Grid container sx={{height: "100%", alignItems: 'center'}}>
                 <Grid size={{md: 1.5, xl: 1.5}} sx={{paddingLeft: isMobile ? '8px' : '14px'}}>
-                    <Box role={operation.etat != null ? "img" : undefined}
-                         aria-label={operation.etat != null ? getOperationStateLabel(operation.etat) : undefined}
-                         sx={{
-                             boxSizing: "border-box",
-                             width: 46,
-                             height: 46,
-                             borderRadius: '50%',
-                             border: '3px solid ' + ringColor,
-                         }}>
-
-                        <Box
+                    <TapTooltip
+                        title={<OperationIconTooltipContent operation={operation} ringColor={ringColor}
+                                                            categorieColor={categorieColor} ringMeaning={ringMeaning}/>}
+                        slotProps={{tooltip: {sx: {backgroundColor: 'transparent', boxShadow: 'none', padding: 0}}}}>
+                        <Box role={operation.etat != null ? "img" : undefined}
+                             aria-label={operation.etat != null ? getOperationStateLabel(operation.etat) : undefined}
                              sx={{
                                  boxSizing: "border-box",
-                                 width: 40,
-                                 height: 40,
+                                 width: 46,
+                                 height: 46,
                                  borderRadius: '50%',
-                                 backgroundColor: getCategorieColor(operation.categorie.id),
-                                 border: '3px solid black',
-                                 padding: '4px',
-                                 color: '#252525'
+                                 border: '3px solid ' + ringColor,
+                                 cursor: "help",
                              }}>
-                            <CenterComponent>{getCategorieIcon(operation.ssCategorie)}</CenterComponent>
+
+                            <Box
+                                 sx={{
+                                     boxSizing: "border-box",
+                                     width: 40,
+                                     height: 40,
+                                     borderRadius: '50%',
+                                     backgroundColor: categorieColor,
+                                     border: '3px solid black',
+                                     padding: '4px',
+                                     color: '#252525'
+                                 }}>
+                                <CenterComponent>{getCategorieIcon(operation.ssCategorie)}</CenterComponent>
+                            </Box>
                         </Box>
-                    </Box>
+                    </TapTooltip>
                 </Grid>
                 <Grid size={{md: 6.5, xl: 6.5}} sx={{minWidth: 0}}>
                     <Stack direction={"column"} sx={{minWidth: 0}}>
