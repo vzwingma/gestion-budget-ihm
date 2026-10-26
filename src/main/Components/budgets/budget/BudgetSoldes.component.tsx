@@ -70,7 +70,7 @@ const BudgetSoldes: React.FC = (): JSX.Element => {
     // Un seul déclencheur pour les 2 soldes : survol (desktop) ou tap (tablette), cible tactile >= 44 px
     return (
         <TapTooltip title={getTooltipSoldes()} followCursor={true} slotProps={{ tooltip: { sx: { backgroundColor: 'transparent', boxShadow: 'none' } } }}>
-            <Stack direction={"column"} sx={{width: "100%", maxWidth: 240, minWidth: 0, minHeight: 44, justifyContent: "center", cursor: "help"}}>
+            <Stack direction={"column"} sx={{width: "100%", maxWidth: 240, marginLeft: "auto", minWidth: 0, minHeight: 44, justifyContent: "center", cursor: "help"}}>
                 <Box sx={rowSx}>
                     <Typography variant={"caption"} sx={labelSx}>Aujourd'hui</Typography>
                     <Typography variant={"h6"} component="span" sx={{textAlign: "right", fontSize: isMobile ? "1.05rem" : undefined}}>

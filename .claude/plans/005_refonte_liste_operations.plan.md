@@ -267,6 +267,10 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 - Effets de bord : l'infobulle intercompte devient aussi tap-activée sur tablette à l'écran détail, la fiche récurrente et l'analyse (fonction partagée) ; une seule infobulle intercompte ouverte à la fois (click-away).
 - Pas d'ADR.
 
+**Retouches issues de la recette 👤 (2026-10-26)** :
+- Puces de filtre (Phase 4) plus compactes : hauteur 40 → 28 px (`FILTER_CHIP_HEIGHT`), police 11 px, bordure 1,5 px ; zone cliquable étendue à ≈ 44 px par `::after` (±8 px). Les 5 puces occupent exactement la largeur du champ de filtre (cellule `HEADER_FILTER_SIZE`, constantes exportées avec `HEADER_MENU_SIZE` par `BudgetPageHeader`) ; la barre de résultat passe dans la cellule voisine (`size="grow"`). `FILTER_BAR_HEIGHT` reste 48. Risque connu : en `md` (< 1536 px), libellés des puces probablement tronqués à 1024 px.
+- Soldes : espace de 16 px avec le champ de filtre (cellule md 1,6 → 2 colonnes) ; bord droit aligné sur celui des montants de la liste **en `xl` uniquement** (padding droit 24 px = gouttière scrollbar 8 px + padding de ligne 16 px, bloc collé à droite). En `md`, la cellule des soldes (3,4 → 5,4 col) dépasse le bord droit de la liste (4 col) : alignement impossible sans refonte de l'en-tête (options : soldes sous le champ de filtre, ou champ plus étroit) — **non traité**, à décider si besoin.
+
 **Points ouverts (recette 👤, non testables en jsdom)** :
 - Mise en page des soldes à 1024 px (serré ; sous 900 px de fenêtre, colonne ≈ 120 px, risque de débordement).
 - Cibles tactiles 44 px réelles ; `display:contents` du wrapper.

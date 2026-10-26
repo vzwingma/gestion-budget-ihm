@@ -6,6 +6,10 @@ import OperationsFiltre from "./OperationsFiltre.component.tsx";
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
 import CompteTitre from "./CompteTitre.component.tsx";
 
+/** Colonnes (Grid 12) du menu et du champ de filtre : la barre de filtres reprend celles du champ pour s'aligner dessus */
+export const HEADER_MENU_SIZE = {md: 0.6, xl: 0.4};
+export const HEADER_FILTER_SIZE = {md: 2.8, xl: 2};
+
 interface BudgetPageHeaderProps {
     onOpenMenu: () => void;
     filterOperations: string | null;
@@ -15,7 +19,7 @@ interface BudgetPageHeaderProps {
     filterPlaceholder?: string;
     additionalHeaderContentLeft?: ReactNode;
     additionalHeaderContentRight?: ReactNode;
-    /** Barre de filtres (puces + résultat) affichée sous le champ de filtrage, hauteur `FILTER_BAR_HEIGHT` */
+    /** Barre de filtres affichée sous le champ de filtrage : cellules Grid (sous le menu, puis colonnes du champ de filtre) */
     filterBar?: ReactNode;
 }
 
@@ -38,14 +42,14 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
 
     return (
         <Grid container sx={{overflow: "hidden", marginTop: 1}}>
-            <Grid size={{md: 0.6, xl: 0.4}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+            <Grid size={HEADER_MENU_SIZE} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                 <MenuIcon 
                     onClick={onOpenMenu}
                     className={"editableField"}
                     fontSize={"large"} 
                 />
             </Grid>
-            <Grid size={{md: 2.8, xl: 2}} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+            <Grid size={HEADER_FILTER_SIZE} sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                 <OperationsFiltre
                     filterValue={filterOperations}
                     onFilterChange={onFilterChange}
@@ -53,7 +57,7 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
                 />
             </Grid>
             {additionalHeaderContentLeft}
-            <Grid size={{md: additionalHeaderContentLeft ? 6 : 7.6, xl: additionalHeaderContentLeft ? 7 : 8.6}} 
+            <Grid size={{md: additionalHeaderContentLeft ? 5.6 : 7.6, xl: additionalHeaderContentLeft ? 7 : 8.6}} 
                   sx={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
                 {selectedDate != null && selectedCompte != null ?
                     <CompteTitre />
@@ -64,10 +68,8 @@ const BudgetPageHeader: React.FC<BudgetPageHeaderProps> = ({
             {additionalHeaderContentRight}
             {filterBar &&
                 <>
-                    <Grid size={{md: 0.6, xl: 0.4}}/>
-                    <Grid size={{md: 11.4, xl: 11.6}}>
-                        {filterBar}
-                    </Grid>
+                    <Grid size={HEADER_MENU_SIZE}/>
+                    {filterBar}
                 </>
             }
         </Grid>
