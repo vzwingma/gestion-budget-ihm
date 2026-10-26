@@ -43,9 +43,14 @@ const OperationIconTooltipContent: React.FC<OperationIconTooltipContentProps> = 
 }: OperationIconTooltipContentProps): JSX.Element => {
 
     const isEtat = ringMeaning === 'etat';
-    const statut = isEtat
-        ? (operation.etat != null ? getOperationStateLabel(operation.etat) : null)
-        : getPeriodeRenderer(operation.mensualite?.periode).text;
+    let statut: string | null;
+    if (!isEtat) {
+        statut = getPeriodeRenderer(operation.mensualite?.periode).text;
+    } else if (operation.etat != null) {
+        statut = getOperationStateLabel(operation.etat);
+    } else {
+        statut = null;
+    }
 
     return (
         <Box sx={PANEL_SX}>
