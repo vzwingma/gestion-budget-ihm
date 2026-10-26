@@ -6,7 +6,7 @@ import OperationModel from '../../../../Models/budgets/Operation.model.ts';
 import {OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM} from '../../../../Utils/AppBusinessEnums.constants.ts';
 
 /**
- * B1 : infobulle de l'icône d'opération (catégorie, sous-catégorie, statut/périodicité, légende).
+ * B1 : infobulle de l'icône d'opération (catégorie, sous-catégorie, statut/périodicité).
  * MUI est réel (pas de mock de useMediaQuery) : le mode tactile est piloté par un stub de matchMedia.
  */
 
@@ -72,7 +72,7 @@ describe('Infobulle icône - courante, hors tactile (survol)', () => {
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
     });
 
-    test('le survol affiche catégorie, sous-catégorie, statut et légende des 4 états', async () => {
+    test('le survol affiche catégorie, sous-catégorie et statut, sans légende', async () => {
         mountItem(buildOperation());
         await userEvent.hover(screen.getByRole('img', {name: 'Prévue'}));
         const tooltip = await screen.findByRole('tooltip');
@@ -80,10 +80,11 @@ describe('Infobulle icône - courante, hors tactile (survol)', () => {
         expect(within(tooltip).getByText('Alimentation')).toBeInTheDocument();
         expect(within(tooltip).getByText('Supermarché')).toBeInTheDocument();
         expect(within(tooltip).getByText('Statut : Prévue')).toBeInTheDocument();
-        expect(within(tooltip).getByText("Anneau : état de l'opération")).toBeInTheDocument();
-        // Match exact : « Statut : Prévue » n'entre pas en conflit avec l'entrée de légende « Prévue »
+        // La légende (texte d'anneau, 4 états, « Icône et fond ») a été supprimée de l'infobulle
+        expect(within(tooltip).queryByText(/Anneau/)).not.toBeInTheDocument();
+        expect(within(tooltip).queryByText(/Icône et fond/)).not.toBeInTheDocument();
         for (const etat of ['Prévue', 'Reportée', 'Réalisée', 'Annulée']) {
-            expect(within(tooltip).getByText(etat)).toBeInTheDocument();
+            expect(within(tooltip).queryByText(etat)).not.toBeInTheDocument();
         }
         expect(within(tooltip).queryByText(/Périodicité/)).not.toBeInTheDocument();
     });
@@ -129,15 +130,10 @@ describe('Infobulle icône - pastilles de couleur', () => {
         mountItem(buildOperation());
         await userEvent.hover(screen.getByRole('img', {name: 'Prévue'}));
         const swatches = getSwatches(await screen.findByRole('tooltip'));
-        // Ordre : catégorie, statut, puis 4 pastilles de légende
-        expect(swatches).toHaveLength(6);
+        // Ordre : catégorie, statut (plus de pastilles de légende)
+        expect(swatches).toHaveLength(2);
         expect(bg(swatches[0])).toBe('rgb(255, 178, 0)');
         expect(bg(swatches[1])).toBe('rgb(18, 52, 86)');
-        // Légende : prévue #ed6c02, reportée #9c27b0, réalisée #2e7d32, annulée #ebebeb
-        expect(bg(swatches[2])).toBe('rgb(237, 108, 2)');
-        expect(bg(swatches[3])).toBe('rgb(156, 39, 176)');
-        expect(bg(swatches[4])).toBe('rgb(46, 125, 50)');
-        expect(bg(swatches[5])).toBe('rgb(235, 235, 235)');
     });
 });
 
@@ -151,18 +147,19 @@ describe('Infobulle icône - etat absent', () => {
         const tooltip = await screen.findByRole('tooltip');
         expect(within(tooltip).getByText('Alimentation')).toBeInTheDocument();
         expect(within(tooltip).queryByText(/Statut/)).not.toBeInTheDocument();
-        // pastilles : catégorie + 4 de légende, pas de pastille de statut
-        expect(getSwatches(tooltip)).toHaveLength(5);
+        // pastilles : catégorie uniquement, pas de pastille de statut
+        expect(getSwatches(tooltip)).toHaveLength(1);
     });
 });
 
 describe('Infobulle icône - récurrente (ringMeaning="periode")', () => {
-    test('affiche « Périodicité : <texte> » sans légende des 4 états', async () => {
+    test('affiche « Périodicité : <texte> » sans ligne Statut', async () => {
         mountItem(buildOperation(), vi.fn(), 'periode');
         await userEvent.hover(screen.getByRole('img', {name: 'Prévue'}));
         const tooltip = await screen.findByRole('tooltip');
 
         expect(within(tooltip).getByText('Périodicité : Trimestrielle')).toBeInTheDocument();
+        expect(within(tooltip).queryByText(/Statut/)).not.toBeInTheDocument();
         // pastilles : catégorie + périodicité uniquement
         expect(getSwatches(tooltip)).toHaveLength(2);
     });
