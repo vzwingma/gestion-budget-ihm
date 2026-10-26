@@ -1,6 +1,6 @@
 # Plan d'Action 005 — Refonte panneau gauche écran « Opérations »
 
-**Statut** : 🟡 En cours — Phases 1–5 terminées (reste recette tablette réelle)
+**Statut** : ✅ Complété — Phases 1–5 clôturées (Gate #4 validé 👤 le 2026-10-26) ; backlog B1 non planifié
 **Date** : 2026-10-23 (dernière mise à jour : 2026-10-25)
 
 ## Journal des gates
@@ -23,7 +23,7 @@
 | #4 | Doc + clôture Phase 4 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK, PR #697 mergée, CI 13/13 verte ; filtre conservé dans le Context tel quel, pas d'ADR) |
 | #2 | Code Phase 5 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 5 | 2026-10-25 | ✅ GO |
-| #4 | Doc + clôture Phase 5 | — | ⏳ En attente 👤 |
+| #4 | Doc + clôture Phase 5 (et plan 005) | 2026-10-26 | ✅ Validé 👤 (recette visuelle OK après retouches : puces compactes, espace avant soldes, alignement xl ; PR #701 CI 13/13) |
 
 ## Context
 
@@ -234,7 +234,7 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 ---
 
-## Phase 5 — En-tête ✅ (terminée 2026-10-25, Gate #4 en attente 👤)
+## Phase 5 — En-tête ✅ (terminée 2026-10-26, Gate #4 validé)
 
 **Critères de réussite** : libellés soldes corrects et lisibles sur les deux formats ; détail par type accessible au tap sur tablette, fermeture par second tap/tap ailleurs ; description intercompte accessible sans survol sur tablette.
 
@@ -283,10 +283,10 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 ## Critères de succès globaux
 
-- [x] Aucune régression sur montants, dates, états, soldes affichés (tests verts toutes phases ; recettes visuelles 1–4 OK, Phase 5 à valider en recette).
-- [ ] Utilisable au doigt en 1024×768 tablette paysage (seule orientation visée) — **à valider en recette** (cibles 44 px, soldes à 1024 px, taps réels).
-- [ ] ≥ 10 lignes visibles à 881 px de haut — **à valider en recette** (calcul, non mesuré).
-- [ ] Captures avant/après systématiques par phase : desktop 1280px + tablette 1024×768 paysage — **à valider en recette** (tablette réelle).
+- [x] Aucune régression sur montants, dates, états, soldes affichés (tests verts toutes phases ; recettes visuelles 1–5 OK 👤).
+- [ ] Utilisable au doigt en 1024×768 tablette paysage (seule orientation visée) — **non confirmé explicitement à la clôture** (cibles 44 px, soldes à 1024 px, taps réels sur tablette physique).
+- [ ] ≥ 10 lignes visibles à 881 px de haut — **non confirmé explicitement à la clôture** (calcul, non mesuré).
+- [ ] Captures avant/après systématiques par phase : desktop 1280px + tablette 1024×768 paysage — **non fournies** (recettes validées par 👤 sur captures desktop).
 - [x] `npm run lint` vert après chaque phase ; tests verts (4 échecs locaux préexistants `Auth.service.test.ts`, absents en CI) ; couverture % non mesurée en Phase 5.
 - [x] Pas de modification d'API/modèle de données.
 - [x] Couleurs anneaux d'état (orange/violet/vert/blanc) inchangées sur toutes les phases.
