@@ -9,6 +9,7 @@ import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
 import { debug } from "../../../../../../Utils/Debug.utils.ts";
+import { evaluateEquation } from "../../../../../../Utils/Equation.utils.ts";
 
 
 /**
@@ -116,8 +117,8 @@ export function validateFormMontant(editOperation: OperationEditionModel, operat
 function calculateValeur(formValue: string): { valeurCalculee: string | null, error: string | null } {
 
     try {
-        // eslint-disable-next-line no-eval
-        const calculee = Number(processEquation(formValue)).toFixed(2);
+        // Évaluateur dédié (sans eval) : toute expression invalide lève une erreur
+        const calculee = evaluateEquation(formValue).toFixed(2);
         debug("Calcul de la valeur saisie [", formValue, "] = [", calculee, "]");
         return { valeurCalculee: calculee, error: null };
     } catch (e) {
@@ -137,20 +138,3 @@ function validateValue(valeur: string): boolean {
     return /(^\d*(.\d{1,2})?$)/.test(valeurATester);
 }
 
-
-
-/**
- * Calcul de l'équation mathématique (sans eval) depuis une chaine de caractères
- * @param valueToCalculate : string : chaine de caractères à calculer à saisie
- * @returns {string} résultat
- * @throws si l'expression n'est pas évaluable
- */
-function processEquation(valueToCalculate: string): string {
-    if (valueToCalculate.length <= 1000) {
-        // Une expression invalide (ex. "abc") lève une erreur : elle est traitée par `calculateValeur` (erreur de montant)
-        // eslint-disable-next-line no-new-func
-        const result = new Function(`return ${valueToCalculate}`)();
-        return result.toString();
-    }
-    return valueToCalculate
-}

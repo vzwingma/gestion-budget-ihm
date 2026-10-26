@@ -25,7 +25,7 @@ gestion-budget-ihm
 ├── hooks/           # Hooks custom : useAuthTokenSync, useBudgetContext, useFetch, useIsTouchDevice
 ├── Models/          # Modèles TypeScript + React Context (BudgetContextProvider)
 ├── Services/        # ClientHTTP.service.ts, Auth.service.ts, CallAndNotify.service.ts
-└── Utils/           # Constantes, enums (AppTechEnums, AppBusinessEnums), Debug.utils.ts
+└── Utils/           # Constantes, enums (AppTechEnums, AppBusinessEnums), Debug.utils.ts, Equation.utils.ts (évaluation sûre des formules de montant)
 ```
 
 ### Flux de données principal
@@ -91,7 +91,7 @@ gestion-budget-ihm/
 │       │   ├── infos/                    # Modèles infos
 │       │   └── profiles/                 # Modèles profils utilisateur
 │       ├── Services/                     # Couche HTTP, Auth, CallAndNotify
-│       └── Utils/                        # Constantes et utilitaires (Debug.utils.ts)
+│       └── Utils/                        # Constantes et utilitaires (Debug.utils.ts, Equation.utils.ts)
 ├── docs/                                 # Documentation versionnée
 │   ├── ARCHITECTURE.md                   # Ce fichier
 │   └── adr/                              # Architecture Decision Records
@@ -186,7 +186,8 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
 - **API Key AWS** : Header `X-Api-Key` injecté automatiquement par `ClientHTTP.service.ts`
 - **Données sensibles** : Jamais de secrets dans le code source. Toujours dans les fichiers `.env.*` (gitignorés). En CI, via GitHub Secrets/Variables.
 - **Validation des entrées** : Typage TypeScript strict côté frontend. Saisie du montant d'une opération : valeurs non numériques (« abc ») ou ambiguës (« 2 3 ») refusées (« Le champ Montant est incorrect »)
-- ⚠️ **Dette sécurité connue** : `processEquation` (calcul du montant saisi) évalue l'expression via `new Function`, malgré la mention « sans eval » ; à remplacer par un parseur arithmétique (tâche dédiée, voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
+- **Évaluation sûre de la saisie Montant** : le champ Montant accepte une formule (ex. `12,5+3*2`). Elle est évaluée par `evaluateEquation(input): number` (`Utils/Equation.utils.ts`), parseur à descente récursive **sans** `eval` / `new Function` / `RegExp` construite depuis la saisie. Grammaire : `expression := terme (('+'|'-') terme)*` ; `terme := facteur (('*'|'/') facteur)*` ; `facteur := ('+'|'-') facteur | nombre | '(' expression ')'` ; `nombre` décimal avec `.` ou `,`. Espaces (dont insécables) ignorés. Garde-fous : 100 caractères max (`EQUATION_MAX_LENGTH`), imbrication de parenthèses max 10 (`EQUATION_MAX_DEPTH`), division par zéro et résultat non fini refusés, tout autre caractère refusé (dont `%` et `**`) ⇒ « Le champ Montant est incorrect ». Convention : toute évaluation de saisie utilisateur passe par ce parseur, jamais par `eval` / `Function`.
+- **Audit** : aucun `new Function`, `eval`, `innerHTML`, `dangerouslySetInnerHTML` dans le code de production (greps du lot 4a). Les usages d'URL / `href` / `window.open` n'ont pas été audités (suite possible, voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
 
 ---
 
@@ -277,6 +278,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
+| v27.0.0 | 2026-10-26 | Revue architecture React (plan 006, lot 4a, sécurité) : `new Function` du calcul de montant remplacé par `evaluateEquation` (`Utils/Equation.utils.ts`, parseur à descente récursive, garde-fous longueur 100 / imbrication 10 / division par zéro). Écarts : `%` et `**` refusés, « --5 » accepté (= 5), « 1/0 » et saisies trop longues refusées ; 951 tests. Reste : T16, T12 — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v27.0.0 | 2026-10-26 | Versioning IHM (plan 008) : version projet alignée sur `27.0.0` (`package.json`, `package-lock.json`) ; `VITE_BUDGET_VERSION` en DEV/QUA calculée par la CI au format `[ENV].[VERSION].[DATE_HEURE]` (ex. `QUA.27.20261026-1018`, heure de Paris) via le placeholder `__BUDGET_IHM_VERSION__` de `.env.dev` / `.env.staging` remplacé dans `build-on-all.yml` / `build-on-master.yml` ; PROD (`build-on-tags.yml`) inchangée. Voir [plan 008](../.claude/plans/008_versioning_ihm_ci.plan.md) |
 | v24.0-SNAPSHOT | 2026-10-26 | Revue architecture React (plan 006, lot 3) : correctif de la régression T10 (plus de re-rendu au clic sur un champ, PR #704) ; `OperationDetailPage` découpée (429 → 106 lignes) : hook `useOperationEditForm`, sous-composants `OperationDetail{Header,CategoriesSection,MensualiteSection,EtatSection,ActionsSection}`, fonctions pures dans `OperationDetailPage.controller.ts` ; état d'édition immuable (brouillon promu `currentOperation` au succès de la sauvegarde) ; défauts corrigés (date du jour en création, montant remis à zéro, libellé numérique, montants « abc » / ambigus refusés, `OperationDetailValeur` désactivé sur budget clos) ; 837 tests. Dette : sécurité `processEquation` (`new Function`), T16, T12 — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 2) : `useFetch` adopté par 7 composants (variantes Promise `fetch*` des extservices + `callWithNotify`, `callAndNotify` conservé pour les actions), `BudgetContext` scindé (`BudgetSelectionContext` / `CurrentBudgetContext`, hooks `useBudgetSelection` / `useCurrentBudget`, agrégat `useBudgetContext`), `OperationRecurrenteDetailDateFin` déplacé vers `operations/shared/`, spinners `CompteItem` / `AnalysesFiltrePeriode`, correctif `BudgetSoldes` (Fragment sous `Tooltip` MUI). Dette restante : découpage `OperationDetailPage`, T16, T20, ADR 002 — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |

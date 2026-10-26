@@ -140,17 +140,30 @@ describe('OperationDetailValeur - validateFormMontant', () => {
         expect(operation.valeur).toBe(attendu);
     });
 
-    test.each(['-5', '1/0'])('saisie "%s" : erreur de format et valeur inchangée', (saisie) => {
-        const { operation, errors } = valider(saisie);
+    test('saisie "-5" : résultat négatif rejeté au format, valeur inchangée', () => {
+        const { operation, errors } = valider('-5');
 
         expect(errors.valeur).toBe('Le format est incorrect : 0000.00 €');
         expect(operation.valeur).toBe(-50);
     });
 
-    test('saisie de plus de 1000 caractères : non évaluée comme équation, rejetée au format', () => {
-        const { operation, errors } = valider('9'.repeat(1001));
+    test.each([
+        ['division par zéro', '1/0'],
+        ['expression de 101 caractères', '9'.repeat(101)],
+        ['expression de plus de 1000 caractères', '9'.repeat(1001)],
+        ['caractère interdit', '2**3'],
+        ['injection de code', '1);alert(1);(']
+    ])('saisie invalide (%s) : "Le champ Montant est incorrect" et valeur inchangée', (_libelle, saisie) => {
+        const { operation, errors } = valider(saisie);
 
-        expect(errors.valeur).toBe('Le format est incorrect : 0000.00 €');
+        expect(errors.valeur).toBe('Le champ Montant est incorrect');
         expect(operation.valeur).toBe(-50);
+    });
+
+    test('saisie de 100 caractères valide : acceptée (limite incluse)', () => {
+        const { operation, errors } = valider('1' + ' '.repeat(99));
+
+        expect(errors.valeur).toBeNull();
+        expect(operation.valeur).toBe(-1);
     });
 });
