@@ -1,12 +1,12 @@
 import React, {JSX} from "react";
-import {Box, Chip, Stack} from "@mui/material";
+import {Box, Chip} from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import {OPERATION_ETATS_ENUM} from "../../../Utils/AppBusinessEnums.constants.ts";
 import {getOperationStateColor, getOperationStateLabel} from "../../../Utils/renderers/OperationItem.renderer.tsx";
 import {PUCE_ETAT_ENUM, PUCE_SENS_ENUM, PucesFiltre, togglePuce} from "../../../Utils/OperationsFilter.utils.ts";
 
-/** Hauteur visuelle des puces (px) ; la zone cliquable est étendue à 44 px (cf. `::after`) */
-export const FILTER_CHIP_HEIGHT = 40;
+/** Hauteur visuelle des puces (px) ; la zone cliquable est étendue à 44 px (cf. `::after`, 28 + 2 x 8) */
+export const FILTER_CHIP_HEIGHT = 28;
 
 /**
  * Couleur de la puce « À valider » : elle combine PREVUE (orange) et REPORTEE (violet) ; une couleur neutre
@@ -57,20 +57,23 @@ const FilterChip: React.FC<FilterChipProps> = ({label, couleur, selected, onTogg
         icon={selected
             ? <CheckIcon/>
             : <Box component="span" aria-hidden="true"
-                   sx={{width: 10, height: 10, borderRadius: "50%", backgroundColor: couleur, flexShrink: 0}}/>}
+                   sx={{width: 6, height: 6, borderRadius: "50%", backgroundColor: couleur, flexShrink: 0}}/>}
         sx={{
             position: "relative",
             height: FILTER_CHIP_HEIGHT,
             borderRadius: `${FILTER_CHIP_HEIGHT / 2}px`,
-            border: `2px solid ${couleur}`,
+            border: `1.5px solid ${couleur}`,
             color: "#f0f0f0",
             fontWeight: selected ? 700 : 400,
-            fontSize: "0.875rem",
+            fontSize: "0.6875rem",
             backgroundColor: selected ? "rgba(255,255,255,0.16)" : "transparent",
-            flexShrink: 0,
-            "& .MuiChip-icon": {ml: "10px", mr: "-4px", color: couleur},
+            // les puces se répartissent la largeur du conteneur (jamais de retour à la ligne ni de débordement)
+            flex: "1 1 auto",
+            minWidth: 0,
+            "& .MuiChip-label": {px: "5px"},
+            "& .MuiChip-icon": {ml: "6px", mr: "-2px", color: couleur, fontSize: "0.875rem"},
             // zone cliquable étendue à 44 px de haut
-            "&::after": {content: '""', position: "absolute", top: -2, bottom: -2, left: 0, right: 0}
+            "&::after": {content: '""', position: "absolute", top: -8, bottom: -8, left: 0, right: 0}
         }}
     />
 );
@@ -80,7 +83,7 @@ const FilterChip: React.FC<FilterChipProps> = ({label, couleur, selected, onTogg
  * et « Sens » (Dépenses / Rentrées), combinables. Pas de logique de filtrage ici (cf. `OperationsFilter.utils.ts`).
  */
 const FilterChips: React.FC<FilterChipsProps> = ({puces, onChange}: FilterChipsProps): JSX.Element => (
-    <Stack direction="row" spacing={1} role="group" aria-label="Filtres des opérations" sx={{alignItems: "center"}}>
+    <Box role="group" aria-label="Filtres des opérations" sx={{display: "flex", flexWrap: "nowrap", alignItems: "center", gap: "4px", width: "100%"}}>
         {PUCES_ETAT.map((puce: PuceConfig<PUCE_ETAT_ENUM>) => (
             <FilterChip key={puce.valeur} label={puce.label} couleur={puce.couleur}
                         selected={puces.etats.includes(puce.valeur)}
@@ -91,7 +94,7 @@ const FilterChips: React.FC<FilterChipsProps> = ({puces, onChange}: FilterChipsP
                         selected={puces.sens.includes(puce.valeur)}
                         onToggle={() => onChange({...puces, sens: togglePuce(puces.sens, puce.valeur)})}/>
         ))}
-    </Stack>
+    </Box>
 );
 
 export default FilterChips;

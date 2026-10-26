@@ -141,7 +141,7 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
                     operationsFiltrees={operationsFiltrees} />
             }
             additionalHeaderContentLeft={
-                <Grid size={{ md: 1.6, xl: 1.6 }}>
+                <Grid size={{ md: 2, xl: 1.6 }} sx={{ paddingLeft: 2, paddingRight: { xl: "24px" }, boxSizing: "border-box" }}>
                     {selectedDate != null && selectedCompte != null ?
                         <BudgetSoldes /> : <></>
                     }

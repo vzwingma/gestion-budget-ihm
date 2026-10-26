@@ -89,8 +89,8 @@ describe('FilterChips', () => {
         expect(within(screen.getByRole('button', {name: 'Réalisée'})).queryByTestId('CheckIcon')).not.toBeInTheDocument();
     });
 
-    test('constantes de style : hauteur visuelle 40 px, couleur « À valider » neutre', () => {
-        expect(FILTER_CHIP_HEIGHT).toBe(40);
+    test('constantes de style : hauteur visuelle 28 px, couleur « À valider » neutre', () => {
+        expect(FILTER_CHIP_HEIGHT).toBe(28);
         expect(COULEUR_PUCE_A_VALIDER).toBe('#90a4ae');
     });
 
@@ -98,8 +98,18 @@ describe('FilterChips', () => {
         render(<FilterChips puces={VIDE} onChange={vi.fn()}/>);
         // Règles emotion injectées dans <head> (le computed style des shorthands n'est pas fiable en jsdom)
         const css = document.head.textContent ?? '';
-        expect(css).toContain('2px solid ' + COULEUR_PUCE_A_VALIDER);
-        expect(css).toContain('2px solid var(--color-depense)');
-        expect(css).toContain('2px solid var(--color-credit)');
+        expect(css).toContain('1.5px solid ' + COULEUR_PUCE_A_VALIDER);
+        expect(css).toContain('1.5px solid var(--color-depense)');
+        expect(css).toContain('1.5px solid var(--color-credit)');
+    });
+
+    test('puces compactes : police 11 px, zone cliquable étendue de 8 px, conteneur non retourné à la ligne', () => {
+        render(<FilterChips puces={VIDE} onChange={vi.fn()}/>);
+        const css = document.head.textContent ?? '';
+        expect(css).toContain('font-size:0.6875rem');
+        expect(css).toMatch(/top:-8px/);
+        expect(css).toMatch(/bottom:-8px/);
+        expect(css).toContain('flex-wrap:nowrap');
+        expect(css).toContain('min-width:0');
     });
 });

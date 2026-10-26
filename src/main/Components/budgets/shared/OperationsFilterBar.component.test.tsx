@@ -1,6 +1,6 @@
 import React from 'react';
 import {beforeEach, describe, expect, test, vi} from 'vitest';
-import {render, screen} from '@testing-library/react';
+import {render, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import OperationsFilterBar from './OperationsFilterBar.component.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
@@ -113,5 +113,31 @@ describe('OperationsFilterBar', () => {
         render(<OperationsFilterBar filtre={filtrePuce} onFiltreChange={onFiltreChange} operationsFiltrees={[]}/>);
         expect(screen.getByRole('button', {name: 'À valider'})).toHaveAttribute('aria-pressed', 'true');
         expect(screen.getByRole('button', {name: 'Réalisée'})).toHaveAttribute('aria-pressed', 'false');
+    });
+
+    test('fragment de 2 cellules : puces dans la 1re, barre de résultat dans la 2e', () => {
+        const {container} = render(<OperationsFilterBar filtre={filtreTexte} onFiltreChange={onFiltreChange} operationsFiltrees={[ope(-10)]}/>);
+        // eslint-disable-next-line testing-library/no-node-access
+        const cellules = Array.from(container.children) as HTMLElement[];
+        expect(cellules).toHaveLength(2);
+        expect(within(cellules[0]).getByRole('group', {name: 'Filtres des opérations'})).toBeInTheDocument();
+        expect(within(cellules[0]).queryByRole('status')).not.toBeInTheDocument();
+        expect(within(cellules[1]).getByRole('status')).toBeInTheDocument();
+        expect(within(cellules[1]).getByRole('button', {name: 'Réinitialiser'})).toBeInTheDocument();
+        expect(within(cellules[1]).queryByRole('group')).not.toBeInTheDocument();
+    });
+
+    test('sans filtre actif : 2 cellules, la 2e est vide', () => {
+        const {container} = render(<OperationsFilterBar filtre={FILTRE_OPERATIONS_VIDE} onFiltreChange={onFiltreChange} operationsFiltrees={[]}/>);
+        // eslint-disable-next-line testing-library/no-node-access
+        const cellules = Array.from(container.children) as HTMLElement[];
+        expect(cellules).toHaveLength(2);
+        expect(cellules[1]).toBeEmptyDOMElement();
+    });
+
+    test('les 5 puces sont rendues dans la cellule filtre', () => {
+        render(<OperationsFilterBar filtre={FILTRE_OPERATIONS_VIDE} onFiltreChange={onFiltreChange} operationsFiltrees={[]}/>);
+        const boutons = within(screen.getByRole('group', {name: 'Filtres des opérations'})).getAllByRole('button');
+        expect(boutons.map(b => b.textContent)).toEqual(['À valider', 'Réalisée', 'Annulée', 'Dépenses', 'Rentrées']);
     });
 });
