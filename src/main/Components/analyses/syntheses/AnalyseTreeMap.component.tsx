@@ -101,14 +101,13 @@ const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategori
                         data={treemapData as any}
                         dataKey="size"
                         stroke="#fff"
-                        content={(props: any) => (
+                        content={
                             <TreemapContentRenderer
-                                {...props}
                                 selectedCategory={selectedCategory}
                                 analyseCategoriesData={analyseCategoriesData}
                                 onCategoryClick={handleCategoryClick}
                             />
-                        )}
+                        }
                         isAnimationActive={true}
                         animationDuration={300}>
                         <Tooltip content={<AnalyseTreeMapTooltip />} />
