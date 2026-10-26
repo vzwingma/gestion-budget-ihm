@@ -240,6 +240,16 @@ Ordre : T11 (adoption, composant par composant, tests de rendu avant) → T2 (d�
 #### Point connu
 - Sans compte sélectionné, le spinner de `AnalysesFiltrePeriode` apparaît brièvement (`useFetch` en `loading` avec `Promise.resolve(undefined)`) ; ajustement possible plus tard.
 
+## Lot 3 (2026-10-26) — branche `claude/react-ui-architecture-lot3`
+
+Périmètre validé 👤 ("lance la suite") : **découpage de `OperationDetailPage`** (état d'édition immuable + hook `useOperationEditForm`, sous-composants) et **couverture T20** des composants concernés (`OperationDetailPage` ~69 %, `OperationDetailPage.controller` ~66 %, `OperationDetailActions`, `BudgetActionsButtonGroup`, sous-composants `OperationDetail*`, `AnalyseOperationItem`). Hors lot : T12 (décision 👤), T16 (co-location des Props).
+
+Ordre : 1) QALvin pose les tests de caractérisation (filet) AVANT tout refactor ; 2) DEVon refactore sans changer le comportement ; 3) QALvin ajuste les tests ; 4) DOCly. Journal des gates lot 3 : #1 GO (2026-10-26) ; #2/#3/#4 à venir.
+
+**Phase 1 (filet QALvin) — résultats** : +231 tests, `OperationDetailPage` 68,9 → 98,9 % lignes, controller 65,9 → 100 %. Le filet a révélé une **régression du lot 1 (T10)** : retirer `setRefresh` a supprimé le re-rendu au clic sur un champ (`openEditForm` réécrivait la même référence `editForm` mutée en place) → corrigée par copie (`setEditForm({ ...editForm })`), PR dédiée. Le même correctif règle l'affichage de l'état REALISEE après « Valider l'opération » en création.
+
+**Défauts connus restants** (tests `test.fails`, à traiter lors du refactor ou en correctif dédié) : (3) création + « Valider l'opération » envoie `dateOperation = null` (`controller.ts:108`) ; (4) montant non contrôlé (`defaultValue`) : ancienne saisie affichée d'une création à l'autre ; (5) libellé purement numérique (« 2024 ») perdu (`OperationDetailLibelle`, `fillLibelleForm`) ; (6) montant « abc » accepté comme 0 (`processEquation`) ; (7) `OperationDetailValeur` : `budgetActif = currentBudget` (objet) au lieu de `currentBudget.actif`.
+
 ## Dette restante / prochain lot (après lot 2)
 
 | Tâche | Reste à faire | Prérequis / blocage |

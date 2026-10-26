@@ -88,7 +88,8 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * @param editForm formulaire d'édition
      */
     function openEditForm(editForm: EditFormProps) {
-        setEditForm(editForm)
+        // Copie : editForm est muté en place par le gestionnaire de clic, une même référence ne déclencherait pas de rendu
+        setEditForm({ ...editForm })
     }
 
     /**
