@@ -67,22 +67,6 @@ const OperationIconTooltipContent: React.FC<OperationIconTooltipContentProps> = 
                     <Typography variant="body2" component="div">{isEtat ? 'Statut' : 'Périodicité'} : {statut}</Typography>
                 </Box>
             }
-            <Typography variant="caption" component="div" sx={{color: SECONDARY_COLOR, marginTop: 1}}>
-                {isEtat ? "Anneau : état de l'opération" : "Anneau : périodicité de l'opération"}
-            </Typography>
-            {isEtat &&
-                <Box sx={{display: 'flex', flexWrap: 'wrap', columnGap: 1.5, rowGap: 0.25}}>
-                    {LEGEND_ETATS.map((etat) => (
-                        <Box key={etat} sx={{...ROW_SX, columnGap: 0.5}}>
-                            <Swatch color={getOperationStateColor(etat)}/>
-                            <Typography variant="caption" component="span" sx={{color: SECONDARY_COLOR}}>{getOperationStateLabel(etat)}</Typography>
-                        </Box>
-                    ))}
-                </Box>
-            }
-            <Typography variant="caption" component="div" sx={{color: SECONDARY_COLOR, marginTop: 0.5}}>
-                Icône et fond : catégorie
-            </Typography>
         </Box>
     );
 };
