@@ -56,7 +56,7 @@ sans impact sur `build-on-tags.yml` ni sur le dev local (`vite --mode dev` lit `
   `sed -i "s#__BUDGET_IHM_VERSION__#${VERSION_MAJEURE}.${BUILD_DATE}#g" <fichier .env>`
 - **Acceptation :** YAML valide ; `build-on-tags.yml` non modifié
 
-### Phase 2 — Vérification — ⏳ Planifié
+### Phase 2 — Vérification — ✅ Complété
 **Contexte :** changement CI non couvrable par Vitest ; vérification par simulation du script.
 **Critères de réussite :**
 - ✅ Simulation bash du script sur copies temporaires des `.env` : valeur conforme à `^(DEV|QUA)\.27\.[0-9]{8}-[0-9]{4}$`
@@ -69,7 +69,7 @@ sans impact sur `build-on-tags.yml` ni sur le dev local (`vite --mode dev` lit `
 - **Couvrir :** nominal DEV + QUA ; régression si placeholder absent (aucun `__BUDGET_IHM_VERSION__` résiduel) ; fuseau
 - **Acceptation :** 2/2 formats conformes, 0 placeholder résiduel, tests existants verts
 
-### Phase 3 — Documentation — ⏳ Planifié
+### Phase 3 — Documentation — 🔄 En cours
 #### T3.1 - Synchroniser la documentation
 - **Agent :** 🟣 DOCly
 - **Fichier(s) :** `docs/ARCHITECTURE.md` (exemple `VITE_BUDGET_VERSION` l.124 + entrée historique v27.0.0), `README.md` (table des variables si concernée), `.claude/plans/README.md`
@@ -117,3 +117,4 @@ Phase 3 (docs)  → Gate #4
 | #0 | 2026-10-26 | Choix de solution | ✅ GO | Option A (CI + placeholder) ; heure Paris ; PROD inchangée. Analyse produite par MAINa (ARCos indisponible : modèle `opus` non résolu, corrigé ensuite par 👤) |
 | #1 | 2026-10-26 | Validation plan | ✅ GO | Pas d'ADR ; lancement Phase 1 |
 | #2 | 2026-10-26 | Validation code Phase 1 | ✅ GO | lint/build ✅ ; typecheck (12 erreurs) et 5 tests tooltip rouges jugés préexistants (hors scope, non prouvé faute de git) ; revue auto indisponible ; DEVon exécuté via agent généraliste (modèle `sonnet` non résolu) |
+| #3 | 2026-10-26 | Validation tests Phase 2 | ✅ GO | Format DEV/QUA conforme, Paris OK ; à la demande 👤 : tests périmés de `OperationsListItem.shared.tooltip.test.tsx` corrigés (légende supprimée en prod par commit f1bfa8c) → vitest 2102 OK / 0 échec |
