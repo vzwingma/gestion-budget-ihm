@@ -9,8 +9,8 @@ import AnalyseTreeMap from './AnalyseTreeMap.component.tsx';
  * Tests du composant AnalyseTreeMap après extraction de TreemapContentRenderer
  * hors du composant parent (issue SonarCloud S6478 - composant défini en ligne).
  *
- * `recharts` est mocké : Treemap invoque directement la prop `content` pour chaque
- * donnée, ce qui permet de vérifier que TreemapContentRenderer transmet correctement
+ * `recharts` est mocké : Treemap clone l'élément `content` pour chaque
+ * donnée (comme le fait recharts), ce qui permet de vérifier que TreemapContentRenderer transmet correctement
  * selectedCategory / onCategoryClick sans dépendre du calcul de layout réel de recharts
  * (non pertinent en environnement jsdom).
  */
@@ -20,7 +20,7 @@ vi.mock('recharts', () => ({
         <div data-testid="treemap">
             {data.map((d: any) => (
                 <div key={d.categoryId ?? d.name}>
-                    {content({ ...d, x: 0, y: 0, width: 200, height: 200 })}
+                    {React.cloneElement(content, { ...d, x: 0, y: 0, width: 200, height: 200 })}
                 </div>
             ))}
         </div>
