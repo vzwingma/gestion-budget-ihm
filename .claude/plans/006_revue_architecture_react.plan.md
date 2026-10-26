@@ -1,6 +1,6 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lot 1 livré (Gate #4 validé 👤, 2026-10-25) · ✅ Lot 2 livré (Gate #4 validé 👤) · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 (reste : T16, T20 partiel, T12, sécurité `processEquation`)
+**Statut** : ✅ Lot 1 livré (Gate #4 validé 👤, 2026-10-25) · ✅ Lot 2 livré (Gate #4 validé 👤) · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 · 🟡 Lot 4a (sécurité `evaluateEquation`) livré, Gate #4 en attente 👤 (reste : T16 = lot 4b, T20 partiel, T12)
 **Date** : 2026-10-23
 
 ## Context
@@ -284,15 +284,51 @@ Le lot 1 a supprimé le `useEffect(() => {}, [refresh])` « vide » et `setRefre
 - Le hook `useOperationEditForm` (dans `hooks/`) importe des modules de `Components/` (dépendance inversée) : déplaçable dans `detail/`.
 - La date d'opération reste non contrôlée (`defaultValue`) : n'affiche pas la date du jour en création + « Valider l'opération » (elle est correctement envoyée à la sauvegarde).
 
+## Lot 4 (2026-10-26) — sécurité `processEquation` puis T16
+
+Périmètre validé 👤 ("fais les tâches sécurité et T16"), deux PR séparées, enchaînées (T16 touche `Components.props.ts` et de nombreux imports : à faire après la sécurité) :
+- **4a — Sécurité** : remplacer l'évaluation par `new Function` de `processEquation` (`OperationDetailValeur.component.tsx`) par un parseur arithmétique (`+ - * / ( )`, décimaux `,`/`.`, moins unaire), sans `eval`/`Function` ; mêmes résultats sur les expressions valides, refus (« Le champ Montant est incorrect ») de tout le reste. Branche `claude/react-ui-architecture-lot4-securite`, PR empilée sur #707 (retargetée vers master au merge de #707).
+- **4b — T16** : co-location des interfaces Props (`Components.props.ts`, ~220 lignes centralisées) à côté de chaque composant/dossier de feature, par lots, sans changement de comportement.
+
+### Journal des gates lot 4a
+
+| Gate | Date | Décision | Détail |
+|---|---|---|---|
+| #1 | 2026-10-26 | GO 👤 | Périmètre lot 4 (4a sécurité puis 4b T16) validé |
+| #2 | 2026-10-26 | GO 👤 | DEVon : `Utils/Equation.utils.ts` + branchement dans `OperationDetailValeur` |
+| #3 | 2026-10-26 | GO 👤 | QALvin : 951 tests verts (95 fichiers), `Equation.utils.ts` 100 % lignes / 97,4 % branches |
+| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
+
+### Résultats (lot 4a)
+
+#### Fait
+- `new Function` supprimé : la saisie du champ Montant est évaluée par `evaluateEquation(input): number` (`src/main/Utils/Equation.utils.ts`), parseur à descente récursive sans `eval` / `Function` / `RegExp` construite depuis la saisie.
+- Grammaire : `expression := terme (('+'|'-') terme)*` ; `terme := facteur (('*'|'/') facteur)*` ; `facteur := ('+'|'-') facteur | nombre | '(' expression ')'` ; `nombre := chiffres [('.'|',') [chiffres]] | ('.'|',') chiffres`. Espaces (dont insécables) ignorés.
+- Garde-fous : 100 caractères max (`EQUATION_MAX_LENGTH`), imbrication max 10 (`EQUATION_MAX_DEPTH`), division par zéro et résultat non fini refusés, tout autre caractère refusé.
+- Branchement : `OperationDetailValeur.component.tsx` (tests `OperationDetailValeur.component.test.tsx` et `OperationDetailPage.integration.test.tsx` ajustés).
+
+#### Écarts de comportement volontaires (vs `new Function`)
+- `%` et `**` refusés (avant : acceptés par JS).
+- « --5 » accepté (= 5).
+- « 1/0 » et saisies > 100 caractères ⇒ « Le champ Montant est incorrect ».
+
+#### Preuves
+- Tests : 951 verts (95 fichiers). `Equation.utils.ts` : 100 % lignes, 97,4 % branches (garde `Number.isFinite` inatteignable). Mutations de vérification détectées.
+- Greps sécurité (DEVon) : aucun `new Function`, `eval`, `innerHTML`, `dangerouslySetInnerHTML` dans le code de production.
+
+#### Limites de l'audit / question ouverte
+- Usages d'URL / `href` / `window.open` **non audités**.
+- Garde `Number.isFinite` : code défensif inatteignable ; garder ou retirer = décision 👤.
+
 ## Dette restante / prochain lot (après lot 3)
 
 | Tâche | Reste à faire | Prérequis / blocage |
 |---|---|---|
 | ~~T2 (reste)~~ | ✅ Fait (lot 3) : `OperationDetailPage` découpée | — |
 | T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) | Lisent des champs des deux moitiés ; à vérifier après le découpage lot 3 |
-| Sécurité | Remplacer l'évaluation `new Function` de `processEquation` par un parseur arithmétique | Tâche dédiée à planifier |
+| ~~Sécurité~~ | ✅ Fait (lot 4a) : `new Function` remplacé par `evaluateEquation`. Reste éventuel : audit URL / `href` / `window.open` | À décider 👤 |
 | Dette | Déplacer `useOperationEditForm` dans `detail/` (dépendance `hooks/` → `Components/`) ; contrôler la date d'opération | Mineur |
-| T16 | Co-location des Props (`Components.props.ts` reste centralisé) | Par lots |
+| T16 | Co-location des Props (`Components.props.ts` reste centralisé) | Lot 4b à venir, par lots |
 | T20 (reste) | Couverture de composants hors lot : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %) | Au fil des refactos |
 | T12 | ADR 002 TanStack Query : statut `Proposée`, décision 👤 | `useFetch` adopté → réévaluation cache/dedup possible (voir note de l'ADR) |
 | Ajustement | Spinner `AnalysesFiltrePeriode` sans compte sélectionné | Mineur |

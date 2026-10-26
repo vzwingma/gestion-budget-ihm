@@ -168,6 +168,7 @@ src/main/
 - Hooks custom dans `src/main/hooks/`. Lecture de données : `useFetch` + `fetch*` (`callWithNotify`) ; actions/sauvegardes : `callAndNotify` (`Services/CallAndNotify.service.ts`). Contexte budget : préférer `useBudgetSelection()` / `useCurrentBudget()` à `useBudgetContext()` si une seule moitié est lue.
 - Pas de `console.log` (ESLint `no-console`, `warn`/`error` OK) : logs debug via `debug()` (`Utils/Debug.utils.ts`, actif si `VITE_CONFIG_DEBUG` défini).
 - Édition d'opération : état **immuable** (jamais muter `currentOperation` du contexte ni un state en place — copier) ; logique dans le hook `useOperationEditForm` (brouillon `editOperation`) + fonctions pures de `OperationDetailPage.controller.ts` ; le brouillon devient `currentOperation` **uniquement au succès** de la sauvegarde (`saveOperation` → commit).
+- Saisie de formule (champ Montant) : évaluer via `evaluateEquation` (`Utils/Equation.utils.ts`), jamais `eval` / `new Function`.
 - Items de liste en `React.memo` + handlers `useCallback`. Routes `MainPage`/`Infos` en `React.lazy` + `Suspense`.
 - Material-UI 9 (`@mui/material`) seule lib UI. `Box`/`Grid` layout; `useMediaQuery`/`useTheme` responsive.
 
@@ -197,7 +198,7 @@ Uniquement ce qui concerne **tous** les agents :
 - Projet en évolution, migré CRA → Vite (AP 001, ADR-001) ; migration dépendances TS/Vite partiellement reportée (AP 003 : TS v7 / typescript-eslint bloqués npm).
 - Contrats API couplés au backend `gestion-budget-serverless` : toute évolution modèle → vérifier côté backend.
 - Ancienne structure `.github/` (agents v2.x, plans) conservée pour référence historique.
-- AP 006 (revue architecture React) : lots 1 et 2 livrés (Gate #4 validé) ; lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤. `useFetch` adopté, contexte budget scindé. Dette restante (T16, T20, sécurité `processEquation` / `new Function`, ADR 002 Proposée) listée dans `.claude/plans/006_revue_architecture_react.plan.md`.
+- AP 006 (revue architecture React) : lots 1 et 2 livrés (Gate #4 validé) ; lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤. `useFetch` adopté, contexte budget scindé. Lot 4a (sécurité) livré, Gate #4 en attente 👤 : `new Function` remplacé par `evaluateEquation`. Dette restante (T16 = lot 4b, T20, ADR 002 Proposée) listée dans `.claude/plans/006_revue_architecture_react.plan.md`.
 
 ---
 

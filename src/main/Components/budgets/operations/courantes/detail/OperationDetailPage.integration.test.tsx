@@ -1055,7 +1055,7 @@ describe('OperationDetailPage - intégration', () => {
 
     describe('défauts historiques corrigés par le lot 3', () => {
 
-        // processEquation avalait l'erreur de `new Function("return abc")` : le montant "abc" était accepté (enregistré à 0)
+        // L'ancien évaluateur (eval dynamique) avalait l'erreur de l'expression "abc" : le montant était accepté (enregistré à 0)
         test('montant non numérique "abc" : refusé avec une erreur de montant', async () => {
             const user = userEvent.setup();
             renderPage({ operations: { nouvelle: createNewOperation() } });
@@ -1068,6 +1068,59 @@ describe('OperationDetailPage - intégration', () => {
 
             expect(saveOperation).not.toHaveBeenCalled();
             expect(await screen.findByText('Le champ Montant est incorrect')).toBeInTheDocument();
+        });
+
+        // Sécurité (lot 4a) : le champ Montant n'exécute jamais la saisie
+        test.each(['1);alert(1);(', 'alert(1)', 'constructor', '1%2', '2**3', '9'.repeat(101)])(
+            'montant "%s" (injection / caractère interdit / trop long) : refusé, rien n\'est sauvegardé', async (saisie) => {
+            const user = userEvent.setup();
+            const alertMock = vi.fn();
+            vi.stubGlobal('alert', alertMock);
+            vi.spyOn(console, 'error').mockImplementation(() => undefined);
+            try {
+                renderPage({ operations: { nouvelle: createNewOperation() } });
+
+                await user.clear(montant());
+                // paste : évite d'interpréter les caractères spéciaux de la saisie par user-event
+                await user.click(montant());
+                await user.paste(saisie);
+                await saisirDescription(user, 'X');
+                await choisirCategorie(user, 'Courses');
+                await user.click(boutonValider());
+
+                expect(await screen.findByText('Le champ Montant est incorrect')).toBeInTheDocument();
+                expect(saveOperation).not.toHaveBeenCalled();
+                expect(alertMock).not.toHaveBeenCalled();
+            } finally {
+                vi.unstubAllGlobals();
+            }
+        });
+
+        test('montant "10+5" : évalué à 15 et sauvegardé (dépense -> -15)', async () => {
+            const user = userEvent.setup();
+            renderPage({ operations: { nouvelle: createNewOperation() } });
+
+            await user.clear(montant());
+            await user.type(montant(), '10+5');
+            await saisirDescription(user, 'X');
+            await choisirCategorie(user, 'Courses');
+            await user.click(boutonValider());
+
+            expect(saveOperation).toHaveBeenCalledTimes(1);
+            expect(dernierSave()[0].valeur).toBe(-15);
+        });
+
+        test('montant "10/3" : résultat arrondi à 2 décimales avant sauvegarde', async () => {
+            const user = userEvent.setup();
+            renderPage({ operations: { nouvelle: createNewOperation() } });
+
+            await user.clear(montant());
+            await user.type(montant(), '10/3');
+            await saisirDescription(user, 'X');
+            await choisirCategorie(user, 'Courses');
+            await user.click(boutonValider());
+
+            expect(dernierSave()[0].valeur).toBe(-3.33);
         });
 
         // Le champ montant est non contrôlé (`defaultValue`) : il est remonté (key=resetKey) à chaque sélection d'opération
