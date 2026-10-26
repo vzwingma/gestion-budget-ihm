@@ -33,9 +33,8 @@ describe('OperationDetailValeur - composant', () => {
         expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
     });
 
-    // DÉFAUT CONNU : `budgetActif = currentBudget` (l'objet, toujours truthy) au lieu de `currentBudget.actif`
-    // -> le montant reste marqué éditable même sur un budget clos.
-    test.fails('lecture sur budget clos : le montant est marqué désactivé', () => {
+    // Défaut corrigé (lot 3) : `budgetActif = currentBudget` (objet toujours truthy) au lieu de `currentBudget?.actif`
+    test('lecture sur budget clos : le montant est marqué désactivé', () => {
         renderWithContexts(<OperationDetailValeur formValueInEdition={false} errorValeur={null} fillOperationForm={fill} />, { budget: buildBudget(false) });
 
         expect(screen.getByRole('heading', { level: 4 })).toHaveClass('editableField--disabled');
@@ -46,6 +45,14 @@ describe('OperationDetailValeur - composant', () => {
 
         expect(screen.getByRole('textbox', { name: /montant/i })).toHaveValue('50');
         expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    });
+
+    test('édition : le type de l\'opération en édition (prop) prime sur celui de l\'opération du contexte', () => {
+        renderWithContexts(<OperationDetailValeur formValueInEdition={true} typeOperation={TYPES_OPERATION_ENUM.CREDIT} errorValeur={null} fillOperationForm={fill} />,
+            { operation: buildOperation({ typeOperation: TYPES_OPERATION_ENUM.DEPENSE }) });
+
+        expect(screen.getByTestId('AddRoundedIcon')).toBeInTheDocument();
+        expect(screen.queryByTestId('RemoveRoundedIcon')).not.toBeInTheDocument();
     });
 
     test.each([

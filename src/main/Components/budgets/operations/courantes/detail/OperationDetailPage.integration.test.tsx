@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -22,10 +22,11 @@ import {
  * arguments transmis à `saveOperation` / `saveOperationIntercompte`), jamais les formats de montants/dates dépendants
  * de la locale du runtime.
  *
- * Note importante : l'état d'édition actuel est muté en place (`editForm`, `editOperation`, `currentOperation`).
- * Une simple ouverture de champ au clic ne provoque donc PAS de re-render (voir `test.fails` ci-dessous) :
- * le helper `ouvrirEdition` force un re-render via le bouton de la harness ("forcer le rendu") pour atteindre
- * l'état "formulaire ouvert" de façon identique avant et après le refactor.
+ * Contrat (lot 3) : l'état d'édition est immuable (hook `useOperationEditForm`) et l'opération du contexte
+ * (`currentOperation`) n'est jamais mutée ; un brouillon est sauvegardé puis devient l'opération courante au succès.
+ * Le helper `ouvrirEdition` clique puis force un re-render via le bouton de la harness ("forcer le rendu") : le re-render
+ * est désormais redondant avec le clic (régression #704 couverte par « ouverture de l'édition au clic »), mais
+ * l'attente reste inoffensive et conserve les scénarios historiques.
  */
 
 vi.mock('react-oidc-context', () => ({ useAuth: () => ({ user: { profile: { email: 'vincent@test.fr' } } }) }));
@@ -88,6 +89,9 @@ describe('OperationDetailPage - intégration', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        // clearAllMocks ne retire pas les implémentations posées par certains scénarios (succès asynchrone)
+        vi.mocked(saveOperation).mockReset();
+        vi.mocked(saveOperationIntercompte).mockReset();
         vi.spyOn(console, 'error').mockImplementation(() => undefined); // validation : console.error volontaire
         vi.spyOn(console, 'warn').mockImplementation(() => undefined); // renderers : catégories de test sans couleur/icône
     });
@@ -191,10 +195,8 @@ describe('OperationDetailPage - intégration', () => {
 
     describe('ouverture de l\'édition au clic sur un champ', () => {
 
-        // RÉGRESSION CONNUE (commit c3f235e, plan 005) : `openEditForm` ne fait plus `setRefresh(new Date())` ; or
-        // `editForm` est muté en place puis re-passé à `setEditForm` (même référence) -> React ne re-rend pas.
-        // Comportement attendu (intention du code) : le clic sur le montant ouvre le champ de saisie.
-        // À retirer du `.fails` quand le refactor (état immuable) corrigera le défaut.
+        // Régression #704 (commit c3f235e, plan 005) : `editForm` était muté en place puis re-passé à `setEditForm`
+        // (même référence) -> pas de re-rendu au clic. Corrigé : état immuable (nouvelle copie à chaque ouverture).
         test('un clic sur le montant ouvre le champ de saisie sans autre interaction', async () => {
             const user = userEvent.setup();
             renderPage();
@@ -202,6 +204,21 @@ describe('OperationDetailPage - intégration', () => {
             await user.click(CHAMPS.valeur());
 
             expect(montant()).toBeInTheDocument();
+        });
+
+        test.each([
+            ['libelle', () => expect(description()).toHaveValue('Courses Carrefour')],
+            ['typeCategorie', () => expect(selectTypeCategorie()).toHaveTextContent('Essentiel')],
+            ['mensualite', () => expect(selectPeriode()).toHaveTextContent('Ponctuelle')],
+            ['dateOperation', () => expect(champDate()).toBeInTheDocument()]
+        ] as const)('un seul clic sur le champ %s l\'ouvre, sans re-rendu forcé', async (champ, verifier) => {
+            const user = userEvent.setup();
+            renderPage();
+
+            await user.click(CHAMPS[champ]());
+
+            verifier();
+            expect(boutonValider()).toBeInTheDocument();
         });
 
         test.each([
@@ -742,9 +759,10 @@ describe('OperationDetailPage - intégration', () => {
 
     describe('actions sur l\'état de l\'opération', () => {
 
-        test('Valider l\'opération : état REALISEE, date du jour renseignée, sauvegarde avec le callback du parent', async () => {
+        test('Valider l\'opération : copie REALISEE avec date du jour sauvegardée ; au succès le parent est notifié et la copie devient l\'opération courante', async () => {
             const user = userEvent.setup();
-            const { onOperationChange } = renderPage();
+            const initiale = buildOperation();
+            const { onOperationChange } = renderPage({ operations: { initiale } });
 
             await user.click(screen.getByRole('button', { name: 'Valider l\'opération' }));
 
@@ -752,7 +770,35 @@ describe('OperationDetailPage - intégration', () => {
             const [operation, , callback] = dernierSave();
             expect(operation).toMatchObject({ id: 'op-1', etat: OPERATION_ETATS_ENUM.REALISEE });
             expect(operation.autresInfos.dateOperation).toBeInstanceOf(Date);
-            expect(callback).toBe(onOperationChange);
+            // Copie : l'opération du contexte reste inchangée tant que la sauvegarde n'a pas réussi
+            expect(operation).not.toBe(initiale);
+            expect(initiale.etat).toBe(OPERATION_ETATS_ENUM.PREVUE);
+            expect(screen.getByText('PREVUE')).toBeInTheDocument();
+            expect(onOperationChange).not.toHaveBeenCalled();
+
+            // Succès de la sauvegarde = appel du callback avec le budget mis à jour
+            const budgetMaj = buildBudget();
+            act(() => callback(budgetMaj));
+
+            expect(onOperationChange).toHaveBeenCalledWith(budgetMaj);
+            expect(screen.getByText('REALISEE')).toBeInTheDocument();
+            expect(initiale.etat).toBe(OPERATION_ETATS_ENUM.PREVUE);
+        });
+
+        test('Valider l\'opération : échec de la sauvegarde (callback jamais appelé) -> état affiché et contexte inchangés', async () => {
+            const user = userEvent.setup();
+            const initiale = buildOperation();
+            const { onOperationChange } = renderPage({ operations: { initiale } });
+
+            await user.click(screen.getByRole('button', { name: 'Valider l\'opération' }));
+            await user.click(screen.getByRole('button', { name: 'forcer le rendu' }));
+
+            expect(saveOperation).toHaveBeenCalledTimes(1);
+            expect(onOperationChange).not.toHaveBeenCalled();
+            expect(screen.getByText('PREVUE')).toBeInTheDocument();
+            expect(screen.queryByText('REALISEE')).not.toBeInTheDocument();
+            expect(screen.getByRole('button', { name: 'Valider l\'opération' })).toBeInTheDocument();
+            expect(initiale.etat).toBe(OPERATION_ETATS_ENUM.PREVUE);
         });
 
         test('Reporter l\'opération : état REPORTEE, date inchangée', async () => {
@@ -820,9 +866,7 @@ describe('OperationDetailPage - intégration', () => {
             expect(screen.getByText('REALISEE')).toBeInTheDocument();
         });
 
-        // RÉGRESSION CONNUE (même cause que l'ouverture au clic : mutation en place sans setState d'une nouvelle
-        // référence, `handleDateOperationFromAction` re-passe l'objet `editOperation` identique) : l'état affiché
-        // reste PREVUE tant qu'un autre rendu n'est pas déclenché. À retirer du `.fails` quand le refactor corrige.
+        // Régression corrigée (lot 3) : l'état choisi en création est porté par une nouvelle copie de la copie de travail
         test('création + Valider l\'opération : l\'état REALISEE est affiché immédiatement', async () => {
             const user = userEvent.setup();
             renderPage({ operations: { nouvelle: createNewOperation() } });
@@ -935,11 +979,10 @@ describe('OperationDetailPage - intégration', () => {
         });
     });
 
-    describe('effets de bord actuels de la validation (à préserver ou à corriger sciemment)', () => {
+    describe('opération du contexte jamais mutée par la validation / la saisie', () => {
 
-        // Caractérisation : la validation écrit dans l'opération du contexte (`currentOperation`) AVANT de savoir si le
-        // formulaire est valide -> une tentative invalide « salit » l'opération partagée (visible dans la liste).
-        test('une validation en échec a déjà reporté le libellé saisi dans l\'opération du contexte', async () => {
+        // La validation travaille sur un brouillon : une tentative invalide ne « salit » plus l'opération partagée du contexte
+        test('une validation en échec ne reporte pas le libellé saisi dans l\'opération du contexte', async () => {
             const user = userEvent.setup();
             const operation = buildOperation();
             renderPage({ operations: { operation } });
@@ -953,42 +996,67 @@ describe('OperationDetailPage - intégration', () => {
 
             expect(await screen.findByText('Le format est incorrect : 0000.00 €')).toBeInTheDocument();
             expect(saveOperation).not.toHaveBeenCalled();
-            expect(operation.libelle).toBe('Modifié');
-            expect(operation.valeur).toBe(-50); // le montant invalide, lui, n'est pas reporté
+            expect(operation.libelle).toBe('Courses Carrefour');
+            expect(operation.valeur).toBe(-50);
         });
 
-        // Caractérisation : un libellé de catégorie sélectionné écrase aussi l'opération du contexte dès le choix
-        // (avant validation) : le type d'opération est modifié en place.
-        test('le choix d\'une catégorie modifie immédiatement l\'opération du contexte (type d\'opération)', async () => {
+        test('le choix d\'une catégorie ne modifie pas l\'opération du contexte (copie de travail uniquement)', async () => {
             const user = userEvent.setup();
             const nouvelle = createNewOperation();
+            const avant = JSON.stringify(nouvelle);
             renderPage({ operations: { nouvelle } });
 
             await choisirCategorie(user, 'Salaire');
 
-            expect(nouvelle.typeOperation).toBe(TYPES_OPERATION_ENUM.CREDIT);
-            expect(nouvelle.categorie).toMatchObject({ id: BUSINESS_GUID.CAT_RENTREE_ARGENT });
-            expect(nouvelle.ssCategorie).toMatchObject({ id: 'ss-salaire', type: TYPES_CATEGORIES_OPERATION_ENUM.REVENUS });
+            expect(JSON.stringify(nouvelle)).toBe(avant);
+            // L'effet est visible dans la copie de travail : type Revenus affiché
+            expect(screen.getByText('Revenus', { selector: '#OPERATION_TYPE_CATEGORIE_INPUT' })).toBeInTheDocument();
         });
 
-        test('période Actifs / Investissements : la période de l\'opération du contexte est forcée à Mensuelle', async () => {
+        test('catégorie Salaire (Rentrées d\'argent) : l\'opération sauvegardée est un CREDIT de type Revenus, contexte inchangé', async () => {
             const user = userEvent.setup();
             const nouvelle = createNewOperation();
             renderPage({ operations: { nouvelle } });
 
-            await choisirCategorie(user, 'Bourse');
+            await user.clear(montant());
+            await user.type(montant(), '1200');
+            await saisirDescription(user, 'Paie');
+            await choisirCategorie(user, 'Salaire');
+            await user.click(boutonValider());
 
-            expect(nouvelle.mensualite.periode).toBe(PERIODES_MENSUALITE_ENUM.MENSUELLE);
-            expect(nouvelle.ssCategorie.type).toBe(TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES);
+            expect(dernierSave()[0]).toMatchObject({
+                typeOperation: TYPES_OPERATION_ENUM.CREDIT,
+                valeur: 1200,
+                categorie: { id: BUSINESS_GUID.CAT_RENTREE_ARGENT },
+                ssCategorie: { id: 'ss-salaire', type: TYPES_CATEGORIES_OPERATION_ENUM.REVENUS }
+            });
+            expect(nouvelle.typeOperation).not.toBe(TYPES_OPERATION_ENUM.CREDIT);
+        });
+
+        test('période Actifs / Investissements : forcée à Mensuelle dans l\'opération sauvegardée, contexte inchangé', async () => {
+            const user = userEvent.setup();
+            const nouvelle = createNewOperation();
+            renderPage({ operations: { nouvelle } });
+
+            await saisirDescription(user, 'Achat ETF');
+            await choisirCategorie(user, 'Bourse');
+            // Bloc « Période » masqué pour la catégorie Actifs / Investissements
+            expect(screen.queryByText('Période')).not.toBeInTheDocument();
+            await user.click(boutonValider());
+
+            expect(dernierSave()[0]).toMatchObject({
+                mensualite: { periode: PERIODES_MENSUALITE_ENUM.MENSUELLE },
+                ssCategorie: { type: TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES }
+            });
+            expect(nouvelle.mensualite.periode).toBe(PERIODES_MENSUALITE_ENUM.PONCTUELLE);
         });
 
     });
 
-    describe('défauts connus de la page actuelle (test.fails : à basculer en test normal une fois corrigés)', () => {
+    describe('défauts historiques corrigés par le lot 3', () => {
 
-        // processEquation avale l'erreur de `new Function("return abc")` et renvoie "0" : le montant "abc" est accepté et
-        // enregistré comme 0 ; la branche d'erreur "Le champ Montant est incorrect" de calculateValeur est inatteignable.
-        test.fails('montant non numérique "abc" : devrait être refusé avec une erreur de montant', async () => {
+        // processEquation avalait l'erreur de `new Function("return abc")` : le montant "abc" était accepté (enregistré à 0)
+        test('montant non numérique "abc" : refusé avec une erreur de montant', async () => {
             const user = userEvent.setup();
             renderPage({ operations: { nouvelle: createNewOperation() } });
 
@@ -999,11 +1067,11 @@ describe('OperationDetailPage - intégration', () => {
             await user.click(boutonValider());
 
             expect(saveOperation).not.toHaveBeenCalled();
+            expect(await screen.findByText('Le champ Montant est incorrect')).toBeInTheDocument();
         });
 
-        // Le champ montant est non contrôlé (`defaultValue`) : en passant d'une création à une autre création, le texte
-        // saisi précédemment reste affiché alors que l'état interne est remis à 0 -> l'écran ment sur ce qui est envoyé.
-        test.fails('création A -> création B : le montant affiché est remis à zéro', async () => {
+        // Le champ montant est non contrôlé (`defaultValue`) : il est remonté (key=resetKey) à chaque sélection d'opération
+        test('création A -> création B : le montant affiché est remis à zéro', async () => {
             const user = userEvent.setup();
             renderPage({ operations: { n1: createNewOperation(), n2: createNewOperation() } });
 
@@ -1014,9 +1082,8 @@ describe('OperationDetailPage - intégration', () => {
             expect(montant()).toHaveValue('0');
         });
 
-        // fillLibelleForm : `Number.isNaN(Number(value))` -> pour une saisie numérique (ex. "2024") le libellé est remplacé
-        // par `event.target.textContent` (vide pour un <input>) : le libellé disparaît et la validation le refuse.
-        test.fails('libellé purement numérique ("2024") : conservé à la validation', async () => {
+        // Un libellé purement numérique était remplacé par `event.target.textContent` (vide pour un <input>)
+        test('libellé purement numérique ("2024") : conservé à la validation', async () => {
             const user = userEvent.setup();
             renderPage({ operations: { nouvelle: createNewOperation() } });
 
@@ -1027,9 +1094,8 @@ describe('OperationDetailPage - intégration', () => {
             expect(dernierSave()[0].libelle).toBe('2024');
         });
 
-        // handleCreateModeAction fixe la date du jour sur l'opération du contexte, mais validateForm la réécrase ensuite par la
-        // date de `editOperation` (restée null) : une création "Validée" est envoyée REALISEE sans date d'opération.
-        test.fails('création + Valider l\'opération : la date du jour est transmise à la sauvegarde', async () => {
+        // La date du jour choisie par « Valider l'opération » en création était réécrasée par validateForm
+        test('création + Valider l\'opération : la date du jour est transmise à la sauvegarde', async () => {
             const user = userEvent.setup();
             renderPage({ operations: { nouvelle: createNewOperation() } });
 
@@ -1040,6 +1106,34 @@ describe('OperationDetailPage - intégration', () => {
 
             expect(dernierSave()[0]).toMatchObject({ etat: OPERATION_ETATS_ENUM.REALISEE });
             expect(dernierSave()[0].autresInfos.dateOperation).toBeInstanceOf(Date);
+        });
+
+        test('création + Reporter : état REPORTEE sans date d\'opération transmis à la sauvegarde', async () => {
+            const user = userEvent.setup();
+            renderPage({ operations: { nouvelle: createNewOperation() } });
+
+            await user.click(screen.getByRole('button', { name: 'Reporter l\'opération' }));
+            await saisirDescription(user, 'X');
+            await choisirCategorie(user, 'Courses');
+            await user.click(boutonValider());
+
+            expect(dernierSave()[0]).toMatchObject({ etat: OPERATION_ETATS_ENUM.REPORTEE });
+            expect(dernierSave()[0].autresInfos.dateOperation).toBeNull();
+        });
+
+        test('erreurs de validation affichées puis formulaire corrigé : les erreurs disparaissent', async () => {
+            const user = userEvent.setup();
+            renderPage({ operations: { nouvelle: createNewOperation() } });
+
+            await user.click(boutonValider());
+            expect(await screen.findByText('Le champ Description est obligatoire')).toBeInTheDocument();
+
+            await saisirDescription(user, 'Corrigé');
+            await choisirCategorie(user, 'Courses');
+            await user.click(boutonValider());
+
+            expect(saveOperation).toHaveBeenCalledTimes(1);
+            await waitFor(() => expect(screen.queryByText('Le champ Description est obligatoire')).not.toBeInTheDocument());
         });
     });
 });

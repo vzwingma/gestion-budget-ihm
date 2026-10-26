@@ -50,6 +50,20 @@ Composant → useFetch(() => fetchX(...), [deps])
           → ClientHTTP.service.ts → µService
 ```
 
+### Édition d'une opération
+
+L'état d'édition est **immuable** : l'opération du contexte (`currentOperation`) n'est jamais mutée pendant l'édition.
+
+- Le hook `hooks/useOperationEditForm.ts` porte l'état de la page `OperationDetailPage` : `editForm`, `editOperation` (brouillon), `errors`, `resetKey` (remise à zéro du montant entre deux créations). Il est initialisé à la sélection pendant le rendu et expose `handleClick`, `validate`, `setEtatInCreation`, `commitOperation`.
+- La logique de modification est dans `OperationDetailPage.controller.ts` sous forme de fonctions pures (`fillOperationField`, `fillCategorieForm`, `applyCategorieParente`, `applyRentreeArgent`, `applyActifInvest`, `applyDefaut`, `applyEtatInCreation`, `openField`) et de clones (`cloneOperation`, `cloneOperationEdition`, `cloneOperationModel`).
+- La validation porte sur le brouillon. Sauvegarde : `saveOperation(updated, budget, wrapper)` ; le wrapper appelle `onOperationChange` puis `onOperationCommit` **uniquement au succès** (le brouillon devient alors `currentOperation`). En cas d'échec : ni commit ni changement d'écran. En création : `handleDateOperationFromAction(date, etat)`.
+
+```
+Saisie → handleClick / fillX (fonctions pures) → editOperation (brouillon copié)
+       → validate → saveOperation → [succès] onOperationChange → onOperationCommit → currentOperation
+                                  → [échec]  brouillon conservé, erreur affichée
+```
+
 ---
 
 ## 📂 Structure des Dossiers
@@ -64,12 +78,12 @@ gestion-budget-ihm/
 │       │   ├── Components.props.ts       # Interfaces de props (les nouvelles interfaces sont co-localisées)
 │       │   ├── analyses/                 # Composants analyses budgétaires (syntheses/AnalyseTooltip = tooltip recharts générique)
 │       │   ├── budgets/                  # Composants gestion budgets
-│       │   │   └── shared/               # BudgetPageShell.component.tsx (squelette commun Budget / Recurrents) ; operations/shared/ : OperationRecurrenteDetailDateFin.component.tsx (partagé courantes / récurrentes)
+│       │   │   └── shared/               # BudgetPageShell.component.tsx (squelette commun Budget / Recurrents) ; operations/shared/ : OperationRecurrenteDetailDateFin.component.tsx (partagé courantes / récurrentes) ; operations/courantes/detail/ : OperationDetailPage (106 lignes, orchestration) + OperationDetailPage.controller.ts (fonctions pures) + subcomponents/ (dont OperationDetail{Header,CategoriesSection,MensualiteSection,EtatSection,ActionsSection}) + actions/
 │       │   ├── infos/                    # Composants informatifs
 │       │   ├── mainpages/                # Pages principales
 │       │   ├── menuTopBar/               # Barre de navigation
 │       │   └── shared/                   # Composants partagés (dont AuthTokenSync.component.tsx, TapTooltip.component.tsx : infobulle survol desktop / tap tactile)
-│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext [+ useBudgetSelection, useCurrentBudget], useFetch, useIsTouchDevice)
+│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext [+ useBudgetSelection, useCurrentBudget], useFetch, useIsTouchDevice, useOperationEditForm)
 │       ├── Models/                       # Modèles TypeScript + Context
 │       │   ├── contextProvider/          # BudgetContextProvider.tsx (3 providers imbriqués ; ré-exporte les contextes et hooks de hooks/useBudgetContext.ts)
 │       │   ├── analyses/                 # Modèles analyses
@@ -157,7 +171,8 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
 - **Autorisation** : Token Bearer attaché à chaque requête HTTP sortante
 - **API Key AWS** : Header `X-Api-Key` injecté automatiquement par `ClientHTTP.service.ts`
 - **Données sensibles** : Jamais de secrets dans le code source. Toujours dans les fichiers `.env.*` (gitignorés). En CI, via GitHub Secrets/Variables.
-- **Validation des entrées** : Typage TypeScript strict côté frontend
+- **Validation des entrées** : Typage TypeScript strict côté frontend. Saisie du montant d'une opération : valeurs non numériques (« abc ») ou ambiguës (« 2 3 ») refusées (« Le champ Montant est incorrect »)
+- ⚠️ **Dette sécurité connue** : `processEquation` (calcul du montant saisi) évalue l'expression via `new Function`, malgré la mention « sans eval » ; à remplacer par un parseur arithmétique (tâche dédiée, voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
 
 ---
 
@@ -182,7 +197,8 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 - **Composants** : Toujours `React.FC<Props>`, fonctionnels uniquement. Props interfaces dans `Components.props.ts`
 - **Sous-composants** : Dans `subcomponents/`, boutons d'action dans `actions/`
 - **Gestion d'état** : état global scindé en deux contextes (`hooks/useBudgetContext.ts`) : `BudgetSelectionContext` (comptes, compte/date sélectionnés, catégories) lu via `useBudgetSelection()`, et `CurrentBudgetContext` (budget et opération courants) lu via `useCurrentBudget()`. `useBudgetContext()` reste l'agrégat des deux (12 champs) pour les composants qui lisent les deux moitiés. Les trois hooks lèvent une erreur hors `BudgetContextProvider`. `useState` pour l'état UI local ; les regroupements dérivés (opérations par date / périodicité) sont calculés via `useMemo`, pas stockés en state
-- **Hooks custom** : dans `src/main/hooks/`. `useFetch(fetcher, deps)` retourne `{ data, loading, error, refetch }` ; adopté par les 7 composants de lecture de données (voir [Data-fetching](#data-fetching))
+- **Hooks custom** : dans `src/main/hooks/`. `useFetch(fetcher, deps)` retourne `{ data, loading, error, refetch }` ; adopté par les 7 composants de lecture de données (voir [Data-fetching](#data-fetching)). `useOperationEditForm` porte l'état d'édition d'une opération (voir [Édition d'une opération](#édition-dune-opération))
+- **État d'édition immuable** : ne jamais muter en place un state React ni l'opération du contexte ; toujours copier (`{ ...x }`, `cloneOperation`). Le brouillon n'est promu `currentOperation` qu'au succès de la sauvegarde
 - **Appels HTTP** : Toujours via `ClientHTTP.service.ts`. URLs avec `{{}}` comme marqueur positionnel. Jamais `fetch` directement dans un composant. Les erreurs sont relancées avec `cause` (stack d'origine conservée). Dans les `*.extservices.ts` : variantes Promise `fetch*` via `callWithNotify(promise, errorMessage, toastOptions?)` pour les lectures (consommées par `useFetch`) ; `callAndNotify(promise, onSuccess, errorMessage, toastOptions?)` pour les actions/sauvegardes
 - **Layout** : `Box`/`Grid` MUI pour la mise en page, `useMediaQuery`/`useTheme` pour le responsive
 - **Optimisation** : `useMemo` pour les calculs dérivés coûteux, `useCallback` pour les handlers passés en props, `React.memo` pour les items de liste (voir [Performance](#-performance))
@@ -211,7 +227,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 - **Mémoïsation** : `React.memo` sur les items de liste `OperationItem`, `OperationRecurrenteItem` et `CompteItem` ; handlers de sélection passés à ces items stabilisés via `useCallback` (prérequis pour que `memo` soit effectif)
 - `useMemo` pour les calculs dérivés coûteux dans les composants (ex : totaux budgétaires, agrégations, regroupements d'opérations)
 - `useCallback` pour les handlers passés en props afin d'éviter les re-renders inutiles
-- **Contexte scindé** : `BudgetSelectionContext` et `CurrentBudgetContext` limitent les re-renders (un changement de budget/opération courants ne re-rend plus les consumers de la sélection, et inversement). 12 consumers utilisent les hooks ciblés. **Limite connue** : 6 composants (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) restent sur l'agrégat `useBudgetContext()` et se re-rendent à tout changement (voir dette du [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
+- **Contexte scindé** : `BudgetSelectionContext` et `CurrentBudgetContext` limitent les re-renders (un changement de budget/opération courants ne re-rend plus les consumers de la sélection, et inversement). 12 consumers utilisent les hooks ciblés. **Limite connue** : 6 composants (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) restaient sur l'agrégat `useBudgetContext()` à l'issue du lot 2 et se re-rendent à tout changement (à revérifier après le découpage du lot 3 ; voir dette du [plan 006](../.claude/plans/006_revue_architecture_react.plan.md))
 - Minification CSS pré-build via `css-minify` sur `public/styles/application.css`
 - Pagination des listes volumineuses côté API (gérée par les µServices)
 
@@ -247,6 +263,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
+| v24.0-SNAPSHOT | 2026-10-26 | Revue architecture React (plan 006, lot 3) : correctif de la régression T10 (plus de re-rendu au clic sur un champ, PR #704) ; `OperationDetailPage` découpée (429 → 106 lignes) : hook `useOperationEditForm`, sous-composants `OperationDetail{Header,CategoriesSection,MensualiteSection,EtatSection,ActionsSection}`, fonctions pures dans `OperationDetailPage.controller.ts` ; état d'édition immuable (brouillon promu `currentOperation` au succès de la sauvegarde) ; défauts corrigés (date du jour en création, montant remis à zéro, libellé numérique, montants « abc » / ambigus refusés, `OperationDetailValeur` désactivé sur budget clos) ; 837 tests. Dette : sécurité `processEquation` (`new Function`), T16, T12 — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 2) : `useFetch` adopté par 7 composants (variantes Promise `fetch*` des extservices + `callWithNotify`, `callAndNotify` conservé pour les actions), `BudgetContext` scindé (`BudgetSelectionContext` / `CurrentBudgetContext`, hooks `useBudgetSelection` / `useCurrentBudget`, agrégat `useBudgetContext`), `OperationRecurrenteDetailDateFin` déplacé vers `operations/shared/`, spinners `CompteItem` / `AnalysesFiltrePeriode`, correctif `BudgetSoldes` (Fragment sous `Tooltip` MUI). Dette restante : découpage `OperationDetailPage`, T16, T20, ADR 002 — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 1) : dossier `hooks/` (`useAuthTokenSync`, `useBudgetContext`, `useFetch`), `AuthTokenSync` à la racine, `callAndNotify`, mode debug `VITE_CONFIG_DEBUG` + règle `no-console`, code splitting des routes (`React.lazy`), `React.memo` sur items de liste, `BudgetPageShell`, `AnalyseTooltip` générique, erreurs HTTP avec `cause`. Dette restante : voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-07-10 | Montée deps : Vite 6→8.1.4, `@vitejs/plugin-react` 4→6.0.3, suppression `@babel/plugin-transform-private-property-in-object` (résidu CRA, sans usage réel). TypeScript v7 et `typescript-eslint` v9/v10 **reportés** (bloqueur npm — voir note Stack Technique ci-dessus). Voir `.claude/plans/003_migration_dependances_ts_vite.plan.md` |

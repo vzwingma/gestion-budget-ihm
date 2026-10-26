@@ -31,8 +31,12 @@ import {
 vi.mock('./actions/OperationDetailActions.component.tsx', () => ({
     OperationDetailActions: () => <div data-testid="mock-actions" />
 }));
+// Les mocks exposent dans le rendu les props issues de la copie de travail (editOperation) pour les observer
+vi.mock('./subcomponents/OperationDetailHeader.component.tsx', () => ({
+    OperationDetailHeader: ({ editOperation }: any) => <div data-testid="mock-header">{editOperation.categorie.id}</div>
+}));
 vi.mock('./subcomponents/OperationDetailValeur.component.tsx', () => ({
-    OperationDetailValeur: () => <div data-testid="mock-valeur" />,
+    OperationDetailValeur: ({ typeOperation }: any) => <div data-testid="mock-valeur">{typeOperation}</div>,
     validateFormMontant: vi.fn()
 }));
 vi.mock('./subcomponents/OperationDetailLibelle.component.tsx', () => ({
@@ -44,13 +48,13 @@ vi.mock('./subcomponents/OperationDetailIntercompte.component.tsx', () => ({
     validateFormTransfertIntercompte: vi.fn()
 }));
 vi.mock('./subcomponents/OperationDetailMensualite.component.tsx', () => ({
-    OperationDetailMensualite: () => <div data-testid="mock-mensualite" />
+    OperationDetailMensualite: ({ periodeInEdition }: any) => <div data-testid="mock-mensualite">{periodeInEdition}</div>
 }));
 vi.mock('./subcomponents/OperationDetailDateOperation.component.tsx', () => ({
     OperationDetailDate: () => <div data-testid="mock-date" />
 }));
 vi.mock('./subcomponents/OperationDetailCategorieType.component.tsx', () => ({
-    OperationDetailCategorieType: () => <div data-testid="mock-categorie-type" />
+    OperationDetailCategorieType: ({ editOperation }: any) => <div data-testid="mock-categorie-type">{editOperation.ssCategorie.type}</div>
 }));
 vi.mock('../../shared/OperationRecurrenteDetailDateFin.component.tsx', () => ({
     OperationDetailDateFin: () => <div data-testid="mock-date-fin" />,
@@ -62,8 +66,9 @@ vi.mock('../../../../../Utils/renderers/OperationDetailStatus.renderer.tsx', () 
 
 // Mock du composant Catégories : expose un bouton par sous-catégorie fournie dans listeCategories
 vi.mock('./subcomponents/OperationDetailCategories.component.tsx', () => ({
-    OperationDetailCategories: ({ listeCategories, fillOperationForm }: any) => (
+    OperationDetailCategories: ({ listeCategories, fillOperationForm, ssCategorieInEdition }: any) => (
         <div data-testid="mock-categories">
+            <output data-testid="sscat-courante">{ssCategorieInEdition.id}|{ssCategorieInEdition.libelle}</output>
             {listeCategories
                 .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
                 .map((ssCat: any) => (
@@ -172,43 +177,51 @@ describe('OperationDetailPage - fillCategorieForm (via sélection de sous-catég
         const user = userEvent.setup();
         const listeCategories = buildListeCategories();
         const { operation } = renderPage(listeCategories);
+        const avant = JSON.stringify(operation);
 
         await user.click(screen.getByTestId('select-sscat-sscat-rentree'));
 
-        expect(operation.categorie.id).toBe(BUSINESS_GUID.CAT_RENTREE_ARGENT);
-        expect(operation.categorie.libelle).toBe('Rentrées d\'argent');
-        expect(operation.ssCategorie.id).toBe('sscat-rentree');
-        expect(operation.ssCategorie.libelle).toBe('Salaire');
-        expect(operation.typeOperation).toBe(TYPES_OPERATION_ENUM.CREDIT);
-        expect(operation.ssCategorie.type).toBe(TYPES_CATEGORIES_OPERATION_ENUM.REVENUS);
+        // Copie de travail (rendu) mise à jour
+        expect(screen.getByTestId('mock-header')).toHaveTextContent(BUSINESS_GUID.CAT_RENTREE_ARGENT);
+        expect(screen.getByTestId('sscat-courante')).toHaveTextContent('sscat-rentree|Salaire');
+        expect(screen.getByTestId('mock-valeur')).toHaveTextContent(TYPES_OPERATION_ENUM.CREDIT);
+        expect(screen.getByTestId('mock-categorie-type')).toHaveTextContent(TYPES_CATEGORIES_OPERATION_ENUM.REVENUS);
+        // Opération du contexte jamais mutée
+        expect(JSON.stringify(operation)).toBe(avant);
     });
 
     test('branche CAT_ACTIFS_INVEST : type CREDIT, catégorie ECONOMIES, mensualité forcée MENSUELLE', async () => {
         const user = userEvent.setup();
         const listeCategories = buildListeCategories();
         const { operation } = renderPage(listeCategories);
+        const avant = JSON.stringify(operation);
 
         await user.click(screen.getByTestId('select-sscat-sscat-actif'));
 
-        expect(operation.categorie.id).toBe(BUSINESS_GUID.CAT_ACTIFS_INVEST);
-        expect(operation.ssCategorie.id).toBe('sscat-actif');
-        expect(operation.typeOperation).toBe(TYPES_OPERATION_ENUM.CREDIT);
-        expect(operation.ssCategorie.type).toBe(TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES);
-        expect(operation.mensualite.periode).toBe(PERIODES_MENSUALITE_ENUM.MENSUELLE);
+        expect(screen.getByTestId('mock-header')).toHaveTextContent(BUSINESS_GUID.CAT_ACTIFS_INVEST);
+        expect(screen.getByTestId('sscat-courante')).toHaveTextContent('sscat-actif|Bourse');
+        expect(screen.getByTestId('mock-valeur')).toHaveTextContent(TYPES_OPERATION_ENUM.CREDIT);
+        expect(screen.getByTestId('mock-categorie-type')).toHaveTextContent(TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES);
         // Le bloc "Période" n'est affiché que si categorie.id !== CAT_ACTIFS_INVEST : ici masqué
+        // (la période forcée à Mensuelle est vérifiée sur la fonction pure applyActifInvest)
         expect(screen.queryByText('Période')).not.toBeInTheDocument();
+        expect(JSON.stringify(operation)).toBe(avant);
+        expect(operation.mensualite.periode).toBe(PERIODES_MENSUALITE_ENUM.PONCTUELLE);
     });
 
     test('branche défaut : type opération = DEPENSE pour une catégorie parente quelconque', async () => {
         const user = userEvent.setup();
         const listeCategories = buildListeCategories();
         const { operation } = renderPage(listeCategories);
+        const avant = JSON.stringify(operation);
 
         await user.click(screen.getByTestId('select-sscat-sscat-autre'));
 
-        expect(operation.categorie.id).toBe('cat-autre');
-        expect(operation.ssCategorie.id).toBe('sscat-autre');
-        expect(operation.typeOperation).toBe(TYPES_OPERATION_ENUM.DEPENSE);
+        expect(screen.getByTestId('mock-header')).toHaveTextContent('cat-autre');
+        expect(screen.getByTestId('sscat-courante')).toHaveTextContent('sscat-autre|Loisirs');
+        expect(screen.getByTestId('mock-valeur')).toHaveTextContent(TYPES_OPERATION_ENUM.DEPENSE);
+        expect(screen.getByTestId('mock-mensualite')).toHaveTextContent(PERIODES_MENSUALITE_ENUM.PONCTUELLE);
+        expect(JSON.stringify(operation)).toBe(avant);
         // Bloc "Période" affiché car catégorie != CAT_ACTIFS_INVEST
         expect(screen.getByText('Période')).toBeInTheDocument();
     });
@@ -216,32 +229,28 @@ describe('OperationDetailPage - fillCategorieForm (via sélection de sous-catég
     test('sous-catégorie sans catégorie parente : ssCategorie mise à jour, categorie inchangée', async () => {
         const user = userEvent.setup();
         const listeCategories = buildListeCategories();
-        const { operation } = renderPage(listeCategories);
-        const categorieAvant = { ...operation.categorie };
+        renderPage(listeCategories);
 
         await user.click(screen.getByTestId('select-sscat-sscat-sans-parente'));
 
         // categorie inchangée : pas de categorieParente sur la sscat sélectionnée
-        expect(operation.categorie).toEqual(categorieAvant);
-        expect(operation.ssCategorie.id).toBe('sscat-sans-parente');
-        expect(operation.ssCategorie.libelle).toBe('Sans parente');
+        expect(screen.getByTestId('mock-header')).toHaveTextContent('cat-initiale');
+        expect(screen.getByTestId('sscat-courante')).toHaveTextContent('sscat-sans-parente|Sans parente');
         // Branche défaut appliquée (pas de match CAT_RENTREE_ARGENT/CAT_ACTIFS_INVEST)
-        expect(operation.typeOperation).toBe(TYPES_OPERATION_ENUM.DEPENSE);
+        expect(screen.getByTestId('mock-valeur')).toHaveTextContent(TYPES_OPERATION_ENUM.DEPENSE);
     });
 
     test('ssCatId non trouvé dans listeCategories : aucune mise à jour, formulaire inchangé', async () => {
         const user = userEvent.setup();
         const listeCategories = buildListeCategories();
         const { operation } = renderPage(listeCategories);
-        const categorieAvant = { ...operation.categorie };
-        const ssCategorieAvant = { ...operation.ssCategorie };
-        const typeOperationAvant = operation.typeOperation;
+        const avant = JSON.stringify(operation);
 
         await user.click(screen.getByTestId('select-sscat-inconnue'));
 
-        expect(operation.categorie).toEqual(categorieAvant);
-        expect(operation.ssCategorie.id).toEqual(ssCategorieAvant.id);
-        expect(operation.ssCategorie.libelle).toEqual(ssCategorieAvant.libelle);
-        expect(operation.typeOperation).toBe(typeOperationAvant);
+        expect(screen.getByTestId('mock-header')).toHaveTextContent('cat-initiale');
+        expect(screen.getByTestId('sscat-courante')).toHaveTextContent('sscat-initiale|Sous-catégorie initiale');
+        expect(screen.getByTestId('mock-valeur')).toHaveTextContent(TYPES_OPERATION_ENUM.DEPENSE);
+        expect(JSON.stringify(operation)).toBe(avant);
     });
 });

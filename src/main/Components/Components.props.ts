@@ -3,8 +3,8 @@ import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.
 import CompteBancaireModel from "../Models/budgets/CompteBancaire.model.ts";
 import OperationModel from "../Models/budgets/Operation.model.ts";
 
-import {BUSINESS_ONGLETS, OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants.ts";
-import {OPERATION_EDITION_FORM} from "./budgets/operations/courantes/detail/OperationDetailPage.constants.ts";
+import {BUSINESS_ONGLETS, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM, UTILISATEUR_DROITS} from "../Utils/AppBusinessEnums.constants.ts";
+import {EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM} from "./budgets/operations/courantes/detail/OperationDetailPage.constants.ts";
 import LibelleCategorieOperationModel from "../Models/budgets/LibelleCategorieOperation.model.ts";
 import OperationEditionModel from "../Models/budgets/OperationEdition.model.ts";
 import {Dispatch, SetStateAction} from "react";
@@ -120,8 +120,11 @@ export interface RecurrentsPageProps {
 export interface OperationDetailActionsProps {
     isInCreateMode: boolean,
     editOperation: OperationEditionModel,
-    onClickRealiseInCreateMode: (valeurDate: Date, editOperation: OperationModel, setEditOperation: Dispatch<SetStateAction<OperationModel>>) => void
+    /** Mode création : état choisi + date d'opération associée, portés par l'opération en édition */
+    onClickRealiseInCreateMode: (valeurDate: Date | null, etat: OPERATION_ETATS_ENUM) => void
     onOperationChange: (budget: BudgetMensuelModel) => void
+    /** Mode édition : propage au contexte la copie de l'opération dont l'état a changé */
+    onOperationCommit?: (operation: OperationModel) => void
 }
 
 
@@ -129,6 +132,8 @@ export interface OperationDetailCategoriesProps {
     listeCategories: CategorieOperationModel[]
     formCatgoriesInEdition: boolean
     errorsCategories: string | null
+    /** Sous-catégorie de l'opération en édition (sinon : celle de l'opération du contexte) */
+    ssCategorieInEdition?: SsCategorieOperationModel
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
 }
 
@@ -154,6 +159,8 @@ export interface OperationDetailLibelleProps {
 
 export interface OperationDetailMensualiteProps {
     formMensualiteInEdition: boolean
+    /** Période de l'opération en édition (sinon : celle de l'opération du contexte) */
+    periodeInEdition?: PERIODES_MENSUALITE_ENUM
     fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
 }
 
@@ -167,8 +174,44 @@ export interface OperationDetailCategorieTypeProps {
 
 export interface OperationDetailValeurProps {
     formValueInEdition: boolean
+    /** Type de l'opération en édition (sinon : celui de l'opération du contexte) */
+    typeOperation?: TYPES_OPERATION_ENUM
     errorValeur: string | null
     fillOperationForm: (field: OPERATION_EDITION_FORM.VALUE, value: string) => void
+}
+
+/** Props communes aux sections de rendu de la page de détail d'une opération */
+export interface OperationDetailSectionProps {
+    editForm: EditFormProps
+    errors: ErrorsFormProps
+    editOperation: OperationEditionModel
+    fillOperationForm: (field: OPERATION_EDITION_FORM | OPERATION_RECURRENTE_EDITION_FORM, value: string) => void
+    isMobile: boolean
+}
+
+export interface OperationDetailCategoriesSectionProps extends OperationDetailSectionProps {
+    listeCategories: CategorieOperationModel[]
+}
+
+export interface OperationDetailEtatSectionProps extends OperationDetailSectionProps {
+    /** Etat affiché (celui de l'édition en création, sinon celui de l'opération du contexte) */
+    etat: OPERATION_ETATS_ENUM
+    /** Clé de remise à zéro des champs non contrôlés (change à chaque nouvelle sélection d'opération) */
+    resetKey: number
+}
+
+export interface OperationDetailMensualiteSectionProps extends OperationDetailSectionProps {
+    /** Clé de remise à zéro des champs non contrôlés (change à chaque nouvelle sélection d'opération) */
+    resetKey: number
+}
+
+export interface OperationDetailActionsSectionProps {
+    editForm: EditFormProps
+    editOperation: OperationEditionModel
+    onClickRealiseInCreateMode: (valeurDate: Date | null, etat: OPERATION_ETATS_ENUM) => void
+    onOperationChange: (budget: BudgetMensuelModel) => void
+    onOperationCommit: (operation: OperationModel) => void
+    onValidate: () => void
 }
 
 export interface OperationDetailPageProps {

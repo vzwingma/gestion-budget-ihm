@@ -18,13 +18,14 @@ import { debug } from "../../../../../../Utils/Debug.utils.ts";
  * @param {OperationDetailValeurProps} props - Les propriétés du composant.
  */
 export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   formValueInEdition,
+                                                                                typeOperation,
                                                                                 errorValeur,
                                                                                 fillOperationForm
                                                                             }: OperationDetailValeurProps): JSX.Element => {
 
     const { currentBudget, currentOperation } = useCurrentBudget();
     const operation = currentOperation;
-    const budgetActif = currentBudget;
+    const budgetActif = currentBudget?.actif ?? false;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
 
@@ -47,7 +48,7 @@ export const OperationDetailValeur: React.FC<OperationDetailValeurProps> = ({   
                     slotProps={{
                         input: {
                             startAdornment: (
-                                <InputAdornment position="start"> {operation.typeOperation === TYPES_OPERATION_ENUM.CREDIT?
+                                <InputAdornment position="start"> {(typeOperation ?? operation.typeOperation) === TYPES_OPERATION_ENUM.CREDIT?
                                     <AddRounded /> : <RemoveRounded />}</InputAdornment>
                             ),
                             endAdornment: (
@@ -142,18 +143,14 @@ function validateValue(valeur: string): boolean {
  * Calcul de l'équation mathématique (sans eval) depuis une chaine de caractères
  * @param valueToCalculate : string : chaine de caractères à calculer à saisie
  * @returns {string} résultat
- *
+ * @throws si l'expression n'est pas évaluable
  */
 function processEquation(valueToCalculate: string): string {
     if (valueToCalculate.length <= 1000) {
-        try {
-            // eslint-disable-next-line no-new-func
-            const result = new Function(`return ${valueToCalculate}`)();
-            return result.toString();
-        } catch (error) {
-            console.error("Erreur lors du traitement de l'équation : ", valueToCalculate, error);
-            return "0";
-        }
+        // Une expression invalide (ex. "abc") lève une erreur : elle est traitée par `calculateValeur` (erreur de montant)
+        // eslint-disable-next-line no-new-func
+        const result = new Function(`return ${valueToCalculate}`)();
+        return result.toString();
     }
     return valueToCalculate
 }

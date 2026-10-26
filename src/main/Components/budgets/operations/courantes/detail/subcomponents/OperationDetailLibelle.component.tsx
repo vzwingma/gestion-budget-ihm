@@ -59,10 +59,9 @@ export const OperationDetailLibelle: React.FC<OperationDetailLibelleProps> = ({ 
      */
     function fillLibelleForm(event: any) {
         if (!operation) return;
-        let newLibelle: string = event.target.value;
-        if (!Number.isNaN(Number(event.target.value))) {
-            newLibelle = event.target.textContent;
-        }
+        // Saisie (input) : `value` est une chaîne, y compris numérique ("2024") ; sélection d'une option (<li>) : `value` est
+        // un nombre -> le libellé est le texte de l'option
+        let newLibelle: string = typeof event.target.value === "string" ? event.target.value : event.target.textContent;
         // Récupération du libellé de l'opération
         if (rawLibelleIntercompteParts !== null) {
             // Rajout des tags en amont

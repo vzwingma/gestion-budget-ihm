@@ -1,57 +1,26 @@
-import React, { JSX, useEffect, useState } from 'react'
-import { Box, Button, Container, Grid, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import React, { JSX } from 'react'
+import { Container, Grid, Stack, useMediaQuery, useTheme } from "@mui/material";
 
-import {
-    handleDateOperationFromAction,
-    handleOperationEditionClick,
-    handleValidateOperationForm,
-    isInCreateMode,
-    isInEditMode
-} from './OperationDetailPage.controller.ts';
-import { CenterComponent } from '../../../../shared/CenterComponent.tsx';
-import {
-    createEmptyEditForm,
-    createEmptyErrors,
-    EditFormProps,
-    ErrorsFormProps,
-    OPERATION_EDITION_FORM
-} from './OperationDetailPage.constants.ts';
-import { OperationDetailActions } from './actions/OperationDetailActions.component.tsx';
-import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
-import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.ts';
-import CompteBancaireModel from '../../../../../Models/budgets/CompteBancaire.model.ts';
-import {
-    BUSINESS_GUID,
-    OPERATION_ETATS_ENUM,
-    PERIODES_MENSUALITE_ENUM,
-    TYPES_CATEGORIES_OPERATION_ENUM,
-    TYPES_OPERATION_ENUM
-} from '../../../../../Utils/AppBusinessEnums.constants.ts';
-import { getCategorieColor, getCategorieIcon } from '../../../../../Utils/renderers/CategorieItem.renderer.tsx';
-import { getOperationStateColor, } from '../../../../../Utils/renderers/OperationItem.renderer.tsx';
+import { isInCreateMode } from './OperationDetailPage.controller.ts';
+import { OPERATION_EDITION_FORM } from './OperationDetailPage.constants.ts';
 import { OperationDetailValeur } from './subcomponents/OperationDetailValeur.component.tsx';
 import { OperationDetailLibelle } from './subcomponents/OperationDetailLibelle.component.tsx';
-import { getAffichageIntercompteRO, OperationDetailIntercompte } from './subcomponents/OperationDetailIntercompte.component.tsx';
-import { OperationDetailMensualite } from './subcomponents/OperationDetailMensualite.component.tsx';
-import { OperationDetailCategories } from './subcomponents/OperationDetailCategories.component.tsx';
-import OperationEditionModel, {
-    cloneOperation,
-    createNewOperationEdition
-} from '../../../../../Models/budgets/OperationEdition.model.ts';
+import { OperationDetailHeader } from './subcomponents/OperationDetailHeader.component.tsx';
+import { OperationDetailCategoriesSection } from './subcomponents/OperationDetailCategoriesSection.component.tsx';
+import { OperationDetailMensualiteSection } from './subcomponents/OperationDetailMensualiteSection.component.tsx';
+import { OperationDetailEtatSection } from './subcomponents/OperationDetailEtatSection.component.tsx';
+import { OperationDetailActionsSection } from './subcomponents/OperationDetailActionsSection.component.tsx';
 import { OperationDetailPageProps } from '../../../../Components.props.ts';
 import { useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
-import { OperationDetailDate } from './subcomponents/OperationDetailDateOperation.component.tsx';
-import OperationDetailStatus from '../../../../../Utils/renderers/OperationDetailStatus.renderer.tsx';
-import { OperationDetailDateFin } from '../../shared/OperationRecurrenteDetailDateFin.component.tsx';
-import { OperationDetailCategorieType } from './subcomponents/OperationDetailCategorieType.component.tsx';
-import { OPERATION_RECURRENTE_EDITION_FORM } from '../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts';
+import { useOperationEditForm } from '../../../../../hooks/useOperationEditForm.ts';
 
 
 /**
  * Composant de page de détail d'une opération.
  *
  * Ce composant affiche les détails d'une opération et permet de modifier ses informations.
- * Il gère également les états du formulaire d'édition et les interactions utilisateur.
+ * L'état du formulaire d'édition (champs ouverts, copie de travail, erreurs, validation, sauvegarde)
+ * est porté par le hook `useOperationEditForm` ; le composant ne garde que le rendu.
  * @returns {JSX.Element} - Le composant de page de détail d'une opération.
  */
 export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
@@ -60,182 +29,17 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     onOperationChange
 }: OperationDetailPageProps): JSX.Element => {
 
-    const [editForm, setEditForm] = useState<EditFormProps>(createEmptyEditForm(false));
-    const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors());
-    const [editOperation, setEditOperation] = useState<OperationEditionModel>(createNewOperationEdition());
-    const { currentBudget, currentOperation, comptes } = useBudgetContext();
-    const operation = currentOperation;
-    const budget = currentBudget;
+    const { currentBudget: budget, currentOperation: operation } = useBudgetContext();
+    const { editForm, editOperation, errors, resetKey, fillOperationForm, handleClick, validate, setEtatInCreation, commitOperation } =
+        useOperationEditForm({ listeCategories, onOperationChange });
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    /**
-     * Init de l'opération du formulaire à la sélection d'une nouvelle opération
-     */
-    useEffect(() => {
-        if (operation) {
-            setEditOperation(cloneOperation(operation));
-            setEditForm(createEmptyEditForm(operation.id === "-1"));
-            setErrors(createEmptyErrors());
-        }
-    }, [operation]);
 
     if (!operation || !budget) {
         return <></>;
     }
 
-    /**
-     * Ouverture du formulaire d'édition
-     * @param editForm formulaire d'édition
-     */
-    function openEditForm(editForm: EditFormProps) {
-        // Copie : editForm est muté en place par le gestionnaire de clic, une même référence ne déclencherait pas de rendu
-        setEditForm({ ...editForm })
-    }
-
-    /**
-     * callback de mise à jour de l'opération
-     * @param budget budget mis à jour
-     */
-    function onOperationUpdate(budget: BudgetMensuelModel) {
-        openEditForm(createEmptyEditForm(false));
-        onOperationChange(budget);
-    }
-
-    /**
-     * Mise à jour du formulaire d'édition
-     * @param field champ du formulaire à mettre à jour
-     * @param value valeur du champ
-     */
-    function fillOperationForm(field: OPERATION_EDITION_FORM | OPERATION_RECURRENTE_EDITION_FORM, value: string) {
-        switch (field) {
-            case OPERATION_EDITION_FORM.LIBELLE:
-                editOperation.libelle = value;
-                break;
-            case OPERATION_EDITION_FORM.DATE_OPERATION:
-                if (value !== null && value !== undefined && value !== "") {
-                    editOperation.autresInfos.dateOperation = new Date(Date.parse(value))
-                }
-                else {
-                    editOperation.autresInfos.dateOperation = null
-                }
-                break;
-            case OPERATION_EDITION_FORM.VALUE:
-                editOperation.valeur = value;
-                break;
-            case OPERATION_EDITION_FORM.MENSUALITE:
-                editOperation.mensualite.periode = Object.values(PERIODES_MENSUALITE_ENUM).find((periode: PERIODES_MENSUALITE_ENUM) => periode === value) || Object.values(PERIODES_MENSUALITE_ENUM)[0];
-                break;
-            case OPERATION_EDITION_FORM.DATE_FIN:
-                if (value !== null && value !== undefined && value !== "") {
-                    editOperation.mensualite.dateFin = new Date(Date.parse(value))
-                }
-                else {
-                    editOperation.mensualite.dateFin = null
-                }
-                break;
-            case OPERATION_EDITION_FORM.CATEGORIE:
-                if (value !== "") {
-                    fillCategorieForm(value);
-                }
-                break;
-            case OPERATION_EDITION_FORM.CATEGORIE_TYPE:
-                editOperation.ssCategorie.type = Object.values(TYPES_CATEGORIES_OPERATION_ENUM).find((type: TYPES_CATEGORIES_OPERATION_ENUM) => type === value);
-                break;
-            case OPERATION_EDITION_FORM.INTERCOMPTES:
-                editOperation.intercompte = value
-                break;
-            case OPERATION_EDITION_FORM.FORM_VALIDATION:
-                editForm.formValidationEnabled = (value === "true")
-                break;
-        }
-        openEditForm(editForm);
-        setEditOperation({ ...editOperation });
-    }
-
-    /**
-     * Applique la catégorie parente (et la sous-catégorie) sur l'opération en édition et l'opération courante
-     * @param ssCat sous catégorie sélectionnée
-     */
-    function applyCategorieParente(ssCat: CategorieOperationModel) {
-        if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
-            editOperation.categorie.id = ssCat.categorieParente.id;
-            editOperation.categorie.libelle = ssCat.categorieParente.libelle;
-        }
-        editOperation.ssCategorie.id = ssCat.id;
-        editOperation.ssCategorie.libelle = ssCat.libelle;
-        editOperation.ssCategorie.type = ssCat.type;
-
-        if (ssCat.categorieParente?.id && operation?.categorie) {
-            operation.categorie.id = ssCat.categorieParente.id;
-            operation.categorie.libelle = ssCat.categorieParente.libelle;
-        }
-        if (operation) {
-            operation.ssCategorie.id = ssCat.id;
-            operation.ssCategorie.libelle = ssCat.libelle;
-            operation.ssCategorie.type = ssCat.type;
-        }
-    }
-
-    /**
-     * Si type Rentrée d'argent, alors type opération = Crédit
-     */
-    function applyRentreeArgent() {
-        editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-        editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
-        if (operation) {
-            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.REVENUS;
-        }
-    }
-
-    /**
-     * Si type Actifs Invest, alors type opération = Crédit
-     */
-    function applyActifInvest() {
-        editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-        editOperation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
-        editOperation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
-        if (operation) {
-            operation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
-            operation.ssCategorie.type = TYPES_CATEGORIES_OPERATION_ENUM.ECONOMIES;
-            operation.mensualite.periode = PERIODES_MENSUALITE_ENUM.MENSUELLE;
-        }
-    }
-
-    /**
-     * Cas par défaut : type opération = Dépense
-     */
-    function applyDefaut() {
-        editOperation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
-        if (operation) {
-            operation.typeOperation = TYPES_OPERATION_ENUM.DEPENSE;
-        }
-    }
-
-    /**
-     * Validation d'une catégorie dans le formulaire
-     * @param ssCatId  id de la sous catégorie
-     */
-    function fillCategorieForm(ssCatId: string) {
-        const ssCat = listeCategories
-            .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
-            .find((ssCat: CategorieOperationModel) => ssCat?.id === ssCatId)
-        if (ssCat === undefined) {
-            return;
-        }
-        applyCategorieParente(ssCat);
-
-        /** Adaptation sur la sélection de catégorie selon le type de catégorie parente **/
-        if (BUSINESS_GUID.CAT_RENTREE_ARGENT === ssCat.categorieParente?.id) {
-            applyRentreeArgent();
-        }
-        else if (BUSINESS_GUID.CAT_ACTIFS_INVEST === ssCat.categorieParente?.id) {
-            applyActifInvest();
-        }
-        else {
-            applyDefaut();
-        }
-    }
+    const inCreateMode = isInCreateMode(editForm);
 
     /**
      * RENDER
@@ -244,43 +48,23 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     return (
         <Container id={OPERATION_EDITION_FORM.FORM}
             component="div" fixed
-            onClick={(event: any) => operation && budget && handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}
-            onKeyUp={(event: any) => operation && budget && handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate)}>
+            onClick={handleClick}
+            onKeyUp={handleClick}>
 
             <Stack direction={"column"} sx={{ justifyContent: isMobile ? "none" : "center", paddingTop: isMobile ? "15px" : "10vh" }}>
                 <Stack direction={"column"} spacing={isMobile ? 1 : 4} className="budget-page-container"
                     sx={{ alignItems: "center", justifyContent: "center", padding: isMobile ? "15px" : "30px", backgroundColor: "var(--color-dark-container)" }}>
-                    <Grid container sx={{ width: "90%" }}>
-                        <Grid size={{ md: 4, xl: 4 }} />
-                        <Grid size={{ md: 4, xl: 4 }}>
-                            <CenterComponent>
-                                <Box sx={{
-                                        width: 56,
-                                        height: 56,
-                                        borderRadius: "50%",
-                                        backgroundColor: getCategorieColor(operation.categorie.id),
-                                        color: 'var(--color-white)',
-                                        padding: '15px 0px 0px 15px'
-                                    }}>
-                                    {getCategorieIcon(operation.ssCategorie)}
-                                </Box>
-                            </CenterComponent>
-                        </Grid>
-                        <Grid size={{ md: 4, xl: 4 }} sx={{ display: "flex", justifyContent: "flex-end" }}>
-                            { /** STATUT **/}
-                            {operation.statuts !== null && operation.statuts !== undefined ?
-                                <OperationDetailStatus statutsOperation={operation.statuts} /> : <></>
-                            }
-                        </Grid>
-                    </Grid>
+
+                    <OperationDetailHeader editOperation={editOperation} statuts={operation.statuts} />
+
                     <Grid container sx={{ width: "90%", alignItems: "center", justifyContent: "center" }}>
                         { /** VALEUR **/}
-                        <OperationDetailValeur formValueInEdition={editForm.value}
+                        <OperationDetailValeur key={resetKey} formValueInEdition={editForm.value}
                             errorValeur={errors.valeur}
+                            typeOperation={editOperation.typeOperation ?? undefined}
                             fillOperationForm={fillOperationForm} />
                     </Grid>
                     <Grid container sx={{ width: "90%", alignItems: "center", justifyContent: "center" }}>
-
                         { /** LIBELLE **/}
                         <OperationDetailLibelle
                             listeLibellesOperations={listeLibellesOperations}
@@ -289,137 +73,30 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
                             fillOperationForm={fillOperationForm} />
                     </Grid>
 
-                    {/** 
-                     * CATEGORIES 
-                     **/}
+                    <Grid container columnSpacing={2} rowSpacing={isMobile ? 1 : 2} sx={{ width: "90%", borderTop: inCreateMode ? 'none' : '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
+                        { /** CATEGORIES **/}
+                        <OperationDetailCategoriesSection listeCategories={listeCategories}
+                            editForm={editForm} errors={errors} editOperation={editOperation}
+                            fillOperationForm={fillOperationForm} isMobile={isMobile} />
 
-                    <Grid container columnSpacing={2} rowSpacing={isMobile ? 1 : 2} sx={{ width: "90%", borderTop: isInCreateMode(editForm) ? 'none' : '1px solid var(--color-operations-primary)', paddingTop: 2 }}>
-                        <Grid size={{ md: 8, xl: 8 }}>
-                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Catégorie</Typography>
-                        </Grid>
-                        <Grid size={{ md: 4, xl: 4 }}>
-                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Type Catégorie</Typography>
-                        </Grid>
+                        { /** MENSUALITES **/}
+                        <OperationDetailMensualiteSection resetKey={resetKey}
+                            editForm={editForm} errors={errors} editOperation={editOperation}
+                            fillOperationForm={fillOperationForm} isMobile={isMobile} />
 
-                        <Grid size={{ md: 8, xl: 8 }}>
-                            {  /** CATEGORIES **/}
-                            <OperationDetailCategories
-                                listeCategories={listeCategories}
-                                formCatgoriesInEdition={editForm.categories}
-                                errorsCategories={errors.categorie}
-                                fillOperationForm={fillOperationForm} />
-                        </Grid>
-                        <Grid size={{ md: 4, xl: 4 }} >
-                            { /** Détail catégorie **/}
-                            <OperationDetailCategorieType
-                                formCategorieTypeInEdition={editForm.categorieType}
-                                editOperation={editOperation}
-                                fillOperationForm={fillOperationForm} />
-                        </Grid>
-
-                        { /** COMPTE DE TRANSFERT **/}
-                        {editOperation !== null && (BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE === editOperation.ssCategorie.id) &&
-                            <>
-                                <Grid size={{ md: 12, xl: 12 }}>
-                                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Compte de transfert</Typography>
-                                </Grid>
-                                <Grid size={{ md: 12, xl: 12 }}>
-                                    {isInCreateMode(editForm) ?
-                                        <OperationDetailIntercompte intercompte={editOperation.intercompte}
-                                            listeAutresComptes={
-                                                comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id)}
-                                            errorIntercompte={errors.intercompte}
-                                            fillOperationForm={fillOperationForm} />
-                                        : getAffichageIntercompteRO(editOperation.libelle, comptes.filter((compte: CompteBancaireModel) => currentBudget?.idCompteBancaire !== compte.id), isMobile)}
-                                </Grid>
-                            </>
-                        }
-
-                        {/** 
-                         * MENSUALITES
-                         **/}
-                        { operation.categorie.id !== BUSINESS_GUID.CAT_ACTIFS_INVEST && 
-                        <>
-                        <Grid size={{ md: 8, xl: 8 }}>
-                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Période</Typography>
-                        </Grid>
-                        <Grid size={{ md: 4, xl: 4 }}>
-                            {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
-                                <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date de fin</Typography>
-                            }
-                        </Grid>
-                        <Grid size={{ md: 8, xl: 8 }}>
-                            { /** Période **/}
-                            <OperationDetailMensualite
-                                formMensualiteInEdition={editForm.mensualite}
-                                fillOperationForm={fillOperationForm} />
-                        </Grid>
-                        <Grid size={{ md: 4, xl: 4 }}>
-                            { /** DATE FIN **/}
-                            {(operation.mensualite.periode !== undefined && operation.mensualite.periode !== PERIODES_MENSUALITE_ENUM.PONCTUELLE) &&
-                                <OperationDetailDateFin formDateInEdition={editForm.dateFin}
-                                    errorDateOperation={errors.dateFin}
-                                    fillOperationForm={fillOperationForm} />}
-                        </Grid>
-                        </>
-                    }
-
-                        {/** 
-                         * ETATS et Actions 
-                         **/}
-                        <Grid size={{ md: 8, xl: 8 }}>
-                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Etat</Typography>
-                        </Grid>
-                        <Grid size={{ md: 4, xl: 4 }}>
-                            <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Date d'opération</Typography>
-                        </Grid>
-
-
-                        <Grid size={{ md: 8, xl: 8 }}>
-                            <Typography variant={"overline"} style={{ border: '1px solid ' + getOperationStateColor(operation.etat), padding: '8px', paddingRight: '10px', borderRadius: '4px', color: getOperationStateColor(operation.etat) }}>
-                                {operation.etat}
-                            </Typography>
-                        </Grid>
-
-                        <Grid size={{ md: 4, xl: 4 }}>
-                            { /** DATE OPERATION **/}
-                            <OperationDetailDate
-                                formDateInEdition={editForm.dateOperation}
-                                errorDateOperation={errors.dateOperation}
-                                fillOperationForm={fillOperationForm} />
-                        </Grid>
-
+                        { /** ETATS **/}
+                        <OperationDetailEtatSection resetKey={resetKey}
+                            etat={inCreateMode ? editOperation.etat : operation.etat}
+                            editForm={editForm} errors={errors} editOperation={editOperation}
+                            fillOperationForm={fillOperationForm} isMobile={isMobile} />
                     </Grid>
 
-                    <Grid container sx={{ width: "90%", alignItems: "center", justifyContent: "center" }}>
-                        {currentBudget?.actif &&
-                            <>
-                                <Grid size={{ md: 2, xl: 2 }}>
-                                    <Typography variant={"caption"} sx={{ color: "var(--color-heading-text)" }}>Actions</Typography>
-                                </Grid>
-                                <Grid size={{ md: 8, xl: 8 }} sx={{ paddingBottom: 2 }}>
-                                    <Stack direction={"column"} sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}>
-                                        { /** ACTIONS **/}
-                                        {currentOperation?.etat === OPERATION_ETATS_ENUM.SUPPRIMEE ?
-                                            <></>
-                                            : <OperationDetailActions
-                                                isInCreateMode={isInCreateMode(editForm)}
-                                                editOperation={editOperation}
-                                                onClickRealiseInCreateMode={() => handleDateOperationFromAction(editOperation, setEditOperation)}
-                                                onOperationChange={onOperationChange}
-                                            />
-                                        }
-                                    </Stack>
-                                </Grid>
-                                <Grid size={{ md: 2, xl: 2 }}></Grid>
-                            </>
-
-                        }
-                        {currentBudget?.actif && isInEditMode(editForm) &&
-                            <Button fullWidth variant="outlined" color="success"
-                                onClick={() => handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate)}>Valider</Button>
-                        }
-                    </Grid>
+                    { /** ACTIONS **/}
+                    <OperationDetailActionsSection editForm={editForm} editOperation={editOperation}
+                        onClickRealiseInCreateMode={setEtatInCreation}
+                        onOperationChange={onOperationChange}
+                        onOperationCommit={commitOperation}
+                        onValidate={validate} />
                 </Stack>
             </Stack>
         </Container>

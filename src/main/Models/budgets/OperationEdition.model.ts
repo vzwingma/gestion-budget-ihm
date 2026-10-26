@@ -74,7 +74,8 @@ export function cloneOperation(operation: OperationModel): OperationEditionModel
         typeOperation: operation.typeOperation,
         etat: operation.etat,
         valeur: valeur,
-        mensualite: operation.mensualite,
+        // Copie (et non référence partagée avec l'opération du contexte) : l'édition ne doit jamais muter l'original
+        mensualite: {...operation.mensualite},
         autresInfos: {
             dateOperation: operation.autresInfos.dateOperation
         },
@@ -82,3 +83,18 @@ export function cloneOperation(operation: OperationModel): OperationEditionModel
     }
 }
 
+
+/**
+ * Copie profonde d'une opération en cours d'édition (état immuable : toute modification passe par une copie).
+ * Les dates (`Date`) sont partagées par référence : elles sont remplacées, jamais modifiées en place.
+ * @param edition opération en édition à copier
+ */
+export function cloneOperationEdition(edition: OperationEditionModel): OperationEditionModel {
+    return {
+        ...edition,
+        categorie: {...edition.categorie},
+        ssCategorie: {...edition.ssCategorie},
+        mensualite: {...edition.mensualite},
+        autresInfos: {...edition.autresInfos}
+    };
+}

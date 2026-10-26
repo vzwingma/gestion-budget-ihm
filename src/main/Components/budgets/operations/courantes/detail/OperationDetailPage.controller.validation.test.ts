@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 
 import {
     handleOperationEditionClick,
@@ -12,7 +12,7 @@ import { saveOperation, saveOperationIntercompte } from './OperationDetailPage.e
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
 import { createNewOperation } from '../../../../../Models/budgets/Operation.model.ts';
 import { cloneOperation } from '../../../../../Models/budgets/OperationEdition.model.ts';
-import { BUSINESS_GUID, TYPES_OPERATION_ENUM } from '../../../../../Utils/AppBusinessEnums.constants.ts';
+import { BUSINESS_GUID, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM } from '../../../../../Utils/AppBusinessEnums.constants.ts';
 
 /**
  * Compléments de OperationDetailPage.controller.test.ts : ici les validateurs des sous-composants sont RÉELS
@@ -75,9 +75,12 @@ describe('OperationDetailPage.controller - handleOperationEditionClick', () => {
 
         appeler(evt({ id }), editForm);
 
-        expect(editForm[drapeau]).toBe(true);
+        // Le formulaire reçu n'est pas muté : une nouvelle copie est transmise à openEditForm
+        expect(editForm[drapeau]).toBe(false);
         expect(openEditForm).toHaveBeenCalledTimes(1);
-        expect(openEditForm).toHaveBeenCalledWith(editForm);
+        const ouvert = openEditForm.mock.calls[0][0];
+        expect(ouvert).not.toBe(editForm);
+        expect(ouvert[drapeau]).toBe(true);
     });
 
     test('un seul drapeau est modifié par clic', () => {
@@ -85,7 +88,8 @@ describe('OperationDetailPage.controller - handleOperationEditionClick', () => {
 
         appeler(evt({ id: 'OPERATION_LIBELLE' }), editForm);
 
-        expect(editForm).toEqual({ ...createEmptyEditForm(false), libelle: true });
+        expect(editForm).toEqual(createEmptyEditForm(false));
+        expect(openEditForm).toHaveBeenCalledWith({ ...createEmptyEditForm(false), libelle: true });
     });
 
     test('clic sur un enfant sans id : remonte au parent identifié', () => {
@@ -93,7 +97,7 @@ describe('OperationDetailPage.controller - handleOperationEditionClick', () => {
 
         appeler(evt({ id: '', parentNode: { id: 'OPERATION_VALUE' } }), editForm);
 
-        expect(editForm.value).toBe(true);
+        expect(openEditForm).toHaveBeenCalledWith(expect.objectContaining({ value: true }));
     });
 
     test('clic sur un élément d\'id inconnu : formulaire ré-émis mais aucun drapeau modifié', () => {
@@ -103,6 +107,7 @@ describe('OperationDetailPage.controller - handleOperationEditionClick', () => {
 
         expect(editForm).toEqual(createEmptyEditForm(false));
         expect(openEditForm).toHaveBeenCalledTimes(1);
+        expect(openEditForm).toHaveBeenCalledWith(createEmptyEditForm(false));
     });
 
     test('clic dans un champ de saisie (id se terminant par _INPUT) : ignoré', () => {
@@ -143,7 +148,10 @@ describe('OperationDetailPage.controller - handleOperationEditionClick', () => {
         handleOperationEditionClick(evt({ id: 'OPERATION_FORM' }, 'keyup', code), { operation, budget: budget() }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate);
 
         expect(saveOperation).toHaveBeenCalledTimes(1);
-        expect(saveOperation).toHaveBeenCalledWith(operation, expect.any(BudgetMensuelModel), onOperationUpdate);
+        // Validation sur un brouillon : l'opération du contexte n'est pas modifiée
+        expect(saveOperation).toHaveBeenCalledWith(expect.objectContaining({ id: 'op-1', libelle: 'Loyer' }), expect.any(BudgetMensuelModel), onOperationUpdate);
+        expect((saveOperation as Mock).mock.calls[0][0]).not.toBe(operation);
+        expect(operation.libelle).toBe('Courses');
         expect(openEditForm).not.toHaveBeenCalled();
     });
 
@@ -267,14 +275,56 @@ describe('OperationDetailPage.controller - validateForm / handleValidateOperatio
         expect(saveOperationIntercompte).not.toHaveBeenCalled();
     });
 
-    test('handleValidateOperationForm : valide -> saveOperation(operation, budget, onOperationUpdate), sans toucher aux erreurs', () => {
+    test('handleValidateOperationForm : erreurs -> opération du contexte non modifiée (libellé saisi non reporté)', () => {
+        const { operation, editOperation } = operations({ ssCategorieId: null });
+        editOperation.libelle = 'Libellé saisi';
+
+        handleValidateOperationForm(operation, budget(), editOperation, formOuvert({ libelle: true }), setErrors, onOperationUpdate);
+
+        expect(setErrors).toHaveBeenCalledWith(expect.objectContaining({ categorie: 'Le champ Catégorie est obligatoire' }));
+        expect(operation.libelle).toBe('Courses');
+    });
+
+    test('handleValidateOperationForm : valide -> saveOperation(brouillon copié, budget, onOperationUpdate), sans toucher aux erreurs', () => {
         const { operation, editOperation } = operations();
         const budgetCourant = budget();
+        editOperation.libelle = 'Nouveau libellé';
+        const onDraft = vi.fn();
 
-        handleValidateOperationForm(operation, budgetCourant, editOperation, formOuvert({ libelle: true }), setErrors, onOperationUpdate);
+        handleValidateOperationForm(operation, budgetCourant, editOperation, formOuvert({ libelle: true }), setErrors, onOperationUpdate, { onDraft });
 
-        expect(saveOperation).toHaveBeenCalledWith(operation, budgetCourant, onOperationUpdate);
+        const brouillon = (saveOperation as Mock).mock.calls[0][0];
+        expect(saveOperation).toHaveBeenCalledWith(brouillon, budgetCourant, onOperationUpdate);
+        expect(brouillon).not.toBe(operation);
+        expect(brouillon.libelle).toBe('Nouveau libellé');
+        expect(operation.libelle).toBe('Courses');
+        expect(onDraft).toHaveBeenCalledWith(brouillon);
         expect(setErrors).not.toHaveBeenCalled();
+    });
+
+    test('handleValidateOperationForm : formulaire corrigé -> les erreurs affichées sont remises à zéro', () => {
+        const { operation, editOperation } = operations();
+        const erreursAffichees = { ...createEmptyErrors(), libelle: 'Le champ Description est obligatoire' };
+
+        handleValidateOperationForm(operation, budget(), editOperation, formOuvert({ libelle: true }), setErrors, onOperationUpdate, { currentErrors: erreursAffichees });
+
+        expect(setErrors).toHaveBeenCalledWith(createEmptyErrors());
+        expect(saveOperation).toHaveBeenCalledTimes(1);
+    });
+
+    test('validateForm : état, sens et période de la copie d\'édition sont recopiés sur le brouillon (dont date de fin)', () => {
+        const { operation, editOperation } = operations();
+        editOperation.etat = OPERATION_ETATS_ENUM.REALISEE;
+        editOperation.typeOperation = TYPES_OPERATION_ENUM.CREDIT;
+        editOperation.mensualite = { periode: PERIODES_MENSUALITE_ENUM.MENSUELLE };
+
+        validateForm(budget(), editOperation, operation, formOuvert({ libelle: true }), createEmptyErrors());
+
+        expect(operation.etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
+        expect(operation.typeOperation).toBe(TYPES_OPERATION_ENUM.CREDIT);
+        expect(operation.mensualite.periode).toBe(PERIODES_MENSUALITE_ENUM.MENSUELLE);
+        // propriétés propres à l'opération (prochaineEcheance) conservées
+        expect(operation.mensualite.prochaineEcheance).toBe(-1);
     });
 
     test('handleValidateOperationForm : virement interne en création -> saveOperationIntercompte avec le compte cible', () => {
@@ -286,9 +336,12 @@ describe('OperationDetailPage.controller - validateForm / handleValidateOperatio
 
         handleValidateOperationForm(operation, budgetCourant, editOperation, createEmptyEditForm(true), setErrors, onOperationUpdate);
 
-        expect(saveOperationIntercompte).toHaveBeenCalledWith(operation, budgetCourant, 'compte-2', onOperationUpdate);
+        const brouillon = (saveOperationIntercompte as Mock).mock.calls[0][0];
+        expect(saveOperationIntercompte).toHaveBeenCalledWith(brouillon, budgetCourant, 'compte-2', onOperationUpdate);
         expect(saveOperation).not.toHaveBeenCalled();
-        expect(operation.intercompte).toBe('compte-2');
+        expect(brouillon).not.toBe(operation);
+        expect(brouillon.intercompte).toBe('compte-2');
+        expect(operation.intercompte).toBeNull();
     });
 
     test('handleValidateOperationForm : virement interne hors création -> saveOperation classique', () => {

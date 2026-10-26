@@ -35,7 +35,8 @@ import { handleOperationAction } from "./OperationDetailActions.controller.ts";
 export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({   isInCreateMode,
                                                                                   editOperation,
                                                                                   onClickRealiseInCreateMode: handleDateOperationFromCreateAction,
-                                                                                  onOperationChange
+                                                                                  onOperationChange,
+                                                                                  onOperationCommit
                                                                               }: OperationDetailActionsProps): JSX.Element => {
 
     const [showModale, setShowModale] = useState<boolean>(false);
@@ -46,12 +47,14 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
     if (!operation || !budget) {
         return <></>;
     }
+    // En création, l'état est porté par l'opération en cours d'édition (le contexte n'est pas modifié)
+    const etat = (isInCreateMode ? editOperation?.etat : undefined) ?? operation.etat;
 
     return (
         <ButtonGroup
             variant="contained"
-            onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, editOperation, handleDateOperationFromCreateAction, onOperationChange, setShowModale)}>
-            {operation.etat !== OPERATION_ETATS_ENUM.REALISEE &&
+            onClick={(e) => handleOperationAction(e, operation, budget, isInCreateMode, editOperation, handleDateOperationFromCreateAction, onOperationChange, setShowModale, onOperationCommit)}>
+            {etat !== OPERATION_ETATS_ENUM.REALISEE &&
                 <Tooltip title="Valider l'opération">
                     <IconButton
                         className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.REALISEE}
@@ -62,7 +65,7 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                     </IconButton>
                 </Tooltip>
             }
-            {operation.etat !== OPERATION_ETATS_ENUM.PREVUE &&
+            {etat !== OPERATION_ETATS_ENUM.PREVUE &&
                 <Tooltip title="Prévoir l'opération">
                     <IconButton
                         className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.PREVUE}
@@ -73,7 +76,7 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                     </IconButton>
                 </Tooltip>
             }
-            {operation.etat !== OPERATION_ETATS_ENUM.REPORTEE &&
+            {etat !== OPERATION_ETATS_ENUM.REPORTEE &&
                 <Tooltip title="Reporter l'opération">
                     <IconButton
                         className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.REPORTEE}
@@ -84,7 +87,7 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                     </IconButton>
                 </Tooltip>
             }
-            {operation.etat !== OPERATION_ETATS_ENUM.ANNULEE && !isInCreateMode &&
+            {etat !== OPERATION_ETATS_ENUM.ANNULEE && !isInCreateMode &&
                 <Tooltip title="Annuler l'opération">
                     <IconButton
                         className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.ANNULEE}
@@ -95,7 +98,7 @@ export const OperationDetailActions: React.FC<OperationDetailActionsProps> = ({ 
                     </IconButton>
                 </Tooltip>
             }
-            {operation.etat !== OPERATION_ETATS_ENUM.SUPPRIMEE && !isInCreateMode &&
+            {etat !== OPERATION_ETATS_ENUM.SUPPRIMEE && !isInCreateMode &&
                 <Tooltip title="Supprimer l'opération">
                     <IconButton
                         className={"buttonsActionsOperations color_" + OPERATION_ETATS_ENUM.SUPPRIMEE}

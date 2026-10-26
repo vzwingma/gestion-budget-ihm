@@ -17,6 +17,7 @@ import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps> = ({ formMensualiteInEdition,
+    periodeInEdition,
     fillOperationForm
 }: OperationDetailMensualiteProps): JSX.Element => {
 
@@ -28,6 +29,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
     }
 
     const budgetActif = currentBudget.actif;
+    const periode = periodeInEdition ?? operation.mensualite.periode;
     /**
  * Remplit le champ "valeur" de l'état à partir de la saisie de l'utilisateur
  * @param {Event} e - L'événement de saisie
@@ -48,7 +50,7 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
             <TextField
                 id={OPERATION_EDITION_FORM.MENSUALITE + OPERATION_EDITION_FORM.INPUT}
                 required select fullWidth
-                value={operation.mensualite.periode}
+                value={periode}
                 placeholder={"Sélectionnez une période"}
                 onChange={fillPeriodeForm}
                 onFocus={() => activateValidationForm(false)}
@@ -65,8 +67,8 @@ export const OperationDetailMensualite: React.FC<OperationDetailMensualiteProps>
             
             <Typography id={OPERATION_EDITION_FORM.MENSUALITE} variant={"overline"}
                 className={budgetActif ? "editableField" : "editableField--disabled"}
-                style={{border: '1px solid ' + getPeriodeRenderer(operation.mensualite.periode).color, padding: '8px', paddingRight: '10px', borderRadius: '4px', color: getPeriodeRenderer(operation.mensualite.periode).color}}>
-                {getPeriodeRenderer(operation.mensualite.periode).text}
+                style={{border: '1px solid ' + getPeriodeRenderer(periode).color, padding: '8px', paddingRight: '10px', borderRadius: '4px', color: getPeriodeRenderer(periode).color}}>
+                {getPeriodeRenderer(periode).text}
             </Typography>
     )
 }

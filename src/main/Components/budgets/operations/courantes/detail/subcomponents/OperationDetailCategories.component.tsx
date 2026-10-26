@@ -27,6 +27,7 @@ import SsCategorieOperationModel from '../../../../../../Models/budgets/SsCatego
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
 export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({  formCatgoriesInEdition,
+                                                                                        ssCategorieInEdition,
                                                                                         errorsCategories,
                                                                                         fillOperationForm
                                                                                 }: OperationDetailCategoriesProps): JSX.Element => {
@@ -39,6 +40,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
     if (!operation) {
         return <></>;
     }
+    const ssCategorie = ssCategorieInEdition ?? operation.ssCategorie;
     /**
      * Active ou désactive le formulaire d'édition lors des autocomplétions
      * @param {boolean} activation - Indique si le formulaire doit être activé ou désactivé
@@ -61,7 +63,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
             <FormControl fullWidth required error={errorsCategories != null}>
                 <Autocomplete
                     id={OPERATION_EDITION_FORM.CATEGORIE + OPERATION_EDITION_FORM.INPUT}
-                    renderInput={(params: any) => <TextField {...params} variant={"standard"} size={"small"} placeholder={operation.ssCategorie == null ? "Sélectionnez des catégories" : ""}/>}
+                    renderInput={(params: any) => <TextField {...params} variant={"standard"} size={"small"} placeholder={ssCategorie == null ? "Sélectionnez des catégories" : ""}/>}
                     renderOption={(props, option, state, ownerState) => {
                         const {key, ...optionProps} = props;
                         return (<Box key={key}
@@ -72,7 +74,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                         )
                     }}
                     sx={{ width: "100%" }}
-                    value={operation.ssCategorie ?? { id: null, libelle: "" }}
+                    value={ssCategorie ?? { id: null, libelle: "" }}
                     options={getListeAllSsCategoriesFlatten(categories)}
                     groupBy={(option: SsCategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
                     getOptionLabel={(option: SsCategorieOperationModel) => option?.libelle ?? ""}
@@ -92,7 +94,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
             </FormControl>
             :
             <Typography variant={"overline"}>
-                {operation.categorie.libelle} / {operation.ssCategorie.libelle}
+                {operation.categorie.libelle} / {ssCategorie.libelle}
             </Typography>
     )
 }

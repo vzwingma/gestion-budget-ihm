@@ -1,6 +1,6 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lot 1 livré (Gate #4 validé 👤, 2026-10-25) · 🟡 Lot 2 livré, Gate #4 en attente 👤 (reste : découpage `OperationDetailPage`, T16, T20 partiel, T12)
+**Statut** : ✅ Lot 1 livré (Gate #4 validé 👤, 2026-10-25) · ✅ Lot 2 livré (Gate #4 validé 👤) · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 (reste : T16, T20 partiel, T12, sécurité `processEquation`)
 **Date** : 2026-10-23
 
 ## Context
@@ -223,7 +223,7 @@ Ordre : T11 (adoption, composant par composant, tests de rendu avant) → T2 (d�
 | #1 | 2026-10-25 | GO | Périmètre lot 2 validé 👤 |
 | #2 | 2026-10-25 | GO 👤 | DEVon : T11 adoption, T2 partiel, T6, correctifs UX/bug |
 | #3 | 2026-10-25 | GO 👤 | QALvin : 365 tests verts (58 fichiers), lint 0 erreur, ~91 % stmt |
-| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, ADR 002 (note), wiki (ConceptionIHM, Historique, C3) mis à jour |
+| #4 | — | GO 👤 (validé avant le lot 3) | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, ADR 002 (note), wiki (ConceptionIHM, Historique, C3) mis à jour |
 
 ### Résultats (lot 2)
 
@@ -244,20 +244,56 @@ Ordre : T11 (adoption, composant par composant, tests de rendu avant) → T2 (d�
 
 Périmètre validé 👤 ("lance la suite") : **découpage de `OperationDetailPage`** (état d'édition immuable + hook `useOperationEditForm`, sous-composants) et **couverture T20** des composants concernés (`OperationDetailPage` ~69 %, `OperationDetailPage.controller` ~66 %, `OperationDetailActions`, `BudgetActionsButtonGroup`, sous-composants `OperationDetail*`, `AnalyseOperationItem`). Hors lot : T12 (décision 👤), T16 (co-location des Props).
 
-Ordre : 1) QALvin pose les tests de caractérisation (filet) AVANT tout refactor ; 2) DEVon refactore sans changer le comportement ; 3) QALvin ajuste les tests ; 4) DOCly. Journal des gates lot 3 : #1 GO (2026-10-26) ; #2/#3/#4 à venir.
+Ordre : 1) QALvin pose les tests de caractérisation (filet) AVANT tout refactor ; 2) DEVon refactore sans changer le comportement ; 3) QALvin ajuste les tests ; 4) DOCly.
+
+### Journal des gates lot 3
+
+| Gate | Date | Décision | Détail |
+|---|---|---|---|
+| #1 | 2026-10-26 | GO 👤 | Périmètre lot 3 validé |
+| #2 | 2026-10-26 | GO 👤 | DEVon : correctif régression T10 (PR #704), refactor `OperationDetailPage` (429 → 106 lignes), état d'édition immuable, défauts (3)–(7) corrigés |
+| #3 | 2026-10-26 | GO 👤 | QALvin : 837 tests verts (92 fichiers), lint 0 erreur, build OK, ~100 % lignes page/hook/controller/actions/sections |
+| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique, C3) mis à jour ; ADR 002 inchangé (`Proposée`) |
 
 **Phase 1 (filet QALvin) — résultats** : +231 tests, `OperationDetailPage` 68,9 → 98,9 % lignes, controller 65,9 → 100 %. Le filet a révélé une **régression du lot 1 (T10)** : retirer `setRefresh` a supprimé le re-rendu au clic sur un champ (`openEditForm` réécrivait la même référence `editForm` mutée en place) → corrigée par copie (`setEditForm({ ...editForm })`), PR dédiée. Le même correctif règle l'affichage de l'état REALISEE après « Valider l'opération » en création.
 
-**Défauts connus restants** (tests `test.fails`, à traiter lors du refactor ou en correctif dédié) : (3) création + « Valider l'opération » envoie `dateOperation = null` (`controller.ts:108`) ; (4) montant non contrôlé (`defaultValue`) : ancienne saisie affichée d'une création à l'autre ; (5) libellé purement numérique (« 2024 ») perdu (`OperationDetailLibelle`, `fillLibelleForm`) ; (6) montant « abc » accepté comme 0 (`processEquation`) ; (7) `OperationDetailValeur` : `budgetActif = currentBudget` (objet) au lieu de `currentBudget.actif`.
+**Défauts identifiés par le filet** (tests `test.fails`, tous corrigés en phase 2) : (3) création + « Valider l'opération » envoyait `dateOperation = null` ; (4) montant non contrôlé : ancienne saisie affichée d'une création à l'autre ; (5) libellé purement numérique (« 2024 ») perdu ; (6) montant « abc » accepté comme 0 (`processEquation`) ; (7) `OperationDetailValeur` : `budgetActif = currentBudget` (objet) au lieu de `currentBudget.actif`.
 
-## Dette restante / prochain lot (après lot 2)
+### Résultats (lot 3)
+
+#### Fait
+- **Régression T10 corrigée** (PR #704, contenue dans la branche) : `openEditForm` copie `editForm` (`{ ...editForm }`) ⇒ re-rendu au clic sur un champ ; filet de tests de caractérisation (+231 tests en phase 1).
+- **T2 (reste) : découpage de `OperationDetailPage`** (429 → 106 lignes) :
+  - hook `hooks/useOperationEditForm.ts` : `editForm`, `editOperation`, `errors`, `resetKey` ; initialisation à la sélection pendant le rendu ; `handleClick`, `validate`, `setEtatInCreation`, `commitOperation` ;
+  - sous-composants `detail/subcomponents/OperationDetail{Header,CategoriesSection,MensualiteSection,EtatSection,ActionsSection}` ;
+  - `OperationDetailPage.controller.ts` : fonctions pures exportées (`fillOperationField`, `fillCategorieForm`, `applyCategorieParente`, `applyRentreeArgent`, `applyActifInvest`, `applyDefaut`, `applyEtatInCreation`, `openField`) ; `cloneOperation` copie `mensualite` en profondeur, + `cloneOperationEdition` / `cloneOperationModel`.
+- **État d'édition immuable** : l'opération du contexte (`currentOperation`) n'est plus jamais mutée ; la validation porte sur un brouillon, qui devient `currentOperation` au succès. Actions d'état en édition : `saveOperation(updated, budget, wrapper)`, le wrapper appelle `onOperationChange` puis `onOperationCommit` **uniquement au succès** (échec : ni commit ni changement d'écran). En création : `handleDateOperationFromAction(date, etat)`.
+- **Défauts corrigés** : date du jour transmise en création + « Valider l'opération » ; montant remis à zéro entre deux créations (`resetKey`) ; libellé numérique « 2024 » conservé ; montant « abc » refusé (« Le champ Montant est incorrect ») et montants ambigus (« 2 3 ») refusés au lieu d'être enregistrés comme 0 ; `OperationDetailValeur` désactivé sur budget clos (`currentBudget?.actif`) ; erreurs effacées après correction.
+
+#### Preuves
+- Tests : 837 verts (92 fichiers). Lint : 0 erreur. Build : OK.
+- Couverture ~100 % lignes sur page / hook / controller / actions / sections (branches page 70 %).
+- Mutations de vérification : le filet a été éprouvé par mutations (cassure volontaire du comportement ⇒ tests rouges) avant/après refactor.
+- Non couvert : `Main.tsx` lazy/Suspense, branches `isMobile`.
+
+#### Leçon (régression T10)
+Le lot 1 a supprimé le `useEffect(() => {}, [refresh])` « vide » et `setRefresh`. Or `refresh` forçait le re-rendu alors que l'état d'édition était **muté en place** et réaffecté avec la **même référence** : React ne voit aucun changement ⇒ pas de rendu. Règles retenues : (1) ne jamais muter un état en place, toujours copier (`{ ...x }`) ; (2) supprimer un `useEffect` ou un state « vide » exige de vérifier ce que son déclenchement provoquait (re-rendu forcé) et de le couvrir par un test avant retrait. Le refactor lot 3 supprime la cause racine (état immuable).
+
+#### Points d'attention / dette issue du lot 3
+- **Sécurité** : `processEquation` évalue la saisie via `new Function` (malgré la mention « sans eval ») ⇒ tâche dédiée : remplacer par un parseur arithmétique.
+- Le hook `useOperationEditForm` (dans `hooks/`) importe des modules de `Components/` (dépendance inversée) : déplaçable dans `detail/`.
+- La date d'opération reste non contrôlée (`defaultValue`) : n'affiche pas la date du jour en création + « Valider l'opération » (elle est correctement envoyée à la sauvegarde).
+
+## Dette restante / prochain lot (après lot 3)
 
 | Tâche | Reste à faire | Prérequis / blocage |
 |---|---|---|
-| T2 (reste) | Découper `OperationDetailPage` en sous-composants | État mutable partagé : nécessite un hook `useOperationEditForm` ; déplacer aussi `OPERATION_RECURRENTE_EDITION_FORM` si le découpage le justifie |
-| T6 (reste) | Migrer vers les hooks ciblés les 6 consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) | Ils lisent des champs des deux moitiés ; à traiter avec le découpage d'`OperationDetailPage` |
+| ~~T2 (reste)~~ | ✅ Fait (lot 3) : `OperationDetailPage` découpée | — |
+| T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) | Lisent des champs des deux moitiés ; à vérifier après le découpage lot 3 |
+| Sécurité | Remplacer l'évaluation `new Function` de `processEquation` par un parseur arithmétique | Tâche dédiée à planifier |
+| Dette | Déplacer `useOperationEditForm` dans `detail/` (dépendance `hooks/` → `Components/`) ; contrôler la date d'opération | Mineur |
 | T16 | Co-location des Props (`Components.props.ts` reste centralisé) | Par lots |
-| T20 (reste) | Couverture `OperationDetailPage` (~69 %) ; composants sans test : `AnalyseOperationItem`, `BudgetActionsButtonGroup`, `OperationDetailActions`, sous-composants `OperationDetail*` | Au fil des refactos |
+| T20 (reste) | Couverture de composants hors lot : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %) | Au fil des refactos |
 | T12 | ADR 002 TanStack Query : statut `Proposée`, décision 👤 | `useFetch` adopté → réévaluation cache/dedup possible (voir note de l'ADR) |
 | Ajustement | Spinner `AnalysesFiltrePeriode` sans compte sélectionné | Mineur |
 
