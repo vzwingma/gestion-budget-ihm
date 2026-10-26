@@ -121,7 +121,7 @@ gestion-budget-ihm/
 
 | Variable | Description | Exemple |
 |---|---|---|
-| `VITE_BUDGET_VERSION` | Version de l'application affichée | `24.0-SNAPSHOT` |
+| `VITE_BUDGET_VERSION` | Version de l'application affichée, au format `[ENV].[VERSION].[DATE_HEURE]` en DEV/QUA (calculée par la CI, voir [Version affichée](#version-affichée-vite_budget_version)) | `QUA.27.20261026-1018` |
 | `VITE_CONFIG_API_KEY` | Clé API Gateway AWS (header `X-Api-Key`) | `AWS_API_KEY` |
 | `VITE_CONFIG_DEBUG` | Mode debug : si renseigné, active les logs `debug()` (voir [Mode debug](#-mode-debug)) ; absent en QUA/PROD | `true` |
 | `VITE_CONFIG_OIDC_AUTHORITY` | URL autorité OIDC Google | `https://accounts.google.com/` |
@@ -133,6 +133,20 @@ gestion-budget-ihm/
 | `VITE_CONFIG_URL_UTILISATEURS` | URL µService utilisateurs | `http://localhost:8093` |
 
 Fichiers d'environnement : `external-ressources/conf/.env.{dev,staging,production,oidc}`
+
+#### Version affichée (`VITE_BUDGET_VERSION`)
+
+La version projet (`package.json`, `package-lock.json`) est `27.0.0`. En DEV et QUA, la valeur affichée est calculée par la CI au format `[ENV].[VERSION].[DATE_HEURE]` (ex. `QUA.27.20261026-1018`) :
+
+| Segment | Valeur |
+|---|---|
+| `ENV` | `DEV` (`build-on-all.yml`, branches ≠ `master`, depuis `.env.dev`) ou `QUA` (`build-on-master.yml`, depuis `.env.staging`) |
+| `VERSION` | Version **majeure** de `package.json` (`27` pour `27.0.0`) |
+| `DATE_HEURE` | `yyyyMMdd-HHmm` du build CI, heure de Paris (`TZ=Europe/Paris`) |
+
+- `.env.dev` / `.env.staging` contiennent le placeholder `__BUDGET_IHM_VERSION__` (ex. `VITE_BUDGET_VERSION=QUA.__BUDGET_IHM_VERSION__`), remplacé par `sed` dans l'étape « Update config » du workflow (`<VERSION>.<DATE_HEURE>`).
+- **Local** (`npm run start:dev`, qui lit un `.env` à la racine ; modèle `.env.model`) : valeur saisie à la main (ex. `DEV.27.yyyyMMdd-HHmm`).
+- **PROD** (`build-on-tags.yml`) : inchangée — version du tag sans préfixe `v`, injectée via `__BUDGET_IHM_VERSION__` dans `.env.production`.
 
 ---
 
@@ -247,6 +261,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
+| v27.0.0 | 2026-10-26 | Versioning IHM (plan 008) : version projet alignée sur `27.0.0` (`package.json`, `package-lock.json`) ; `VITE_BUDGET_VERSION` en DEV/QUA calculée par la CI au format `[ENV].[VERSION].[DATE_HEURE]` (ex. `QUA.27.20261026-1018`, heure de Paris) via le placeholder `__BUDGET_IHM_VERSION__` de `.env.dev` / `.env.staging` remplacé dans `build-on-all.yml` / `build-on-master.yml` ; PROD (`build-on-tags.yml`) inchangée. Voir [plan 008](../.claude/plans/008_versioning_ihm_ci.plan.md) |
 | v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 2) : `useFetch` adopté par 7 composants (variantes Promise `fetch*` des extservices + `callWithNotify`, `callAndNotify` conservé pour les actions), `BudgetContext` scindé (`BudgetSelectionContext` / `CurrentBudgetContext`, hooks `useBudgetSelection` / `useCurrentBudget`, agrégat `useBudgetContext`), `OperationRecurrenteDetailDateFin` déplacé vers `operations/shared/`, spinners `CompteItem` / `AnalysesFiltrePeriode`, correctif `BudgetSoldes` (Fragment sous `Tooltip` MUI). Dette restante : découpage `OperationDetailPage`, T16, T20, ADR 002 — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-10-25 | Revue architecture React (plan 006, lot 1) : dossier `hooks/` (`useAuthTokenSync`, `useBudgetContext`, `useFetch`), `AuthTokenSync` à la racine, `callAndNotify`, mode debug `VITE_CONFIG_DEBUG` + règle `no-console`, code splitting des routes (`React.lazy`), `React.memo` sur items de liste, `BudgetPageShell`, `AnalyseTooltip` générique, erreurs HTTP avec `cause`. Dette restante : voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v24.0-SNAPSHOT | 2026-07-10 | Montée deps : Vite 6→8.1.4, `@vitejs/plugin-react` 4→6.0.3, suppression `@babel/plugin-transform-private-property-in-object` (résidu CRA, sans usage réel). TypeScript v7 et `typescript-eslint` v9/v10 **reportés** (bloqueur npm — voir note Stack Technique ci-dessus). Voir `.claude/plans/003_migration_dependances_ts_vite.plan.md` |

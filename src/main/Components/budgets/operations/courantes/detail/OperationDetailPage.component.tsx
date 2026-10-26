@@ -19,6 +19,7 @@ import {
 import { OperationDetailActions } from './actions/OperationDetailActions.component.tsx';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
 import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.ts';
+import SsCategorieOperationModel from '../../../../../Models/budgets/SsCategorieOperation.model.ts';
 import CompteBancaireModel from '../../../../../Models/budgets/CompteBancaire.model.ts';
 import {
     BUSINESS_GUID,
@@ -156,7 +157,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
      * Applique la catégorie parente (et la sous-catégorie) sur l'opération en édition et l'opération courante
      * @param ssCat sous catégorie sélectionnée
      */
-    function applyCategorieParente(ssCat: CategorieOperationModel) {
+    function applyCategorieParente(ssCat: SsCategorieOperationModel) {
         if (ssCat.categorieParente !== null && ssCat.categorieParente !== undefined) {
             editOperation.categorie.id = ssCat.categorieParente.id;
             editOperation.categorie.libelle = ssCat.categorieParente.libelle;
@@ -219,7 +220,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     function fillCategorieForm(ssCatId: string) {
         const ssCat = listeCategories
             .flatMap((cat: CategorieOperationModel) => cat.listeSSCategories ?? [])
-            .find((ssCat: CategorieOperationModel) => ssCat?.id === ssCatId)
+            .find((ssCat: SsCategorieOperationModel) => ssCat?.id === ssCatId)
         if (ssCat === undefined) {
             return;
         }

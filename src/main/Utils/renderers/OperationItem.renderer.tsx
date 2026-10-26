@@ -105,7 +105,7 @@ export function getOperationLibelle(operationLibelle: string, listeComptes: Comp
 /** Libellé & Couleur du background de l'attribut Mensualité
  * @param periodeKey : string enum période
  * */
-export function getTypeCategorieRenderer(typeCategorieKey : TYPES_CATEGORIES_OPERATION_ENUM) {
+export function getTypeCategorieRenderer(typeCategorieKey : TYPES_CATEGORIES_OPERATION_ENUM | null | undefined) {
     switch (typeCategorieKey) {
         case TYPES_CATEGORIES_OPERATION_ENUM.ESSENTIEL:
             return {value: typeCategorieKey, text: "Essentiel", color: "var(--color-type-essentiel-primary)"}
