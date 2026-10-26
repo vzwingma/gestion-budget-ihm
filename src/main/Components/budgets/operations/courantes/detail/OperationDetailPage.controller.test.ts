@@ -72,9 +72,7 @@ describe('OperationDetailPage.controller', () => {
             {operation: {}, budget: {actif: true}} as any,
             {} as any,
             editForm as any,
-            openEditForm,
-            vi.fn() as any,
-            vi.fn()
+            {openEditForm, setErrors: vi.fn() as any, onOperationUpdate: vi.fn()}
         );
 
         expect(openEditForm).toHaveBeenCalledTimes(1);

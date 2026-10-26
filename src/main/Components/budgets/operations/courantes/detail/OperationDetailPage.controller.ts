@@ -40,6 +40,16 @@ export interface ValidationOptions {
     onDraft?: (draft: OperationModel) => void;
 }
 
+/** Callbacks de la page d'édition appelés par le gestionnaire de clic */
+export interface EditionCallbacks {
+    /** Ouvre le formulaire d'édition (reçoit une nouvelle copie du formulaire) */
+    openEditForm: (editForm: EditFormProps) => void;
+    /** Met à jour les erreurs du formulaire */
+    setErrors: Dispatch<SetStateAction<ErrorsFormProps>>;
+    /** Mise à jour de l'opération après sauvegarde */
+    onOperationUpdate: (budget: BudgetMensuelModel) => void;
+}
+
 /**
  * Event sur le clic d'une édition d'opération
  * @param event événement sur le clic d'une opération
@@ -47,16 +57,14 @@ export interface ValidationOptions {
  * @param budget budget associé
  * @param editOperation opération en cours d'édition
  * @param editForm formulaire d'édition (non modifié : le nouvel état est transmis à `openEditForm`)
- * @param openEditForm fonction pour ouvrir le formulaire d'édition (reçoit une nouvelle copie du formulaire)
- * @param setErrors fonction pour mettre à jour les erreurs du formulaire
- * @param onOperationUpdate mise à jour de l'opération
+ * @param callbacks callbacks de la page : ouverture du formulaire, mise à jour des erreurs, mise à jour de l'opération
  * @param options options de validation
  */
 export function handleOperationEditionClick(event: any, { operation, budget }: OperationBudgetProps,
-    editOperation: OperationEditionModel, editForm: EditFormProps, openEditForm: (editForm: EditFormProps) => void,
-    setErrors: Dispatch<SetStateAction<ErrorsFormProps>>,
-    onOperationUpdate: (budget: BudgetMensuelModel) => void,
+    editOperation: OperationEditionModel, editForm: EditFormProps, callbacks: EditionCallbacks,
     options?: ValidationOptions) {
+
+    const { openEditForm, setErrors, onOperationUpdate } = callbacks;
 
 
     if (event.target !== null && event.target !== undefined && budget?.actif) {
@@ -268,7 +276,7 @@ export function validateForm(budget: BudgetMensuelModel, editOperation: Operatio
     validateFormMontant(editOperation, operation, editForm, errors);
     // Etat et sens (portés par l'édition : choix des boutons d'action en création, de la catégorie)
     operation.etat = editOperation.etat;
-    operation.typeOperation = editOperation.typeOperation;
+    operation.typeOperation = editOperation.typeOperation ?? operation.typeOperation;
     // DateOperation
     operation.autresInfos.dateOperation = editOperation.autresInfos.dateOperation;
     // Période (et date de fin éventuelle) : l'édition en est la source

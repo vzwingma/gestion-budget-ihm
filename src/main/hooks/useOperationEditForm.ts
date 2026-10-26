@@ -147,7 +147,7 @@ export function useOperationEditForm({ listeCategories, onOperationChange }: Use
 
     function handleClick(event: SyntheticEvent) {
         if (operation && budget) {
-            handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate, validationOptions);
+            handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, { openEditForm, setErrors, onOperationUpdate }, validationOptions);
         }
     }
 

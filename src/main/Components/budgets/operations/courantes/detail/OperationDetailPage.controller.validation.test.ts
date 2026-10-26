@@ -60,7 +60,7 @@ describe('OperationDetailPage.controller - handleOperationEditionClick', () => {
 
     function appeler(event: unknown, editForm: EditFormProps, budgetCourant = budget()) {
         const { operation, editOperation } = operations();
-        handleOperationEditionClick(event, { operation, budget: budgetCourant }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate);
+        handleOperationEditionClick(event, { operation, budget: budgetCourant }, editOperation, editForm, { openEditForm, setErrors, onOperationUpdate });
     }
 
     test.each([
@@ -145,7 +145,7 @@ describe('OperationDetailPage.controller - handleOperationEditionClick', () => {
         editOperation.libelle = 'Loyer';
         const editForm = formOuvert({ libelle: true, formValidationEnabled: true });
 
-        handleOperationEditionClick(evt({ id: 'OPERATION_FORM' }, 'keyup', code), { operation, budget: budget() }, editOperation, editForm, openEditForm, setErrors, onOperationUpdate);
+        handleOperationEditionClick(evt({ id: 'OPERATION_FORM' }, 'keyup', code), { operation, budget: budget() }, editOperation, editForm, { openEditForm, setErrors, onOperationUpdate });
 
         expect(saveOperation).toHaveBeenCalledTimes(1);
         // Validation sur un brouillon : l'opération du contexte n'est pas modifiée
