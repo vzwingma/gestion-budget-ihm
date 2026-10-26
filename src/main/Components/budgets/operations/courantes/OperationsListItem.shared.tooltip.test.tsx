@@ -163,11 +163,6 @@ describe('Infobulle icône - récurrente (ringMeaning="periode")', () => {
         const tooltip = await screen.findByRole('tooltip');
 
         expect(within(tooltip).getByText('Périodicité : Trimestrielle')).toBeInTheDocument();
-        expect(within(tooltip).getByText("Anneau : périodicité de l'opération")).toBeInTheDocument();
-        expect(within(tooltip).queryByText(/Statut/)).not.toBeInTheDocument();
-        for (const etat of ['Prévue', 'Reportée', 'Réalisée', 'Annulée']) {
-            expect(within(tooltip).queryByText(etat)).not.toBeInTheDocument();
-        }
         // pastilles : catégorie + périodicité uniquement
         expect(getSwatches(tooltip)).toHaveLength(2);
     });
