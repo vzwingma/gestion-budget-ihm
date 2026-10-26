@@ -78,6 +78,7 @@ Préfixe `VITE_*` (migré depuis `REACT_APP_*`, voir [ADR 001](docs/adr/001-migr
 
 | Variable | Description |
 |---|---|
+| `VITE_BUDGET_VERSION` | Version affichée. DEV/QUA : `[ENV].[VERSION].[DATE_HEURE]` (ex. `QUA.27.20261026-1018`), calculée par la CI qui remplace le placeholder `__BUDGET_IHM_VERSION__` (heure de Paris) ; en local, valeur saisie à la main dans `.env` (modèle `.env.model`) ; PROD : version du tag. Détails : [Architecture](docs/ARCHITECTURE.md#version-affichée-vite_budget_version) |
 | `VITE_CONFIG_URL_COMPTES` | URL µService comptes |
 | `VITE_CONFIG_URL_OPERATIONS` | URL µService opérations |
 | `VITE_CONFIG_URL_PARAMS` | URL µService paramètres |

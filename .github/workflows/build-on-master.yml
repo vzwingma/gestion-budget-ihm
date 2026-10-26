@@ -39,6 +39,9 @@ jobs:
           sed -i "s#__OIDC_CLIENT_SECRET__#$OIDC_CLIENT_SECRET#g" external-ressources/conf/.env.staging
           sed -i "s#__CONFIG_URL_BACKENDS__#$CONFIG_URL_BACKENDS#g" external-ressources/conf/.env.staging
           sed -i "s#__API_GW_API_KEY__#$API_GW_API_KEY#g" external-ressources/conf/.env.staging
+          VERSION_MAJEURE=$(node -p "require('./package.json').version.split('.')[0]")
+          BUILD_DATE=$(TZ=Europe/Paris date +%Y%m%d-%H%M)
+          sed -i "s#__BUDGET_IHM_VERSION__#${VERSION_MAJEURE}.${BUILD_DATE}#g" external-ressources/conf/.env.staging
 
       - run: mv external-ressources/conf/.env.staging .env
         name: Set env STAGING

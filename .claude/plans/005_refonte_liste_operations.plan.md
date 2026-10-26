@@ -1,6 +1,6 @@
 # Plan d'Action 005 — Refonte panneau gauche écran « Opérations »
 
-**Statut** : 🟡 En cours — Phases 1–5 terminées (reste recette tablette réelle)
+**Statut** : ✅ Complété — Phases 1–5 clôturées (Gate #4 validé 👤 le 2026-10-26) ; backlog B1 non planifié
 **Date** : 2026-10-23 (dernière mise à jour : 2026-10-25)
 
 ## Journal des gates
@@ -23,7 +23,7 @@
 | #4 | Doc + clôture Phase 4 | 2026-10-25 | ✅ Validé 👤 (recette visuelle OK, PR #697 mergée, CI 13/13 verte ; filtre conservé dans le Context tel quel, pas d'ADR) |
 | #2 | Code Phase 5 | 2026-10-25 | ✅ GO |
 | #3 | Tests Phase 5 | 2026-10-25 | ✅ GO |
-| #4 | Doc + clôture Phase 5 | — | ⏳ En attente 👤 |
+| #4 | Doc + clôture Phase 5 (et plan 005) | 2026-10-26 | ✅ Validé 👤 (recette visuelle OK après retouches : puces compactes, espace avant soldes, alignement xl ; PR #701 CI 13/13) |
 
 ## Context
 
@@ -234,7 +234,7 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 ---
 
-## Phase 5 — En-tête ✅ (terminée 2026-10-25, Gate #4 en attente 👤)
+## Phase 5 — En-tête ✅ (terminée 2026-10-26, Gate #4 validé)
 
 **Critères de réussite** : libellés soldes corrects et lisibles sur les deux formats ; détail par type accessible au tap sur tablette, fermeture par second tap/tap ailleurs ; description intercompte accessible sans survol sur tablette.
 
@@ -267,6 +267,10 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 - Effets de bord : l'infobulle intercompte devient aussi tap-activée sur tablette à l'écran détail, la fiche récurrente et l'analyse (fonction partagée) ; une seule infobulle intercompte ouverte à la fois (click-away).
 - Pas d'ADR.
 
+**Retouches issues de la recette 👤 (2026-10-26)** :
+- Puces de filtre (Phase 4) plus compactes : hauteur 40 → 28 px (`FILTER_CHIP_HEIGHT`), police 11 px, bordure 1,5 px ; zone cliquable étendue à ≈ 44 px par `::after` (±8 px). Les 5 puces occupent exactement la largeur du champ de filtre (cellule `HEADER_FILTER_SIZE`, constantes exportées avec `HEADER_MENU_SIZE` par `BudgetPageHeader`) ; la barre de résultat passe dans la cellule voisine (`size="grow"`). `FILTER_BAR_HEIGHT` reste 48. Risque connu : en `md` (< 1536 px), libellés des puces probablement tronqués à 1024 px.
+- Soldes : espace de 16 px avec le champ de filtre (cellule md 1,6 → 2 colonnes) ; bord droit aligné sur celui des montants de la liste **en `xl` uniquement** (padding droit 24 px = gouttière scrollbar 8 px + padding de ligne 16 px, bloc collé à droite). En `md`, la cellule des soldes (3,4 → 5,4 col) dépasse le bord droit de la liste (4 col) : alignement impossible sans refonte de l'en-tête (options : soldes sous le champ de filtre, ou champ plus étroit) — **non traité**, à décider si besoin.
+
 **Points ouverts (recette 👤, non testables en jsdom)** :
 - Mise en page des soldes à 1024 px (serré ; sous 900 px de fenêtre, colonne ≈ 120 px, risque de débordement).
 - Cibles tactiles 44 px réelles ; `display:contents` du wrapper.
@@ -279,10 +283,10 @@ Liste reste informative — pas de bouton/geste d'action sur les lignes.
 
 ## Critères de succès globaux
 
-- [x] Aucune régression sur montants, dates, états, soldes affichés (tests verts toutes phases ; recettes visuelles 1–4 OK, Phase 5 à valider en recette).
-- [ ] Utilisable au doigt en 1024×768 tablette paysage (seule orientation visée) — **à valider en recette** (cibles 44 px, soldes à 1024 px, taps réels).
-- [ ] ≥ 10 lignes visibles à 881 px de haut — **à valider en recette** (calcul, non mesuré).
-- [ ] Captures avant/après systématiques par phase : desktop 1280px + tablette 1024×768 paysage — **à valider en recette** (tablette réelle).
+- [x] Aucune régression sur montants, dates, états, soldes affichés (tests verts toutes phases ; recettes visuelles 1–5 OK 👤).
+- [ ] Utilisable au doigt en 1024×768 tablette paysage (seule orientation visée) — **non confirmé explicitement à la clôture** (cibles 44 px, soldes à 1024 px, taps réels sur tablette physique).
+- [ ] ≥ 10 lignes visibles à 881 px de haut — **non confirmé explicitement à la clôture** (calcul, non mesuré).
+- [ ] Captures avant/après systématiques par phase : desktop 1280px + tablette 1024×768 paysage — **non fournies** (recettes validées par 👤 sur captures desktop).
 - [x] `npm run lint` vert après chaque phase ; tests verts (4 échecs locaux préexistants `Auth.service.test.ts`, absents en CI) ; couverture % non mesurée en Phase 5.
 - [x] Pas de modification d'API/modèle de données.
 - [x] Couleurs anneaux d'état (orange/violet/vert/blanc) inchangées sur toutes les phases.
@@ -297,7 +301,7 @@ Pas d'ADR requis : refonte UI/UX réutilisant les patterns existants (MUI, Conte
 
 ## Backlog (évolutions hors phases 1–5, à planifier)
 
-- **B1 — Infobulle sur l'icône d'opération (colonne gauche de la liste)** (idée 👤, 2026-10-25, issue de la recette Phase 3) : au survol/tap de l'icône, afficher catégorie, sous-catégorie et statut de l'opération, et expliquer l'icône et les couleurs (anneau d'état : orange = prévue, violet = reportée, vert = réalisée, blanc = annulée). Contraintes : aucune info uniquement au survol sur tablette → déclenchement au tap (même pattern que Phase 5, tooltip contrôlé + `ClickAwayListener`) ; `aria-label` de l'anneau (`getOperationStateLabel`) déjà en place ; cibles tactiles ≥ 44 px ; couleurs d'état inchangées. Point à cadrer : l'icône (≈ 46 px) devient une cible interactive distincte du clic de sélection de la ligne (ne pas déclencher la sélection au tap de l'infobulle, ou l'assumer). À instruire par ARCos/MAINa avant plan (non planifié).
+- **B1 — ✅ Réalisé le 2026-10-26 (traité directement à la demande du 👤, sans plan ni gates : DEVon + QALvin, PR dédiée)** — implémentation : `OperationIconTooltipContent.component.tsx` (catégorie, sous-catégorie, statut, légende des 4 états), `TapTooltip` autour du cercle `role="img"` de `OperationsListItem.shared.tsx` (clic non stoppé : un tap sélectionne la ligne ET ouvre l'infobulle), prop `ringMeaning` (`'etat'` par défaut, `'periode'` pour les récurrentes : « Périodicité : … » sans légende d'état) ; 18 tests. Point connu : une fois l'infobulle ouverte, MUI relie le contenu à l'icône par `aria-labelledby` (nom accessible plus riche que « Prévue »). Rendu (largeur 280 px, ancrage tablette) à valider à l'œil. Énoncé d'origine — **B1 — Infobulle sur l'icône d'opération (colonne gauche de la liste)** (idée 👤, 2026-10-25, issue de la recette Phase 3) : au survol/tap de l'icône, afficher catégorie, sous-catégorie et statut de l'opération, et expliquer l'icône et les couleurs (anneau d'état : orange = prévue, violet = reportée, vert = réalisée, blanc = annulée). Contraintes : aucune info uniquement au survol sur tablette → déclenchement au tap (même pattern que Phase 5, tooltip contrôlé + `ClickAwayListener`) ; `aria-label` de l'anneau (`getOperationStateLabel`) déjà en place ; cibles tactiles ≥ 44 px ; couleurs d'état inchangées. Point à cadrer : l'icône (≈ 46 px) devient une cible interactive distincte du clic de sélection de la ligne (ne pas déclencher la sélection au tap de l'infobulle, ou l'assumer). À instruire par ARCos/MAINa avant plan (non planifié).
 
 ## Fichiers impactés (vue d'ensemble)
 

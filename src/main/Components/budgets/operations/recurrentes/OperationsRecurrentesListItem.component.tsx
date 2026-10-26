@@ -21,6 +21,7 @@ const OperationRecurrenteItem: React.FC<OperationItemProps> = ({operation, onCli
             operation={operation}
             onClick={handleOperationSelect}
             getBorderColor={getBorderColor}
+            ringMeaning="periode"
             isSelected={isSelected}
             isOneSelected={isOneSelected} />
     );
