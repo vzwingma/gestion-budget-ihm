@@ -11,6 +11,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
 | 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (Gate #4 validé 👤) · 🟡 Lot 2 livré (T11 adoption, T6, T2 partiel), Gate #4 validé 👤 — reste : découpage `OperationDetailPage`, T16, T20, T12 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
+| 008 | Versioning IHM 27.0.0 + version horodatée DEV/QUA calculée en CI | ⏳ Planifié (Gate #1 en attente) | [`008_versioning_ihm_ci.plan.md`](./008_versioning_ihm_ci.plan.md) |
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Proposée — item T12 uniquement)
 
@@ -103,5 +104,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-10-25 (plan 005 : clôturé (5 phases, Gate #4 validé) ; plan 006 : lots 1 et 2 livrés, Gate #4 validé)
+**Dernière mise à jour :** 2026-10-26 (plan 008 créé, Gate #1 en attente) — 2026-10-25 (plan 005 : clôturé (5 phases, Gate #4 validé) ; plan 006 : lots 1 et 2 livrés, Gate #4 validé)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain
