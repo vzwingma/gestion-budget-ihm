@@ -1,8 +1,7 @@
 import React, {JSX} from 'react'
 import {Box, Typography} from "@mui/material";
 import OperationModel from '../../../../Models/budgets/Operation.model.ts';
-import {OPERATION_ETATS_ENUM} from '../../../../Utils/AppBusinessEnums.constants.ts';
-import {getOperationStateColor, getOperationStateLabel, getPeriodeRenderer} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
+import {getOperationStateLabel, getPeriodeRenderer} from '../../../../Utils/renderers/OperationItem.renderer.tsx';
 
 /** Signification de l'anneau autour de l'icône : état de l'opération (courantes) ou périodicité (récurrentes) */
 export type OperationRingMeaning = 'etat' | 'periode';
@@ -15,14 +14,6 @@ interface OperationIconTooltipContentProps {
     categorieColor: string;
     ringMeaning: OperationRingMeaning;
 }
-
-/** États expliqués dans la légende de l'anneau */
-const LEGEND_ETATS: OPERATION_ETATS_ENUM[] = [
-    OPERATION_ETATS_ENUM.PREVUE,
-    OPERATION_ETATS_ENUM.REPORTEE,
-    OPERATION_ETATS_ENUM.REALISEE,
-    OPERATION_ETATS_ENUM.ANNULEE
-];
 
 const PANEL_SX = {backgroundColor: '#424242', color: 'white', borderRadius: '4px', padding: '8px 12px', maxWidth: 280} as const;
 const SECONDARY_COLOR = '#e0e0e0';
