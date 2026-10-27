@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import { OperationDetailMensualite } from './OperationDetailMensualite.component.tsx';
 import { OperationDetailDateFin } from '../../../shared/OperationRecurrenteDetailDateFin.component.tsx';
 import { BUSINESS_GUID, PERIODES_MENSUALITE_ENUM } from '../../../../../../Utils/AppBusinessEnums.constants.ts';
-import { OperationDetailMensualiteSectionProps } from '../../../../../Components.props.ts';
+import { OperationDetailMensualiteSectionProps } from "../OperationDetailPage.props.ts";
 
 /**
  * Section « Période / Date de fin » de la page de détail (masquée pour la catégorie Actifs / Investissements,

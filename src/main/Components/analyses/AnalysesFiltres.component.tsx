@@ -1,6 +1,5 @@
 import { Backdrop, CircularProgress, Divider, Stack, Typography } from "@mui/material";
-import React, { JSX, useCallback } from "react";
-import { AnalysesFiltresProps } from "../Components.props.ts";
+import React, { Dispatch, JSX, SetStateAction, useCallback } from "react";
 import { AnalysesFiltrePeriodeComponent } from "./filtres/AnalysesFiltrePeriode.component.tsx";
 import { AnalysesFiltreTypesCategories } from "./filtres/AnalysesFiltreTypesCategories.component.tsx";
 import { AnalysesFiltresOperation } from "./filtres/AnalysesFiltresOperation.component.tsx";
@@ -8,6 +7,18 @@ import { AnalysesFiltreCategories } from "./filtres/AnalysesFiltreCategories.com
 import CategorieOperationModel from "../../Models/budgets/CategorieOperation.model.ts";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import { OPERATION_ETATS_ENUM, TYPES_CATEGORIES_OPERATION_ENUM, TYPES_OPERATION_ENUM } from "../../Utils/AppBusinessEnums.constants.ts";
+import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
+import { AnalysesFiltersModel } from "../../Models/analyses/AnalysesFilters.model.ts";
+
+export interface AnalysesFiltresProps {
+    isLoading: boolean;
+    currentPeriode: AnalysesPeriodeModel;
+    selectedCompte: CompteBancaireModel | null;
+    setPeriodeAnalyses: Dispatch<SetStateAction<AnalysesPeriodeModel>>;
+    filters: AnalysesFiltersModel;
+    setFilters: Dispatch<SetStateAction<AnalysesFiltersModel>>;
+    distinctCategories: CategorieOperationModel[];
+}
 
 
 

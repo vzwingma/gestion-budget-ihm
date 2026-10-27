@@ -6,8 +6,8 @@ import { getAffichageIntercompteRO, OperationDetailIntercompte } from './Operati
 import { BUSINESS_GUID } from '../../../../../../Utils/AppBusinessEnums.constants.ts';
 import CompteBancaireModel from '../../../../../../Models/budgets/CompteBancaire.model.ts';
 import { useBudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx';
-import { OperationDetailCategoriesSectionProps } from '../../../../../Components.props.ts';
 import { isInCreateMode } from '../OperationDetailPage.controller.ts';
+import { OperationDetailCategoriesSectionProps } from "../OperationDetailPage.props.ts";
 
 /**
  * Section « Catégories » de la page de détail : catégorie, type de catégorie et compte de transfert (virement interne)

@@ -20,9 +20,21 @@ import {
 } from "@mui/icons-material";
 import {OPERATION_ETATS_ENUM} from "../../../../../../Utils/AppBusinessEnums.constants.ts";
 import { CenterComponent } from "../../../../../shared/CenterComponent.tsx";
-import {OperationDetailActionsProps} from "../../../../../Components.props.ts";
 import { useCurrentBudget } from "../../../../../../hooks/useBudgetContext.ts";
 import { handleOperationAction } from "./OperationDetailActions.controller.ts";
+import OperationModel from "../../../../../../Models/budgets/Operation.model.ts";
+import OperationEditionModel from "../../../../../../Models/budgets/OperationEdition.model.ts";
+import BudgetMensuelModel from "../../../../../../Models/budgets/BudgetMensuel.model.ts";
+
+export interface OperationDetailActionsProps {
+    isInCreateMode: boolean,
+    editOperation: OperationEditionModel,
+    /** Mode création : état choisi + date d'opération associée, portés par l'opération en édition */
+    onClickRealiseInCreateMode: (valeurDate: Date | null, etat: OPERATION_ETATS_ENUM) => void
+    onOperationChange: (budget: BudgetMensuelModel) => void
+    /** Mode édition : propage au contexte la copie de l'opération dont l'état a changé */
+    onOperationCommit?: (operation: OperationModel) => void
+}
 
 
 /**

@@ -10,7 +10,6 @@ import OperationsListe from "../operations/OperationsListe.component.tsx";
 import OperationDetailPage from "../operations/courantes/detail/OperationDetailPage.component.tsx";
 import { getOperationsGroupedByDateOperation, updateOperationsStatus } from "./Budget.controller.ts";
 import { fetchLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
-import { BudgetPageProps } from "../../Components.props.tsx";
 import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import { useFetch } from "../../../hooks/useFetch.ts";
 import BudgetSoldes from "./BudgetSoldes.component.tsx";
@@ -19,6 +18,10 @@ import { debug } from "../../../Utils/Debug.utils.ts";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import OperationsFilterBar from "../shared/OperationsFilterBar.component.tsx";
 import { filterOperationsList } from "../operations/OperationsListe.shared.tsx";
+
+export interface BudgetPageProps {
+    onOpenMenu: () => void
+}
 
 
 /**

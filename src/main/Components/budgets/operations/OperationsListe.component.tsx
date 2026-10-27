@@ -1,10 +1,19 @@
 import React, { JSX } from 'react'
 import OperationItem from './courantes/OperationsListItem.component.tsx';
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
-import { OperationsListeProps } from '../../Components.props.tsx';
 import SharedOperationsListe from './OperationsListe.shared.tsx';
 import OperationsListHeader from './OperationsListHeader.component.tsx';
 import { FILTER_BAR_HEIGHT } from '../../../Utils/renderers/ListData.renderer.utils.tsx';
+import { PucesFiltre } from "../../../Utils/OperationsFilter.utils.ts";
+
+export interface OperationsListeProps {
+    operationGroupedByDate: {[key: string]: OperationModel[]}
+    filterOperations: string | null
+    /** Puces de filtre actives (état / sens) */
+    filterPuces?: PucesFiltre
+    onClick: (operation : OperationModel) => void
+    selectedOperationId?: string | null
+}
 
 
 /**

@@ -1,8 +1,13 @@
 import { Stack, Typography } from "@mui/material";
 import React, { JSX } from "react";
-import { AnalysesTitreProps } from "../Components.props.ts";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import { getLabelMonthFRFromDate } from "../../Utils/Date.utils.ts";
+import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
+
+export interface AnalysesTitreProps {
+    currentCompte: CompteBancaireModel;
+    currentPeriode: AnalysesPeriodeModel;
+}
 
 
 /**

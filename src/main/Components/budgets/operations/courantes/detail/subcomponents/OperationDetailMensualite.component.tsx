@@ -3,8 +3,14 @@ import {MenuItem, TextField, Typography} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {getPeriodeRenderer} from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
 import {PERIODES_MENSUALITE_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
-import {OperationDetailMensualiteProps} from '../../../../../Components.props.ts'
 import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
+
+export interface OperationDetailMensualiteProps {
+    formMensualiteInEdition: boolean
+    /** Période de l'opération en édition (sinon : celle de l'opération du contexte) */
+    periodeInEdition?: PERIODES_MENSUALITE_ENUM
+    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
+}
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.

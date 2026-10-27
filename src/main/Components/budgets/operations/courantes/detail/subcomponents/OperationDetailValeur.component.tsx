@@ -4,12 +4,19 @@ import {EditFormProps, ErrorsFormProps, OPERATION_EDITION_FORM} from "../Operati
 import OperationValue from "../../../../../../Utils/renderers/OperationValue.renderer.tsx"
 import {AddRounded, EuroRounded, RemoveRounded} from '@mui/icons-material'
 import {TYPES_OPERATION_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
-import {OperationDetailValeurProps} from '../../../../../Components.props.ts'
 import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
 import { debug } from "../../../../../../Utils/Debug.utils.ts";
 import { evaluateEquation } from "../../../../../../Utils/Equation.utils.ts";
+
+export interface OperationDetailValeurProps {
+    formValueInEdition: boolean
+    /** Type de l'opération en édition (sinon : celui de l'opération du contexte) */
+    typeOperation?: TYPES_OPERATION_ENUM
+    errorValeur: string | null
+    fillOperationForm: (field: OPERATION_EDITION_FORM.VALUE, value: string) => void
+}
 
 
 /**

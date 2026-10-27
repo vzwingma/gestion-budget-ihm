@@ -1,5 +1,4 @@
 import React, { JSX, useMemo, useState } from 'react'
-import { AnalyseEvolutionProps } from '../../Components.props.ts';
 import { Box, Breadcrumbs, Link, Switch, Typography } from '@mui/material';
 import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { prepareGraphDataFromOperations, extractUniqueCategories } from './AnalyseEvolution.controller.ts';
@@ -7,6 +6,14 @@ import { getCategorieColor } from '../../../Utils/renderers/CategorieItem.render
 import AnalyseEvolutionTooltip from './AnalyseEvolutionTooltip.component.tsx';
 import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
 import HomeIcon from '@mui/icons-material/Home';
+import OperationModel from "../../../Models/budgets/Operation.model.ts";
+import BudgetMensuelAnalyseConsolideModel from "../../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
+
+export interface AnalyseEvolutionProps {
+    budgetConsolide: BudgetMensuelAnalyseConsolideModel;
+    operations: OperationModel[];
+    isVueMensuelle: boolean;
+}
 
 /**
  * Composant d'analyse de l'évolution des catégories par mois
