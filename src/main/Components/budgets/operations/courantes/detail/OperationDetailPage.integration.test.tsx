@@ -1,9 +1,10 @@
-import { act, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { saveOperation, saveOperationIntercompte } from './OperationDetailPage.extservices.ts';
 import { buildBudget, buildOperation, renderPage } from './OperationDetailPage.testutils.tsx';
+import { getLabelISOFromDate } from '../../../../../Utils/Date.utils.ts';
 import { createNewOperation } from '../../../../../Models/budgets/Operation.model.ts';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
 import {
@@ -874,6 +875,54 @@ describe('OperationDetailPage - intégration', () => {
             await user.click(screen.getByRole('button', { name: 'Valider l\'opération' }));
 
             expect(screen.getByText('REALISEE')).toBeInTheDocument();
+        });
+    });
+
+    describe("création + Valider l'opération : champ date alimenté par le brouillon", () => {
+
+        afterEach(() => {
+            vi.useRealTimers();
+        });
+
+        /** Horloge figée à midi local (seul `Date` est simulé : user-event et MUI gardent les vrais timers) */
+        function figerHorlogeMidiLocal() {
+            vi.useFakeTimers({ toFake: ['Date'] });
+            vi.setSystemTime(new Date(2026, 9, 27, 12, 0, 0));
+        }
+
+        test("le champ date affiche la date du jour (ISO) et non plus un champ vide", async () => {
+            figerHorlogeMidiLocal();
+            const user = userEvent.setup();
+            renderPage({ operations: { nouvelle: createNewOperation() } });
+            expect(champDate()).toHaveValue('');
+
+            await user.click(screen.getByRole('button', { name: "Valider l'opération" }));
+
+            expect(champDate()).toHaveValue(getLabelISOFromDate(new Date()));
+            expect(champDate().value).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        });
+
+        test("le champ reste modifiable ensuite (saisie, effacement) et la date saisie est sauvegardée", async () => {
+            figerHorlogeMidiLocal();
+            const user = userEvent.setup();
+            renderPage({ operations: { nouvelle: createNewOperation() } });
+            await user.click(screen.getByRole('button', { name: "Valider l'opération" }));
+
+            fireEvent.change(champDate(), { target: { value: '2026-03-15' } });
+            expect(champDate()).toHaveValue('2026-03-15');
+
+            fireEvent.change(champDate(), { target: { value: '' } });
+            expect(champDate()).toHaveValue('');
+
+            fireEvent.change(champDate(), { target: { value: '2026-04-01' } });
+            await user.type(montant(), '25');
+            await saisirDescription(user, 'Dentiste');
+            await choisirCategorie(user, 'Courses');
+            await user.click(boutonValider());
+
+            const operation = dernierSave()[0];
+            expect(operation.etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
+            expect((operation.autresInfos.dateOperation as Date).toISOString().startsWith('2026-04-01')).toBe(true);
         });
     });
 

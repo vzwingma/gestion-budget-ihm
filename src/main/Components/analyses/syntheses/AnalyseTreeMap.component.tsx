@@ -103,7 +103,7 @@ const AnalyseTreeMap: React.FC<AnalyseCategoriesListeProps> = ({ analyseCategori
                         stroke="#fff"
                         content={
                             <TreemapContentRenderer
-                                selectedCategory={selectedCategory}
+                                selectedCategory={selectedCategory ?? undefined}
                                 analyseCategoriesData={analyseCategoriesData}
                                 onCategoryClick={handleCategoryClick}
                             />

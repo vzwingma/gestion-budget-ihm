@@ -104,4 +104,58 @@ describe('ClientHTTP.service', () => {
         expect(spy).toHaveBeenCalled();
         spy.mockRestore();
     });
+
+    describe("construction de l'URL ({{}} + encodage des paramètres)", () => {
+
+        /** URL réellement passée à fetch pour un appel GET réussi */
+        async function urlAppelee(path: string, params?: string[]): Promise<string> {
+            (globalThis.fetch as Mock).mockResolvedValue({status: 200, json: vi.fn().mockResolvedValue({})});
+            await call('GET', 'https://api.exemple.fr', path, params);
+            return (globalThis.fetch as Mock).mock.calls[0][0] as string;
+        }
+
+        test.each([
+            ['a/b?c', 'a%2Fb%3Fc'],
+            ['x&y=1', 'x%26y%3D1'],
+            ['id#frag', 'id%23frag'],
+            ['avec espace', 'avec%20espace'],
+            ['../admin', '..%2Fadmin'],
+        ])("paramètre '%s' encodé en '%s' (pas d'injection de chemin / requête)", async (param, attendu) => {
+            await expect(urlAppelee('/r/{{}}', [param])).resolves.toBe('https://api.exemple.fr/r/' + attendu);
+        });
+
+        test.each(['$&', '$1', "$'", '$`', '$$'])('motif spécial de replace "%s" conservé littéral', async (param) => {
+            const url = await urlAppelee('/r/{{}}/fin', [param]);
+
+            expect(url).toBe('https://api.exemple.fr/r/' + encodeURIComponent(param) + '/fin');
+            expect(url).not.toContain('{{}}');
+        });
+
+        test.each(['550e8400-e29b-41d4-a716-446655440000', 'compte_2024_03', 'A-b_c.d~e'])('identifiant courant "%s" inchangé', async (id) => {
+            await expect(urlAppelee('/r/{{}}', [id])).resolves.toBe('https://api.exemple.fr/r/' + id);
+        });
+
+        test("plusieurs {{}} remplacés dans l'ordre, chaque paramètre encodé", async () => {
+            await expect(urlAppelee('/{{}}/operations/{{}}', ['c/1', 'o 2'])).resolves
+                .toBe('https://api.exemple.fr/c%2F1/operations/o%202');
+        });
+
+        test("un paramètre contenant {{}} est encodé et n'est pas consommé par le remplacement suivant", async () => {
+            await expect(urlAppelee('/{{}}/x/{{}}', ['{{}}', 'b'])).resolves
+                .toBe('https://api.exemple.fr/%7B%7B%7D%7D/x/b');
+        });
+
+        test('moins de paramètres que de {{}} : les {{}} restants sont conservés (comportement actuel)', async () => {
+            await expect(urlAppelee('/{{}}/operations/{{}}', ['c1'])).resolves
+                .toBe('https://api.exemple.fr/c1/operations/{{}}');
+        });
+
+        test('plus de paramètres que de {{}} : paramètres excédentaires ignorés', async () => {
+            await expect(urlAppelee('/r/{{}}', ['a', 'b'])).resolves.toBe('https://api.exemple.fr/r/a');
+        });
+
+        test('sans paramètres : chemin inchangé', async () => {
+            await expect(urlAppelee('/r/liste')).resolves.toBe('https://api.exemple.fr/r/liste');
+        });
+    });
 });

@@ -10,7 +10,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
-| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (Gate #4 validé 👤) · ✅ Lot 2 livré (T11 adoption, T6, T2 partiel), Gate #4 validé 👤 · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 · 🟡 Lot 4a (sécurité : `new Function` → `evaluateEquation`) livré, Gate #4 en attente 👤 · 🟡 Lot 4b (T16 : Props co-localisées) livré, Gate #4 en attente 👤 — reste : T20, T12 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
+| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (Gate #4 validé 👤) · ✅ Lot 2 livré (T11 adoption, T6, T2 partiel), Gate #4 validé 👤 · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 · 🟡 Lot 4a (sécurité : `new Function` → `evaluateEquation`) livré, Gate #4 en attente 👤 · 🟡 Lot 4b (T16 : Props co-localisées) livré, Gate #4 en attente 👤 · 🟡 Lot 5 (finitions : hook déplacé, date contrôlée, encodage URL, audit URL) livré, Gate #4 en attente 👤 — reste : T20, T12 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Proposée — item T12 uniquement)
 
@@ -104,5 +104,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-10-27 (lot 4b T16 livré, Gate #4 en attente 👤 ; plan 008 : clôturé, Gate #4 validé ; plan 005 : clôturé ; plan 006 : lots 1, 2 et 3 livrés, Gate #4 du lot 3 validé ; lot 4a livré, Gate #4 en attente 👤)
+**Dernière mise à jour :** 2026-10-27 (lot 5 finitions livré, Gate #4 en attente 👤 ; lot 4b T16 livré, Gate #4 en attente 👤 ; plan 008 : clôturé, Gate #4 validé ; plan 005 : clôturé ; plan 006 : lots 1, 2 et 3 livrés, Gate #4 du lot 3 validé ; lot 4a livré, Gate #4 en attente 👤)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain

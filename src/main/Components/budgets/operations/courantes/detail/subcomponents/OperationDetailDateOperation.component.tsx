@@ -16,10 +16,14 @@ import { OperationDetailDateProps } from "../../../shared/OperationDetailDate.pr
  * @property {string | null} errorValeur - Le message d'erreur pour la valeur, ou null s'il n'y a pas d'erreur.
  * @property {(field: OPERATION_EDITION_FORM_IDS.LIBELLE, value: string) => void} fillOperationForm - Fonction pour remplir le formulaire de l'opération.
  */
-export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   formDateInEdition,
+/** Props du champ : `dateEdition` = date du brouillon d'édition (champ contrôlé) ; `undefined` → date de l'opération du contexte */
+type OperationDetailDateOperationProps = OperationDetailDateProps & { dateEdition?: Date | null };
+
+export const OperationDetailDate: React.FC<OperationDetailDateOperationProps> = ({   formDateInEdition,
                                                                             errorDateOperation,
-                                                                            fillOperationForm
-                                                                        }: OperationDetailDateProps): JSX.Element => {
+                                                                            fillOperationForm,
+                                                                            dateEdition
+                                                                        }: OperationDetailDateOperationProps): JSX.Element => {
 
     const { currentBudget, currentOperation } = useCurrentBudget();
     const operation = currentOperation;
@@ -29,6 +33,7 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   form
     }
 
     const budgetActif = currentBudget.actif;
+    const dateSaisie = dateEdition === undefined ? operation.autresInfos.dateOperation : dateEdition;
 
     /**
  * Remplit le champ "dateOperation" de l'état à partir de la saisie de l'utilisateur
@@ -46,7 +51,7 @@ export const OperationDetailDate: React.FC<OperationDetailDateProps> = ({   form
         (formDateInEdition) ?
             <TextField
                 id={OPERATION_EDITION_FORM.DATE_OPERATION + OPERATION_EDITION_FORM.INPUT}
-                defaultValue={operation.autresInfos.dateOperation == null ? null : getLabelISOFromDate(operation.autresInfos.dateOperation)}
+                value={dateSaisie == null ? '' : getLabelISOFromDate(dateSaisie)}
                 variant={"standard"} type={"date"} fullWidth size={"small"}
                 error={errorDateOperation != null}
                 helperText={errorDateOperation}

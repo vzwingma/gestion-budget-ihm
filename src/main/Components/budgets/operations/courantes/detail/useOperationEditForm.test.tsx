@@ -3,22 +3,22 @@ import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 
 import { useOperationEditForm } from './useOperationEditForm.ts';
-import { BudgetContextProvider, useBudgetContext } from '../Models/contextProvider/BudgetContextProvider.tsx';
-import { saveOperation } from '../Components/budgets/operations/courantes/detail/OperationDetailPage.extservices.ts';
+import { BudgetContextProvider, useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { saveOperation } from './OperationDetailPage.extservices.ts';
 import {
     buildBudget,
     buildCategories,
     buildOperation
-} from '../Components/budgets/operations/courantes/detail/OperationDetailPage.testutils.tsx';
-import { OPERATION_EDITION_FORM } from '../Components/budgets/operations/courantes/detail/OperationDetailPage.constants.ts';
-import { createNewOperation } from '../Models/budgets/Operation.model.ts';
-import { OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM } from '../Utils/AppBusinessEnums.constants.ts';
+} from './OperationDetailPage.testutils.tsx';
+import { OPERATION_EDITION_FORM } from './OperationDetailPage.constants.ts';
+import { createNewOperation } from '../../../../../Models/budgets/Operation.model.ts';
+import { OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM } from '../../../../../Utils/AppBusinessEnums.constants.ts';
 
 /**
  * Tests du hook `useOperationEditForm` (AP 006 lot 3) avec le vrai `BudgetContextProvider` ;
  * seul le service de sauvegarde (HTTP) est mocké.
  */
-vi.mock('../Components/budgets/operations/courantes/detail/OperationDetailPage.extservices.ts', () => ({
+vi.mock('./OperationDetailPage.extservices.ts', () => ({
     saveOperation: vi.fn(),
     saveOperationIntercompte: vi.fn()
 }));

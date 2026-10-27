@@ -11,7 +11,7 @@ import { OperationDetailMensualiteSection } from './subcomponents/OperationDetai
 import { OperationDetailEtatSection } from './subcomponents/OperationDetailEtatSection.component.tsx';
 import { OperationDetailActionsSection } from './subcomponents/OperationDetailActionsSection.component.tsx';
 import { useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
-import { useOperationEditForm } from '../../../../../hooks/useOperationEditForm.ts';
+import { useOperationEditForm } from './useOperationEditForm.ts';
 import CategorieOperationModel from "../../../../../Models/budgets/CategorieOperation.model.ts";
 import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
 import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
