@@ -1,6 +1,6 @@
 {
   "name": "gestion-budget-ihm",
-  "version": "27.0.0",
+  "version": "27-SNAPSHOT",
   "private": true,
   "engines": {
     "node": ">=20.19.0 <21 || >=22.12.0"
