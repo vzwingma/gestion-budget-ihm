@@ -198,7 +198,7 @@ Uniquement ce qui concerne **tous** les agents :
 - Projet en évolution, migré CRA → Vite (AP 001, ADR-001) ; migration dépendances TS/Vite partiellement reportée (AP 003 : TS v7 / typescript-eslint bloqués npm).
 - Contrats API couplés au backend `gestion-budget-serverless` : toute évolution modèle → vérifier côté backend.
 - Ancienne structure `.github/` (agents v2.x, plans) conservée pour référence historique.
-- AP 006 (revue architecture React) : lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées) et 5 (finitions) livrés et mergés. `useFetch` adopté, contexte budget scindé. Reste (voir « Statut global » du plan `.claude/plans/006_revue_architecture_react.plan.md`) : T12 / ADR 002 Proposée (décision 👤), T1/T6/T20 partiels, dette mineure.
+- AP 006 (revue architecture React) : lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées) et 5 (finitions) livrés et mergés. `useFetch` adopté, contexte budget scindé. T12 non retenu (décision 👤 2026-10-27, ADR 002 Rejetée) ; `logAuth` conservé en debug (risque accepté). Lot 6 décidé (code, à venir) : T1, T6, T20, `getLabelISOFromDate` UTC, spinner `AnalysesFiltrePeriode`, `itemIcon` — voir « Statut global » du plan `.claude/plans/006_revue_architecture_react.plan.md`.
 
 ---
 

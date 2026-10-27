@@ -1,6 +1,6 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lots 1, 2, 3, 4a, 4b et 5 livrés et mergés (Gate #4 validé 👤) · reste : voir « Statut global » (T12 décision 👤, T1/T6/T20 partiels, dette mineure)
+**Statut** : ✅ Lots 1, 2, 3, 4a, 4b et 5 livrés et mergés (Gate #4 validé 👤) · T12 non retenu (décision 👤 2026-10-27, ADR 002 Rejetée) · lot 6 décidé, à venir (T1/T6/T20, dette mineure) — voir « Statut global »
 **Date** : 2026-10-23
 
 ## Statut global (état réel au 2026-10-27)
@@ -21,7 +21,7 @@ PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710
 | T8 / T9 `React.memo` + `useCallback` | ✅ Fait | Items de liste et handlers |
 | T10 `useEffect` vides | ✅ Fait | Régression introduite par T10 (plus de re-rendu au clic) corrigée au lot 3 (PR #704) |
 | T11 `useFetch` | ✅ Fait | Infra (lot 1) et adoption par les 7 composants (lot 2) |
-| T12 TanStack Query (ADR 002) | ⏳ Décision 👤 | ADR `Proposée` ; réévaluation possible depuis que `useFetch` est adopté |
+| T12 TanStack Query (ADR 002) | ❌ Non retenu | Décision 👤 2026-10-27 : ADR 002 `Rejetée` (`useFetch` + `fetch*` couvrent le besoin) |
 | T13 Cause des erreurs HTTP | ✅ Fait | `new Error(..., { cause })` |
 | T14 Resync token OIDC | ✅ Fait | `AuthTokenSync` à la racine |
 | T15 `console.log` | ✅ Fait | Conservés sous le mode debug `debug()` / `VITE_CONFIG_DEBUG` ; `no-console` actif |
@@ -35,21 +35,35 @@ PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710
 - **Lot 4a** : `new Function` remplacé par `evaluateEquation` (parseur sûr).
 - **Lot 5** : hook `useOperationEditForm` déplacé dans `detail/` ; date d'opération contrôlée ; paramètres d'URL encodés ; audit URL / `href` / `window.open` ; erreur de type `AnalyseTreeMap`.
 
-### Reste à faire
+### Décisions 👤 du 2026-10-27
+- **T12** : TanStack Query non retenu → ADR 002 `Rejetée` (réévaluation possible si un besoin de cache/dédup apparaît).
+- **`logAuth`** : conservé en mode debug (trace jeton Bearer + clé API si `VITE_CONFIG_DEBUG` actif) ; risque accepté et documenté, usage dev uniquement, ne jamais activer le debug en QUA / PROD.
+- **Garde `Number.isFinite`** de `Equation.utils.ts` : conservée (défense en profondeur).
+- **Vérifications navigateur** : effectuées par 👤, OK (saisie manuelle de la date, parcours Budget / Récurrents / Analyses, création + « Valider l'opération », champ Montant). Wiki : commits et image faits par 👤.
+
+### Lot 6 — à venir (code, branche depuis master)
+
+Périmètre décidé par 👤 (2026-10-27), tout le « Reste à faire » ci-dessous :
+
+| Élément | Détail |
+|---|---|
+| T1 | Fusion complète des pages Budget / Recurrents |
+| T6 | Les 9 consumers restants vers les hooks ciblés |
+| T20 | Tests : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer`, `Main.tsx` (lazy / Suspense), branche `isMobile`, composants sans test dédié |
+| `getLabelISOFromDate` | Passage en UTC corrigé (décalage d'un jour possible tôt le matin) |
+| `AnalysesFiltrePeriode` | Spinner sans compte sélectionné |
+| `itemIcon` | Assainissement de la valeur API concaténée dans `<img src>` |
+
+### Reste à faire (périmètre du lot 6)
 
 | Catégorie | Élément | Détail |
 |---|---|---|
-| Décision 👤 | T12 | Introduire TanStack Query ou rester sur `useFetch` ? |
-| Décision 👤 | `logAuth` | Trace le jeton Bearer et la clé API quand `VITE_CONFIG_DEBUG` est actif : masquer ou conserver ? |
-| Décision 👤 | Garde `Number.isFinite` de `Equation.utils.ts` | Inatteignable (100 caractères max) : conservée par défaut comme défense en profondeur |
 | Code | T1 (reste) | Fusion complète des pages Budget / Recurrents (listes et détails distincts) |
 | Code | T6 (reste) | 9 consumers sur l'agrégat `useBudgetContext()` : `Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`, `OperationDetailActionsSection`, `OperationDetailCategoriesSection`, `useOperationEditForm` (dont certains lisent les deux moitiés) |
 | Code | T20 (reste) | 26 composants sur 64 sans fichier de test dédié (certains couverts par les tests d'intégration) ; `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %), `Main.tsx` (lazy / Suspense), branche `isMobile` |
 | Code | `getLabelISOFromDate` | En UTC (`toISOString`) : « aujourd'hui » peut être décalé d'un jour tôt le matin en heure locale |
 | Code (mineur) | Spinner `AnalysesFiltrePeriode` | Apparaît brièvement quand aucun compte n'est sélectionné |
 | Code (mineur) | `itemIcon` | Valeur de l'API concaténée dans `<img src>` (5 endroits), non assainie ; risque faible |
-| Vérification 👤 | Navigateur | Saisie manuelle d'une date partielle dans le champ contrôlé ; parcours Budget / Récurrents / Analyses ; création + « Valider l'opération » ; champ Montant (`10+5`, `(1+2)*3` acceptés ; `abc`, `1/0` refusés) |
-| Process | Wiki | Commits locaux du wiki à pousser sur son `master` (dépôt séparé) ; `C3_ihm.png` à vérifier |
 
 ## Context
 
@@ -153,7 +167,7 @@ Deux explorations factuelles (structure composants + data flow/hooks/optimisatio
 
 **T12 — ADR : introduction TanStack Query (arbitrage)**
 - Constat : aucun cache/dedup/retry actuel ; T11 résout la duplication mais pas le cache.
-- Action : voir `docs/adr/002-tanstack-query-data-fetching.md` (statut Proposée). Décision différée à 👤, après T11, si besoin cache/dedup confirmé.
+- Action : voir `docs/adr/002-tanstack-query-data-fetching.md` (statut Rejetée). **Décision 👤 2026-10-27 : non retenu** (ADR 002 `Rejetée`).
 - Fichiers : `ClientHTTP.service.ts`, les 7 extservices
 - Effort : L · Risque : Élevé · Priorité : Basse
 
@@ -433,7 +447,7 @@ Aucun `window.open`, `<a>`, `href`, `target`, `postMessage`, `document.write`, `
 | `<Avatar src={profile.picture}>` | Profil OIDC | OK (image) |
 | URL des appels HTTP (`evaluateURL`) | Paramètres de chemin / requête | Corrigé : `encodeURIComponent` |
 | Jeton OIDC en `localStorage` | `Auth.service.ts` | Risque accepté en l'absence de sink XSS |
-| `logAuth` | Jeton Bearer + clé API | À savoir : tracés dans les logs si `VITE_CONFIG_DEBUG` actif — **non modifié** |
+| `logAuth` | Jeton Bearer + clé API | Tracés dans les logs si `VITE_CONFIG_DEBUG` actif — **conservé** (décision 👤 2026-10-27, risque accepté ; dev uniquement) |
 
 #### Preuves
 - Tests : 981 verts (95 fichiers, +30). Lint : 0 erreur. Build : OK. `tsc --noEmit` : 0 erreur dans `src/`.
@@ -443,17 +457,14 @@ Aucun `window.open`, `<a>`, `href`, `target`, `postMessage`, `document.write`, `
 
 | Tâche | Reste à faire | Prérequis / blocage |
 |---|---|---|
-| T12 | ADR 002 TanStack Query : statut `Proposée`, décision 👤 | `useFetch` adopté → réévaluation cache/dedup possible (voir note de l'ADR) |
-| Sécurité | `logAuth` trace le jeton Bearer et la clé API en mode debug (`VITE_CONFIG_DEBUG`) : masquer ou conserver ? | Décision 👤 |
 | Sécurité (faible) | `itemIcon` (API) concaténé dans `<img src>` non assaini (5 endroits) | Mineur |
 | Dette | `getLabelISOFromDate` en UTC (`toISOString`) : décalage possible d'un jour tôt le matin | À corriger |
-| Vérification | Saisie manuelle de la date d'opération (champ contrôlé) à vérifier en navigateur | Test manuel 👤 |
 | T20 (reste) | Couverture de composants hors lot : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %) | Au fil des refactos |
 | T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`, `OperationDetailActionsSection`, `OperationDetailCategoriesSection`, `useOperationEditForm`) | Certains lisent des champs des deux moitiés |
 | T1 (reste) | Fusion complète des pages Budget / Recurrents (seul le squelette `BudgetPageShell` est factorisé) | Risque moyen |
 | Ajustement | Spinner `AnalysesFiltrePeriode` sans compte sélectionné | Mineur |
 
-Historique des lignes soldées : T2 (lot 3), sécurité `new Function` (lot 4a), T16 (lot 4b), déplacement du hook, date contrôlée, audit URL, suppression de `Components.props.ts` (lot 5).
+Historique des lignes soldées : T12 (non retenu), `logAuth` (conservé), vérification navigateur (OK 👤) — 2026-10-27 ; T2 (lot 3), sécurité `new Function` (lot 4a), T16 (lot 4b), déplacement du hook, date contrôlée, audit URL, suppression de `Components.props.ts` (lot 5).
 
 ## Fichiers critiques
 - `src/main/Components/budgets/budget/Budget.component.tsx`
@@ -464,4 +475,4 @@ Historique des lignes soldées : T2 (lot 3), sécurité `new Function` (lot 4a),
 
 ## ADR associé
 
-[`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Proposée — décision T12 uniquement)
+[`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Rejetée le 2026-10-27 — T12 non retenu)
