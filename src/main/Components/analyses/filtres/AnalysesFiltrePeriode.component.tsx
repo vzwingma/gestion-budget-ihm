@@ -152,7 +152,7 @@ export const AnalysesFiltrePeriodeComponent: React.FC<AnalysesFiltrePeriodeProps
                         <FormControlLabel value="true" control={<Radio />} label="Période" />
                     </RadioGroup>
                 </FormControl>
-                {chargementIntervalles && <CircularProgress size={20} aria-label="Chargement des périodes valides" />}
+                {selectedCompte && chargementIntervalles && <CircularProgress size={20} aria-label="Chargement des périodes valides" />}
             </Stack>
 
             {!vuePeriode && (

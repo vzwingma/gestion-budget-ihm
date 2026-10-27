@@ -11,6 +11,7 @@ import OperationEditionModel from "../../../../../../Models/budgets/OperationEdi
 import OperationModel from "../../../../../../Models/budgets/Operation.model.ts";
 import { BUSINESS_GUID } from "../../../../../../Utils/AppBusinessEnums.constants.ts";
 import { useAuth } from "react-oidc-context";
+import { getBanqueIconSrc } from "../../../../../../Utils/Banque.utils.ts";
 
 export interface OperationDetailIntercompteProps {
     intercompte: string | null
@@ -96,7 +97,7 @@ export const OperationDetailIntercompte: React.FC<
                     .map((compte) => (
                         <MenuItem key={compte.id} value={compte.id}>
                             <img
-                                src={"/img/banques/" + compte.itemIcon}
+                                src={getBanqueIconSrc(compte.itemIcon)}
                                 width={20}
                                 height={20}
                                 alt={compte.libelle}

@@ -30,12 +30,16 @@ export function getLabelMonthFRFromDate(dateOperation: Date): string {
 }
 
 /**
- * Retourne le label Fr d'une date
+ * Retourne le label ISO `yyyy-mm-dd` d'une date, construit à partir des composantes du fuseau LOCAL
+ * (et non UTC : évite le décalage d'un jour tôt le matin).
  * @param dateOperation date à afficher
- * @returns {string} label FR de la date
+ * @returns {string} label ISO `yyyy-mm-dd`
  */
 export function getLabelISOFromDate(dateOperation: Date): string {
-    return new Date(dateOperation).toISOString().split('T')[0];
+    const date = new Date(dateOperation);
+    const mois = String(date.getMonth() + 1).padStart(2, '0');
+    const jour = String(date.getDate()).padStart(2, '0');
+    return `${date.getFullYear()}-${mois}-${jour}`;
 }
 /**
  * Convertit un nom de mois en numéro de mois.

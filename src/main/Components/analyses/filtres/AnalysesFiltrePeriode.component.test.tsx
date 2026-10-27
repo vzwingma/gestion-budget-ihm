@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -52,6 +52,31 @@ describe('AnalysesFiltrePeriodeComponent', () => {
 
     afterEach(() => {
         vi.useRealTimers();
+    });
+
+    describe('indicateur de chargement', () => {
+
+        const spinner = () => screen.queryByRole('progressbar', { name: 'Chargement des périodes valides' });
+
+        test('sans compte sélectionné : aucun spinner (même au premier rendu)', async () => {
+            renderFiltre(null);
+
+            expect(spinner()).not.toBeInTheDocument();
+            // Le chargement "à vide" se termine sans jamais afficher le spinner
+            await waitFor(() => expect(monthInput('Mois')).toBeInTheDocument());
+            expect(spinner()).not.toBeInTheDocument();
+        });
+
+        test('avec compte sélectionné : spinner pendant le chargement, retiré une fois les intervalles reçus', async () => {
+            let resolve!: (valeur: any) => void;
+            (getValidPeriodesForCompte as any).mockReturnValue(new Promise((r) => { resolve = r; }));
+            renderFiltre();
+
+            expect(spinner()).toBeInTheDocument();
+            await act(async () => { resolve([intervalle]); });
+
+            await waitFor(() => expect(spinner()).not.toBeInTheDocument());
+        });
     });
 
     describe('chargement des intervalles via useFetch', () => {
@@ -173,9 +198,9 @@ describe('AnalysesFiltrePeriodeComponent', () => {
             expect(monthInput('Fin')).toHaveValue('2026-06');
         });
 
-        test('compte null : aucun appel réseau, spinner transitoire (promesse immédiate) puis disparu', async () => {
+        test('compte null : aucun appel réseau, aucun spinner', async () => {
             renderFiltre(null);
-            // useFetch passe brièvement en loading même sans compte (Promise.resolve(undefined))
+            // useFetch passe brièvement en loading même sans compte (Promise.resolve(undefined)) : spinner conditionné au compte
             await waitFor(() => expect(screen.queryByRole('progressbar')).not.toBeInTheDocument());
             expect(getValidPeriodesForCompte).not.toHaveBeenCalled();
         });
@@ -260,6 +285,80 @@ describe('AnalysesFiltrePeriodeComponent', () => {
             expect(monthInput('Début')).toHaveValue('2026-04');
             expect(monthInput('Fin')).toHaveValue('2026-06');
             expect(screen.getByText('Durée : 3 mois')).toBeInTheDocument();
+        });
+    });
+
+    describe('saisies et raccourcis complémentaires', () => {
+
+        async function afficherVuePeriode(periode: AnalysesPeriodeModel = { ...periodeInitiale, vuePeriode: true }) {
+            const utils = renderFiltre(compte, periode);
+            await waitFor(() => expect(monthInput('Début')).toHaveAttribute('min', '2026-05'));
+            return utils;
+        }
+
+        test('bouton radio "Période" : bascule en vue Période (champs Début / Fin), puis "Mois" revient en vue Mois', async () => {
+            const user = userEvent.setup();
+            const { onChange } = renderFiltre(null);
+
+            await user.click(screen.getByRole('radio', { name: 'Période' }));
+
+            expect(monthInput('Début')).toBeInTheDocument();
+            expect(monthInput('Fin')).toBeInTheDocument();
+            await waitFor(() => expect(onChange.mock.calls.at(-1)?.[0].vuePeriode).toBe(true));
+
+            await user.click(screen.getByRole('radio', { name: 'Mois' }));
+
+            expect(monthInput('Mois')).toBeInTheDocument();
+            await waitFor(() => expect(onChange.mock.calls.at(-1)?.[0].vuePeriode).toBe(false));
+        });
+
+        test('saisie du champ Début : seule la borne de début change, la durée est recalculée', async () => {
+            const { onChange } = await afficherVuePeriode({ vuePeriode: true, periodeDebut: new Date(2026, 4, 1), periodeFin: new Date(2026, 5, 1) });
+
+            fireEvent.change(monthInput('Début'), { target: { value: '2026-03' } });
+
+            expect(screen.getByText('Durée : 4 mois')).toBeInTheDocument();
+            const derniere: AnalysesPeriodeModel = onChange.mock.calls.at(-1)?.[0];
+            expect(derniere.periodeDebut).toEqual(new Date(2026, 2, 1));
+            expect(derniere.periodeFin).toEqual(new Date(2026, 5, 1));
+        });
+
+        test('saisie du champ Fin : seule la borne de fin change, la durée est recalculée', async () => {
+            const { onChange } = await afficherVuePeriode({ vuePeriode: true, periodeDebut: new Date(2026, 4, 1), periodeFin: new Date(2026, 5, 1) });
+
+            fireEvent.change(monthInput('Fin'), { target: { value: '2026-07' } });
+
+            expect(screen.getByText('Durée : 3 mois')).toBeInTheDocument();
+            const derniere: AnalysesPeriodeModel = onChange.mock.calls.at(-1)?.[0];
+            expect(derniere.periodeDebut).toEqual(new Date(2026, 4, 1));
+            expect(derniere.periodeFin).toEqual(new Date(2026, 6, 1));
+        });
+
+        test('"6 mois" et "12 mois" : plage correspondante jusqu au mois courant (début borné au min de l intervalle)', async () => {
+            const user = userEvent.setup();
+            await afficherVuePeriode();
+
+            await user.click(screen.getByRole('button', { name: '6 mois' }));
+            // janvier 2026 -> juin 2026, borné au min (mai 2026)
+            expect(monthInput('Début')).toHaveValue('2026-05');
+            expect(monthInput('Fin')).toHaveValue('2026-06');
+
+            await user.click(screen.getByRole('button', { name: '12 mois' }));
+            expect(monthInput('Début')).toHaveValue('2026-05');
+            expect(monthInput('Fin')).toHaveValue('2026-06');
+        });
+
+        test('intervalle terminé avant le mois courant : fin bornée au max, et début > fin ramène tout l intervalle', async () => {
+            // Intervalle valide : janvier -> mars 2026 ; "3 mois" donnerait avril -> juin 2026
+            (getValidPeriodesForCompte as any).mockResolvedValue([{ debut: new Date(2026, 0, 1), fin: new Date(2026, 2, 1) }]);
+            const user = userEvent.setup();
+            renderFiltre(compte, { ...periodeInitiale, vuePeriode: true });
+            await waitFor(() => expect(monthInput('Début')).toHaveAttribute('min', '2026-01'));
+
+            await user.click(screen.getByRole('button', { name: '3 mois' }));
+
+            expect(monthInput('Début')).toHaveValue('2026-01');
+            expect(monthInput('Fin')).toHaveValue('2026-03');
         });
     });
 

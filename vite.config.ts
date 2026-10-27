@@ -16,6 +16,8 @@ export default defineConfig({
         environment: 'jsdom',
         globals: true,
         setupFiles: ['src/setupTests.ts'],
+        // Les tests d'intégration (formulaire d'opération) dépassent parfois 5 s sous charge / couverture
+        testTimeout: 15000,
         coverage: {
             provider: 'v8',
             reporter: ['text', 'lcov'],

@@ -2,7 +2,7 @@ import React, { JSX } from 'react'
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import { OperationDetailActions } from '../actions/OperationDetailActions.component.tsx';
 import { OPERATION_ETATS_ENUM } from '../../../../../../Utils/AppBusinessEnums.constants.ts';
-import { useBudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts';
 import { isInCreateMode, isInEditMode } from '../OperationDetailPage.controller.ts';
 import OperationModel from "../../../../../../Models/budgets/Operation.model.ts";
 import OperationEditionModel from "../../../../../../Models/budgets/OperationEdition.model.ts";
@@ -26,7 +26,7 @@ export const OperationDetailActionsSection: React.FC<OperationDetailActionsSecti
     editForm, editOperation, onClickRealiseInCreateMode, onOperationChange, onOperationCommit, onValidate
 }: OperationDetailActionsSectionProps): JSX.Element => {
 
-    const { currentBudget, currentOperation } = useBudgetContext();
+    const { currentBudget, currentOperation } = useCurrentBudget();
 
     return (
         <Grid container sx={{ width: "90%", alignItems: "center", justifyContent: "center" }}>

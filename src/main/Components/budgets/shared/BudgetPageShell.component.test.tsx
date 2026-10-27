@@ -102,6 +102,19 @@ describe('BudgetPageShell', () => {
             expect(document.head.textContent).not.toContain('height:812px');
         });
 
+        // Mobile (useMediaQuery down('lg')) : matchMedia simulé à "vrai" -> innerHeight - 95
+        test('mobile : innerHeight - 95, et avec filterBar réduite de FILTER_BAR_HEIGHT', () => {
+            vi.stubGlobal('matchMedia', (query: string) => ({
+                matches: true, media: query, onchange: null,
+                addEventListener: vi.fn(), removeEventListener: vi.fn(), addListener: vi.fn(), removeListener: vi.fn(), dispatchEvent: vi.fn()
+            }));
+            renderShell();
+            expect(document.head.textContent).toContain('height:905px');
+
+            renderShell({ filterBar: <span>barre</span> });
+            expect(document.head.textContent).toContain('height:857px');
+        });
+
         test('avec filterBar : réduite de FILTER_BAR_HEIGHT (48 px)', () => {
             renderShell({ filterBar: <span>barre</span> });
             expect(document.head.textContent).toContain('height:812px');

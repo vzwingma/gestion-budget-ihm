@@ -168,6 +168,8 @@ src/main/
 - Hooks custom dans `src/main/hooks/`. Lecture de données : `useFetch` + `fetch*` (`callWithNotify`) ; actions/sauvegardes : `callAndNotify` (`Services/CallAndNotify.service.ts`). Contexte budget : préférer `useBudgetSelection()` / `useCurrentBudget()` à `useBudgetContext()` si une seule moitié est lue.
 - Pas de `console.log` (ESLint `no-console`, `warn`/`error` OK) : logs debug via `debug()` (`Utils/Debug.utils.ts`, actif si `VITE_CONFIG_DEBUG` défini).
 - Édition d'opération : état **immuable** (jamais muter `currentOperation` du contexte ni un state en place — copier) ; logique dans le hook `useOperationEditForm` (dans `detail/`, brouillon `editOperation`) + fonctions pures de `OperationDetailPage.controller.ts` ; le brouillon devient `currentOperation` **uniquement au succès** de la sauvegarde (`saveOperation` → commit).
+- Pages budget (`BudgetPage`, `RecurrentsPage`) : données communes via `useBudgetPageData` (`Components/budgets/shared/`) ; `groupOperations` / `prepareBudget` à référence stable.
+- Icône de banque (`itemIcon` de l'API) : toujours via `getBanqueIconSrc` (`Utils/Banque.utils.ts`), jamais concaténée dans `<img src>`.
 - Saisie de formule (champ Montant) : évaluer via `evaluateEquation` (`Utils/Equation.utils.ts`), jamais `eval` / `new Function`.
 - Items de liste en `React.memo` + handlers `useCallback`. Routes `MainPage`/`Infos` en `React.lazy` + `Suspense`.
 - Material-UI 9 (`@mui/material`) seule lib UI. `Box`/`Grid` layout; `useMediaQuery`/`useTheme` responsive.
@@ -198,7 +200,7 @@ Uniquement ce qui concerne **tous** les agents :
 - Projet en évolution, migré CRA → Vite (AP 001, ADR-001) ; migration dépendances TS/Vite partiellement reportée (AP 003 : TS v7 / typescript-eslint bloqués npm).
 - Contrats API couplés au backend `gestion-budget-serverless` : toute évolution modèle → vérifier côté backend.
 - Ancienne structure `.github/` (agents v2.x, plans) conservée pour référence historique.
-- AP 006 (revue architecture React) : lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées) et 5 (finitions) livrés et mergés. `useFetch` adopté, contexte budget scindé. Reste (voir « Statut global » du plan `.claude/plans/006_revue_architecture_react.plan.md`) : T12 / ADR 002 Proposée (décision 👤), T1/T6/T20 partiels, dette mineure.
+- AP 006 (revue architecture React) : lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées) et 5 (finitions) livrés et mergés. `useFetch` adopté, contexte budget scindé. T12 non retenu (décision 👤 2026-10-27, ADR 002 Rejetée) ; `logAuth` conservé en debug (risque accepté). Lot 6 livré (branche `claude/react-ui-architecture-lot6`, Gate #4 en attente 👤) : T1 (`useBudgetPageData`), T6, T20 (1121 tests), `getLabelISOFromDate` en local, spinner `AnalysesFiltrePeriode`, `itemIcon` assaini — voir « Statut global » du plan `.claude/plans/006_revue_architecture_react.plan.md`.
 
 ---
 

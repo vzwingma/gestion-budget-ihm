@@ -1,13 +1,13 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 
 import { RecurrentsPage } from './Recurrents.component.tsx';
-import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { BudgetContextsWrapper } from '../../../hooks/budgetContexts.testutils.tsx';
 import BudgetMensuelModel from '../../../Models/budgets/BudgetMensuel.model.ts';
 import { createNewOperation } from '../../../Models/budgets/Operation.model.ts';
-import { PERIODES_MENSUALITE_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
+import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from '../../../Utils/AppBusinessEnums.constants.ts';
 
 /**
  * Tests de rendu de RecurrentsPage (filet de sécurité AP 006 - T19, posé avant T1 :
@@ -30,7 +30,7 @@ vi.mock('../shared/BudgetPageHeader.component.tsx', () => ({
 }));
 
 vi.mock('../budget/actions/BudgetActionsButtonGroup.component.tsx', () => ({
-    BudgetActionsButtonGroupComponent: () => <div data-testid="mock-actions" />
+    BudgetActionsButtonGroupComponent: ({ droits }: any) => <output data-testid="mock-actions">{droits.join(',')}</output>
 }));
 
 vi.mock('../operations/recurrentes/OperationsRecurrentesListe.component.tsx', () => ({
@@ -83,9 +83,9 @@ function renderRecurrentsPage(contextOverrides: any = {}) {
     const contextValue = buildContextValue(contextOverrides);
     const onOpenMenu = vi.fn();
     render(
-        <BudgetContext.Provider value={contextValue}>
+        <BudgetContextsWrapper value={contextValue}>
             <RecurrentsPage onOpenMenu={onOpenMenu} />
-        </BudgetContext.Provider>
+        </BudgetContextsWrapper>
     );
     return { contextValue, onOpenMenu };
 }
@@ -117,6 +117,25 @@ describe('RecurrentsPage', () => {
         expect(screen.getByTestId('mock-liste')).toBeInTheDocument();
         expect(screen.getByTestId(`group-${PERIODES_MENSUALITE_ENUM.MENSUELLE}`)).toBeInTheDocument();
         expect(screen.getByTestId('op-op-1')).toBeInTheDocument();
+    });
+
+    test('droits utilisateur : préférences chargées transmises telles quelles (pas de droit de création ajouté)', async () => {
+        (fetchPreferenceUtilisateur as any).mockResolvedValue([UTILISATEUR_DROITS.DROIT_RAZ_BUDGET]);
+        const budget = new BudgetMensuelModel('budget-1', 'Budget test');
+        (fetchBudget as any).mockResolvedValue(budget);
+
+        renderRecurrentsPage({ currentBudget: budget });
+
+        await waitFor(() => expect(screen.getByTestId('mock-actions')).toHaveTextContent(String(UTILISATEUR_DROITS.DROIT_RAZ_BUDGET)));
+        expect(screen.getByTestId('mock-actions')).not.toHaveTextContent(String(UTILISATEUR_DROITS.DROIT_CREATE_OPERATION));
+    });
+
+    test('droits utilisateur : aucun droit tant que les préférences ne sont pas chargées', () => {
+        const budget = new BudgetMensuelModel('budget-1', 'Budget test');
+
+        renderRecurrentsPage({ currentBudget: budget });
+
+        expect(screen.getByTestId('mock-actions')).toBeEmptyDOMElement();
     });
 
     test('sélection d une opération récurrente met à jour currentOperation', async () => {

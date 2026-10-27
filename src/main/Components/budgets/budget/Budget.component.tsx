@@ -3,21 +3,25 @@ import React, { JSX, useCallback, useEffect, useMemo } from "react";
 import { Grid } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel, { createNewOperation } from "../../../Models/budgets/Operation.model.ts";
-import { fetchBudget, fetchCategories, fetchPreferenceUtilisateur } from "./Budget.extservices.ts";
+import { fetchCategories } from "./Budget.extservices.ts";
 import { PERIODES_MENSUALITE_ENUM, UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { BudgetActionsButtonGroupComponent } from "./actions/BudgetActionsButtonGroup.component.tsx";
 import OperationsListe from "../operations/OperationsListe.component.tsx";
 import OperationDetailPage from "../operations/courantes/detail/OperationDetailPage.component.tsx";
 import { getOperationsGroupedByDateOperation, updateOperationsStatus } from "./Budget.controller.ts";
 import { fetchLibellesOperationsCompte } from "../operations/courantes/detail/OperationDetailPage.extservices.ts";
-import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
+import { useBudgetSelection, useCurrentBudget } from "../../../hooks/useBudgetContext.ts";
+import { useBudgetPageData } from "../shared/useBudgetPageData.ts";
 import { useFetch } from "../../../hooks/useFetch.ts";
 import BudgetSoldes from "./BudgetSoldes.component.tsx";
 import BudgetPageShell from "../shared/BudgetPageShell.component.tsx";
-import { debug } from "../../../Utils/Debug.utils.ts";
-import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import OperationsFilterBar from "../shared/OperationsFilterBar.component.tsx";
 import { filterOperationsList } from "../operations/OperationsListe.shared.tsx";
+
+/** Regroupement des opérations du budget par date d'opération (référence stable) */
+const groupOperationsByDate = (budget: BudgetMensuelModel) => getOperationsGroupedByDateOperation(budget.listeOperations);
+/** Compatibilité des opérations sur le statut en retard (référence stable) */
+const prepareBudgetOperations = (budget: BudgetMensuelModel) => updateOperationsStatus(budget.listeOperations);
 
 export interface BudgetPageProps {
     onOpenMenu: () => void
@@ -34,8 +38,9 @@ export interface BudgetPageProps {
  * @component
  *
  * @description
- * Ce composant gère l'affichage et les interactions de la page Budget. Il charge les catégories et les préférences utilisateur au démarrage,
- * et met à jour le budget lorsque le compte ou la date sélectionnée change. Il permet également de filtrer les opérations, de sélectionner
+ * Ce composant gère l'affichage et les interactions de la page Budget. Le chargement du budget, la réinitialisation du contexte (compte / date),
+ * le regroupement et les droits utilisateur sont portés par `useBudgetPageData` (commun avec `RecurrentsPage`) ; il charge ici les catégories
+ * et les libellés. Il permet également de filtrer les opérations, de sélectionner
  * une opération et de créer une nouvelle opération.
  *
  * @remarks
@@ -45,13 +50,16 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
 
     /** Etats pour la page Budget **/
 
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate, categories, setCategories, filtreOperations, setFiltreOperations } = useBudgetContext();
+    const { categories, setCategories } = useBudgetSelection();
+    const { filtreOperations, setFiltreOperations } = useCurrentBudget();
+    const {
+        selectedCompte, selectedDate, currentBudget, currentOperation, setCurrentOperation,
+        operationsGroupees: operationsGroupedByDateOperation, userDroits, handleBudgetUpdate
+    } = useBudgetPageData({ groupOperations: groupOperationsByDate, prepareBudget: prepareBudgetOperations });
 
 
-    /** Chargement des catégories et des préférences utilisateurs au 1er démarrage **/
+    /** Chargement des catégories au 1er démarrage **/
     const { data: categoriesChargees } = useFetch(() => fetchCategories(), []);
-    const { data: userDroitsCharges } = useFetch(() => fetchPreferenceUtilisateur(), []);
-    const userDroits: UTILISATEUR_DROITS[] = userDroitsCharges ?? [];
 
     /** Les catégories chargées alimentent le contexte **/
     useEffect(() => {
@@ -59,20 +67,6 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
             setCategories(categoriesChargees);
         }
     }, [categoriesChargees, setCategories]);
-
-    /** Callback de mise à jour du budget **/
-    const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
-        // Compatibilité des opérations sur le statut en retard
-        updateOperationsStatus(budget.listeOperations);
-        setCurrentBudget(budget);
-        debug("Chargement du budget correctement effectué");
-    }, [setCurrentBudget]);
-
-    /** Regroupement des opérations par date, dérivé du budget courant **/
-    const operationsGroupedByDateOperation = useMemo(
-        () => currentBudget == null ? {} : getOperationsGroupedByDateOperation(currentBudget.listeOperations),
-        [currentBudget]
-    );
 
     /** Opérations de la liste après filtrage texte + puces (compteur et net de la barre de résultat) **/
     const operationsFiltrees = useMemo(
@@ -86,26 +80,11 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     }, [setFiltreOperations]);
 
 
-    /** Rechargement du budget et des libellés si changement de compte ou de date **/
-    const { data: budgetCharge } = useFetch(() => fetchBudget(selectedCompte, selectedDate), [selectedCompte, selectedDate]);
+    /** Rechargement des libellés si changement de compte ou de date **/
     const { data: libellesCharges } = useFetch(
         () => selectedCompte == null ? Promise.resolve([]) : fetchLibellesOperationsCompte(selectedCompte.id),
         [selectedCompte, selectedDate]);
     const listeLibellesOperations = libellesCharges ?? [];
-
-    /** Réinitialisation du contexte si changement de compte ou de date **/
-    useEffect(() => {
-        debug("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate));
-        setCurrentBudget(undefined);
-        setCurrentOperation(null);
-    }, [selectedCompte, selectedDate, setCurrentOperation, setCurrentBudget]);
-
-    /** Le budget chargé alimente le contexte **/
-    useEffect(() => {
-        if (budgetCharge !== undefined) {
-            handleBudgetUpdate(budgetCharge);
-        }
-    }, [budgetCharge, handleBudgetUpdate]);
 
     /**
      * Sélection d'une opération
