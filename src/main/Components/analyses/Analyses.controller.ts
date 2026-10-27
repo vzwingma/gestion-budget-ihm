@@ -74,6 +74,11 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
                                                                                 .filter((categorie): categorie is CategorieOperationModel => categorie != null)
                                                                                 .sort((a, b) => a.libelle.localeCompare(b.libelle));
         handleDataCalculationResult(budgetConsolide, distinctCategories);
+    })
+    .catch((e) => {
+        const libErreur = "Erreur lors de la consolidation des budgets du compte " + selectedCompte.libelle;
+        console.error(libErreur, e);
+        toast.error(libErreur, {autoClose: false, closeOnClick: true});
     });
 
 }
