@@ -1,11 +1,11 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lots 1, 2, 3, 4a et 4b livrés et mergés (Gate #4 validé 👤) · 🟡 Lot 5 (finitions) livré, PR #711 ouverte, Gate #4 en attente du merge · reste : voir « Statut global » (T12 décision 👤, T1/T6/T20 partiels, dette mineure)
+**Statut** : ✅ Lots 1, 2, 3, 4a, 4b et 5 livrés et mergés (Gate #4 validé 👤) · reste : voir « Statut global » (T12 décision 👤, T1/T6/T20 partiels, dette mineure)
 **Date** : 2026-10-23
 
 ## Statut global (état réel au 2026-10-27)
 
-PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710 (lot 4b) — toutes mergées ; #711 (lot 5) — ouverte. Suivi : 981 tests verts, lint 0 erreur, `tsc` 0 erreur dans `src/`.
+PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710 (lot 4b), #711 (lot 5) — toutes mergées. Suivi : 981 tests verts, lint 0 erreur, `tsc` 0 erreur dans `src/`.
 
 ### Les 20 tâches du plan initial (T1–T20)
 
@@ -49,7 +49,6 @@ PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710
 | Code (mineur) | Spinner `AnalysesFiltrePeriode` | Apparaît brièvement quand aucun compte n'est sélectionné |
 | Code (mineur) | `itemIcon` | Valeur de l'API concaténée dans `<img src>` (5 endroits), non assainie ; risque faible |
 | Vérification 👤 | Navigateur | Saisie manuelle d'une date partielle dans le champ contrôlé ; parcours Budget / Récurrents / Analyses ; création + « Valider l'opération » ; champ Montant (`10+5`, `(1+2)*3` acceptés ; `abc`, `1/0` refusés) |
-| Process | PR #711 | À merger : clôt le Gate #4 du lot 5 |
 | Process | Wiki | Commits locaux du wiki à pousser sur son `master` (dépôt séparé) ; `C3_ihm.png` à vérifier |
 
 ## Context
@@ -411,7 +410,7 @@ Périmètre : solder la dette mineure des lots 3 et 4 : (1) déplacer `useOperat
 | #1 | 2026-10-27 | GO 👤 | Périmètre lot 5 validé |
 | #2 | 2026-10-27 | GO 👤 | DEVon : hook déplacé, date contrôlée, `evaluateURL` encodé, `AnalyseTreeMap` |
 | #3 | 2026-10-27 | GO 👤 | QALvin : 981 tests verts (95 fichiers, +30), lint 0 erreur, build OK |
-| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
+| #4 | 2026-10-27 | GO 👤 (PR #711 mergée) | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
 
 ### Résultats (lot 5)
 
