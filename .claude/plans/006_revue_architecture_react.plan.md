@@ -1,6 +1,6 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lot 1 livré (Gate #4 validé 👤, 2026-10-25) · ✅ Lot 2 livré (Gate #4 validé 👤) · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 · 🟡 Lot 4a (sécurité `evaluateEquation`) livré, Gate #4 en attente 👤 (reste : T16 = lot 4b, T20 partiel, T12)
+**Statut** : ✅ Lot 1 livré (Gate #4 validé 👤, 2026-10-25) · ✅ Lot 2 livré (Gate #4 validé 👤) · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 · 🟡 Lot 4a (sécurité `evaluateEquation`) livré, Gate #4 en attente 👤 · 🟡 Lot 4b (T16, Props co-localisées) livré, Gate #4 en attente 👤 · 🟡 Lot 5 (finitions : hook déplacé, date contrôlée, encodage des URL, audit URL) livré, Gate #4 en attente 👤 (reste : T20 partiel, T12, voir « Dette restante »)
 **Date** : 2026-10-23
 
 ## Context
@@ -351,18 +351,60 @@ Journal des gates lot 4a
 - Usages d'URL / `href` / `window.open` **non audités**.
 - Garde `Number.isFinite` : code défensif inatteignable ; garder ou retirer = décision 👤.
 
-## Dette restante / prochain lot (après lot 3)
+## Lot 5 (2026-10-27) — finitions, branche `claude/react-ui-architecture-lot5-finitions`
+
+Périmètre : solder la dette mineure des lots 3 et 4 : (1) déplacer `useOperationEditForm` hors de `hooks/` (dépendance inversée `hooks/` → `Components/`) ; (2) contrôler le champ date d'opération ; (3) audit URL / `href` / `window.open` laissé ouvert par le lot 4a, et durcissement de `evaluateURL` ; (4) erreur `tsc` de `AnalyseTreeMap` ; (5) `Components.props.ts` (vide) : supprimé par 👤 sur master (commit acb2bd7).
+
+### Journal des gates lot 5
+
+| Gate | Date | Décision | Détail |
+|---|---|---|---|
+| #1 | 2026-10-27 | GO 👤 | Périmètre lot 5 validé |
+| #2 | 2026-10-27 | GO 👤 | DEVon : hook déplacé, date contrôlée, `evaluateURL` encodé, `AnalyseTreeMap` |
+| #3 | 2026-10-27 | GO 👤 | QALvin : 981 tests verts (95 fichiers, +30), lint 0 erreur, build OK |
+| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
+
+### Résultats (lot 5)
+
+#### Fait
+- **Hook déplacé** : `useOperationEditForm.ts` (+ test) passe de `src/main/hooks/` à `src/main/Components/budgets/operations/courantes/detail/` : la dépendance inversée `hooks/` → `Components/` disparaît.
+- **Date d'opération contrôlée** : `OperationDetailDateOperation` reçoit `dateEdition` (brouillon) au lieu d'un `defaultValue`. En création + « Valider l'opération », la date du jour s'affiche (avant : champ vide alors que la date partait bien à la sauvegarde).
+- **`evaluateURL` (`ClientHTTP.service.ts`)** : paramètres de chemin et de requête encodés (`encodeURIComponent`) ; remplacement par fonction (motifs `$&` / `$1` non interprétés) — défense en profondeur.
+- **`AnalyseTreeMap.component.tsx`** : `selectedCategory ?? undefined` (erreur `tsc` corrigée ; `tsc --noEmit` : 0 erreur dans `src/`).
+- **`Components.props.ts`** supprimé par 👤 (commit acb2bd7 sur master) : plus aucune mention à conserver.
+
+#### Audit URL / href / window.open
+
+Aucun `window.open`, `<a>`, `href`, `target`, `postMessage`, `document.write`, `insertAdjacentHTML`, `outerHTML`, `innerHTML`, `dangerouslySetInnerHTML`, `setAttribute`, `eval`, `new Function` dans le code de production.
+
+| Sink | Source | Verdict |
+|---|---|---|
+| `globalThis.location.href = "/"` | Constante | OK |
+| `redirect_uri` OIDC | URL du navigateur | OK (validée par le fournisseur OIDC) |
+| `<img src="/img/banques/" + itemIcon>` (5 endroits) | `itemIcon` renvoyé par l'API | Risque faible (image, même origine) — **non corrigé** |
+| `<Avatar src={profile.picture}>` | Profil OIDC | OK (image) |
+| URL des appels HTTP (`evaluateURL`) | Paramètres de chemin / requête | Corrigé : `encodeURIComponent` |
+| Jeton OIDC en `localStorage` | `Auth.service.ts` | Risque accepté en l'absence de sink XSS |
+| `logAuth` | Jeton Bearer + clé API | À savoir : tracés dans les logs si `VITE_CONFIG_DEBUG` actif — **non modifié** |
+
+#### Preuves
+- Tests : 981 verts (95 fichiers, +30). Lint : 0 erreur. Build : OK. `tsc --noEmit` : 0 erreur dans `src/`.
+- Mutations de vérification : retrait de l'encodage et `defaultValue` à la place de `value` détectés. Le replacer-fonction est un mutant équivalent (`encodeURIComponent` encode déjà `$`).
+
+## Dette restante / prochain lot (après lot 5)
 
 | Tâche | Reste à faire | Prérequis / blocage |
 |---|---|---|
-| ~~T2 (reste)~~ | ✅ Fait (lot 3) : `OperationDetailPage` découpée | — |
-| T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) | Lisent des champs des deux moitiés ; à vérifier après le découpage lot 3 |
-| ~~Sécurité~~ | ✅ Fait (lot 4a) : `new Function` remplacé par `evaluateEquation`. Reste éventuel : audit URL / `href` / `window.open` | À décider 👤 |
-| Dette | Déplacer `useOperationEditForm` dans `detail/` (dépendance `hooks/` → `Components/`) ; contrôler la date d'opération | Mineur |
-| ~~T16~~ | ✅ Fait (lot 4b) : Props co-localisées. Reste : supprimer `Components.props.ts` (vide) | Suppression à décider 👤 |
-| T20 (reste) | Couverture de composants hors lot : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %) | Au fil des refactos |
 | T12 | ADR 002 TanStack Query : statut `Proposée`, décision 👤 | `useFetch` adopté → réévaluation cache/dedup possible (voir note de l'ADR) |
+| Sécurité | `logAuth` trace le jeton Bearer et la clé API en mode debug (`VITE_CONFIG_DEBUG`) : masquer ou conserver ? | Décision 👤 |
+| Sécurité (faible) | `itemIcon` (API) concaténé dans `<img src>` non assaini (5 endroits) | Mineur |
+| Dette | `getLabelISOFromDate` en UTC (`toISOString`) : décalage possible d'un jour tôt le matin | À corriger |
+| Vérification | Saisie manuelle de la date d'opération (champ contrôlé) à vérifier en navigateur | Test manuel 👤 |
+| T20 (reste) | Couverture de composants hors lot : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %) | Au fil des refactos |
+| T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) | Lisent des champs des deux moitiés |
 | Ajustement | Spinner `AnalysesFiltrePeriode` sans compte sélectionné | Mineur |
+
+Historique des lignes soldées : T2 (lot 3), sécurité `new Function` (lot 4a), T16 (lot 4b), déplacement du hook, date contrôlée, audit URL, suppression de `Components.props.ts` (lot 5).
 
 ## Fichiers critiques
 - `src/main/Components/budgets/budget/Budget.component.tsx`
