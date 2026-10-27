@@ -1,11 +1,11 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lots 1, 2, 3, 4a, 4b et 5 livrés et mergés (Gate #4 validé 👤) · T12 non retenu (décision 👤 2026-10-27, ADR 002 Rejetée) · 🟡 lot 6 livré (T1/T6/T20, dette mineure), Gate #4 en attente 👤 (branche `claude/react-ui-architecture-lot6`, non commité) — voir « Statut global »
+**Statut** : ✅ **Plan clos (2026-10-27)** — lots 1, 2, 3, 4a, 4b, 5 et 6 livrés et mergés (Gate #4 validé 👤) · T12 non retenu (décision 👤, ADR 002 Rejetée) · dette mineure résiduelle : voir « Dette restante »
 **Date** : 2026-10-23
 
 ## Statut global (état réel au 2026-10-27)
 
-PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710 (lot 4b), #711 (lot 5) — toutes mergées ; lot 6 : branche `claude/react-ui-architecture-lot6`, pas encore de PR (Gate #4 en attente 👤). Suivi (lot 6) : 1121 tests verts (109 fichiers), 0 `expected fail`, couverture 97,67 % stmt / 88,69 % branches / 98,18 % lignes.
+PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710 (lot 4b), #711 (lot 5) et #713 (lot 6) — toutes mergées.
 
 ### Les 20 tâches du plan initial (T1–T20)
 
@@ -34,7 +34,7 @@ PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710
 - **Lot 3** : correctif de la régression T10 ; refactor immuable de l'édition d'opération ; 5 défauts corrigés (date nulle à la création, montant non remis à zéro, libellé numérique perdu, montant invalide accepté, montant éditable sur budget clos).
 - **Lot 4a** : `new Function` remplacé par `evaluateEquation` (parseur sûr).
 - **Lot 5** : hook `useOperationEditForm` déplacé dans `detail/` ; date d'opération contrôlée ; paramètres d'URL encodés ; audit URL / `href` / `window.open` ; erreur de type `AnalyseTreeMap`.
-- **Lot 6** (Gate #4 en attente 👤) : `useBudgetPageData` (T1) ; consumers du contexte migrés (T6) ; `getLabelISOFromDate` en composantes locales ; spinner `AnalysesFiltrePeriode` conditionné au compte ; `getBanqueIconSrc` (`itemIcon` assaini) ; ~150 tests (T20) ; bug latent d'injection d'un budget périmé corrigé.
+- **Lot 6** (PR #713 mergée) : `useBudgetPageData` (T1) ; consumers du contexte migrés (T6) ; `getLabelISOFromDate` en composantes locales ; spinner `AnalysesFiltrePeriode` conditionné au compte ; `getBanqueIconSrc` (`itemIcon` assaini) ; ~150 tests (T20) ; bug latent d'injection d'un budget périmé corrigé.
 
 ### Décisions 👤 du 2026-10-27
 - **T12** : TanStack Query non retenu → ADR 002 `Rejetée` (réévaluation possible si un besoin de cache/dédup apparaît).
@@ -42,7 +42,7 @@ PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710
 - **Garde `Number.isFinite`** de `Equation.utils.ts` : conservée (défense en profondeur).
 - **Vérifications navigateur** : effectuées par 👤, OK (saisie manuelle de la date, parcours Budget / Récurrents / Analyses, création + « Valider l'opération », champ Montant). Wiki : commits et image faits par 👤.
 
-### Lot 6 — livré, Gate #4 en attente 👤 (branche `claude/react-ui-architecture-lot6`)
+### Lot 6 — livré et mergé (PR #713)
 
 Périmètre décidé par 👤 (2026-10-27) — réalisé, détail dans « Lot 6 » plus bas :
 
@@ -458,7 +458,7 @@ Périmètre : solder le « Reste à faire » du plan (décision 👤 2026-10-27)
 | #1 | 2026-10-27 | GO 👤 (« On lance dans le prochain lot ») | Périmètre lot 6 validé |
 | #2 | 2026-10-27 | GO 👤 | DEVon : `useBudgetPageData`, migration des consumers, `Date.utils`, spinner, `Banque.utils` |
 | #3 | 2026-10-27 | GO 👤 | QALvin : 1121 tests verts (109 fichiers), couverture 97,67 % stmt |
-| #4 | 2026-10-27 | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
+| #4 | 2026-10-27 | GO 👤 (PR #713 mergée) | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
 
 ### Résultats (lot 6)
 
