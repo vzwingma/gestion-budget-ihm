@@ -10,7 +10,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
-| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées) et 5 (finitions) livrés et mergés ; T12 non retenu (décision 👤 2026-10-27) ; 🟡 lot 6 livré (T1 `useBudgetPageData`, T6, T20, `getLabelISOFromDate`, spinner, `itemIcon`), Gate #4 en attente 👤 (voir « Statut global » du plan) | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
+| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ **Clos (2026-10-27)** — lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées), 5 (finitions) et 6 (`useBudgetPageData`, T6, T20) livrés et mergés ; T12 non retenu (décision 👤, ADR 002 Rejetée) ; dette mineure résiduelle dans « Dette restante » du plan | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Rejetée le 2026-10-27 — item T12 non retenu)
 
