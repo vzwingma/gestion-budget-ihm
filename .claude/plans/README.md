@@ -10,7 +10,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
-| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lot 1 livré (Gate #4 validé 👤) · ✅ Lot 2 livré (T11 adoption, T6, T2 partiel), Gate #4 validé 👤 · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 · 🟡 Lot 4a (sécurité : `new Function` → `evaluateEquation`) livré, Gate #4 en attente 👤 · 🟡 Lot 4b (T16 : Props co-localisées) livré, Gate #4 en attente 👤 · 🟡 Lot 5 (finitions : hook déplacé, date contrôlée, encodage URL, audit URL) livré, Gate #4 en attente 👤 — reste : T20, T12 | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
+| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lots 1, 2, 3, 4a (sécurité `evaluateEquation`) et 4b (Props co-localisées) livrés et mergés · 🟡 Lot 5 (finitions) : PR #711 ouverte, Gate #4 en attente du merge — reste : T12 (décision 👤), T1/T6/T20 partiels, dette mineure (voir « Statut global » du plan) | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Proposée — item T12 uniquement)
 

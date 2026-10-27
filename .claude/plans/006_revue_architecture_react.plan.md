@@ -1,7 +1,56 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lot 1 livré (Gate #4 validé 👤, 2026-10-25) · ✅ Lot 2 livré (Gate #4 validé 👤) · 🟡 Lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤 · 🟡 Lot 4a (sécurité `evaluateEquation`) livré, Gate #4 en attente 👤 · 🟡 Lot 4b (T16, Props co-localisées) livré, Gate #4 en attente 👤 · 🟡 Lot 5 (finitions : hook déplacé, date contrôlée, encodage des URL, audit URL) livré, Gate #4 en attente 👤 (reste : T20 partiel, T12, voir « Dette restante »)
+**Statut** : ✅ Lots 1, 2, 3, 4a et 4b livrés et mergés (Gate #4 validé 👤) · 🟡 Lot 5 (finitions) livré, PR #711 ouverte, Gate #4 en attente du merge · reste : voir « Statut global » (T12 décision 👤, T1/T6/T20 partiels, dette mineure)
 **Date** : 2026-10-23
+
+## Statut global (état réel au 2026-10-27)
+
+PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710 (lot 4b) — toutes mergées ; #711 (lot 5) — ouverte. Suivi : 981 tests verts, lint 0 erreur, `tsc` 0 erreur dans `src/`.
+
+### Les 20 tâches du plan initial (T1–T20)
+
+| Tâche | État | Détail |
+|---|---|---|
+| T1 Fusion Budget / Recurrents | 🟡 Partielle | Seul le squelette de page est factorisé (`BudgetPageShell`). Les listes et détails restent distincts (fusion complète jugée risquée) |
+| T2 Découpler `OperationDetailPage` | ✅ Fait | Lot 2 : `OperationRecurrenteDetailDateFin` déplacé dans `shared/` ; lot 3 : page découpée (429 → 106 lignes) |
+| T3 Tooltip recharts générique | ✅ Fait | `AnalyseTooltip` |
+| T4 Pattern extservices | ✅ Fait | `callAndNotify` (actions) et `callWithNotify` (lectures `fetch*`) |
+| T5 Regroupements via `useMemo` | ✅ Fait | Lot 1 |
+| T6 Scinder `BudgetContext` | 🟡 Partielle | Scission faite (lot 2) ; 9 consumers restent sur l'agrégat (voir dette) |
+| T7 `React.lazy` / `Suspense` | ✅ Fait | `MainPage` et `Infos` |
+| T8 / T9 `React.memo` + `useCallback` | ✅ Fait | Items de liste et handlers |
+| T10 `useEffect` vides | ✅ Fait | Régression introduite par T10 (plus de re-rendu au clic) corrigée au lot 3 (PR #704) |
+| T11 `useFetch` | ✅ Fait | Infra (lot 1) et adoption par les 7 composants (lot 2) |
+| T12 TanStack Query (ADR 002) | ⏳ Décision 👤 | ADR `Proposée` ; réévaluation possible depuis que `useFetch` est adopté |
+| T13 Cause des erreurs HTTP | ✅ Fait | `new Error(..., { cause })` |
+| T14 Resync token OIDC | ✅ Fait | `AuthTokenSync` à la racine |
+| T15 `console.log` | ✅ Fait | Conservés sous le mode debug `debug()` / `VITE_CONFIG_DEBUG` ; `no-console` actif |
+| T16 Props co-localisées | ✅ Fait | Lot 4b ; `Components.props.ts` supprimé par 👤 (commit acb2bd7) |
+| T17 `React.FC` recharts | ✅ Fait | Lot 1 |
+| T18 / T19 Couverture et filet de tests | ✅ Fait | Lot 1 |
+| T20 Couverture des composants | 🟡 Partielle | 981 tests ; il reste des composants sans test dédié (voir dette) |
+
+### Hors plan initial, réalisé en cours de route
+- **Lot 3** : correctif de la régression T10 ; refactor immuable de l'édition d'opération ; 5 défauts corrigés (date nulle à la création, montant non remis à zéro, libellé numérique perdu, montant invalide accepté, montant éditable sur budget clos).
+- **Lot 4a** : `new Function` remplacé par `evaluateEquation` (parseur sûr).
+- **Lot 5** : hook `useOperationEditForm` déplacé dans `detail/` ; date d'opération contrôlée ; paramètres d'URL encodés ; audit URL / `href` / `window.open` ; erreur de type `AnalyseTreeMap`.
+
+### Reste à faire
+
+| Catégorie | Élément | Détail |
+|---|---|---|
+| Décision 👤 | T12 | Introduire TanStack Query ou rester sur `useFetch` ? |
+| Décision 👤 | `logAuth` | Trace le jeton Bearer et la clé API quand `VITE_CONFIG_DEBUG` est actif : masquer ou conserver ? |
+| Décision 👤 | Garde `Number.isFinite` de `Equation.utils.ts` | Inatteignable (100 caractères max) : conservée par défaut comme défense en profondeur |
+| Code | T1 (reste) | Fusion complète des pages Budget / Recurrents (listes et détails distincts) |
+| Code | T6 (reste) | 9 consumers sur l'agrégat `useBudgetContext()` : `Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`, `OperationDetailActionsSection`, `OperationDetailCategoriesSection`, `useOperationEditForm` (dont certains lisent les deux moitiés) |
+| Code | T20 (reste) | 26 composants sur 64 sans fichier de test dédié (certains couverts par les tests d'intégration) ; `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %), `Main.tsx` (lazy / Suspense), branche `isMobile` |
+| Code | `getLabelISOFromDate` | En UTC (`toISOString`) : « aujourd'hui » peut être décalé d'un jour tôt le matin en heure locale |
+| Code (mineur) | Spinner `AnalysesFiltrePeriode` | Apparaît brièvement quand aucun compte n'est sélectionné |
+| Code (mineur) | `itemIcon` | Valeur de l'API concaténée dans `<img src>` (5 endroits), non assainie ; risque faible |
+| Vérification 👤 | Navigateur | Saisie manuelle d'une date partielle dans le champ contrôlé ; parcours Budget / Récurrents / Analyses ; création + « Valider l'opération » ; champ Montant (`10+5`, `(1+2)*3` acceptés ; `abc`, `1/0` refusés) |
+| Process | PR #711 | À merger : clôt le Gate #4 du lot 5 |
+| Process | Wiki | Commits locaux du wiki à pousser sur son `master` (dépôt séparé) ; `C3_ihm.png` à vérifier |
 
 ## Context
 
@@ -253,7 +302,7 @@ Ordre : 1) QALvin pose les tests de caractérisation (filet) AVANT tout refactor
 | #1 | 2026-10-26 | GO 👤 | Périmètre lot 3 validé |
 | #2 | 2026-10-26 | GO 👤 | DEVon : correctif régression T10 (PR #704), refactor `OperationDetailPage` (429 → 106 lignes), état d'édition immuable, défauts (3)–(7) corrigés |
 | #3 | 2026-10-26 | GO 👤 | QALvin : 837 tests verts (92 fichiers), lint 0 erreur, build OK, ~100 % lignes page/hook/controller/actions/sections |
-| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique, C3) mis à jour ; ADR 002 inchangé (`Proposée`) |
+| #4 | 2026-10-27 | GO 👤 (PR #707 mergée) | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique, C3) mis à jour ; ADR 002 inchangé (`Proposée`) |
 
 **Phase 1 (filet QALvin) — résultats** : +231 tests, `OperationDetailPage` 68,9 → 98,9 % lignes, controller 65,9 → 100 %. Le filet a révélé une **régression du lot 1 (T10)** : retirer `setRefresh` a supprimé le re-rendu au clic sur un champ (`openEditForm` réécrivait la même référence `editForm` mutée en place) → corrigée par copie (`setEditForm({ ...editForm })`), PR dédiée. Le même correctif règle l'affichage de l'état REALISEE après « Valider l'opération » en création.
 
@@ -301,7 +350,7 @@ Journal des gates lot 4b
 | #1 | 2026-10-26 | GO 👤 | "attends les merges puis lance T16" |
 | #2 | 2026-10-27 | GO 👤 | DEVon : co-location des Props |
 | #3 | 2026-10-27 | N/A | Aucun test impacté (pas de changement de comportement) |
-| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, conventions-dev, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
+| #4 | 2026-10-27 | GO 👤 (PR #710 mergée) | DOCly : plan, index, CLAUDE.md, conventions-dev, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
 
 #### Fait
 Les ~35 interfaces/types Props de `Components.props.ts` sont co-localisés (aucun changement de comportement) :
@@ -328,7 +377,7 @@ Journal des gates lot 4a
 | #1 | 2026-10-26 | GO 👤 | Périmètre lot 4 (4a sécurité puis 4b T16) validé |
 | #2 | 2026-10-26 | GO 👤 | DEVon : `Utils/Equation.utils.ts` + branchement dans `OperationDetailValeur` |
 | #3 | 2026-10-26 | GO 👤 | QALvin : 951 tests verts (95 fichiers), `Equation.utils.ts` 100 % lignes / 97,4 % branches |
-| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
+| #4 | 2026-10-27 | GO 👤 (PR #708 mergée) | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
 
 ### Résultats (lot 4a)
 
@@ -391,7 +440,7 @@ Aucun `window.open`, `<a>`, `href`, `target`, `postMessage`, `document.write`, `
 - Tests : 981 verts (95 fichiers, +30). Lint : 0 erreur. Build : OK. `tsc --noEmit` : 0 erreur dans `src/`.
 - Mutations de vérification : retrait de l'encodage et `defaultValue` à la place de `value` détectés. Le replacer-fonction est un mutant équivalent (`encodeURIComponent` encode déjà `$`).
 
-## Dette restante / prochain lot (après lot 5)
+## Dette restante / prochain lot (après lot 5) — voir aussi « Statut global » en tête de plan
 
 | Tâche | Reste à faire | Prérequis / blocage |
 |---|---|---|
@@ -401,7 +450,8 @@ Aucun `window.open`, `<a>`, `href`, `target`, `postMessage`, `document.write`, `
 | Dette | `getLabelISOFromDate` en UTC (`toISOString`) : décalage possible d'un jour tôt le matin | À corriger |
 | Vérification | Saisie manuelle de la date d'opération (champ contrôlé) à vérifier en navigateur | Test manuel 👤 |
 | T20 (reste) | Couverture de composants hors lot : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %) | Au fil des refactos |
-| T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) | Lisent des champs des deux moitiés |
+| T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`, `OperationDetailActionsSection`, `OperationDetailCategoriesSection`, `useOperationEditForm`) | Certains lisent des champs des deux moitiés |
+| T1 (reste) | Fusion complète des pages Budget / Recurrents (seul le squelette `BudgetPageShell` est factorisé) | Risque moyen |
 | Ajustement | Spinner `AnalysesFiltrePeriode` sans compte sélectionné | Mineur |
 
 Historique des lignes soldées : T2 (lot 3), sécurité `new Function` (lot 4a), T16 (lot 4b), déplacement du hook, date contrôlée, audit URL, suppression de `Components.props.ts` (lot 5).
