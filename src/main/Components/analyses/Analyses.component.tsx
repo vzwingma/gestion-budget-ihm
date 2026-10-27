@@ -2,7 +2,6 @@ import React, { JSX, useEffect, useMemo, useState } from "react";
 
 import { Backdrop, Box, CircularProgress, Grid, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import { AnalyseProps } from "../Components.props.ts";
 import AnalysesTitre, { formatPeriode } from "./AnalysesTitre.component.tsx";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import AnalysesFiltres from "./AnalysesFiltres.component.tsx";
@@ -18,6 +17,12 @@ import AnalyseTreeMap from "./syntheses/AnalyseTreeMap.component.tsx";
 import AnalyseEvolution from "./syntheses/AnalyseEvolution.component.tsx";
 import BudgetMensuelAnalyseConsolideModel from "../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
 import { debug } from "../../Utils/Debug.utils.ts";
+import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
+
+export interface AnalyseProps {
+   selectedCompte: CompteBancaireModel | null
+   onOpenMenu: () => void
+}
 
 
 /**

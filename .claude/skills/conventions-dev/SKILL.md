@@ -38,7 +38,7 @@ npx vitest run      # tests existants (non-régression)
 
 ## Conventions de code
 
-- Composants fonctionnels typés `React.FC<Props>` ; interfaces de props dans `src/main/Components/Components.props.ts`.
+- Composants fonctionnels typés `React.FC<Props>` ; props définies à côté du composant (`*.component.tsx`) ou dans un `*.props.ts` voisin si partagées dans une feature ; `src/main/Components/Components.props.ts` n'est plus utilisé.
 - `useMemo` pour calculs dérivés coûteux, `useCallback` pour handlers passés en props ; responsive via
   `useMediaQuery(useTheme().breakpoints.down('lg'))`.
 - Gestion d'erreurs : `ClientHTTP.service.ts` lève une `Error` sur statut non 2xx (403 → `logOut()`) ; les

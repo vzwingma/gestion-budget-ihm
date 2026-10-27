@@ -162,7 +162,7 @@ src/main/
 
 ### Component conventions
 - Tous composants **fonctionnels**, typing `React.FC<Props>`.
-- Interfaces props co-localisées dans `Components.props.ts`.
+- Props définies à côté du composant (`*.component.tsx`) ou dans un `*.props.ts` voisin si partagées dans une feature ; `Components.props.ts` n'est plus utilisé (vide, suppression à décider 👤).
 - Feature folders miroir noms domaine: `analyses/`, `budgets/`, `operations/`.
 - Sub-composants page dans sous-dossier `subcomponents/`; boutons action dans `actions/`.
 - Hooks custom dans `src/main/hooks/`. Lecture de données : `useFetch` + `fetch*` (`callWithNotify`) ; actions/sauvegardes : `callAndNotify` (`Services/CallAndNotify.service.ts`). Contexte budget : préférer `useBudgetSelection()` / `useCurrentBudget()` à `useBudgetContext()` si une seule moitié est lue.
@@ -198,7 +198,7 @@ Uniquement ce qui concerne **tous** les agents :
 - Projet en évolution, migré CRA → Vite (AP 001, ADR-001) ; migration dépendances TS/Vite partiellement reportée (AP 003 : TS v7 / typescript-eslint bloqués npm).
 - Contrats API couplés au backend `gestion-budget-serverless` : toute évolution modèle → vérifier côté backend.
 - Ancienne structure `.github/` (agents v2.x, plans) conservée pour référence historique.
-- AP 006 (revue architecture React) : lots 1 et 2 livrés (Gate #4 validé) ; lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤. `useFetch` adopté, contexte budget scindé. Lot 4a (sécurité) livré, Gate #4 en attente 👤 : `new Function` remplacé par `evaluateEquation`. Dette restante (T16 = lot 4b, T20, ADR 002 Proposée) listée dans `.claude/plans/006_revue_architecture_react.plan.md`.
+- AP 006 (revue architecture React) : lots 1 et 2 livrés (Gate #4 validé) ; lot 3 livré (découpage `OperationDetailPage`, régression T10 corrigée), Gate #4 en attente 👤. `useFetch` adopté, contexte budget scindé. Lot 4a (sécurité) livré, Gate #4 en attente 👤 : `new Function` remplacé par `evaluateEquation`. Lot 4b (T16) livré, Gate #4 en attente 👤 : Props co-localisées. Dette restante (T20, T12 / ADR 002 Proposée) listée dans `.claude/plans/006_revue_architecture_react.plan.md`.
 
 ---
 

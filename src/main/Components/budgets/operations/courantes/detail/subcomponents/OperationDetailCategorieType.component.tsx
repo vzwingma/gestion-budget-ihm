@@ -3,9 +3,15 @@ import {MenuItem, TextField, Typography} from "@mui/material"
 import {OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {getTypeCategorieRenderer} from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
 import {TYPES_CATEGORIES_OPERATION_ENUM} from '../../../../../../Utils/AppBusinessEnums.constants.ts'
-import {OperationDetailCategorieTypeProps} from '../../../../../Components.props.ts'
 import { useCurrentBudget } from '../../../../../../hooks/useBudgetContext.ts'
 import { debug } from "../../../../../../Utils/Debug.utils.ts";
+import OperationEditionModel from "../../../../../../Models/budgets/OperationEdition.model.ts";
+
+export interface OperationDetailCategorieTypeProps {
+    formCategorieTypeInEdition: boolean
+    editOperation: OperationEditionModel
+    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
+}
 
 /**
  * Composant React pour afficher et éditer les détails d'une opération budgétaire.

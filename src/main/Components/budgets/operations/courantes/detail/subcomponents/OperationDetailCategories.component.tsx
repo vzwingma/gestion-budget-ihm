@@ -12,11 +12,19 @@ import {
 import {ErrorsFormProps, OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {sortLibellesSsCategories} from '../../../../../../Utils/OperationData.utils.ts'
 import CategorieOperationModel from '../../../../../../Models/budgets/CategorieOperation.model.ts'
-import {OperationDetailCategoriesProps} from '../../../../../Components.props.ts'
 import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
 import SsCategorieOperationModel from '../../../../../../Models/budgets/SsCategorieOperation.model.ts'
+
+export interface OperationDetailCategoriesProps {
+    listeCategories: CategorieOperationModel[]
+    formCatgoriesInEdition: boolean
+    errorsCategories: string | null
+    /** Sous-catégorie de l'opération en édition (sinon : celle de l'opération du contexte) */
+    ssCategorieInEdition?: SsCategorieOperationModel
+    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
+}
 
 
 /**

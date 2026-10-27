@@ -1,7 +1,12 @@
 import React, { JSX } from "react";
 import { Autocomplete, Box, TextField, useMediaQuery, useTheme } from "@mui/material";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
-import { AnalysesFiltresCategoriesProps } from "../../Components.props.ts";
+
+export interface AnalysesFiltresCategoriesProps {
+    distinctCategories: CategorieOperationModel[];
+    selectedCategories: CategorieOperationModel[];
+    onChange: (selectedCategories: CategorieOperationModel[]) => void;
+}
 
 /**
  * Composant pour filtrer les opérations par catégories.

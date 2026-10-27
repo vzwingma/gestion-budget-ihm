@@ -2,7 +2,11 @@ import React, {JSX, useState} from "react";
 import {Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import {handleModalClick, handleSelect} from "./DateRange.controller.ts";
 import { CenterComponent } from "../../shared/CenterComponent.tsx";
-import {DateRangeProps} from "../../Components.props.tsx";
+
+export interface DateRangeProps {
+    selectedDate: Date;
+    onDateChange: Function
+}
 
 
 /**

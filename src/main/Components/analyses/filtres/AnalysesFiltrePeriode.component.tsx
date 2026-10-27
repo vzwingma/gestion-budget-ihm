@@ -14,10 +14,16 @@ import {
     TextField
 } from '@mui/material';
 import { AnalysesPeriodeModel } from '../../../Models/analyses/AnalysesPeriode.model.ts';
-import { AnalysesFiltrePeriodeProps } from '../../Components.props.ts';
 import { getValidPeriodesForCompte } from '../Analyses.extservices.ts';
 import { debug } from "../../../Utils/Debug.utils.ts";
 import { useFetch } from '../../../hooks/useFetch.ts';
+import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
+
+export interface AnalysesFiltrePeriodeProps {
+    periode: AnalysesPeriodeModel;
+    selectedCompte: CompteBancaireModel | null;
+    onChange: (periode: AnalysesPeriodeModel) => void;
+}
 
 
 

@@ -75,7 +75,7 @@ gestion-budget-ihm/
 │   └── main/
 │       ├── Main.tsx                      # Router principal (HashRouter), routes lazy + AuthTokenSync
 │       ├── Components/                   # Composants React UI
-│       │   ├── Components.props.ts       # Interfaces de props (les nouvelles interfaces sont co-localisées)
+│       │   ├── Components.props.ts       # Obsolète : vide (plan 006 T16), props co-localisées ; suppression à décider
 │       │   ├── analyses/                 # Composants analyses budgétaires (syntheses/AnalyseTooltip = tooltip recharts générique)
 │       │   ├── budgets/                  # Composants gestion budgets
 │       │   │   └── shared/               # BudgetPageShell.component.tsx (squelette commun Budget / Recurrents) ; operations/shared/ : OperationRecurrenteDetailDateFin.component.tsx (partagé courantes / récurrentes) ; operations/courantes/detail/ : OperationDetailPage (106 lignes, orchestration) + OperationDetailPage.controller.ts (fonctions pures) + subcomponents/ (dont OperationDetail{Header,CategoriesSection,MensualiteSection,EtatSection,ActionsSection}) + actions/
@@ -209,7 +209,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 
 - **Nommage fichiers** : `PascalCase.tsx` pour composants, `camelCase.service.ts` pour services, `camelCase.constants.ts` pour constantes
 - **Nommage variables** : camelCase pour variables/fonctions, PascalCase pour composants et interfaces
-- **Composants** : Toujours `React.FC<Props>`, fonctionnels uniquement. Props interfaces dans `Components.props.ts`
+- **Composants** : Toujours `React.FC<Props>`, fonctionnels uniquement. Props définies à côté du composant (`*.component.tsx`) ou dans un `*.props.ts` voisin si partagées dans une feature (`Components.props.ts` n'est plus utilisé)
 - **Sous-composants** : Dans `subcomponents/`, boutons d'action dans `actions/`
 - **Gestion d'état** : état global scindé en deux contextes (`hooks/useBudgetContext.ts`) : `BudgetSelectionContext` (comptes, compte/date sélectionnés, catégories) lu via `useBudgetSelection()`, et `CurrentBudgetContext` (budget et opération courants) lu via `useCurrentBudget()`. `useBudgetContext()` reste l'agrégat des deux (12 champs) pour les composants qui lisent les deux moitiés. Les trois hooks lèvent une erreur hors `BudgetContextProvider`. `useState` pour l'état UI local ; les regroupements dérivés (opérations par date / périodicité) sont calculés via `useMemo`, pas stockés en state
 - **Hooks custom** : dans `src/main/hooks/`. `useFetch(fetcher, deps)` retourne `{ data, loading, error, refetch }` ; adopté par les 7 composants de lecture de données (voir [Data-fetching](#data-fetching)). `useOperationEditForm` porte l'état d'édition d'une opération (voir [Édition d'une opération](#édition-dune-opération))

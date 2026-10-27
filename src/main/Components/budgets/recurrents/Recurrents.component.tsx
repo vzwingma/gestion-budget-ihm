@@ -6,7 +6,6 @@ import OperationModel from "../../../Models/budgets/Operation.model.ts";
 import { fetchBudget, fetchPreferenceUtilisateur } from "./../budget/Budget.extservices.ts";
 
 import { getOperationsRecurrentesGroupedByPeriodicity } from "./Recurrents.controller.ts";
-import { RecurrentsPageProps } from "../../Components.props.ts";
 import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
 import BudgetPageShell from "../shared/BudgetPageShell.component.tsx";
@@ -16,6 +15,10 @@ import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts
 import { debug } from "../../../Utils/Debug.utils.ts";
 import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
 import { useFetch } from "../../../hooks/useFetch.ts";
+
+export interface RecurrentsPageProps {
+    onOpenMenu: () => void
+}
 
 
 /**

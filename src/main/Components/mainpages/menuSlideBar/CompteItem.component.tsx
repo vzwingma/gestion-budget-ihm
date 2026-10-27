@@ -3,8 +3,17 @@ import { CircularProgress, Container, Stack, Typography } from "@mui/material";
 import OperationValue from "../../../Utils/renderers/OperationValue.renderer.tsx";
 import { BUSINESS_ONGLETS } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { fetchSoldesBudget } from './CompteItem.controller.ts';
-import { CompteItemProps } from '../../Components.props.ts';
 import { useFetch } from '../../../hooks/useFetch.ts';
+import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
+
+export interface CompteItemProps {
+    compte: CompteBancaireModel;
+    selectedCompte: CompteBancaireModel | null;
+    selectedDate: Date;
+    selectedFunction: BUSINESS_ONGLETS;
+    onRefreshMenuBar: boolean;
+    onClick: (compte : CompteBancaireModel) => void
+}
 
 
 /**

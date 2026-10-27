@@ -17,8 +17,14 @@ import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "../../../../Utils/AppBu
 import { getEventTargetId } from '../../../../Utils/OperationData.utils.ts';
 import { userHasPermission } from '../../../../Utils/UserData.utils.ts';
 import { CenterComponent } from '../../../shared/CenterComponent.tsx';
-import { BudgetActionsButtonGroupProps } from '../../../Components.props.tsx';
 import { callReinitBudget, callReopenCloseBudget } from './BudgetActionsButtonGroup.extservices.ts';
+import BudgetMensuelModel from "../../../../Models/budgets/BudgetMensuel.model.ts";
+
+export interface BudgetActionsButtonGroupProps {
+    droits: UTILISATEUR_DROITS[]
+    onActionBudgetChange: (budget: BudgetMensuelModel) => void
+    onActionOperationCreate: () => void
+}
 
 
 /**

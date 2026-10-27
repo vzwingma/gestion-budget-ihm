@@ -15,9 +15,12 @@ import { createEmptyEditForm, createEmptyErrors, EditRFormProps, ErrorsRFormProp
 import { OPERATION_EDITION_FORM } from '../../courantes/detail/OperationDetailPage.constants.ts';
 import { handleOperationRecurrenteEditionClick, handleValidateOperationForm, isInEditMode } from './OperationRecurrenteDetailPage.controller.ts';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
-import { OperationRecurrenteDetailPageProps } from '../../../../Components.props.ts';
 import { getAffichageIntercompteRO } from '../../courantes/detail/subcomponents/OperationDetailIntercompte.component.tsx';
 import OperationDetailStatus from '../../../../../Utils/renderers/OperationDetailStatus.renderer.tsx';
+
+export interface OperationRecurrenteDetailPageProps {
+    onOperationChange: (budget: BudgetMensuelModel) => void
+}
 
 
 
