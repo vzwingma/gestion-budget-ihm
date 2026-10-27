@@ -105,4 +105,23 @@ describe('AnalyseTreeMap', () => {
         const cell = screen.getByTestId('cell-SousCat 1');
         expect(cell).toBeDisabled();
     });
+
+    // selectedCategory === null (aucune catégorie unique sélectionnée) est transmis au renderer sous forme `undefined` : cellules cliquables
+    test.each([
+        ['selectedCategories null', null],
+        ['selectedCategories undefined', undefined],
+        ['plusieurs catégories sélectionnées', [{ id: 'c1', libelle: 'Cat 1' }, { id: 'c2', libelle: 'Cat 2' }]],
+    ])('%s : vue racine, cellules cliquables et clic opérationnel', async (_cas, selection) => {
+        const user = userEvent.setup();
+        const setFilters = vi.fn();
+        render(<AnalyseTreeMap analyseCategories={buildAnalyseCategories()} selectedCategories={selection as any} setFilters={setFilters} />);
+
+        expect(screen.getByTestId('cell-c1')).toBeEnabled();
+        expect(screen.getByTestId('cell-c2')).toBeEnabled();
+
+        await user.click(screen.getByTestId('cell-c2'));
+
+        const updater = setFilters.mock.calls[0][0];
+        expect(updater({})).toEqual({ selectedCategories: [{ id: 'c2', libelle: 'Cat 2' }] });
+    });
 });

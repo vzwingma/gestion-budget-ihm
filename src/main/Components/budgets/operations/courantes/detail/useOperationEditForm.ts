@@ -1,24 +1,24 @@
 import { SyntheticEvent, useCallback, useRef, useState } from "react";
-import { useBudgetContext } from "./useBudgetContext.ts";
-import BudgetMensuelModel from "../Models/budgets/BudgetMensuel.model.ts";
-import CategorieOperationModel from "../Models/budgets/CategorieOperation.model.ts";
-import OperationModel from "../Models/budgets/Operation.model.ts";
-import OperationEditionModel, { cloneOperation, createNewOperationEdition } from "../Models/budgets/OperationEdition.model.ts";
-import { OPERATION_ETATS_ENUM } from "../Utils/AppBusinessEnums.constants.ts";
+import { useBudgetContext } from "../../../../../hooks/useBudgetContext.ts";
+import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
+import CategorieOperationModel from "../../../../../Models/budgets/CategorieOperation.model.ts";
+import OperationModel from "../../../../../Models/budgets/Operation.model.ts";
+import OperationEditionModel, { cloneOperation, createNewOperationEdition } from "../../../../../Models/budgets/OperationEdition.model.ts";
+import { OPERATION_ETATS_ENUM } from "../../../../../Utils/AppBusinessEnums.constants.ts";
 import {
     createEmptyEditForm,
     createEmptyErrors,
     EditFormProps,
     ErrorsFormProps,
     OPERATION_EDITION_FORM
-} from "../Components/budgets/operations/courantes/detail/OperationDetailPage.constants.ts";
+} from "./OperationDetailPage.constants.ts";
 import {
     fillOperationField,
     handleDateOperationFromAction,
     handleOperationEditionClick,
     handleValidateOperationForm
-} from "../Components/budgets/operations/courantes/detail/OperationDetailPage.controller.ts";
-import type { OPERATION_RECURRENTE_EDITION_FORM } from "../Components/budgets/operations/recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
+} from "./OperationDetailPage.controller.ts";
+import type { OPERATION_RECURRENTE_EDITION_FORM } from "../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
 
 /** Identifiant d'une opération en cours de création */
 const ID_NOUVELLE_OPERATION = "-1";

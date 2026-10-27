@@ -27,7 +27,8 @@ function evaluateURL(uri: string, path: string, params?: string[]): string {
     let fullURL = uri + path;
     if (params != null) {
         params.forEach(param => {
-            fullURL = fullURL.replace("{{}}", param)
+            // encodeURIComponent : pas d'injection de chemin / query (`/`, `?`, `&`, `#`) ; callback : pas d'interprétation des motifs `$&`, `$1`… de replace
+            fullURL = fullURL.replace("{{}}", () => encodeURIComponent(param))
         })
     }
     return fullURL;

@@ -8,7 +8,7 @@ import { OperationDetailEtatSectionProps } from '../../../../../Components.props
  * Section « Etat / Date d'opération » de la page de détail (éléments de grille, à insérer dans un `Grid container`)
  */
 export const OperationDetailEtatSection: React.FC<OperationDetailEtatSectionProps> = ({
-    etat, editForm, errors, fillOperationForm, resetKey
+    etat, editForm, editOperation, errors, fillOperationForm, resetKey
 }: OperationDetailEtatSectionProps): JSX.Element => {
     return (
         <>
@@ -30,6 +30,7 @@ export const OperationDetailEtatSection: React.FC<OperationDetailEtatSectionProp
                 <OperationDetailDate
                     key={resetKey}
                     formDateInEdition={editForm.dateOperation}
+                    dateEdition={editOperation.autresInfos.dateOperation}
                     errorDateOperation={errors.dateOperation}
                     fillOperationForm={fillOperationForm} />
             </Grid>

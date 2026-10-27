@@ -12,7 +12,7 @@ import { OperationDetailEtatSection } from './subcomponents/OperationDetailEtatS
 import { OperationDetailActionsSection } from './subcomponents/OperationDetailActionsSection.component.tsx';
 import { OperationDetailPageProps } from '../../../../Components.props.ts';
 import { useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
-import { useOperationEditForm } from '../../../../../hooks/useOperationEditForm.ts';
+import { useOperationEditForm } from './useOperationEditForm.ts';
 
 
 /**
