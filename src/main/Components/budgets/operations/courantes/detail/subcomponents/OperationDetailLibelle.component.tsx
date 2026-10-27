@@ -2,11 +2,17 @@ import React, { JSX, useEffect, useState } from 'react'
 import { OPERATION_EDITION_FORM } from "../OperationDetailPage.constants.ts"
 import { Autocomplete, FormControl, FormHelperText, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { getOperationLibelle } from '../../../../../../Utils/renderers/OperationItem.renderer.tsx'
-import { OperationDetailLibelleProps } from '../../../../../Components.props.ts'
 import { useBudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
 import { INTERCOMPTE_LIBELLE_REGEX } from "../../../../../../Utils/OperationData.utils.ts";
 import LibelleCategorieOperationModel from "../../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import { evaluatePendingLibelle, getOperationLibelleInEdition, prioritySort } from "./OperationDetailLibelle.controller.ts";
+
+export interface OperationDetailLibelleProps {
+    listeLibellesOperations: LibelleCategorieOperationModel[]
+    formLibelleInEdition: boolean
+    errorLibelle: string | null
+    fillOperationForm: (field: OPERATION_EDITION_FORM, value: string) => void
+}
 
 
 /**

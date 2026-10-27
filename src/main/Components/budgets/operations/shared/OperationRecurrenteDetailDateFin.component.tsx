@@ -1,7 +1,6 @@
 import React, { JSX } from 'react'
 import { EditFormProps, ErrorsFormProps } from "../courantes/detail/OperationDetailPage.constants.ts"
 import { TextField, Typography } from '@mui/material'
-import { OperationDetailDateProps } from '../../../Components.props.ts'
 import { useCurrentBudget } from '../../../../hooks/useBudgetContext.ts'
 import { getLabelISOFromDate, getLabelMonthFRFromDate } from '../../../../Utils/Date.utils.ts'
 import { EditRFormProps, ErrorsRFormProps, isDerniereEcheanceRO, OPERATION_RECURRENTE_EDITION_FORM } from '../recurrentes/details/OperationRecurrenteDetailPage.constants.ts'
@@ -9,6 +8,7 @@ import BudgetMensuelModel from '../../../../Models/budgets/BudgetMensuel.model.t
 import OperationEditionModel from '../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../Models/budgets/Operation.model.ts'
 import { OPERATION_STATUS_ENUM } from '../../../../Utils/AppBusinessEnums.constants.ts'
+import { OperationDetailDateProps } from "./OperationDetailDate.props.ts";
 
 
 /**

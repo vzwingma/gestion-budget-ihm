@@ -1,7 +1,12 @@
 import React, { JSX } from "react";
 import { Autocomplete, Box, TextField, useMediaQuery, useTheme } from "@mui/material";
 import SsCategorieOperationModel from "../../../Models/budgets/SsCategorieOperation.model.ts";
-import { AnalysesFiltresSsCategoriesProps } from "../../Components.props.ts";
+
+export interface AnalysesFiltresSsCategoriesProps {
+    distinctSubcategories: SsCategorieOperationModel[];
+    selectedSubcategories: SsCategorieOperationModel[];
+    onChange: (selectedSubcategories: SsCategorieOperationModel[]) => void;
+}
 
 /**
  * Composant pour filtrer les opérations par sous-catégories.

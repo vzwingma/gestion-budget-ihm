@@ -3,8 +3,20 @@ import { Button, Grid, Stack, Typography } from "@mui/material";
 import { OperationDetailActions } from '../actions/OperationDetailActions.component.tsx';
 import { OPERATION_ETATS_ENUM } from '../../../../../../Utils/AppBusinessEnums.constants.ts';
 import { useBudgetContext } from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx';
-import { OperationDetailActionsSectionProps } from '../../../../../Components.props.ts';
 import { isInCreateMode, isInEditMode } from '../OperationDetailPage.controller.ts';
+import OperationModel from "../../../../../../Models/budgets/Operation.model.ts";
+import OperationEditionModel from "../../../../../../Models/budgets/OperationEdition.model.ts";
+import BudgetMensuelModel from "../../../../../../Models/budgets/BudgetMensuel.model.ts";
+import { EditFormProps } from "../OperationDetailPage.constants.ts";
+
+export interface OperationDetailActionsSectionProps {
+    editForm: EditFormProps
+    editOperation: OperationEditionModel
+    onClickRealiseInCreateMode: (valeurDate: Date | null, etat: OPERATION_ETATS_ENUM) => void
+    onOperationChange: (budget: BudgetMensuelModel) => void
+    onOperationCommit: (operation: OperationModel) => void
+    onValidate: () => void
+}
 
 /**
  * Section « Actions » de la page de détail : boutons d'action sur l'état + bouton de validation du formulaire

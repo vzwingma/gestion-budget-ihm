@@ -290,7 +290,38 @@ Périmètre validé 👤 ("fais les tâches sécurité et T16"), deux PR sépar�
 - **4a — Sécurité** : remplacer l'évaluation par `new Function` de `processEquation` (`OperationDetailValeur.component.tsx`) par un parseur arithmétique (`+ - * / ( )`, décimaux `,`/`.`, moins unaire), sans `eval`/`Function` ; mêmes résultats sur les expressions valides, refus (« Le champ Montant est incorrect ») de tout le reste. Branche `claude/react-ui-architecture-lot4-securite`, PR empilée sur #707 (retargetée vers master au merge de #707).
 - **4b — T16** : co-location des interfaces Props (`Components.props.ts`, ~220 lignes centralisées) à côté de chaque composant/dossier de feature, par lots, sans changement de comportement.
 
-### Journal des gates lot 4a
+### **Lot 4b (T16) — démarré 2026-10-26** (PRs #707 et #708 mergées) : branche `claude/react-ui-architecture-lot4b-props` depuis master. Journal des gates 4b : voir ci-dessous.
+
+### Résultats 4b (T16)
+
+Journal des gates lot 4b
+
+| Gate | Date | Décision | Détail |
+|---|---|---|---|
+| #1 | 2026-10-26 | GO 👤 | "attends les merges puis lance T16" |
+| #2 | 2026-10-27 | GO 👤 | DEVon : co-location des Props |
+| #3 | 2026-10-27 | N/A | Aucun test impacté (pas de changement de comportement) |
+| #4 | — | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, conventions-dev, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
+
+#### Fait
+Les ~35 interfaces/types Props de `Components.props.ts` sont co-localisés (aucun changement de comportement) :
+
+| Feature | Emplacement |
+|---|---|
+| `analyses/` (page, filtres, syntheses : `AnalyseProps`, `AnalysesTitreProps`, `AnalysesFiltres*Props`, `AnalyseEvolutionProps`, `AnalyseOperationsListeProps`, `AnalyseSyntheseTypesProps`…) | Dans le `*.component.tsx` du seul consommateur |
+| `analyses/syntheses/` — `AnalyseCategoriesListeProps` (partagé) | Nouveau `AnalyseCategoriesListe.props.ts` |
+| `budgets/` (`BudgetPageProps`, `BudgetActionsButtonGroupProps`, `RecurrentsPageProps`, `OperationsListeProps`, `OperationsRecurrentesListeProps`, `OperationDetailActionsProps`, `OperationRecurrenteDetailPageProps`, `OperationDetail*Props` des sous-composants…) | Dans le `*.component.tsx` du consommateur |
+| `budgets/operations/shared/` — `OperationItemProps`, `OperationDetailDateProps` (partagés) | Nouveaux `OperationItem.props.ts`, `OperationDetailDate.props.ts` |
+| `budgets/operations/courantes/detail/` — `OperationDetailSectionProps` et `OperationDetail{Categories,Etat,Mensualite}SectionProps` (partagés par les sections) | Nouveau `OperationDetailPage.props.ts` |
+| `mainpages/` (`MainPageProps`, `CompteItemProps`, `DateRangeProps`), `shared/` (`CenterComponentProps`) | Dans le `*.component.tsx` |
+
+`Components.props.ts` ne contient plus qu'un commentaire de convention et `export {};` (plus aucun import).
+
+#### Preuves
+- Tests : 951 verts. Lint : 0 erreur. Build : OK. `tsc` : 0 erreur dans `src/`.
+- Doc alignée : `.claude/CLAUDE.md`, skill `conventions-dev`, `docs/ARCHITECTURE.md`, wiki IHM.
+
+Journal des gates lot 4a
 
 | Gate | Date | Décision | Détail |
 |---|---|---|---|
@@ -328,7 +359,7 @@ Périmètre validé 👤 ("fais les tâches sécurité et T16"), deux PR sépar�
 | T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`) | Lisent des champs des deux moitiés ; à vérifier après le découpage lot 3 |
 | ~~Sécurité~~ | ✅ Fait (lot 4a) : `new Function` remplacé par `evaluateEquation`. Reste éventuel : audit URL / `href` / `window.open` | À décider 👤 |
 | Dette | Déplacer `useOperationEditForm` dans `detail/` (dépendance `hooks/` → `Components/`) ; contrôler la date d'opération | Mineur |
-| T16 | Co-location des Props (`Components.props.ts` reste centralisé) | Lot 4b à venir, par lots |
+| ~~T16~~ | ✅ Fait (lot 4b) : Props co-localisées. Reste : supprimer `Components.props.ts` (vide) | Suppression à décider 👤 |
 | T20 (reste) | Couverture de composants hors lot : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %) | Au fil des refactos |
 | T12 | ADR 002 TanStack Query : statut `Proposée`, décision 👤 | `useFetch` adopté → réévaluation cache/dedup possible (voir note de l'ADR) |
 | Ajustement | Spinner `AnalysesFiltrePeriode` sans compte sélectionné | Mineur |

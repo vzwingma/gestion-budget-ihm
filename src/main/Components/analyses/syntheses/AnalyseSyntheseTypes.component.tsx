@@ -3,8 +3,13 @@ import { Box, Stack, Typography } from "@mui/material";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { TYPES_CATEGORIES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { getTypeCategorieRenderer } from "../../../Utils/renderers/OperationItem.renderer.tsx";
-import { AnalyseSyntheseTypesProps } from "../../Components.props.ts";
 import AnalyseSyntheseTooltip from "./AnalyseSyntheseTooltip.component.tsx";
+import OperationModel from "../../../Models/budgets/Operation.model.ts";
+
+export interface AnalyseSyntheseTypesProps {
+    operations: OperationModel[];
+    selectedTypes: TYPES_CATEGORIES_OPERATION_ENUM[];
+}
 
 /**
  * Composant de synthèse des types de catégories d'opérations.

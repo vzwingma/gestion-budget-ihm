@@ -6,12 +6,18 @@ import {
 } from "../OperationDetailPage.constants.ts";
 import { operationIsIntercompteFromLibelle } from "../../../../../../Utils/OperationData.utils.ts";
 import { getOperationIntercompteCatLibelle } from "../../../../../../Utils/renderers/OperationItem.renderer.tsx";
-import { OperationDetailIntercompteProps } from "../../../../../Components.props.ts";
 import CompteBancaireModel from "../../../../../../Models/budgets/CompteBancaire.model.ts";
 import OperationEditionModel from "../../../../../../Models/budgets/OperationEdition.model.ts";
 import OperationModel from "../../../../../../Models/budgets/Operation.model.ts";
 import { BUSINESS_GUID } from "../../../../../../Utils/AppBusinessEnums.constants.ts";
 import { useAuth } from "react-oidc-context";
+
+export interface OperationDetailIntercompteProps {
+    intercompte: string | null
+    listeAutresComptes: CompteBancaireModel[]
+    errorIntercompte: string | null
+    fillOperationForm: (field: OPERATION_EDITION_FORM.INTERCOMPTES, value: string) => void
+}
 
 /**
  * @returns {JSX.Element} Affichage de l'intercompte en lecture seule

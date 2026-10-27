@@ -10,9 +10,17 @@ import { OperationDetailCategoriesSection } from './subcomponents/OperationDetai
 import { OperationDetailMensualiteSection } from './subcomponents/OperationDetailMensualiteSection.component.tsx';
 import { OperationDetailEtatSection } from './subcomponents/OperationDetailEtatSection.component.tsx';
 import { OperationDetailActionsSection } from './subcomponents/OperationDetailActionsSection.component.tsx';
-import { OperationDetailPageProps } from '../../../../Components.props.ts';
 import { useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
 import { useOperationEditForm } from '../../../../../hooks/useOperationEditForm.ts';
+import CategorieOperationModel from "../../../../../Models/budgets/CategorieOperation.model.ts";
+import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
+import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
+
+export interface OperationDetailPageProps {
+    listeCategories: CategorieOperationModel[]
+    listeLibellesOperations: LibelleCategorieOperationModel[]
+    onOperationChange: (budget: BudgetMensuelModel) => void
+}
 
 
 /**

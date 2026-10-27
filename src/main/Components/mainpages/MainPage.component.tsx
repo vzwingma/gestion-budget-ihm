@@ -8,7 +8,6 @@ import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import CompteItem from "./menuSlideBar/CompteItem.component.tsx";
 import DateRange from "./menuSlideBar/DateRange.component.tsx";
 import BudgetPage from "../budgets/budget/Budget.component.tsx";
-import {MainPageProps} from "../Components.props.tsx";
 import { useBudgetSelection } from "../../hooks/useBudgetContext.ts";
 import {useAuth} from "react-oidc-context";
 import { RecurrentsPage } from "../budgets/recurrents/Recurrents.component.tsx";
@@ -16,6 +15,10 @@ import { Analyses } from "../analyses/Analyses.component.tsx";
 import { getCompteGroupByOwner } from "../../Utils/UserData.utils.ts";
 import { debug } from "../../Utils/Debug.utils.ts";
 import { useFetch } from "../../hooks/useFetch.ts";
+
+export interface MainPageProps {
+    fonction: BUSINESS_ONGLETS;
+}
 
 
 /**

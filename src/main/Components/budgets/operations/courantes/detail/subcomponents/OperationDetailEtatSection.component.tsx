@@ -2,7 +2,7 @@ import React, { JSX } from 'react'
 import { Grid, Typography } from "@mui/material";
 import { OperationDetailDate } from './OperationDetailDateOperation.component.tsx';
 import { getOperationStateColor } from '../../../../../../Utils/renderers/OperationItem.renderer.tsx';
-import { OperationDetailEtatSectionProps } from '../../../../../Components.props.ts';
+import { OperationDetailEtatSectionProps } from "../OperationDetailPage.props.ts";
 
 /**
  * Section « Etat / Date d'opération » de la page de détail (éléments de grille, à insérer dans un `Grid container`)

@@ -1,11 +1,11 @@
 import React, { JSX, useMemo, useState } from "react";
-import { AnalyseCategoriesListeProps } from "../../Components.props.ts";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import AnalyseTreeMapContent from "./AnalyseTreeMapContent.component.tsx";
 import AnalyseTreeMapTooltip from "./AnalyseTreeMapTooltip.component.tsx";
 import { NoDataComponent } from "../../shared/NoDataComponent.tsx";
+import { AnalyseCategoriesListeProps } from "./AnalyseCategoriesListe.props.ts";
 
 
 interface TreemapNode {

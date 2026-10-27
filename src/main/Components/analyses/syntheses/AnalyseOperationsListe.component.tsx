@@ -1,10 +1,13 @@
 import React, { JSX, useMemo, useState } from 'react'
 import OperationModel from '../../../Models/budgets/Operation.model.ts';
-import { AnalyseOperationsListeProps } from '../../Components.props.ts';
 import { Box, Grid, TableSortLabel, useMediaQuery, useTheme } from '@mui/material';
 import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
 import AnalyseOperationItem from './AnalyseOperationItem.component.tsx';
 import { compareNumberValues, compareStringValues, SortDirection } from '../../../Utils/OperationData.utils.ts';
+
+export interface AnalyseOperationsListeProps {
+    operations: OperationModel[];
+}
 
 type SortColumn = 'type' | 'date' | 'libelle' | 'valeur';
 

@@ -17,7 +17,6 @@ import { COLUMN_WIDTHS, getCategoryTypeColor, getSortedSubCategories } from './A
 import OperationValue from '../../../Utils/renderers/OperationValue.renderer.tsx';
 import { getCategorieColor, getCategorieIcon } from '../../../Utils/renderers/CategorieItem.renderer.tsx';
 import { CenterComponent } from '../../shared/CenterComponent.tsx';
-import { AnalyseCategoriesListeProps } from '../../Components.props.ts';
 import { generateDerivedColors } from '../../../Utils/renderers/DerivedColors.renderer.utils.ts';
 import { NoDataComponent } from '../../shared/NoDataComponent.tsx';
 import {
@@ -26,6 +25,7 @@ import {
     compareSubCategories,
     SortDirection
 } from '../../../Utils/OperationData.utils.ts';
+import { AnalyseCategoriesListeProps } from "./AnalyseCategoriesListe.props.ts";
 
 type SortColumn = AnalyseCategoriesSortColumn;
 

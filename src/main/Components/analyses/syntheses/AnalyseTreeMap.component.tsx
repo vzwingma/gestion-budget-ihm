@@ -1,5 +1,4 @@
 import React, { JSX } from "react";
-import { AnalyseCategoriesListeProps } from "../../Components.props.ts";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
@@ -9,6 +8,7 @@ import { useAnalyseTreeMapData } from "./AnalyseTreeMap.controller.ts";
 import { NoDataComponent } from "../../shared/NoDataComponent.tsx";
 import CategorieOperationModel from "../../../Models/budgets/CategorieOperation.model.ts";
 import AnalyseCategoriesModel from "../../../Models/analyses/syntheses/AnalyseCategories.model.ts";
+import { AnalyseCategoriesListeProps } from "./AnalyseCategoriesListe.props.ts";
 
 
 interface TreemapContentRendererProps {

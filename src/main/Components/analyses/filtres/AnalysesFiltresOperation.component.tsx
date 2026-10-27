@@ -1,7 +1,12 @@
 import React, { JSX } from "react";
 import { Checkbox, FormControlLabel, Grid, Stack, Typography } from "@mui/material";
 import { OPERATION_ETATS_ENUM, TYPES_OPERATION_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
-import { AnalysesFiltresOperationProps } from "../../Components.props.ts";
+
+export interface AnalysesFiltresOperationProps {
+    selectedEtats: OPERATION_ETATS_ENUM[];
+    selectedTypes: TYPES_OPERATION_ENUM[];
+    onChange: (selectedEtats: OPERATION_ETATS_ENUM[], selectedTypes: TYPES_OPERATION_ENUM[]) => void;
+}
 
 /**
  * Composant pour filtrer les opérations par état et par type.
