@@ -42,7 +42,15 @@ Utilisateur (navigateur)
 
 - **Lecture de données** : les `*.extservices.ts` exposent des variantes Promise `fetch*` (`fetchCategories`, `fetchBudget`, `fetchPreferenceUtilisateur`, `fetchLibellesOperationsCompte`, `fetchInfosFromMicroServices`, `fetchLastAccessDateUtilisateur`, `fetchComptes`, `fetchSoldesBudget`), enveloppées par `callWithNotify` (`Services/CallAndNotify.service.ts`) : log `console.error` + toast d'erreur, puis relance de l'erreur. Les composants les consomment via `useFetch(fetcher, deps)` → `{ data, loading, error, refetch }` (les réponses périmées d'un chargement précédent sont ignorées). `useFetch` est adopté par `Budget`, `Recurrents`, `AnalysesFiltrePeriode`, `Infos`, `MainPage`, `ProfileInfos` et `CompteItem`.
 - **Actions / sauvegardes** : `callAndNotify(promise, onSuccess, errorMessage, toastOptions?)` (même fichier) reste utilisé en mode callback (`BudgetActionsButtonGroup`, `saveOperation*`).
-- `Budget` et `Recurrents` réinitialisent le contexte (budget courant) dans un effet sur `[selectedCompte, selectedDate]`.
+- **Pages budget** : `BudgetPage` et `RecurrentsPage` sont des wrappers fins autour du hook `useBudgetPageData({ groupOperations, prepareBudget? })` (`Components/budgets/shared/useBudgetPageData.ts`, références de paramètres stables). Le hook : charge le budget (`useFetch` sur `[selectedCompte, selectedDate]`), réinitialise le contexte (budget et opération courants) sur ce même changement, injecte le budget chargé **une seule fois par budget reçu** (ref sur le dernier budget injecté : `useFetch` conserve l'ancien `data` pendant un rechargement, il ne doit jamais être réinjecté après le reset), expose `handleBudgetUpdate`, le regroupement des opérations (`useMemo`) et `userDroits`. Le groupe d'actions reste dans chaque wrapper (droits et callback de création différents).
+
+```
+BudgetPage / RecurrentsPage → useBudgetPageData → useFetch(fetchBudget) → setCurrentBudget (contexte)
+                            → groupOperations (useMemo) → listes + BudgetPageShell
+```
+
+- **Contexte budget** : les consumers lisent `useCurrentBudget()` ou `useBudgetSelection()` selon la moitié utilisée. Seuls 3 restent sur l'agrégat `useBudgetContext()` car ils lisent les deux moitiés : `OperationDetailLibelle`, `OperationDetailCategoriesSection`, `OperationRecurrenteDetailPage`. `OperationDetailCategories` reçoit `listeCategories` en prop.
+- **Dates** : `getLabelISOFromDate` (`Utils/Date.utils.ts`) formate `yyyy-mm-dd` en composantes **locales** (une date API `2026-03-01T00:00:00` ne s'affiche plus la veille en France). Limite connue et acceptée : la saisie utilisateur est stockée en minuit UTC et envoyée telle quelle à l'API (ne pas passer en minuit local) ; l'affichage serait décalé d'un jour dans un fuseau à l'ouest de l'UTC (hors usage).
 
 ```
 Composant → useFetch(() => fetchX(...), [deps])
@@ -77,12 +85,12 @@ gestion-budget-ihm/
 │       ├── Components/                   # Composants React UI
 │       │   ├── analyses/                 # Composants analyses budgétaires (syntheses/AnalyseTooltip = tooltip recharts générique)
 │       │   ├── budgets/                  # Composants gestion budgets
-│       │   │   └── shared/               # BudgetPageShell.component.tsx (squelette commun Budget / Recurrents) ; operations/shared/ : OperationRecurrenteDetailDateFin.component.tsx (partagé courantes / récurrentes) ; operations/courantes/detail/ : OperationDetailPage (106 lignes, orchestration) + useOperationEditForm.ts (hook d'édition) + OperationDetailPage.controller.ts (fonctions pures) + subcomponents/ (dont OperationDetail{Header,CategoriesSection,MensualiteSection,EtatSection,ActionsSection}) + actions/
+│       │   │   └── shared/               # BudgetPageShell.component.tsx (squelette commun Budget / Recurrents) + useBudgetPageData.ts (hook des données communes : fetch, reset, injection, regroupement, droits) ; operations/shared/ : OperationRecurrenteDetailDateFin.component.tsx (partagé courantes / récurrentes) ; operations/courantes/detail/ : OperationDetailPage (106 lignes, orchestration) + useOperationEditForm.ts (hook d'édition) + OperationDetailPage.controller.ts (fonctions pures) + subcomponents/ (dont OperationDetail{Header,CategoriesSection,MensualiteSection,EtatSection,ActionsSection}) + actions/
 │       │   ├── infos/                    # Composants informatifs
 │       │   ├── mainpages/                # Pages principales
 │       │   ├── menuTopBar/               # Barre de navigation
 │       │   └── shared/                   # Composants partagés (dont AuthTokenSync.component.tsx, TapTooltip.component.tsx : infobulle survol desktop / tap tactile)
-│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext [+ useBudgetSelection, useCurrentBudget], useFetch, useIsTouchDevice)
+│       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext [+ useBudgetSelection, useCurrentBudget], useFetch, useIsTouchDevice ; budgetContexts.testutils.tsx = harnais de test des contextes)
 │       ├── Models/                       # Modèles TypeScript + Context
 │       │   ├── contextProvider/          # BudgetContextProvider.tsx (3 providers imbriqués ; ré-exporte les contextes et hooks de hooks/useBudgetContext.ts)
 │       │   ├── analyses/                 # Modèles analyses
@@ -90,7 +98,7 @@ gestion-budget-ihm/
 │       │   ├── infos/                    # Modèles infos
 │       │   └── profiles/                 # Modèles profils utilisateur
 │       ├── Services/                     # Couche HTTP, Auth, CallAndNotify
-│       └── Utils/                        # Constantes et utilitaires (Debug.utils.ts, Equation.utils.ts)
+│       └── Utils/                        # Constantes et utilitaires (Debug.utils.ts, Equation.utils.ts, Banque.utils.ts : getBanqueIconSrc)
 ├── docs/                                 # Documentation versionnée
 │   ├── ARCHITECTURE.md                   # Ce fichier
 │   └── adr/                              # Architecture Decision Records
@@ -188,7 +196,8 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
 - **Évaluation sûre de la saisie Montant** : le champ Montant accepte une formule (ex. `12,5+3*2`). Elle est évaluée par `evaluateEquation(input): number` (`Utils/Equation.utils.ts`), parseur à descente récursive **sans** `eval` / `new Function` / `RegExp` construite depuis la saisie. Grammaire : `expression := terme (('+'|'-') terme)*` ; `terme := facteur (('*'|'/') facteur)*` ; `facteur := ('+'|'-') facteur | nombre | '(' expression ')'` ; `nombre` décimal avec `.` ou `,`. Espaces (dont insécables) ignorés. Garde-fous : 100 caractères max (`EQUATION_MAX_LENGTH`), imbrication de parenthèses max 10 (`EQUATION_MAX_DEPTH`), division par zéro et résultat non fini refusés, tout autre caractère refusé (dont `%` et `**`) ⇒ « Le champ Montant est incorrect ». Convention : toute évaluation de saisie utilisateur passe par ce parseur, jamais par `eval` / `Function`.
 - **Encodage des paramètres d'URL** : `evaluateURL` (`ClientHTTP.service.ts`) encode chaque paramètre de chemin ou de requête avec `encodeURIComponent` avant de remplacer le marqueur `{{}}` ; le remplacement se fait par fonction, donc les motifs `$&` / `$1` ne sont pas interprétés.
 - **Audit (lots 4a et 5)** : aucun `new Function`, `eval`, `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `dangerouslySetInnerHTML`, `setAttribute`, `document.write`, `postMessage`, `window.open`, `<a>` / `href` / `target` dans le code de production. `globalThis.location.href = "/"` est une constante ; `redirect_uri` OIDC est l'URL du navigateur (validée par le fournisseur) ; `<Avatar src={profile.picture}>` vient de l'OIDC (image).
-- **Points connus, non corrigés** : (1) `<img src="/img/banques/" + itemIcon>` (5 endroits) : `itemIcon` vient de l'API, risque faible (image, même origine) ; (2) jeton OIDC en `localStorage` : risque accepté en l'absence de sink XSS ; (3) `logAuth` écrit le jeton Bearer et la clé API dans les logs quand `VITE_CONFIG_DEBUG` est actif : **conservé volontairement** (décision 👤 2026-10-27, risque accepté et documenté) ; usage développement uniquement, ne jamais activer le debug en QUA / PROD. Détail : [plan 006](../.claude/plans/006_revue_architecture_react.plan.md)
+- **Icône de banque assainie (lot 6)** : `itemIcon` (valeur de l'API) n'est plus concaténé tel quel dans `<img src>` : `getBanqueIconSrc` (`Utils/Banque.utils.ts`) n'accepte qu'un nom de fichier `/^[\w.-]+$/` sans `..`, sinon `/img/icon.webp`. Utilisé aux 5 endroits (`AnalysesTitre`, `OperationDetailIntercompte`, `CompteTitre`, `CompteItem`, `OperationItem.renderer`).
+- **Points connus, non corrigés** : (1) jeton OIDC en `localStorage` : risque accepté en l'absence de sink XSS ; (2) `logAuth` écrit le jeton Bearer et la clé API dans les logs quand `VITE_CONFIG_DEBUG` est actif : **conservé volontairement** (décision 👤 2026-10-27, risque accepté et documenté) ; usage développement uniquement, ne jamais activer le debug en QUA / PROD. Détail : [plan 006](../.claude/plans/006_revue_architecture_react.plan.md)
 
 ---
 
@@ -279,6 +288,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
+| v27.0.0 | 2026-10-27 | Revue architecture React (plan 006, lot 6, Gate #4 en attente 👤) : hook `useBudgetPageData` (T1, pages Budget / Recurrents) avec correction d'un bug latent (réinjection d'un budget périmé) ; consumers migrés vers `useCurrentBudget()` / `useBudgetSelection()` (T6, 3 restent sur l'agrégat par choix) ; `getLabelISOFromDate` en composantes locales ; spinner `AnalysesFiltrePeriode` masqué sans compte ; `itemIcon` assaini (`getBanqueIconSrc`) ; ~150 tests (T20) : 1121 tests, couverture 97,67 % stmt ; `testTimeout` 15 s. Reste : 3 fichiers < 85 %, fuseau UTC- accepté — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v27.0.0 | 2026-10-27 | Décisions 👤 (plan 006) : TanStack Query non retenu (T12, [ADR 002](./adr/002-tanstack-query-data-fetching.md) `Rejetée`, `useFetch` + `fetch*` conservés) ; `logAuth` conservé en mode debug (risque accepté, usage dev uniquement) ; lot 6 décidé (T1, T6, T20, `getLabelISOFromDate` UTC, spinner `AnalysesFiltrePeriode`, `itemIcon`) — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v27.0.0 | 2026-10-27 | Revue architecture React (plan 006, lot 5, finitions) : `useOperationEditForm` déplacé de `hooks/` vers `Components/budgets/operations/courantes/detail/` (fin de la dépendance `hooks/` → `Components/`) ; champ date d'opération contrôlé par le brouillon (la date du jour s'affiche en création + « Valider l'opération ») ; `evaluateURL` encode les paramètres d'URL (`encodeURIComponent`) ; `AnalyseTreeMap` : erreur `tsc` corrigée ; audit URL / `href` / `window.open` réalisé ; `Components.props.ts` supprimé ; 981 tests. Reste : T12, T20, `logAuth` en debug — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v27.0.0 | 2026-10-26 | Revue architecture React (plan 006, lot 4a, sécurité) : `new Function` du calcul de montant remplacé par `evaluateEquation` (`Utils/Equation.utils.ts`, parseur à descente récursive, garde-fous longueur 100 / imbrication 10 / division par zéro). Écarts : `%` et `**` refusés, « --5 » accepté (= 5), « 1/0 » et saisies trop longues refusées ; 951 tests. Reste : T16, T12 — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |

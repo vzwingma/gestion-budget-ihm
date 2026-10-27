@@ -92,6 +92,58 @@ describe('OperationDetailCategories - composant', () => {
         expect(fill).toHaveBeenCalledWith('FORM_VALIDATION', 'true');
     });
 
+    test('édition : les options viennent de la prop listeCategories, pas des catégories du contexte', async () => {
+        const user = userEvent.setup();
+        const autre = { id: 'cat-autre', libelle: 'Autre', listeSSCategories: [{ id: 'ss-autre', libelle: 'Sous-cat de la prop', categorieParente: { id: 'cat-autre', libelle: 'Autre' } }] } as any;
+        // Contexte : catégories par défaut (Courses, Restaurant...) DIFFÉRENTES de la prop
+        renderWithContexts(
+            <OperationDetailCategories listeCategories={[autre]} formCatgoriesInEdition={true}
+                errorsCategories={null} fillOperationForm={fill} />);
+
+        await user.click(categorie());
+
+        const options = await screen.findAllByRole('option');
+        expect(options.map((option) => option.textContent)).toEqual(['Sous-cat de la prop']);
+    });
+
+    test('édition : ssCategorieInEdition prime sur la sous-catégorie de la ligne du contexte', () => {
+        renderWithContexts(
+            <OperationDetailCategories listeCategories={buildCategories()} formCatgoriesInEdition={true}
+                ssCategorieInEdition={{ id: 'ss-resto', libelle: 'Restaurant' } as any}
+                errorsCategories={null} fillOperationForm={fill} />);
+
+        expect(categorie()).toHaveValue('Restaurant');
+    });
+
+    test('édition : catégories sans sous-catégories ni parente : aucune option', async () => {
+        const user = userEvent.setup();
+        renderWithContexts(
+            <OperationDetailCategories listeCategories={[{ id: 'vide', libelle: 'Vide' } as any]} formCatgoriesInEdition={true}
+                errorsCategories={null} fillOperationForm={fill} />);
+
+        await user.click(categorie());
+
+        expect(screen.queryAllByRole('option')).toHaveLength(0);
+    });
+
+    test('édition : une option sans identifiant n est jamais considérée comme la valeur sélectionnée', async () => {
+        const user = userEvent.setup();
+        const sansId = { id: 'cat-x', libelle: 'X', listeSSCategories: [
+            { id: null, libelle: 'Sans identifiant', categorieParente: { id: 'cat-x', libelle: 'X' } },
+            { id: 'ss-courses', libelle: 'Courses', categorieParente: { id: 'cat-x', libelle: 'X' } }
+        ] } as any;
+        renderWithContexts(
+            <OperationDetailCategories listeCategories={[sansId]} formCatgoriesInEdition={true}
+                errorsCategories={null} fillOperationForm={fill} />);
+
+        await user.click(categorie());
+
+        const options = await screen.findAllByRole('option');
+        expect(options.map((option) => option.textContent)).toEqual(expect.arrayContaining(['Sans identifiant', 'Courses']));
+        expect(screen.getByRole('option', { name: 'Courses' })).toHaveAttribute('aria-selected', 'true');
+        expect(screen.getByRole('option', { name: 'Sans identifiant' })).toHaveAttribute('aria-selected', 'false');
+    });
+
     test('édition sur budget clos : le composant reste fonctionnel (le verrou est porté par la page)', () => {
         rendre({}, { budget: buildBudget(false) });
 

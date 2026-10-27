@@ -102,6 +102,20 @@ describe('Logo intercompte', () => {
         expect(screen.getByRole('img', {name: 'Livret A'}).style.width).toBe('1.4em');
     });
 
+    test('nom d icône non sûr fourni par l API : icône par défaut', () => {
+        const comptesPieges = [{id: 'cpt1', libelle: 'Livret A', itemIcon: '../x.png'}] as unknown as CompteBancaireModel[];
+        render(getOperationLibelle('[vers cpt1]Virement', comptesPieges, false, false));
+
+        expect(screen.getByRole('img', {name: 'Livret A'})).toHaveAttribute('src', '/img/icon.webp');
+    });
+
+    test('libellé de catégorie sans balise intercompte : libellé brut, sans logo', () => {
+        render(getOperationIntercompteCatLibelle('Courses', comptes, false));
+
+        expect(screen.getByText('Courses')).toBeInTheDocument();
+        expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    });
+
     test('compte introuvable : repli sur libellé brut, sans logo', () => {
         render(getOperationLibelle('[vers inconnu]Virement', comptes, false, false));
         expect(screen.queryByRole('img')).not.toBeInTheDocument();

@@ -5,6 +5,7 @@ import { BUSINESS_ONGLETS } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { fetchSoldesBudget } from './CompteItem.controller.ts';
 import { useFetch } from '../../../hooks/useFetch.ts';
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
+import { getBanqueIconSrc } from "../../../Utils/Banque.utils.ts";
 
 export interface CompteItemProps {
     compte: CompteBancaireModel;
@@ -79,7 +80,7 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedCompte, selecte
         <Container className={"listeItem" + (isCompteCourant ? " listeItem--selected" : "")}
             onClick={() => handleCompteChange(compte)}>
             <Stack direction={"row"} spacing={5}>
-                <img src={"/img/banques/" + compte.itemIcon} className={"compteListIcon"} alt={compte.libelle}
+                <img src={getBanqueIconSrc(compte.itemIcon)} className={"compteListIcon"} alt={compte.libelle}
                     key={"img_" + compte.id} />
                 <Stack direction={"column"}>
                     <Typography variant={"h6"} key={"lib_" + compte.id}>

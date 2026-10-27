@@ -10,7 +10,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
-| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées) et 5 (finitions) livrés et mergés ; T12 non retenu (décision 👤 2026-10-27) ; lot 6 décidé, à venir : T1/T6/T20, dette mineure (voir « Statut global » du plan) | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
+| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées) et 5 (finitions) livrés et mergés ; T12 non retenu (décision 👤 2026-10-27) ; 🟡 lot 6 livré (T1 `useBudgetPageData`, T6, T20, `getLabelISOFromDate`, spinner, `itemIcon`), Gate #4 en attente 👤 (voir « Statut global » du plan) | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Rejetée le 2026-10-27 — item T12 non retenu)
 
@@ -104,5 +104,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-10-27 (lot 5 finitions livré, Gate #4 en attente 👤 ; lot 4b T16 livré, Gate #4 en attente 👤 ; plan 008 : clôturé, Gate #4 validé ; plan 005 : clôturé ; plan 006 : lots 1, 2 et 3 livrés, Gate #4 du lot 3 validé ; lot 4a livré, Gate #4 en attente 👤)
+**Dernière mise à jour :** 2026-10-27 (plan 006 : lot 6 livré, Gate #4 en attente 👤 ; lot 5 finitions livré, mergé ; lot 4b T16 livré, Gate #4 en attente 👤 ; plan 008 : clôturé, Gate #4 validé ; plan 005 : clôturé ; plan 006 : lots 1, 2 et 3 livrés, Gate #4 du lot 3 validé ; lot 4a livré, Gate #4 en attente 👤)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain

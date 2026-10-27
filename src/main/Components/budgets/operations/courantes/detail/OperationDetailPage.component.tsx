@@ -10,7 +10,7 @@ import { OperationDetailCategoriesSection } from './subcomponents/OperationDetai
 import { OperationDetailMensualiteSection } from './subcomponents/OperationDetailMensualiteSection.component.tsx';
 import { OperationDetailEtatSection } from './subcomponents/OperationDetailEtatSection.component.tsx';
 import { OperationDetailActionsSection } from './subcomponents/OperationDetailActionsSection.component.tsx';
-import { useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { useCurrentBudget } from '../../../../../hooks/useBudgetContext.ts';
 import { useOperationEditForm } from './useOperationEditForm.ts';
 import CategorieOperationModel from "../../../../../Models/budgets/CategorieOperation.model.ts";
 import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
@@ -37,7 +37,7 @@ export const OperationDetailPage: React.FC<OperationDetailPageProps> = ({
     onOperationChange
 }: OperationDetailPageProps): JSX.Element => {
 
-    const { currentBudget: budget, currentOperation: operation } = useBudgetContext();
+    const { currentBudget: budget, currentOperation: operation } = useCurrentBudget();
     const { editForm, editOperation, errors, resetKey, fillOperationForm, handleClick, validate, setEtatInCreation, commitOperation } =
         useOperationEditForm({ listeCategories, onOperationChange });
 

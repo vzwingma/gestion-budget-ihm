@@ -1,5 +1,5 @@
 import { SyntheticEvent, useCallback, useRef, useState } from "react";
-import { useBudgetContext } from "../../../../../hooks/useBudgetContext.ts";
+import { useCurrentBudget } from "../../../../../hooks/useBudgetContext.ts";
 import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
 import CategorieOperationModel from "../../../../../Models/budgets/CategorieOperation.model.ts";
 import OperationModel from "../../../../../Models/budgets/Operation.model.ts";
@@ -61,7 +61,7 @@ export interface UseOperationEditFormResult {
  */
 export function useOperationEditForm({ listeCategories, onOperationChange }: UseOperationEditFormProps): UseOperationEditFormResult {
 
-    const { currentBudget: budget, currentOperation: operation, setCurrentOperation } = useBudgetContext();
+    const { currentBudget: budget, currentOperation: operation, setCurrentOperation } = useCurrentBudget();
 
     const [editForm, setEditForm] = useState<EditFormProps>(() => createEmptyEditForm(operation?.id === ID_NOUVELLE_OPERATION));
     const [errors, setErrors] = useState<ErrorsFormProps>(createEmptyErrors);

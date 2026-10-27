@@ -27,6 +27,15 @@ describe('CompteItem (React.memo)', () => {
         (fetchSoldesBudget as any).mockReturnValue(new Promise(() => {}));
     });
 
+    test('icône : fichier de banque sûr utilisé, nom non sûr remplacé par l icône par défaut', () => {
+        const { unmount } = renderItem();
+        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.png');
+        unmount();
+
+        renderItem({ compte: { ...compte, itemIcon: '../../secret.png' } });
+        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/icon.webp');
+    });
+
     test('affiche un spinner tant que le solde est inconnu (BUDGET)', () => {
         renderItem();
         expect(screen.getByText('Compte courant')).toBeInTheDocument();

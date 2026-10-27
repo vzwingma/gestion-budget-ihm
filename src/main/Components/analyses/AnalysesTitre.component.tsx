@@ -3,6 +3,7 @@ import React, { JSX } from "react";
 import { AnalysesPeriodeModel } from "../../Models/analyses/AnalysesPeriode.model.ts";
 import { getLabelMonthFRFromDate } from "../../Utils/Date.utils.ts";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
+import { getBanqueIconSrc } from "../../Utils/Banque.utils.ts";
 
 export interface AnalysesTitreProps {
     currentCompte: CompteBancaireModel;
@@ -23,7 +24,7 @@ const AnalysesTitre: React.FC<AnalysesTitreProps> = ({ currentCompte, currentPer
     return (
         // Création d'une pile pour l'affichage du titre
         <Stack direction={"row"} spacing={2} sx={{ justifyContent: "center", alignItems: "center", alignContent: "center" }}>
-            <img src={"/img/banques/" + currentCompte.itemIcon} className={"compteIcon"}
+            <img src={getBanqueIconSrc(currentCompte.itemIcon)} className={"compteIcon"}
                 alt={currentCompte.libelle} />
             <Typography variant={"h6"} component="div"
                 sx={{ textAlign: "center", justifyContent: "center", alignContent: "center" }}>

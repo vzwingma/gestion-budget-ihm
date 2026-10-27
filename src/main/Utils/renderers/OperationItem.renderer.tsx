@@ -4,6 +4,7 @@ import TapTooltip from "../../Components/shared/TapTooltip.component.tsx";
 import React, {JSX} from "react";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import {INTERCOMPTE_LIBELLE_REGEX, operationIsIntercompteFromLibelle} from "../OperationData.utils.ts";
+import { getBanqueIconSrc } from "../Banque.utils.ts";
 
 /**
  * Couleur d'une opération selon son état
@@ -202,7 +203,7 @@ function getOperationIntercompteLibelleWithIconAndComment(compte: CompteBancaire
     const iconSize = maxVue ? 40 : "1.4em";
     return <TapTooltip title={"Transfert intercompte " + label}>
             <Box component="span" sx={{display: "inline"}}>
-                <img src={"/img/banques/" + compte.itemIcon}
+                <img src={getBanqueIconSrc(compte.itemIcon)}
                     width={iconSize} height={iconSize}
                     alt={compte.libelle}
                     style={{marginRight: "5px", display: "inline", verticalAlign: "middle", objectFit: "contain",

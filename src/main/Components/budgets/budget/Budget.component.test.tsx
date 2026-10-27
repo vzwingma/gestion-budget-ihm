@@ -1,13 +1,13 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 
 import { BudgetPage } from './Budget.component.tsx';
-import { BudgetContext } from '../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { BudgetContextsWrapper } from '../../../hooks/budgetContexts.testutils.tsx';
 import BudgetMensuelModel from '../../../Models/budgets/BudgetMensuel.model.ts';
 import { createNewOperation } from '../../../Models/budgets/Operation.model.ts';
-import { OPERATION_ETATS_ENUM } from '../../../Utils/AppBusinessEnums.constants.ts';
+import { OPERATION_ETATS_ENUM, UTILISATEUR_DROITS } from '../../../Utils/AppBusinessEnums.constants.ts';
 import { FILTRE_OPERATIONS_VIDE } from '../../../Utils/OperationsFilter.utils.ts';
 
 /**
@@ -44,8 +44,11 @@ vi.mock('./BudgetSoldes.component.tsx', () => ({
 }));
 
 vi.mock('./actions/BudgetActionsButtonGroup.component.tsx', () => ({
-    BudgetActionsButtonGroupComponent: ({ onActionOperationCreate }: any) => (
-        <button data-testid="mock-create" onClick={onActionOperationCreate} />
+    BudgetActionsButtonGroupComponent: ({ onActionOperationCreate, droits }: any) => (
+        <>
+            <output data-testid="mock-droits">{droits.join(',')}</output>
+            <button data-testid="mock-create" onClick={onActionOperationCreate} />
+        </>
     )
 }));
 
@@ -103,9 +106,9 @@ function renderBudgetPage(contextOverrides: any = {}) {
     const contextValue = buildContextValue(contextOverrides);
     const onOpenMenu = vi.fn();
     render(
-        <BudgetContext.Provider value={contextValue}>
+        <BudgetContextsWrapper value={contextValue}>
             <BudgetPage onOpenMenu={onOpenMenu} />
-        </BudgetContext.Provider>
+        </BudgetContextsWrapper>
     );
     return { contextValue, onOpenMenu };
 }
@@ -139,6 +142,25 @@ describe('BudgetPage', () => {
 
         expect(screen.getByTestId('mock-liste')).toBeInTheDocument();
         expect(screen.getByTestId('op-op-1')).toBeInTheDocument();
+    });
+
+    test('droits utilisateur : préférences chargées + droit de création toujours accordé', async () => {
+        (fetchPreferenceUtilisateur as any).mockResolvedValue([UTILISATEUR_DROITS.DROIT_CLOTURE_BUDGET]);
+        const budget = new BudgetMensuelModel('budget-1', 'Budget test');
+        (fetchBudget as any).mockResolvedValue(budget);
+
+        renderBudgetPage({ currentBudget: budget });
+
+        await waitFor(() => expect(screen.getByTestId('mock-droits')).toHaveTextContent(
+            [UTILISATEUR_DROITS.DROIT_CLOTURE_BUDGET, UTILISATEUR_DROITS.DROIT_CREATE_OPERATION].join(',')));
+    });
+
+    test('droits utilisateur : sans préférences, seul le droit de création est accordé', () => {
+        const budget = new BudgetMensuelModel('budget-1', 'Budget test');
+
+        renderBudgetPage({ currentBudget: budget });
+
+        expect(screen.getByTestId('mock-droits')).toHaveTextContent(String(UTILISATEUR_DROITS.DROIT_CREATE_OPERATION));
     });
 
     test('sélection d une opération dans la liste met à jour currentOperation', async () => {

@@ -1,20 +1,19 @@
-import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
+import React, { JSX, useCallback, useState } from "react";
 
 import { Grid } from "@mui/material";
 import BudgetMensuelModel from "../../../Models/budgets/BudgetMensuel.model.ts";
 import OperationModel from "../../../Models/budgets/Operation.model.ts";
-import { fetchBudget, fetchPreferenceUtilisateur } from "./../budget/Budget.extservices.ts";
 
 import { getOperationsRecurrentesGroupedByPeriodicity } from "./Recurrents.controller.ts";
-import { useBudgetContext } from "../../../Models/contextProvider/BudgetContextProvider.tsx";
 import OperationsRecurrentesListe from "../operations/recurrentes/OperationsRecurrentesListe.component.tsx";
 import BudgetPageShell from "../shared/BudgetPageShell.component.tsx";
+import { useBudgetPageData } from "../shared/useBudgetPageData.ts";
 import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
 import { BudgetActionsButtonGroupComponent } from "../budget/actions/BudgetActionsButtonGroup.component.tsx";
-import { UTILISATEUR_DROITS } from "../../../Utils/AppBusinessEnums.constants.ts";
 import { debug } from "../../../Utils/Debug.utils.ts";
-import { getLabelFRFromDate } from "../../../Utils/Date.utils.ts";
-import { useFetch } from "../../../hooks/useFetch.ts";
+
+/** Regroupement des opérations récurrentes par périodicité (référence stable) */
+const groupOperationsByPeriodicity = (budget: BudgetMensuelModel) => getOperationsRecurrentesGroupedByPeriodicity(budget.listeOperations, budget.id);
 
 export interface RecurrentsPageProps {
     onOpenMenu: () => void
@@ -31,55 +30,19 @@ export interface RecurrentsPageProps {
  * @component
  *
  * @description
- * Ce composant gère l'affichage et les interactions de la page Recurrents. Il charge les catégories et les préférences utilisateur au démarrage,
- * et met à jour le budget lorsque le compte ou la date sélectionnée change. Il permet également de filtrer les opérations, de sélectionner
- * une opération et de créer une nouvelle opération.
- *
- * @remarks
- * Ce composant utilise plusieurs hooks React pour gérer l'état et les effets de bord, ainsi que des composants Material-UI pour l'interface utilisateur.
+ * Wrapper mince : le chargement du budget, la réinitialisation du contexte (compte / date), le regroupement et les droits
+ * utilisateur sont portés par `useBudgetPageData` (commun avec `BudgetPage`) ; il ne reste ici que le filtre texte, la
+ * sélection d'une opération et les 2 colonnes (liste des récurrentes / détail).
  */
 export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: RecurrentsPageProps): JSX.Element => {
 
     /** Etats pour la page Recurrents **/
-
-    const { currentBudget, setCurrentBudget, currentOperation, setCurrentOperation, selectedCompte, selectedDate } = useBudgetContext();
+    const {
+        selectedCompte, selectedDate, currentBudget, currentOperation, setCurrentOperation,
+        operationsGroupees: operationsRecurrentesGroupedByPeriodicity, userDroits, handleBudgetUpdate
+    } = useBudgetPageData({ groupOperations: groupOperationsByPeriodicity });
 
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
-
-    /** Préférences utilisateur au 1er démarrage **/
-    const { data: userDroitsCharges } = useFetch(() => fetchPreferenceUtilisateur(), []);
-    const userDroits: UTILISATEUR_DROITS[] = userDroitsCharges ?? [];
-
-
-
-    /** Callback de mise à jour du budget **/
-    const handleBudgetUpdate = useCallback((budget: BudgetMensuelModel) => {
-        setCurrentBudget(budget);
-        debug("Chargement du budget correctement effectué");
-    }, [setCurrentBudget]);
-
-    /** Regroupement des opérations récurrentes par périodicité, dérivé du budget courant **/
-    const operationsRecurrentesGroupedByPeriodicity = useMemo(
-        () => currentBudget == null ? {} : getOperationsRecurrentesGroupedByPeriodicity(currentBudget.listeOperations, currentBudget.id),
-        [currentBudget]
-    );
-
-    /** Rechargement du budget si changement de compte ou de date **/
-    const { data: budgetCharge } = useFetch(() => fetchBudget(selectedCompte, selectedDate), [selectedCompte, selectedDate]);
-
-    /** Réinitialisation du contexte si changement de compte ou de date **/
-    useEffect(() => {
-        debug("[TRIGGER] Context selectedCompte :", selectedCompte?.id, "selectedDate :", getLabelFRFromDate(selectedDate));
-        setCurrentBudget(undefined);
-        setCurrentOperation(null);
-    }, [selectedCompte, selectedDate, setCurrentOperation, setCurrentBudget]);
-
-    /** Le budget chargé alimente le contexte **/
-    useEffect(() => {
-        if (budgetCharge !== undefined) {
-            handleBudgetUpdate(budgetCharge);
-        }
-    }, [budgetCharge, handleBudgetUpdate]);
 
     /**
      * Sélection d'une opération

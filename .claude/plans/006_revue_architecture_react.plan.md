@@ -1,22 +1,22 @@
 # Plan d'Action 006 — Revue qualité/architecture React IHM
 
-**Statut** : ✅ Lots 1, 2, 3, 4a, 4b et 5 livrés et mergés (Gate #4 validé 👤) · T12 non retenu (décision 👤 2026-10-27, ADR 002 Rejetée) · lot 6 décidé, à venir (T1/T6/T20, dette mineure) — voir « Statut global »
+**Statut** : ✅ Lots 1, 2, 3, 4a, 4b et 5 livrés et mergés (Gate #4 validé 👤) · T12 non retenu (décision 👤 2026-10-27, ADR 002 Rejetée) · 🟡 lot 6 livré (T1/T6/T20, dette mineure), Gate #4 en attente 👤 (branche `claude/react-ui-architecture-lot6`, non commité) — voir « Statut global »
 **Date** : 2026-10-23
 
 ## Statut global (état réel au 2026-10-27)
 
-PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710 (lot 4b), #711 (lot 5) — toutes mergées. Suivi : 981 tests verts, lint 0 erreur, `tsc` 0 erreur dans `src/`.
+PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710 (lot 4b), #711 (lot 5) — toutes mergées ; lot 6 : branche `claude/react-ui-architecture-lot6`, pas encore de PR (Gate #4 en attente 👤). Suivi (lot 6) : 1121 tests verts (109 fichiers), 0 `expected fail`, couverture 97,67 % stmt / 88,69 % branches / 98,18 % lignes.
 
 ### Les 20 tâches du plan initial (T1–T20)
 
 | Tâche | État | Détail |
 |---|---|---|
-| T1 Fusion Budget / Recurrents | 🟡 Partielle | Seul le squelette de page est factorisé (`BudgetPageShell`). Les listes et détails restent distincts (fusion complète jugée risquée) |
+| T1 Fusion Budget / Recurrents | ✅ Fait | Lot 6 : hook `useBudgetPageData` (fetch, reset, injection, regroupement, droits) + squelette `BudgetPageShell`. `BudgetPage` / `RecurrentsPage` restent des wrappers fins ; listes et détails restent distincts par choix (métier différent) |
 | T2 Découpler `OperationDetailPage` | ✅ Fait | Lot 2 : `OperationRecurrenteDetailDateFin` déplacé dans `shared/` ; lot 3 : page découpée (429 → 106 lignes) |
 | T3 Tooltip recharts générique | ✅ Fait | `AnalyseTooltip` |
 | T4 Pattern extservices | ✅ Fait | `callAndNotify` (actions) et `callWithNotify` (lectures `fetch*`) |
 | T5 Regroupements via `useMemo` | ✅ Fait | Lot 1 |
-| T6 Scinder `BudgetContext` | 🟡 Partielle | Scission faite (lot 2) ; 9 consumers restent sur l'agrégat (voir dette) |
+| T6 Scinder `BudgetContext` | ✅ Fait | Scission (lot 2) ; lot 6 : consumers migrés vers `useCurrentBudget()` / `useBudgetSelection()` ; 3 restent sur l'agrégat par choix (lisent les deux moitiés : `OperationDetailLibelle`, `OperationDetailCategoriesSection`, `OperationRecurrenteDetailPage`) |
 | T7 `React.lazy` / `Suspense` | ✅ Fait | `MainPage` et `Infos` |
 | T8 / T9 `React.memo` + `useCallback` | ✅ Fait | Items de liste et handlers |
 | T10 `useEffect` vides | ✅ Fait | Régression introduite par T10 (plus de re-rendu au clic) corrigée au lot 3 (PR #704) |
@@ -28,12 +28,13 @@ PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710
 | T16 Props co-localisées | ✅ Fait | Lot 4b ; `Components.props.ts` supprimé par 👤 (commit acb2bd7) |
 | T17 `React.FC` recharts | ✅ Fait | Lot 1 |
 | T18 / T19 Couverture et filet de tests | ✅ Fait | Lot 1 |
-| T20 Couverture des composants | 🟡 Partielle | 981 tests ; il reste des composants sans test dédié (voir dette) |
+| T20 Couverture des composants | ✅ Fait (reste mineur) | Lot 6 : 1121 tests, couverture 97,67 % stmt ; reste hors périmètre : 3 fichiers < 85 % et wrappers de présentation sans test dédié (voir « Dette restante ») |
 
 ### Hors plan initial, réalisé en cours de route
 - **Lot 3** : correctif de la régression T10 ; refactor immuable de l'édition d'opération ; 5 défauts corrigés (date nulle à la création, montant non remis à zéro, libellé numérique perdu, montant invalide accepté, montant éditable sur budget clos).
 - **Lot 4a** : `new Function` remplacé par `evaluateEquation` (parseur sûr).
 - **Lot 5** : hook `useOperationEditForm` déplacé dans `detail/` ; date d'opération contrôlée ; paramètres d'URL encodés ; audit URL / `href` / `window.open` ; erreur de type `AnalyseTreeMap`.
+- **Lot 6** (Gate #4 en attente 👤) : `useBudgetPageData` (T1) ; consumers du contexte migrés (T6) ; `getLabelISOFromDate` en composantes locales ; spinner `AnalysesFiltrePeriode` conditionné au compte ; `getBanqueIconSrc` (`itemIcon` assaini) ; ~150 tests (T20) ; bug latent d'injection d'un budget périmé corrigé.
 
 ### Décisions 👤 du 2026-10-27
 - **T12** : TanStack Query non retenu → ADR 002 `Rejetée` (réévaluation possible si un besoin de cache/dédup apparaît).
@@ -41,9 +42,9 @@ PR liées : #689 (lot 1), #698 (lot 2), #704 + #707 (lot 3), #708 (lot 4a), #710
 - **Garde `Number.isFinite`** de `Equation.utils.ts` : conservée (défense en profondeur).
 - **Vérifications navigateur** : effectuées par 👤, OK (saisie manuelle de la date, parcours Budget / Récurrents / Analyses, création + « Valider l'opération », champ Montant). Wiki : commits et image faits par 👤.
 
-### Lot 6 — à venir (code, branche depuis master)
+### Lot 6 — livré, Gate #4 en attente 👤 (branche `claude/react-ui-architecture-lot6`)
 
-Périmètre décidé par 👤 (2026-10-27), tout le « Reste à faire » ci-dessous :
+Périmètre décidé par 👤 (2026-10-27) — réalisé, détail dans « Lot 6 » plus bas :
 
 | Élément | Détail |
 |---|---|
@@ -54,16 +55,9 @@ Périmètre décidé par 👤 (2026-10-27), tout le « Reste à faire » ci-dess
 | `AnalysesFiltrePeriode` | Spinner sans compte sélectionné |
 | `itemIcon` | Assainissement de la valeur API concaténée dans `<img src>` |
 
-### Reste à faire (périmètre du lot 6)
+### Reste à faire (après lot 6)
 
-| Catégorie | Élément | Détail |
-|---|---|---|
-| Code | T1 (reste) | Fusion complète des pages Budget / Recurrents (listes et détails distincts) |
-| Code | T6 (reste) | 9 consumers sur l'agrégat `useBudgetContext()` : `Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`, `OperationDetailActionsSection`, `OperationDetailCategoriesSection`, `useOperationEditForm` (dont certains lisent les deux moitiés) |
-| Code | T20 (reste) | 26 composants sur 64 sans fichier de test dédié (certains couverts par les tests d'intégration) ; `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %), `Main.tsx` (lazy / Suspense), branche `isMobile` |
-| Code | `getLabelISOFromDate` | En UTC (`toISOString`) : « aujourd'hui » peut être décalé d'un jour tôt le matin en heure locale |
-| Code (mineur) | Spinner `AnalysesFiltrePeriode` | Apparaît brièvement quand aucun compte n'est sélectionné |
-| Code (mineur) | `itemIcon` | Valeur de l'API concaténée dans `<img src>` (5 endroits), non assainie ; risque faible |
+Voir « Dette restante » en fin de plan : 3 fichiers < 85 % (hors périmètre), risque fuseau UTC- accepté, durée de la suite de tests, wrappers de présentation sans test dédié.
 
 ## Context
 
@@ -443,7 +437,7 @@ Aucun `window.open`, `<a>`, `href`, `target`, `postMessage`, `document.write`, `
 |---|---|---|
 | `globalThis.location.href = "/"` | Constante | OK |
 | `redirect_uri` OIDC | URL du navigateur | OK (validée par le fournisseur OIDC) |
-| `<img src="/img/banques/" + itemIcon>` (5 endroits) | `itemIcon` renvoyé par l'API | Risque faible (image, même origine) — **non corrigé** |
+| `<img src="/img/banques/" + itemIcon>` (5 endroits) | `itemIcon` renvoyé par l'API | Risque faible (image, même origine) — non corrigé au lot 5 ; **corrigé au lot 6** (`getBanqueIconSrc`) |
 | `<Avatar src={profile.picture}>` | Profil OIDC | OK (image) |
 | URL des appels HTTP (`evaluateURL`) | Paramètres de chemin / requête | Corrigé : `encodeURIComponent` |
 | Jeton OIDC en `localStorage` | `Auth.service.ts` | Risque accepté en l'absence de sink XSS |
@@ -453,18 +447,60 @@ Aucun `window.open`, `<a>`, `href`, `target`, `postMessage`, `document.write`, `
 - Tests : 981 verts (95 fichiers, +30). Lint : 0 erreur. Build : OK. `tsc --noEmit` : 0 erreur dans `src/`.
 - Mutations de vérification : retrait de l'encodage et `defaultValue` à la place de `value` détectés. Le replacer-fonction est un mutant équivalent (`encodeURIComponent` encode déjà `$`).
 
-## Dette restante / prochain lot (après lot 5) — voir aussi « Statut global » en tête de plan
+## Lot 6 (2026-10-27) — T1, T6, T20 et dette mineure, branche `claude/react-ui-architecture-lot6`
 
-| Tâche | Reste à faire | Prérequis / blocage |
+Périmètre : solder le « Reste à faire » du plan (décision 👤 2026-10-27) : T1, T6, T20, `getLabelISOFromDate`, spinner `AnalysesFiltrePeriode`, `itemIcon`.
+
+### Journal des gates lot 6
+
+| Gate | Date | Décision | Détail |
+|---|---|---|---|
+| #1 | 2026-10-27 | GO 👤 (« On lance dans le prochain lot ») | Périmètre lot 6 validé |
+| #2 | 2026-10-27 | GO 👤 | DEVon : `useBudgetPageData`, migration des consumers, `Date.utils`, spinner, `Banque.utils` |
+| #3 | 2026-10-27 | GO 👤 | QALvin : 1121 tests verts (109 fichiers), couverture 97,67 % stmt |
+| #4 | 2026-10-27 | ⏳ En attente 👤 | DOCly : plan, index, CLAUDE.md, ARCHITECTURE.md, wiki (ConceptionIHM, Historique) mis à jour |
+
+### Résultats (lot 6)
+
+#### T1 — `useBudgetPageData`
+- Nouveau hook `Components/budgets/shared/useBudgetPageData.ts`, paramétré par `groupOperations` et `prepareBudget?` (références stables : fonction de module ou `useCallback`). Il porte le commun de `Budget.component.tsx` (166 l.) et `Recurrents.component.tsx` (102 l.) : fetch du budget (`useFetch`), reset du contexte sur `[selectedCompte, selectedDate]`, injection du budget chargé, `handleBudgetUpdate`, regroupement `useMemo`, `userDroits`.
+- `BudgetPage` / `RecurrentsPage` restent des wrappers (mêmes exports, props, ids DOM). Le groupe d'actions reste dans chaque wrapper (droits et callback de création différents).
+- **Bug latent corrigé** (trouvé par QALvin) : `useFetch` conserve l'ancien `data` pendant un rechargement ; un `prepareBudget` à référence instable réinjectait un budget périmé après le reset. Le budget chargé est désormais injecté **une seule fois par budget reçu** (ref sur le dernier budget injecté).
+
+#### T6 — consumers du contexte
+
+| Consumer | Décision |
+|---|---|
+| `OperationDetailPage`, `OperationDetailActionsSection`, `useOperationEditForm` | Migrés vers `useCurrentBudget()` |
+| `OperationDetailCategories` | Lit la prop `listeCategories` (plus de contexte) |
+| `Budget` | `useBudgetSelection()` + `useCurrentBudget()` |
+| `Recurrents` | Ne lit plus le contexte (via `useBudgetPageData`) |
+| `OperationDetailLibelle`, `OperationDetailCategoriesSection`, `OperationRecurrenteDetailPage` | **Restent sur l'agrégat** `useBudgetContext()` par choix : lisent les deux moitiés, migrer n'apporterait rien |
+
+#### Dette mineure
+- **`getLabelISOFromDate`** (`Utils/Date.utils.ts`) : `yyyy-mm-dd` en composantes **locales** (avant : `toISOString()` UTC → une date API `2026-03-01T00:00:00` s'affichait la veille en France). Risque connu et accepté : la saisie utilisateur est stockée en minuit UTC (`new Date(Date.parse("yyyy-mm-dd"))`, `OperationDetailPage.controller.ts`) et envoyée telle quelle à l'API ; ne PAS passer en minuit local (décalerait la date envoyée). L'affichage serait décalé d'un jour seulement dans un fuseau à l'ouest de l'UTC (hors usage).
+- **Spinner `AnalysesFiltrePeriode`** : masqué sans compte sélectionné.
+- **`itemIcon`** : nouveau `Utils/Banque.utils.ts` `getBanqueIconSrc` (nom de fichier `/^[\w.-]+$/` sans `..`, sinon `/img/icon.webp`), utilisé aux 5 endroits (`AnalysesTitre`, `OperationDetailIntercompte`, `CompteTitre`, `CompteItem`, `OperationItem.renderer`) : le point « `itemIcon` non assaini » de l'audit URL est corrigé.
+
+#### T20 — tests
+- ~150 tests ajoutés : `Main.tsx` (lazy / Suspense), renderers de statut, branche `isMobile`, filtres d'analyses, `DateRange`, `ExpandableDetailSection`, harnais `hooks/budgetContexts.testutils.tsx`, etc.
+- `vite.config.ts` : `testTimeout: 15000` (les tests d'intégration du formulaire d'opération dépassaient parfois 5 s sous charge / couverture).
+
+#### Preuves
+- Tests : 1121 verts (109 fichiers), 0 `expected fail`. Couverture : 97,67 % stmt / 88,69 % branches / 98,18 % lignes.
+- Mutations de vérification, toutes détectées : suppression du reset ; `..` accepté dans l'icône ; retour à `toISOString` (tests à fuseau forcé) ; spinner sans condition.
+- Suite complète : environ 4,5 min sur la machine de dev (`OperationDetailPage.integration` ~1 min à elle seule).
+
+## Dette restante (après lot 6) — voir aussi « Statut global » en tête de plan
+
+| Élément | Reste à faire | Prérequis / blocage |
 |---|---|---|
-| Sécurité (faible) | `itemIcon` (API) concaténé dans `<img src>` non assaini (5 endroits) | Mineur |
-| Dette | `getLabelISOFromDate` en UTC (`toISOString`) : décalage possible d'un jour tôt le matin | À corriger |
-| T20 (reste) | Couverture de composants hors lot : `OperationDetailCategories` (l.83), `OperationDetailStatus.renderer` (67 %) | Au fil des refactos |
-| T6 (reste) | Migrer vers les hooks ciblés les consumers restés sur l'agrégat (`Budget`, `Recurrents`, `OperationDetailPage`, `OperationDetailCategories`, `OperationDetailLibelle`, `OperationRecurrenteDetailPage`, `OperationDetailActionsSection`, `OperationDetailCategoriesSection`, `useOperationEditForm`) | Certains lisent des champs des deux moitiés |
-| T1 (reste) | Fusion complète des pages Budget / Recurrents (seul le squelette `BudgetPageShell` est factorisé) | Risque moyen |
-| Ajustement | Spinner `AnalysesFiltrePeriode` sans compte sélectionné | Mineur |
+| Couverture < 85 % | `ClientHTTP.service.ts` 82,9 % (lignes de debug), `Analyses.controller.ts` 83 %, `OperationRecurrenteDetailPage.controller.ts` 83,3 % | Hors périmètre lot 6 |
+| Fuseau UTC- | `getLabelISOFromDate` : affichage décalé d'un jour à l'ouest de l'UTC | Risque accepté (hors usage) ; à revoir si la saisie passe en minuit local |
+| Durée de la suite | ~4,5 min en local | À optimiser si gênant |
+| Wrappers de présentation | Composants sans test dédié, couverts par d'autres tests | Non traités |
 
-Historique des lignes soldées : T12 (non retenu), `logAuth` (conservé), vérification navigateur (OK 👤) — 2026-10-27 ; T2 (lot 3), sécurité `new Function` (lot 4a), T16 (lot 4b), déplacement du hook, date contrôlée, audit URL, suppression de `Components.props.ts` (lot 5).
+Historique des lignes soldées : T12 (non retenu), `logAuth` (conservé), vérification navigateur (OK 👤) — 2026-10-27 ; T2 (lot 3), sécurité `new Function` (lot 4a), T16 (lot 4b), déplacement du hook, date contrôlée, audit URL, suppression de `Components.props.ts` (lot 5) ; T1, T6, T20, `getLabelISOFromDate`, spinner, `itemIcon` (lot 6).
 
 ## Fichiers critiques
 - `src/main/Components/budgets/budget/Budget.component.tsx`

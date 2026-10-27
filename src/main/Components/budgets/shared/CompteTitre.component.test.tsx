@@ -31,6 +31,12 @@ describe('CompteTitre', () => {
         expect(screen.getByText(/2026/)).toBeInTheDocument();
     });
 
+    test.each(['../x', 'a/b', 'https://evil.example/x.png', ''])('nom d icône non sûr "%s" : icône par défaut', (itemIcon) => {
+        renderTitre({ ...compte, itemIcon });
+
+        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/icon.webp');
+    });
+
     test('ne rend rien sans compte sélectionné', () => {
         renderTitre(null);
 

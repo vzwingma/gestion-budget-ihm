@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 
 import { OperationDetailPage } from './OperationDetailPage.component.tsx';
-import { BudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
+import { BudgetContextsWrapper } from '../../../../../hooks/budgetContexts.testutils.tsx';
 import CategorieOperationModel from '../../../../../Models/budgets/CategorieOperation.model.ts';
 import { createNewOperation } from '../../../../../Models/budgets/Operation.model.ts';
 import BudgetMensuelModel from '../../../../../Models/budgets/BudgetMensuel.model.ts';
@@ -155,13 +155,13 @@ function renderPage(listeCategories: CategorieOperationModel[]) {
     };
 
     render(
-        <BudgetContext.Provider value={contextValue}>
+        <BudgetContextsWrapper value={contextValue}>
             <OperationDetailPage
                 listeCategories={listeCategories}
                 listeLibellesOperations={[]}
                 onOperationChange={vi.fn()}
             />
-        </BudgetContext.Provider>
+        </BudgetContextsWrapper>
     );
 
     return { operation, budget };

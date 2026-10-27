@@ -12,7 +12,7 @@ import {
 import {ErrorsFormProps, OPERATION_EDITION_FORM} from "../OperationDetailPage.constants.ts"
 import {sortLibellesSsCategories} from '../../../../../../Utils/OperationData.utils.ts'
 import CategorieOperationModel from '../../../../../../Models/budgets/CategorieOperation.model.ts'
-import {useBudgetContext} from '../../../../../../Models/contextProvider/BudgetContextProvider.tsx'
+import {useCurrentBudget} from '../../../../../../hooks/useBudgetContext.ts'
 import OperationEditionModel from '../../../../../../Models/budgets/OperationEdition.model.ts'
 import OperationModel from '../../../../../../Models/budgets/Operation.model.ts'
 import SsCategorieOperationModel from '../../../../../../Models/budgets/SsCategorieOperation.model.ts'
@@ -34,13 +34,14 @@ export interface OperationDetailCategoriesProps {
  * @param {OperationDetailCategoriesProps} props - Les propriétés du composant.
  * @returns {JSX.Element} Élément JSX représentant le composant.
  */
-export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({  formCatgoriesInEdition,
+export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps> = ({  listeCategories,
+                                                                                        formCatgoriesInEdition,
                                                                                         ssCategorieInEdition,
                                                                                         errorsCategories,
                                                                                         fillOperationForm
                                                                                 }: OperationDetailCategoriesProps): JSX.Element => {
 
-    const { currentOperation, categories } = useBudgetContext();
+    const { currentOperation } = useCurrentBudget();
     const operation = currentOperation;
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
@@ -83,7 +84,7 @@ export const OperationDetailCategories: React.FC<OperationDetailCategoriesProps>
                     }}
                     sx={{ width: "100%" }}
                     value={ssCategorie ?? { id: null, libelle: "" }}
-                    options={getListeAllSsCategoriesFlatten(categories)}
+                    options={getListeAllSsCategoriesFlatten(listeCategories)}
                     groupBy={(option: SsCategorieOperationModel) => option?.categorieParente?.libelle ?? ""}
                     getOptionLabel={(option: SsCategorieOperationModel) => option?.libelle ?? ""}
                     isOptionEqualToValue={(option : any, value : any) => {
