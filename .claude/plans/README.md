@@ -11,6 +11,10 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
 | 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ **Clos (2026-10-27)** — lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées), 5 (finitions) et 6 (`useBudgetPageData`, T6, T20) livrés et mergés ; T12 non retenu (décision 👤, ADR 002 Rejetée) ; dette mineure résiduelle dans « Dette restante » du plan | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
+| 008 | Gestion des erreurs HTTP et de la session (401/403 → déconnexion unique, `HttpError`, messages centralisés) | 🔵 **En cours** — Gate #1 GO 2026-11-04 (Phase 1 DEVon) | [`008_gestion_401_auth_oidc_backend.plan.md`](./008_gestion_401_auth_oidc_backend.plan.md) |
+| 009 | Impacts IHM de la Phase 1 backend (codes métier, `messagesParStatut`) | ⏳ **Planifié** — Gate #0 GO ; démarre après le merge du 008 | [`009_impacts_ihm_phase1_backend.plan.md`](./009_impacts_ihm_phase1_backend.plan.md) |
+
+ADR associé (plan 008) : [`docs/adr/008-gestion-erreurs-http-et-session.md`](../../docs/adr/008-gestion-erreurs-http-et-session.md) (Acceptée le 2026-11-04)
 
 ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Rejetée le 2026-10-27 — item T12 non retenu)
 
