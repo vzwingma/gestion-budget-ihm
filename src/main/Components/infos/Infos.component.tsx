@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Box,
     Table,
@@ -16,6 +16,8 @@ import MicroServicesInfos from "./MicroServicesInfos.component.tsx";
 import MsInfoModel from "../../Models/infos/MsInfo.model.ts";
 import { useFetch } from "../../hooks/useFetch.ts";
 import { CenterComponent } from "../shared/CenterComponent.tsx";
+import { toast, ToastContainer } from "react-toastify";
+import { consommerSessionExpiree } from "../../Services/Auth.service.ts";
 
 
 /**
@@ -30,6 +32,13 @@ export const Infos: React.FC = () => {
     const infos: MsInfoModel[] = infosChargees ?? [];
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+
+    /** Retour d'une déconnexion sur 401 / 403 (ADR 008) : toast « Session expirée », drapeau effacé à la lecture **/
+    useEffect(() => {
+        if (consommerSessionExpiree()) {
+            toast.warn("Session expirée, reconnectez-vous", {toastId: "session-expiree", autoClose: 5000});
+        }
+    }, []);
 
 
     /** Phase de Render à partir de la liste de statuts  **/
@@ -90,6 +99,7 @@ export const Infos: React.FC = () => {
             </Table>
             
         </CenterComponent>
+        <ToastContainer position="bottom-left" autoClose={1000} pauseOnFocusLoss draggable pauseOnHover />
         </Box>
     )
 }

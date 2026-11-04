@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
-import { putTokenInStorage, removeTokenFromStorage } from "../Services/Auth.service.ts";
+import { marquerSessionExpiree, putTokenInStorage, removeTokenFromStorage } from "../Services/Auth.service.ts";
+import { setGestionnaireDeconnexion } from "../Services/ClientHTTP.service.ts";
 
 /**
  * Synchronise le token OIDC (id_token) dans le localStorage, indépendamment du cycle de vie
@@ -35,6 +36,30 @@ export function useAuthTokenSync(): void {
     useEffect(() => {
         return auth.events.addUserUnloaded(() => {
             removeTokenFromStorage();
+        });
+    }, [auth.events]);
+
+    const removeUser = auth.removeUser;
+    useEffect(() => {
+        // Gestionnaire de déconnexion appelé (une seule fois) par ClientHTTP sur un 401 / 403 :
+        // drapeau « session expirée » (toast au retour sur l'accueil), suppression de l'utilisateur OIDC
+        // (évite une boucle de rechargement), puis retour à l'accueil.
+        setGestionnaireDeconnexion(() => {
+            marquerSessionExpiree();
+            removeTokenFromStorage();
+            removeUser()
+                .catch((e) => console.warn("Erreur lors de la suppression de l'utilisateur OIDC", e))
+                .finally(() => {
+                    globalThis.location.href = "/";
+                });
+        });
+        return () => setGestionnaireDeconnexion();
+    }, [removeUser]);
+
+    useEffect(() => {
+        // Mesure du renouvellement silencieux (ADR 008 : A2 reportée)
+        return auth.events.addSilentRenewError((error) => {
+            console.warn("Échec du renouvellement silencieux de la session", error);
         });
     }, [auth.events]);
 }
