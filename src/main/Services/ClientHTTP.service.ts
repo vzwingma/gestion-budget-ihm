@@ -3,17 +3,41 @@ import {v7} from 'uuid';
 import {API_GW_ENUM} from '../Utils/AppTechEnums.constants.ts';
 import {debug, isDebugEnabled} from '../Utils/Debug.utils.ts';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts'
+import {HttpError} from './HttpError.ts';
 
 let alreadyTraced: boolean = false;
+/** Drapeau anti-réentrance : la déconnexion n'est déclenchée qu'une fois, même avec plusieurs appels en parallèle **/
+let deconnexionEnCours: boolean = false;
 
 
 /**
- * Log Out de la session si les tokens sont expirés
+ * Log Out de repli (si aucun gestionnaire n'est enregistré) : suppression du token et retour à l'accueil
  */
 function logOut() {
 
     removeTokenFromStorage();
     globalThis.location.href = "/";
+}
+
+let gestionnaireDeconnexion: () => void = logOut;
+
+/**
+ * Enregistre le gestionnaire appelé sur un 401 / 403 (enregistré par `useAuthTokenSync`).
+ * Sans argument, retour au comportement de repli (`logOut`). Réarme la garde de déconnexion unique.
+ * @param gestionnaire fonction de déconnexion
+ */
+export function setGestionnaireDeconnexion(gestionnaire?: () => void): void {
+    gestionnaireDeconnexion = gestionnaire ?? logOut;
+    deconnexionEnCours = false;
+}
+
+/** Déclenche la déconnexion une seule fois **/
+function declencherDeconnexion(): void {
+    if (deconnexionEnCours) {
+        return;
+    }
+    deconnexionEnCours = true;
+    gestionnaireDeconnexion();
 }
 
 /**
@@ -84,33 +108,46 @@ export async function call(httpMethod: string, uri: string, path: string, params
 
     logAuth();
 
-    return await fetch(fullURL,
-        {
-            method: httpMethod.toString(),
-            mode: 'cors',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'X-Api-Key': API_GW_ENUM.API_KEY,
-                'Authorization': 'Bearer ' + getOAuthToken()
-            }),
-            body: jsonBody
-        })
-        .then(res => {
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+        'X-Api-Key': API_GW_ENUM.API_KEY
+    });
+    const token = getOAuthToken();
+    if (token) {
+        headers.set('Authorization', 'Bearer ' + token);
+    }
 
-            if (res.status >= 200 && res.status < 300) {
-                return res.json();
-            } else if (res.status === 403) {
-                console.warn("[WS-"+uuid+"] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
-                logOut();
-            } else {
-                console.error("[WS-"+uuid+"] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
-                throw new Error(res.statusText);
-            }
-        })
-        .catch(e => {
-            console.error("Erreur lors de l'appel HTTP [" + fullURL + "]", e)
-            // Conserve l'erreur d'origine (stack, type) via `cause`, tout en gardant le message
-            // existant (préfixe "Error: " issu de la coercition historique en chaîne).
-            throw new Error(String(e), { cause: e });
-        })
+    let res: Response;
+    try {
+        res = await fetch(fullURL,
+            {
+                method: httpMethod.toString(),
+                mode: 'cors',
+                headers: headers,
+                body: jsonBody
+            });
+    } catch (e) {
+        console.error("Erreur lors de l'appel HTTP [" + fullURL + "]", e);
+        throw new HttpError(undefined, e instanceof Error ? e.message : String(e), undefined, {cause: e});
+    }
+
+    if (res.status >= 200 && res.status < 300) {
+        return res.json();
+    }
+
+    const trace = "[WS-" + uuid + "] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]";
+    if (res.status === 401 || res.status === 403) {
+        console.warn(trace);
+        declencherDeconnexion();
+        throw new HttpError(res.status, res.statusText);
+    }
+
+    console.error(trace);
+    let corps: string | undefined;
+    try {
+        corps = await res.text();
+    } catch {
+        corps = undefined;
+    }
+    throw new HttpError(res.status, res.statusText, corps);
 }

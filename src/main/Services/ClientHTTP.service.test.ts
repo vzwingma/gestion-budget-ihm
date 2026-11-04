@@ -1,6 +1,7 @@
 import type { Mock } from 'vitest';
 import {v7} from 'uuid';
-import {call} from './ClientHTTP.service.ts';
+import {call, setGestionnaireDeconnexion} from './ClientHTTP.service.ts';
+import {HttpError} from './HttpError.ts';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts';
 
 vi.mock('uuid', () => ({
@@ -37,6 +38,7 @@ describe('ClientHTTP.service', () => {
         (v7 as Mock).mockReturnValue('12345678-abcd-4ef0-9012-3456789abcde');
         (getOAuthToken as Mock).mockReturnValue('token-test');
         globalThis.fetch = vi.fn();
+        setGestionnaireDeconnexion();
     });
 
     test('retourne le JSON en cas de succès 2xx', async () => {
@@ -74,7 +76,7 @@ describe('ClientHTTP.service', () => {
 
         await expect(call('GET', 'https://api.exemple.fr', '/resource'))
             .rejects
-            .toThrow('Error: Erreur serveur');
+            .toMatchObject({name: 'HttpError', status: 500, statusText: 'Erreur serveur'});
 
         expect(removeTokenFromStorage).not.toHaveBeenCalled();
     });
@@ -85,7 +87,7 @@ describe('ClientHTTP.service', () => {
             statusText: 'Forbidden'
         });
 
-        await expect(call('GET', 'https://api.exemple.fr', '/resource')).resolves.toBeUndefined();
+        await expect(call('GET', 'https://api.exemple.fr', '/resource')).rejects.toBeInstanceOf(HttpError);
 
         expect(removeTokenFromStorage).toHaveBeenCalledTimes(1);
         expect(globalThis.location.href).toBe('/');
@@ -98,8 +100,8 @@ describe('ClientHTTP.service', () => {
 
         const error = await call('GET', 'https://api.exemple.fr', '/resource').catch(e => e);
 
-        expect(error).toBeInstanceOf(Error);
-        expect(error.message).toBe('TypeError: Failed to fetch');
+        expect(error).toBeInstanceOf(HttpError);
+        expect(error.status).toBeUndefined();
         expect(error.cause).toBe(original);
         expect(spy).toHaveBeenCalled();
         spy.mockRestore();
