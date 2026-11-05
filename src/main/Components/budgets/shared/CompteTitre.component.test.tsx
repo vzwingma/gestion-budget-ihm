@@ -10,7 +10,7 @@ import { BudgetSelectionContext } from '../../../hooks/useBudgetContext.ts';
  * il suffit de fournir BudgetSelectionContext (pas de CurrentBudgetContext).
  */
 
-const compte: any = { id: 'c1', libelle: 'Compte courant', itemIcon: 'banque.png' };
+const compte: any = { id: 'c1', libelle: 'Compte courant', itemIcon: 'banque' };
 
 function renderTitre(selectedCompte: any, selectedDate = new Date(2026, 0, 1)) {
     const value: any = { selectedCompte, selectedDate, comptes: [], categories: [] };
@@ -27,7 +27,7 @@ describe('CompteTitre', () => {
         renderTitre(compte);
 
         expect(screen.getByText('Compte courant')).toBeInTheDocument();
-        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.png');
+        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.webp');
         expect(screen.getByText(/2026/)).toBeInTheDocument();
     });
 

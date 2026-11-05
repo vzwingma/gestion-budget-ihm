@@ -8,6 +8,10 @@ import { GraphAnalyseTimelineModel } from "../../../Models/analyses/syntheses/Gr
 import { OPERATION_ETATS_ENUM } from "../../../Utils/AppBusinessEnums.constants.ts";
 import BudgetMensuelAnalyseConsolideModel from "../../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
 import { debug } from "../../../Utils/Debug.utils.ts";
+import { Soldes } from "../../../Models/budgets/BudgetMensuel.model.ts";
+
+/** Soldes d'un mois, avec le solde de fin de mois éventuellement fourni par l'API */
+type SoldesMensuels = Soldes & { soldeAtFinMois?: number };
 
 /**
  * Extrait le mois et l'année d'une date d'opération
@@ -109,7 +113,7 @@ function prepareMonthlyViewData(budgetConsolide: BudgetMensuelAnalyseConsolideMo
 
     // Aplatir les données pour Recharts
     const flattenData = (data: GraphAnalyseTimelineItemModel): GraphAnalyseTimelineItemModel => {
-        const flattened: any = {
+        const flattened: Record<string, unknown> = {
             id: data.id,
             name: data.name
         };
@@ -119,7 +123,7 @@ function prepareMonthlyViewData(budgetConsolide: BudgetMensuelAnalyseConsolideMo
             flattened[`abs_${categoryLabel}`] = data.absCategories[categoryLabel] || 0;
         });
 
-        return flattened;
+        return flattened as GraphAnalyseTimelineItemModel;
     };
 
     const flattenedData = [flattenData(currentDateData), flattenData(endOfMonthData)];
@@ -131,7 +135,7 @@ function prepareMonthlyViewData(budgetConsolide: BudgetMensuelAnalyseConsolideMo
         const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
         
         if (budgetConsolide.soldesParMois[monthKey]) {
-            const soldes = budgetConsolide.soldesParMois[monthKey] as any;
+            const soldes: SoldesMensuels = budgetConsolide.soldesParMois[monthKey];
             // currentDateData: solde actuel (soldeAtMaintenant)
             flattenedData[0].solde = soldes.soldeAtMaintenant ?? 0;
             // endOfMonthData: solde de fin de mois (soldeAtFinMoisCourant)
@@ -188,20 +192,19 @@ function preparePeriodViewData(budgetConsolide: BudgetMensuelAnalyseConsolideMod
     const flatData = Object.values(timelineData.dataGraphTimelineItem)
         .sort((a, b) => a.name.localeCompare(b.name))
         .map(monthData => {
-            const flatEntry: any = {
-                ...monthData,
+            const { categories, absCategories, ...rest } = monthData;
+            const flatEntry: Record<string, unknown> = {
+                ...rest,
                 name: monthData.name
             };
 
             // Ajouter toutes les catégories pour chaque mois (avec 0 si pas de données)
             categoriesMap.forEach((_value, categoryLabel) => {
-                flatEntry[categoryLabel] = monthData.categories[categoryLabel] || 0;
-                flatEntry[`abs_${categoryLabel}`] = monthData.absCategories[categoryLabel] || 0;
+                flatEntry[categoryLabel] = categories[categoryLabel] || 0;
+                flatEntry[`abs_${categoryLabel}`] = absCategories[categoryLabel] || 0;
             });
 
-            delete flatEntry.categories;
-            delete flatEntry.absCategories;
-            return flatEntry;
+            return flatEntry as GraphAnalyseTimelineItemModel;
         });
 
 
@@ -214,7 +217,7 @@ function preparePeriodViewData(budgetConsolide: BudgetMensuelAnalyseConsolideMod
         // Extraire la clé YYYY-MM depuis l'id (format: evolution_YYYY_M)
         const monthKey = extractMonthKeyFromTimelineId(dataItem.id);
         if (monthKey && soldesParMois[monthKey]) {
-            const soldes = soldesParMois[monthKey] as any;
+            const soldes: SoldesMensuels = soldesParMois[monthKey];
             const soldeAtFinMois = soldes.soldeAtFinMois ?? soldes.soldeAtFinMoisCourant ?? 0;
             // Premier mois: soldeAtFinMoisPrecedent, autres mois: soldeAtFinMois
             dataItem.solde = index === 0 ? (soldes.soldeAtFinMoisPrecedent ?? 0) : soldeAtFinMois;

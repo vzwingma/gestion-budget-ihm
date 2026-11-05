@@ -82,12 +82,12 @@ describe('OperationDetailIntercompte - icônes des comptes', () => {
 
     test('options : icône de banque sûre utilisée, nom non sûr remplacé par l icône par défaut', async () => {
         const [courant, livret] = buildComptes();
-        const comptes = [{ ...courant, itemIcon: 'banque.png' }, { ...livret, itemIcon: '../../x.png' }] as any[];
+        const comptes = [{ ...courant, itemIcon: 'banque' }, { ...livret, itemIcon: '../../x.png' }] as any[];
         render(<OperationDetailIntercompte intercompte="compte-1" listeAutresComptes={comptes} errorIntercompte={null} fillOperationForm={vi.fn()} />);
 
         await userEvent.click(screen.getByRole('combobox'));
 
-        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.png');
+        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.webp');
         expect(screen.getByRole('img', { name: 'Livret A' })).toHaveAttribute('src', '/img/icon.webp');
     });
 });

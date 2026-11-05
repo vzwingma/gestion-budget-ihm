@@ -5,10 +5,10 @@ const DEFAULT_ICON = '/img/icon.webp';
 
 describe('getBanqueIconSrc', () => {
 
-    test.each(['icone.png', 'caisse-epargne.webp', 'banque_1.svg', 'a.b.c', 'BNP'])(
+    test.each(['icone', 'caisse-epargne', 'banque_1', 'a.b', 'BNP'])(
         'nom de fichier sûr "%s" : chemin dans /img/banques/',
         (nom) => {
-            expect(getBanqueIconSrc(nom)).toBe('/img/banques/' + nom);
+            expect(getBanqueIconSrc(nom)).toBe('/img/banques/' + nom + '.webp');
         });
 
     test.each([

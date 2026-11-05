@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 import AnalysesTitre, { formatPeriode } from './AnalysesTitre.component.tsx';
 import { getLabelMonthFRFromDate } from '../../Utils/Date.utils.ts';
 
-const compte: any = { id: 'c1', libelle: 'Compte courant', itemIcon: 'banque.png' };
+const compte: any = { id: 'c1', libelle: 'Compte courant', itemIcon: 'banque' };
 const moisUnique: any = { vuePeriode: false, periodeDebut: new Date(2026, 2, 1), periodeFin: new Date(2026, 2, 1) };
 const plageMois: any = { vuePeriode: true, periodeDebut: new Date(2026, 0, 1), periodeFin: new Date(2026, 4, 1) };
 
@@ -15,7 +15,7 @@ describe('AnalysesTitre', () => {
         render(<AnalysesTitre currentCompte={compte} currentPeriode={moisUnique} />);
 
         expect(screen.getByText('Compte courant')).toBeInTheDocument();
-        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.png');
+        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.webp');
     });
 
     test.each(['../x', 'a/b', '%2e%2e'])('nom d icône non sûr "%s" : icône par défaut', (itemIcon) => {
