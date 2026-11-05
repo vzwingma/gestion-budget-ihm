@@ -1,4 +1,6 @@
 import {useAnalyseTreeMapData} from './AnalyseTreeMap.controller.ts';
+import AnalyseCategoriesModel from '../../../Models/analyses/syntheses/AnalyseCategories.model.ts';
+import CategorieOperationModel from '../../../Models/budgets/CategorieOperation.model.ts';
 
 describe('AnalyseTreeMap.controller', () => {
 
@@ -24,9 +26,9 @@ describe('AnalyseTreeMap.controller', () => {
                 nbTransactions: 2,
                 resumesSsCategories: {}
             }
-        ] as any[];
+        ] as unknown as AnalyseCategoriesModel[];
 
-        const result = useAnalyseTreeMapData(data as any, null);
+        const result = useAnalyseTreeMapData(data, null);
 
         expect(result.treemapData).toHaveLength(2);
         expect(result.treemapData[0].categoryId).toBe('c2');
@@ -46,9 +48,9 @@ describe('AnalyseTreeMap.controller', () => {
                     b: {ssCategorie: {libelle: 'Alpha'}, pourcentage: 90, total: 9, nbTransactions: 2}
                 }
             }
-        ] as any[];
+        ] as unknown as AnalyseCategoriesModel[];
 
-        const result = useAnalyseTreeMapData(data as any, [{id: 'c1'}] as any);
+        const result = useAnalyseTreeMapData(data, [{id: 'c1'}] as unknown as CategorieOperationModel[]);
 
         expect(result.treemapData).toHaveLength(2);
         expect(result.treemapData[0].name).toBe('Alpha');

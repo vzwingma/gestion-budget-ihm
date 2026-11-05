@@ -3,7 +3,7 @@ const BANQUES_ICON_DIR = "/img/banques/";
 const DEFAULT_ICON_SRC = "/img/icon.webp";
 /** Nom de fichier simple : lettres, chiffres, `_`, `-`, `.` (ni `/`, ni `\`) */
 const SAFE_ICON_FILENAME = /^[\w.-]+$/;
-
+const ICON_EXT = ".webp";
 /**
  * Retourne la source d'une icône de banque, à partir du nom de fichier fourni par l'API.
  * Seul un nom de fichier sûr est accepté (pas de `/`, ni de `..`) ; sinon icône par défaut.
@@ -12,7 +12,7 @@ const SAFE_ICON_FILENAME = /^[\w.-]+$/;
  */
 export function getBanqueIconSrc(itemIcon: string | null | undefined): string {
     if (typeof itemIcon === "string" && SAFE_ICON_FILENAME.test(itemIcon) && !itemIcon.includes("..")) {
-        return BANQUES_ICON_DIR + itemIcon;
+        return BANQUES_ICON_DIR + itemIcon + ICON_EXT;
     }
     return DEFAULT_ICON_SRC;
 }

@@ -10,7 +10,7 @@ interface TreemapNode {
     nbTransactions?: number;
     categoryId?: string;
     children?: TreemapNode[];
-    [key: string]: any; // Index signature for recharts compatibility
+    [key: string]: unknown; // Index signature for recharts compatibility
 }
 
 

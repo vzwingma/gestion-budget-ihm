@@ -9,7 +9,7 @@ import { BUSINESS_ONGLETS } from '../../../Utils/AppBusinessEnums.constants.ts';
 // Contrôleur mocké : évite tout appel réseau, le solde est la valeur résolue de la promesse (useFetch)
 vi.mock('./CompteItem.controller.ts', () => ({ fetchSoldesBudget: vi.fn() }));
 
-const compte: any = { id: 'c1', libelle: 'Compte courant', itemIcon: 'banque.png', actif: true };
+const compte: any = { id: 'c1', libelle: 'Compte courant', itemIcon: 'banque', actif: true };
 const selectedDate = new Date(2026, 0, 1);
 
 function renderItem(props: any = {}) {
@@ -29,7 +29,7 @@ describe('CompteItem (React.memo)', () => {
 
     test('icône : fichier de banque sûr utilisé, nom non sûr remplacé par l icône par défaut', () => {
         const { unmount } = renderItem();
-        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.png');
+        expect(screen.getByRole('img', { name: 'Compte courant' })).toHaveAttribute('src', '/img/banques/banque.webp');
         unmount();
 
         renderItem({ compte: { ...compte, itemIcon: '../../secret.png' } });

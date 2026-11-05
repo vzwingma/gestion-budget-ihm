@@ -9,7 +9,7 @@ import {
 import {OPERATION_ETATS_ENUM} from '../AppBusinessEnums.constants.ts';
 import CompteBancaireModel from '../../Models/budgets/CompteBancaire.model.ts';
 
-const comptes = [{id: 'cpt1', libelle: 'Livret A', itemIcon: 'livret.png'}] as unknown as CompteBancaireModel[];
+const comptes = [{id: 'cpt1', libelle: 'Livret A', itemIcon: 'livret'}] as unknown as CompteBancaireModel[];
 
 describe('getOperationStateColor (non-régression : inchangée)', () => {
     test.each([
@@ -81,7 +81,7 @@ describe('Logo intercompte', () => {
     test('en liste : taille relative 1.4em, pas de bloc (inline)', () => {
         render(getOperationLibelle('[vers cpt1]Virement', comptes, false, false));
         const logo = screen.getByRole('img', {name: 'Livret A'});
-        expect(logo).toHaveAttribute('src', '/img/banques/livret.png');
+        expect(logo).toHaveAttribute('src', '/img/banques/livret.webp');
         expect(logo.style.width).toBe('1.4em');
         expect(logo.style.height).toBe('1.4em');
         expect(logo.style.display).toBe('inline');
