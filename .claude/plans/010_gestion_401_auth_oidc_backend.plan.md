@@ -131,6 +131,7 @@ Gate #1 → T1.1 → (T1.2 ∥ T1.3) → Gate #2 → T1.4 → Gate #3 → T1.5 �
 | #2 | 2026-11-15 | Validation du code (Phase 1 DEVon) | 🔧 AJUSTER | Points 1 à 5 : déconnexion seulement si la requête portait un jeton, pas de toast Analyses sur 401/403, garde non réarmée, repli sans gestionnaire aligné, JSON invalide enveloppé dans `HttpError`. 403 conservé (déconnexion). Renumérotation 008/009 → 010/011. Libellés 500/réseau validés ; toast dans Infos validé |
 | #2 (2e passage) | 2026-11-15 | Validation du code (correctifs DEVon) | 🔧 AJUSTER | MainPage attend l'auth, règle 204 retirée, comparaison du jeton (course renouvellement), commentaire repli |
 | #2 (2e passage) | 2026-11-15 | Points 8 et 9 inclus (décision 👤 du 2026-11-15) | ℹ️ | Gate #2 2e passage : points 8 et 9 inclus (décision 👤 du 2026-11-15) |
+| — | 2026-11-15 | T1.4 (QALvin) : tests écrits sur branche `claude/ihm-010-t1-4-mods-042ad5` rebasée sur `feat/ihm-008-session-erreurs-http` | ℹ️ | Commits `cbd8e83`, `f3212e9`. 1171/1171 tests verts, couverture ≥ 89 % sur les fichiers du plan. Régression prouvée (garde anti-réentrance). Détail : [`010_reports/PHASE_1_TESTS_REPORT.md`](./010_reports/PHASE_1_TESTS_REPORT.md). Reste : scénarios manuels QUA, Gate #3 👤 |
 
 ## Dette
 
