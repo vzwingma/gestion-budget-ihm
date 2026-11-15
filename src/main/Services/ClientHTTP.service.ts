@@ -15,8 +15,9 @@ let deconnexionEnCours: boolean = false;
 
 /**
  * Log Out de repli (si aucun gestionnaire n'est enregistré) : drapeau « session expirée », suppression du token
- * et retour à l'accueil. `removeUser` (OIDC) n'est pas accessible hors React : l'utilisateur OIDC est nettoyé
- * par `react-oidc-context` après rechargement ; sans token, les appels suivants ne déclenchent plus de déconnexion.
+ * et retour à l'accueil. `removeUser` (OIDC) n'est pas accessible hors React : l'utilisateur OIDC n'est PAS nettoyé
+ * par ce repli ; il est resynchronisé (et le token réécrit dans le storage) par `useAuthTokenSync` après le
+ * rechargement de la page.
  */
 function logOut() {
 
@@ -142,10 +143,6 @@ export async function call(httpMethod: string, uri: string, path: string, params
     }
 
     if (res.status >= 200 && res.status < 300) {
-        // 204 No Content (ex: DELETE d'une opération) : succès sans corps
-        if (res.status === 204) {
-            return undefined;
-        }
         try {
             return await res.json();
         } catch (e) {
@@ -157,8 +154,9 @@ export async function call(httpMethod: string, uri: string, path: string, params
     const trace = "[WS-" + uuid + "] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]";
     if (res.status === 401 || res.status === 403) {
         console.warn(trace);
-        // Déconnexion seulement si la requête portait un jeton (sinon : F5 avant synchro du jeton, visiteur anonyme)
-        if (token) {
+        // Déconnexion seulement si la requête portait un jeton (sinon : visiteur anonyme) et si ce jeton n'a pas été
+        // renouvelé entre l'envoi et la réponse (sinon : 401 dû à l'ancien jeton, la session est valide)
+        if (token && getOAuthToken() === token) {
             declencherDeconnexion();
         }
         throw new HttpError(res.status, res.statusText);
