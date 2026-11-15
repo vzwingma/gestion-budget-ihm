@@ -130,9 +130,10 @@ Gate #1 → T1.1 → (T1.2 ∥ T1.3) → Gate #2 → T1.4 → Gate #3 → T1.5 �
 | #1 | 2026-11-04 | Validation du plan + ADR 008 | ✅ GO | ADR IHM 008 → `Acceptée`. Branche `feat/ihm-008-session-erreurs-http` depuis `origin/master` |
 | #2 | 2026-11-15 | Validation du code (Phase 1 DEVon) | 🔧 AJUSTER | Points 1 à 5 : déconnexion seulement si la requête portait un jeton, pas de toast Analyses sur 401/403, garde non réarmée, repli sans gestionnaire aligné, JSON invalide enveloppé dans `HttpError`. 403 conservé (déconnexion). Renumérotation 008/009 → 010/011. Libellés 500/réseau validés ; toast dans Infos validé |
 | #2 (2e passage) | 2026-11-15 | Validation du code (correctifs DEVon) | 🔧 AJUSTER | MainPage attend l'auth, règle 204 retirée, comparaison du jeton (course renouvellement), commentaire repli |
+| #2 (2e passage) | 2026-11-15 | Points 8 et 9 inclus (décision 👤 du 2026-11-15) | ℹ️ | Gate #2 2e passage : points 8 et 9 inclus (décision 👤 du 2026-11-15) |
 
 ## Dette
 
 - (5) 403 avec jeton valide = boucle de reconnexion (décision 👤 : conserver).
-- (8) Bloc toast Analyses dupliqué ×4, sans les messages réseau / 500 / 503.
-- (9) Export `reinitialiserGardeDeconnexionPourTests` dans le module de production (alternative : `vi.resetModules` dans les tests).
+- (8) ✅ Traité (commit `refactor(analyses): toasts d'erreur via notifierErreur`) : 4 blocs remplacés par `notifierErreur` (exporté), messages réseau / 500 / 503 appliqués.
+- (9) ✅ Traité (commit `refactor(http): garde de déconnexion isolée par vi.resetModules dans les tests`) : export de test retiré du module de production.
