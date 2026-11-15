@@ -25,3 +25,11 @@ export class HttpError extends Error {
         return this.status === 401 || this.status === 403;
     }
 }
+
+/**
+ * Erreur d'authentification (401 / 403) : la déconnexion est déjà gérée, aucun toast d'erreur à afficher.
+ * @param e erreur interceptée
+ */
+export function isSessionInvalide(e: unknown): boolean {
+    return e instanceof HttpError && e.isSessionInvalide;
+}

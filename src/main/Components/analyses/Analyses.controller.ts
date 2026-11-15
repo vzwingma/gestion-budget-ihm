@@ -9,6 +9,7 @@ import OperationModel from "../../Models/budgets/Operation.model.ts";
 import { AnalysesFiltersModel } from "../../Models/analyses/AnalysesFilters.model.ts";
 import BudgetMensuelAnalyseConsolideModel from "../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
 import { debug } from "../../Utils/Debug.utils.ts";
+import { isSessionInvalide } from "../../Services/HttpError.ts";
 
 /**
  * Contrôleur des analyses
@@ -42,7 +43,9 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
                 .catch((e) => {
                     const libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte.libelle + " du " + (month.getMonth() + 1) + "/" + month.getFullYear();
                     console.error(libErreur, e);
-                    toast.error(libErreur, {autoClose: false, closeOnClick: true});
+                    if (!isSessionInvalide(e)) {
+                        toast.error(libErreur, {autoClose: false, closeOnClick: true});
+                    }
                     return { month, budget: null };
                 })
         )
@@ -78,7 +81,9 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
     .catch((e) => {
         const libErreur = "Erreur lors de la consolidation des budgets du compte " + selectedCompte.libelle;
         console.error(libErreur, e);
-        toast.error(libErreur, {autoClose: false, closeOnClick: true});
+        if (!isSessionInvalide(e)) {
+            toast.error(libErreur, {autoClose: false, closeOnClick: true});
+        }
     });
 
 }
