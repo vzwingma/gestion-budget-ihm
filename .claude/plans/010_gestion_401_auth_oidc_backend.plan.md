@@ -129,3 +129,10 @@ Gate #1 → T1.1 → (T1.2 ∥ T1.3) → Gate #2 → T1.4 → Gate #3 → T1.5 �
 | #0 | 2026-11-04 | Choix de solution (cadrage ARCos) | ✅ GO | A1 durcie (A2 reportée, mesure via `addSilentRenewError`) ; plus d'en-tête sans jeton (à vérifier en QUA) ; B1 `HttpError` + messages centralisés ; toast « Session expirée » ; deux plans (010 puis 011) ; ADR IHM 008 |
 | #1 | 2026-11-04 | Validation du plan + ADR 008 | ✅ GO | ADR IHM 008 → `Acceptée`. Branche `feat/ihm-008-session-erreurs-http` depuis `origin/master` |
 | #2 | 2026-11-15 | Validation du code (Phase 1 DEVon) | 🔧 AJUSTER | Points 1 à 5 : déconnexion seulement si la requête portait un jeton, pas de toast Analyses sur 401/403, garde non réarmée, repli sans gestionnaire aligné, JSON invalide enveloppé dans `HttpError`. 403 conservé (déconnexion). Renumérotation 008/009 → 010/011. Libellés 500/réseau validés ; toast dans Infos validé |
+| #2 (2e passage) | 2026-11-15 | Validation du code (correctifs DEVon) | 🔧 AJUSTER | MainPage attend l'auth, règle 204 retirée, comparaison du jeton (course renouvellement), commentaire repli |
+
+## Dette
+
+- (5) 403 avec jeton valide = boucle de reconnexion (décision 👤 : conserver).
+- (8) Bloc toast Analyses dupliqué ×4, sans les messages réseau / 500 / 503.
+- (9) Export `reinitialiserGardeDeconnexionPourTests` dans le module de production (alternative : `vi.resetModules` dans les tests).

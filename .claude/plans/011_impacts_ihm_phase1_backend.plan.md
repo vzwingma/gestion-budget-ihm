@@ -5,7 +5,7 @@
 **Porteur :** ⚫ MAINa
 **Note :** plan renuméroté depuis 009 le 2026-11-15 (collision avec 008_versioning_ihm_ci) ; socle : [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md)
 **Origine :** plan serverless `004_revue_architecture_backend`, tâche T1.5. Décisions 👤 aux Gates #1 et #2 de la Phase 1 (2026-10-26 / 2026-10-29) et au Gate #0 IHM (2026-11-04).
-**Branche (proposée) :** `feat/ihm-009-impacts-backend` depuis `origin/master`, **après le merge du plan 010**
+**Branche (proposée) :** `feat/ihm-011-impacts-backend` depuis `origin/master`, **après le merge du plan 010**
 **Ordre PROD :** la **Phase 1 (F3 + Analyses)** passe **avant** la PROD backend. La Phase 2 (erreurs) peut suivre.
 
 ---
