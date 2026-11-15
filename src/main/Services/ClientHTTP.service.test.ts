@@ -196,6 +196,22 @@ describe('ClientHTTP.service', () => {
         expect(removeTokenFromStorage).not.toHaveBeenCalled();
     });
 
+    test('réponse 204 (sans corps) : rejette avec une HttpError (règle 204 retirée)', async () => {
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        (globalThis.fetch as Mock).mockResolvedValue({
+            status: 204,
+            statusText: 'No Content',
+            json: vi.fn().mockRejectedValue(new SyntaxError('Unexpected end of JSON input'))
+        });
+
+        const error = await call('DELETE', 'https://api.exemple.fr', '/resource').catch(e => e);
+
+        expect(error).toBeInstanceOf(HttpError);
+        expect(error.status).toBe(204);
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
+    });
+
     test('réponse 2xx avec JSON invalide : rejette avec une HttpError', async () => {
         const original = new SyntaxError('Unexpected token');
         const spy = vi.spyOn(console, 'error').mockImplementation(() => {});

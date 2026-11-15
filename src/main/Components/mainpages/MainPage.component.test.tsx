@@ -16,7 +16,8 @@ const ctx = {
 vi.mock('../../hooks/useBudgetContext.ts', () => ({
     useBudgetSelection: () => ctx
 }));
-vi.mock('react-oidc-context', () => ({useAuth: () => ({user: {profile: {email: 'a@b.c'}}})}));
+const authMock = vi.hoisted(() => ({isAuthenticated: true as boolean | undefined}));
+vi.mock('react-oidc-context', () => ({useAuth: () => ({user: {profile: {email: 'a@b.c'}}, isAuthenticated: authMock.isAuthenticated})}));
 vi.mock('./MainPage.extservices.ts', () => ({fetchComptes: vi.fn()}));
 // Regroupement par propriétaire : un seul groupe "a" contenant tous les comptes du contexte (ou aucun)
 vi.mock('../../Utils/UserData.utils.ts', () => ({
@@ -46,6 +47,7 @@ describe('MainPage menu', () => {
         (fetchComptes as any).mockResolvedValue([]);
         state.comptes = [];
         ctx.selectedCompte = compteSel;
+        authMock.isAuthenticated = true;
     });
 
     test('fermeture par le bouton "Fermer le menu"', async () => {
@@ -125,5 +127,26 @@ describe('MainPage menu', () => {
         render(<MainPage fonction={BUSINESS_ONGLETS.RECURRENTS}/>);
 
         expect(screen.queryByText('page-recurrents')).not.toBeInTheDocument();
+    });
+
+    test('authentification non prête (F5) : fetchComptes non appelé (ADR 008 / plan 010)', async () => {
+        authMock.isAuthenticated = false;
+        render(<MainPage fonction={BUSINESS_ONGLETS.BUDGET}/>);
+
+        await new Promise((r) => setTimeout(r, 0));
+
+        expect(fetchComptes).not.toHaveBeenCalled();
+        expect(ctx.setListeComptes).not.toHaveBeenCalled();
+    });
+
+    test('authentification devient prête après montage : fetchComptes est alors appelé', async () => {
+        authMock.isAuthenticated = false;
+        const { rerender } = render(<MainPage fonction={BUSINESS_ONGLETS.BUDGET}/>);
+        expect(fetchComptes).not.toHaveBeenCalled();
+
+        authMock.isAuthenticated = true;
+        rerender(<MainPage fonction={BUSINESS_ONGLETS.BUDGET}/>);
+
+        await waitFor(() => expect(fetchComptes).toHaveBeenCalledTimes(1));
     });
 });

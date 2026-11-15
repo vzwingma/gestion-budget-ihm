@@ -72,4 +72,44 @@ describe('useFetch', () => {
         await act(async () => { resolvers[2]('frais'); });
         expect(result.current.data).toBe('frais');
     });
+
+    describe('option enabled', () => {
+
+        test('enabled=false : aucun chargement (ex: authentification non prête)', async () => {
+            const fetcher = vi.fn().mockResolvedValue('x');
+            const { result } = renderHook(() => useFetch(fetcher, [], { enabled: false }));
+
+            await new Promise((r) => setTimeout(r, 0));
+
+            expect(fetcher).not.toHaveBeenCalled();
+            expect(result.current.data).toBeUndefined();
+            expect(result.current.loading).toBe(true);
+        });
+
+        test('enabled passe de false à true : déclenche le chargement', async () => {
+            const fetcher = vi.fn().mockResolvedValue('x');
+            const { result, rerender } = renderHook(
+                ({ enabled }) => useFetch(fetcher, [], { enabled }),
+                { initialProps: { enabled: false } }
+            );
+            expect(fetcher).not.toHaveBeenCalled();
+
+            rerender({ enabled: true });
+
+            await waitFor(() => expect(result.current.data).toBe('x'));
+            expect(fetcher).toHaveBeenCalledTimes(1);
+        });
+
+        test('enabled=true : chargement normal', async () => {
+            const fetcher = vi.fn().mockResolvedValue('x');
+            const { result } = renderHook(() => useFetch(fetcher, [], { enabled: true }));
+            await waitFor(() => expect(result.current.data).toBe('x'));
+        });
+
+        test('sans option enabled : chargement normal (comportement par défaut)', async () => {
+            const fetcher = vi.fn().mockResolvedValue('x');
+            const { result } = renderHook(() => useFetch(fetcher, []));
+            await waitFor(() => expect(result.current.data).toBe('x'));
+        });
+    });
 });
