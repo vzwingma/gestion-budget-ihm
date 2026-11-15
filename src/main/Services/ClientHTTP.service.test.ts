@@ -1,8 +1,5 @@
 import type { Mock } from 'vitest';
-import {v7} from 'uuid';
-import {call, reinitialiserGardeDeconnexionPourTests, setGestionnaireDeconnexion} from './ClientHTTP.service.ts';
-import {HttpError} from './HttpError.ts';
-import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts';
+
 
 vi.mock('uuid', () => ({
     v7: vi.fn()
@@ -15,6 +12,13 @@ vi.mock('./Auth.service.ts', () => ({
 }));
 
 describe('ClientHTTP.service', () => {
+
+    // Modules réimportés à chaque test (vi.resetModules) : la garde de déconnexion unique du client repart de zéro
+    let v7: Mock;
+    let getOAuthToken: Mock;
+    let removeTokenFromStorage: Mock;
+    let call: typeof import('./ClientHTTP.service.ts').call;
+    let HttpError: typeof import('./HttpError.ts').HttpError;
 
     const originalLocation = globalThis.location;
 
@@ -34,13 +38,16 @@ describe('ClientHTTP.service', () => {
         });
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        vi.resetModules();
         vi.clearAllMocks();
-        (v7 as Mock).mockReturnValue('12345678-abcd-4ef0-9012-3456789abcde');
-        (getOAuthToken as Mock).mockReturnValue('token-test');
+        ({v7} = await import('uuid') as unknown as {v7: Mock});
+        ({getOAuthToken, removeTokenFromStorage} = await import('./Auth.service.ts') as unknown as {getOAuthToken: Mock, removeTokenFromStorage: Mock});
+        ({call} = await import('./ClientHTTP.service.ts'));
+        ({HttpError} = await import('./HttpError.ts'));
+        v7.mockReturnValue('12345678-abcd-4ef0-9012-3456789abcde');
+        getOAuthToken.mockReturnValue('token-test');
         globalThis.fetch = vi.fn();
-        setGestionnaireDeconnexion();
-        reinitialiserGardeDeconnexionPourTests();
     });
 
     test('retourne le JSON en cas de succès 2xx', async () => {

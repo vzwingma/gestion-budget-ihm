@@ -37,11 +37,6 @@ export function setGestionnaireDeconnexion(gestionnaire?: () => void): void {
     gestionnaireDeconnexion = gestionnaire ?? logOut;
 }
 
-/** Réarme la garde de déconnexion unique : réservé aux tests (en production, seul le rechargement de page la réarme) **/
-export function reinitialiserGardeDeconnexionPourTests(): void {
-    deconnexionEnCours = false;
-}
-
 /** Déclenche la déconnexion une seule fois **/
 function declencherDeconnexion(): void {
     if (deconnexionEnCours) {
