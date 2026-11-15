@@ -17,7 +17,7 @@ const MESSAGE_ERREUR_RESEAU = "Serveur injoignable, vérifiez votre connexion";
  * - 401 / 403 : aucun toast, la déconnexion et le toast « Session expirée » sont gérés ailleurs ;
  * - sinon, par priorité : message par statut de l'appelant, message technique (503, 500, réseau), message de l'appelant.
  */
-function notifierErreur(e: unknown, errorMessage: string, toastOptions?: ToastOptions, messagesParStatut?: MessagesParStatut): void {
+export function notifierErreur(e: unknown, errorMessage: string, toastOptions?: ToastOptions, messagesParStatut?: MessagesParStatut): void {
     if (e instanceof HttpError) {
         if (e.isSessionInvalide) {
             return;

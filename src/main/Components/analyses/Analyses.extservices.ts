@@ -1,9 +1,8 @@
-import { toast } from "react-toastify";
 import CompteBancaireModel from "../../Models/budgets/CompteBancaire.model.ts";
 import { call } from "../../Services/ClientHTTP.service.ts";
 import { BACKEND_ENUM, METHODE_HTTP, SERVICES_URL } from "../../Utils/AppTechEnums.constants.ts";
 import BudgetMensuelModel from "../../Models/budgets/BudgetMensuel.model.ts";
-import { isSessionInvalide } from "../../Services/HttpError.ts";
+import { notifierErreur } from "../../Services/CallAndNotify.service.ts";
 
 /**
  * Services back-end pour les analyses
@@ -28,10 +27,7 @@ export function loadBudget(selectedCompte: CompteBancaireModel | null, selectedD
         [selectedCompte.id, String(selectedDate.getFullYear()), String(selectedDate.getMonth() + 1)])
         .catch(e => {
             const libErreur = "Erreur lors du chargement du budget du compte " + selectedCompte?.libelle + " du " + (selectedDate.getMonth() + 1) + "/" + selectedDate.getFullYear();
-            console.error(libErreur, e)
-            if (!isSessionInvalide(e)) {
-                toast.error(libErreur, { autoClose: false, closeOnClick: true })
-            }
+            notifierErreur(e, libErreur, { autoClose: false, closeOnClick: true });
             return undefined;
         })
 }
@@ -66,10 +62,7 @@ export function getValidPeriodesForCompte(selectedCompte: CompteBancaireModel | 
             })
             .catch(e => {
                 const libErreur = "Erreur lors du chargement des périodes d'analyses disponibles pour le compte " + selectedCompte?.libelle;
-                console.error(libErreur, e)
-                if (!isSessionInvalide(e)) {
-                    toast.error(libErreur, { autoClose: false, closeOnClick: true })
-                }
+                notifierErreur(e, libErreur, { autoClose: false, closeOnClick: true });
             }
             )
     }
