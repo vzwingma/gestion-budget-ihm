@@ -2,9 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { toast } from 'react-toastify';
 
 import { Infos } from './Infos.component.tsx';
 import { fetchInfosFromMicroServices } from './Infos.extservices.ts';
+import { consommerSessionExpiree } from '../../Services/Auth.service.ts';
 
 /**
  * Page Infos (AP 006 - T11/T20) : chargement des versions des µS via useFetch.
@@ -14,11 +16,19 @@ import { fetchInfosFromMicroServices } from './Infos.extservices.ts';
 vi.mock('./Infos.extservices.ts', () => ({
     fetchInfosFromMicroServices: vi.fn()
 }));
+vi.mock('../../Services/Auth.service.ts', () => ({
+    consommerSessionExpiree: vi.fn()
+}));
+vi.mock('react-toastify', () => ({
+    toast: { warn: vi.fn() },
+    ToastContainer: () => null
+}));
 
 describe('Infos', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        (consommerSessionExpiree as any).mockReturnValue(false);
     });
 
     test('charge les infos des µS au montage, sans les afficher tant que le logo n est pas cliqué', async () => {
@@ -68,5 +78,25 @@ describe('Infos', () => {
 
         expect(screen.getByText('IHM')).toBeInTheDocument();
         expect(screen.queryByText('API Comptes')).not.toBeInTheDocument();
+    });
+
+    test('retour d\'une déconnexion sur 401/403 (ADR 008) : toast « Session expirée » affiché une seule fois', () => {
+        (fetchInfosFromMicroServices as any).mockResolvedValue([]);
+        (consommerSessionExpiree as any).mockReturnValue(true);
+
+        render(<Infos />);
+
+        expect(consommerSessionExpiree).toHaveBeenCalledTimes(1);
+        expect(toast.warn).toHaveBeenCalledTimes(1);
+        expect(toast.warn).toHaveBeenCalledWith('Session expirée, reconnectez-vous', {toastId: 'session-expiree', autoClose: 5000});
+    });
+
+    test('pas de déconnexion récente : aucun toast « Session expirée »', () => {
+        (fetchInfosFromMicroServices as any).mockResolvedValue([]);
+        (consommerSessionExpiree as any).mockReturnValue(false);
+
+        render(<Infos />);
+
+        expect(toast.warn).not.toHaveBeenCalled();
     });
 });

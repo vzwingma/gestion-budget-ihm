@@ -18,6 +18,7 @@ describe('ClientHTTP.service', () => {
     let getOAuthToken: Mock;
     let removeTokenFromStorage: Mock;
     let call: typeof import('./ClientHTTP.service.ts').call;
+    let setGestionnaireDeconnexion: typeof import('./ClientHTTP.service.ts').setGestionnaireDeconnexion;
     let HttpError: typeof import('./HttpError.ts').HttpError;
 
     const originalLocation = globalThis.location;
@@ -43,7 +44,7 @@ describe('ClientHTTP.service', () => {
         vi.clearAllMocks();
         ({v7} = await import('uuid') as unknown as {v7: Mock});
         ({getOAuthToken, removeTokenFromStorage} = await import('./Auth.service.ts') as unknown as {getOAuthToken: Mock, removeTokenFromStorage: Mock});
-        ({call} = await import('./ClientHTTP.service.ts'));
+        ({call, setGestionnaireDeconnexion} = await import('./ClientHTTP.service.ts'));
         ({HttpError} = await import('./HttpError.ts'));
         v7.mockReturnValue('12345678-abcd-4ef0-9012-3456789abcde');
         getOAuthToken.mockReturnValue('token-test');
@@ -100,6 +101,117 @@ describe('ClientHTTP.service', () => {
 
         expect(removeTokenFromStorage).toHaveBeenCalledTimes(1);
         expect(globalThis.location.href).toBe('/');
+    });
+
+    test('déconnecte sur un statut 401', async () => {
+        (globalThis.fetch as Mock).mockResolvedValue({
+            status: 401,
+            statusText: 'Unauthorized'
+        });
+
+        await expect(call('GET', 'https://api.exemple.fr', '/resource'))
+            .rejects
+            .toMatchObject({name: 'HttpError', status: 401, statusText: 'Unauthorized'});
+
+        expect(removeTokenFromStorage).toHaveBeenCalledTimes(1);
+        expect(globalThis.location.href).toBe('/');
+    });
+
+    test('3 × 401 en parallèle → une seule déconnexion (garde anti-réentrance)', async () => {
+        (globalThis.fetch as Mock).mockResolvedValue({
+            status: 401,
+            statusText: 'Unauthorized'
+        });
+
+        const resultats = await Promise.allSettled([
+            call('GET', 'https://api.exemple.fr', '/a'),
+            call('GET', 'https://api.exemple.fr', '/b'),
+            call('GET', 'https://api.exemple.fr', '/c')
+        ]);
+
+        expect(resultats.every(r => r.status === 'rejected')).toBe(true);
+        expect(removeTokenFromStorage).toHaveBeenCalledTimes(1);
+    });
+
+    test('sans jeton : aucun en-tête Authorization, et pas de déconnexion sur 401', async () => {
+        getOAuthToken.mockReturnValue(null);
+        (globalThis.fetch as Mock).mockResolvedValue({
+            status: 401,
+            statusText: 'Unauthorized'
+        });
+
+        await expect(call('GET', 'https://api.exemple.fr', '/resource')).rejects.toBeInstanceOf(HttpError);
+
+        const options = (globalThis.fetch as Mock).mock.calls[0][1];
+        const headers = options.headers as Headers;
+        expect(headers.has('Authorization')).toBe(false);
+        expect(removeTokenFromStorage).not.toHaveBeenCalled();
+    });
+
+    test('jeton renouvelé entre l\'envoi et la réponse : pas de déconnexion (401 dû à l\'ancien jeton)', async () => {
+        getOAuthToken.mockReturnValueOnce('token-ancien').mockReturnValueOnce('token-renouvele');
+        (globalThis.fetch as Mock).mockResolvedValue({
+            status: 401,
+            statusText: 'Unauthorized'
+        });
+
+        await expect(call('GET', 'https://api.exemple.fr', '/resource')).rejects.toBeInstanceOf(HttpError);
+
+        expect(removeTokenFromStorage).not.toHaveBeenCalled();
+    });
+
+    test('setGestionnaireDeconnexion : le gestionnaire personnalisé est appelé sur un 401/403', async () => {
+        const gestionnairePerso = vi.fn();
+        setGestionnaireDeconnexion(gestionnairePerso);
+        (globalThis.fetch as Mock).mockResolvedValue({status: 403, statusText: 'Forbidden'});
+
+        await expect(call('GET', 'https://api.exemple.fr', '/resource')).rejects.toBeInstanceOf(HttpError);
+
+        expect(gestionnairePerso).toHaveBeenCalledTimes(1);
+        expect(removeTokenFromStorage).not.toHaveBeenCalled();
+    });
+
+    test('setGestionnaireDeconnexion() sans argument : retour au repli (logOut)', async () => {
+        const gestionnairePerso = vi.fn();
+        setGestionnaireDeconnexion(gestionnairePerso);
+        setGestionnaireDeconnexion();
+        (globalThis.fetch as Mock).mockResolvedValue({status: 403, statusText: 'Forbidden'});
+
+        await expect(call('GET', 'https://api.exemple.fr', '/resource')).rejects.toBeInstanceOf(HttpError);
+
+        expect(gestionnairePerso).not.toHaveBeenCalled();
+        expect(removeTokenFromStorage).toHaveBeenCalledTimes(1);
+    });
+
+    test.each([404, 503])('jette une HttpError avec le statut %i', async (status) => {
+        (globalThis.fetch as Mock).mockResolvedValue({
+            status,
+            statusText: 'peu importe'
+        });
+
+        await expect(call('GET', 'https://api.exemple.fr', '/resource'))
+            .rejects
+            .toMatchObject({name: 'HttpError', status});
+
+        expect(removeTokenFromStorage).not.toHaveBeenCalled();
+    });
+
+    test('réponse 2xx avec JSON invalide : rejette avec une HttpError', async () => {
+        const original = new SyntaxError('Unexpected token');
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        (globalThis.fetch as Mock).mockResolvedValue({
+            status: 200,
+            statusText: 'OK',
+            json: vi.fn().mockRejectedValue(original)
+        });
+
+        const error = await call('GET', 'https://api.exemple.fr', '/resource').catch(e => e);
+
+        expect(error).toBeInstanceOf(HttpError);
+        expect(error.status).toBe(200);
+        expect(error.cause).toBe(original);
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
     });
 
     test("préserve l'erreur d'origine dans cause (erreur réseau)", async () => {
