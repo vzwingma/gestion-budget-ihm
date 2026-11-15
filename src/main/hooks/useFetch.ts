@@ -8,6 +8,11 @@ interface UseFetchResult<T> {
     refetch: () => void;
 }
 
+interface UseFetchOptions {
+    /** `false` : aucun chargement tant que la condition n'est pas remplie (ex: authentification non prête). Défaut : `true` **/
+    enabled?: boolean;
+}
+
 /**
  * Hook générique de data-fetching (AP 006 - T11), factorisant le triplet `useState`
  * (données/chargement/erreur) + `useEffect` + callback répété dans plusieurs composants
@@ -24,8 +29,10 @@ interface UseFetchResult<T> {
  *
  * @param fetcher fonction retournant la promesse de la donnée à charger
  * @param deps dépendances déclenchant un nouveau chargement (comme un `useEffect` classique)
+ * @param options `enabled` (défaut `true`) : le chargement démarre (ou redémarre) quand `enabled` devient `true`
  */
-export function useFetch<T>(fetcher: () => Promise<T>, deps: DependencyList): UseFetchResult<T> {
+export function useFetch<T>(fetcher: () => Promise<T>, deps: DependencyList, options?: UseFetchOptions): UseFetchResult<T> {
+    const enabled = options?.enabled ?? true;
     const [data, setData] = useState<T | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
@@ -34,6 +41,9 @@ export function useFetch<T>(fetcher: () => Promise<T>, deps: DependencyList): Us
     const refetch = useCallback(() => setRefreshToken((token) => token + 1), []);
 
     useEffect(() => {
+        if (!enabled) {
+            return;
+        }
         let cancelled = false;
         setLoading(true);
         setError(null);
@@ -59,7 +69,7 @@ export function useFetch<T>(fetcher: () => Promise<T>, deps: DependencyList): Us
             cancelled = true;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [...deps, refreshToken]);
+    }, [...deps, refreshToken, enabled]);
 
     return { data, loading, error, refetch };
 }

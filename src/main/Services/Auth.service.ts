@@ -22,3 +22,22 @@ export const putTokenInStorage = (value: string | undefined) => {
 export const removeTokenFromStorage = () => {
     localStorage.removeItem(OAUTH2_KEY);
 }
+
+const SESSION_EXPIREE_KEY = 'sessionExpiree';
+
+/**
+ * Pose le drapeau « session expirée » (sessionStorage), lu au retour sur la page d'accueil
+ */
+export const marquerSessionExpiree = () => {
+    sessionStorage.setItem(SESSION_EXPIREE_KEY, 'true');
+}
+
+/**
+ * Lit puis efface le drapeau « session expirée »
+ * @returns true si le drapeau était présent
+ */
+export const consommerSessionExpiree = (): boolean => {
+    const present = sessionStorage.getItem(SESSION_EXPIREE_KEY) !== null;
+    sessionStorage.removeItem(SESSION_EXPIREE_KEY);
+    return present;
+}

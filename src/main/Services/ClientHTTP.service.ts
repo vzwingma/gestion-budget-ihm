@@ -2,18 +2,48 @@
 import {v7} from 'uuid';
 import {API_GW_ENUM} from '../Utils/AppTechEnums.constants.ts';
 import {debug, isDebugEnabled} from '../Utils/Debug.utils.ts';
-import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts'
+import {getOAuthToken, marquerSessionExpiree, removeTokenFromStorage} from './Auth.service.ts'
+import {HttpError} from './HttpError.ts';
 
 let alreadyTraced: boolean = false;
+/**
+ * Drapeau anti-réentrance : la déconnexion n'est déclenchée qu'une fois, même avec plusieurs appels en parallèle.
+ * Jamais réarmé : une fois lancée, la déconnexion se termine par un rechargement de la page (`location.href`).
+ **/
+let deconnexionEnCours: boolean = false;
 
 
 /**
- * Log Out de la session si les tokens sont expirés
+ * Log Out de repli (si aucun gestionnaire n'est enregistré) : drapeau « session expirée », suppression du token
+ * et retour à l'accueil. `removeUser` (OIDC) n'est pas accessible hors React : l'utilisateur OIDC n'est PAS nettoyé
+ * par ce repli ; il est resynchronisé (et le token réécrit dans le storage) par `useAuthTokenSync` après le
+ * rechargement de la page.
  */
 function logOut() {
 
+    marquerSessionExpiree();
     removeTokenFromStorage();
     globalThis.location.href = "/";
+}
+
+let gestionnaireDeconnexion: () => void = logOut;
+
+/**
+ * Enregistre le gestionnaire appelé sur un 401 / 403 (enregistré par `useAuthTokenSync`).
+ * Sans argument, retour au comportement de repli (`logOut`). Ne réarme pas la garde de déconnexion unique.
+ * @param gestionnaire fonction de déconnexion
+ */
+export function setGestionnaireDeconnexion(gestionnaire?: () => void): void {
+    gestionnaireDeconnexion = gestionnaire ?? logOut;
+}
+
+/** Déclenche la déconnexion une seule fois **/
+function declencherDeconnexion(): void {
+    if (deconnexionEnCours) {
+        return;
+    }
+    deconnexionEnCours = true;
+    gestionnaireDeconnexion();
 }
 
 /**
@@ -84,33 +114,55 @@ export async function call(httpMethod: string, uri: string, path: string, params
 
     logAuth();
 
-    return await fetch(fullURL,
-        {
-            method: httpMethod.toString(),
-            mode: 'cors',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'X-Api-Key': API_GW_ENUM.API_KEY,
-                'Authorization': 'Bearer ' + getOAuthToken()
-            }),
-            body: jsonBody
-        })
-        .then(res => {
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+        'X-Api-Key': API_GW_ENUM.API_KEY
+    });
+    const token = getOAuthToken();
+    if (token) {
+        headers.set('Authorization', 'Bearer ' + token);
+    }
 
-            if (res.status >= 200 && res.status < 300) {
-                return res.json();
-            } else if (res.status === 403) {
-                console.warn("[WS-"+uuid+"] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
-                logOut();
-            } else {
-                console.error("[WS-"+uuid+"] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]")
-                throw new Error(res.statusText);
-            }
-        })
-        .catch(e => {
-            console.error("Erreur lors de l'appel HTTP [" + fullURL + "]", e)
-            // Conserve l'erreur d'origine (stack, type) via `cause`, tout en gardant le message
-            // existant (préfixe "Error: " issu de la coercition historique en chaîne).
-            throw new Error(String(e), { cause: e });
-        })
+    let res: Response;
+    try {
+        res = await fetch(fullURL,
+            {
+                method: httpMethod.toString(),
+                mode: 'cors',
+                headers: headers,
+                body: jsonBody
+            });
+    } catch (e) {
+        console.error("Erreur lors de l'appel HTTP [" + fullURL + "]", e);
+        throw new HttpError(undefined, e instanceof Error ? e.message : String(e), undefined, {cause: e});
+    }
+
+    if (res.status >= 200 && res.status < 300) {
+        try {
+            return await res.json();
+        } catch (e) {
+            console.error("Réponse JSON invalide [" + fullURL + "]", e);
+            throw new HttpError(res.status, res.statusText, undefined, {cause: e});
+        }
+    }
+
+    const trace = "[WS-" + uuid + "] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]";
+    if (res.status === 401 || res.status === 403) {
+        console.warn(trace);
+        // Déconnexion seulement si la requête portait un jeton (sinon : visiteur anonyme) et si ce jeton n'a pas été
+        // renouvelé entre l'envoi et la réponse (sinon : 401 dû à l'ancien jeton, la session est valide)
+        if (token && getOAuthToken() === token) {
+            declencherDeconnexion();
+        }
+        throw new HttpError(res.status, res.statusText);
+    }
+
+    console.error(trace);
+    let corps: string | undefined;
+    try {
+        corps = await res.text();
+    } catch {
+        corps = undefined;
+    }
+    throw new HttpError(res.status, res.statusText, corps);
 }

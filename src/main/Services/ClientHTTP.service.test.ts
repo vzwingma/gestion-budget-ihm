@@ -1,7 +1,5 @@
 import type { Mock } from 'vitest';
-import {v7} from 'uuid';
-import {call} from './ClientHTTP.service.ts';
-import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts';
+
 
 vi.mock('uuid', () => ({
     v7: vi.fn()
@@ -9,10 +7,18 @@ vi.mock('uuid', () => ({
 
 vi.mock('./Auth.service.ts', () => ({
     getOAuthToken: vi.fn(),
+    marquerSessionExpiree: vi.fn(),
     removeTokenFromStorage: vi.fn()
 }));
 
 describe('ClientHTTP.service', () => {
+
+    // Modules réimportés à chaque test (vi.resetModules) : la garde de déconnexion unique du client repart de zéro
+    let v7: Mock;
+    let getOAuthToken: Mock;
+    let removeTokenFromStorage: Mock;
+    let call: typeof import('./ClientHTTP.service.ts').call;
+    let HttpError: typeof import('./HttpError.ts').HttpError;
 
     const originalLocation = globalThis.location;
 
@@ -32,10 +38,15 @@ describe('ClientHTTP.service', () => {
         });
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        vi.resetModules();
         vi.clearAllMocks();
-        (v7 as Mock).mockReturnValue('12345678-abcd-4ef0-9012-3456789abcde');
-        (getOAuthToken as Mock).mockReturnValue('token-test');
+        ({v7} = await import('uuid') as unknown as {v7: Mock});
+        ({getOAuthToken, removeTokenFromStorage} = await import('./Auth.service.ts') as unknown as {getOAuthToken: Mock, removeTokenFromStorage: Mock});
+        ({call} = await import('./ClientHTTP.service.ts'));
+        ({HttpError} = await import('./HttpError.ts'));
+        v7.mockReturnValue('12345678-abcd-4ef0-9012-3456789abcde');
+        getOAuthToken.mockReturnValue('token-test');
         globalThis.fetch = vi.fn();
     });
 
@@ -74,7 +85,7 @@ describe('ClientHTTP.service', () => {
 
         await expect(call('GET', 'https://api.exemple.fr', '/resource'))
             .rejects
-            .toThrow('Error: Erreur serveur');
+            .toMatchObject({name: 'HttpError', status: 500, statusText: 'Erreur serveur'});
 
         expect(removeTokenFromStorage).not.toHaveBeenCalled();
     });
@@ -85,7 +96,7 @@ describe('ClientHTTP.service', () => {
             statusText: 'Forbidden'
         });
 
-        await expect(call('GET', 'https://api.exemple.fr', '/resource')).resolves.toBeUndefined();
+        await expect(call('GET', 'https://api.exemple.fr', '/resource')).rejects.toBeInstanceOf(HttpError);
 
         expect(removeTokenFromStorage).toHaveBeenCalledTimes(1);
         expect(globalThis.location.href).toBe('/');
@@ -98,8 +109,8 @@ describe('ClientHTTP.service', () => {
 
         const error = await call('GET', 'https://api.exemple.fr', '/resource').catch(e => e);
 
-        expect(error).toBeInstanceOf(Error);
-        expect(error.message).toBe('TypeError: Failed to fetch');
+        expect(error).toBeInstanceOf(HttpError);
+        expect(error.status).toBeUndefined();
         expect(error.cause).toBe(original);
         expect(spy).toHaveBeenCalled();
         spy.mockRestore();

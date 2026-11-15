@@ -8,7 +8,8 @@ import { putTokenInStorage, removeTokenFromStorage } from '../Services/Auth.serv
 vi.mock('react-oidc-context', () => ({ useAuth: vi.fn() }));
 vi.mock('../Services/Auth.service.ts', () => ({
     putTokenInStorage: vi.fn(),
-    removeTokenFromStorage: vi.fn()
+    removeTokenFromStorage: vi.fn(),
+    marquerSessionExpiree: vi.fn()
 }));
 
 describe('useAuthTokenSync / AuthTokenSync', () => {
@@ -29,7 +30,8 @@ describe('useAuthTokenSync / AuthTokenSync', () => {
         unloadedCb = undefined;
         events = {
             addUserLoaded: vi.fn((cb) => { loadedCb = cb; return removeLoaded; }),
-            addUserUnloaded: vi.fn((cb) => { unloadedCb = cb; return removeUnloaded; })
+            addUserUnloaded: vi.fn((cb) => { unloadedCb = cb; return removeUnloaded; }),
+            addSilentRenewError: vi.fn(() => vi.fn())
         };
     });
 

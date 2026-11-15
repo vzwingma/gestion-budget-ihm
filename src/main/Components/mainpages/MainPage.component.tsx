@@ -53,8 +53,12 @@ export const MainPage: React.FC<MainPageProps> = ({ fonction }: MainPageProps): 
     const auth = useAuth();
     const [budgetMenuOpen, setBudgetMenuOpen] = useState<boolean>(true);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
-    /** Appels WS vers pour charger la liste des comptes **/
-    const { data: comptesCharges } = useFetch(() => fetchComptes(), [selectedDate]);
+    /**
+     * Appels WS pour charger la liste des comptes, seulement une fois l'authentification prête (F5 : sans cela,
+     * l'appel part sans jeton et provoque un 401). Le jeton est synchronisé dans le storage par `AuthTokenSync`
+     * (monté avant les routes), dont l'effet précède celui de cette page.
+     **/
+    const { data: comptesCharges } = useFetch(() => fetchComptes(), [selectedDate], { enabled: auth.isAuthenticated });
     useEffect(() => {
         if (comptesCharges !== undefined) {
             setListeComptes(comptesCharges);
