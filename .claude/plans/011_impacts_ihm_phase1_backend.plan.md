@@ -1,10 +1,11 @@
-# Plan d'Action 009 — IHM : impacts des changements de comportement du backend (plan serverless 004, Phase 1)
+# Plan d'Action 011 — IHM : impacts des changements de comportement du backend (plan serverless 004, Phase 1)
 
 **Date création :** 2026-10-29 · **Mise à jour :** 2026-11-04 (Gate #0 GO, cadrage ARCos)
-**Statut :** ⏳ Planifié — Gate #0 GO ; **démarre après le merge du plan 008** (dépend du socle `HttpError`)
+**Statut :** ⏳ Planifié — Gate #0 GO ; **démarre après le merge du plan 010** (dépend du socle `HttpError`)
 **Porteur :** ⚫ MAINa
+**Note :** plan renuméroté depuis 009 le 2026-11-15 (collision avec 008_versioning_ihm_ci) ; socle : [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md)
 **Origine :** plan serverless `004_revue_architecture_backend`, tâche T1.5. Décisions 👤 aux Gates #1 et #2 de la Phase 1 (2026-10-26 / 2026-10-29) et au Gate #0 IHM (2026-11-04).
-**Branche (proposée) :** `feat/ihm-009-impacts-backend` depuis `origin/master`, **après le merge du plan 008**
+**Branche (proposée) :** `feat/ihm-009-impacts-backend` depuis `origin/master`, **après le merge du plan 010**
 **Ordre PROD :** la **Phase 1 (F3 + Analyses)** passe **avant** la PROD backend. La Phase 2 (erreurs) peut suivre.
 
 ---
@@ -26,13 +27,13 @@ La Phase 1 du plan serverless 004 modifie des comportements et des codes HTTP vi
 | I4 | Virement **vers le même compte** | accepté | **400** | idem | « Virement vers le même compte impossible » |
 | I5 | Virement vers un **compte destination inconnu** | 500 | **404** | idem | « Compte destinataire introuvable » |
 | I6 | Dernier accès d'un **utilisateur inconnu** | 500 | **404** | Erreur avalée (`ProfileInfos.component.tsx:11`) : OK | Aucune (test optionnel) |
-| — | Erreur Mongo sur le virement (M-1 destination) | — | **503** | Message générique | « Service momentanément indisponible, réessayez » (socle 008) |
+| — | Erreur Mongo sur le virement (M-1 destination) | — | **503** | Message générique | « Service momentanément indisponible, réessayez » (socle 010) |
 
 ### Décisions 👤 (Gate #0, 2026-11-04)
 - **C2 :** le mois demandé reste affiché, avec un bandeau **« Compte inactif — dernier budget disponible : MM/AAAA »** quand le budget reçu ne correspond pas au mois demandé. On ne recale pas la date sélectionnée (option C1 rejetée : `selectedDate` est global et la navigation se bloquerait).
 - **Masquer « Réouvrir »** sur un compte inactif.
 - **Filtre Analyses (I1-bis).**
-- **Messages** (B1, via `messagesParStatut` du plan 008) : 406 « Le compte destinataire est clos », 400 « Virement vers le même compte impossible », 404 « Compte destinataire introuvable », 503 « Service momentanément indisponible, réessayez ».
+- **Messages** (B1, via `messagesParStatut` du plan 010) : 406 « Le compte destinataire est clos », 400 « Virement vers le même compte impossible », 404 « Compte destinataire introuvable », 503 « Service momentanément indisponible, réessayez ».
 - **Solde du compte inactif dans le menu** (`/soldes` du mois M vide, alors que le panneau principal affiche le solde du dernier budget) : **à aligner si c'est simple**, sinon accepté et documenté. Décision prise en T1.2.
 
 ---
@@ -95,7 +96,7 @@ La Phase 1 du plan serverless 004 modifie des comportements et des codes HTTP vi
 
 ## Dépendances
 ```
-Plan 008 mergé → Gate #1 (009) → Phase 1 → Gates #2/#3 → [PROD IHM] → PROD backend
+Plan 010 mergé → Gate #1 (011) → Phase 1 → Gates #2/#3 → [PROD IHM] → PROD backend
                                         → Phase 2 → Gates #2/#3 → Phase 3 → Gate #4
 ```
 
@@ -114,4 +115,4 @@ Plan 008 mergé → Gate #1 (009) → Phase 1 → Gates #2/#3 → [PROD IHM] →
 |---|---|---|---|---|
 | — | 2026-10-29 | Création (T1.5 du plan serverless 004) | ℹ️ | Plan créé, non commité |
 | #0 | 2026-11-04 | Choix de solution (cadrage ARCos) | ✅ GO | C2 bandeau + « Réouvrir » masqué + filtre Analyses (I1-bis) ; libellés virement / 503 ; alignement du solde du menu si simple ; Phase 1 avant la PROD backend |
-| #1 | — | Validation du plan | ⏳ Après le merge du plan 008 | |
+| #1 | — | Validation du plan | ⏳ Après le merge du plan 010 | |

@@ -1,8 +1,9 @@
-# Plan d'Action 008 — IHM : session (401) et socle des erreurs HTTP
+# Plan d'Action 010 — IHM : session (401) et socle des erreurs HTTP
 
 **Date création :** 2026-10-25 · **Mise à jour :** 2026-11-04 (Gate #0 GO, cadrage ARCos)
 **Statut :** 🔵 En cours — Gate #1 GO (2026-11-04), Phase 1 DEVon lancée
 **Porteur :** ⚫ MAINa
+**Note :** plan renuméroté depuis 008 le 2026-11-15 (collision avec 008_versioning_ihm_ci) ; plan suivant : [`011_impacts_ihm_phase1_backend.plan.md`](./011_impacts_ihm_phase1_backend.plan.md)
 **Origine :** plan serverless `004_revue_architecture_backend` (ex-T0.7) et plan serverless `005_info_endpoint_public`
 **ADR :** [`docs/adr/008-gestion-erreurs-http-et-session.md`](../../docs/adr/008-gestion-erreurs-http-et-session.md) (`Acceptée`)
 **Branche (proposée) :** `feat/ihm-008-session-erreurs-http`, créée depuis `origin/master` ; push et merge par le 👤
@@ -16,19 +17,19 @@ Le backend valide maintenant les jetons Google avec `quarkus-oidc` (ADR-005 serv
 
 État constaté par ARCos le 2026-11-04 sur master 6bd7757 :
 - **401 non géré.** `ClientHTTP.service.ts:100-108` ne déconnecte que sur 403. Un 401 devient une erreur générique et la session reste morte. **Bloquant pour la PROD backend.**
-- **Statut HTTP perdu.** Le rejet vaut `new Error(res.statusText)` (`:107`). Aucun appelant ne peut distinguer 404, 406 ou 503. C'est un prérequis du plan 009.
+- **Statut HTTP perdu.** Le rejet vaut `new Error(res.statusText)` (`:107`). Aucun appelant ne peut distinguer 404, 406 ou 503. C'est un prérequis du plan 011.
 - **Promesse résolue à `undefined` après un 403** (`:102-104`). Les `onSuccess` reçoivent `undefined`, ce qui donne une TypeError puis un toast d'erreur juste avant la redirection.
 - **`logOut()` sans `auth.removeUser()`.** L'utilisateur OIDC reste dans le sessionStorage, avec un risque de boucle de rechargement.
 - **`Bearer null` envoyé** quand aucun jeton n'est disponible (`:94`).
 
-Ce plan pose le socle : déconnexion fiable, erreur typée `HttpError`, messages techniques centralisés. Le plan 009 s'appuie dessus.
+Ce plan pose le socle : déconnexion fiable, erreur typée `HttpError`, messages techniques centralisés. Le plan 011 s'appuie dessus.
 
 ### Décisions 👤 (Gate #0, 2026-11-04)
 | # | Sujet | Décision |
 |---|---|---|
 | a | Gestion du 401 | **A1 durcie** : 401 ou 403 entraîne une déconnexion **en un seul passage**, via `auth.removeUser()` puis redirection. La promesse est **rejetée** avec une `HttpError`, sans toast. A2 (`signinSilent` puis nouvel essai) est **reportée** ; on journalise `addSilentRenewError` pour mesurer si le renouvellement silencieux Google fonctionne. Aucune hypothèse sur une déconnexion vers 1 h : non constaté à date. |
 | — | En-tête sans jeton | **Ne plus envoyer `Authorization`** quand il n'y a pas de jeton (fin de `Bearer null`). **À vérifier en QUA** que l'API Gateway accepte un appel sans cet en-tête. |
-| b | Messages d'erreur | **B1** : `HttpError {status, statusText, body?}`. Messages **techniques** centralisés dans `callAndNotify` : 503 = « Service momentanément indisponible, réessayez », 500, réseau. Une **surcharge métier par appel** (`messagesParStatut`) sera utilisée par le plan 009. Le libellé renvoyé par le backend va uniquement en console. |
+| b | Messages d'erreur | **B1** : `HttpError {status, statusText, body?}`. Messages **techniques** centralisés dans `callAndNotify` : 503 = « Service momentanément indisponible, réessayez », 500, réseau. Une **surcharge métier par appel** (`messagesParStatut`) sera utilisée par le plan 011. Le libellé renvoyé par le backend va uniquement en console. |
 | — | Toast de session | Après la redirection : toast **« Session expirée, reconnectez-vous »** (drapeau sessionStorage lu au retour sur la page d'accueil). |
 | — | ADR | ADR IHM **008** « Gestion des erreurs HTTP et de la session », `Proposée` au Gate #1, passée `Acceptée` au GO. |
 
@@ -69,7 +70,7 @@ Ce plan pose le socle : déconnexion fiable, erreur typée `HttpError`, messages
 - **Implémenter :**
   - Une `HttpError` 401 ou 403 ne produit **aucun toast**.
   - Messages techniques centralisés : 503, 500, réseau.
-  - Paramètre optionnel `messagesParStatut` (compatible avec les appels existants), utilisé par le plan 009.
+  - Paramètre optionnel `messagesParStatut` (compatible avec les appels existants), utilisé par le plan 011.
   - Ne jamais afficher le libellé du backend (console uniquement).
 - **Acceptation :** les appels existants compilent sans modification.
 
@@ -102,12 +103,12 @@ Ce plan pose le socle : déconnexion fiable, erreur typée `HttpError`, messages
 ## Dépendances
 ```
 Gate #1 → T1.1 → (T1.2 ∥ T1.3) → Gate #2 → T1.4 → Gate #3 → T1.5 → Gate #4
-→ merge + PROD IHM (👤) → plan 009 → PROD backend (plans serverless 004 + 005)
+→ merge + PROD IHM (👤) → plan 011 → PROD backend (plans serverless 004 + 005)
 ```
 
 ## Critères de succès globaux
 1. Un 401 ou un 403 provoque une déconnexion unique et propre, suivie du toast « Session expirée ».
-2. `HttpError` avec statut disponible pour tous les appelants (socle du plan 009).
+2. `HttpError` avec statut disponible pour tous les appelants (socle du plan 011).
 3. Aucun en-tête `Authorization` sans jeton ; appel accepté par l'API Gateway (QUA).
 4. Tests verts, couverture ≥ 80 %, SonarCloud OK.
 5. En PROD avant la PROD backend.
@@ -125,5 +126,6 @@ Gate #1 → T1.1 → (T1.2 ∥ T1.3) → Gate #2 → T1.4 → Gate #3 → T1.5 �
 | Gate | Date | Objet | Décision | Notes |
 |---|---|---|---|---|
 | — | 2026-10-25 | Création (issue du Gate #2 serverless 004) | ℹ️ | Décision 👤 : traiter le 401 côté IHM, dans un plan dédié |
-| #0 | 2026-11-04 | Choix de solution (cadrage ARCos) | ✅ GO | A1 durcie (A2 reportée, mesure via `addSilentRenewError`) ; plus d'en-tête sans jeton (à vérifier en QUA) ; B1 `HttpError` + messages centralisés ; toast « Session expirée » ; deux plans (008 puis 009) ; ADR IHM 008 |
+| #0 | 2026-11-04 | Choix de solution (cadrage ARCos) | ✅ GO | A1 durcie (A2 reportée, mesure via `addSilentRenewError`) ; plus d'en-tête sans jeton (à vérifier en QUA) ; B1 `HttpError` + messages centralisés ; toast « Session expirée » ; deux plans (010 puis 011) ; ADR IHM 008 |
 | #1 | 2026-11-04 | Validation du plan + ADR 008 | ✅ GO | ADR IHM 008 → `Acceptée`. Branche `feat/ihm-008-session-erreurs-http` depuis `origin/master` |
+| #2 | 2026-11-15 | Validation du code (Phase 1 DEVon) | 🔧 AJUSTER | Points 1 à 5 : déconnexion seulement si la requête portait un jeton, pas de toast Analyses sur 401/403, garde non réarmée, repli sans gestionnaire aligné, JSON invalide enveloppé dans `HttpError`. 403 conservé (déconnexion). Renumérotation 008/009 → 010/011. Libellés 500/réseau validés ; toast dans Infos validé |

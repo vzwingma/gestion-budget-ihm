@@ -1,7 +1,7 @@
 # ADR 008 — Gestion des erreurs HTTP et de la session
 
 **Date :** 2026-11-04
-**Statut :** Acceptée (Gate #1 GO 👤 du plan 008, 2026-11-04)
+**Statut :** Acceptée (Gate #1 GO 👤 du plan 010, 2026-11-04)
 **Décideurs :** 🟠 ARCos + 👤 Développeur humain
 
 ---
@@ -51,7 +51,7 @@ Ce correctif est **bloquant pour la PROD backend** : l'IHM doit être en PROD av
 - **Avantages** :
   - Session fiable : déconnexion unique, `removeUser` évite la boucle de rechargement.
   - Plus de toast parasite ni de résolution à `undefined`.
-  - Statut disponible pour tous les appelants (socle du plan 009).
+  - Statut disponible pour tous les appelants (socle du plan 011).
   - Messages techniques cohérents et centralisés.
 - **Inconvénients** :
   - Signature de `callAndNotify` enrichie (paramètre optionnel, compatible).
@@ -87,7 +87,7 @@ Ce correctif est **bloquant pour la PROD backend** : l'IHM doit être en PROD av
 ### Positives
 - Session fiable : déconnexion unique et propre, plus de boucle de rechargement.
 - Plus de toast parasite lors d'un 401/403.
-- Statut HTTP disponible pour le plan 009 (codes métier du virement, etc.).
+- Statut HTTP disponible pour le plan 011 (codes métier du virement, etc.).
 
 ### Négatives / Compromis
 - Signature de `callAndNotify` enrichie (paramètre optionnel `messagesParStatut`, compatible avec les appels existants).
@@ -95,7 +95,7 @@ Ce correctif est **bloquant pour la PROD backend** : l'IHM doit être en PROD av
 - Tests existants à adapter : `resolves.toBeUndefined()` sur 403, assertions `'Error: …'`.
 
 ### Neutres
-- Le plan 009 utilisera `messagesParStatut`.
+- Le plan 011 utilisera `messagesParStatut`.
 - A2 reste possible plus tard, sans remise en cause de cette décision.
 - `docs/ARCHITECTURE.md` à mettre à jour (règle « 403 → logout » remplacée).
 
@@ -104,8 +104,8 @@ Ce correctif est **bloquant pour la PROD backend** : l'IHM doit être en PROD av
 ## Mise en œuvre
 
 - **Fichiers impactés** : `src/main/Services/ClientHTTP.service.ts`, nouvelle classe `HttpError`, `src/main/Services/CallAndNotify.service.ts`, `src/main/hooks/useAuthTokenSync.ts`, page d'accueil (toast « Session expirée »).
-- **Tâches de suivi** : plan 008, tâches T1.1 à T1.5 (DEVon — T1.1 à T1.3, QALvin — T1.4, DOCly — T1.5).
-- **Date d'effet** : au merge du plan 008, avant la PROD backend.
+- **Tâches de suivi** : plan 010, tâches T1.1 à T1.5 (DEVon — T1.1 à T1.3, QALvin — T1.4, DOCly — T1.5).
+- **Date d'effet** : au merge du plan 010, avant la PROD backend.
 - **Statut de l'ADR** : `Proposée` au Gate #1, passée `Acceptée` au `GO`.
 
 ---
@@ -114,5 +114,5 @@ Ce correctif est **bloquant pour la PROD backend** : l'IHM doit être en PROD av
 
 - ADR-005 du dépôt `gestion-budget-serverless` : `docs/adr/005-*.md` (validation des jetons par `quarkus-oidc`)
 - ADR-008 du dépôt `gestion-budget-serverless` : `docs/adr/008-*.md` (`/_info` public)
-- Plan d'Action IHM 008 : [`.claude/plans/008_gestion_401_auth_oidc_backend.plan.md`](../../.claude/plans/008_gestion_401_auth_oidc_backend.plan.md)
-- Plan d'Action IHM 009 : `.claude/plans/009_impacts_ihm_phase1_backend.plan.md`
+- Plan d'Action IHM 010 : [`.claude/plans/010_gestion_401_auth_oidc_backend.plan.md`](../../.claude/plans/010_gestion_401_auth_oidc_backend.plan.md)
+- Plan d'Action IHM 011 : `.claude/plans/011_impacts_ihm_phase1_backend.plan.md`
