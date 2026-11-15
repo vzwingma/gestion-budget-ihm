@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest';
 import {v7} from 'uuid';
-import {call, setGestionnaireDeconnexion} from './ClientHTTP.service.ts';
+import {call, reinitialiserGardeDeconnexionPourTests, setGestionnaireDeconnexion} from './ClientHTTP.service.ts';
 import {HttpError} from './HttpError.ts';
 import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts';
 
@@ -10,6 +10,7 @@ vi.mock('uuid', () => ({
 
 vi.mock('./Auth.service.ts', () => ({
     getOAuthToken: vi.fn(),
+    marquerSessionExpiree: vi.fn(),
     removeTokenFromStorage: vi.fn()
 }));
 
@@ -39,6 +40,7 @@ describe('ClientHTTP.service', () => {
         (getOAuthToken as Mock).mockReturnValue('token-test');
         globalThis.fetch = vi.fn();
         setGestionnaireDeconnexion();
+        reinitialiserGardeDeconnexionPourTests();
     });
 
     test('retourne le JSON en cas de succès 2xx', async () => {

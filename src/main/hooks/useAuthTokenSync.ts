@@ -53,6 +53,7 @@ export function useAuthTokenSync(): void {
                     globalThis.location.href = "/";
                 });
         });
+        // Pas de réarmement de la garde : une déconnexion lancée se termine par un rechargement de page
         return () => setGestionnaireDeconnexion();
     }, [removeUser]);
 

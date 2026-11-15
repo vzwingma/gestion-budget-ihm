@@ -2,19 +2,25 @@
 import {v7} from 'uuid';
 import {API_GW_ENUM} from '../Utils/AppTechEnums.constants.ts';
 import {debug, isDebugEnabled} from '../Utils/Debug.utils.ts';
-import {getOAuthToken, removeTokenFromStorage} from './Auth.service.ts'
+import {getOAuthToken, marquerSessionExpiree, removeTokenFromStorage} from './Auth.service.ts'
 import {HttpError} from './HttpError.ts';
 
 let alreadyTraced: boolean = false;
-/** Drapeau anti-réentrance : la déconnexion n'est déclenchée qu'une fois, même avec plusieurs appels en parallèle **/
+/**
+ * Drapeau anti-réentrance : la déconnexion n'est déclenchée qu'une fois, même avec plusieurs appels en parallèle.
+ * Jamais réarmé : une fois lancée, la déconnexion se termine par un rechargement de la page (`location.href`).
+ **/
 let deconnexionEnCours: boolean = false;
 
 
 /**
- * Log Out de repli (si aucun gestionnaire n'est enregistré) : suppression du token et retour à l'accueil
+ * Log Out de repli (si aucun gestionnaire n'est enregistré) : drapeau « session expirée », suppression du token
+ * et retour à l'accueil. `removeUser` (OIDC) n'est pas accessible hors React : l'utilisateur OIDC est nettoyé
+ * par `react-oidc-context` après rechargement ; sans token, les appels suivants ne déclenchent plus de déconnexion.
  */
 function logOut() {
 
+    marquerSessionExpiree();
     removeTokenFromStorage();
     globalThis.location.href = "/";
 }
@@ -23,11 +29,15 @@ let gestionnaireDeconnexion: () => void = logOut;
 
 /**
  * Enregistre le gestionnaire appelé sur un 401 / 403 (enregistré par `useAuthTokenSync`).
- * Sans argument, retour au comportement de repli (`logOut`). Réarme la garde de déconnexion unique.
+ * Sans argument, retour au comportement de repli (`logOut`). Ne réarme pas la garde de déconnexion unique.
  * @param gestionnaire fonction de déconnexion
  */
 export function setGestionnaireDeconnexion(gestionnaire?: () => void): void {
     gestionnaireDeconnexion = gestionnaire ?? logOut;
+}
+
+/** Réarme la garde de déconnexion unique : réservé aux tests (en production, seul le rechargement de page la réarme) **/
+export function reinitialiserGardeDeconnexionPourTests(): void {
     deconnexionEnCours = false;
 }
 
@@ -132,13 +142,25 @@ export async function call(httpMethod: string, uri: string, path: string, params
     }
 
     if (res.status >= 200 && res.status < 300) {
-        return res.json();
+        // 204 No Content (ex: DELETE d'une opération) : succès sans corps
+        if (res.status === 204) {
+            return undefined;
+        }
+        try {
+            return await res.json();
+        } catch (e) {
+            console.error("Réponse JSON invalide [" + fullURL + "]", e);
+            throw new HttpError(res.status, res.statusText, undefined, {cause: e});
+        }
     }
 
     const trace = "[WS-" + uuid + "] < [" + res.status + (res.statusText !== null && res.statusText !== "" ? " - " + res.statusText : "") + "]";
     if (res.status === 401 || res.status === 403) {
         console.warn(trace);
-        declencherDeconnexion();
+        // Déconnexion seulement si la requête portait un jeton (sinon : F5 avant synchro du jeton, visiteur anonyme)
+        if (token) {
+            declencherDeconnexion();
+        }
         throw new HttpError(res.status, res.statusText);
     }
 
