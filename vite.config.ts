@@ -1,5 +1,5 @@
 /// <reference types="vitest/config" />
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
@@ -15,6 +15,9 @@ export default defineConfig({
     test: {
         environment: 'jsdom',
         globals: true,
+        // Worktrees imbriqués (`.claude/worktrees/`) exclus : chacun porte ses propres tests déjà
+        // comptés dans son propre checkout (IHM AP011 T0.1, dette AP010).
+        exclude: [...configDefaults.exclude, '.claude/**'],
         setupFiles: ['src/setupTests.ts'],
         // Les tests d'intégration (formulaire d'opération) dépassent parfois 5 s sous charge / couverture
         testTimeout: 15000,
