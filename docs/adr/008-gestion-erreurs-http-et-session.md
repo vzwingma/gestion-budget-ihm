@@ -108,6 +108,17 @@ Ce correctif est **bloquant pour la PROD backend** : l'IHM doit être en PROD av
 - **Date d'effet** : au merge du plan 010, avant la PROD backend.
 - **Statut de l'ADR** : `Proposée` au Gate #1, passée `Acceptée` au `GO`.
 
+### Note de mise en œuvre (2026-11-16)
+
+- Code : PR **#739**. Tests : PR **#741**.
+- Évolutions décidées au Gate #2 (par rapport à la décision initiale ci-dessus) :
+  - déconnexion déclenchée seulement si la requête portait un jeton, et si c'est encore le jeton courant (course possible avec un renouvellement entre l'envoi et la réponse) ;
+  - règle « 204 → succès » retirée : un 2xx sans corps JSON est rejeté en `HttpError` ;
+  - garde de déconnexion anti-réentrance non réarmée ;
+  - `MainPage` attend `auth.isAuthenticated` avant ses appels (cas du F5) ;
+  - toasts d'erreur des Analyses passés par `notifierErreur` ;
+  - export réservé aux tests retiré du module de production (isolation via `vi.resetModules`).
+
 ---
 
 ## Références
