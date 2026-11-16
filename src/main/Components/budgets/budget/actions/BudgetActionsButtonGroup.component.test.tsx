@@ -49,6 +49,21 @@ describe('BudgetActionsButtonGroupComponent', () => {
         expect(boutons()).toEqual(['Réouvrir le budget']);
     });
 
+    test('compte inactif + budget clos (dernier disponible, IHM AP011 C2) : Réouvrir masqué', () => {
+        const compteInactif = { id: 'compte-3', libelle: 'Compte fermé', actif: false } as any;
+        rendre(TOUS_DROITS, { budget: buildBudget(false), selectedCompte: compteInactif });
+
+        expect(boutons()).toEqual([]);
+        expect(screen.queryByRole('button', { name: 'Réouvrir le budget' })).not.toBeInTheDocument();
+    });
+
+    test('compte inactif + budget ouvert : Clôturer reste proposé', () => {
+        const compteInactif = { id: 'compte-3', libelle: 'Compte fermé', actif: false } as any;
+        rendre(TOUS_DROITS, { selectedCompte: compteInactif });
+
+        expect(screen.getByRole('button', { name: 'Clôturer le budget' })).toBeInTheDocument();
+    });
+
     test.each([
         [[], []],
         [[UTILISATEUR_DROITS.DROIT_CLOTURE_BUDGET], ['Clôturer le budget']],

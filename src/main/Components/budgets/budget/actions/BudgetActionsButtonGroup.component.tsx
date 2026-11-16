@@ -12,7 +12,7 @@ import {
 import React, { JSX, useState } from 'react';
 
 import { AddchartRounded, LockOpenRounded, LockRounded, RestartAltRounded } from "@mui/icons-material";
-import { useCurrentBudget } from '../../../../hooks/useBudgetContext.ts';
+import { useBudgetSelection, useCurrentBudget } from '../../../../hooks/useBudgetContext.ts';
 import { ACTIONS_BUDGET_ENUM, UTILISATEUR_DROITS } from "../../../../Utils/AppBusinessEnums.constants.ts";
 import { getEventTargetId } from '../../../../Utils/OperationData.utils.ts';
 import { userHasPermission } from '../../../../Utils/UserData.utils.ts';
@@ -38,7 +38,11 @@ export interface BudgetActionsButtonGroupProps {
 export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGroupProps> = ({ droits, onActionBudgetChange, onActionOperationCreate }: BudgetActionsButtonGroupProps): JSX.Element => {
 
     const { currentBudget } = useCurrentBudget();
+    const { selectedCompte } = useBudgetSelection();
     const budget = currentBudget;
+    // Compte inactif renvoyant le dernier budget disponible (IHM AP011, décision 👤 C2) :
+    // « Réouvrir » rouvrirait ce vieux budget, pas le mois affiché — masqué dans ce cas.
+    const afficherBoutonClotureReouverture = budget?.actif || selectedCompte?.actif !== false;
     const [showModale, setShowModale] = useState<boolean>(false);
     const [modaleContent, setModaleContent] = useState<{ title: string, question: string }>();
     const [actionEnCours, setActionEnCours] = useState<string>();
@@ -125,7 +129,7 @@ export const BudgetActionsButtonGroupComponent: React.FC<BudgetActionsButtonGrou
     /** Groupe d'actions sur le budget **/
     return (
         <Stack direction={"row-reverse"} onClick={handleButtonsBudgetClick} sx={{ alignItems: "end" }}>
-            {userHasPermission(droits, UTILISATEUR_DROITS.DROIT_CLOTURE_BUDGET) &&
+            {afficherBoutonClotureReouverture && userHasPermission(droits, UTILISATEUR_DROITS.DROIT_CLOTURE_BUDGET) &&
                 <Tooltip title={(budget.actif ? "Clôturer" : "Réouvrir") + " le budget"}>
 
                     {(budget.actif ?

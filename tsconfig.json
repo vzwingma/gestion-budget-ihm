@@ -27,6 +27,11 @@
     "**/*.ts",
     "**/*.tsx"
   ],
+  "exclude": [
+    ".claude",
+    "node_modules",
+    "dist"
+  ],
   "ts-node": {
     "transpileOnly": true,
     "files": true,

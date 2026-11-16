@@ -9,6 +9,9 @@ class BudgetMensuelModel {
     libelle: string;
     actif: boolean = true;
     idCompteBancaire!: string;
+    /** Mois du budget (ADR 008 serverless) : nom Java (ex. `"MARCH"`) ou numéro 1-12 selon le backend **/
+    mois?: string | number;
+    annee?: number;
     soldes: Soldes = new Soldes();
     totauxParTypeCategories: { [key: string]: TotauxParTypeCategorie } = {};
     listeOperations: Array<OperationModel> = new Array<OperationModel>();

@@ -1,7 +1,7 @@
 # Plan d'Action 011 — IHM : impacts des changements de comportement du backend (plan serverless 004, Phase 1)
 
-**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-04 (Gate #0 GO, cadrage ARCos)
-**Statut :** ⏳ Planifié — Gate #0 GO ; **démarre après le merge du plan 010** (dépend du socle `HttpError`)
+**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-16 (Gate #1 GO, Phase 1 implémentée, Gate #2 soumis)
+**Statut :** 🚧 Phase 1 en cours — Gate #1 GO, T1.1-T1.4 réalisés, en attente Gate #2
 **Porteur :** ⚫ MAINa
 **Note :** plan renuméroté depuis 009 le 2026-11-15 (collision avec 008_versioning_ihm_ci) ; socle : [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md)
 **Origine :** plan serverless `004_revue_architecture_backend`, tâche T1.5. Décisions 👤 aux Gates #1 et #2 de la Phase 1 (2026-10-26 / 2026-10-29) et au Gate #0 IHM (2026-11-04).
@@ -61,8 +61,12 @@ La Phase 1 du plan serverless 004 modifie des comportements et des codes HTTP vi
 - **Fichier(s) :** `Components/analyses/Analyses.controller.ts`.
 - **Implémenter :** ignorer tout budget dont (annee, mois) ≠ mois de la boucle.
 
-#### T1.4 — Tests (QALvin)
-- Utilitaire (champs, repli id, deux formes de `Month`) ; `CompteTitre` (bandeau présent ou absent) ; « Réouvrir » masqué ; `Analyses.controller.test.ts` (pas de doublon) ; non-régression I2/I2b (budget vierge, solde repris).
+#### T1.4 — Tests (QALvin) — ✅ réalisé 2026-11-16
+- `Budget.utils.test.ts` (nouveau) : champs mois/annee (deux formes de `Month`), repli sur le suffixe `_AAAA_MM` de l'id, cas inertes.
+- `CompteTitre.component.test.tsx` : bandeau présent (budget hors mois) / absent (budget du mois / compte actif) ; correctif du helper de rendu (`CurrentBudgetContext` manquant).
+- `BudgetActionsButtonGroup.component.test.tsx` : « Réouvrir » masqué (compte inactif + budget de repli clos) ; « Clôturer » toujours proposé si le budget reçu est ouvert.
+- `Analyses.controller.test.ts` : pas de doublon sur budget de repli hors mois demandé (I1-bis) ; non-régression I2/I2b déjà couverte par le test de consolidation existant (budgets normaux sur plusieurs mois).
+- Preuve de régression (manuelle, non committée) : neutraliser le filtre `estBudgetDuMois` dans `Analyses.controller.ts` fait échouer le test de non-duplication (3 opérations au lieu de 1) ; filtre restauré et re-vérifié vert.
 
 ---
 
@@ -115,4 +119,5 @@ Plan 010 mergé → Gate #1 (011) → Phase 1 → Gates #2/#3 → [PROD IHM] →
 |---|---|---|---|---|
 | — | 2026-10-29 | Création (T1.5 du plan serverless 004) | ℹ️ | Plan créé, non commité |
 | #0 | 2026-11-04 | Choix de solution (cadrage ARCos) | ✅ GO | C2 bandeau + « Réouvrir » masqué + filtre Analyses (I1-bis) ; libellés virement / 503 ; alignement du solde du menu si simple ; Phase 1 avant la PROD backend |
-| #1 | — | Validation du plan | ⏳ Après le merge du plan 010 | |
+| #1 | 2026-11-16 | Validation du plan (Brief B 👤) | ✅ GO | Branche `feat/ihm-011-impacts-backend` créée depuis `origin/master` |
+| #2 | 2026-11-16 | Implémentation + tests Phase 1 (T1.1-T1.4) | ⏳ Soumis au 👤 | Revue code (1 bug corrigé : crash `CompteTitre` sans `CurrentBudgetContext`) + revue sécurité (rien trouvé) faites avant le gate ; lint/typecheck/build/`test:coverage` verts (98.12 % statements / 89.2 % branches global) ; commits `07d982f`, `13f0bfd`, `956fe7b` |
