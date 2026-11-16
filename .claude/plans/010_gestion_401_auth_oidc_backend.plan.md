@@ -95,8 +95,9 @@ Ce plan pose le socle : déconnexion fiable, erreur typée `HttpError`, messages
   - aucune boucle de rechargement.
 - **Acceptation :** `npm run test:coverage` vert ; couverture ≥ 80 % sur les fichiers modifiés ; preuve de détection de régression (neutraliser la garde de déconnexion unique : le test passe au rouge).
 
-#### T1.5 — Documentation (DOCly)
+#### T1.5 — Documentation (DOCly) ✅ Réalisée (2026-11-16)
 - **Fichier(s) :** `docs/ARCHITECTURE.md` (règle « 403 → logout » remplacée par la nouvelle gestion des erreurs et de la session), ADR IHM 008 `Acceptée` au GO du Gate #1, wiki IHM `Historique-de-l'Architecture.md`, liens vers ADR-005 et ADR-008 serverless.
+- **Fichiers modifiés :** `docs/ARCHITECTURE.md` (section « Gestion des erreurs HTTP et de la session », index ADR 007/008, lien `.claude/plans/`), `docs/adr/008-gestion-erreurs-http-et-session.md` (note de mise en œuvre PR #739/#741), `.claude/plans/010_gestion_401_auth_oidc_backend.plan.md` (ce fichier), `.claude/plans/README.md`. Wiki IHM lu (non commité — à charge du 👤).
 
 ---
 
@@ -132,9 +133,12 @@ Gate #1 → T1.1 → (T1.2 ∥ T1.3) → Gate #2 → T1.4 → Gate #3 → T1.5 �
 | #2 (2e passage) | 2026-11-15 | Validation du code (correctifs DEVon) | 🔧 AJUSTER | MainPage attend l'auth, règle 204 retirée, comparaison du jeton (course renouvellement), commentaire repli |
 | #2 (2e passage) | 2026-11-15 | Points 8 et 9 inclus (décision 👤 du 2026-11-15) | ℹ️ | Gate #2 2e passage : points 8 et 9 inclus (décision 👤 du 2026-11-15) |
 | — | 2026-11-15 | T1.4 (QALvin) : tests écrits sur branche `claude/ihm-010-t1-4-mods-042ad5` rebasée sur `feat/ihm-008-session-erreurs-http` | ℹ️ | Commits `cbd8e83`, `f3212e9`. 1171/1171 tests verts, couverture ≥ 89 % sur les fichiers du plan. Régression prouvée (garde anti-réentrance). Détail : [`010_reports/PHASE_1_TESTS_REPORT.md`](./010_reports/PHASE_1_TESTS_REPORT.md). Reste : scénarios manuels QUA, Gate #3 👤 |
+| #3 | 2026-11-16 | Validation tests T1.4 | ✅ GO (par merge PR #741) | 1171/1171 (109 fichiers), couverture 98,05 % l. / 89,06 % br., fichiers du plan ≥ 89 %, régression prouvée (garde anti-réentrance) |
+| — | 2026-11-16 | T1.5 documentation réalisée, Gate #4 en attente | ℹ️ | `docs/ARCHITECTURE.md`, ADR IHM 008, plan 010, `.claude/plans/README.md`, wiki IHM (lu, non commité — à charge du 👤) |
 
 ## Dette
 
 - (5) 403 avec jeton valide = boucle de reconnexion (décision 👤 : conserver).
 - (8) ✅ Traité (commit `refactor(analyses): toasts d'erreur via notifierErreur`) : 4 blocs remplacés par `notifierErreur` (exporté), messages réseau / 500 / 503 appliqués.
 - (9) ✅ Traité (commit `refactor(http): garde de déconnexion isolée par vi.resetModules dans les tests`) : export de test retiré du module de production.
+- (10) **Worktrees imbriqués** : `vite.config.ts` n'exclut pas `.claude/worktrees/` des tests — en local, depuis le checkout principal, Vitest compte aussi les tests des worktrees (341 fichiers au lieu de 109). `tsconfig.json` inclut `**/*.ts` sans exclusion : les `node_modules` des worktrees provoquent des erreurs `TS2428`. La CI n'est pas concernée (pas de worktrees imbriqués dans les runners). Correctif planifié au plan 011 (T0.1).
