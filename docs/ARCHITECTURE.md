@@ -201,6 +201,24 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
 
 ---
 
+## 🧯 Gestion des erreurs HTTP et de la session
+
+> Décision : [ADR 008](./adr/008-gestion-erreurs-http-et-session.md) (`Acceptée`). Backend : ADR-005 et ADR-008 du dépôt `gestion-budget-serverless` (validation du jeton par `quarkus-oidc`, `/_info` public).
+
+- **Erreur typée** `HttpError` (`Services/HttpError.ts`) : `status`, `statusText`, `body` (console uniquement, jamais affiché), `cause`. Toute réponse non-2xx est rejetée en `HttpError` — y compris un 2xx dont le corps n'est pas du JSON (204 compris : la règle « 204 → succès » a été retirée). Une erreur réseau donne une `HttpError` sans statut, avec `cause`.
+- **Déconnexion unique sur 401/403 avec jeton** : si la requête portait un jeton et qu'il s'agit encore du jeton courant (`getOAuthToken() === token` au retour de la réponse — sinon le jeton a été renouvelé entre l'envoi et la réponse, pas de déconnexion), `ClientHTTP.service.ts` déclenche le gestionnaire de déconnexion derrière une garde anti-réentrance (`deconnexionEnCours`, jamais réarmée : une déconnexion lancée se termine par un rechargement de page). Le gestionnaire, enregistré par `useAuthTokenSync`, pose un drapeau sessionStorage, appelle `auth.removeUser()`, puis `location.href = "/"`. Au retour sur la page Infos (qui a son propre `ToastContainer`), toast « Session expirée, reconnectez-vous ». Sans jeton (visiteur anonyme), ou avec un jeton déjà renouvelé : simple `HttpError`, sans déconnexion.
+- **Repli sans gestionnaire** (`logOut()`, utilisé si `useAuthTokenSync` n'est pas monté) : pose le drapeau, nettoie le storage local, redirige — mais **n'appelle pas** `removeUser` (inaccessible hors React). L'utilisateur OIDC est resynchronisé par `useAuthTokenSync` après le rechargement de page.
+- **Aucun en-tête `Authorization`** n'est envoyé sans jeton (fin de `Bearer null`).
+- **Notifications** (`CallAndNotify.service.ts`, `notifierErreur` exporté) :
+  - aucun toast **ni log** sur 401/403 (la trace `console.warn` est déjà émise par `ClientHTTP.call`) ;
+  - messages techniques centralisés : 503 « Service momentanément indisponible, réessayez », 500 « Erreur interne du serveur, réessayez plus tard », réseau « Serveur injoignable, vérifiez votre connexion » ;
+  - surchargeables par appel via le paramètre optionnel `messagesParStatut` (utilisé par le plan 011) ;
+  - le libellé renvoyé par le backend ne va qu'en console, jamais dans un toast ;
+  - Analyses (`Analyses.extservices.ts`, `Analyses.controller.ts`) : les toasts d'erreur passent par `notifierErreur`.
+- **`useFetch`** accepte l'option `{ enabled }` ; `MainPage` attend `auth.isAuthenticated` avant ses appels (cas du F5).
+
+---
+
 ## 🧪 Tests
 
 | Type | Framework | Emplacement | Couverture cible |
@@ -227,7 +245,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 - **Appels HTTP** : Toujours via `ClientHTTP.service.ts`. URLs avec `{{}}` comme marqueur positionnel. Jamais `fetch` directement dans un composant. Les erreurs sont relancées avec `cause` (stack d'origine conservée). Dans les `*.extservices.ts` : variantes Promise `fetch*` via `callWithNotify(promise, errorMessage, toastOptions?)` pour les lectures (consommées par `useFetch`) ; `callAndNotify(promise, onSuccess, errorMessage, toastOptions?)` pour les actions/sauvegardes
 - **Layout** : `Box`/`Grid` MUI pour la mise en page, `useMediaQuery`/`useTheme` pour le responsive
 - **Optimisation** : `useMemo` pour les calculs dérivés coûteux, `useCallback` pour les handlers passés en props, `React.memo` pour les items de liste (voir [Performance](#-performance))
-- **Gestion erreurs** : Codes HTTP 403 → logout, autres erreurs → toast via react-toastify
+- **Gestion erreurs** : `HttpError` typée sur toute réponse non-2xx, déconnexion unique sur 401/403 avec jeton courant, messages techniques centralisés via `notifierErreur` — voir [Gestion des erreurs HTTP et de la session](#-gestion-des-erreurs-http-et-de-la-session)
 - **Logs** : pas de `console.log` direct (règle ESLint `no-console`, `warn` et `error` autorisés). Logs de debug via `debug()` de `Utils/Debug.utils.ts` (voir [Mode debug](#-mode-debug))
 
 ---
@@ -241,6 +259,8 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 |---|---|---|---|
 | 001 | [Migration du socle build Create React App vers Vite](./adr/001-migration-cra-vers-vite.md) | ✅ Acceptée | 2026-07-07 |
 | 002 | [Introduction conditionnelle de TanStack Query (data-fetching)](./adr/002-tanstack-query-data-fetching.md) | ❌ Rejetée | 2026-10-27 |
+| 007 | [Migration déploiement S3 `reggionick/s3-deploy` → AWS CLI natif](./adr/007-migration-s3-deploy-aws-cli.md) | ✅ Acceptée | 2026-10-25 |
+| 008 | [Gestion des erreurs HTTP et de la session](./adr/008-gestion-erreurs-http-et-session.md) | ✅ Acceptée | 2026-11-04 |
 
 > 💡 Chaque nouvelle décision architecturale majeure doit faire l'objet d'un ADR. Voir `docs/adr/` pour les détails.
 
@@ -305,6 +325,6 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 - **README** : [`README.md`](../README.md)
 - **Instructions Copilot** : [`.github/copilot-instructions.md`](../.github/copilot-instructions.md)
-- **Plans d'Action** : [`.github/plans/`](../.github/plans/)
+- **Plans d'Action** : [`.claude/plans/`](../.claude/plans/)
 - **ADRs** : [`docs/adr/`](./adr/)
 - **Backend** : [`gestion-budget-serverless`](https://github.com/vzwingma/gestion-budget-serverless)
