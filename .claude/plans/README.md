@@ -11,7 +11,7 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
 | 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ **Clos (2026-10-27)** — lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées), 5 (finitions) et 6 (`useBudgetPageData`, T6, T20) livrés et mergés ; T12 non retenu (décision 👤, ADR 002 Rejetée) ; dette mineure résiduelle dans « Dette restante » du plan | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
-| 010 | Gestion des erreurs HTTP et de la session (401/403 → déconnexion unique, `HttpError`, messages centralisés) | 🔵 **En cours** — Gate #2 2e passage ✅ ; T1.4 (tests) livré 2026-11-15, Gate #3 en attente 👤 | [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md) |
+| 010 | Gestion des erreurs HTTP et de la session (401/403 → déconnexion unique, `HttpError`, messages centralisés) | 🔵 **En cours** — Gate #3 ✅ GO (merge PR #741) ; T1.5 (doc) réalisée 2026-11-16, Gate #4 en attente 👤 | [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md) |
 | 011 | Impacts IHM de la Phase 1 backend (codes métier, `messagesParStatut`) | ⏳ **Planifié** — Gate #0 GO ; démarre après le merge du 010 | [`011_impacts_ihm_phase1_backend.plan.md`](./011_impacts_ihm_phase1_backend.plan.md) |
 
 ADR associé (plan 010) : [`docs/adr/008-gestion-erreurs-http-et-session.md`](../../docs/adr/008-gestion-erreurs-http-et-session.md) (Acceptée le 2026-11-04)
