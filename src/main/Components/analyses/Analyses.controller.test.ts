@@ -6,6 +6,7 @@ import { AnalysesPeriodeModel } from '../../Models/analyses/AnalysesPeriode.mode
 import { AnalysesFiltersModel } from '../../Models/analyses/AnalysesFilters.model.ts';
 import CompteBancaireModel from '../../Models/budgets/CompteBancaire.model.ts';
 import OperationModel from '../../Models/budgets/Operation.model.ts';
+import { HttpError } from '../../Services/HttpError.ts';
 
 vi.mock('./Analyses.extservices.ts', () => ({
     loadBudget: vi.fn()
@@ -76,6 +77,40 @@ describe('Analyses.controller', () => {
             }
         });
         expect(handleDataCalculationResult.mock.calls[0][1].map((cat: { libelle: string }) => cat.libelle)).toEqual(['A', 'B']);
+    });
+
+    test('échec HttpError 401/403 sur un mois : pas de toast, mois exclu de la consolidation', async () => {
+        const handleDataCalculationResult = vi.fn();
+        (loadBudget as Mock).mockRejectedValue(new HttpError(401, 'Unauthorized'));
+
+        loadBudgetsPeriodes(
+            {id: 'compte-1', libelle: 'Compte 1'} as unknown as CompteBancaireModel,
+            {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-01-01')} as unknown as AnalysesPeriodeModel,
+            handleDataCalculationResult
+        );
+        await flushPromises();
+        await flushPromises();
+
+        expect(toast.error).not.toHaveBeenCalled();
+        expect(handleDataCalculationResult).toHaveBeenCalledTimes(1);
+        expect(handleDataCalculationResult.mock.calls[0][0].listeOperations).toEqual([]);
+    });
+
+    test('échec de la consolidation (HttpError 503) : toast avec message technique dédié', async () => {
+        const handleDataCalculationResult = vi.fn().mockImplementation(() => {
+            throw new HttpError(503, 'Service Unavailable');
+        });
+        (loadBudget as Mock).mockResolvedValue({listeOperations: [], soldes: undefined});
+
+        loadBudgetsPeriodes(
+            {id: 'compte-1', libelle: 'Compte 1'} as unknown as CompteBancaireModel,
+            {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-01-01')} as unknown as AnalysesPeriodeModel,
+            handleDataCalculationResult
+        );
+        await flushPromises();
+        await flushPromises();
+
+        expect(toast.error).toHaveBeenCalledWith('Service momentanément indisponible, réessayez', expect.anything());
     });
 
     test('applique les filtres sur les opérations', () => {

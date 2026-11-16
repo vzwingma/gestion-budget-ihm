@@ -3,6 +3,7 @@ import {getValidPeriodesForCompte, loadBudget} from './Analyses.extservices.ts';
 import {call} from '../../Services/ClientHTTP.service.ts';
 import { toast } from 'react-toastify';
 import CompteBancaireModel from '../../Models/budgets/CompteBancaire.model.ts';
+import { HttpError } from '../../Services/HttpError.ts';
 
 vi.mock('../../Services/ClientHTTP.service.ts', () => ({
     call: vi.fn()
@@ -48,6 +49,26 @@ describe('Analyses.extservices', () => {
         expect(toast.error).toHaveBeenCalledWith(expect.stringContaining('Compte'), expect.anything());
         expect(erreurConsole).toHaveBeenCalled();
         erreurConsole.mockRestore();
+    });
+
+    test('loadBudget : HttpError 401/403 (session invalide) : aucun toast (ADR 008)', async () => {
+        const erreurConsole = vi.spyOn(console, 'error').mockImplementation(() => {});
+        (call as Mock).mockRejectedValue(new HttpError(401, 'Unauthorized'));
+
+        await expect(loadBudget({id: 'c1', libelle: 'Compte'} as CompteBancaireModel, new Date(2026, 0, 10))).resolves.toBeUndefined();
+
+        expect(toast.error).not.toHaveBeenCalled();
+        expect(erreurConsole).not.toHaveBeenCalled();
+        erreurConsole.mockRestore();
+    });
+
+    test('loadBudget : HttpError 503 -> message technique dédié', async () => {
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        (call as Mock).mockRejectedValue(new HttpError(503, 'Service Unavailable'));
+
+        await loadBudget({id: 'c1', libelle: 'Compte'} as CompteBancaireModel, new Date(2026, 0, 10));
+
+        expect(toast.error).toHaveBeenCalledWith('Service momentanément indisponible, réessayez', expect.anything());
     });
 
     test('getValidPeriodesForCompte : réponse inattendue -> tableau vide', async () => {

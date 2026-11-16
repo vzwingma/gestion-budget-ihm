@@ -1,9 +1,10 @@
-import {getOAuthToken, putTokenInStorage, removeTokenFromStorage} from './Auth.service.ts';
+import {consommerSessionExpiree, getOAuthToken, marquerSessionExpiree, putTokenInStorage, removeTokenFromStorage} from './Auth.service.ts';
 
 describe('Auth.service', () => {
 
     beforeEach(() => {
         localStorage.clear();
+        sessionStorage.clear();
         vi.restoreAllMocks();
     });
 
@@ -34,5 +35,18 @@ describe('Auth.service', () => {
 
         expect(localStorage.getItem('oauth2TokenKey')).toBeNull();
         expect(getOAuthToken()).toBeNull();
+    });
+
+    test('consommerSessionExpiree renvoie false quand le drapeau est absent', () => {
+        expect(consommerSessionExpiree()).toBe(false);
+    });
+
+    test('marquerSessionExpiree pose le drapeau, consommerSessionExpiree le lit puis l\'efface', () => {
+        marquerSessionExpiree();
+
+        expect(sessionStorage.getItem('sessionExpiree')).toBe('true');
+        expect(consommerSessionExpiree()).toBe(true);
+        expect(sessionStorage.getItem('sessionExpiree')).toBeNull();
+        expect(consommerSessionExpiree()).toBe(false);
     });
 });
