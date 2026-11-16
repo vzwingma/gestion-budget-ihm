@@ -1,22 +1,26 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import CompteTitre from './CompteTitre.component.tsx';
-import { BudgetSelectionContext } from '../../../hooks/useBudgetContext.ts';
+import { BudgetSelectionContext, CurrentBudgetContext } from '../../../hooks/useBudgetContext.ts';
+import BudgetMensuelModel from '../../../Models/budgets/BudgetMensuel.model.ts';
 
 /**
- * CompteTitre lit uniquement la moitié "sélection" du contexte (AP 006 - T6) :
- * il suffit de fournir BudgetSelectionContext (pas de CurrentBudgetContext).
+ * CompteTitre lit la sélection (compte, date) et le budget courant (bandeau « Compte inactif »,
+ * IHM AP011 T1.2) : les deux sous-contextes doivent être fournis.
  */
 
 const compte: any = { id: 'c1', libelle: 'Compte courant', itemIcon: 'banque' };
 
-function renderTitre(selectedCompte: any, selectedDate = new Date(2026, 0, 1)) {
-    const value: any = { selectedCompte, selectedDate, comptes: [], categories: [] };
+function renderTitre(selectedCompte: any, selectedDate = new Date(2026, 0, 1), currentBudget: BudgetMensuelModel | undefined = undefined) {
+    const selectionValue: any = { selectedCompte, selectedDate, comptes: [], categories: [] };
+    const currentBudgetValue: any = { currentBudget, setCurrentBudget: vi.fn(), currentOperation: null, setCurrentOperation: vi.fn(), filtreOperations: undefined, setFiltreOperations: vi.fn() };
     return render(
-        <BudgetSelectionContext.Provider value={value}>
-            <CompteTitre />
+        <BudgetSelectionContext.Provider value={selectionValue}>
+            <CurrentBudgetContext.Provider value={currentBudgetValue}>
+                <CompteTitre />
+            </CurrentBudgetContext.Provider>
         </BudgetSelectionContext.Provider>
     );
 }
@@ -42,5 +46,26 @@ describe('CompteTitre', () => {
 
         expect(screen.queryByRole('img')).not.toBeInTheDocument();
         expect(screen.queryByText(/2026/)).not.toBeInTheDocument();
+    });
+
+    test('bandeau affiché : compte inactif, budget reçu d\'un autre mois (IHM AP011 - C2)', () => {
+        const budget = new BudgetMensuelModel('c1_2025_11', 'Budget');
+        renderTitre({ ...compte, actif: false }, new Date(2026, 0, 1), budget);
+
+        expect(screen.getByText('Compte inactif — dernier budget disponible : 11/2025')).toBeInTheDocument();
+    });
+
+    test('pas de bandeau : compte inactif mais budget du mois demandé', () => {
+        const budget = new BudgetMensuelModel('c1_2026_01', 'Budget');
+        renderTitre({ ...compte, actif: false }, new Date(2026, 0, 1), budget);
+
+        expect(screen.queryByText(/Compte inactif/)).not.toBeInTheDocument();
+    });
+
+    test('pas de bandeau : compte actif (backend inchangé)', () => {
+        const budget = new BudgetMensuelModel('c1_2025_11', 'Budget');
+        renderTitre({ ...compte, actif: true }, new Date(2026, 0, 1), budget);
+
+        expect(screen.queryByText(/Compte inactif/)).not.toBeInTheDocument();
     });
 });

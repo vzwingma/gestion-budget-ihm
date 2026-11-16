@@ -147,6 +147,7 @@ export interface RenderWithContextsOptions {
     operation?: OperationModel | null;
     comptes?: CompteBancaireModel[];
     categories?: CategorieOperationModel[];
+    selectedCompte?: CompteBancaireModel | null;
 }
 
 /**
@@ -157,7 +158,7 @@ export function renderWithContexts(ui: React.ReactElement, options: RenderWithCo
     const selection: BudgetSelectionContextType = {
         comptes: options.comptes ?? buildComptes(),
         setListeComptes: vi.fn(),
-        selectedCompte: null,
+        selectedCompte: 'selectedCompte' in options ? (options.selectedCompte ?? null) : null,
         setSelectedCompte: vi.fn(),
         selectedDate: new Date(2026, 9, 1),
         setSelectedDate: vi.fn(),
