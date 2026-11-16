@@ -113,6 +113,40 @@ describe('Analyses.controller', () => {
         expect(toast.error).toHaveBeenCalledWith('Service momentanément indisponible, réessayez', expect.anything());
     });
 
+    test('compte inactif (F3, backend) : budget de repli hors mois demandé exclu, pas de doublon (IHM AP011 I1-bis)', async () => {
+        const handleDataCalculationResult = vi.fn();
+        const budgetJanvier = {
+            id: 'compte-1_2026_01',
+            listeOperations: [{categorie: {id: 'c1', libelle: 'A'}, autresInfos: {dateOperation: new Date('2026-01-15')}}],
+            soldes: {soldeAtMaintenant: 100, soldeAtFinMoisCourant: 120, soldeAtFinMoisPrecedent: 80}
+        };
+        // Compte inactif sans budget propre : le backend renvoie le même dernier budget disponible (F3) sur février et mars
+        const budgetRepli = {
+            id: 'compte-1_2025_11',
+            listeOperations: [{categorie: {id: 'c2', libelle: 'B'}, autresInfos: {dateOperation: new Date('2025-11-20')}}],
+            soldes: {soldeAtMaintenant: 50, soldeAtFinMoisCourant: 60, soldeAtFinMoisPrecedent: 40}
+        };
+        (loadBudget as Mock)
+            .mockResolvedValueOnce(budgetJanvier)
+            .mockResolvedValueOnce(budgetRepli)
+            .mockResolvedValueOnce(budgetRepli);
+
+        loadBudgetsPeriodes(
+            {id: 'compte-1', libelle: 'Compte 1'} as unknown as CompteBancaireModel,
+            {periodeDebut: new Date('2026-01-01'), periodeFin: new Date('2026-03-01')} as unknown as AnalysesPeriodeModel,
+            handleDataCalculationResult
+        );
+        await flushPromises();
+        await flushPromises();
+
+        expect(loadBudget).toHaveBeenCalledTimes(3);
+        expect(handleDataCalculationResult.mock.calls[0][0].listeOperations).toHaveLength(1);
+        expect(handleDataCalculationResult.mock.calls[0][0].listeOperations[0].categorie.id).toBe('c1');
+        expect(handleDataCalculationResult.mock.calls[0][0].soldesParMois).toEqual({
+            '2026-01': {soldeAtMaintenant: 100, soldeAtFinMoisCourant: 120, soldeAtFinMoisPrecedent: 80}
+        });
+    });
+
     test('applique les filtres sur les opérations', () => {
         const operations = [
             {

@@ -10,6 +10,7 @@ import { AnalysesFiltersModel } from "../../Models/analyses/AnalysesFilters.mode
 import BudgetMensuelAnalyseConsolideModel from "../../Models/budgets/BudgetMensuel.analyse.consolide.model.ts";
 import { debug } from "../../Utils/Debug.utils.ts";
 import { notifierErreur } from "../../Services/CallAndNotify.service.ts";
+import { estBudgetDuMois } from "../../Utils/Budget.utils.ts";
 
 /**
  * Contrôleur des analyses
@@ -48,7 +49,15 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
         )
     )
     .then((monthlyBudgets: { month: Date, budget: BudgetMensuelModel | null | undefined }[]) => {
-        budgetConsolide.listeOperations = monthlyBudgets.flatMap(({ month, budget }) => {
+        // Filtre I1-bis (IHM AP011) : un compte inactif sans budget pour le mois demandé reçoit
+        // le dernier budget disponible (F3, backend) — identique sur plusieurs mois de la
+        // période. Sans ce filtre, ses opérations et son solde seraient dupliqués sur chacun.
+        const budgetsDuMoisDemande = monthlyBudgets.map(({ month, budget }) => ({
+            month,
+            budget: budget && estBudgetDuMois(budget, month) ? budget : null
+        }));
+
+        budgetConsolide.listeOperations = budgetsDuMoisDemande.flatMap(({ month, budget }) => {
             return (budget?.listeOperations || []).map(operation => {
             if (operation.autresInfos?.dateOperation) {
                 const operationDate = new Date(operation.autresInfos.dateOperation);
@@ -61,7 +70,7 @@ export function loadBudgetsPeriodes(selectedCompte: CompteBancaireModel | null, 
             return operation;
             });
         });
-        budgetConsolide.soldesParMois = monthlyBudgets.reduce((acc: { [key: string]: Soldes }, { month, budget }) => {
+        budgetConsolide.soldesParMois = budgetsDuMoisDemande.reduce((acc: { [key: string]: Soldes }, { month, budget }) => {
             if (budget?.soldes) {
                 const monthKey = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}`;
                 acc[monthKey] = budget.soldes;
