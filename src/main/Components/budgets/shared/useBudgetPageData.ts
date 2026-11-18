@@ -31,7 +31,9 @@ export interface UseBudgetPageDataOptions {
  *   rechargement n'est jamais réinjecté, même si `prepareBudget` change de référence) ;
  * - callback de mise à jour du budget (`handleBudgetUpdate`) ;
  * - regroupement des opérations (`useMemo`) dérivé du budget courant ;
- * - droits utilisateur (préférences, chargées au 1er affichage).
+ * - droits utilisateur (préférences, chargées au 1er affichage) ;
+ * - erreur de chargement du budget + `refetchBudget` (IHM AP011 T2.1 : écran d'erreur + « Réessayer »
+ *   plutôt qu'un Backdrop bloqué indéfiniment sur 404/503).
  */
 export function useBudgetPageData({ groupOperations, prepareBudget }: UseBudgetPageDataOptions) {
     const { selectedCompte, selectedDate } = useBudgetSelection();
@@ -55,7 +57,7 @@ export function useBudgetPageData({ groupOperations, prepareBudget }: UseBudgetP
     );
 
     /** Rechargement du budget si changement de compte ou de date **/
-    const { data: budgetCharge } = useFetch(() => fetchBudget(selectedCompte, selectedDate), [selectedCompte, selectedDate]);
+    const { data: budgetCharge, error: budgetError, refetch: refetchBudget } = useFetch(() => fetchBudget(selectedCompte, selectedDate), [selectedCompte, selectedDate]);
 
     /** Réinitialisation du contexte si changement de compte ou de date **/
     useEffect(() => {
@@ -85,6 +87,10 @@ export function useBudgetPageData({ groupOperations, prepareBudget }: UseBudgetP
         setCurrentOperation,
         operationsGroupees,
         userDroits,
-        handleBudgetUpdate
+        handleBudgetUpdate,
+        /** Erreur du dernier chargement de budget (404/503…) — `undefined` si aucune, ou si masquée par un rechargement réussi depuis **/
+        budgetError,
+        /** Force un nouveau chargement du budget (bouton « Réessayer ») **/
+        refetchBudget
     };
 }

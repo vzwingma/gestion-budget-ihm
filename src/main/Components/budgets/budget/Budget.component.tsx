@@ -13,6 +13,7 @@ import { fetchLibellesOperationsCompte } from "../operations/courantes/detail/Op
 import { useBudgetSelection, useCurrentBudget } from "../../../hooks/useBudgetContext.ts";
 import { useBudgetPageData } from "../shared/useBudgetPageData.ts";
 import { useFetch } from "../../../hooks/useFetch.ts";
+import { messageErreurHttp } from "../../../Services/CallAndNotify.service.ts";
 import BudgetSoldes from "./BudgetSoldes.component.tsx";
 import BudgetPageShell from "../shared/BudgetPageShell.component.tsx";
 import OperationsFilterBar from "../shared/OperationsFilterBar.component.tsx";
@@ -54,8 +55,14 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
     const { filtreOperations, setFiltreOperations } = useCurrentBudget();
     const {
         selectedCompte, selectedDate, currentBudget, currentOperation, setCurrentOperation,
-        operationsGroupees: operationsGroupedByDateOperation, userDroits, handleBudgetUpdate
+        operationsGroupees: operationsGroupedByDateOperation, userDroits, handleBudgetUpdate,
+        budgetError, refetchBudget
     } = useBudgetPageData({ groupOperations: groupOperationsByDate, prepareBudget: prepareBudgetOperations });
+
+    /** Message d'erreur du budget (IHM AP011 T2.1) : 503 distinct du message générique (404…) */
+    const budgetErrorMessage = budgetError === undefined || budgetError === null
+        ? undefined
+        : messageErreurHttp(budgetError, "Impossible de charger le budget");
 
 
     /** Chargement des catégories au 1er démarrage **/
@@ -110,6 +117,8 @@ export const BudgetPage: React.FC<BudgetPageProps> = ({ onOpenMenu }: BudgetPage
         <BudgetPageShell
             className="page-container budget-page-container"
             isLoading={currentBudget == null}
+            errorMessage={budgetErrorMessage}
+            onRetry={refetchBudget}
             onOpenMenu={onOpenMenu}
             filterOperations={filtreOperations.texte}
             onFilterChange={handleFilterTexteChange}

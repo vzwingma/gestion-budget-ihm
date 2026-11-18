@@ -1,5 +1,5 @@
 import React, { JSX, ReactNode } from "react";
-import { Backdrop, Box, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Alert, Backdrop, Box, Button, CircularProgress, Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
 import CompteBancaireModel from "../../../Models/budgets/CompteBancaire.model.ts";
 import BudgetPageHeader from "./BudgetPageHeader.component.tsx";
 import { FILTER_BAR_HEIGHT, getHeightList } from "../../../Utils/renderers/ListData.renderer.utils.tsx";
@@ -21,6 +21,12 @@ interface BudgetPageShellProps {
     rightColumnSize: { md: number; xl: number };
     leftContent: ReactNode;
     rightContent: ReactNode;
+    /**
+     * Échec du chargement du budget (IHM AP011 T2.1) : ferme le Backdrop et affiche `errorMessage`
+     * avec un bouton « Réessayer » (`onRetry`) au lieu de bloquer l'écran indéfiniment.
+     */
+    errorMessage?: string;
+    onRetry?: () => void;
 }
 
 /**
@@ -29,6 +35,9 @@ interface BudgetPageShellProps {
  *
  * Chaque page reste responsable de ses propres données (chargement, regroupement,
  * sélection d'opération) et ne fournit ici que le contenu des 2 colonnes.
+ *
+ * `errorMessage` (IHM AP011 T2.1) : ferme le Backdrop et affiche le message + bouton « Réessayer »
+ * au lieu de bloquer l'écran indéfiniment (404/503 sur le chargement du budget).
  */
 const BudgetPageShell: React.FC<BudgetPageShellProps> = ({
     className,
@@ -45,19 +54,29 @@ const BudgetPageShell: React.FC<BudgetPageShellProps> = ({
     leftColumnSize,
     rightColumnSize,
     leftContent,
-    rightContent
+    rightContent,
+    errorMessage,
+    onRetry
 }: BudgetPageShellProps): JSX.Element => {
 
     const isMobile = useMediaQuery(useTheme().breakpoints.down('lg'));
+    const isError = errorMessage !== undefined;
 
     return (
         <Box className={className}>
 
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={isLoading}>
+                open={isLoading && !isError}>
                 <CircularProgress color="inherit" />
             </Backdrop>
+
+            {isError &&
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 4, gap: 2 }}>
+                    <Alert severity="error">{errorMessage}</Alert>
+                    <Button variant="outlined" color="error" onClick={onRetry}>Réessayer</Button>
+                </Box>
+            }
 
             <BudgetPageHeader
                 onOpenMenu={onOpenMenu}

@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { toast } from 'react-toastify';
-import { callAndNotify, callWithNotify, notifierErreur } from './CallAndNotify.service.ts';
+import { callAndNotify, callWithNotify, messageErreurHttp, notifierErreur } from './CallAndNotify.service.ts';
 import { HttpError, isSessionInvalide } from './HttpError.ts';
 
 vi.mock('react-toastify', () => ({ toast: { error: vi.fn() } }));
@@ -160,6 +160,20 @@ describe('notifierErreur', () => {
         notifierErreur(new HttpError(500), 'Erreur X', options);
 
         expect(toast.error).toHaveBeenCalledWith('Erreur interne du serveur, réessayez plus tard', options);
+    });
+});
+
+describe('messageErreurHttp (IHM AP011 T2.1 : réutilisé hors toast, ex. écran d\'erreur budget)', () => {
+
+    test('HttpError 503 : message technique, distinct du message générique (404)', () => {
+        expect(messageErreurHttp(new HttpError(503, 'Service Unavailable'), 'Impossible de charger le budget'))
+            .toBe('Service momentanément indisponible, réessayez');
+        expect(messageErreurHttp(new HttpError(404, 'Not Found'), 'Impossible de charger le budget'))
+            .toBe('Impossible de charger le budget');
+    });
+
+    test('erreur non HttpError : message de l\'appelant tel quel', () => {
+        expect(messageErreurHttp(new Error('x'), 'Impossible de charger le budget')).toBe('Impossible de charger le budget');
     });
 });
 

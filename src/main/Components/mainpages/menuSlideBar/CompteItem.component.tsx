@@ -40,8 +40,9 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedCompte, selecte
             ? fetchSoldesBudget(compte, selectedDate)
             : Promise.resolve(undefined),
         [compte, selectedDate, selectedFunction, onRefreshMenuBar]);
-    /** En cas d'erreur, le solde repasse à `undefined` (indicateur de chargement) **/
-    const soldes: number | null | undefined = erreurSoldes ? undefined : soldesCharges;
+    /** Erreur de chargement du solde (IHM AP011 T2.2) : état « Indisponible » plutôt qu'un spinner infini **/
+    const erreurSoldesPresente = erreurSoldes != null;
+    const soldes: number | null | undefined = erreurSoldesPresente ? undefined : soldesCharges;
 
 
     /**
@@ -50,7 +51,12 @@ const CompteItem: React.FC<CompteItemProps> = ({ compte, selectedCompte, selecte
      * @constructor
      */
     function renderValueCompte(): JSX.Element {
-        if ( (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS) && (chargementSoldes || soldes === undefined) ) {
+        if ( (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS) && erreurSoldesPresente ) {
+            return <Typography variant={"subtitle1"} sx={{ width: 120, cursor: "help" }}>
+                <span style={{color: "var(--color-depense)"}}>Indisponible</span>
+            </Typography>
+        }
+        else if ( (selectedFunction === BUSINESS_ONGLETS.BUDGET || selectedFunction === BUSINESS_ONGLETS.RECURRENTS) && (chargementSoldes || soldes === undefined) ) {
             return <CircularProgress size={20} />
         }
         else if (selectedFunction === BUSINESS_ONGLETS.BUDGET) {

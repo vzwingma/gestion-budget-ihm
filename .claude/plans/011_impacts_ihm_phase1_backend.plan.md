@@ -1,7 +1,7 @@
 # Plan d'Action 011 — IHM : impacts des changements de comportement du backend (plan serverless 004, Phase 1)
 
-**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-16 (Gate #1 GO, Phase 1 implémentée, Gate #2 soumis)
-**Statut :** 🚧 Phase 1 en cours — Gate #1 GO, T1.1-T1.4 réalisés, en attente Gate #2
+**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-18 (Gate #2 Phase 1 GO, Phase 2 implémentée, Gate #2 Phase 2 soumis)
+**Statut :** 🚧 Phase 2 en cours — Phase 1 mergée (PR #743), T2.1-T2.4 réalisés, en attente Gate #2 (Phase 2)
 **Porteur :** ⚫ MAINa
 **Note :** plan renuméroté depuis 009 le 2026-11-15 (collision avec 008_versioning_ihm_ci) ; socle : [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md)
 **Origine :** plan serverless `004_revue_architecture_backend`, tâche T1.5. Décisions 👤 aux Gates #1 et #2 de la Phase 1 (2026-10-26 / 2026-10-29) et au Gate #0 IHM (2026-11-04).
@@ -79,17 +79,23 @@ La Phase 1 du plan serverless 004 modifie des comportements et des codes HTTP vi
 - Le virement affiche les messages dédiés pour 406, 400, 404 et 503, sans déconnexion, et le brouillon est conservé.
 
 ### Tâches
-#### T2.1 — Page budget (DEVon)
-- **Fichier(s) :** `hooks/useBudgetPageData.ts` (exposer `error` et `refetch`), `Budget.component.tsx`, `BudgetPageShell.component.tsx`, `Budget.extservices.ts`, `Analyses.extservices.ts`.
+#### T2.1 — Page budget (DEVon) — ✅ réalisé 2026-11-18
+- **Fichier(s) :** `hooks/useBudgetPageData.ts` (expose `budgetError`/`refetchBudget`), `BudgetPageShell.component.tsx` (`errorMessage`/`onRetry` : Backdrop fermé sur erreur, Alert + bouton « Réessayer »), `Budget.component.tsx`, `Recurrents.component.tsx`.
+- `Services/CallAndNotify.service.ts` : message extrait dans `messageErreurHttp` (réutilisé hors toast) — 503 distinct du message générique (404 non mappé explicitement).
+- `Analyses.extservices.ts` / `Budget.extservices.ts` : **non modifiés** — Analyses écarte déjà le mois en erreur sans bloquer l'écran (T1.3/plan 010) ; `fetchBudget` utilisait déjà `callWithNotify` (socle plan 010).
 
-#### T2.2 — Menu des comptes (DEVon)
-- **Fichier(s) :** `CompteItem.component.tsx` : état « indisponible ».
+#### T2.2 — Menu des comptes (DEVon) — ✅ réalisé 2026-11-18
+- **Fichier(s) :** `CompteItem.component.tsx` : état « Indisponible » (BUDGET et RECURRENTS) au lieu du spinner infini sur erreur `/soldes`.
 
-#### T2.3 — Virement (DEVon)
-- **Fichier(s) :** `OperationDetailPage.extservices.ts` : `messagesParStatut` (406, 400, 404, 503).
+#### T2.3 — Virement (DEVon) — ✅ réalisé 2026-11-18
+- **Fichier(s) :** `OperationDetailPage.extservices.ts` : `messagesParStatut` sur `saveOperationIntercompte` (406, 400, 404 ; 503 via le message technique centralisé ADR 008). Pas de déconnexion (401/403 court-circuités avant, inchangé) ; brouillon conservé par construction (commit du brouillon en `currentOperation` seulement au succès, via `onOperationUpdate` non appelé en erreur).
 
-#### T2.4 — Tests (QALvin)
-- `useBudgetPageData.test.tsx`, `CompteItem.component.test.tsx`, `OperationDetailPage.extservices.test.ts` (406, 400, 404, 503 : message dédié, pas de déconnexion, brouillon conservé).
+#### T2.4 — Tests (QALvin) — ✅ réalisé 2026-11-18
+- `useBudgetPageData.test.tsx` : `budgetError` exposé après échec, effacé après `refetchBudget` réussi.
+- `BudgetPageShell.component.test.tsx` : `errorMessage` ferme le spinner + affiche le message + bouton « Réessayer » (clic → `onRetry`) ; absent sans `errorMessage`.
+- `CompteItem.component.test.tsx` : 3 tests existants (spinner sur erreur) corrigés en « Indisponible » (comportement changé par T2.2).
+- `OperationDetailPage.extservices.test.ts` : virement 406/400/404/503 → message dédié, `onOperationUpdate` non appelé (pas de commit du brouillon).
+- `CallAndNotify.service.test.ts` : `messageErreurHttp` (503 vs 404, erreur non-`HttpError`).
 
 ---
 
@@ -120,4 +126,5 @@ Plan 010 mergé → Gate #1 (011) → Phase 1 → Gates #2/#3 → [PROD IHM] →
 | — | 2026-10-29 | Création (T1.5 du plan serverless 004) | ℹ️ | Plan créé, non commité |
 | #0 | 2026-11-04 | Choix de solution (cadrage ARCos) | ✅ GO | C2 bandeau + « Réouvrir » masqué + filtre Analyses (I1-bis) ; libellés virement / 503 ; alignement du solde du menu si simple ; Phase 1 avant la PROD backend |
 | #1 | 2026-11-16 | Validation du plan (Brief B 👤) | ✅ GO | Branche `feat/ihm-011-impacts-backend` créée depuis `origin/master` |
-| #2 | 2026-11-16 | Implémentation + tests Phase 1 (T1.1-T1.4) | ⏳ Soumis au 👤 | Revue code (1 bug corrigé : crash `CompteTitre` sans `CurrentBudgetContext`) + revue sécurité (rien trouvé) faites avant le gate ; lint/typecheck/build/`test:coverage` verts (98.12 % statements / 89.2 % branches global) ; commits `07d982f`, `13f0bfd`, `956fe7b` |
+| #2 | 2026-11-18 | Implémentation + tests Phase 1 (T1.1-T1.4) | ✅ GO | Revue code (1 bug corrigé : crash `CompteTitre` sans `CurrentBudgetContext`) + revue sécurité (rien trouvé) faites avant le gate ; lint/typecheck/build/`test:coverage` verts (98.12 % statements / 89.2 % branches global) ; commits `07d982f`, `13f0bfd`, `956fe7b` ; PR [#743](https://github.com/vzwingma/gestion-budget-ihm/pull/743) — démarre Phase 2 |
+| #2 | 2026-11-18 | Implémentation + tests Phase 2 (T2.1-T2.4) | ⏳ Soumis au 👤 | Revue code (rien trouvé) + revue sécurité (rien trouvé) ; lint/typecheck/build/`test:coverage` verts (98.13 % statements / 89.2 % branches global) ; commits `6bc1612`, `06443af`, `99a4731` — PR #743 à mettre à jour (push en attente) |

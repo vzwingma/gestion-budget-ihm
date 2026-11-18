@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import BudgetPageShell from './BudgetPageShell.component.tsx';
 
@@ -75,6 +76,22 @@ describe('BudgetPageShell', () => {
     test('masque le spinner quand isLoading=false', () => {
         renderShell({ isLoading: false });
         expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+    });
+
+    test('errorMessage : ferme le spinner, affiche le message et le bouton Réessayer (IHM AP011 T2.1)', async () => {
+        const onRetry = vi.fn();
+        renderShell({ isLoading: true, errorMessage: 'Service momentanément indisponible, réessayez', onRetry });
+
+        expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+        expect(screen.getByText('Service momentanément indisponible, réessayez')).toBeInTheDocument();
+        const bouton = screen.getByRole('button', { name: 'Réessayer' });
+        await userEvent.click(bouton);
+        expect(onRetry).toHaveBeenCalledTimes(1);
+    });
+
+    test('sans errorMessage : pas de bouton Réessayer', () => {
+        renderShell();
+        expect(screen.queryByRole('button', { name: 'Réessayer' })).not.toBeInTheDocument();
     });
 
     test('transmet filterBar au header (AP 005 - Phase 4) ; absent par défaut', () => {

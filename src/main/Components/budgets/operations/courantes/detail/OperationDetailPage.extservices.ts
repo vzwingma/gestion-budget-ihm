@@ -5,7 +5,7 @@ import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.mode
 import {BACKEND_ENUM, METHODE_HTTP, SERVICES_URL} from "../../../../../Utils/AppTechEnums.constants.ts";
 import {OPERATION_ETATS_ENUM} from "../../../../../Utils/AppBusinessEnums.constants.ts";
 import {call} from "../../../../../Services/ClientHTTP.service.ts";
-import {callAndNotify} from "../../../../../Services/CallAndNotify.service.ts";
+import {callAndNotify, MessagesParStatut} from "../../../../../Services/CallAndNotify.service.ts";
 import LibelleCategorieOperationModel from "../../../../../Models/budgets/LibelleCategorieOperation.model.ts";
 import { debug } from "../../../../../Utils/Debug.utils.ts";
 
@@ -44,6 +44,17 @@ export function saveOperation(operation: OperationModel, budget: BudgetMensuelMo
 }
 
 /**
+ * Messages métier du virement intercompte par code HTTP (IHM AP011 T2.3, décision 👤 Gate #0) :
+ * 406 compte destinataire clos, 400 même compte, 404 compte destinataire introuvable.
+ * 503 (erreur Mongo) reste le message technique centralisé (ADR 008).
+ */
+const MESSAGES_INTERCOMPTE: MessagesParStatut = {
+    406: "Le compte destinataire est clos",
+    400: "Virement vers le même compte impossible",
+    404: "Compte destinataire introuvable"
+};
+
+/**
  * Appels WS vers pour enregistrer l'opération intercompte sur le backend
  * @param operation opération à enregistrer
  * @param budget budget concerné
@@ -68,7 +79,9 @@ export function saveOperationIntercompte(operation: OperationModel, budget: Budg
             onOperationUpdate(budgetUpdated);
             toast.success("Création de l'opération inter-comptes correctement effectuée")
         },
-        "Erreur lors de l'enregistrement de l'opération intercomptes"
+        "Erreur lors de l'enregistrement de l'opération intercomptes",
+        undefined,
+        MESSAGES_INTERCOMPTE
     );
 }
 

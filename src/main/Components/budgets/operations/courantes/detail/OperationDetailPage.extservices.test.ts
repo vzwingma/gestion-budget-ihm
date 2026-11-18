@@ -3,6 +3,7 @@ import {saveOperation, saveOperationIntercompte, fetchLibellesOperationsCompte} 
 import {call} from '../../../../../Services/ClientHTTP.service.ts';
 import {toast} from 'react-toastify';
 import {v7 as uuid} from 'uuid';
+import {HttpError} from '../../../../../Services/HttpError.ts';
 
 vi.mock('../../../../../Services/ClientHTTP.service.ts', () => ({
     call: vi.fn()
@@ -56,6 +57,22 @@ describe('OperationDetailPage.extservices', () => {
 
         expect(call).not.toHaveBeenCalled();
         expect(toast.error).toHaveBeenCalledTimes(1);
+    });
+
+    test.each([
+        [406, 'Le compte destinataire est clos'],
+        [400, 'Virement vers le même compte impossible'],
+        [404, 'Compte destinataire introuvable'],
+        [503, 'Service momentanément indisponible, réessayez']
+    ])('virement intercompte en erreur %i : message dédié "%s" (IHM AP011 T2.3)', async (status, messageAttendu) => {
+        const onOperationUpdate = vi.fn();
+        (call as Mock).mockRejectedValue(new HttpError(status, 'ko'));
+
+        saveOperationIntercompte({id: 'op-1'} as any, {id: 'b1', actif: true} as any, 'compte-cible', onOperationUpdate);
+        await flushPromises();
+
+        expect(toast.error).toHaveBeenCalledWith(messageAttendu, undefined);
+        expect(onOperationUpdate).not.toHaveBeenCalled();
     });
 
     test('charge, trie et déduplique les libellés d opérations', async () => {
