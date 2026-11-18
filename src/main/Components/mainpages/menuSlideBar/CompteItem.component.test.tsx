@@ -50,11 +50,11 @@ describe('CompteItem (React.memo)', () => {
         expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     });
 
-    test('repasse au spinner si le chargement du solde échoue (BUDGET)', async () => {
+    test('affiche "Indisponible" si le chargement du solde échoue (BUDGET, IHM AP011 T2.2)', async () => {
         (fetchSoldesBudget as any).mockRejectedValue(new Error('500'));
         renderItem();
-        await waitFor(() => expect(fetchSoldesBudget).toHaveBeenCalled());
-        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+        expect(await screen.findByText('Indisponible')).toBeInTheDocument();
+        expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     });
 
     test('RECURRENTS : "Non initialisé" si solde null, "Actif" sinon', async () => {
@@ -117,7 +117,7 @@ describe('CompteItem (React.memo)', () => {
         expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     });
 
-    test('BUDGET : rechargement en erreur après un solde chargé -> spinner (ancien solde non conservé)', async () => {
+    test('BUDGET : rechargement en erreur après un solde chargé -> "Indisponible" (ancien solde non conservé, IHM AP011 T2.2)', async () => {
         (fetchSoldesBudget as any).mockResolvedValueOnce(125.5);
         const { base, rerender } = renderItem();
         expect(await screen.findByText(/125[.,]50/)).toBeInTheDocument();
@@ -126,17 +126,18 @@ describe('CompteItem (React.memo)', () => {
         rerender(<CompteItem {...base} selectedDate={new Date(2026, 1, 1)} />);
 
         await waitFor(() => expect(fetchSoldesBudget).toHaveBeenCalledTimes(2));
-        expect(await screen.findByRole('progressbar')).toBeInTheDocument();
+        expect(await screen.findByText('Indisponible')).toBeInTheDocument();
         expect(screen.queryByText(/125[.,]50/)).not.toBeInTheDocument();
+        expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     });
 
-    test('RECURRENTS : erreur du fetch -> spinner', async () => {
+    test('RECURRENTS : erreur du fetch -> "Indisponible" (IHM AP011 T2.2)', async () => {
         (fetchSoldesBudget as any).mockRejectedValue(new Error('500'));
         renderItem({ selectedFunction: BUSINESS_ONGLETS.RECURRENTS });
 
-        await waitFor(() => expect(fetchSoldesBudget).toHaveBeenCalled());
-        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+        expect(await screen.findByText('Indisponible')).toBeInTheDocument();
         expect(screen.queryByText('Actif')).not.toBeInTheDocument();
+        expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     });
 
     test('BUDGET -> autre onglet : le spinner disparaît, Actif affiché', async () => {
