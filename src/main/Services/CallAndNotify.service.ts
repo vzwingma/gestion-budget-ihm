@@ -13,6 +13,20 @@ const MESSAGES_TECHNIQUES: Readonly<Record<number, string>> = {
 const MESSAGE_ERREUR_RESEAU = "Serveur injoignable, vérifiez votre connexion";
 
 /**
+ * Message utilisateur pour une erreur HTTP, par priorité : message par statut de l'appelant,
+ * message technique (503, 500, réseau), message de l'appelant (`errorMessage`, utilisé tel quel
+ * si `e` n'est pas une `HttpError`).
+ */
+export function messageErreurHttp(e: unknown, errorMessage: string, messagesParStatut?: MessagesParStatut): string {
+    if (e instanceof HttpError) {
+        return e.status === undefined
+            ? MESSAGE_ERREUR_RESEAU
+            : (messagesParStatut?.[e.status] ?? MESSAGES_TECHNIQUES[e.status] ?? errorMessage);
+    }
+    return errorMessage;
+}
+
+/**
  * Journalise l'erreur (console uniquement : le libellé du backend n'est jamais affiché) et affiche le toast adapté.
  * - 401 / 403 : aucun toast, la déconnexion et le toast « Session expirée » sont gérés ailleurs ;
  * - sinon, par priorité : message par statut de l'appelant, message technique (503, 500, réseau), message de l'appelant.
@@ -23,10 +37,7 @@ export function notifierErreur(e: unknown, errorMessage: string, toastOptions?: 
             return;
         }
         console.error(errorMessage, e);
-        const message = e.status === undefined
-            ? MESSAGE_ERREUR_RESEAU
-            : (messagesParStatut?.[e.status] ?? MESSAGES_TECHNIQUES[e.status] ?? errorMessage);
-        toast.error(message, toastOptions);
+        toast.error(messageErreurHttp(e, errorMessage, messagesParStatut), toastOptions);
         return;
     }
     console.error(errorMessage, e);

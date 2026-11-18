@@ -11,6 +11,7 @@ import { useBudgetPageData } from "../shared/useBudgetPageData.ts";
 import OperationRecurrenteDetailPage from "../operations/recurrentes/details/OperationRecurrenteDetailPage.component.tsx";
 import { BudgetActionsButtonGroupComponent } from "../budget/actions/BudgetActionsButtonGroup.component.tsx";
 import { debug } from "../../../Utils/Debug.utils.ts";
+import { messageErreurHttp } from "../../../Services/CallAndNotify.service.ts";
 
 /** Regroupement des opérations récurrentes par périodicité (référence stable) */
 const groupOperationsByPeriodicity = (budget: BudgetMensuelModel) => getOperationsRecurrentesGroupedByPeriodicity(budget.listeOperations, budget.id);
@@ -39,10 +40,16 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
     /** Etats pour la page Recurrents **/
     const {
         selectedCompte, selectedDate, currentBudget, currentOperation, setCurrentOperation,
-        operationsGroupees: operationsRecurrentesGroupedByPeriodicity, userDroits, handleBudgetUpdate
+        operationsGroupees: operationsRecurrentesGroupedByPeriodicity, userDroits, handleBudgetUpdate,
+        budgetError, refetchBudget
     } = useBudgetPageData({ groupOperations: groupOperationsByPeriodicity });
 
     const [filterOperations, setFilterOperations] = useState<string | null>(null);
+
+    /** Message d'erreur du budget (IHM AP011 T2.1) : 503 distinct du message générique (404…) */
+    const budgetErrorMessage = budgetError === undefined || budgetError === null
+        ? undefined
+        : messageErreurHttp(budgetError, "Impossible de charger le budget");
 
     /**
      * Sélection d'une opération
@@ -61,6 +68,8 @@ export const RecurrentsPage: React.FC<RecurrentsPageProps> = ({ onOpenMenu }: Re
         <BudgetPageShell
             className="page-container recurrents-page-container"
             isLoading={currentBudget == null}
+            errorMessage={budgetErrorMessage}
+            onRetry={refetchBudget}
             onOpenMenu={onOpenMenu}
             filterOperations={filterOperations}
             onFilterChange={setFilterOperations}

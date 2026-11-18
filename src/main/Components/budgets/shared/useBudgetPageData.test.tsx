@@ -201,6 +201,28 @@ describe('useBudgetPageData', () => {
         await waitFor(() => expect(result.current.page.userDroits).toEqual([UTILISATEUR_DROITS.DROIT_CREATE_OPERATION]));
     });
 
+    test('budgetError : exposé après échec, effacé après rechargement réussi (IHM AP011 T2.1)', async () => {
+        const erreur = new Error('503');
+        (fetchBudget as any).mockImplementation((compte: any, date?: Date) =>
+            compte == null || date == null ? Promise.resolve(undefined) : Promise.reject(erreur));
+        const { result } = setup();
+        const mois = result.current.ctx.selectedDate.getMonth();
+
+        act(() => result.current.ctx.setSelectedCompte(COMPTE_A));
+        await waitFor(() => expect(result.current.page.budgetError).toBe(erreur));
+        expect(result.current.page.currentBudget).toBeUndefined();
+
+        (fetchBudget as any).mockImplementation((compte: any, date?: Date) =>
+            compte == null || date == null
+                ? Promise.resolve(undefined)
+                : new Promise((resolve) => { pending.set(compte.id + '/' + date.getMonth(), resolve); }));
+        act(() => result.current.page.refetchBudget());
+        await respond('A/' + mois, buildBudget('A1'));
+
+        await waitFor(() => expect(result.current.page.currentBudget?.id).toBe('A1'));
+        expect(result.current.page.budgetError).toBeNull();
+    });
+
     test('userDroits : reste vide si le chargement des préférences échoue', async () => {
         (fetchPreferenceUtilisateur as any).mockRejectedValue(new Error('500'));
         const { result } = setup();
