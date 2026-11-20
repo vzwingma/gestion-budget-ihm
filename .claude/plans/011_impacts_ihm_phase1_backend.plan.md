@@ -1,7 +1,7 @@
 # Plan d'Action 011 — IHM : impacts des changements de comportement du backend (plan serverless 004, Phase 1)
 
-**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-20 (Phase 3 documentation réalisée, Gate #4 soumis)
-**Statut :** 🚧 Phase 3 réalisée — en attente Gate #4 (clôture)
+**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-20 (Gate #4 GO — plan clos)
+**Statut :** ✅ **Clos (2026-11-20)** — Phases 1, 2 et 3 livrées et mergées (PR #743, #749, #755)
 **Porteur :** ⚫ MAINa
 **Note :** plan renuméroté depuis 009 le 2026-11-15 (collision avec 008_versioning_ihm_ci) ; socle : [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md)
 **Origine :** plan serverless `004_revue_architecture_backend`, tâche T1.5. Décisions 👤 aux Gates #1 et #2 de la Phase 1 (2026-10-26 / 2026-10-29) et au Gate #0 IHM (2026-11-04).
@@ -118,6 +118,11 @@ Plan 010 mergé → Gate #1 (011) → Phase 1 → Gates #2/#3 → [PROD IHM] →
 4. Messages métier du virement corrects.
 5. Tests verts, couverture ≥ 80 %, SonarCloud OK.
 
+## Dette restante (acceptée à la clôture)
+1. **Forme de sérialisation `Month`** (nom Java `"MARCH"` vs numéro 1-12) : `estBudgetDuMois`/`libelleMoisAnneeBudget` gèrent les deux formes, mais la forme réelle envoyée par le backend **n'a pas été confirmée en QUA**. À vérifier lors du prochain déploiement QUA ; sans impact si la forme change (repli sur l'id déjà en place).
+2. **Solde du compte inactif dans le menu** (`CompteItem`, `/soldes`) : non aligné avec le panneau principal (qui affiche le solde du dernier budget disponible, F3) — `/soldes` du mois demandé reste vide. Écart jugé non simple (fallback F3 non confirmé pour cet endpoint), accepté et documenté (`docs/ARCHITECTURE.md`).
+3. **Dette worktrees** (héritée du plan 010, corrigée en T0.1) : solution appliquée (`exclude` vitest/tsc) — aucune dette résiduelle sur ce point pour ce plan.
+
 ---
 
 ## 🚦 Journal des gates
@@ -130,4 +135,4 @@ Plan 010 mergé → Gate #1 (011) → Phase 1 → Gates #2/#3 → [PROD IHM] →
 | #2 | 2026-11-18 | Implémentation + tests Phase 1 (T1.1-T1.4) | ✅ GO | Revue code (1 bug corrigé : crash `CompteTitre` sans `CurrentBudgetContext`) + revue sécurité (rien trouvé) faites avant le gate ; lint/typecheck/build/`test:coverage` verts (98.12 % statements / 89.2 % branches global) ; commits `07d982f`, `13f0bfd`, `956fe7b` ; PR [#743](https://github.com/vzwingma/gestion-budget-ihm/pull/743) — démarre Phase 2 |
 | #2 | 2026-11-18 | Implémentation + tests Phase 2 (T2.1-T2.4) | ✅ GO | Revue code (rien trouvé) + revue sécurité (rien trouvé) ; lint/typecheck/build/`test:coverage` verts (98.13 % statements / 89.2 % branches global) ; commits `6bc1612`, `06443af`, `99a4731` ; PR [#749](https://github.com/vzwingma/gestion-budget-ihm/pull/749) |
 | #3 | 2026-11-20 | Merge Phase 2 | ✅ GO | PR #749 mergée par le 👤 dans `master` (`23e47ff`) — démarre Phase 3 (documentation) |
-| #4 | 2026-11-20 | Documentation Phase 3 + clôture plan 011 | ⏳ Soumis au 👤 | `docs/ARCHITECTURE.md` mis à jour ; wiki IHM signalé au 👤 (non modifié, hors périmètre) ; aucun code applicatif touché |
+| #4 | 2026-11-20 | Documentation Phase 3 + clôture plan 011 | ✅ GO | `docs/ARCHITECTURE.md` mis à jour (PR [#755](https://github.com/vzwingma/gestion-budget-ihm/pull/755), mergée) ; wiki IHM signalé au 👤 (non modifié, hors périmètre) ; aucun code applicatif touché — **plan clos** |
