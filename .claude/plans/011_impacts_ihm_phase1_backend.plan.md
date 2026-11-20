@@ -1,7 +1,7 @@
 # Plan d'Action 011 — IHM : impacts des changements de comportement du backend (plan serverless 004, Phase 1)
 
-**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-20 (Gate #3 Phase 2 — merge PR #749)
-**Statut :** 🚧 Phase 2 clôturée (mergée, PR #749) — Phase 3 (documentation) à démarrer
+**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-20 (Phase 3 documentation réalisée, Gate #4 soumis)
+**Statut :** 🚧 Phase 3 réalisée — en attente Gate #4 (clôture)
 **Porteur :** ⚫ MAINa
 **Note :** plan renuméroté depuis 009 le 2026-11-15 (collision avec 008_versioning_ihm_ci) ; socle : [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md)
 **Origine :** plan serverless `004_revue_architecture_backend`, tâche T1.5. Décisions 👤 aux Gates #1 et #2 de la Phase 1 (2026-10-26 / 2026-10-29) et au Gate #0 IHM (2026-11-04).
@@ -99,8 +99,9 @@ La Phase 1 du plan serverless 004 modifie des comportements et des codes HTTP vi
 
 ---
 
-## Phase 3 — Documentation (DOCly)
-- `docs/ARCHITECTURE.md` : table statut HTTP → message, bandeau F3, filtre Analyses ; wiki IHM `Historique-de-l'Architecture.md`. Pas d'ADR : C2 est une décision d'interface locale.
+## Phase 3 — Documentation (DOCly) — ✅ réalisé 2026-11-20
+- `docs/ARCHITECTURE.md` : nouvelle sous-section « Impacts IHM du plan backend 004 — Phase 1 » (sous 🧯 Gestion des erreurs HTTP et de la session) — bandeau F3 (C2), masquage Réouvrir, filtre Analyses (I1-bis), écran d'erreur budget + Réessayer, « Indisponible » menu, table statut HTTP → message virement (406/400/404/503), écart accepté solde menu. Pas d'ADR : C2 est une décision d'interface locale (pas d'ADR dédié, documentée dans ARCHITECTURE.md).
+- Wiki IHM `Historique-de-l'Architecture.md` : **non modifié par cette session** — signalé au 👤 (commite le wiki lui-même, hors périmètre de cette branche).
 
 ---
 
@@ -129,3 +130,4 @@ Plan 010 mergé → Gate #1 (011) → Phase 1 → Gates #2/#3 → [PROD IHM] →
 | #2 | 2026-11-18 | Implémentation + tests Phase 1 (T1.1-T1.4) | ✅ GO | Revue code (1 bug corrigé : crash `CompteTitre` sans `CurrentBudgetContext`) + revue sécurité (rien trouvé) faites avant le gate ; lint/typecheck/build/`test:coverage` verts (98.12 % statements / 89.2 % branches global) ; commits `07d982f`, `13f0bfd`, `956fe7b` ; PR [#743](https://github.com/vzwingma/gestion-budget-ihm/pull/743) — démarre Phase 2 |
 | #2 | 2026-11-18 | Implémentation + tests Phase 2 (T2.1-T2.4) | ✅ GO | Revue code (rien trouvé) + revue sécurité (rien trouvé) ; lint/typecheck/build/`test:coverage` verts (98.13 % statements / 89.2 % branches global) ; commits `6bc1612`, `06443af`, `99a4731` ; PR [#749](https://github.com/vzwingma/gestion-budget-ihm/pull/749) |
 | #3 | 2026-11-20 | Merge Phase 2 | ✅ GO | PR #749 mergée par le 👤 dans `master` (`23e47ff`) — démarre Phase 3 (documentation) |
+| #4 | 2026-11-20 | Documentation Phase 3 + clôture plan 011 | ⏳ Soumis au 👤 | `docs/ARCHITECTURE.md` mis à jour ; wiki IHM signalé au 👤 (non modifié, hors périmètre) ; aucun code applicatif touché |

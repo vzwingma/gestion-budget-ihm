@@ -217,6 +217,26 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
   - Analyses (`Analyses.extservices.ts`, `Analyses.controller.ts`) : les toasts d'erreur passent par `notifierErreur`.
 - **`useFetch`** accepte l'option `{ enabled }` ; `MainPage` attend `auth.isAuthenticated` avant ses appels (cas du F5).
 
+### Impacts IHM du plan backend 004 — Phase 1 (plan [011](../.claude/plans/011_impacts_ihm_phase1_backend.plan.md), décisions 👤 Gate #0 du 2026-11-04)
+
+Le backend renvoie désormais, pour un compte **inactif** sans budget du mois demandé, le **dernier budget disponible** (200) au lieu d'un 404 (F3) ; des codes HTTP plus précis sur le virement intercompte et les erreurs Mongo.
+
+- **Bandeau « Compte inactif »** (`CompteTitre.component.tsx`, Budget et Récurrents) : `Utils/Budget.utils.ts#estBudgetDuMois` compare le budget reçu au mois sélectionné (champs `mois`/`annee` du `BudgetMensuelModel`, ou repli sur le suffixe `_AAAA_MM` de l'id). Si le budget reçu est d'un autre mois : bandeau « Compte inactif — dernier budget disponible : MM/AAAA », **sans recaler** la date sélectionnée (décision C2 — `selectedDate` est global, un recalage bloquerait la navigation). Le bouton « Réouvrir » est masqué dans ce cas (`BudgetActionsButtonGroup.component.tsx`) : il rouvrirait le budget du mois reçu, pas celui affiché.
+- **Analyses** (`Analyses.controller.ts`) : le même filtre écarte un budget de repli hors mois demandé **avant** consolidation — sans lui, un compte inactif dupliquerait ses opérations et son solde sur chaque mois sans budget propre (I1-bis).
+- **Écran d'erreur budget** (`useBudgetPageData.ts`, `BudgetPageShell.component.tsx`) : une erreur de chargement (404/503…) ferme le Backdrop et affiche le message + un bouton « Réessayer » (`refetchBudget`), au lieu de bloquer l'écran indéfiniment.
+- **Menu des comptes** (`CompteItem.component.tsx`) : une erreur sur `/soldes` affiche « Indisponible » au lieu d'un spinner infini.
+- **Messages HTTP → IHM** (virement intercompte, `OperationDetailPage.extservices.ts#saveOperationIntercompte`, via `messagesParStatut` de `notifierErreur`) :
+
+  | Code | Message IHM | Cas |
+  |---|---|---|
+  | 406 | « Le compte destinataire est clos » | virement vers un compte clos |
+  | 400 | « Virement vers le même compte impossible » | compte source = compte cible |
+  | 404 | « Compte destinataire introuvable » | compte cible inexistant |
+  | 503 | « Service momentanément indisponible, réessayez » | message technique centralisé (ADR 008), inchangé |
+
+  401/403 restent gérés par la déconnexion unique (ci-dessus), sans message dédié. Le brouillon d'opération n'est jamais perdu sur erreur : il n'est promu `currentOperation` qu'au succès (`onOperationUpdate` non appelé en erreur).
+- **Alignement du solde du compte inactif dans le menu** (`/soldes` du mois demandé vide, alors que le panneau principal affiche le solde du dernier budget disponible) : **écart accepté**, non traité — le fallback F3 n'est documenté côté backend que pour la lecture de budget, pas confirmé pour `/soldes`.
+
 ---
 
 ## 🧪 Tests
