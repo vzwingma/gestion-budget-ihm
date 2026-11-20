@@ -12,7 +12,6 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 |---|---|---|---|
 | 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ **Clos (2026-10-27)** — lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées), 5 (finitions) et 6 (`useBudgetPageData`, T6, T20) livrés et mergés ; T12 non retenu (décision 👤, ADR 002 Rejetée) ; dette mineure résiduelle dans « Dette restante » du plan | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 | 010 | Gestion des erreurs HTTP et de la session (401/403 → déconnexion unique, `HttpError`, messages centralisés) | 🔵 **En cours** — Gate #2 2e passage ✅ ; T1.4 (tests) livré 2026-11-15, Gate #3 en attente 👤 | [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md) |
-| 011 | Impacts IHM de la Phase 1 backend (bandeau F3, filtre Analyses, codes métier, écrans d'erreur) | 🚧 **En cours** — Phases 1 et 2 mergées (PR #743, #749) ; Phase 3 (documentation) livrée 2026-11-20, Gate #4 en attente 👤 | [`011_impacts_ihm_phase1_backend.plan.md`](./011_impacts_ihm_phase1_backend.plan.md) |
 
 ADR associé (plan 010) : [`docs/adr/008-gestion-erreurs-http-et-session.md`](../../docs/adr/008-gestion-erreurs-http-et-session.md) (Acceptée le 2026-11-04)
 
@@ -30,6 +29,7 @@ ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../..
 | 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | ✅ Complété (5 phases, Gate #4 validé 👤 ; backlog B1 non planifié) | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
 | 007 | Migration déploiement S3 `reggionick/s3-deploy` → AWS CLI natif (warning Node 20 déprécié) | ✅ Complété | [`007_migration_s3_deploy_aws_cli.plan.md`](./007_migration_s3_deploy_aws_cli.plan.md) |
 | 008 | Versioning IHM 27.0.0 + version horodatée DEV/QUA calculée en CI | ✅ Complété (3 phases, Gate #4 validé 👤) | [`008_versioning_ihm_ci.plan.md`](./008_versioning_ihm_ci.plan.md) |
+| 011 | Impacts IHM de la Phase 1 backend (bandeau F3, filtre Analyses, codes métier, écrans d'erreur) | ✅ Clos (2026-11-20) — Phases 1, 2 et 3 livrées et mergées (PR #743, #749, #755) ; dette restante (2 items acceptés) dans le plan | [`011_impacts_ihm_phase1_backend.plan.md`](./011_impacts_ihm_phase1_backend.plan.md) |
 
 ADR associé (001) : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
 ADR associé (007) : [`docs/adr/007-migration-s3-deploy-aws-cli.md`](../../docs/adr/007-migration-s3-deploy-aws-cli.md)
@@ -108,5 +108,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-10-27 (plan 006 : lot 6 livré, Gate #4 en attente 👤 ; lot 5 finitions livré, mergé ; lot 4b T16 livré, Gate #4 en attente 👤 ; plan 008 : clôturé, Gate #4 validé ; plan 005 : clôturé ; plan 006 : lots 1, 2 et 3 livrés, Gate #4 du lot 3 validé ; lot 4a livré, Gate #4 en attente 👤)
+**Dernière mise à jour :** 2026-11-20 (plan 011 : clos, Gate #4 validé, Phases 1-3 mergées)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain
