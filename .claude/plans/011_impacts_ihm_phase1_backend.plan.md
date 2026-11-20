@@ -1,7 +1,7 @@
 # Plan d'Action 011 — IHM : impacts des changements de comportement du backend (plan serverless 004, Phase 1)
 
-**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-18 (Gate #2 Phase 1 GO, Phase 2 implémentée, Gate #2 Phase 2 soumis)
-**Statut :** 🚧 Phase 2 en cours — Phase 1 mergée (PR #743), T2.1-T2.4 réalisés, en attente Gate #2 (Phase 2)
+**Date création :** 2026-10-29 · **Mise à jour :** 2026-11-20 (Gate #3 Phase 2 — merge PR #749)
+**Statut :** 🚧 Phase 2 clôturée (mergée, PR #749) — Phase 3 (documentation) à démarrer
 **Porteur :** ⚫ MAINa
 **Note :** plan renuméroté depuis 009 le 2026-11-15 (collision avec 008_versioning_ihm_ci) ; socle : [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md)
 **Origine :** plan serverless `004_revue_architecture_backend`, tâche T1.5. Décisions 👤 aux Gates #1 et #2 de la Phase 1 (2026-10-26 / 2026-10-29) et au Gate #0 IHM (2026-11-04).
@@ -127,4 +127,5 @@ Plan 010 mergé → Gate #1 (011) → Phase 1 → Gates #2/#3 → [PROD IHM] →
 | #0 | 2026-11-04 | Choix de solution (cadrage ARCos) | ✅ GO | C2 bandeau + « Réouvrir » masqué + filtre Analyses (I1-bis) ; libellés virement / 503 ; alignement du solde du menu si simple ; Phase 1 avant la PROD backend |
 | #1 | 2026-11-16 | Validation du plan (Brief B 👤) | ✅ GO | Branche `feat/ihm-011-impacts-backend` créée depuis `origin/master` |
 | #2 | 2026-11-18 | Implémentation + tests Phase 1 (T1.1-T1.4) | ✅ GO | Revue code (1 bug corrigé : crash `CompteTitre` sans `CurrentBudgetContext`) + revue sécurité (rien trouvé) faites avant le gate ; lint/typecheck/build/`test:coverage` verts (98.12 % statements / 89.2 % branches global) ; commits `07d982f`, `13f0bfd`, `956fe7b` ; PR [#743](https://github.com/vzwingma/gestion-budget-ihm/pull/743) — démarre Phase 2 |
-| #2 | 2026-11-18 | Implémentation + tests Phase 2 (T2.1-T2.4) | ⏳ Soumis au 👤 | Revue code (rien trouvé) + revue sécurité (rien trouvé) ; lint/typecheck/build/`test:coverage` verts (98.13 % statements / 89.2 % branches global) ; commits `6bc1612`, `06443af`, `99a4731` — PR #743 à mettre à jour (push en attente) |
+| #2 | 2026-11-18 | Implémentation + tests Phase 2 (T2.1-T2.4) | ✅ GO | Revue code (rien trouvé) + revue sécurité (rien trouvé) ; lint/typecheck/build/`test:coverage` verts (98.13 % statements / 89.2 % branches global) ; commits `6bc1612`, `06443af`, `99a4731` ; PR [#749](https://github.com/vzwingma/gestion-budget-ihm/pull/749) |
+| #3 | 2026-11-20 | Merge Phase 2 | ✅ GO | PR #749 mergée par le 👤 dans `master` (`23e47ff`) — démarre Phase 3 (documentation) |
