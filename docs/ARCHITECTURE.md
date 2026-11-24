@@ -81,7 +81,7 @@ gestion-budget-ihm/
 ├── src/
 │   ├── index.tsx                         # Point d'entrée React
 │   └── main/
-│       ├── Main.tsx                      # Router principal (HashRouter), routes lazy + AuthTokenSync
+│       ├── Main.tsx                      # Router principal (HashRouter), routes lazy + AuthTokenSync ; routes métier sous RequireAuth
 │       ├── Components/                   # Composants React UI
 │       │   ├── analyses/                 # Composants analyses budgétaires (syntheses/AnalyseTooltip = tooltip recharts générique)
 │       │   ├── budgets/                  # Composants gestion budgets
@@ -89,7 +89,7 @@ gestion-budget-ihm/
 │       │   ├── infos/                    # Composants informatifs
 │       │   ├── mainpages/                # Pages principales
 │       │   ├── menuTopBar/               # Barre de navigation
-│       │   └── shared/                   # Composants partagés (dont AuthTokenSync.component.tsx, TapTooltip.component.tsx : infobulle survol desktop / tap tactile)
+│       │   └── shared/                   # Composants partagés (dont AuthTokenSync.component.tsx, RequireAuth.component.tsx : garde des routes métier, TapTooltip.component.tsx : infobulle survol desktop / tap tactile)
 │       ├── hooks/                        # Hooks custom (useAuthTokenSync, useBudgetContext [+ useBudgetSelection, useCurrentBudget], useFetch, useIsTouchDevice ; budgetContexts.testutils.tsx = harnais de test des contextes)
 │       ├── Models/                       # Modèles TypeScript + Context
 │       │   ├── contextProvider/          # BudgetContextProvider.tsx (3 providers imbriqués ; ré-exporte les contextes et hooks de hooks/useBudgetContext.ts)
@@ -189,7 +189,7 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
 
 - **Authentification** : Google OAuth2 via `react-oidc-context`. Tokens gérés par `Auth.service.ts`
 - **Synchronisation du token** : le composant `AuthTokenSync` (`Components/shared/AuthTokenSync.component.tsx`), monté une fois à la racine dans `Main.tsx` (dans `AuthProvider`), utilise le hook `useAuthTokenSync`. Le hook écoute les événements `addUserLoaded` / `addUserUnloaded` d'oidc-client et recopie le token dans le `localStorage` via `Auth.service.ts` (y compris lors de l'`automaticSilentRenew`). Ce pont ne dépend donc plus du montage de `Profile.component.tsx`.
-- **Autorisation** : Token Bearer attaché à chaque requête HTTP sortante
+- **Autorisation** : Token Bearer attaché à chaque requête HTTP sortante ; requête protégée refusée localement si le jeton est expiré, routes métier protégées par `RequireAuth` — voir [Expiration de session détectée côté client](#expiration-de-session-détectée-côté-client-plan-007)
 - **API Key AWS** : Header `X-Api-Key` injecté automatiquement par `ClientHTTP.service.ts`
 - **Données sensibles** : Jamais de secrets dans le code source. Toujours dans les fichiers `.env.*` (gitignorés). En CI, via GitHub Secrets/Variables.
 - **Validation des entrées** : Typage TypeScript strict côté frontend. Saisie du montant d'une opération : valeurs non numériques (« abc ») ou ambiguës (« 2 3 ») refusées (« Le champ Montant est incorrect »)
@@ -216,6 +216,28 @@ Le backend est le repo [`gestion-budget-serverless`](https://github.com/vzwingma
   - le libellé renvoyé par le backend ne va qu'en console, jamais dans un toast ;
   - Analyses (`Analyses.extservices.ts`, `Analyses.controller.ts`) : les toasts d'erreur passent par `notifierErreur`.
 - **`useFetch`** accepte l'option `{ enabled }` ; `MainPage` attend `auth.isAuthenticated` avant ses appels (cas du F5).
+
+### Expiration de session détectée côté client (plan 007)
+
+> Décision : [ADR 009](./adr/009-expiration-session-routes-protegees.md) (`Acceptée`). Complète la déconnexion réactive 401/403 ci-dessus : l'expiration est détectée **avant** l'effet métier, sans attendre un rejet serveur.
+
+- **Source d'expiration** : claim `exp` du JWT `id_token` réellement envoyé aux services (`estTokenExpire`, `Auth.service.ts`), et non l'`access_token` OIDC. Décodage local, **signature non vérifiée** (contrôle de confort, pas de sécurité : le serveur reste l'autorité). Jeton absent, opaque, malformé ou sans `exp` numérique fini : expiration **indéterminée**, traitée comme non expirée (avertissement console sans jeton ni claims) ; le serveur tranche.
+- **Garde commune** `verifierSessionExpiree(token)` (`ClientHTTP.service.ts`) : renvoie `true` si une déconnexion est déjà en cours ou si le jeton est expiré, et dans ce cas déclenche la déconnexion **unique** existante (`deconnexionEnCours`, gestionnaire enregistré par `useAuthTokenSync` : drapeau « session expirée », suppression du token et de l'utilisateur OIDC, puis `location.href = "/"`). Au retour sur l'accueil public, toast « Session expirée, reconnectez-vous ».
+- **Contrôles événementiels** (`useAuthTokenSync`, armés une fois la restauration OIDC terminée — `auth.isLoading` et `auth.activeNavigator` faux) :
+  - contrôle immédiat à l'armement, au `focus` de la fenêtre et au retour de visibilité (`visibilitychange` avec `visibilityState === "visible"`) ;
+  - **première interaction** : listeners en phase de capture sur `window` pour `pointerdown`, `pointerup`, `mousedown`, `mouseup`, `click`, `dblclick`, `contextmenu`, `keydown`, `keypress`, `keyup`, `submit`. Si la session est expirée, l'événement est annulé (`preventDefault` + `stopImmediatePropagation`) avant les handlers métier React et les actions natives ; session valide : événement non modifié. `mousemove` n'est volontairement pas écouté ;
+  - nettoyage de tous les listeners au démontage ; le jeton lu est celui du stockage (`getOAuthToken()`), prioritaire sur l'ancien jeton capturé par le hook, afin de ne pas déconnecter sur un jeton déjà renouvelé.
+- **Refus local de requête** (`ClientHTTP.call`) : tout appel protégé avec un jeton expiré, ou pendant une déconnexion, est rejeté en `HttpError(401, "Session expirée")` **sans `fetch`** (jamais de succès factice). Seul `GET` de `SERVICES_URL.INFOS.GET_INFO` (`/_info`, public, page d'accueil) reste autorisé, sans en-tête `Authorization` si le jeton est expiré ou la déconnexion en cours.
+- **Garde de routes** (`Components/shared/RequireAuth.component.tsx`, route de layout dans `Main.tsx`) : `/budgets`, `/recurrents` et `/analyses` sont sous `RequireAuth`. `/`, `/infos` et le callback OIDC restent publics. Comportement : OIDC en chargement ou navigation de callback → indicateur de chargement, aucun montage métier ; jeton expiré ou déconnexion en cours → rien n'est monté et la déconnexion est déclenchée ; non authentifié (ou sans `id_token`) → `<Navigate to="/" replace />` ; session valide → `<Outlet />`. Couvre accès direct par URL, historique et navigation interne.
+- **Expiration ≠ erreur technique** : une erreur réseau, un 5xx ou un échec isolé du renouvellement silencieux (`addSilentRenewError` : simple `console.warn`) ne prouvent **pas** une expiration et ne déconnectent pas. La politique 401/403 de l'ADR 008 est inchangée (déconnexion unique si jeton courant ; réponse d'un ancien jeton renouvelé ignorée). Le renouvellement silencieux (`automaticSilentRenew`) est conservé.
+- **Limites** :
+  - pas de surveillance périodique (option rejetée) : une session expirée dans un onglet inactif n'est détectée qu'au focus, au retour de visibilité, à la première interaction listée, à la navigation vers une route protégée ou au prochain appel protégé ;
+  - la saisie en cours est perdue à l'expiration (accepté, ADR 008) ;
+  - horloge locale : un décalage de l'horloge du poste influe sur la détection ; signature du jeton non contrôlée localement ;
+  - la garde de routes est une protection d'interface, pas d'autorisation : la sécurité reste côté backend ;
+  - le repli `logOut()` (hors gestionnaire enregistré) n'appelle pas `removeUser` (voir ci-dessus) ;
+  - validé par tests simulant OIDC (jsdom), pas par test en navigateur réel.
+- **Preuves QA** (plan 007) : 11 fichiers / 118 tests Vitest verts (hooks, ClientHTTP, Main, shared) ; typecheck, lint (0 erreur) et build OK ; couverture des fichiers modifiés 93,1 % instructions / 87,6 % branches (Main 100, RequireAuth 100, useAuthTokenSync 100, ClientHTTP 91, Auth.service 81). Régression démontrée : avec le code de production antérieur au correctif, 4 fichiers de tests sur 5 échouent ; code restauré, 5/5 verts.
 
 ### Impacts IHM du plan backend 004 — Phase 1 (plan [011](../.claude/plans/011_impacts_ihm_phase1_backend.plan.md), décisions 👤 Gate #0 du 2026-11-04)
 
@@ -281,6 +303,7 @@ Qualité : SonarCloud (organisation `vzwingma-github`, projet `vzwingma_gestion-
 | 002 | [Introduction conditionnelle de TanStack Query (data-fetching)](./adr/002-tanstack-query-data-fetching.md) | ❌ Rejetée | 2026-10-27 |
 | 007 | [Migration déploiement S3 `reggionick/s3-deploy` → AWS CLI natif](./adr/007-migration-s3-deploy-aws-cli.md) | ✅ Acceptée | 2026-10-25 |
 | 008 | [Gestion des erreurs HTTP et de la session](./adr/008-gestion-erreurs-http-et-session.md) | ✅ Acceptée | 2026-11-04 |
+| 009 | [Expiration de session et routes protégées](./adr/009-expiration-session-routes-protegees.md) | ✅ Acceptée | 2026-11-24 |
 
 > 💡 Chaque nouvelle décision architecturale majeure doit faire l'objet d'un ADR. Voir `docs/adr/` pour les détails.
 
@@ -328,6 +351,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
+| v27.1.0 | 2026-11-24 | Expiration de session IHM ([ADR 009](./adr/009-expiration-session-routes-protegees.md)) : contrôle au focus / retour de visibilité et à la première interaction (capture, événement annulé), refus local des requêtes protégées avec jeton expiré (`HttpError` 401, sans `fetch`), garde `RequireAuth` sur `/budgets`, `/recurrents`, `/analyses`, retour à l'accueil par la déconnexion unique existante ; réseau / 5xx / échec de renouvellement non assimilés à une expiration ; 118 tests verts, couverture 93,1 % / 87,6 % — voir [plan 007](../../.claude/plans/007_expiration-session-ihm.plan.md) |
 | v27.0.0 | 2026-10-27 | Revue architecture React (plan 006, lot 6, Gate #4 en attente 👤) : hook `useBudgetPageData` (T1, pages Budget / Recurrents) avec correction d'un bug latent (réinjection d'un budget périmé) ; consumers migrés vers `useCurrentBudget()` / `useBudgetSelection()` (T6, 3 restent sur l'agrégat par choix) ; `getLabelISOFromDate` en composantes locales ; spinner `AnalysesFiltrePeriode` masqué sans compte ; `itemIcon` assaini (`getBanqueIconSrc`) ; ~150 tests (T20) : 1121 tests, couverture 97,67 % stmt ; `testTimeout` 15 s. Reste : 3 fichiers < 85 %, fuseau UTC- accepté — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v27.0.0 | 2026-10-27 | Décisions 👤 (plan 006) : TanStack Query non retenu (T12, [ADR 002](./adr/002-tanstack-query-data-fetching.md) `Rejetée`, `useFetch` + `fetch*` conservés) ; `logAuth` conservé en mode debug (risque accepté, usage dev uniquement) ; lot 6 décidé (T1, T6, T20, `getLabelISOFromDate` UTC, spinner `AnalysesFiltrePeriode`, `itemIcon`) — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v27.0.0 | 2026-10-27 | Revue architecture React (plan 006, lot 5, finitions) : `useOperationEditForm` déplacé de `hooks/` vers `Components/budgets/operations/courantes/detail/` (fin de la dépendance `hooks/` → `Components/`) ; champ date d'opération contrôlé par le brouillon (la date du jour s'affiche en création + « Valider l'opération ») ; `evaluateURL` encode les paramètres d'URL (`encodeURIComponent`) ; `AnalyseTreeMap` : erreur `tsc` corrigée ; audit URL / `href` / `window.open` réalisé ; `Components.props.ts` supprimé ; 981 tests. Reste : T12, T20, `logAuth` en debug — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |

@@ -73,7 +73,7 @@ Choix humain : **GO au Gate #0 le 2026-11-24**, après présentation par MAINa d
 ### Neutres
 
 - Aucun changement de bibliothèque, de backend ou de politique 403.
-- Mise à jour de `docs/ARCHITECTURE.md` et note de mise en œuvre de cet ADR prévues après implémentation et validation, sans anticiper leurs résultats.
+- Mise à jour de `docs/ARCHITECTURE.md` et note de mise en œuvre de cet ADR réalisées en Phase 3 (voir ci-dessous).
 
 ---
 
@@ -85,7 +85,20 @@ Travaux prévus dans le plan workspace 007, à créer par MAINa dans le même lo
 - **DEVon — T1.2** : protéger les routes dans `src/main/Main.tsx`, avec un composant de garde minimal si nécessaire.
 - **QALvin — T2.1 / T2.2** : tests ciblés du hook, du client HTTP et des routes, couvrant notamment les événements, la première action, le renouvellement et les réponses d'un ancien jeton.
 - **DOCly — T3.1** : mettre à jour `docs/ARCHITECTURE.md` et ajouter une note de mise en œuvre à cet ADR sur la base des résultats effectivement validés.
-- **Date d'effet** : après implémentation et validation des travaux prévus ; aucun résultat d'implémentation ou de test n'est revendiqué ici.
+- **Date d'effet** : après implémentation et validation des travaux prévus (voir la note de mise en œuvre ci-dessous).
+
+### Note de mise en œuvre (Phase 3, 2026-11-24)
+
+Implémenté et validé (Gates #2 et #3 `GO`) ; l'ADR reste `Acceptée`. Description détaillée : [ARCHITECTURE.md — Expiration de session détectée côté client](../ARCHITECTURE.md#expiration-de-session-détectée-côté-client-plan-007).
+
+- **Source d'expiration** (risque 1 confirmé) : claim `exp` du JWT `id_token` transmis (`estTokenExpire`, `Auth.service.ts`), décodé localement sans vérification de signature. Jeton absent, opaque, malformé ou sans `exp` valide : indéterminé, non traité comme expiré (le serveur tranche).
+- **Garde commune** `verifierSessionExpiree` (`ClientHTTP.service.ts`) : réutilise la déconnexion unique existante (`deconnexionEnCours`, gestionnaire de `useAuthTokenSync`, `removeUser`, retour à `/`, toast au retour).
+- **Événements** (`useAuthTokenSync.ts`) : contrôle au `focus` et au retour `visible`, et à la première interaction via listeners **capture** sur `window` (`pointerdown/up`, `mousedown/up`, `click`, `dblclick`, `contextmenu`, `keydown/keypress/keyup`, `submit`) qui annulent l'événement (`preventDefault` + `stopImmediatePropagation`) si la session est expirée. `mousemove` non écouté. Armement seulement après la fin du chargement OIDC (`isLoading` / `activeNavigator`), listeners retirés au démontage. Le jeton du stockage prime sur l'ancien jeton capturé (pas de déconnexion sur un jeton renouvelé).
+- **Transport** (`ClientHTTP.call`) : jeton expiré ou déconnexion en cours → `HttpError(401, "Session expirée")` sans `fetch` ; seul `GET /_info` (public) reste permis, sans `Authorization` dans ce cas.
+- **Routes** : `/budgets`, `/recurrents`, `/analyses` sous `RequireAuth` (`Components/shared/RequireAuth.component.tsx`, `Main.tsx`) ; `/`, `/infos` et callback OIDC publics ; chargement OIDC = indicateur sans montage ; non authentifié → `Navigate` vers `/`.
+- **Inchangés** : `automaticSilentRenew`, politique 401/403 et garde ancien jeton (ADR 008), absence de logout sur erreur réseau / 5xx / échec isolé de renouvellement ; aucun changement backend ni dépendance.
+- **Limites** : pas de surveillance périodique (détection au focus, visibilité, première interaction listée, navigation protégée ou prochain appel protégé) ; saisie perdue à l'expiration ; dépend de l'horloge locale ; signature non vérifiée côté client (le serveur reste l'autorité) ; tests avec OIDC simulé, sans navigateur réel.
+- **Preuves QA** : 11 fichiers / 118 tests Vitest verts ; typecheck, lint, build OK ; couverture des fichiers modifiés 93,1 % instructions / 87,6 % branches ; régression démontrée (4 fichiers de tests sur 5 échouent avec le code antérieur, 5/5 verts après restauration).
 
 ### Risques et points à confirmer
 
@@ -99,4 +112,5 @@ Travaux prévus dans le plan workspace 007, à créer par MAINa dans le même lo
 ## Références
 
 - [ADR 008 — Gestion des erreurs HTTP et de la session](008-gestion-erreurs-http-et-session.md), acceptée ; voir également sa note de mise en œuvre.
-- [Plan d'Action workspace 007 — Expiration de session IHM](../../../.claude/plans/007_expiration-session-ihm.plan.md) — création par MAINa dans ce lot, avant Gate #1.
+- [Plan d'Action workspace 007 — Expiration de session IHM](../../../.claude/plans/007_expiration-session-ihm.plan.md).
+- [ARCHITECTURE.md](../ARCHITECTURE.md) — section « Expiration de session détectée côté client ».
