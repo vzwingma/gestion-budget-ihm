@@ -8,11 +8,14 @@ import { setGestionnaireDeconnexion } from '../Services/ClientHTTP.service.ts';
 
 vi.mock('react-oidc-context', () => ({ useAuth: vi.fn() }));
 vi.mock('../Services/Auth.service.ts', () => ({
+    getOAuthToken: vi.fn().mockReturnValue(null),
     putTokenInStorage: vi.fn(),
     removeTokenFromStorage: vi.fn(),
     marquerSessionExpiree: vi.fn()
 }));
 vi.mock('../Services/ClientHTTP.service.ts', () => ({
+    estDeconnexionEnCours: vi.fn().mockReturnValue(false),
+    verifierSessionExpiree: vi.fn().mockReturnValue(false),
     setGestionnaireDeconnexion: vi.fn()
 }));
 
