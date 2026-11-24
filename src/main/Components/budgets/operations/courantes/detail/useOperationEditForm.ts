@@ -1,4 +1,6 @@
 import { SyntheticEvent, useCallback, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import { debug } from "../../../../../Utils/Debug.utils.ts";
 import { useCurrentBudget } from "../../../../../hooks/useBudgetContext.ts";
 import BudgetMensuelModel from "../../../../../Models/budgets/BudgetMensuel.model.ts";
 import CategorieOperationModel from "../../../../../Models/budgets/CategorieOperation.model.ts";
@@ -16,7 +18,8 @@ import {
     fillOperationField,
     handleDateOperationFromAction,
     handleOperationEditionClick,
-    handleValidateOperationForm
+    handleValidateOperationForm,
+    resolveCreatedOperation
 } from "./OperationDetailPage.controller.ts";
 import type { OPERATION_RECURRENTE_EDITION_FORM } from "../../recurrentes/details/OperationRecurrenteDetailPage.constants.ts";
 
@@ -72,6 +75,8 @@ export function useOperationEditForm({ listeCategories, onOperationChange }: Use
     const [propagated] = useState<WeakSet<OperationModel>>(() => new WeakSet());
     /** Brouillon validé en attente du retour de sauvegarde */
     const pendingDraft = useRef<OperationModel | null>(null);
+    /** Budget courant avant une création (null hors création) : référence pour retrouver l'opération créée par le backend */
+    const budgetBeforeCreation = useRef<BudgetMensuelModel | null>(null);
 
     /**
      * Init du formulaire à la sélection d'une nouvelle opération (ajustement d'état au rendu, sans passage par un effet)
@@ -101,14 +106,30 @@ export function useOperationEditForm({ listeCategories, onOperationChange }: Use
     function onOperationUpdate(budgetMaj: BudgetMensuelModel) {
         setEditForm(createEmptyEditForm(false));
         setErrors(createEmptyErrors());
-        const saved = pendingDraft.current;
+        // Propagation du budget d'abord : la préparation du parent (statuts...) est appliquée avant la résolution
+        onOperationChange(budgetMaj);
+        const draft = pendingDraft.current;
+        const budgetAvant = budgetBeforeCreation.current;
+        pendingDraft.current = null;
+        budgetBeforeCreation.current = null;
+        if (!draft) {
+            return;
+        }
+        let saved: OperationModel | null = draft;
+        if (budgetAvant) {
+            // Création : l'id client du brouillon est écrasé par le backend, on retient l'opération réelle du budget retourné
+            saved = resolveCreatedOperation(budgetAvant, budgetMaj, draft);
+            debug("Opération créée résolue dans le budget retourné : " + (saved?.id ?? "non résolue"));
+        }
         if (saved) {
             propagated.add(saved);
             setEditOperation(cloneOperation(saved));
             setCurrentOperation(saved);
-            pendingDraft.current = null;
+        } else {
+            // Opération introuvable : fermeture du détail (jamais de promotion d'un id inconnu du backend)
+            setCurrentOperation(null);
+            toast.warn("Opération créée, mais impossible de l'afficher en détail : sélectionnez-la dans la liste");
         }
-        onOperationChange(budgetMaj);
     }
 
     const fillOperationForm = useCallback((field: OPERATION_EDITION_FORM | OPERATION_RECURRENTE_EDITION_FORM, value: string) => {
@@ -140,20 +161,26 @@ export function useOperationEditForm({ listeCategories, onOperationChange }: Use
         handleDateOperationFromAction(valeurDate, etat, setEditOperation);
     }, []);
 
-    const validationOptions = {
-        currentErrors: errors,
-        onDraft: (draft: OperationModel) => { pendingDraft.current = draft; }
-    };
+    function buildValidationOptions(budgetCourant: BudgetMensuelModel) {
+        return {
+            currentErrors: errors,
+            // Appelé avant la sauvegarde : id "-1" = création (l'id est ensuite remplacé par un uuid client)
+            onDraft: (draft: OperationModel) => {
+                pendingDraft.current = draft;
+                budgetBeforeCreation.current = draft.id === ID_NOUVELLE_OPERATION ? budgetCourant : null;
+            }
+        };
+    }
 
     function handleClick(event: SyntheticEvent) {
         if (operation && budget) {
-            handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, { openEditForm, setErrors, onOperationUpdate }, validationOptions);
+            handleOperationEditionClick(event, { operation, budget }, editOperation, editForm, { openEditForm, setErrors, onOperationUpdate }, buildValidationOptions(budget));
         }
     }
 
     function validate() {
         if (operation && budget) {
-            handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate, validationOptions);
+            handleValidateOperationForm(operation, budget, editOperation, editForm, setErrors, onOperationUpdate, buildValidationOptions(budget));
         }
     }
 
