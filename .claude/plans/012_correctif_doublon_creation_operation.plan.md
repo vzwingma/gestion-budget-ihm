@@ -2,7 +2,7 @@
 
 **Document :** `.claude/plans/012_correctif_doublon_creation_operation.plan.md`
 **Date de création :** 2026-11-24
-**Statut :** ⏳ Planifié (Gate #1 en attente)
+**Statut :** ✅ Complété (2026-11-24, Gate #4 validé)
 **Objectif Prioritaire :** HIGH
 **ADR associé :** aucun (correctif local, sans changement de contrat ni de pattern)
 
@@ -102,4 +102,5 @@ Phase 3 (docs)  → Gate #4
 | #0 | 2026-11-24 | Choix de solution | ✅ GO | Option A puis ticket B ; intercompte = même correctif ; repli = fermer détail + toast |
 | #1 | 2026-11-24 | Validation plan | ✅ GO | Plan validé, pas d'ADR |
 | #2 | 2026-11-24 | Validation code | ✅ GO | lint 0 err, tsc OK, vitest 628/628, revue auto OK |
-| #3 | — | Validation tests | ⏳ En attente | — |
+| #3 | 2026-11-24 | Validation tests | ✅ GO | vitest detail/ 393/393, couverture 100 %/98,4 %, lint 0 err, tsc OK |
+| #4 | 2026-11-24 | Validation doc + clôture | ✅ GO | Plan clos ; ticket serverless B à ouvrir par 👤 |
