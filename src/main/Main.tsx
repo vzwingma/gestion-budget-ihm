@@ -1,7 +1,6 @@
 import React, {Component, Suspense} from "react";
 import {HashRouter, Route, Routes} from 'react-router-dom';
 import {AuthProvider} from 'react-oidc-context';
-import {removeTokenFromStorage} from "./Services/Auth.service.ts";
 
 import {
     AppBar,
@@ -20,6 +19,7 @@ import PrivateNavLinks from "./Components/menuTopBar/PrivateNavLinks.component.t
 import Profile from "./Components/menuTopBar/Profile.component.tsx";
 import {BudgetContextProvider} from "./Models/contextProvider/BudgetContextProvider.tsx";
 import AuthTokenSync from "./Components/shared/AuthTokenSync.component.tsx";
+import RequireAuth from "./Components/shared/RequireAuth.component.tsx";
 
 // Chargement différé des pages de routes (code-splitting) : chaque page n'est téléchargée
 // qu'à la navigation vers son chemin, au lieu d'alourdir le bundle initial.
@@ -56,8 +56,6 @@ export default class Main extends Component {
 
 
     render() {
-        removeTokenFromStorage();
-
         let darkTheme = createTheme({
             palette: {
                 mode: 'dark',
@@ -96,9 +94,11 @@ export default class Main extends Component {
                                 <Suspense fallback={<RouteLoadingFallback />}>
                                     <Routes>
                                         <Route path="/" element={<Infos />} />
-                                        <Route path="/budgets" element={<MainPage fonction={BUSINESS_ONGLETS.BUDGET} />} />
-                                        <Route path="/recurrents" element={<MainPage fonction={BUSINESS_ONGLETS.RECURRENTS} />} />
-                                        <Route path="/analyses" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSES} />} />
+                                        <Route element={<RequireAuth />}>
+                                            <Route path="/budgets" element={<MainPage fonction={BUSINESS_ONGLETS.BUDGET} />} />
+                                            <Route path="/recurrents" element={<MainPage fonction={BUSINESS_ONGLETS.RECURRENTS} />} />
+                                            <Route path="/analyses" element={<MainPage fonction={BUSINESS_ONGLETS.ANALYSES} />} />
+                                        </Route>
                                         <Route path="/infos" element={<Infos />} />
                                     </Routes>
                                 </Suspense>

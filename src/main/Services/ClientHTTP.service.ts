@@ -1,8 +1,8 @@
 /** Client HTTP **/
 import {v7} from 'uuid';
-import {API_GW_ENUM} from '../Utils/AppTechEnums.constants.ts';
+import {API_GW_ENUM, METHODE_HTTP, SERVICES_URL} from '../Utils/AppTechEnums.constants.ts';
 import {debug, isDebugEnabled} from '../Utils/Debug.utils.ts';
-import {getOAuthToken, marquerSessionExpiree, removeTokenFromStorage} from './Auth.service.ts'
+import {estTokenExpire, getOAuthToken, marquerSessionExpiree, removeTokenFromStorage} from './Auth.service.ts'
 import {HttpError} from './HttpError.ts';
 
 let alreadyTraced: boolean = false;
@@ -46,6 +46,22 @@ function declencherDeconnexion(): void {
     gestionnaireDeconnexion();
 }
 
+export function estDeconnexionEnCours(): boolean {
+    return deconnexionEnCours;
+}
+
+/** Garde partagée par les événements, les routes et le transport. */
+export function verifierSessionExpiree(token = getOAuthToken()): boolean {
+    if (deconnexionEnCours) {
+        return true;
+    }
+    if (!estTokenExpire(token)) {
+        return false;
+    }
+    declencherDeconnexion();
+    return true;
+}
+
 /**
  * Calcul de l'URL complétée
  * @param uri URI de base
@@ -86,7 +102,7 @@ function evaluateBody(body?: any): string|null {
 function logAuth(): void {
     if (isDebugEnabled() && !alreadyTraced) {
         debug("[WS] > [X-Api-Key] : " + API_GW_ENUM.API_KEY);
-        debug("[WS] > [Bearer] : " + getOAuthToken());
+        debug("[WS] > Authentification présente : " + Boolean(getOAuthToken()));
         if (getOAuthToken() !== undefined && getOAuthToken() !== null) {
             alreadyTraced = true;
         }
@@ -104,6 +120,15 @@ function logAuth(): void {
  */
 export async function call(httpMethod: string, uri: string, path: string, params?: string[], body?: any): Promise<any> {
 
+    // Seul endpoint public utilisé par l'accueil : ne nécessite pas de Bearer.
+    const appelPublic = httpMethod === METHODE_HTTP.GET && path === SERVICES_URL.INFOS.GET_INFO;
+    const tokenStocke = getOAuthToken();
+    const token = appelPublic && (deconnexionEnCours || estTokenExpire(tokenStocke)) ? null : tokenStocke;
+    // Vérifier aussi la déconnexion en cours : le token peut déjà avoir été supprimé.
+    if (!appelPublic && verifierSessionExpiree(token)) {
+        throw new HttpError(401, 'Session expirée');
+    }
+
     // Calcul de l'URL complétée
     const fullURL = evaluateURL(uri, path, params);
     const uuid = v7().slice(0, 8);
@@ -118,7 +143,6 @@ export async function call(httpMethod: string, uri: string, path: string, params
         'Content-Type': 'application/json',
         'X-Api-Key': API_GW_ENUM.API_KEY
     });
-    const token = getOAuthToken();
     if (token) {
         headers.set('Authorization', 'Bearer ' + token);
     }

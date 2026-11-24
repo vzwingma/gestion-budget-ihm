@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useAuth } from "react-oidc-context";
-import { marquerSessionExpiree, putTokenInStorage, removeTokenFromStorage } from "../Services/Auth.service.ts";
-import { setGestionnaireDeconnexion } from "../Services/ClientHTTP.service.ts";
+import { getOAuthToken, marquerSessionExpiree, putTokenInStorage, removeTokenFromStorage } from "../Services/Auth.service.ts";
+import { estDeconnexionEnCours, setGestionnaireDeconnexion, verifierSessionExpiree } from "../Services/ClientHTTP.service.ts";
 
 /**
  * Synchronise le token OIDC (id_token) dans le localStorage, indépendamment du cycle de vie
@@ -19,9 +19,9 @@ import { setGestionnaireDeconnexion } from "../Services/ClientHTTP.service.ts";
 export function useAuthTokenSync(): void {
     const auth = useAuth();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Synchronisation immédiate si une session est déjà active au montage
-        if (auth.isAuthenticated && auth.user?.id_token) {
+        if (!estDeconnexionEnCours() && auth.isAuthenticated && auth.user?.id_token) {
             putTokenInStorage(auth.user.id_token);
         }
     }, [auth.isAuthenticated, auth.user]);
@@ -29,7 +29,9 @@ export function useAuthTokenSync(): void {
     useEffect(() => {
         // le `return` est important : addUserLoaded() renvoie une fonction de nettoyage
         return auth.events.addUserLoaded((user) => {
-            putTokenInStorage(user.id_token);
+            if (!estDeconnexionEnCours()) {
+                putTokenInStorage(user.id_token);
+            }
         });
     }, [auth.events]);
 
@@ -40,7 +42,7 @@ export function useAuthTokenSync(): void {
     }, [auth.events]);
 
     const removeUser = auth.removeUser;
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Gestionnaire de déconnexion appelé (une seule fois) par ClientHTTP sur un 401 / 403 :
         // drapeau « session expirée » (toast au retour sur l'accueil), suppression de l'utilisateur OIDC
         // (évite une boucle de rechargement), puis retour à l'accueil.
@@ -56,6 +58,39 @@ export function useAuthTokenSync(): void {
         // Pas de réarmement de la garde : une déconnexion lancée se termine par un rechargement de page
         return () => setGestionnaireDeconnexion();
     }, [removeUser]);
+
+    useLayoutEffect(() => {
+        // La restauration et le callback OIDC ne sont pas une preuve d'expiration.
+        if (auth.isLoading || auth.activeNavigator) {
+            return;
+        }
+        const verifier = () => verifierSessionExpiree(getOAuthToken() ?? auth.user?.id_token ?? null);
+        const verifierVisibilite = () => {
+            if (document.visibilityState === "visible") {
+                verifier();
+            }
+        };
+        const intercepter = (event: Event) => {
+            if (verifier()) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
+        };
+        // Capture au niveau window, avant les handlers métier React et les actions natives.
+        const interactions = [
+            "pointerdown", "pointerup", "mousedown", "mouseup", "click", "dblclick",
+            "contextmenu", "keydown", "keypress", "keyup", "submit"
+        ];
+        window.addEventListener("focus", verifier);
+        document.addEventListener("visibilitychange", verifierVisibilite);
+        interactions.forEach(type => window.addEventListener(type, intercepter, true));
+        verifier();
+        return () => {
+            window.removeEventListener("focus", verifier);
+            document.removeEventListener("visibilitychange", verifierVisibilite);
+            interactions.forEach(type => window.removeEventListener(type, intercepter, true));
+        };
+    }, [auth.isLoading, auth.activeNavigator, auth.user]);
 
     useEffect(() => {
         // Mesure du renouvellement silencieux (ADR 008 : A2 reportée)
