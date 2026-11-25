@@ -16,7 +16,7 @@ Issue #759 : créer une opération « prévue », puis cliquer « réaliser » s
 
 ### Solution retenue (Gate #0)
 
-**Option A** : IHM seule. Après création, identifier l'opération réelle (id backend) dans le budget retourné par diff d'ids avec le budget précédent ; repli (0 ou plusieurs candidats, correspondance par champs impossible) : fermer le détail + toast. Intercompte : même correctif. **Ticket serverless B** (backend respecte l'id client) à ouvrir séparément, hors plan.
+**Option A** : IHM seule. Après création, identifier l'opération réelle (id backend) dans le budget retourné par diff d'ids avec le budget précédent ; repli (0 ou plusieurs candidats, correspondance par champs impossible) : fermer le détail + toast. Intercompte : même correctif. **Ticket serverless B** (backend respecte l'id client) traité séparément, hors plan : ✅ **livré** (issue vzwingma/gestion-budget-serverless#238, PR #239 mergée le 2026-11-25). Le backend conserve l'id client (UUID valide, tout format v7 inclus, libre dans le budget) à la création — opération et virement intercompte source/cible —, sinon génère un UUID ; collision côté cible → 409 `ConflictException` (compensation de la source). La résolution IHM (`resolveCreatedOperation`) est conservée comme filet de sécurité ; aucun changement de code IHM.
 
 ---
 
@@ -58,7 +58,7 @@ Issue #759 : créer une opération « prévue », puis cliquer « réaliser » s
 #### T3.1 - Documenter l'id attribué par le backend
 - **Agent :** 🟣 DOCly
 - **Fichier(s) :** `docs/ARCHITECTURE.md` (si section flux de sauvegarde), index plans
-- **Acceptation :** note « id opération attribué par le backend, résolu côté IHM » ; ticket B référencé.
+- **Acceptation :** note « id opération attribué par le backend, résolu côté IHM » ; ticket B référencé (livré : serverless #238/#239).
 
 ---
 
@@ -103,4 +103,5 @@ Phase 3 (docs)  → Gate #4
 | #1 | 2026-11-24 | Validation plan | ✅ GO | Plan validé, pas d'ADR |
 | #2 | 2026-11-24 | Validation code | ✅ GO | lint 0 err, tsc OK, vitest 628/628, revue auto OK |
 | #3 | 2026-11-24 | Validation tests | ✅ GO | vitest detail/ 393/393, couverture 100 %/98,4 %, lint 0 err, tsc OK |
-| #4 | 2026-11-24 | Validation doc + clôture | ✅ GO | Plan clos ; ticket serverless B à ouvrir par 👤 |
+| #4 | 2026-11-24 | Validation doc + clôture | ✅ GO | Plan clos ; v27.1.1 confirmée par 👤 ; ticket serverless B ouvert ensuite par 👤 (livré, voir ligne suivante) |
+| — | 2026-11-25 | Suivi hors gate : ticket B | ✅ Livré | serverless #238 / PR #239 mergée le 2026-11-25 ; id client conservé (UUID valide et libre), sinon généré ; collision cible intercompte → 409 ; résolution IHM conservée comme filet de sécurité, aucun changement de code IHM |

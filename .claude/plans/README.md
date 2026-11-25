@@ -10,13 +10,9 @@ Chaque plan orchestre une initiative multi-phases coordonnée entre plusieurs ag
 
 | # | Plan | Statut | Emplacement |
 |---|---|---|---|
-| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ **Clos (2026-10-27)** — lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées), 5 (finitions) et 6 (`useBudgetPageData`, T6, T20) livrés et mergés ; T12 non retenu (décision 👤, ADR 002 Rejetée) ; dette mineure résiduelle dans « Dette restante » du plan | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 | 010 | Gestion des erreurs HTTP et de la session (401/403 → déconnexion unique, `HttpError`, messages centralisés) | 🔵 **En cours** — Gate #2 2e passage ✅ ; T1.4 (tests) livré 2026-11-15, Gate #3 en attente 👤 | [`010_gestion_401_auth_oidc_backend.plan.md`](./010_gestion_401_auth_oidc_backend.plan.md) |
-| 012 | Correctif doublon de création d'opération (issue #759 : id backend écrasé → « réaliser » insère un doublon) | ✅ **Clos (2026-11-24)** — Gates #0–#4 ✅ ; ticket serverless B (id client respecté) à ouvrir | [`012_correctif_doublon_creation_operation.plan.md`](./012_correctif_doublon_creation_operation.plan.md) |
 
 ADR associé (plan 010) : [`docs/adr/008-gestion-erreurs-http-et-session.md`](../../docs/adr/008-gestion-erreurs-http-et-session.md) (Acceptée le 2026-11-04)
-
-ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Rejetée le 2026-10-27 — item T12 non retenu)
 
 ---
 
@@ -28,11 +24,15 @@ ADR associé (plan 006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../..
 | 003 | Migration dépendances TypeScript/Vite (5 majors) | ✅ Lot clos (Phase 0/3/4/5/6 faites ; Phase 1/2 reportées — TS v7/typescript-eslint v9-10 bloqués npm) | [`003_migration_dependances_ts_vite.plan.md`](./003_migration_dependances_ts_vite.plan.md) |
 | 004 | Remédiation SonarCloud (8 issues : S3776, S5145 x5, S6478 x2) | ✅ Complété (DEVon+QALvin, pushé `feat/qa_deploy`) | [`004_remediation_sonarcloud.plan.md`](./004_remediation_sonarcloud.plan.md) |
 | 005 | Refonte panneau gauche écran Opérations (5 phases : correctifs, lisibilité lignes, repérage « À valider », filtre puces, en-tête) | ✅ Complété (5 phases, Gate #4 validé 👤 ; backlog B1 non planifié) | [`005_refonte_liste_operations.plan.md`](./005_refonte_liste_operations.plan.md) |
+| 006 | Revue qualité/architecture React (mutualisation, état, perf, data-fetching, tests) | ✅ Clos (2026-10-27) — lots 1, 2, 3, 4a (sécurité `evaluateEquation`), 4b (Props co-localisées), 5 (finitions) et 6 (`useBudgetPageData`, T6, T20) livrés et mergés ; T12 non retenu (décision 👤, ADR 002 Rejetée) ; dette mineure résiduelle dans « Dette restante » du plan | [`006_revue_architecture_react.plan.md`](./006_revue_architecture_react.plan.md) |
 | 007 | Migration déploiement S3 `reggionick/s3-deploy` → AWS CLI natif (warning Node 20 déprécié) | ✅ Complété | [`007_migration_s3_deploy_aws_cli.plan.md`](./007_migration_s3_deploy_aws_cli.plan.md) |
 | 008 | Versioning IHM 27.0.0 + version horodatée DEV/QUA calculée en CI | ✅ Complété (3 phases, Gate #4 validé 👤) | [`008_versioning_ihm_ci.plan.md`](./008_versioning_ihm_ci.plan.md) |
 | 011 | Impacts IHM de la Phase 1 backend (bandeau F3, filtre Analyses, codes métier, écrans d'erreur) | ✅ Clos (2026-11-20) — Phases 1, 2 et 3 livrées et mergées (PR #743, #749, #755) ; dette restante (2 items acceptés) dans le plan | [`011_impacts_ihm_phase1_backend.plan.md`](./011_impacts_ihm_phase1_backend.plan.md) |
 
+| 012 | Correctif doublon de création d'opération (issue #759 : id backend écrasé → « réaliser » insère un doublon) | ✅ Clos (2026-11-24) — Gates #0–#4 ✅ ; code mergé (PR #766) ; B livré (serverless #238/#239) | [`012_correctif_doublon_creation_operation.plan.md`](./012_correctif_doublon_creation_operation.plan.md) |
+
 ADR associé (001) : [`docs/adr/001-migration-cra-vers-vite.md`](../../docs/adr/001-migration-cra-vers-vite.md)
+ADR associé (006) : [`docs/adr/002-tanstack-query-data-fetching.md`](../../docs/adr/002-tanstack-query-data-fetching.md) (Rejetée le 2026-10-27 — item T12 non retenu)
 ADR associé (007) : [`docs/adr/007-migration-s3-deploy-aws-cli.md`](../../docs/adr/007-migration-s3-deploy-aws-cli.md)
 
 ---
@@ -109,5 +109,5 @@ Pour contribuer ou modifier un plan existant :
 
 ---
 
-**Dernière mise à jour :** 2026-11-20 (plan 011 : clos, Gate #4 validé, Phases 1-3 mergées)
+**Dernière mise à jour :** 2026-11-25 (plans 006 et 012 déplacés vers « Archivés / Complétés » ; seul le plan 010 reste actif)
 **Gestionnaire des Plans :** ARCos (🟠) & 👤 Développeur humain
