@@ -4,7 +4,8 @@ import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 
 import { useOperationEditForm } from './useOperationEditForm.ts';
 import { BudgetContextProvider, useBudgetContext } from '../../../../../Models/contextProvider/BudgetContextProvider.tsx';
-import { saveOperation } from './OperationDetailPage.extservices.ts';
+import { toast } from 'react-toastify';
+import { saveOperation, saveOperationIntercompte } from './OperationDetailPage.extservices.ts';
 import {
     buildBudget,
     buildCategories,
@@ -12,7 +13,10 @@ import {
 } from './OperationDetailPage.testutils.tsx';
 import { OPERATION_EDITION_FORM } from './OperationDetailPage.constants.ts';
 import { createNewOperation } from '../../../../../Models/budgets/Operation.model.ts';
-import { OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM } from '../../../../../Utils/AppBusinessEnums.constants.ts';
+import { BUSINESS_GUID, OPERATION_ETATS_ENUM, PERIODES_MENSUALITE_ENUM, TYPES_OPERATION_ENUM } from '../../../../../Utils/AppBusinessEnums.constants.ts';
+
+// Toast mocké : seul `warn` (repli de la résolution d'opération créée) est observé
+vi.mock('react-toastify', () => ({ toast: { warn: vi.fn(), success: vi.fn(), error: vi.fn() } }));
 
 /**
  * Tests du hook `useOperationEditForm` (AP 006 lot 3) avec le vrai `BudgetContextProvider` ;
@@ -289,5 +293,208 @@ describe('useOperationEditForm', () => {
 
         expect(courant().formulaire.resetKey).toBe(cle + 1);
         expect(courant().formulaire.editOperation.id).toBe('op-3');
+    });
+
+    /**
+     * AP 012 (issue #759) : le backend écrase l'id client de la création et renvoie le budget complet.
+     * Le mock de `saveOperation` reproduit ce comportement : id client posé sur le brouillon (comme le vrai service),
+     * puis callback de succès appelé avec un budget contenant l'opération sous un id backend.
+     */
+    describe('création : promotion de l\'opération backend (issue #759)', () => {
+        const ID_BACKEND = 'id-backend';
+        const ID_CLIENT = 'uuid-client';
+
+        const operationBackend = (id: string, overrides: Partial<ReturnType<typeof buildOperation>> = {}) =>
+            buildOperation({ id, libelle: 'Cinéma', valeur: -12, ...overrides });
+
+        /** Budget retourné par le backend : opérations existantes + opération(s) créée(s) */
+        const budgetAvecOperations = (...operations: ReturnType<typeof buildOperation>[]) => {
+            const budget = buildBudget();
+            budget.listeOperations = operations;
+            return budget;
+        };
+
+        /** Prépare une création valide (brouillon « Cinéma ») sur un budget contenant déjà `op-1` */
+        function preparerCreation(options: { intercompte?: boolean } = {}) {
+            const rendu = rendreHook();
+            const budgetAvant = budgetAvecOperations(buildOperation());
+            act(() => rendu.courant().contexte.setCurrentBudget(budgetAvant));
+            rendu.selectionner(createNewOperation());
+            act(() => {
+                rendu.courant().formulaire.fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, 'Cinéma');
+                rendu.courant().formulaire.fillOperationForm(OPERATION_EDITION_FORM.VALUE, '12');
+                rendu.courant().formulaire.fillOperationForm(OPERATION_EDITION_FORM.CATEGORIE, options.intercompte ? BUSINESS_GUID.SS_CAT_VIREMENT_INTERNE : 'ss-resto');
+                if (options.intercompte) {
+                    rendu.courant().formulaire.fillOperationForm(OPERATION_EDITION_FORM.INTERCOMPTES, 'compte-2');
+                }
+            });
+            return { ...rendu, budgetAvant };
+        }
+
+        /** Ids portés par le brouillon à chaque appel de sauvegarde (relevés à l'appel : "-1" = CREATE, autre = UPDATE) */
+        let idsAppel: string[];
+        let callbackSucces: (budget: ReturnType<typeof buildBudget>) => void;
+
+        beforeEach(() => {
+            idsAppel = [];
+            vi.mocked(saveOperation).mockImplementation((operation, _budget, callback) => {
+                idsAppel.push(operation.id);
+                if (operation.id === '-1') {
+                    operation.id = ID_CLIENT; // comme le vrai service : id client, ensuite écrasé par le backend
+                }
+                callbackSucces = callback;
+            });
+            vi.mocked(saveOperationIntercompte).mockImplementation((operation, _budget, _cible, callback) => {
+                idsAppel.push(operation.id);
+                callbackSucces = callback;
+            });
+            vi.mocked(toast.warn).mockClear();
+        });
+
+        test('1 seul id nouveau : currentOperation et copie de travail portent l\'id backend, jamais l\'id client', () => {
+            const { courant, budgetAvant } = preparerCreation();
+            act(() => courant().formulaire.validate());
+            expect(idsAppel).toEqual(['-1']);
+
+            act(() => callbackSucces(budgetAvecOperations(...budgetAvant.listeOperations, operationBackend(ID_BACKEND))));
+
+            expect(courant().contexte.currentOperation?.id).toBe(ID_BACKEND);
+            expect(courant().formulaire.editOperation.id).toBe(ID_BACKEND);
+            expect(courant().formulaire.editForm.libelle).toBe(false);
+            expect(toast.warn).not.toHaveBeenCalled();
+        });
+
+        test('la résolution porte sur le budget retourné APRÈS sa propagation au parent (onOperationChange d\'abord)', () => {
+            const { courant, onOperationChange, budgetAvant } = preparerCreation();
+            const ordre: string[] = [];
+            onOperationChange.mockImplementation(() => ordre.push('onOperationChange'));
+            act(() => courant().formulaire.validate());
+            const budgetMaj = budgetAvecOperations(...budgetAvant.listeOperations, operationBackend(ID_BACKEND));
+
+            act(() => callbackSucces(budgetMaj));
+
+            expect(onOperationChange).toHaveBeenCalledWith(budgetMaj);
+            expect(ordre).toEqual(['onOperationChange']);
+            expect(courant().contexte.currentOperation?.id).toBe(ID_BACKEND);
+        });
+
+        test('plusieurs candidats : l\'opération correspondant aux champs du brouillon est promue', () => {
+            const { courant, budgetAvant } = preparerCreation();
+            act(() => courant().formulaire.validate());
+            const autre = operationBackend('id-autre', { libelle: 'Autre' });
+
+            act(() => callbackSucces(budgetAvecOperations(...budgetAvant.listeOperations, autre, operationBackend(ID_BACKEND, { ssCategorie: { id: 'ss-resto', libelle: 'Restaurant' } }))));
+
+            expect(courant().contexte.currentOperation?.id).toBe(ID_BACKEND);
+        });
+
+        test('création puis « réaliser » : 1 CREATE puis 1 UPDATE avec l\'id backend, aucun second CREATE', () => {
+            const { courant, budgetAvant } = preparerCreation();
+            act(() => courant().formulaire.validate());
+            act(() => callbackSucces(budgetAvecOperations(...budgetAvant.listeOperations, operationBackend(ID_BACKEND))));
+
+            // « Réaliser » sans changer d'écran : état réalisé sur la copie de travail puis validation
+            act(() => courant().formulaire.handleClick(clic('OPERATION_LIBELLE')));
+            act(() => courant().formulaire.setEtatInCreation(new Date(2026, 9, 5), OPERATION_ETATS_ENUM.REALISEE));
+            act(() => courant().formulaire.validate());
+
+            expect(saveOperation).toHaveBeenCalledTimes(2);
+            expect(idsAppel).toEqual(['-1', ID_BACKEND]);
+            expect(idsAppel.filter((id) => id === '-1')).toHaveLength(1);
+            const [brouillonUpdate] = vi.mocked(saveOperation).mock.calls[1];
+            expect(brouillonUpdate.id).toBe(ID_BACKEND);
+            expect(brouillonUpdate.etat).toBe(OPERATION_ETATS_ENUM.REALISEE);
+        });
+
+        test('repli (0 candidat) : détail fermé (currentOperation null) + toast.warn, parent tout de même notifié', () => {
+            const { courant, onOperationChange, budgetAvant } = preparerCreation();
+            act(() => courant().formulaire.validate());
+            const budgetSansNouveau = budgetAvecOperations(...budgetAvant.listeOperations);
+
+            act(() => callbackSucces(budgetSansNouveau));
+
+            expect(courant().contexte.currentOperation).toBeNull();
+            expect(toast.warn).toHaveBeenCalledTimes(1);
+            expect(onOperationChange).toHaveBeenCalledWith(budgetSansNouveau);
+            expect(courant().formulaire.editForm.libelle).toBe(false);
+        });
+
+        test('repli (plusieurs candidats ambigus) : détail fermé + toast, l\'id client n\'est jamais promu', () => {
+            const { courant, budgetAvant } = preparerCreation();
+            act(() => courant().formulaire.validate());
+
+            act(() => callbackSucces(budgetAvecOperations(...budgetAvant.listeOperations,
+                operationBackend('a', { libelle: 'A' }), operationBackend('b', { libelle: 'B' }))));
+
+            expect(courant().contexte.currentOperation).toBeNull();
+            expect(toast.warn).toHaveBeenCalledTimes(1);
+            expect(courant().contexte.currentOperation?.id).not.toBe(ID_CLIENT);
+        });
+
+        test('repli : après fermeture, la sélection d\'une autre opération réinitialise normalement le formulaire', () => {
+            const { courant, selectionner, budgetAvant } = preparerCreation();
+            act(() => courant().formulaire.validate());
+            act(() => callbackSucces(budgetAvecOperations(...budgetAvant.listeOperations)));
+            const cle = courant().formulaire.resetKey;
+
+            selectionner(buildOperation({ id: 'op-1' }));
+
+            expect(courant().formulaire.resetKey).toBe(cle + 1);
+            expect(courant().formulaire.editOperation.id).toBe('op-1');
+        });
+
+        test('échec de sauvegarde (callback jamais appelé) : currentOperation inchangé, aucun toast', () => {
+            const { courant } = preparerCreation();
+            const avant = courant().contexte.currentOperation;
+
+            act(() => courant().formulaire.validate());
+
+            expect(saveOperation).toHaveBeenCalledTimes(1);
+            expect(courant().contexte.currentOperation).toBe(avant);
+            expect(courant().contexte.currentOperation?.id).toBe('-1');
+            expect(toast.warn).not.toHaveBeenCalled();
+        });
+
+        test('flux non-création : le brouillon est promu tel quel (id inchangé), sans résolution ni toast', () => {
+            const { courant, selectionner } = rendreHook();
+            const operation = buildOperation();
+            selectionner(operation);
+            // Le budget retourné ne contient aucune opération « nouvelle » : une résolution échouerait en repli
+            const budgetMaj = budgetAvecOperations();
+            act(() => courant().contexte.setCurrentBudget(budgetAvecOperations(operation)));
+            act(() => courant().formulaire.handleClick(clic('OPERATION_LIBELLE')));
+            act(() => courant().formulaire.fillOperationForm(OPERATION_EDITION_FORM.LIBELLE, 'Modifié'));
+            act(() => courant().formulaire.validate());
+
+            act(() => callbackSucces(budgetMaj));
+
+            expect(idsAppel).toEqual(['op-1']);
+            expect(courant().contexte.currentOperation?.id).toBe('op-1');
+            expect(courant().contexte.currentOperation?.libelle).toBe('Modifié');
+            expect(toast.warn).not.toHaveBeenCalled();
+        });
+
+        test('intercompte : virement créé via saveOperationIntercompte, opération backend promue', () => {
+            const { courant, budgetAvant } = preparerCreation({ intercompte: true });
+            act(() => courant().formulaire.validate());
+            expect(saveOperationIntercompte).toHaveBeenCalledTimes(1);
+            expect(saveOperation).not.toHaveBeenCalled();
+            expect(vi.mocked(saveOperationIntercompte).mock.calls[0][2]).toBe('compte-2');
+
+            act(() => callbackSucces(budgetAvecOperations(...budgetAvant.listeOperations, operationBackend(ID_BACKEND))));
+
+            expect(courant().contexte.currentOperation?.id).toBe(ID_BACKEND);
+            expect(toast.warn).not.toHaveBeenCalled();
+        });
+
+        test('intercompte : opération source introuvable -> même repli (détail fermé + toast)', () => {
+            const { courant, budgetAvant } = preparerCreation({ intercompte: true });
+            act(() => courant().formulaire.validate());
+
+            act(() => callbackSucces(budgetAvecOperations(...budgetAvant.listeOperations)));
+
+            expect(courant().contexte.currentOperation).toBeNull();
+            expect(toast.warn).toHaveBeenCalledTimes(1);
+        });
     });
 });

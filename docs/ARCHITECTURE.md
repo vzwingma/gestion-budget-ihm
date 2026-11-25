@@ -72,6 +72,26 @@ Saisie → handleClick / fillX (fonctions pures) → editOperation (brouillon co
                                   → [échec]  brouillon conservé, erreur affichée
 ```
 
+#### Id d'opération attribué par le backend (création)
+
+À la création, le backend (`BudgetsResource.createOperation`) **attribue lui-même l'id de l'opération** : l'`uuid()` généré par l'IHM dans le brouillon est écrasé, et la réponse est le `BudgetMensuel` complet. Promouvoir le brouillon tel quel en `currentOperation` donnerait un id inconnu du backend : un « réaliser » enchaîné sans changer d'écran enverrait un UPDATE sur un id inexistant, donc l'insertion d'un doublon (issue #759).
+
+L'IHM **résout donc l'opération réelle côté client** avec la fonction pure `resolveCreatedOperation(budgetAvant, budgetMaj, draft)` (`OperationDetailPage.controller.ts`), appelée par `onOperationUpdate` de `useOperationEditForm` :
+
+1. diff des ids d'opérations entre le budget d'avant (ids capturés avant l'appel) et le budget retourné : un seul id nouveau → opération retenue (clone) ;
+2. plusieurs ids nouveaux → repli par correspondance de champs (libellé, montant, catégorie, date) avec le brouillon ;
+3. aucune opération identifiable (0 ou plusieurs candidats) → `null` : le détail est fermé et un `toast.warn` invite à rouvrir l'opération depuis la liste. Aucun doublon n'est créé.
+
+L'opération résolue (id backend) alimente `setEditOperation`, `setCurrentOperation` et la propagation ; le commit reste conditionné au succès de la sauvegarde. Le virement intercompte (`saveOperationIntercompte`) applique la même résolution pour l'opération source.
+
+```
+création → saveOperation → budget retourné → resolveCreatedOperation(avant, après, brouillon)
+         → [opération trouvée] currentOperation.id = id backend → « réaliser » = UPDATE /{budget}/operations/{idBackend}
+         → [null]              fermeture du détail + toast.warn
+```
+
+**Limite connue** : la résolution est un contournement côté IHM. Le repli par champs peut échouer si plusieurs opérations nouvelles sont indiscernables (le détail est alors fermé, par sécurité). Correction de fond à porter côté backend : **ticket serverless « B »** (le backend respecte l'id fourni par le client) — à ouvrir dans `gestion-budget-serverless`, hors plan 012. Une fois livré, la résolution pourra être simplifiée. Voir [plan 012](../.claude/plans/012_correctif_doublon_creation_operation.plan.md).
+
 ---
 
 ## 📂 Structure des Dossiers
@@ -351,6 +371,7 @@ Pipeline CI/CD : GitHub Actions — `.github/workflows/`
 
 | Version | Date | Changements majeurs |
 |---|---|---|
+| v27.1.1 | 2026-11-24 | Correctif doublon de création d'opération (issue #759, plan 012, Gate #4 en attente 👤) : le backend attribue l'id d'opération à la création (id client écrasé) ; l'IHM résout l'opération réelle via `resolveCreatedOperation` (diff d'ids budget avant/après, repli par champs, sinon fermeture du détail + `toast.warn`), virement intercompte inclus ; ticket serverless B (backend respecte l'id client) à ouvrir — voir [plan 012](../.claude/plans/012_correctif_doublon_creation_operation.plan.md) |
 | v27.1.0 | 2026-11-24 | Expiration de session IHM ([ADR 009](./adr/009-expiration-session-routes-protegees.md)) : contrôle au focus / retour de visibilité et à la première interaction (capture, événement annulé), refus local des requêtes protégées avec jeton expiré (`HttpError` 401, sans `fetch`), garde `RequireAuth` sur `/budgets`, `/recurrents`, `/analyses`, retour à l'accueil par la déconnexion unique existante ; réseau / 5xx / échec de renouvellement non assimilés à une expiration ; 118 tests verts, couverture 93,1 % / 87,6 % — voir [plan 007](../../.claude/plans/007_expiration-session-ihm.plan.md) |
 | v27.0.0 | 2026-10-27 | Revue architecture React (plan 006, lot 6, Gate #4 en attente 👤) : hook `useBudgetPageData` (T1, pages Budget / Recurrents) avec correction d'un bug latent (réinjection d'un budget périmé) ; consumers migrés vers `useCurrentBudget()` / `useBudgetSelection()` (T6, 3 restent sur l'agrégat par choix) ; `getLabelISOFromDate` en composantes locales ; spinner `AnalysesFiltrePeriode` masqué sans compte ; `itemIcon` assaini (`getBanqueIconSrc`) ; ~150 tests (T20) : 1121 tests, couverture 97,67 % stmt ; `testTimeout` 15 s. Reste : 3 fichiers < 85 %, fuseau UTC- accepté — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |
 | v27.0.0 | 2026-10-27 | Décisions 👤 (plan 006) : TanStack Query non retenu (T12, [ADR 002](./adr/002-tanstack-query-data-fetching.md) `Rejetée`, `useFetch` + `fetch*` conservés) ; `logAuth` conservé en mode debug (risque accepté, usage dev uniquement) ; lot 6 décidé (T1, T6, T20, `getLabelISOFromDate` UTC, spinner `AnalysesFiltrePeriode`, `itemIcon`) — voir [plan 006](../.claude/plans/006_revue_architecture_react.plan.md) |

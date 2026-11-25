@@ -22,6 +22,8 @@ export function saveOperation(operation: OperationModel, budget: BudgetMensuelMo
         const isCreation: boolean = operation.id === "-1"
         debug((isCreation ? "Création" : "Mise à jour") + " d'une opération sur le budget : " + budget.id)
         if (isCreation) {
+            // Id client provisoire : écrasé par le backend (BudgetsResource.createOperation). Ne pas s'en servir pour
+            // les appels suivants : l'id réel est résolu côté IHM (resolveCreatedOperation, issue #759).
             operation.id = uuid();
         }
 

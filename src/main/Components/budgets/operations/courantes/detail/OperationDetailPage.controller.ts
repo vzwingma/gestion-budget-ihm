@@ -339,6 +339,58 @@ export function handleValidateOperationForm(operation: OperationModel, budget: B
     }
 }
 
+/** Jour (local) d'une date d'opération, quel que soit son format (Date, chaîne ISO, timestamp) ; null si absente ou invalide */
+function toDayKey(date: Date | string | number | null | undefined): string | null {
+    if (date === null || date === undefined) {
+        return null;
+    }
+    const parsed = new Date(date);
+    return Number.isNaN(parsed.getTime()) ? null : parsed.toDateString();
+}
+
+/** L'opération du budget retourné correspond-elle au brouillon (libellé, montant, catégorie, sous-catégorie, date) ? */
+function matchesDraft(candidate: OperationModel, draft: OperationModel): boolean {
+    return candidate.libelle === draft.libelle
+        && Math.abs(Number(candidate.valeur)) === Math.abs(Number(draft.valeur))
+        && candidate.categorie?.id === draft.categorie?.id
+        && candidate.ssCategorie?.id === draft.ssCategorie?.id
+        && toDayKey(candidate.autresInfos?.dateOperation) === toDayKey(draft.autresInfos?.dateOperation);
+}
+
+/**
+ * Résout l'opération créée par le backend (AP 012, issue #759).
+ *
+ * Le backend écrase l'id généré par l'IHM et renvoie le budget complet : l'id du brouillon est inconnu du backend.
+ * Les opérations absentes du budget précédent sont les candidates : une seule → retenue ; plusieurs → celle qui
+ * correspond au brouillon (libellé, montant, catégorie, sous-catégorie, date) si elle est unique ; sinon `null`.
+ *
+ * Fonction pure : aucun argument n'est muté, l'opération retournée est une copie.
+ *
+ * @param budgetAvant budget avant la création
+ * @param budgetMaj budget retourné par le backend
+ * @param draft brouillon sauvegardé
+ * @returns copie de l'opération avec l'id backend, ou `null` si non résolue
+ */
+export function resolveCreatedOperation(budgetAvant: BudgetMensuelModel | null | undefined,
+    budgetMaj: BudgetMensuelModel | null | undefined, draft: OperationModel): OperationModel | null {
+    const operationsMaj = budgetMaj?.listeOperations;
+    if (!Array.isArray(operationsMaj) || operationsMaj.length === 0) {
+        return null;
+    }
+    const idsAvant = new Set((budgetAvant?.listeOperations ?? []).map((operation) => operation.id));
+    const candidates = operationsMaj.filter((operation) => !idsAvant.has(operation.id));
+    if (candidates.length === 1) {
+        return cloneOperationModel(candidates[0]);
+    }
+    if (candidates.length > 1) {
+        const correspondances = candidates.filter((candidate) => matchesDraft(candidate, draft));
+        if (correspondances.length === 1) {
+            return cloneOperationModel(correspondances[0]);
+        }
+    }
+    return null;
+}
+
 /** Au moins une erreur renseignée ? */
 function hasAnyError(errors: ErrorsFormProps): boolean {
     return Object.values(errors ?? {}).some((error) => error !== null && error !== undefined);
